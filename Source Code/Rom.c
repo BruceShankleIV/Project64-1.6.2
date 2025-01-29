@@ -908,7 +908,7 @@ void SetRecentRomDir (DWORD Index) {
 	Index -= ID_FILE_RECENT_DIR;
 	if (Index < 0 || Index > RomDirsToRemember) { return; }
 	SetRomDirectory(LastDirs[Index]);
-	CheckRbRefresh();
+	if (RomBrowser) RefreshRomBrowser();
 }
 void SetRomDirectory ( char * Directory ) {
 	long lResult;
