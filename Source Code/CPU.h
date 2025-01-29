@@ -84,7 +84,6 @@ void RunRsp             ( void );
 void SetCoreToRunning   ( void );
 void SetCoreToStepping  ( void );
 void StartEmulation     ( void );
-void CheckRbRefresh	( void );
 void StepOpcode         ( void );
 void TimerDone          ( void );
 #define NORMAL					0

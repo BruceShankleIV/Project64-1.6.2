@@ -1582,10 +1582,6 @@ void StartEmulation ( void ) {
 	strcpy(SaveAsFileName,SaveFile);
 	CPU_Action.SaveState = TRUE;
 }
-void CheckRbRefresh ( void ) {
-ShowRomList(hMainWindow);
-if (RomBrowser) RefreshRomBrowser(); else HideRomBrowser();
-}
 void StepOpcode        ( void ) {
 	PulseEvent( CPU_Action.hStepping );
 }

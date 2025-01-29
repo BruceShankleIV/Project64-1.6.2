@@ -757,7 +757,8 @@ BOOL CALLBACK RomBrowserProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
 			}
 			LoadRomBrowserColoumnInfo();
 			ResetRomBrowserColomuns();
-			CheckRbRefresh();
+			if (RomBrowser) { ShowRomList(hMainWindow); RefreshRomBrowser();
+			} else HideRomBrowser();
 			RemoveRecentList(hMainWindow);
 			RomsToRemember = GetDlgItemInt(hDlg,IDC_REMEMBER,NULL,FALSE);
 			if (RomsToRemember < 0) { RomsToRemember = 0; }
