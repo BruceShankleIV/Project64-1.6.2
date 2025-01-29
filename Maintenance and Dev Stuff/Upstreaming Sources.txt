@@ -1,6 +1,5 @@
 https://github.com/mdqinc/SDL_GameControllerDB/blob/master/gamecontrollerdb.txt
 https://www.youtube.com/watch?v=rYWtGcdsrcY
-https://www.youtube.com/watch?v=SsU3uC68dBc
 https://github.com/krm01/oot-indigo-mod/releases
 https://github.com/RichieUltimate/ultimate-trial/releases
 https://github.com/Javarooster-png/PumkinPatch/releases
@@ -28,11 +27,10 @@ curseofmoonlight Nov 4 2024
 Beta Quest V2.2
 OoT: Chaos Mod 11/8/2023
 ocarina-demonsquest Jun 24, 2023
-Sands of Time Dec 23, 2024
+Sands of Time Jan 9, 2025
 Pumkin Patch/Pumkin Tower July 31st 2024
 Ultimate Trial September 16th 2024
 Indigo Chapter 2 Sep 16 2024
-Time Lost 01/06/25
 Shadows of Eldoria 10/31/2024
 gamecontrollerdb e9d11d9
 
