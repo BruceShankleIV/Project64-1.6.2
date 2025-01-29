@@ -1,4 +1,4 @@
-
+//ESSENTIAL SPACE
 [Meta]
 Author=Bruce Shankle IV x Smiff
 Date=January 2025
@@ -422,7 +422,7 @@ SCM=Check Memory Advance
 Status=Compatible
 CF=2
 [733FCCB1-444892F9-C:50]
-Game Name=Banjo-Kazooie (E) (M3)
+Game Name=Banjo Kazooie (E) (M3)
 CPU=Recompiler
 SCM=Check Memory Advance
 Status=Compatible
@@ -430,7 +430,7 @@ Plugin Note=Graphic issues with Jabo plugins
 MB=4
 CF=2
 [A4BF9306-BF0CDFD1-C:45]
-Game Name=Banjo-Kazooie (U) (v1.0)
+Game Name=Banjo Kazooie (U) (v1.0)
 MB=4
 CPU=Recompiler
 SCM=Check Memory Advance
@@ -438,7 +438,7 @@ Status=Compatible
 Plugin Note=Graphic issues with Jabo plugins
 CF=2
 [CD7559AC-B26CF5AE-C:45]
-Game Name=Banjo-Kazooie (U) (v1.1)
+Game Name=Banjo Kazooie (U) (v1.1)
 MB=4
 CPU=Recompiler
 SCM=Check Memory Advance
@@ -446,20 +446,22 @@ Status=Compatible
 Plugin Note=Graphic issues with Jabo plugins
 CF=2
 [155B7CDF-F0DA7325-C:55]
-Game Name=Banjo-Tooie (A)
+Game Name=Banjo Tooie (A)
 MB=4
 Save=16
 CPU=Recompiler
 SCM=Check Memory Advance
-Status=Compatible
+Status=Semicompatible
+Plugin Note=Use Icepir8's LLE
 CF=2
 [C2E9AA9A-475D70AA-C:45]
-Game Name=Banjo-Tooie (U)
+Game Name=Banjo Tooie (U)
 MB=4
 Save=16
 CPU=Recompiler
 SCM=Check Memory Advance
-Status=Compatible
+Status=Semicompatible
+Plugin Note=Use Icepir8's LLE
 CF=2
 [B088FBB4-441E4B1D-C:50]
 Game Name=Bass Hunter 64 (E)
@@ -5926,16 +5928,16 @@ Game Name=The Legend of Zelda - Ocarina of Time (E) (M3) (v1.0)
 MB=4
 CPU=Recompiler
 SCM=Check Memory & Return
-Status=Compatible
-Plugin Note=Graphic issues with Jabo plugins
+Status=Semicompatible
+Plugin Note=Use Icepir8's LLE
 CF=2
 [B2055FBD-0BAB4E0C-C:50]
 Game Name=The Legend of Zelda - Ocarina of Time (E) (M3) (v1.1)
 MB=4
 CPU=Recompiler
 SCM=Check Memory & Return
-Status=Compatible
-Plugin Note=Graphic issues with Jabo plugins
+Status=Semicompatible
+Plugin Note=Use Icepir8's LLE
 CF=2
 [EC7011B7-7616D72B-C:45]
 Game Name=The Legend of Zelda - Ocarina of Time (U) (v1.0)
@@ -5969,18 +5971,18 @@ Game Name=The Legend of Zelda - Ocarina of Time GC (E)
 MB=4
 CPU=Recompiler
 SCM=Check Memory Advance
-Status=Compatible
+Status=Semicompatible
+Plugin Note=Use Icepir8's plugins
 Cheat0=D109A8E4 0320,8109A8E4 0000,D109A8E6 F809,8109A8E6 0000//End Credits Fix
-Plugin Note=Graphic issues with Jabo plugins
 CF=2
 [F3DD35BA-4152E075-C:45]
 Game Name=The Legend of Zelda - Ocarina of Time GC (U)
 MB=4
 CPU=Recompiler
 SCM=Check Memory Advance
-Status=Compatible
+Status=Semicompatible
+Plugin Note=Use Icepir8's LLE
 Cheat0=D109A814 0320,8109A814 0000,D109A816 F809,8109A816 0000//End Credits Fix
-Plugin Note=Graphic issues with Jabo plugins
 CF=2
 [B443EB08-4DB31193-C:45]
 Game Name=The Legend of Zelda - Majora's Mask - Collector's Edition (U)
@@ -6003,18 +6005,18 @@ Game Name=The Legend of Zelda - Ocarina of Time - Master Quest GC (E)
 MB=4
 CPU=Recompiler
 SCM=Check Memory Advance
-Status=Compatible
+Status=Semicompatible
+Plugin Note=Use Icepir8's LLE
 Cheat0=D109A8C4 0320,8109A8C4 0000,D109A8C6 F809,8109A8C6 0000//End Credits Fix
-Plugin Note=Graphic issues with Jabo plugins
 CF=2
 [F034001A-AE47ED06-C:45]
 Game Name=The Legend of Zelda - Ocarina of Time - Master Quest GC (U)
 MB=4
 CPU=Recompiler
 SCM=Check Memory Advance
-Status=Compatible
+Status=Semicompatible
+Plugin Note=Use Icepir8's LLE
 Cheat0=D109A7F4 0320,8109A7F4 0000,D109A7F6 F809,8109A7F6 0000//End Credits Fix
-Plugin Note=Graphic issues with Jabo plugins
 CF=2
 [E61CFF0A-CE1C0D71-C:50]
 Game Name=The New Tetris (E)
@@ -7154,27 +7156,27 @@ Game Name=Zelda no Densetsu - Toki no Ocarina GC (J)
 MB=4
 CPU=Recompiler
 SCM=Check Memory Advance
-Status=Compatible
+Status=Semicompatible
+Plugin Note=Use Icepir8's LLE
 Cheat0=D109A834 0320,8109A834 0000,D109A836 F809,8109A836 0000//End Credits Fix
-Plugin Note=Graphic issues with Jabo plugins
 CF=2
 [F43B45BA-2F0E9B6F-C:4A]
 Game Name=Zelda no Densetsu - Toki no Ocarina Master Quest GC (J)
 MB=4
 CPU=Recompiler
 SCM=Check Memory Advance
-Status=Compatible
+Status=Semicompatible
+Plugin Note=Use Icepir8's LLE
 Cheat0=D109A814 0320,8109A814 0000,D109A816 F809,8109A816 0000//End Credits Fix
-Plugin Note=Graphic issues with Jabo plugins
 CF=2
 [F7F52DB8-2195E636-C:4A]
 Game Name=Zelda no Densetsu - Toki no Ocarina - Zelda Collection Version GC (J)
 MB=4
 CPU=Recompiler
 SCM=Check Memory Advance
-Status=Compatible
+Status=Semicompatible
+Plugin Note=Use Icepir8's LLE
 Cheat0=D109A814 0320,8109A814 0000,D109A816 F809,8109A816 0000//End Credits Fix
-Plugin Note=Graphic issues with Jabo plugins
 CF=2
 [EC417312-EB31DE5F-C:4A]
 Game Name=Zelda no Densetsu - Mujura no Kamen (J) (v1.0)
@@ -7336,7 +7338,7 @@ Game Name=(Hack) Cosmic Goddess
 MB=8
 CPU=Interpreter
 Plugin Note=ANGLE GLideN64 ONLY
-Status=Compatible
+Status=Semicompatible
 Core Note=Uses Interpreter CPU w/custom F3DEX3 microcode spec baked into modern GLideN64
 CF=2
 [EC340D12-EA9AD3F3-C:45]
@@ -7546,3 +7548,13 @@ CPU=Recompiler
 SCM=Cache
 Status=Compatible
 Plugin Note=Use ANGLE GLideN64
+[ECFBE337-AAE69FDF-C:45]
+Game Name=(Hack) Dungeon Rush
+CF=2
+CPU=Recompiler
+MB=4
+SCM=Check Memory & Return
+Status=Compatible
+Cheat0=D109C5AC 0C02,8109C5AC 2400//Subscreen Delay Fix
+Cheat1=D138E8CC 0C0E,8138E8CC 2400//Equipment Screen Delay Fix
+//ESSENTIAL SPACE

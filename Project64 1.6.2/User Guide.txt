@@ -13,12 +13,14 @@ Section#06 RUNNING ROMHACKS
 Section#07 Known Issues
 Section#08 Tips and Tricks
 Section#09 Credits
-Section#10 Donations
+Section#10 Don't "Support Project64"
 Section#11 Special Thanks & Shoutouts
 Section#12 The End
-Section#13 Extra
-Section#14 How to Develop Project64 1.6 + BEWARE of MiB/PJ64Team!
-Section#15 Documentation That You Can Use to Help Develop Project64 & Fix Emulation Issues You Encounter
+Section#13 Extra (Part 1 of 4), Suggestions
+Section#14 Extra (Part 2 of 4), How to Develop Project64 1.6 + BEWARE of MiB/PJ64Team!
+Section#15 Extra (Part 3 of 4), Technical Documentation
+Section#16 Extra (Part 4 of 4), Theoretial ROM Browser Usage
+
 (just ctrl-f the name to navigate to your desired section)
 ********************************************************************************************************
 
@@ -511,50 +513,32 @@ listdiff.com
 GitHub Copilot
 --------------------------------------------------------------------------------------------------------
 
-Section#10 Donations
+Section#10 Don't "Support Project64"
 --------------------------------------------------------------------------------------------------------
-As well-versed users know, Zilmar turned Project64 into donationware. But don't fret, as Project64 1.6.2
-is completely 100% free, and will not once ever ask you to donate money and punish you for not doing so.
-However, if you would like to donate as a way of showing appreciation for the time and effort I invested
-into developing Project64 1.6.2, you are welcome to send nothing more than $1 to my paypal account here:
-bruceiv.shankle2@gmail.com. Do not expect any benefits of any kind for donating as donating should never
-be about receiving. Donating is about contributing to a good cause instead of being solely obligated to,
-at which point it puts it would put into question whether the cause is even, "good" or basically a scam.
-
-BONUS! This emulator also doesn't allow you to get infected by binno malware bundled into the installer,
-what a concept! Imagine users reporting that they were getting infected and then do nothing for 3 fuckin
-years while illegally profiting off of harming your end users, and turning your open source project into
-a donationware, and visiting the official Project64 website to see a warning which stated the following:
-
-"The site ahead contains harmful programs
-
-Attackers on www.pj64-emu.com might attempt to trick you into installing programs that
-harm your browsing experience (for example, by changing your homepage or showing
-extra ads on sites that you visit)."
-
-Want to see what I'm talking about? View the commit history for Project64's installers
-
-https://github.com/project64/project64/commit/596caf94c5c3e0ef69403186b810f8bd71980831
-https://github.com/project64/project64/commit/7937d356d9bf12192ddc03f47f32b6ce2742cd3f
 https://github.com/project64/project64/commit/f825b21de5e7e3cbc5722275754274eadb5497d0
-https://github.com/project64/project64/commit/c823815cc123dca12a23121ff2d58ef10c2558f5
-https://github.com/project64/project64/commit/a7e723e642ca72cba0a47ef04b70085ce4065707
-https://github.com/project64/project64/commit/047eab9b7038460a533faf510d435adb780a5e41
-https://github.com/project64/project64/commit/a201d219eab294e70b2f17699de238d54efa962a
-https://github.com/project64/project64/commit/47b1456c8d46df9085a29d3eac1f08b38f77de47
-https://www.emutalk.net/threads/removing-the-spyware-from-project64-2-1.54652/
-https://www.emutalk.net/threads/removing-the-spyware-from-project64-2-1.54652/page-2
-
-Use http://web.archive.org/ to pull up these links if they are not available to you for whatever reason.
-
-Look at the stuff on GitHub. It's awful. Delta Toolbar, Delta SearchBar, and they told people installing
-malware helps support Project64. I see it in the source. It literally says this in ln 315 installer.iss:
-
+Ctrl-f for Support in the installer.iss one, look at what they were telling their end users...
+'Iminent Minibar - Optional Installation', 'Installing this minibar helps supports Project 64'
+'Iminent Toolbar - Optional Installation', 'Installing this toolbar helps supports Project 64'
 'Lollipop - Optional Installation', 'Installing this helps supports Project 64'
+'Delta Toolbar - Optional Installation', 'Installing this toolbar helps supports Project 64'
 
-https://www.microsoft.com/en-us/wdsi/threats/malware-encyclopedia-description?Name=Adware:Win32/Lollipop
+All of these are different forms of malware. Try downloading Project64_Bundle.exe and scanning somewhere
+like @ https://virusscan.jotti.org/ if you wannna see what was active back then (services discontinued).
 
-What's microsoft got to say about this?
+
+
+Iminent microsoft.com/en-us/wdsi/threats/malware-encyclopedia-description?Name=PUA:Win32/IminentToolbar
+
+"Devices affected by this threat might exhibit the following unexpected behavior:
+
+    Slow performance
+    Presence of added or modified files
+    Changes in desktop settings
+    Freezing or crashing
+    Diminished storage space"
+
+
+Lollipop microsoft.com/en-us/wdsi/threats/malware-encyclopedia-description?Name=Adware:Win32/Lollipop
 
 "This adware program shows ads as you browse the web. It can also redirect your search engine results,
 monitor what you do on your PC, download applications, and send information about your PC to a hacker.
@@ -563,8 +547,27 @@ It can be downloaded from the program's website or bundled with some third-party
 programs."
 
 
-I just want to clarify that I am not going to pull this BS on you. Project64 1.6.2 won't be hacking you.
-And if you don't believe that guess what, you don't have to take my word for it. Get on GitHub yourself.
+Delta Toolbar pcrisk.com/removal-guides/7040-remove-delta-search-redirect-toolbar#!prettyPhoto
+
+"Delta toolbar causes browser redirects to delta-search.com and, commonly, this toolbar is installed
+without users' consent by third party freeware or free browser extensions. This browser hijacker is
+similar to searchgol and buenosearch amongst many others.
+
+Note that a common tactic, widely used by free software developers, is to 'bundle' unwanted toolbars with
+their programs to monetize their products. Thus, to prevent installation of such adware on your Internet
+browsers, closely inspect each freeware installation step, disallowing any suggested changes to your
+Internet browsers and avoid installation of additional software.
+
+If your download is managed by a download client, decline installation of promoted browser add-ons. When
+installing free software, ensure that you choose the 'Advanced' or 'Custom' installation options - this
+will reveal any hidden (bundled) software that you may choose to deselect."
+
+
+
+But that is not even all of it, nope! He went on to bundle even more different viruses, until people had
+enough of his crap. Ever since, he's nagged everyone to "Support Project64" by "donating". Conversation:
+https://www.emutalk.net/threads/removing-the-spyware-from-project64-2-1.54652/
+https://github.com/project64/project64/pull/354
 --------------------------------------------------------------------------------------------------------
 
 Section#11 Special Thanks & Shoutouts
@@ -597,15 +600,13 @@ lilycatx - You're the sweetest person ever lily, thanks for being the best frien
 
 Section#12 The End
 --------------------------------------------------------------------------------------------------------
-I hope you enjoy using this. If you don't, then I encourage you to improve the source code, and fix bugs
-that bother you so you can make it better. If you do decide to develop it more, it would be great to fix
-the save issue present in ROMhacks like Indigo Chapter 2 and Ultimate Trial instead of using savestates.
+I hope you enjoy using this. If you don't, then I encourage you to improve the source code and fix bugs.
 Peace! ✌
 
 - Edwin Bruce Shankle IV
 --------------------------------------------------------------------------------------------------------
 
-Section#13 Extra
+Section#13 Extra (Part 1), Suggestions
 --------------------------------------------------------------------------------------------------------
 Additionally, if you decide to develop a new revision of Ver1.6.2 or make a Ver1.6.3, I'd suggest fixing
 the following issues with this emulator:
@@ -640,8 +641,6 @@ entries, because if you do, then you are just wasting space, assuming you leave 
 
 ABL= 
 (Off)
-AI= 
-(Off)
 Buffer= 
 (Off)
 Caching= 
@@ -668,14 +667,14 @@ TLB=
 (On)
 --------------------------------------------------------------------------------------------------------
 
-Section#14 How to Develop Project64 1.6 + BEWARE of MiB/PJ64Team!
+Section#14 Extra (Part 2), How to Develop Project64 1.6 + BEWARE of MiB/PJ64Team!
 --------------------------------------------------------------------------------------------------------
 If you would like to develop Project64 1.6 or you're unaware of the risks involved with associating with
 Men in Black/Project64 Team, please carefully read this informative document from my URL provided below:
 https://docs.google.com/document/d/1VosUr3DHkhFd6hYRLrwpAtuzDuvYq0zUe2C1rkQ1_xg/edit?usp=sharing
 --------------------------------------------------------------------------------------------------------
 
-Section#15 Documentation That You Can Use to Help Develop Project64 & Fix Emulation Issues You Encounter
+Section#15 Extra (Part 3), Technical Documentation
 --------------------------------------------------------------------------------------------------------
 Surreal64 Documentation for Project64 1.4 from here http://surreal64ce.wikidot.com/settings:pj64settings
 
@@ -792,4 +791,24 @@ messages, usually soon after boot. TLB is an option mainly because you can gain 
 turning it off when not needed, and strangely, some games require it disabled to work.
 
 Note from Bruce IV: TLB must be disabled for some older Ocarina of Time romhacks.
+--------------------------------------------------------------------------------------------------------
+
+Section#16 Extra (Part 4 of 4), ROM Browser Usage
+--------------------------------------------------------------------------------------------------------
+The ROM browser system, controlled by PJ64.RDB is supposed to work like this:
+
+You select your ROM directory and then all those ROMs will be loaded in the ROM browser. They get marked
+by colors based on compatibility. Green should indicate that the game is functional, no delay or freeze.
+Yellow should indicate that a special video (and possibly RSP plugin) is necessary for the user to enjoy
+playing the game without bad issues. Red should indicate the game can't be played. The colors mean this:
+
+Green - Compatible
+
+Yellow - Semicompatible
+
+Red - Incompatible
+
+That's the theory anyways. Most games are Compatible or Semicompatible, only rarely is one Incompatible.
+The user should refer to the plugin note if given for Semicompatible games to see what plugin(s) to use.
+However, the RDB is inherently flawed and is always in need of work so this is just the RDB theory/idea.
 --------------------------------------------------------------------------------------------------------
