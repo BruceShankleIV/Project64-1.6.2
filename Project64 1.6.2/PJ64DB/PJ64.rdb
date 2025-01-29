@@ -7266,7 +7266,7 @@ TLB=Off
 Core Note=Core Note=Emulator crashes without Direct3D8 within an iron knuckle room in Dungeon 1/Requires recompiler core with TLB off for ROMhacks
 CF=1
 Status=Compatible
-Plugin Note=Jabo's Direct3D8 1.6 ONLY/Use GLideN64
+Plugin Note=Jabo's Direct3D8 1.6 ONLY/Use Mk3 GLideN64
 [E27F4A0D-3173AC9B-C:45]
 Game Name=(Hack) Nimpize Adventure
 MB=4
@@ -7408,7 +7408,7 @@ Game Name=(Hack) Indigo Chapter 2
 MB=8
 CPU=Recompiler
 SCM=Check Memory Advance
-Plugin Note=Use GLideN64
+Plugin Note=Use Mk3 GLideN64
 Status=Compatible
 CF=2
 [FDDAA882-1EF1AB5C-C:45]
@@ -7416,7 +7416,7 @@ Game Name=(Hack) Ultimate Trial
 MB=8
 CPU=Recompiler
 SCM=Check Memory Advance
-Plugin Note=Use GLideN64
+Plugin Note=Use Mk3 GLideN64
 Status=Compatible
 CF=2
 [D1AA799D-489144F5-C:45]
@@ -7481,7 +7481,7 @@ MB=8
 CPU=Recompiler
 SCM=Check Memory Advance
 Status=Compatible
-Plugin Note=Use GLideN64 or D3D8 1.6
+Plugin Note=Use Mk3 GLideN64 or D3D8 1.6
 CF=2
 [A7C17E96-56D0B621-C:45]
 Game Name=(Hack) The Sealed Palace
@@ -7489,7 +7489,7 @@ MB=8
 CPU=Recompiler
 SCM=Check Memory Advance
 Status=Compatible
-Plugin Note=Use GLideN64 or D3D8 1.6
+Plugin Note=Use Mk3 GLideN64 or D3D8 1.6
 CF=2
 [6AF2B8CC-AB2DCB77-C:45]
 Game Name=(Hack) Time Lost
@@ -7497,7 +7497,7 @@ MB=8
 CPU=Recompiler
 SCM=Check Memory Advance
 Status=Compatible
-Plugin Note=Use GLideN64 or D3D8 1.6
+Plugin Note=Use Mk3 GLideN64 or D3D8 1.6
 CF=2
 [C24AB09A-6873FECC-C:45]
 Game Name=(Hack) 3rd Quest Patch 0.5
@@ -7523,7 +7523,7 @@ MB=8
 CPU=Recompiler
 SCM=Check Memory Advance
 Status=Compatible
-Plugin Note=Use GLideN64 or D3D8 1.6
+Plugin Note=Use Mk3 GLideN64 or D3D8 1.6
 CF=2
 [E5E9F5FB-E1C4551D-C:45]
 Game Name=(Hack) Mario 64 60fps

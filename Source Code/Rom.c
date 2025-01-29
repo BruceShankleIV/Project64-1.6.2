@@ -611,7 +611,7 @@ void SetNewFileDirectory (void ){
 		GetRomDirectory( CurrentDir );
 		if (strcmp(CurrentDir,Directory) == 0) { return; }
 		SetRomDirectory(Directory);
-		CheckRbRefresh();
+		if (RomBrowser) RefreshRomBrowser();
 	}
 }
 void OpenChosenFile ( void ) {
