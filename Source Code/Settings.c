@@ -587,18 +587,17 @@ BOOL CALLBACK PluginSelectProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
 				_makepath(SaveFile, drive, fixedDir, (GS(HOT_SWAP_COMPLETE)), "");
 				strcpy(SaveAsFileName,SaveFile);
 				CPU_Action.SaveState = TRUE;
-                                CloseCpu();
-                                SendMessage( hStatusWnd, SB_SETTEXT, 0, (LPARAM)GS(MSG_PLUGIN_HOT_SWAP));
-				ShutdownPlugins();
+                CloseCpu();
+                SendMessage( hStatusWnd, SB_SETTEXT, 0, (LPARAM)GS(MSG_PLUGIN_HOT_SWAP));
 				SetupPlugins(hMainWindow);
 				DWORD ThreadID;
 				memset(&CPU_Action,0,sizeof(CPU_Action));
-        			LoadRomOptions();
+        		LoadRomOptions();
 				switch (CPU_Type) {
 				case CPU_Interpreter: hCPU = CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)StartInterpreterCPU,NULL,0, &ThreadID); break;
 				case CPU_Recompiler: hCPU = CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)StartRecompilerCPU,NULL,0, &ThreadID);	break;
 				}
-        			CPURunning = TRUE;
+        		CPURunning = TRUE;
 				_splitpath(SaveFile, drive, dir, fname, ext);
 				_makepath(SaveFile, drive, dir, (GS(HOT_SWAP_COMPLETE)), "");
 				strcpy(LoadFileName,SaveFile);

@@ -115,13 +115,12 @@ void CloseCpu (void) {
 		CPU_Action.Stepping = FALSE;
 		CPU_Action.DoSomething = TRUE;
 		PulseEvent( CPU_Action.hStepping );
-		timeBeginPeriod(16);
-                Sleep(50);
-		timeEndPeriod(16);
-		GetExitCodeThread(hCPU,&ExitCode);
-		if (ExitCode != STILL_ACTIVE) {
-			hCPU = NULL;
-			count = 100;
+		if (WaitForSingleObject(hCPU, 1) == WAIT_OBJECT_0) {
+			GetExitCodeThread(hCPU, &ExitCode);
+			if (ExitCode != STILL_ACTIVE) {
+				hCPU = NULL;
+				break;
+			}
 		}
 	}
 	if (hCPU != NULL) {  TerminateThread(hCPU,0); hCPU = NULL; }

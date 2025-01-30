@@ -285,7 +285,6 @@ LANG_STR DefaultString[] = {
 	{ GZ_ROMS,                "Exiting thread\n(Try Icepir8's LLE Plugin)\n(Try Check Memory & Return)\n(Try Interpreter CPU Core Style)"},
         { MSG_CONFIRMATION_UNINSTALL, "This action will attempt to terminate this instance and factory reset included registry configurations"},
         { MSG_PLUGIN_HOT_SWAP,    "Plugin hot swapping in progress"},
-        { PLUG_HOT_SWAP_DOUBLE,   "Double click the OK button while plugin hot swapping to quickly close Project64 from this window"},
         { HOT_SWAP_COMPLETE,      "Plugin hot swapping completed"},
         { FULLSCREEN_ENTERED,     "Fullscreen mode entered"},
         { GS_PRESS,               "GS button pressed"},

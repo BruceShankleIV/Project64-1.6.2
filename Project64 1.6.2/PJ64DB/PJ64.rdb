@@ -24,7 +24,7 @@ Incompatible.Sel=C10000
 Incompatible.Seltext=FFFFFF
 //0-9
 [3B941695-F90A5EEB-C:50]
-Game Name=007 - The World is Not Enough (E) (M3)
+Game Name=007 - The World is Not Enough (E)
 MB=8
 CPU=Recompiler
 SCM=Protect Memory
@@ -38,14 +38,14 @@ SCM=Protect Memory
 Status=Compatible
 CF=2
 [58FD3F25-D92EAA8D-C:50]
-Game Name=1080 Snowboarding (E) (M4)
+Game Name=1080 Snowboarding (E)
 CPU=Recompiler
 SCM=Protect Memory
 Status=Compatible
 MB=4
 CF=2
 [1FBAF161-2C1C54F1-C:41]
-Game Name=1080 Snowboarding (J/U) (M2)
+Game Name=1080 Snowboarding (J/U)
 MB=4
 CPU=Recompiler
 SCM=Protect Memory
@@ -130,7 +130,7 @@ CPU=Recompiler
 SCM=Check Memory & Cache
 Status=Compatible
 [62F6BE95-F102D6D6-C:50]
-Game Name=AeroFighters Assault (E) (M3)
+Game Name=AeroFighters Assault (E)
 CPU=Recompiler
 SCM=Check Memory & Cache
 Status=Compatible
@@ -144,7 +144,7 @@ SCM=Check Memory & Cache
 Status=Compatible
 CF=2
 [D83045C8-F29D3A36-C:50]
-Game Name=AeroGauge (E) (M3)
+Game Name=AeroGauge (E)
 CPU=Recompiler
 SCM=Cache
 Status=Compatible
@@ -323,7 +323,7 @@ Status=Semicompatible
 Plugin Note=Graphic issues with Jabo plugins
 CF=2
 [B210DF19-98B58D1A-C:50]
-Game Name=Army Men - Sarge's Heroes (E) (M3)
+Game Name=Army Men - Sarge's Heroes (E)
 CPU=Recompiler
 SCM=Cache
 Status=Compatible
@@ -422,7 +422,7 @@ SCM=Check Memory Advance
 Status=Compatible
 CF=2
 [733FCCB1-444892F9-C:50]
-Game Name=Banjo Kazooie (E) (M3)
+Game Name=Banjo Kazooie (E)
 CPU=Recompiler
 SCM=Check Memory Advance
 Status=Compatible
@@ -452,7 +452,7 @@ Save=16
 CPU=Recompiler
 SCM=Check Memory Advance
 Status=Semicompatible
-Plugin Note=Use Icepir8's LLE
+Plugin Note=Icepir8's LLE ONLY
 CF=2
 [C2E9AA9A-475D70AA-C:45]
 Game Name=Banjo Tooie (U)
@@ -461,7 +461,7 @@ Save=16
 CPU=Recompiler
 SCM=Check Memory Advance
 Status=Semicompatible
-Plugin Note=Use Icepir8's LLE
+Plugin Note=Icepir8's LLE ONLY
 CF=2
 [B088FBB4-441E4B1D-C:50]
 Game Name=Bass Hunter 64 (E)
@@ -489,7 +489,7 @@ SCM=Cache
 Status=Compatible
 Plugin Note=Graphic issues with Jabo plugins
 [259F7F84-7C9EED26-C:50]
-Game Name=Batman of the Future - Return of the Joker (E) (M3)
+Game Name=Batman of the Future - Return of the Joker (E)
 CPU=Recompiler
 SCM=Check Memory & Cache
 Status=Compatible
@@ -503,7 +503,7 @@ SCM=Check Memory & Cache
 Status=Compatible
 CF=2
 [0CAD17E6-71A5B797-C:50]
-Game Name=BattleTanx - Global Assault (E) (M3)
+Game Name=BattleTanx - Global Assault (E)
 CPU=Recompiler
 SCM=Cache
 Status=Compatible
@@ -540,7 +540,7 @@ Status=Compatible
 Plugin Note=Graphic issues with Jabo plugins
 CF=2
 [A1B64A61-D014940B-C:50]
-Game Name=Beetle Adventure Racing! (E) (M3)
+Game Name=Beetle Adventure Racing! (E)
 CPU=Recompiler
 SCM=Check Memory Advance
 Caching=Off
@@ -549,7 +549,7 @@ Plugin Note=Graphic issues with Jabo plugins
 MB=8
 CF=2
 [EDF419A8-BF1904CC-C:45]
-Game Name=Beetle Adventure Racing! (U) (M3)
+Game Name=Beetle Adventure Racing! (U)
 MB=4
 CPU=Recompiler
 SCM=Check Memory Advance
@@ -589,7 +589,7 @@ Caching=Off
 Status=Compatible
 Plugin Note=Graphic issues with Jabo plugins
 [7C64E6DB-55B924DB-C:50]
-Game Name=Blast Corps (E) (M2)
+Game Name=Blast Corps (E)
 CPU=Recompiler
 SCM=Cache
 Status=Compatible
@@ -621,7 +621,7 @@ Status=Compatible
 Plugin Note=Graphic issues with Jabo plugins
 CF=2
 [D571C883-822D3FCF-C:50]
-Game Name=Blues Brothers 2000 (E) (M6)
+Game Name=Blues Brothers 2000 (E)
 CPU=Recompiler
 SCM=Check Memory & Cache
 Status=Compatible
@@ -635,7 +635,7 @@ SCM=Check Memory & Cache
 Status=Compatible
 CF=2
 [0B58B8CD-B7B291D2-C:50]
-Game Name=Body Harvest (E) (M3)
+Game Name=Body Harvest (E)
 CF=1
 CPU=Recompiler
 SCM=Check Memory & Cache
@@ -745,7 +745,7 @@ Status=Compatible
 Plugin Note=Graphic issues with Jabo plugins
 CF=2
 [D5B2339C-CABCCAED-C:50]
-Game Name=Buck Bumble (E) (M5)
+Game Name=Buck Bumble (E)
 CPU=Recompiler
 SCM=Check Memory & Cache
 Caching=Off
@@ -805,14 +805,14 @@ CPU=Recompiler
 SCM=Cache
 Status=Compatible
 [580162EC-E3108BF1-C:58]
-Game Name=Carmageddon 64 (E) (M4)
+Game Name=Carmageddon 64 (E)
 MB=4
 CF=1
 CPU=Recompiler
 SCM=Check Memory Advance
 Status=Compatible
 [E48E01F5-E6E51F9B-C:59]
-Game Name=Carmageddon 64 (E) (M4) (Eng-Spa-Fre-Ita)
+Game Name=Carmageddon 64 (E) (Eng-Spa-Fre-Ita)
 MB=4
 CF=1
 CPU=Recompiler
@@ -826,7 +826,7 @@ CPU=Recompiler
 SCM=Check Memory Advance
 Status=Compatible
 [A2C54BE7-6719CBB2-C:50]
-Game Name=Castlevania - Legacy of Darkness (E) (M3)
+Game Name=Castlevania - Legacy of Darkness (E)
 CPU=Recompiler
 SCM=Change Memory & Cache
 ABL=On
@@ -850,7 +850,7 @@ ABL=On
 Status=Compatible
 CF=2
 [64F1B7CA-71A23755-C:50]
-Game Name=Castlevania (E) (M3)
+Game Name=Castlevania (E)
 CPU=Recompiler
 SCM=Change Memory & Cache
 ABL=On
@@ -1036,7 +1036,7 @@ Status=Compatible
 Plugin Note=Graphic issues with Jabo plugins
 CF=2
 [AE5B9465-C54D6576-C:50]
-Game Name=Command & Conquer (E) (M2)
+Game Name=Command & Conquer (E)
 MB=4
 CPU=Recompiler
 SCM=Check Memory & Cache
@@ -1235,7 +1235,7 @@ Plugin Note=Graphic issues with Jabo plugins
 Cheat0=D10C21A2 3021,810C21A0 2406,D10C21A2 3021,810C21A2 0001//save fix
 CF=2
 [630AA37D-896BD7DB-C:50]
-Game Name=Destruction Derby 64 (E) (M3)
+Game Name=Destruction Derby 64 (E)
 MB=4
 CPU=Recompiler
 SCM=Cache
@@ -1260,14 +1260,14 @@ Status=Compatible
 Cheat0=8104327C 1400//Boot Fix but gives mempak error
 CF=2
 [FD73F775-9724755A-C:50]
-Game Name=Diddy Kong Racing (E) (M3) (v1.0)
+Game Name=Diddy Kong Racing (E) (v1.0)
 MB=4
 CPU=Recompiler
 SCM=None
 Status=Compatible
 CF=2
 [596E145B-F7D9879F-C:50]
-Game Name=Diddy Kong Racing (E) (M3) (v1.1)
+Game Name=Diddy Kong Racing (E) (v1.1)
 MB=4
 CPU=Recompiler
 SCM=None
@@ -1288,14 +1288,14 @@ SCM=Cache
 Status=Compatible
 CF=2
 [53D440E7-7519B011-C:45]
-Game Name=Diddy Kong Racing (U) (M2) (v1.0)
+Game Name=Diddy Kong Racing (U) (v1.0)
 MB=4
 CPU=Recompiler
 SCM=None
 Status=Compatible
 CF=2
 [E402430D-D2FCFC9D-C:45]
-Game Name=Diddy Kong Racing (U) (M2) (v1.1)
+Game Name=Diddy Kong Racing (U) (v1.1)
 MB=4
 CPU=Recompiler
 SCM=None
@@ -1337,7 +1337,7 @@ SCM=Protect Memory
 Status=Compatible
 CF=2
 [3DF17480-193DED5A-C:50]
-Game Name=Donald Duck - Quack Attack (E) (M5)
+Game Name=Donald Duck - Quack Attack (E)
 MB=8
 CF=3
 CPU=Recompiler
@@ -1484,7 +1484,7 @@ Status=Compatible
 Plugin Note=Graphic issues with Jabo plugins
 CF=2
 [FBB9F1FA-6BF88689-C:45]
-Game Name=Duck Dodgers Starring Daffy Duck (U) (M3)
+Game Name=Duck Dodgers Starring Daffy Duck (U)
 MB=4
 CF=1
 CPU=Recompiler
@@ -1543,7 +1543,7 @@ Plugin Note=Graphic issues with Jabo plugins
 CF=2
 //eROMs
 [492B9DE8-C6CCC81C-C:50]
-Game Name=Earthworm Jim 3D (E) (M6)
+Game Name=Earthworm Jim 3D (E)
 MB=4
 CPU=Recompiler
 SCM=Cache
@@ -1654,7 +1654,7 @@ SCM=Check Memory & Cache
 Status=Compatible
 Plugin Note=Graphic issues with Jabo plugins
 [8E9D834E-1E8B29A9-C:50]
-Game Name=Extreme-G (E) (M5)
+Game Name=Extreme-G (E)
 MB=4
 CPU=Recompiler
 SCM=Check Memory & Cache
@@ -1678,7 +1678,7 @@ Status=Compatible
 Plugin Note=Graphic issues with Jabo plugins
 CF=2
 [1185EC85-4B5A7731-C:50]
-Game Name=Extreme-G XG2 (E) (M5)
+Game Name=Extreme-G XG2 (E)
 MB=4
 CPU=Recompiler
 SCM=Check Memory & Cache
@@ -1703,14 +1703,14 @@ Status=Compatible
 CF=1
 //fROMs
 [FDD248B2-569A020E-C:50]
-Game Name=F-1 Pole Position 64 (E) (M3)
+Game Name=F-1 Pole Position 64 (E)
 MB=4
 CPU=Recompiler
 SCM=Cache
 Status=Compatible
 CF=2
 [AE82687A-9A3F388D-C:45]
-Game Name=F-1 Pole Position 64 (U) (M3)
+Game Name=F-1 Pole Position 64 (U)
 MB=4
 CPU=Recompiler
 SCM=Cache
@@ -1749,7 +1749,7 @@ Status=Compatible
 Plugin Note=Graphic issues with Jabo plugins
 CF=2
 [07C1866E-5775CCDE-C:50]
-Game Name=F-1 World Grand Prix II (E) (M4)
+Game Name=F-1 World Grand Prix II (E)
 MB=8
 CPU=Recompiler
 SCM=Check Memory & Cache
@@ -1772,7 +1772,7 @@ SCM=Protect Memory
 Status=Compatible
 CF=2
 [3CECBCB8-6126BF07-C:50]
-Game Name=F1 Racing Championship (E) (M5)
+Game Name=F1 Racing Championship (E)
 MB=8
 CPU=Recompiler
 SCM=Protect Memory
@@ -1780,7 +1780,7 @@ Status=Compatible
 Plugin Note=Graphic issues with Jabo plugins
 CF=2
 [0E31EDF0-C37249D5-C:50]
-Game Name=FIFA - Road to World Cup 98 (E) (M7)
+Game Name=FIFA - Road to World Cup 98 (E)
 MB=4
 CPU=Recompiler
 SCM=Cache
@@ -1804,7 +1804,7 @@ Status=Compatible
 Plugin Note=Graphic issues with Jabo plugins
 CF=2
 [0198A651-FC219D84-C:50]
-Game Name=FIFA 99 (E) (M8)
+Game Name=FIFA 99 (E)
 MB=4
 CPU=Recompiler
 SCM=Check Memory & Cache
@@ -1820,7 +1820,7 @@ Caching=Off
 Status=Compatible
 CF=2
 [C3F19159-65D2BC5A-C:50]
-Game Name=FIFA Soccer 64 (E) (M3)
+Game Name=FIFA Soccer 64 (E)
 MB=4
 CPU=Recompiler
 SCM=Cache
@@ -1829,7 +1829,7 @@ Status=Compatible
 Cheat0=810C1102 2400//Nekokabu Game Fix
 CF=2
 [C3F19159-65D2BC5A-C:45]
-Game Name=FIFA Soccer 64 (U) (M3)
+Game Name=FIFA Soccer 64 (U)
 MB=4
 CPU=Recompiler
 SCM=Cache
@@ -1918,7 +1918,7 @@ SCM=Check Memory Advance
 Status=Compatible
 Plugin Note=Graphic issues with Jabo plugins
 [142A17AA-13028D96-C:50]
-Game Name=Forsaken 64 (E) (M4)
+Game Name=Forsaken 64 (E)
 MB=4
 CPU=Recompiler
 SCM=Check Memory Advance
@@ -2061,7 +2061,7 @@ Status=Semicompatible
 Plugin Note=Graphic issues with Jabo plugins
 CF=2
 [99179359-2FE7EBC3-C:50]
-Game Name=Gex 3 - Deep Cover Gecko (E) (M3)
+Game Name=Gex 3 - Deep Cover Gecko (E)
 MB=4
 CPU=Recompiler
 SCM=Change Memory & Cache
@@ -2070,7 +2070,7 @@ Status=Compatible
 Plugin Note=Graphic issues with Jabo plugins
 CF=2
 [874733A4-A823745A-C:58]
-Game Name=Gex 3 - Deep Cover Gecko (E) (M2)
+Game Name=Gex 3 - Deep Cover Gecko (E)
 MB=4
 CPU=Recompiler
 SCM=Change Memory & Cache
@@ -2104,7 +2104,7 @@ Status=Compatible
 Plugin Note=Graphic issues with Jabo plugins
 CF=2
 [F5237301-99E3EE93-C:50]
-Game Name=Glover (E) (M3)
+Game Name=Glover (E)
 MB=4
 CPU=Recompiler
 SCM=Cache
@@ -2184,7 +2184,7 @@ Buffer=On
 Status=Compatible
 SP=On
 [EE4A0E33-8FD588C9-C:50]
-Game Name=GT 64 - Championship Edition (E) (M3)
+Game Name=GT 64 - Championship Edition (E)
 MB=8
 CF=1
 CPU=Recompiler
@@ -2236,7 +2236,7 @@ Plugin Note=Graphic issues with Jabo plugins
 RDP=On
 CF=2
 [AE90DBEB-79B89123-C:50]
-Game Name=Hercules - The Legendary Journeys (E) (M6)
+Game Name=Hercules - The Legendary Journeys (E)
 MB=4
 CF=1
 CPU=Recompiler
@@ -2363,7 +2363,7 @@ Status=Compatible
 RDP=On
 CF=2
 [E7D20193-C1158E93-C:50]
-Game Name=Hot Wheels Turbo Racing (E) (M3)
+Game Name=Hot Wheels Turbo Racing (E)
 MB=4
 CPU=Recompiler
 SCM=Check Memory & Cache
@@ -2394,7 +2394,7 @@ Status=Compatible
 Plugin Note=Graphic issues with Jabo plugins
 CF=2
 [641D3A7F-86820466-C:50]
-Game Name=Hybrid Heaven (E) (M3) PAL
+Game Name=Hybrid Heaven (E)
 MB=8
 CPU=Recompiler
 SCM=Protect Memory
@@ -2486,7 +2486,7 @@ Game Name=Indiana Jones and the Infernal Machine (U)
 MB=8
 CPU=Interpreter
 Status=Semicompatible
-Plugin Note=Use Icepir8's plugins
+Plugin Note=Icepir8's plugins ONLY
 CF=2
 [E436467A-82DE8F9B-C:45]
 Game Name=Indy Racing 2000 (U)
@@ -2506,21 +2506,21 @@ SCM=Check Memory & Cache
 Status=Compatible
 Plugin Note=Graphic issues with Jabo plugins
 [336364A0-06C8D5BF-C:58]
-Game Name=International Superstar Soccer 2000 (E) (M2)
+Game Name=International Superstar Soccer 2000 (E)
 MB=8
 CPU=Recompiler
 SCM=Check Memory Advance
 Status=Compatible
 CF=2
 [8E835437-CD5748B4-C:45]
-Game Name=International Superstar Soccer 2000 (U) (M2) (v1.0)
+Game Name=International Superstar Soccer 2000 (U) (v1.0)
 MB=8
 CPU=Recompiler
 SCM=Check Memory Advance
 Status=Compatible
 CF=2
 [96816CCD-0272EA8C-C:45]
-Game Name=International Superstar Soccer 2000 (U) (M2) (v1.1)
+Game Name=International Superstar Soccer 2000 (U) (v1.1)
 MB=8
 CPU=Recompiler
 SCM=Check Memory Advance
@@ -2566,7 +2566,7 @@ SCM=Change Memory & Cache
 ABL=On
 CF=2
 [6712C779-3B72781D-C:50]
-Game Name=International Track & Field Summer Games (E) (M3)
+Game Name=International Track & Field Summer Games (E)
 Status=Compatible
 MB=4
 CPU=Recompiler
@@ -2720,7 +2720,7 @@ SCM=Check Memory & Cache
 Status=Compatible
 CF=2
 [68D7A1DE-0079834A-C:50]
-Game Name=Jet Force Gemini (E) (M4)
+Game Name=Jet Force Gemini (E)
 MB=4
 CPU=Recompiler
 SCM=Check Memory & Cache
@@ -2840,7 +2840,7 @@ SCM=Check Memory & Cache
 Status=Compatible
 CF=2
 [0F743195-D8A6DB95-C:50]
-Game Name=John Romero's Daikatana (E) (M3)
+Game Name=John Romero's Daikatana (E)
 MB=4
 CPU=Recompiler
 SCM=Protect Memory
@@ -3007,14 +3007,14 @@ Status=Compatible
 Plugin Note=Graphic issues with Jabo plugins
 CF=2
 [F478D8B3-9716DD6D-C:50]
-Game Name=LEGO Racers (E) (M10)
+Game Name=LEGO Racers (E)
 MB=4
 CF=3
 CPU=Recompiler
 SCM=Protect Memory
 Status=Compatible
 [096A40EA-8ABE0A10-C:45]
-Game Name=LEGO Racers (U) (M10)
+Game Name=LEGO Racers (U)
 MB=4
 CF=3
 CPU=Recompiler
@@ -3035,7 +3035,7 @@ SCM=Protect Memory
 Status=Compatible
 CF=2
 [60460680-305F0E72-C:50]
-Game Name=Lode Runner 3-D (E) (M5)
+Game Name=Lode Runner 3-D (E)
 MB=4
 CPU=Recompiler
 SCM=Check Memory & Cache
@@ -3059,21 +3059,21 @@ Status=Compatible
 Plugin Note=Graphic issues with Jabo plugins
 CF=2
 [0AA0055B-7637DF65-C:50]
-Game Name=Looney Tunes - Duck Dodgers (E) (M6)
+Game Name=Looney Tunes - Duck Dodgers (E)
 MB=8
 CPU=Recompiler
 SCM=Check Memory Advance
 Status=Compatible
 CF=2
 [2483F22B-136E025E-C:55]
-Game Name=Lylat Wars (A) (M3)
+Game Name=Lylat Wars (A)
 MB=4
 CPU=Recompiler
 SCM=Protect Memory
 Status=Compatible
 CF=2
 [F4CBE92C-B392ED12-C:50]
-Game Name=Lylat Wars (E) (M3)
+Game Name=Lylat Wars (E)
 MB=4
 CPU=Recompiler
 SCM=Protect Memory
@@ -3303,7 +3303,7 @@ CF=2
 Game Name=Mario no Photopie (J)
 Status=Incompatible
 [9C663069-80F24A80-C:50]
-Game Name=Mario Party (E) (M3)
+Game Name=Mario Party (E)
 MB=4
 CF=1
 CPU=Recompiler
@@ -3326,7 +3326,7 @@ SCM=Protect Memory
 Status=Compatible
 Plugin Note=Graphic issues with Jabo plugins
 [82380387-DFC744D9-C:50]
-Game Name=Mario Party 2 (E) (M5)
+Game Name=Mario Party 2 (E)
 MB=4
 CF=1
 CPU=Recompiler
@@ -3350,7 +3350,7 @@ SCM=Protect Memory
 Status=Compatible
 Plugin Note=Graphic issues with Jabo plugins
 [C5674160-0F5F453C-C:50]
-Game Name=Mario Party 3 (E) (M4)
+Game Name=Mario Party 3 (E)
 MB=4
 CF=1
 Save=16
@@ -3424,7 +3424,7 @@ Status=Compatible
 Plugin Note=Graphic issues with Jabo plugins
 CF=2
 [1001F10C-3D51D8C1-C:45]
-Game Name=Mia Hamm Soccer 64 (U) (M2)
+Game Name=Mia Hamm Soccer 64 (U)
 MB=4
 CPU=Recompiler
 SCM=Check Memory Advance
@@ -3450,7 +3450,7 @@ Status=Compatible
 Plugin Note=Graphic issues with Jabo plugins
 CF=2
 [DED0DD9A-E78225A7-C:50]
-Game Name=Mickey's Speedway USA (E) (M5)
+Game Name=Mickey's Speedway USA (E)
 MB=4
 CPU=Recompiler
 SCM=Check Memory & Cache
@@ -3466,7 +3466,7 @@ Status=Compatible
 Plugin Note=Graphic issues with Jabo plugins
 CF=2
 [2A49018D-D0034A02-C:50]
-Game Name=Micro Machines 64 Turbo (E) (M5)
+Game Name=Micro Machines 64 Turbo (E)
 MB=8
 CPU=Recompiler
 SCM=Check Memory & Cache
@@ -3593,7 +3593,7 @@ Status=Compatible
 Plugin Note=Graphic issues with Jabo plugins
 CF=2
 [5AC383E1-D712E387-C:45]
-Game Name=Monopoly (U) (M2)
+Game Name=Monopoly (U)
 MB=4
 CF=1
 CPU=Recompiler
@@ -3602,7 +3602,7 @@ ABL=On
 Status=Compatible
 Plugin Note=Graphic issues with Jabo plugins
 [D3D806FC-B43AA2A8-C:50]
-Game Name=Monster Truck Madness 64 (E) (M5)
+Game Name=Monster Truck Madness 64 (E)
 MB=4
 CF=3
 CPU=Recompiler
@@ -3682,7 +3682,7 @@ SCM=Check Memory & Cache
 Status=Compatible
 CF=2
 [B8F0BD03-4479189E-C:50]
-Game Name=MRC - Multi Racing Championship (E) (M3)
+Game Name=MRC - Multi Racing Championship (E)
 MB=4
 CPU=Recompiler
 SCM=Check Memory & Cache
@@ -3731,14 +3731,14 @@ Status=Semicompatible
 Plugin Note=Graphic issues with Jabo plugins
 CF=2
 [7F9345D3-841ECADE-C:50]
-Game Name=Mystical Ninja 2 Starring Goemon (E) (M3)
+Game Name=Mystical Ninja 2 Starring Goemon (E)
 MB=4
 CF=1
 CPU=Recompiler
 SCM=Check Memory & Cache
 Status=Compatible
 [28705FA5-B509690E-C:50]
-Game Name=Monaco Grand Prix - Racing Simulation 2 (E) (M4)
+Game Name=Monaco Grand Prix - Racing Simulation 2 (E)
 MB=4
 CPU=Recompiler
 SCM=Check Memory & Cache
@@ -3778,7 +3778,7 @@ Status=Compatible
 Plugin Note=Graphic issues with Jabo plugins
 CF=2
 [AE4992C9-9253B253-C:50]
-Game Name=NASCAR 99 (E) (M3)
+Game Name=NASCAR 99 (E)
 MB=4
 CPU=Recompiler
 SCM=Check Memory & Cache
@@ -3889,7 +3889,7 @@ SCM=Protect Memory
 Status=Compatible
 CF=2
 [EB499C8F-CD4567B6-C:50]
-Game Name=NBA Live 2000 (E) (M4)
+Game Name=NBA Live 2000 (E)
 MB=4
 CPU=Recompiler
 SCM=Check Memory & Cache
@@ -3907,7 +3907,7 @@ Caching=Off
 Status=Compatible
 CF=2
 [CF84F45F-00E4F6EB-C:50]
-Game Name=NBA Live 99 (E) (M5)
+Game Name=NBA Live 99 (E)
 MB=4
 CPU=Recompiler
 SCM=Cache
@@ -4125,7 +4125,7 @@ ABL=On
 Status=Compatible
 Plugin Note=Graphic issues with Jabo plugins
 [8A97A197-272DF6C1-C:50]
-Game Name=Nuclear Strike 64 (E) (M2)
+Game Name=Nuclear Strike 64 (E)
 MB=4
 CF=1
 CPU=Recompiler
@@ -4171,7 +4171,7 @@ Status=Semicompatible
 Plugin Note=Graphic issues with Jabo plugins
 //oROMs
 [AE2D3A35-24F0D41A-C:50]
-Game Name=Olympic Hockey Nagano '98 (E) (M4)
+Game Name=Olympic Hockey Nagano '98 (E)
 MB=4
 CPU=Recompiler
 SCM=Cache
@@ -4239,7 +4239,7 @@ ABL=On
 Status=Compatible
 CF=2
 [D5898CAF-6007B65B-C:50]
-Game Name=Operation WinBack (E) (M5)
+Game Name=Operation WinBack (E)
 MB=4
 CPU=Recompiler
 SCM=Cache
@@ -4264,7 +4264,7 @@ Status=Semicompatible
 Plugin Note=Graphic issues with Jabo plugins
 CF=2
 [19AB29AF-C71BCD28-C:50]
-Game Name=Paper Mario (E) (M4)
+Game Name=Paper Mario (E)
 MB=4
 CF=1
 CPU=Recompiler
@@ -4327,7 +4327,7 @@ SCM=Cache
 Status=Compatible
 CF=2
 [E4B08007-A602FF33-C:50]
-Game Name=Perfect Dark (E) (M5)
+Game Name=Perfect Dark (E)
 MB=8
 Save=16
 CPU=Recompiler
@@ -4374,7 +4374,7 @@ CPU=Recompiler
 SCM=Check Memory & Cache
 Status=Compatible
 [EE08C602-6BC2D5A6-C:50]
-Game Name=PGA European Tour (E) (M5)
+Game Name=PGA European Tour (E)
 MB=4
 CPU=Recompiler
 SCM=Cache
@@ -4397,7 +4397,7 @@ SCM=Cache
 Status=Semicompatible
 CF=2
 [1AA05AD5-46F52D80-C:50]
-Game Name=Pilotwings 64 (E) (M3)
+Game Name=Pilotwings 64 (E)
 MB=4
 CF=3
 CPU=Recompiler
@@ -4890,7 +4890,7 @@ SCM=Check Memory & Cache
 Status=Compatible
 CF=2
 [20FD0BF1-F5CF1D87-C:50]
-Game Name=Rat Attack (E) (M6)
+Game Name=Rat Attack (E)
 MB=4
 CPU=Interpreter
 Status=Compatible
@@ -4902,7 +4902,7 @@ CPU=Interpreter
 Status=Compatible
 CF=2
 [60D5E10B-8BEDED46-C:50]
-Game Name=Rayman 2 - The Great Escape (E) (M5)
+Game Name=Rayman 2 - The Great Escape (E)
 MB=8
 CPU=Recompiler
 SCM=Check Memory & Cache
@@ -4927,7 +4927,7 @@ SCM=Check Memory & Cache
 ABL=On
 Status=Compatible
 [8BD4A334-1E138B05-C:50]
-Game Name=Ready 2 Rumble Boxing (E) (M3)
+Game Name=Ready 2 Rumble Boxing (E)
 MB=4
 CPU=Recompiler
 SCM=Check Memory & Cache
@@ -4949,13 +4949,13 @@ CPU=Recompiler
 SCM=Cache
 Status=Compatible
 [9B500E8E-E90550B3-C:50]
-Game Name=Resident Evil 2 (E) (M2)
+Game Name=Resident Evil 2 (E)
 MB=8
 CPU=Recompiler
 SCM=Protect Memory
 Caching=Off
 Status=Semicompatible
-Plugin Note=Use Icepir8's LLE
+Plugin Note=Icepir8's LLE ONLY
 CF=1
 [AA18B1A5-07DB6AEB-C:45]
 Game Name=Resident Evil 2 (U) (v1.1)
@@ -4964,7 +4964,7 @@ CPU=Recompiler
 SCM=Protect Memory
 Caching=Off
 Status=Semicompatible
-Plugin Note=Use Icepir8's LLE
+Plugin Note=Icepir8's LLE ONLY
 CF=1
 [2F493DD0-2E64DFD9-C:45]
 Game Name=Resident Evil 2 (U) (v1.0)
@@ -4974,9 +4974,9 @@ CPU=Recompiler
 SCM=Protect Memory
 Caching=Off
 Status=Semicompatible
-Plugin Note=Use Icepir8's LLE
+Plugin Note=Icepir8's LLE ONLY
 [C3E7E29E-5D7251CC-C:50]
-Game Name=Re-Volt (E) (M4)
+Game Name=Re-Volt (E)
 MB=8
 CF=1
 CPU=Recompiler
@@ -5004,7 +5004,7 @@ CPU=Recompiler
 SCM=Cache
 Status=Compatible
 [74E87A70-6293AED4-C:50]
-Game Name=Roadsters Trophy (E) (M6)
+Game Name=Roadsters Trophy (E)
 MB=4
 CF=1
 CPU=Recompiler
@@ -5013,7 +5013,7 @@ Caching=Off
 Status=Compatible
 Plugin Note=Graphic issues with Jabo plugins
 [0B6B4DDB-9671E682-C:45]
-Game Name=Roadsters Trophy (U) (M3)
+Game Name=Roadsters Trophy (U)
 MB=4
 CF=1
 CPU=Recompiler
@@ -5046,7 +5046,7 @@ SCM=Cache
 Status=Compatible
 CF=2
 [9FD375F8-45F32DC8-C:50]
-Game Name=Rocket - Robot on Wheels (M3)
+Game Name=Rocket - Robot on Wheels
 MB=4
 CPU=Recompiler
 SCM=Cache
@@ -5127,7 +5127,7 @@ SCM=Protect Memory
 Status=Semicompatible
 CF=2
 [B7CF2136-FA0AA715-C:50]
-Game Name=Rush 2 - Extreme Racing USA (E) (M6)
+Game Name=Rush 2 - Extreme Racing USA (E)
 MB=4
 CF=1
 CPU=Recompiler
@@ -5142,7 +5142,7 @@ SCM=Check Memory & Cache
 Status=Compatible
 //sROMs
 [918E2D60-F865683E-C:50]
-Game Name=S.C.A.R.S. (E) (M3)
+Game Name=S.C.A.R.S. (E)
 MB=4
 CPU=Recompiler
 SCM=Cache
@@ -5164,7 +5164,7 @@ Status=Semicompatible
 Plugin Note=Graphic issues with Jabo plugins
 CF=2
 [61D116B0-FA24D60C-C:50]
-Game Name=San Francisco Rush - Extreme Racing (E) (M3)
+Game Name=San Francisco Rush - Extreme Racing (E)
 MB=4
 CPU=Recompiler
 SCM=Check Memory & Cache
@@ -5185,7 +5185,7 @@ SCM=Check Memory & Cache
 Status=Compatible
 CF=2
 [51D29418-D5B46AE3-C:50]
-Game Name=San Francisco Rush 2049 (E) (M6)
+Game Name=San Francisco Rush 2049 (E)
 MB=8
 CF=1
 CPU=Recompiler
@@ -5230,7 +5230,7 @@ Status=Semicompatible
 Plugin Note=Graphic issues with Jabo plugins
 CF=2
 [60C437E5-A2251EE3-C:50]
-Game Name=Shadow Man (E) (M3)
+Game Name=Shadow Man (E)
 MB=8
 CF=1
 CPU=Recompiler
@@ -5265,14 +5265,14 @@ SCM=Check Memory & Cache
 Status=Compatible
 CF=2
 [02B46F55-61778D0B-C:59]
-Game Name=Shadowgate 64 - Trials Of The Four Towers (E) (M2)
+Game Name=Shadowgate 64 - Trials Of The Four Towers (E)
 MB=4
 CPU=Recompiler
 SCM=Check Memory & Cache
 Status=Compatible
 CF=2
 [2BC1FCF2-7B9A0DF4-C:58]
-Game Name=Shadowgate 64 - Trials Of The Four Towers (E) (M3)
+Game Name=Shadowgate 64 - Trials Of The Four Towers (E)
 MB=4
 CPU=Recompiler
 SCM=Check Memory & Cache
@@ -5286,7 +5286,7 @@ SCM=Check Memory & Cache
 Status=Compatible
 CF=2
 [036897CE-E0D4FA54-C:45]
-Game Name=Shadowgate 64 - Trials Of The Four Towers (U) (M2)
+Game Name=Shadowgate 64 - Trials Of The Four Towers (U)
 MB=4
 CPU=Recompiler
 SCM=Check Memory & Cache
@@ -5382,7 +5382,7 @@ SCM=Protect Memory
 Status=Compatible
 CF=2
 [20B53662-7B61899F-C:50]
-Game Name=South Park (E) (M3)
+Game Name=South Park (E)
 MB=4
 CPU=Recompiler
 SCM=Check Memory & Cache
@@ -5439,7 +5439,7 @@ SCM=Cache
 Status=Compatible
 CF=2
 [FC70E272-08FFE7AA-C:50]
-Game Name=Space Station Silicon Valley (E) (M7)
+Game Name=Space Station Silicon Valley (E)
 MB=4
 CPU=Recompiler
 SCM=Check Memory & Cache
@@ -5514,7 +5514,7 @@ Status=Compatible
 Plugin Note=Graphic issues with Jabo plugins
 CF=2
 [7EE0E8BB-49E411AA-C:50]
-Game Name=Star Wars - Rogue Squadron (E) (M3) (v1.0)
+Game Name=Star Wars - Rogue Squadron (E) (v1.0)
 MB=8
 CPU=Recompiler
 SCM=Protect Memory
@@ -5522,7 +5522,7 @@ Status=Semicompatible
 Plugin Note=Graphic issues with Jabo plugins
 CF=2
 [219191C1-33183C61-C:50]
-Game Name=Star Wars - Rogue Squadron (E) (M3) (v1.1)
+Game Name=Star Wars - Rogue Squadron (E) (v1.1)
 MB=8
 CPU=Recompiler
 SCM=Protect Memory
@@ -5600,17 +5600,17 @@ MB=8
 CPU=Recompiler
 SCM=Protect Memory
 Status=Semicompatible
-Plugin Note=Use Icepir8's LLE
+Plugin Note=Icepir8's LLE ONLY
 CF=2
 [3D02989B-D4A381E2-C:45]
 Game Name=Star Wars Episode I - Battle for Naboo (U)
 MB=8
 CPU=Interpreter
 Status=Semicompatible
-Plugin Note=Use Icepir8's LLE
+Plugin Note=Icepir8's LLE ONLY
 CF=2
 [53ED2DC4-06258002-C:50]
-Game Name=Star Wars Episode I - Racer (E) (M3)
+Game Name=Star Wars Episode I - Racer (E)
 MB=8
 Save=16
 CPU=Recompiler
@@ -5648,7 +5648,7 @@ SCM=Check Memory & Cache
 Status=Compatible
 CF=2
 [D89E0E55-B17AA99A-C:50]
-Game Name=Starshot - Space Circus Fever (E) (M3)
+Game Name=Starshot - Space Circus Fever (E)
 MB=4
 CPU=Recompiler
 SCM=Check Memory & Cache
@@ -5656,7 +5656,7 @@ Status=Compatible
 Plugin Note=Graphic issues with Jabo plugins
 CF=2
 [94EDA5B8-8673E903-C:45]
-Game Name=Starshot - Space Circus Fever (U) (M3)
+Game Name=Starshot - Space Circus Fever (U)
 MB=4
 CPU=Recompiler
 SCM=Check Memory & Cache
@@ -5668,7 +5668,7 @@ Game Name=Stunt Racer 64 (U)
 MB=8
 CPU=Interpreter
 Status=Semicompatible
-Plugin Note=Use Icepir8's plugins
+Plugin Note=Icepir8's plugins ONLY
 CF=2
 [F4646B69-C5751095-C:4A]
 Game Name=Super B-Daman - Battle Phoenix 64 (J)
@@ -5694,7 +5694,7 @@ Status=Semicompatible
 Plugin Note=Graphic issues with Jabo plugins
 CF=2
 [A03CF036-BCC1C5D2-C:50]
-Game Name=Super Mario 64 (E) (M3)
+Game Name=Super Mario 64 (E)
 MB=4
 CF=1
 CPU=Recompiler
@@ -5751,7 +5751,7 @@ ABL=On
 Status=Compatible
 Plugin Note=Graphic issues with Jabo plugins
 [93945F48-5C0F2E30-C:50]
-Game Name=Super Smash Bros. (E) (M3)
+Game Name=Super Smash Bros. (E)
 CF=1
 MB=4
 CPU=Recompiler
@@ -5776,7 +5776,7 @@ SCM=Cache
 Status=Compatible
 CF=2
 [2CBB127F-09C2BFD8-C:50]
-Game Name=Supercross 2000 (E) (M3)
+Game Name=Supercross 2000 (E)
 MB=8
 CPU=Recompiler
 SCM=Check Memory & Cache
@@ -5793,7 +5793,7 @@ Status=Compatible
 Plugin Note=Graphic issues with Jabo plugins
 CF=2
 [B44CAB74-07029A29-C:50]
-Game Name=Superman (E) (M6)
+Game Name=Superman (E)
 MB=4
 CPU=Recompiler
 SCM=Cache
@@ -5801,7 +5801,7 @@ Status=Compatible
 Plugin Note=Graphic issues with Jabo plugins
 CF=2
 [A2E8F35B-C9DC87D9-C:45]
-Game Name=Superman (U) (M3)
+Game Name=Superman (U)
 MB=4
 CPU=Recompiler
 SCM=Cache
@@ -5818,14 +5818,14 @@ Plugin Note=Graphic issues with Jabo plugins
 CF=2
 //tROMs
 [B6BE20A5-FACAF66D-C:58]
-Game Name=Turok - Rage Wars (E) (M3) (Eng-Fre-Ita)
+Game Name=Turok - Rage Wars (E) (Eng-Fre-Ita)
 MB=8
 CPU=Recompiler
 SCM=Check Memory & Cache
 Status=Compatible
 CF=2
 [2E0E7749-B8B49D59-C:58]
-Game Name=Turok 2 - Seeds of Evil (FIS) (M3)
+Game Name=Turok 2 - Seeds of Evil (FIS)
 MB=8
 CPU=Recompiler
 SCM=Check Memory & Cache
@@ -5847,7 +5847,7 @@ Status=Compatible
 Plugin Note=Graphic issues with Jabo plugins
 CF=2
 [AEBCDD54-15FF834A-C:50]
-Game Name=Taz Express (E) (M6)
+Game Name=Taz Express (E)
 MB=8
 CF=1
 CPU=Recompiler
@@ -5859,7 +5859,7 @@ Game Name=Telefoot Soccer 2000 (F)
 MB=8
 CPU=Interpreter
 Status=Semicompatible
-Plugin Note=Use Icepir8's LLE
+Plugin Note=Icepir8's LLE ONLY
 CF=2
 [963ADBA6-F7D5C89B-C:4A]
 Game Name=Tetris 64 (J)
@@ -5890,20 +5890,20 @@ SCM=Check Memory & Cache
 Status=Compatible
 CF=2
 [E97955C6-BC338D38-C:50]
-Game Name=The Legend of Zelda - Majora's Mask (E) (M4) (v1.0)
+Game Name=The Legend of Zelda - Majora's Mask (E) (v1.0)
 MB=8
 CF=1
 CPU=Recompiler
 SCM=Check Memory Advance
 Status=Compatible
-Plugin Note=Graphic issues with Jabo plugins
+Plugin Note=Icepir8's LLE suggested
 [0A5D8F83-98C5371A-C:50]
-Game Name=The Legend of Zelda - Majora's Mask (E) (M4) (v1.1)
+Game Name=The Legend of Zelda - Majora's Mask (E) (v1.1)
 MB=8
 CF=1
 CPU=Recompiler
 SCM=Check Memory Advance
-Plugin Note=Graphic issues with Jabo plugins
+Plugin Note=Icepir8's LLE suggested
 Status=Compatible
 [5354631C-03A2DEF0-C:45]
 Game Name=The Legend of Zelda - Majora's Mask (U)
@@ -5912,32 +5912,32 @@ CPU=Recompiler
 SCM=Check Memory Advance
 CF=1
 Status=Compatible
-Plugin Note=Graphic issues with Jabo plugins
+Plugin Note=Icepir8's LLE suggested
 TLB=Off
 Core Note=Requires recompiler core with TLB off for ROMhacks
 [6AECEC4F-F0924814-C:50]
-Game Name=The Legend of Zelda - Majora's Mask - Collector's Edition (E) (M4)
+Game Name=The Legend of Zelda - Majora's Mask - Collector's Edition (E)
 MB=8
 CF=1
 CPU=Recompiler
 SCM=Check Memory Advance
 Status=Compatible
-Plugin Note=Graphic issues with Jabo plugins
+Plugin Note=Icepir8's LLE suggested
 [B044B569-373C1985-C:50]
-Game Name=The Legend of Zelda - Ocarina of Time (E) (M3) (v1.0)
+Game Name=The Legend of Zelda - Ocarina of Time (E) (v1.0)
 MB=4
 CPU=Recompiler
 SCM=Check Memory & Return
 Status=Semicompatible
-Plugin Note=Use Icepir8's LLE
+Plugin Note=Icepir8's LLE suggested
 CF=2
 [B2055FBD-0BAB4E0C-C:50]
-Game Name=The Legend of Zelda - Ocarina of Time (E) (M3) (v1.1)
+Game Name=The Legend of Zelda - Ocarina of Time (E) (v1.1)
 MB=4
 CPU=Recompiler
 SCM=Check Memory & Return
 Status=Semicompatible
-Plugin Note=Use Icepir8's LLE
+Plugin Note=Icepir8's LLE suggested
 CF=2
 [EC7011B7-7616D72B-C:45]
 Game Name=The Legend of Zelda - Ocarina of Time (U) (v1.0)
@@ -5972,7 +5972,7 @@ MB=4
 CPU=Recompiler
 SCM=Check Memory Advance
 Status=Semicompatible
-Plugin Note=Use Icepir8's plugins
+Plugin Note=Icepir8's plugins ONLY
 Cheat0=D109A8E4 0320,8109A8E4 0000,D109A8E6 F809,8109A8E6 0000//End Credits Fix
 CF=2
 [F3DD35BA-4152E075-C:45]
@@ -5981,7 +5981,7 @@ MB=4
 CPU=Recompiler
 SCM=Check Memory Advance
 Status=Semicompatible
-Plugin Note=Use Icepir8's LLE
+Plugin Note=Icepir8's LLE suggested
 Cheat0=D109A814 0320,8109A814 0000,D109A816 F809,8109A816 0000//End Credits Fix
 CF=2
 [B443EB08-4DB31193-C:45]
@@ -5991,7 +5991,7 @@ CPU=Recompiler
 SCM=Check Memory Advance
 CF=1
 Status=Compatible
-Plugin Note=Graphic issues with Jabo plugins
+Plugin Note=Icepir8's LLE suggested
 [BF799345-39FF7A02-C:45]
 Game Name=The Legend of Zelda - Majora's Mask (U) (Demo)
 MB=8
@@ -5999,14 +5999,14 @@ CPU=Recompiler
 SCM=Check Memory Advance
 CF=1
 Status=Compatible
-Plugin Note=Graphic issues with Jabo plugins
+Plugin Note=Icepir8's LLE suggested
 [1D4136F3-AF63EEA9-C:50]
 Game Name=The Legend of Zelda - Ocarina of Time - Master Quest GC (E)
 MB=4
 CPU=Recompiler
 SCM=Check Memory Advance
 Status=Semicompatible
-Plugin Note=Use Icepir8's LLE
+Plugin Note=Icepir8's LLE suggested
 Cheat0=D109A8C4 0320,8109A8C4 0000,D109A8C6 F809,8109A8C6 0000//End Credits Fix
 CF=2
 [F034001A-AE47ED06-C:45]
@@ -6015,7 +6015,7 @@ MB=4
 CPU=Recompiler
 SCM=Check Memory Advance
 Status=Semicompatible
-Plugin Note=Use Icepir8's LLE
+Plugin Note=Icepir8's LLE suggested
 Cheat0=D109A7F4 0320,8109A7F4 0000,D109A7F6 F809,8109A7F6 0000//End Credits Fix
 CF=2
 [E61CFF0A-CE1C0D71-C:50]
@@ -6042,7 +6042,7 @@ SCM=Check Memory & Cache
 Status=Compatible
 CF=2
 [E0C4F72F-769E1506-C:50]
-Game Name=Tigger's Honey Hunt (E) (M7)
+Game Name=Tigger's Honey Hunt (E)
 MB=4
 CF=1
 CPU=Recompiler
@@ -6057,7 +6057,7 @@ SCM=Check Memory Advance
 ABL=On
 Status=Compatible
 [2B4F4EFB-43C511FE-C:50]
-Game Name=Tom and Jerry in Fists of Furry (E) (M6)
+Game Name=Tom and Jerry in Fists of Furry (E)
 MB=4
 CPU=Recompiler
 SCM=Check Memory Advance
@@ -6099,7 +6099,7 @@ SCM=Check Memory Advance
 Status=Compatible
 CF=2
 [093F916E-4408B698-C:50]
-Game Name=Tonic Trouble (E) (M5)
+Game Name=Tonic Trouble (E)
 MB=4
 CPU=Recompiler
 SCM=Cache
@@ -6429,7 +6429,7 @@ SCM=Check Memory & Cache
 Status=Compatible
 CF=2
 [E0B92B94-80E87CBD-C:50]
-Game Name=Turok 2 - Seeds of Evil (E) (M4)
+Game Name=Turok 2 - Seeds of Evil (E)
 MB=8
 CPU=Recompiler
 SCM=Check Memory & Cache
@@ -6554,7 +6554,7 @@ SCM=Check Memory & Cache
 Status=Compatible
 CF=2
 [2FDAA221-A588A7CE-C:50]
-Game Name=Virtual Chess 64 (E) (M6)
+Game Name=Virtual Chess 64 (E)
 MB=4
 CPU=Recompiler
 SCM=Cache
@@ -6600,7 +6600,7 @@ SCM=Protect Memory
 Status=Compatible
 CF=2
 [636E6B19-E57DDC5F-C:50]
-Game Name=V-Rally Edition 99 (E) (M3)
+Game Name=V-Rally Edition 99 (E)
 MB=4
 CPU=Recompiler
 SCM=Check Memory & Cache
@@ -6641,7 +6641,7 @@ ABL=On
 Status=Compatible
 CF=2
 [93053075-261E0F43-C:50]
-Game Name=Waialae Country Club - True Golf Classics (E) (M4)
+Game Name=Waialae Country Club - True Golf Classics (E)
 MB=4
 CPU=Recompiler
 SCM=Check Memory & Cache
@@ -6649,7 +6649,7 @@ Status=Compatible
 Plugin Note=Graphic issues with Jabo plugins
 CF=2
 [0C5057AD-046E126E-C:50]
-Game Name=Waialae Country Club - True Golf Classics (E) (M4) (v1.1)
+Game Name=Waialae Country Club - True Golf Classics (E) (v1.1)
 MB=4
 CPU=Recompiler
 SCM=Check Memory & Cache
@@ -6689,7 +6689,7 @@ SCM=Cache
 Status=Compatible
 Plugin Note=Graphic issues with Jabo plugins
 [650EFA96-30DDF9A7-C:50]
-Game Name=Wave Race 64 (E) (M2)
+Game Name=Wave Race 64 (E)
 MB=4
 CPU=Recompiler
 SCM=Check Memory & Cache
@@ -6728,7 +6728,7 @@ CPU=Recompiler
 SCM=Check Memory & Cache
 Status=Compatible
 [2209094B-2C9559AF-C:50]
-Game Name=Wayne Gretzky's 3D Hockey (E) (M4)
+Game Name=Wayne Gretzky's 3D Hockey (E)
 MB=4
 CPU=Recompiler
 SCM=Cache
@@ -6756,7 +6756,7 @@ SCM=Cache
 Status=Compatible
 CF=2
 [661B45F3-9ED6266D-C:50]
-Game Name=Wayne Gretzky's 3D Hockey '98 (E) (M4)
+Game Name=Wayne Gretzky's 3D Hockey '98 (E)
 MB=4
 CPU=Recompiler
 SCM=Cache
@@ -6840,7 +6840,7 @@ SCM=Check Memory & Cache
 ABL=On
 Status=Compatible
 [CEA8B54F-7F21D503-C:50]
-Game Name=Wetrix (E) (M6)
+Game Name=Wetrix (E)
 MB=8
 CF=3
 CPU=Recompiler
@@ -6924,7 +6924,7 @@ Status=Compatible
 Plugin Note=Graphic issues with Jabo plugins
 CF=2
 [F9FC3090-FF014EC2-C:50]
-Game Name=World Cup 98 (E) (M8)
+Game Name=World Cup 98 (E)
 MB=4
 CPU=Recompiler
 SCM=Check Memory & Cache
@@ -6933,7 +6933,7 @@ Status=Compatible
 Plugin Note=Graphic issues with Jabo pluginsCF=2
 CF=2
 [BD636D6A-5D1F54BA-C:45]
-Game Name=World Cup 98 (U) (M8)
+Game Name=World Cup 98 (U)
 MB=4
 CPU=Recompiler
 SCM=Check Memory & Cache
@@ -6942,21 +6942,21 @@ Status=Compatible
 Plugin Note=Graphic issues with Jabo plugins
 CF=2
 [AC062778-DFADFCB8-C:50]
-Game Name=World Driver Championship (E) (M5)
+Game Name=World Driver Championship (E)
 MB=4
 CPU=Interpreter
-Plugin Note=Use Icepir8's plugins
+Plugin Note=Icepir8's plugins ONLY
 Status=Semicompatible
 CF=2
 [308DFEC8-CE2EB5F6-C:45]
 Game Name=World Driver Championship (U)
 MB=4
 CPU=Interpreter
-Plugin Note=Use Icepir8's plugins
+Plugin Note=Icepir8's plugins ONLY
 Status=Semicompatible
 CF=2
 [2D21C57B-8FE4C58C-C:50]
-Game Name=Worms - Armageddon (E) (M6)
+Game Name=Worms - Armageddon (E)
 MB=4
 CPU=Recompiler
 SCM=Check Memory & Cache
@@ -6964,7 +6964,7 @@ ABL=On
 Status=Compatible
 CF=2
 [13E959A0-0E93CAB0-C:45]
-Game Name=Worms - Armageddon (U) (M3)
+Game Name=Worms - Armageddon (U)
 MB=4
 CPU=Recompiler
 SCM=Check Memory & Cache
@@ -7090,7 +7090,7 @@ SCM=Protect Memory
 Status=Semicompatible
 RDP=On
 [D3F97D49-6924135B-C:50]
-Game Name=Yoshi's Story (E) (M3)
+Game Name=Yoshi's Story (E)
 MB=4
 Save=16
 CPU=Recompiler
@@ -7108,7 +7108,7 @@ Status=Compatible
 Plugin Note=Graphic issues with Jabo plugins
 CF=2
 [2337D8E8-6B8E7CEC-C:45]
-Game Name=Yoshi's Story (U) (M2)
+Game Name=Yoshi's Story (U)
 MB=4
 Save=16
 CPU=Recompiler
@@ -7157,7 +7157,7 @@ MB=4
 CPU=Recompiler
 SCM=Check Memory Advance
 Status=Semicompatible
-Plugin Note=Use Icepir8's LLE
+Plugin Note=Icepir8's LLE suggested
 Cheat0=D109A834 0320,8109A834 0000,D109A836 F809,8109A836 0000//End Credits Fix
 CF=2
 [F43B45BA-2F0E9B6F-C:4A]
@@ -7166,7 +7166,7 @@ MB=4
 CPU=Recompiler
 SCM=Check Memory Advance
 Status=Semicompatible
-Plugin Note=Use Icepir8's LLE
+Plugin Note=Icepir8's LLE suggested
 Cheat0=D109A814 0320,8109A814 0000,D109A816 F809,8109A816 0000//End Credits Fix
 CF=2
 [F7F52DB8-2195E636-C:4A]
@@ -7175,7 +7175,7 @@ MB=4
 CPU=Recompiler
 SCM=Check Memory Advance
 Status=Semicompatible
-Plugin Note=Use Icepir8's LLE
+Plugin Note=Icepir8's LLE suggested
 Cheat0=D109A814 0320,8109A814 0000,D109A816 F809,8109A816 0000//End Credits Fix
 CF=2
 [EC417312-EB31DE5F-C:4A]
@@ -7185,7 +7185,7 @@ CPU=Recompiler
 SCM=Check Memory Advance
 CF=1
 Status=Compatible
-Plugin Note=Graphic issues with Jabo plugins
+Plugin Note=Icepir8's LLE suggested
 [69AE0438-2C63F3F3-C:4A]
 Game Name=Zelda no Densetsu - Mujura no Kamen (J) (v1.1)
 MB=8
@@ -7193,7 +7193,7 @@ CPU=Recompiler
 SCM=Check Memory Advance
 CF=1
 Status=Compatible
-Plugin Note=Graphic issues with Jabo plugins
+Plugin Note=Icepir8's LLE suggested
 [8473D0C1-23120666-C:4A]
 Game Name=Zelda no Densetsu - Mujura no Kamen - Zelda Collection Version GC (J)
 MB=8
@@ -7201,7 +7201,7 @@ CPU=Recompiler
 SCM=Check Memory Advance
 CF=1
 Status=Compatible
-Plugin Note=Graphic issues with Jabo plugins
+Plugin Note=Icepir8's LLE suggested
 [1C010CCD-22D3B7FA-C:4A]
 Game Name=Zool - Majuu Tsukai Densetsu (J)
 MB=4
@@ -7239,12 +7239,12 @@ Buffer=On
 Status=Compatible
 CF=2
 [9FC385E5-3ECC05C7-C:50]
-Game Name=Majora's Mask (E) (M3) (Debug)
+Game Name=Majora's Mask (E) (Debug)
 MB=8
 CPU=Recompiler
 SCM=Check Memory Advance
 Status=Compatible
-Plugin Note=Graphic issues with Jabo plugins
+Plugin Note=Icepir8's LLE suggested
 Core Note=Extreme lag
 [917D18F6-69BC5453-C:45]
 Game Name=Ocarina of Time Master Quest GC (Debug)
@@ -7266,7 +7266,7 @@ TLB=Off
 Core Note=Core Note=Emulator crashes without Direct3D8 within an iron knuckle room in Dungeon 1/Requires recompiler core with TLB off for ROMhacks
 CF=1
 Status=Compatible
-Plugin Note=Jabo's Direct3D8 1.6 ONLY/Mk3 GLideN64 suggested
+Plugin Note=D3D8 1.6 ONLY/Mk3 GLideN64 suggested
 [E27F4A0D-3173AC9B-C:45]
 Game Name=(Hack) Nimpize Adventure
 MB=4
@@ -7401,7 +7401,7 @@ CF=1
 MB=8
 CPU=Recompiler
 SCM=Check Memory Advance
-Plugin Note=Graphic issues with Jabo plugins
+Plugin Note=Mk3 GLideN64 suggested
 Status=Compatible
 [CDD9E9E1-ED4EEF35-C:45]
 Game Name=(Hack) Indigo Chapter 2
@@ -7505,7 +7505,7 @@ MB=8
 CPU=Recompiler
 SCM=Check Memory Advance
 Status=Compatible
-Plugin Note=Jabo's Direct3D8 1.6 ONLY
+Plugin Note=D3D8 1.6 ONLY
 Core Note=Emulator crashes without Direct3D8 upon death in Dungeon 1
 CF=1
 [CF2E9419-6F97E25D-C:45]
@@ -7514,7 +7514,7 @@ MB=8
 CPU=Recompiler
 SCM=Check Memory Advance
 Status=Compatible
-Plugin Note=Jabo's Direct3D8 1.6 ONLY
+Plugin Note=D3D8 1.6 ONLY
 Core Note=Emulator crashes without Direct3D8 upon death in Dungeon 1 Boss
 CF=2
 [5A091FA5-5AAA78FE-C:45]

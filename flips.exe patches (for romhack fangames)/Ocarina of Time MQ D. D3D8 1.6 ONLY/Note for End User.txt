@@ -1,0 +1,9 @@
+If you don't use Jabo's Direct3D8 1.6, these ROMhacks MAY CRASH!
+
+3rd Quest, if you die in dungeon 1.
+
+DHF Demo, if you die in the dungeon 1 boss.
+
+Zelda's Birthday, in the middle of dungeon 1 at a pair of iron knuckles.
+
+Reason: Bad display lists.

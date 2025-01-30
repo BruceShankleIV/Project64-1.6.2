@@ -114,8 +114,6 @@ Blocked hyperlinks for security reasons (a plugin you add could link to a websit
 Changed a few error messages to be more informative so that they are actually helpful, instead of saying
 that something is wrong and not giving the user any idea on how to fix the problem they're experiencing.
 
-Changed CloseCpu to run twice as fast and temp set system timer resolution for consistent functionality.
-
 Changed the FPS display to round to whole numbers, de-acronym the term, and display even if not running.
 
 Changed the way resetting is done to fix Jabo FSAA flickering on reset in fullscreen and GLideN64 crash.
@@ -332,9 +330,9 @@ Shankle's Octomino SDL2 Input 0.1.1 (1.0) - Very suggested choice if this plugin
 
 Reality Signal Processor plugin:
 
-Icepir8's Legacy RSP Ver. 0.1.7 - Pairing this plugin with Icepir8's Legacy LLE is needed with a handful
-				  of games like Stunt Racer, World Driver, and Indiana Jones. Otherwise,
-                                  don't ever bother using this plugin because of its horrid performance.
+Icepir8's Legacy RSP - Pairing Ice's RSP with Icepir8's Legacy LLE is necessary with specific games like
+		       Stunt Racer, World Driver Championship, also Indiana Jones. Otherwise, don't ever
+		       bother using this plugin because it's prone to weak performance (game dependent).
 
 Shankle's Dual Level Sound MP RSP v1.0 - You can cycle between HLE and LLE sound in the config. Not much
 					 else to set it apart from 1.6 RSP other than that it seems more
@@ -353,7 +351,7 @@ Video (graphics) plugin:
 Icepir8's Legacy LLE
 
 Reality Signal Processor plugin:
-Icepir8's Legacy RSP Ver. 0.1.7
+Icepir8's Legacy RSP
 
 
 (All combos below are to be used with Shankle's Dual Level Sound MP RSP v1.0)
@@ -421,10 +419,10 @@ either the ROM header data above the internal name, or the baseROM's internal na
 
 Section#07 Known Issues
 --------------------------------------------------------------------------------------------------------
-The audio does not sync with the game when Limit FPS is off in a few games while on AziAudio with AI on.
+Depending on the PC hardware, Jabo's Direct3D8 can sometimes freeze, though the ROM still stays running.
 GLideN64 is missing microcode support for some games which will crash at some point when using GLideN64.
 The rom browser is a bit buggy but this shouldn't affect your gaming experience so it's not a big issue.
-GLideN64 is prone to crashing upon using "End Emulation". It seems to be related to a lack of threading.
+GLideN64 is prone to crashing upon executing CloseCpu();. It seems to be related to a lack of threading.
 Lots of tearing in fullscreen mode if VSync is not set and initialized (hot swap will initialize Vsync).
 Special characters aren't supported when it comes to language database translations for other languages.
 The .exe shall fail to properly close if you leave Octomino SDL2 config window open and close Project64.

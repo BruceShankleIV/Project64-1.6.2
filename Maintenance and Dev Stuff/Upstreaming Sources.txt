@@ -28,11 +28,11 @@ Beta Quest V2.2
 OoT: Chaos Mod 11/8/2023
 ocarina-demonsquest Jun 24, 2023
 Sands of Time Jan 9, 2025
-Pumkin Patch/Pumkin Tower July 31st 2024
+Pumkin Tower July 31st 2024
 Ultimate Trial September 16th 2024
 Indigo Chapter 2 Sep 16 2024
 Shadows of Eldoria 10/31/2024
-gamecontrollerdb e9d11d9
+gamecontrollerdb bddb30e (only windows stuff)
 
 NOTE: I have included the Return to Yoshi's Island Demo 2, but I don't plan to upstream it
 because I'd rather wait until the whole game is released and then I'll just go from there.
