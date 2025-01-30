@@ -1523,7 +1523,7 @@ void RunRsp (void) {
 			}
 		}
 	}
-void SetCoreToRunning  ( void ) {
+void SetCoreToRunning ( void ) {
 	CPU_Action.Stepping = FALSE;
 	PulseEvent( CPU_Action.hStepping );
 }
@@ -1582,7 +1582,11 @@ void StartEmulation ( void ) {
 	strcpy(SaveAsFileName,SaveFile);
 	CPU_Action.SaveState = TRUE;
 }
-void StepOpcode        ( void ) {
+void CheckRbRefresh ( void ) {
+	if (RomBrowser) { ShowRomList(hMainWindow); RefreshRomBrowser();
+	} else SetupMenu(hMainWindow);
+}
+void StepOpcode ( void ) {
 	PulseEvent( CPU_Action.hStepping );
 }
 void TimerDone (void) {

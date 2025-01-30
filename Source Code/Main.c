@@ -818,8 +818,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 			EnableMenuItem(hMenu,ID_FILE_STARTEMULATION,MFS_ENABLED|MF_BYCOMMAND);
 			if (DrawScreen != NULL) { DrawScreen(); }
 			CloseCheatWindow();
-			if (RomBrowser) { ShowRomList(hMainWindow); RefreshRomBrowser();
-			} else SetupMenu(hMainWindow);
+			CheckRbRefresh();
 			break;
 		case ID_FILE_ROMDIRECTORY: SelectRomDir(); break;
 		case ID_FILE_REFRESHROMLIST: RefreshRomBrowser(); break;

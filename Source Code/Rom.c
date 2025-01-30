@@ -650,7 +650,7 @@ void OpenChosenFile ( void ) {
 		file = unzOpen(CurrentFileName);
 		if (file == NULL) {
 			DisplayError(GS(MSG_FAIL_OPEN_ZIP));
-			if (RomBrowser) { ShowRomList(hMainWindow); RefreshRomBrowser(); }
+			CheckRbRefresh();
 			return;
 		}
 		port = unzGoToFirstFile(file);
@@ -660,13 +660,13 @@ void OpenChosenFile ( void ) {
 		    if (unzLocateFile(file, zname, 1) != UNZ_OK ) {
 				unzClose(file);
 				DisplayError(GS(MSG_FAIL_ZIP));
-				if (RomBrowser) { ShowRomList(hMainWindow); RefreshRomBrowser(); }
+				CheckRbRefresh();
 				return;
 			}
 			if( unzOpenCurrentFile(file) != UNZ_OK ) {
 				unzClose(file);
 				DisplayError(GS(MSG_FAIL_OPEN_ZIP));
-				if (RomBrowser) { ShowRomList(hMainWindow); RefreshRomBrowser(); }
+				CheckRbRefresh();
 				return;
 			}
 			unzReadCurrentFile(file,Test,4);
@@ -677,7 +677,7 @@ void OpenChosenFile ( void ) {
 					unzCloseCurrentFile(file);
 					unzClose(file);
 					DisplayError(GS(MSG_MEM_ALLOC_ERROR));
-					if (RomBrowser) { ShowRomList(hMainWindow); RefreshRomBrowser(); }
+					CheckRbRefresh();
 					return;
 				}
 				memcpy(ROM,Test,4);
@@ -699,13 +699,13 @@ void OpenChosenFile ( void ) {
 						DisplayError(GS(MSG_FAIL_OPEN_ZIP));
 						break;
 					}
-					if (RomBrowser) { ShowRomList(hMainWindow); RefreshRomBrowser(); }
+					CheckRbRefresh();
 					return;
 				}
 				if(unzCloseCurrentFile(file) == UNZ_CRCERROR) {
 					unzClose(file);
 					DisplayError(GS(MSG_FAIL_OPEN_ZIP));
-					if (RomBrowser) { ShowRomList(hMainWindow); RefreshRomBrowser(); }
+					CheckRbRefresh();
 					return;
 				}
 				AddRecentFile(hMainWindow,CurrentFileName);
@@ -720,7 +720,7 @@ void OpenChosenFile ( void ) {
 		if (FoundRom == FALSE) {
 		    DisplayError(GS(MSG_FAIL_OPEN_ZIP));
 		    unzClose(file);
-			if (RomBrowser) { ShowRomList(hMainWindow); RefreshRomBrowser(); }
+			CheckRbRefresh();
 			return;
 		}
 	} else {
@@ -730,7 +730,7 @@ void OpenChosenFile ( void ) {
 			OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL | FILE_FLAG_RANDOM_ACCESS,
 			NULL);
 		if (hFile == INVALID_HANDLE_VALUE) {
-			if (RomBrowser) { ShowRomList(hMainWindow); RefreshRomBrowser(); }
+			CheckRbRefresh();
 			return;
 		}
 		SetFilePointer(hFile,0,0,FILE_BEGIN);
@@ -739,7 +739,7 @@ void OpenChosenFile ( void ) {
 			CloseHandle( hFile );
 			SendMessage( hStatusWnd, SB_SETTEXT, 0, (LPARAM)"" );
 			DisplayError(GS(MSG_FAIL_IMAGE));
-			if (RomBrowser) { ShowRomList(hMainWindow); RefreshRomBrowser(); }
+			CheckRbRefresh();
 			return;
 		}
 		RomFileSize = GetFileSize(hFile,NULL);
@@ -747,7 +747,7 @@ void OpenChosenFile ( void ) {
 			CloseHandle( hFile );
 			SendMessage( hStatusWnd, SB_SETTEXT, 0, (LPARAM)"" );
 			DisplayError(GS(MSG_MEM_ALLOC_ERROR));
-			if (RomBrowser) { ShowRomList(hMainWindow); RefreshRomBrowser(); } 
+			CheckRbRefresh(); 
 			return;
 		}
 		SetFilePointer(hFile,0,0,FILE_BEGIN);
