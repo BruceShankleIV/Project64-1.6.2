@@ -630,7 +630,7 @@ void OpenChosenFile ( void ) {
 		if (strlen(LastRoms[count]) == 0) { break; }
 		EnableMenuItem(hMainMenu,ID_FILE_RECENT_FILE + count,MFS_DISABLED|MF_BYCOMMAND);
 	}
-	if (!RomBrowser) HideRomBrowser();
+	if (RomBrowser) HideRomBrowser();
 	CloseCheatWindow();
 	{
 		HMENU hMenu = GetMenu(hMainWindow);

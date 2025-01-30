@@ -5700,7 +5700,7 @@ CF=1
 CPU=Recompiler
 SCM=Cache
 Status=Compatible
-Plugin Note=Use ANGLE GLideN64 or Direct3D8
+Plugin Note=ANGLE GLideN64 suggested
 [4EAA3D0E-74757C24-C:4A]
 Game Name=Super Mario 64 (J)
 MB=8
@@ -5708,7 +5708,7 @@ CF=1
 CPU=Recompiler
 SCM=Cache
 Status=Compatible
-Plugin Note=Use ANGLE GLideN64 or Direct3D8
+Plugin Note=ANGLE GLideN64 suggested
 [635A2BFF-8B022326-C:45]
 Game Name=Super Mario 64 (U)
 MB=4
@@ -5716,7 +5716,7 @@ CF=1
 CPU=Recompiler
 SCM=Cache
 Status=Compatible
-Plugin Note=Use ANGLE GLideN64 or Direct3D8
+Plugin Note=ANGLE GLideN64 suggested
 [D6FBA4A8-6326AA2C-C:4A]
 Game Name=Super Mario 64 - Shindou Pack Taiou Version (J) (v1.3)
 MB=8
@@ -5724,7 +5724,7 @@ CF=1
 CPU=Recompiler
 SCM=Cache
 Status=Compatible
-Plugin Note=Use ANGLE GLideN64 or Direct3D8
+Plugin Note=ANGLE GLideN64 suggested
 [66572080-28E348E1-C:4A]
 Game Name=Super Robot Spirits (J)
 MB=4
@@ -7266,7 +7266,7 @@ TLB=Off
 Core Note=Core Note=Emulator crashes without Direct3D8 within an iron knuckle room in Dungeon 1/Requires recompiler core with TLB off for ROMhacks
 CF=1
 Status=Compatible
-Plugin Note=Jabo's Direct3D8 1.6 ONLY/Use Mk3 GLideN64
+Plugin Note=Jabo's Direct3D8 1.6 ONLY/Mk3 GLideN64 suggested
 [E27F4A0D-3173AC9B-C:45]
 Game Name=(Hack) Nimpize Adventure
 MB=4
@@ -7348,7 +7348,7 @@ CF=1
 CPU=Recompiler
 SCM=Cache
 Status=Compatible
-Plugin Note=Use ANGLE GLideN64 or Direct3D8
+Plugin Note=ANGLE GLideN64 suggested
 Cheat0=802473A7 00BC,802473B3 0000,8024748E 0000,80247966 0000,80247996 0000,8027B4F6 0000,8027B46A 0000,8027B4AA 0000,8027B582 0000,8027C99F 00BC,8027C9AB 0000//Cropfix
 [FAADE031-7BA332DC-C:45]
 Game Name=(Hack) Super Mario Star Road Original
@@ -7357,7 +7357,7 @@ CF=1
 CPU=Recompiler
 SCM=Cache
 Status=Compatible
-Plugin Note=Use ANGLE GLideN64 or Direct3D8
+Plugin Note=ANGLE GLideN64 suggested
 Cheat0=802473A7 00BC,802473B3 0000,8024748E 0000,80247966 0000,80247996 0000,8027B4F6 0000,8027B46A 0000,8027B4AA 0000,8027B582 0000,8027C99F 00BC,8027C9AB 0000//Cropfix
 [D9DBF5ED-F58A4E97-C:45]
 Game Name=(Hack) Super Mario Star Road Beta
@@ -7366,7 +7366,7 @@ CF=1
 CPU=Recompiler
 SCM=Cache
 Status=Compatible
-Plugin Note=Use ANGLE GLideN64 or Direct3D8
+Plugin Note=ANGLE GLideN64 suggested
 Cheat0=802473A7 00BC,802473B3 0000,8024748E 0000,80247966 0000,80247996 0000,8027B4F6 0000,8027B46A 0000,8027B4AA 0000,8027B582 0000,8027C99F 00BC,8027C9AB 0000//Cropfix
 [56CA3E01-7364C208-C:45]
 Game Name=(Hack) Super Mario Star Road French
@@ -7375,7 +7375,7 @@ CF=1
 CPU=Recompiler
 SCM=Cache
 Status=Compatible
-Plugin Note=Use ANGLE GLideN64 or Direct3D8
+Plugin Note=ANGLE GLideN64 suggested
 Cheat0=802473A7 00BC,802473B3 0000,8024748E 0000,80247966 0000,80247996 0000,8027B4F6 0000,8027B46A 0000,8027B4AA 0000,8027B582 0000,8027C99F 00BC,8027C9AB 0000//Cropfix
 [9CC44345-D6DF4426-C:45]
 Game Name=(Hack) Super Mario Star Road Final
@@ -7384,7 +7384,7 @@ CF=1
 CPU=Recompiler
 SCM=Cache
 Status=Compatible
-Plugin Note=Use ANGLE GLideN64 or Direct3D8
+Plugin Note=ANGLE GLideN64 suggested
 Cheat0=802473A7 00BC,802473B3 0000,8024748E 0000,80247966 0000,80247996 0000,8027B4F6 0000,8027B46A 0000,8027B4AA 0000,8027B582 0000,8027C99F 00BC,8027C9AB 0000//Cropfix
 [79BC362E-C7C8B112-C:45]
 Game Name=(Hack) Super Mario Star Road Deluxe
@@ -7393,7 +7393,7 @@ CF=1
 CPU=Recompiler
 SCM=Cache
 Status=Compatible
-Plugin Note=Use ANGLE GLideN64 or Direct3D8
+Plugin Note=ANGLE GLideN64 suggested
 Cheat0=802473A7 00BC,802473B3 0000,8024748E 0000,80247966 0000,80247996 0000,8027B4F6 0000,8027B46A 0000,8027B4AA 0000,8027B582 0000,8027C99F 00BC,8027C9AB 0000//Cropfix
 [36F2DB16-DF63D3BE-C:45]
 Game Name=(Hack) Pumkin Tower
@@ -7408,7 +7408,7 @@ Game Name=(Hack) Indigo Chapter 2
 MB=8
 CPU=Recompiler
 SCM=Check Memory Advance
-Plugin Note=Use Mk3 GLideN64
+Plugin Note=Mk3 GLideN64 suggested
 Status=Compatible
 CF=2
 [FDDAA882-1EF1AB5C-C:45]
@@ -7416,7 +7416,7 @@ Game Name=(Hack) Ultimate Trial
 MB=8
 CPU=Recompiler
 SCM=Check Memory Advance
-Plugin Note=Use Mk3 GLideN64
+Plugin Note=Mk3 GLideN64 suggested
 Status=Compatible
 CF=2
 [D1AA799D-489144F5-C:45]
@@ -7481,7 +7481,7 @@ MB=8
 CPU=Recompiler
 SCM=Check Memory Advance
 Status=Compatible
-Plugin Note=Use Mk3 GLideN64 or D3D8 1.6
+Plugin Note=Mk3 GLideN64 or D3D8 1.6 suggested
 CF=2
 [A7C17E96-56D0B621-C:45]
 Game Name=(Hack) The Sealed Palace
@@ -7489,7 +7489,7 @@ MB=8
 CPU=Recompiler
 SCM=Check Memory Advance
 Status=Compatible
-Plugin Note=Use Mk3 GLideN64 or D3D8 1.6
+Plugin Note=Mk3 GLideN64 or D3D8 1.6 suggested
 CF=2
 [6AF2B8CC-AB2DCB77-C:45]
 Game Name=(Hack) Time Lost
@@ -7497,7 +7497,7 @@ MB=8
 CPU=Recompiler
 SCM=Check Memory Advance
 Status=Compatible
-Plugin Note=Use Mk3 GLideN64 or D3D8 1.6
+Plugin Note=Mk3 GLideN64 or D3D8 1.6 suggested
 CF=2
 [C24AB09A-6873FECC-C:45]
 Game Name=(Hack) 3rd Quest Patch 0.5
@@ -7523,7 +7523,7 @@ MB=8
 CPU=Recompiler
 SCM=Check Memory Advance
 Status=Compatible
-Plugin Note=Use Mk3 GLideN64 or D3D8 1.6
+Plugin Note=Mk3 GLideN64 or D3D8 1.6 suggested
 CF=2
 [E5E9F5FB-E1C4551D-C:45]
 Game Name=(Hack) Mario 64 60fps
@@ -7539,7 +7539,7 @@ CF=1
 CPU=Recompiler
 SCM=Cache
 Status=Compatible
-Plugin Note=Use ANGLE GLideN64
+Plugin Note=ANGLE GLideN64 suggested
 [91085973-E32B4E16-C:45]
 Game Name=(Hack) That Time I Became Friends With The Royal Scuttlebug Family And Fell From Space
 MB=8
@@ -7547,7 +7547,7 @@ CF=1
 CPU=Recompiler
 SCM=Cache
 Status=Compatible
-Plugin Note=Use ANGLE GLideN64
+Plugin Note=ANGLE GLideN64 suggested
 [ECFBE337-AAE69FDF-C:45]
 Game Name=(Hack) Dungeon Rush
 CF=2
