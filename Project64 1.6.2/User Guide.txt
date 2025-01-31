@@ -16,10 +16,10 @@ Section#09 Credits
 Section#10 Don't "Support Project64"
 Section#11 Special Thanks & Shoutouts
 Section#12 The End
-Section#13 Extra (Part 1 of 4), Suggestions
-Section#14 Extra (Part 2 of 4), How to Develop Project64 1.6 + BEWARE of MiB/PJ64Team!
-Section#15 Extra (Part 3 of 4), Technical Documentation
-Section#16 Extra (Part 4 of 4), Theoretial ROM Browser Usage
+Section#13 Extra (Part 1), Suggestions
+Section#14 Extra (Part 2), How to Develop Project64 1.6 + BEWARE of MiB/PJ64Team!
+Section#15 Extra (Part 3), Technical Documentation
+Section#16 Extra (Part 4), Theoretial ROM Browser Usage
 
 (just ctrl-f the name to navigate to your desired section)
 ********************************************************************************************************
@@ -232,7 +232,7 @@ Jabo's Direct3D8 1.6 -   **Note: This is the previous version of the plugin foun
 
 Jabo's Direct3D8 1.6.1 - This is the default gfx plugin due to low requirements and minimal regressions.
 			 However, it also has many graphics emulation issues, and if your PC can support
-			 Mk3 GLideN64 or Icepir8's Legacy LLE plugins I would suggest giving those a try
+			 Icepir8's Legacy LLE and RSP plugins I would suggest giving them plugins a try.
 			 if you experience bad graphic issues with the ROMs/hacks you're trying to play.
 			 Do not enable "Copy framebuffer to RDRAM" or you will suffer evil consequences.
 			 Avoid enabling full-scene anti aliasing if possible because it causes problems.
@@ -281,10 +281,6 @@ Vigilante 8: fixed some textures
 
 Legend of Zelda Majora's Mask: fixed day transition borders and lens of truth in snow areas
 
-
-Mk3 GLideN64#42d6569 - The last stable release of GLideN64 I am able to find before the bad regressions.
-		       Use this if you want something that generally works but it has high requirements.
-		       Taken from: https://github.com/gonetz/GLideN64/issues/1574#issuecomment-345526911
 
 Shankle's AntiFbffr ANGLE GLideN64 (1.0) - Use ANGLE GLideN64 for ROMhacks using DEX3 (F3DEX3) microcode
 					   or for (most) SM64 hacks. You can enable framebuffer from the
@@ -357,7 +353,7 @@ Icepir8's Legacy RSP
 (All combos below are to be used with Shankle's Dual Level Sound MP RSP v1.0)
 
 
-Majority Retail Game Compatibility (requires high-end PC, DO NOT USE WITH ROMHACKS)
+Majority Retail Game/Hack Compatibility (requires high-end PC)
 
 Video (graphics) plugin:
 Icepir8's Legacy LLE
@@ -367,12 +363,6 @@ Majority Super Mario 64 ROMhacks Compatibility (requires OpenGL 3.3 GPU support)
 
 Video (graphics) plugin:
 Shankle's AntiFbffr ANGLE GLideN64 (1.0)
-
-
-Majority Newer ROMhacks Compatibility (requires OpenGL 3.3 GPU support)
-
-Video (graphics) plugin:
-Mk3 GLideN64#42d6569
 
 
 Majority Older ROMhacks Compatibility
@@ -422,10 +412,7 @@ Section#07 Known Issues
 Opening settings pauses CPU when Pause CPU Upon Focus Loss is unchecked. Otherwise hot swap would break.
 Limit FPS off doesn't work on Icepir8's Legacy LLE in DirectX8 render mode with fullscreen mode entered.
 Depending on the PC hardware, Jabo's Direct3D8 can sometimes freeze, though the ROM still stays running.
-GLideN64 is missing microcode support for some games which will crash at some point when using GLideN64.
 The rom browser is a bit buggy but this shouldn't affect your gaming experience so it's not a big issue.
-GLideN64 is prone to crashing upon executing CloseCpu();. It seems to be related to a lack of threading.
-Lots of tearing in fullscreen mode if VSync is not set and initialized (hot swap will initialize Vsync).
 Special characters aren't supported when it comes to language database translations for other languages.
 The .exe shall fail to properly close if you leave Octomino SDL2 config window open and close Project64.
 There are some controllers which are not supported by any known input plugins and will mandate keyboard.
@@ -443,15 +430,12 @@ If your CPU usage is high from screen recording or from your PC being infected w
 the program can misbehave and fail to open up ROMs or have a varying amount of input delay and stutters.
 Shankle's GLideN64 can sometimes get stuck on a black screen when messing with config settings. However,
 the screen returns to normal if you enter or exit fullscreen mode or if you hot swap one of the plugins.
-The issue described above is also present if using Icepir8's Legacy LLE, and can be solved the same way.
 If you hold down the F1 key, sometimes it accidentally attempts to load the selected state slot instead.
 The display will be frozen if you either sleep or lock your computer while using Jabo's Direct3D8 video.
 --------------------------------------------------------------------------------------------------------
 
 Section#08 Tips and Tricks
 --------------------------------------------------------------------------------------------------------
-If you're playing newer ROMhacks, GLideN64 is recommended. Use an ANGLE version for Super Mario 64 mods.
-
 Try using Counter Factor 1 by default if the only ROMhacks you play are Super Mario 64 or Majora's Mask.
 (this can also apply to playing any other games which benefit from counter factor by 1 without crashing)
 
@@ -793,7 +777,7 @@ turning it off when not needed, and strangely, some games require it disabled to
 Note from Bruce IV: TLB must be disabled for some older Ocarina of Time romhacks.
 --------------------------------------------------------------------------------------------------------
 
-Section#16 Extra (Part 4 of 4), ROM Browser Usage
+Section#16 Extra (Part 4), ROM Browser Usage
 --------------------------------------------------------------------------------------------------------
 The ROM browser system, controlled by PJ64.RDB is supposed to work like this:
 

@@ -20,5 +20,6 @@ Direct64 v0.5 ALPHA
 Jabo's Direct3D6 1.5.2
 Jabo's Direct3D8 1.7.0.471 V1.6.2 2024
 Glide64 'Napalm WX' release 1
+Mk3 GLideN64#42d65694
 
-Each of the plugins shown above have various glitches/issues and can make Project64 reliably crash or screw up, so it's only suggested you install these plugins if your PC is unable to work with some of the newer plugins included in the 1.6.2 pack like GLideN64 and you're experiencing bad graphics issues with Direct3D8 1.6.1 like flickering in paper mario (fixed in Direct64 and Glide64). Just beware that these plugins are very buggy and prone to problems. I suggest getting a better PC that can support better plugins instead of using these worse plugins, but it's your choice.
+Each of the plugins shown above have various glitches/issues and can make Project64 reliably crash or screw up, so it's only suggested you install these plugins if your PC is unable to work with Icepir8's LLE and you're experiencing bad graphics issues with Direct3D8 1.6.1 like flickering in paper mario (fixed in Direct64, Glide64, and Mk3 GLideN64). Just beware that these plugins are very buggy and prone to problems. I suggest getting a better PC that can support better plugins instead of using these worse plugins, but it's up to you.

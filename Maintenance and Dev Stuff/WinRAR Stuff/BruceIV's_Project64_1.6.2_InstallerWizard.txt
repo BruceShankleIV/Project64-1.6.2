@@ -38,7 +38,7 @@ Windows Security's Virus & threat protection can interfere with this installer w
 Avoid loading decompressed roms into the emulator or they can misbehave/crash. When I say decompressed I don't mean extracted from a .zip/compression format, but when the .z64/.n64 file itself has not been compressed.
 
 
-The default video plugin can have flickering issues with N64 games on modern hardware. Use Icepir8's Legacy LLE or Mk3 GLideN64 to prevent flickering problems in games like Paper Mario.
+The default video plugin can have flickering issues with N64 games on modern hardware. Use Icepir8's Legacy LLE to prevent flickering problems in games like Paper Mario.
 
 
 The default input plugin is just for general-use, if you play on keyboard you should use LINK's DirectInput7 which has key binding on the F and G keys (but does not save its config, you can save its config with Jabo's DirectInput7 though), while controller users should try the Octomino SDL2 plugin and configure it after opening a rom, though Octomino SDL2 lacks pak support which is required by some games like GoldenEye.
