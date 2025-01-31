@@ -7489,7 +7489,7 @@ MB=8
 CPU=Recompiler
 SCM=Check Memory Advance
 Status=Compatible
-Plugin Note=Mk3 GLideN64 or D3D8 1.6 suggested
+Plugin Note=Icepir8's LLE ONLY
 CF=2
 [6AF2B8CC-AB2DCB77-C:45]
 Game Name=(Hack) Time Lost
