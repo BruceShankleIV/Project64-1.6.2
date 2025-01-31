@@ -1,4 +1,6 @@
 You can visit my unofficial Project64 1.6.2 repo here: https://github.com/BruceShankleIV/Project64-1.6.2
+https://discord.gg/cHDxa9vzQM -Discord Report Center for reporting issues/problems you experience whilst
+running Project64 1.6.2 to either get fixed in the future, or at least become documented about/recorded.
 ********************************************************************************************************
 ---------------------------
 |||||Table of Contents|||||
@@ -8,18 +10,17 @@ Section#01 IP Notice
 Section#02 Notable Changes Between Project64 Version 1.6.1 & Project64 Version 1.6.2
 Section#03 Project64 Legacy is an unfinished emulator with concerning issues to be aware of if using it!
 Section#04 Plugin Details
-Section#05 Plugin Wombo Combos
-Section#06 RUNNING ROMHACKS
-Section#07 Known Issues
-Section#08 Tips and Tricks
-Section#09 Credits
-Section#10 Don't "Support Project64"
-Section#11 Special Thanks & Shoutouts
-Section#12 The End
-Section#13 Extra (Part 1), Suggestions
-Section#14 Extra (Part 2), How to Develop Project64 1.6 + BEWARE of MiB/PJ64Team!
-Section#15 Extra (Part 3), Technical Documentation
-Section#16 Extra (Part 4), Theoretial ROM Browser Usage
+Section#05 RUNNING ROMHACKS
+Section#06 Known Issues
+Section#07 Tips and Tricks
+Section#08 Credits
+Section#09 Don't "Support Project64"
+Section#10 Special Thanks & Shoutouts
+Section#11 The End
+Section#12 Extra (Part 1), Suggestions
+Section#13 Extra (Part 2), How to Develop Project64 1.6 + BEWARE of MiB/PJ64Team!
+Section#14 Extra (Part 3), Technical Documentation
+Section#15 Extra (Part 4), Theoretial ROM Browser Usage
 
 (just ctrl-f the name to navigate to your desired section)
 ********************************************************************************************************
@@ -223,63 +224,15 @@ Icepir8's Legacy LLE - This video plugin should be used where Jabo's Direct3D8 w
 		       in order to avoid crashes and instances where games like World Driver don't boot.
 		       It was created by Icepir8 for the unfinished "Legacy" experiment, but works here.
 
-Jabo's Direct3D8 1.6 -   **Note: This is the previous version of the plugin found below. It was included
-			 because each version of Jabo's plugins seems to bring regressions from previous
-			 versions and Direct3D8 1.6.1 was no exception. In Direct3D8 1.6, the stone mask
-			 get-item model is not invisible when lens of truth is on but it IS invisible in
-			 Direct3D8 1.6.1 because he inverted the lens of truth perROM hack and broke it.
-			 However, 1.6 has its own issues like snowhead temple stray fairy not appearing.
-
-Jabo's Direct3D8 1.6.1 - This is the default gfx plugin due to low requirements and minimal regressions.
+Jabo's Direct3D8 1.6.2 - This is the default plugin due to low specs requirements/good pc compatibility.
 			 However, it also has many graphics emulation issues, and if your PC can support
-			 Icepir8's Legacy LLE and RSP plugins I would suggest giving them plugins a try.
+			 Icepir8's Legacy LLE video plugin, I'd highly suggest using that plugin instead
 			 if you experience bad graphic issues with the ROMs/hacks you're trying to play.
 			 Do not enable "Copy framebuffer to RDRAM" or you will suffer evil consequences.
 			 Avoid enabling full-scene anti aliasing if possible because it causes problems.
 			 If you want try out native widescreen, try enabling this from the Advanced tab:
 			 "Adjust game aspect ratio to match yours", then select a widescreen resolution.
-			 This version also suffers from an amplified ringing effect not seen in D3D 1.6.
-			 Below is a changelog from Jabo's website detailing the changes from D3D8 1.6.0.
-
-bugfix: fixed a problem where the plugin could crash if it ran out of video memory
-
-bugfix: fixed microcodes for Blast Corps, Body Harvest, O.D.T. (Or Die Trying), and Asteroids
-
-1080 Snowboarding: fixed europe region effects
-
-40 Winks: fixed strange texturing issue
-
-Bakuretsu Muteki Bangaioh: sprite edges should look correct
-
-Banjo-Tooie: fixed puzzle rendering and other regions
-
-Cruisin USA: brake lights work
-
-Dragon Sword: menu text drawing and scaling fixed
-
-Dr. Mario: fixed background in versus mode
-
-F-Zero X: fixed potential triangle overflow issue
-
-GoldenEye 007: fixed calculations of sky triangles
-
-Lego Racers: fixed players going out of sight
-
-Mario Kart: fixed whomps in bowser castle
-
-Mario Kart: racetrack frame buffer support
-
-Legend of Zelda Ocarina of Time: end of game subscreen issues
-
-Paperboy: fixed map drawing in game
-
-Perfect Dark: fixed scanners
-
-Disney's Tarzan: fixed butterfly and health meter
-
-Vigilante 8: fixed some textures
-
-Legend of Zelda Majora's Mask: fixed day transition borders and lens of truth in snow areas
+			Note: This is a Hex edit of Jabo's 1.6.1 from jabosoft.com/blog/project64-update
 
 
 Shankle's AntiFbffr ANGLE GLideN64 (1.0) - Use ANGLE GLideN64 for ROMhacks using DEX3 (F3DEX3) microcode
@@ -291,9 +244,10 @@ Shankle's AntiFbffr ANGLE GLideN64 (1.0) - Use ANGLE GLideN64 for ROMhacks using
 
 Audio (sound) plugin:
 
-Jabo's DirectSound 1.6.1 - Supports LLE only. Use this plugin to wav log or if AziAudio gives you issues
+Jabo's DirectSound 1.6.2 - Supports LLE only. Use this plugin to wav log or if AziAudio gives you issues
 			   with your current machine (less demanding than AziAudio with lower end PC's).
 			   Use Sync game to Audio (per-game) during wav audio logging to stop crackling.
+			Note: This is a Hex edit of Jabo's 1.6.1 from jabosoft.com/blog/project64-update
 
 Shankle's LINK's AziAudio [SEP2023] (1.0) - Supports dual HLE / LLE sound. Use Sync game to Audio option
 					    to fix stuttering which happens upon pause, savestate loads,
@@ -303,13 +257,14 @@ Shankle's LINK's AziAudio [SEP2023] (1.0) - Supports dual HLE / LLE sound. Use S
 
 Input (controller) plugin:
 
-Jabo's DirectInput7 Ver1.6.2 - Great general-use plugin, it's ok for most keyboard and controller users.
-			       Be mindful that the back shoulder buttons cannot hold Z/R simultaneously.
+Jabo's DirectInput7 1.6.2 - Great as a general-use plugin, it is adequate keyboard and controller users.
+			    But be aware that the back shoulder buttons can't hold Z & R simultaneously.
+			    Setup mode added in by Gent of Project64 Team from their Project64 1.6 Plus.
+			Note: This is a Hex edit of Jabo's 1.6.1 from jabosoft.com/blog/project64-update
 
-LINK's DirectInput7 Ver1.6.2 - A fork of the above plugin, it does not save config but supports keyboard
-			       binding via the F/G keys which makes it possible to do stuff like aiming.
-			       Additionally, it shares its config in the registries with Jabo's DInput7.
-			       Be mindful that the back shoulder buttons cannot hold Z/R simultaneously.
+LINK's DirectInput7 1.6.2 - A wrapper for Jabo's DirectInput7. Can't save registry configs, but supports
+			    keyboard binding via the F/G keys, which makes it possible to do things like
+			    aiming. Additionally, it shares registry configurations with Jabo's DInput7.
 
 N-Rage's DirectInput8 Ver1.83 - Solid DirectInput plugin with tons of features. You can receive profiles
 				for this plugin from the author which have very fine tuned configuration
@@ -333,49 +288,7 @@ Shankle's Dual Level Sound MP RSP v1.0 - You can cycle between HLE and LLE sound
 					 accurate and doesn't crash when configuring with a running ROM.
 --------------------------------------------------------------------------------------------------------
 
-Section#05 Plugin Wombo Combos
---------------------------------------------------------------------------------------------------------
-This section will list very specific plugin combinations to be used for meeting common specific demands.
-
-
-
-Maximum Retail Game Compatiblity (requires high-end PC, DO NOT USE WITH ROMHACKS)
-
-Video (graphics) plugin:
-Icepir8's Legacy LLE
-
-Reality Signal Processor plugin:
-Icepir8's Legacy RSP
-
-
-(All combos below are to be used with Shankle's Dual Level Sound MP RSP v1.0)
-
-
-Majority Retail Game/Hack Compatibility (requires high-end PC)
-
-Video (graphics) plugin:
-Icepir8's Legacy LLE
-
-
-Majority Super Mario 64 ROMhacks Compatibility (requires OpenGL 3.3 GPU support)
-
-Video (graphics) plugin:
-Shankle's AntiFbffr ANGLE GLideN64 (1.0)
-
-
-Majority Older ROMhacks Compatibility
-
-Video (graphics) plugin:
-Jabo's Direct3D8 1.6
-
-
-Maximum PC Hardware Compatibility (reliable combo for playing popular retail N64 games like Zelda/Mario)
-
-Video (graphics) plugin:
-Jabo's Direct3D8 1.6.1
---------------------------------------------------------------------------------------------------------
-
-Section#06 RUNNING ROMHACKS
+Section#05 RUNNING ROMHACKS
 --------------------------------------------------------------------------------------------------------
 First of all, Project64 1.6 was not originally designed for playing ROMhacks. They were not even a thing
 at the time it was made. So if you want to play ROMhacks, you probably need to setup ROM settings for it
@@ -405,9 +318,8 @@ So essentially, in order to get Jabo's Direct3D8 plugins to apply pergame hacks 
 either the ROM header data above the internal name, or the baseROM's internal name. That's the only way!
 --------------------------------------------------------------------------------------------------------
 
-Section#07 Known Issues
+Section#06 Known Issues
 --------------------------------------------------------------------------------------------------------
-Opening settings pauses CPU when Pause CPU Upon Focus Loss is unchecked. Otherwise hot swap would break.
 Limit FPS off doesn't work on Icepir8's Legacy LLE in DirectX8 render mode with fullscreen mode entered.
 Depending on the PC hardware, Jabo's Direct3D8 can sometimes freeze, though the ROM still stays running.
 The rom browser is a bit buggy but this shouldn't affect your gaming experience so it's not a big issue.
@@ -432,7 +344,7 @@ If you hold down the F1 key, sometimes it accidentally attempts to load the sele
 The display will be frozen if you either sleep or lock your computer while using Jabo's Direct3D8 video.
 --------------------------------------------------------------------------------------------------------
 
-Section#08 Tips and Tricks
+Section#07 Tips and Tricks
 --------------------------------------------------------------------------------------------------------
 Try using Counter Factor 1 by default if the only ROMhacks you play are Super Mario 64 or Majora's Mask.
 (this can also apply to playing any other games which benefit from counter factor by 1 without crashing)
@@ -457,7 +369,7 @@ or uploading it to a cloud storage platform, and then downloading/copying it ont
 However, Project64 1.6 and Jabo plugin configuration settings won't transfer! Same for Shankle AziAudio.
 --------------------------------------------------------------------------------------------------------
 
-Section#09 Credits
+Section#08 Credits
 --------------------------------------------------------------------------------------------------------
 While I won't be able to recall every single person whose work has been used to help develop PJ64 1.6.2,
 I will still try to name as many people as I can and label their contribution appropriately. As follows,
@@ -492,10 +404,10 @@ Maël Hörz - HxD
 Don Ho - Notepad++
 info@redketchup.io - redketchup.io
 listdiff.com
-GitHub Copilot
+GitHub Copilot - Helped me write some of the new code added in Project64 1.6.2
 --------------------------------------------------------------------------------------------------------
 
-Section#10 Don't "Support Project64"
+Section#09 Don't "Support Project64"
 --------------------------------------------------------------------------------------------------------
 https://github.com/project64/project64/commit/f825b21de5e7e3cbc5722275754274eadb5497d0
 Ctrl-f for Support in the installer.iss one, look at what they were telling their end users...
@@ -552,7 +464,7 @@ https://www.emutalk.net/threads/removing-the-spyware-from-project64-2-1.54652/
 https://github.com/project64/project64/pull/354
 --------------------------------------------------------------------------------------------------------
 
-Section#11 Special Thanks & Shoutouts
+Section#10 Special Thanks & Shoutouts
 --------------------------------------------------------------------------------------------------------
 These are my special thanks and memorable quotes from users for their work, assistance, and/or kindness:
 
@@ -580,7 +492,7 @@ Emmanuel - For giving me a piece of candy he found at the bottom of a vending ma
 lilycatx - You're the sweetest person ever lily, thanks for being the best friend a friend could have!💖
 --------------------------------------------------------------------------------------------------------
 
-Section#12 The End
+Section#11 The End
 --------------------------------------------------------------------------------------------------------
 I hope you enjoy using this. If you don't, then I encourage you to improve the source code and fix bugs.
 Peace! ✌
@@ -588,7 +500,7 @@ Peace! ✌
 - Edwin Bruce Shankle IV
 --------------------------------------------------------------------------------------------------------
 
-Section#13 Extra (Part 1), Suggestions
+Section#12 Extra (Part 1), Suggestions
 --------------------------------------------------------------------------------------------------------
 Additionally, if you decide to develop a new revision of Ver1.6.2 or make a Ver1.6.3, I'd suggest fixing
 the following issues with this emulator:
@@ -649,14 +561,14 @@ TLB=
 (On)
 --------------------------------------------------------------------------------------------------------
 
-Section#14 Extra (Part 2), How to Develop Project64 1.6 + BEWARE of MiB/PJ64Team!
+Section#13 Extra (Part 2), How to Develop Project64 1.6 + BEWARE of MiB/PJ64Team!
 --------------------------------------------------------------------------------------------------------
 If you would like to develop Project64 1.6 or you're unaware of the risks involved with associating with
 Men in Black/Project64 Team, please carefully read this informative document from my URL provided below:
 https://docs.google.com/document/d/1VosUr3DHkhFd6hYRLrwpAtuzDuvYq0zUe2C1rkQ1_xg/edit?usp=sharing
 --------------------------------------------------------------------------------------------------------
 
-Section#15 Extra (Part 3), Technical Documentation
+Section#14 Extra (Part 3), Technical Documentation
 --------------------------------------------------------------------------------------------------------
 Surreal64 Documentation for Project64 1.4 from here http://surreal64ce.wikidot.com/settings:pj64settings
 
@@ -775,7 +687,7 @@ turning it off when not needed, and strangely, some games require it disabled to
 Note from Bruce IV: TLB must be disabled for some older Ocarina of Time romhacks.
 --------------------------------------------------------------------------------------------------------
 
-Section#16 Extra (Part 4), ROM Browser Usage
+Section#15 Extra (Part 4), ROM Browser Usage
 --------------------------------------------------------------------------------------------------------
 The ROM browser system, controlled by PJ64.RDB is supposed to work like this:
 

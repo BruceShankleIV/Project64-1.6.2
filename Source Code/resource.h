@@ -253,3 +253,4 @@
 #define ID_CURRENTSAVE_48               40242
 #define ID_CURRENTSAVE_49               40243
 #define ID_CURRENTSAVE_50               40244
+#define IDC_PLUGINS			40245

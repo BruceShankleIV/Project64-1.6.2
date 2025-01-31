@@ -187,8 +187,8 @@ SCM, ABL, Bufer de Compilacion Grande y Cache de Registros"
 #199# "Agregar nuevo Truco"
 #200# "Editar"
 #201# "Eliminar"
-#202# "CPU Pausada"
-#203# "CPU Reanudada"
+#202# "CPU pausada"
+#203# "CPU reanudada"
 #204# "La emulacion se atasco en un bucle permanente.
 
 Salir del hilo"
@@ -228,6 +228,7 @@ Salir del hilo"
 #222# "Ejecutando desde espacio no asignado.
 
 Salir del hilo
+(Pruebe otro plugin RSP)
 (Intenta Revisar Memoria y Devolver)
 (Intenta Tamano de Memoria de 8MB)"
 #224# "Secuencia de copyright no encontrada en LUT. El juego ya no funcionara"
@@ -239,7 +240,6 @@ Salir del hilo
 #230# "El nombre del Truco ya esta en uso"
 #231# "Has alcanzado la cantidad maxima de Trucos permitidos para esta ROM"
 #232# "Salir del hilo
-(Intenta el Plugin LLE de Icepir8's)
 (Intenta Revisar Memoria y Devolver)
 (Intenta Estilo de Nucleo de CPU Interprete)"
 #233# "Esta accion intentara detener esta instancia y resetea de fabrica todo junto la configuracion de registro"
@@ -252,10 +252,13 @@ Salir del hilo
 #240# "Esta accion intentara detener esta instancia y coloca varias configuraciones de registro lento LLE (Interpretador x CF3 x plugins de Icepir8's). Es experimental, solo deberias usarlo si estas teniendo problemas tecnicos consiguiendo que una ROM trabaje correctamente y no sabes que configuracion usar"
 #241# "Modo de ROMhacks de SM64"
 #242# "Intenta detener esta instancia y coloca varias configuraciones de registro para SM64"
-#243# "Esta accion intentara detener esta instancia y coloca varios registros de configuracion para los ajustes de ROMhacks de SM64. Cambia a un plugin de gama baja como Jabo's Direct3D8 1.6 despues de que los registros hayan sido reconfigurados si tu PC no soporta GLideN64"
+#243# "Esta accion intentara detener esta instancia y coloca varios registros de configuracion para los ajustes de ROMhacks de SM64. Cambia a un plugin de gama baja como Jabo's Direct3D8 1.6.2 despues de que los registros hayan sido reconfigurados si tu PC no soporta GLideN64"
 #244# "Modo Estandar"
 #245# "Intenta detener esta instancia y coloca varias configuraciones estandares de registro"
 #246# "Esta accion intentara detener esta instancia y coloca varias configuraciones estandares de registro para la configuracion estandar"
 #247# "Configurar Registros"
 #248# "2 (Con Lag, Semi-estable)"
 #249# "3 (Mucho Lag, Estable)"
+#250# "Icepir8's Legacy LLE = Graficos LLE de gama alta
+Jabo's Direct3D8 1.6.2 = Graficos HLE de gama baja
+ANGLE GLideN64 = Graficos ROMhacks SM64"

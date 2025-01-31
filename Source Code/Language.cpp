@@ -252,8 +252,8 @@ LANG_STR DefaultString[] = {
 /*********************************************************************************
 * Messages                                                                       *
 *********************************************************************************/
-	{ MSG_CPU_PAUSED,         "CPU Paused"},
-	{ MSG_CPU_RESUMED,        "CPU Resumed"},
+	{ MSG_CPU_PAUSED,         "CPU paused"},
+	{ MSG_CPU_RESUMED,        "CPU resumed"},
 	{ MSG_PERM_LOOP,          "In a permanent loop that cannot be exited.\n\nExiting thread"},
 	{ MSG_MEM_ALLOC_ERROR,    "Failed to allocate memory.\n\nExiting thread"},
 	{ MSG_FAIL_INIT_GFX,      "The default or selected video plugin is missing or invalid.\n\nYou need to go into Settings and select a video (graphics) plugin"},
@@ -272,7 +272,7 @@ LANG_STR DefaultString[] = {
 	{ MSG_UNKNOWN_MEM_ACTION, "Unknown memory action.\n\nExiting thread"},
 	{ MSG_UNHANDLED_OP,       "Unhandled R4300i OpCode at"},
         { MSG_FAIL_OPEN_MEMPAK,   "Failed to open mempak"},
-	{ MSG_NONMAPPED_SPACE,    "Executing from non-mapped space.\n\nExiting thread\n(Try Check Memory & Return)\n(Try 8MB Memory Size)"},
+	{ MSG_NONMAPPED_SPACE,    "Executing from non-mapped space.\n\nExiting thread\n(Try another RSP plugin)\n(Try Check Memory & Return)\n(Try 8MB Memory Size)"},
 	{ MSG_MSGBOX_TITLE,       "Error"},
 	{ MSG_PIF2_ERROR,         "Copyright sequence not found in LUT. Game will no longer function"},
 	{ MSG_PIF2_TITLE,         "Copy Protection Failure"},
@@ -282,7 +282,7 @@ LANG_STR DefaultString[] = {
 	{ MSG_PLUGIN_NOT_INIT,    "Cannot open a ROM because plugins haven't successfully initialized"},
 	{ MSG_CHEAT_NAME_IN_USE,  "Cheat name is currently in use"},
 	{ MSG_MAX_CHEATS,         "You have reached the maximum amount of cheats allowed for this ROM"},
-	{ GZ_ROMS,                "Exiting thread\n(Try Icepir8's LLE Plugin)\n(Try Check Memory & Return)\n(Try Interpreter CPU Core Style)"},
+	{ GZ_ROMS,                "Exiting thread\n(Try Check Memory & Return)\n(Try Interpreter CPU Core Style)"},
         { MSG_CONFIRMATION_UNINSTALL, "This action will attempt to terminate this instance and factory reset included registry configurations"},
         { MSG_PLUGIN_HOT_SWAP,    "Plugin hot swapping in progress"},
         { HOT_SWAP_COMPLETE,      "Plugin hot swapping completed"},
@@ -293,13 +293,14 @@ LANG_STR DefaultString[] = {
 	{ SLOW_WARN,		  "This action will attempt to terminate this instance and set various LLE slow registry configurations (Interpreter x CF3 x Icepir8's plugins). It's experimental, you should only use this mode if you are having technical difficulties getting a ROM to work properly and you don't know what settings to use"},
 	{ MENU_SM64,		  "SM64 ROMhacks Mode"},
 	{ MENUDES_SM64,		  "Attempts to terminate this instance and set various SM64 registry configurations"},
-	{ SM64_WARN,		  "This action will attempt to terminate this instance and set various SM64 registry configurations for SM64 ROMhacks settings. Change to a lower-end video plugin like Jabo's Direct3D8 1.6 after the registries have been reconfigured if your PC does not support GLideN64"},
+	{ SM64_WARN,		  "This action will attempt to terminate this instance and set various SM64 registry configurations for SM64 ROMhacks settings. Change to a lower-end video plugin like Jabo's Direct3D8 1.6.2 after the registries have been reconfigured if your PC does not support GLideN64"},
 	{ MENU_STANDARD,	  "Standard Mode"},
 	{ MENUDES_STANDARD,	  "Attempts to terminate this instance and set various standard registry configurations"},
 	{ STANDARD_WARN,	  "This action will attempt to terminate this instance and set various standard registry configurations for standard settings"},
 	{ REGISTRY,		  "Configure Registries"},
 	{ NUMBER_2,		  "2 (Laggy, Semi-stable)"},
 	{ NUMBER_3,               "3 (Laggard, Stable)"},
+	{ PLUGINS,		  "Icepir8's Legacy LLE = High-end LLE Graphics\nJabo's Direct3D8 1.6.2 = Low-end HLE Graphics\nANGLE GLideN64 = SM64 ROMhacks Graphics"},
 };
 class CLanguage  {
 	void FindLangName  ( int Index );

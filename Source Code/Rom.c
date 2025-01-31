@@ -625,7 +625,6 @@ void OpenChosenFile ( void ) {
 		DisplayError(GS(MSG_PLUGIN_NOT_INIT));
 		return;
 	}
-	EnableMenuItem(hMainMenu,ID_FILE_OPEN_ROM,MFS_DISABLED|MF_BYCOMMAND);
 	for (count = 0; count < (int)RomsToRemember; count ++ ) {
 		if (strlen(LastRoms[count]) == 0) { break; }
 		EnableMenuItem(hMainMenu,ID_FILE_RECENT_FILE + count,MFS_DISABLED|MF_BYCOMMAND);
@@ -639,7 +638,7 @@ void OpenChosenFile ( void ) {
 		}
 		DrawMenuBar(hMainWindow);
 	}
-	CloseCpu();
+	if (CPURunning) CloseCpu();
 	SetNewFileDirectory();
 	strcpy(MapFile,CurrentFileName);
 	if (_strnicmp(&CurrentFileName[strlen(CurrentFileName)-4], ".ZIP",4) == 0 ){
@@ -797,6 +796,7 @@ void OpenChosenFile ( void ) {
 	}
 	SetWindowText(hMainWindow,WinTitle);
 	if (!RememberCheats) { DisableAllCheats(); }
+	CPURunning = TRUE;
 	SetupMenu(hMainWindow);
         SetCurrentSaveState(hMainWindow,ID_CURRENTSAVE_DEFAULT);
 	SendMessage( hStatusWnd, SB_SETTEXT, 0, (LPARAM)"");

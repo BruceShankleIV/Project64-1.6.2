@@ -200,8 +200,8 @@ SCM, ABL, Larger Compile Buffer, and Register Caching"
 #199# "Add New Cheat"
 #200# "Edit"
 #201# "Delete"
-#202# "CPU Paused"
-#203# "CPU Resumed"
+#202# "CPU paused"
+#203# "CPU resumed"
 #204# "In a permanent loop that cannot be exited.
 
 Exiting thread"
@@ -241,6 +241,7 @@ Exiting thread"
 #222# "Executing from non-mapped space.
 
 Exiting thread
+(Try another RSP plugin)
 (Try Check Memory & Return)
 (Try 8MB Memory Size)"
 #223# "Error"
@@ -253,7 +254,6 @@ Exiting thread
 #230# "Cheat name is currently in use"
 #231# "You have reached the maximum amount of cheats allowed for this ROM"
 #232# "Exiting thread
-(Try Icepir8's LLE Plugin)
 (Try Check Memory & Return)
 (Try Interpreter CPU Core Style)"
 #233# "This action will attempt to terminate this instance and factory reset included registry configurations"
@@ -266,10 +266,13 @@ Exiting thread
 #240# "This action will attempt to terminate this instance and set various LLE slow registry configurations (Interpreter x CF3 x Icepir8's plugins). It's experimental, you should only use this mode if you are having technical difficulties getting a ROM to work properly and you don't know what settings to use"
 #241# "SM64 ROMhacks Mode"
 #242# "Attempts to terminate this instance and set various SM64 registry configurations"
-#243# "This action will attempt to terminate this instance and set various SM64 registry configurations for SM64 ROMhacks settings. Change to a lower-end video plugin like Jabo's Direct3D8 1.6 after the registries have been reconfigured if your PC does not support GLideN64"
+#243# "This action will attempt to terminate this instance and set various SM64 registry configurations for SM64 ROMhacks settings. Change to a lower-end video plugin like Jabo's Direct3D8 1.6.2 after the registries have been reconfigured if your PC does not support GLideN64"
 #244# "Standard Mode"
 #245# "Attempts to terminate this instance and set various standard registry configurations"
 #246# "This action will attempt to terminate this instance and set various standard registry configurations for standard settings"
 #247# "Configure Registries"
 #248# "2 (Laggy, Semi-stable)"
 #249# "3 (Laggard, Stable)"
+#250# "Icepir8's Legacy LLE = High-end LLE Graphics
+Jabo's Direct3D8 1.6.2 = Low-end HLE Graphics
+ANGLE GLideN64 = SM64 ROMhacks Graphics"

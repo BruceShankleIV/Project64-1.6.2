@@ -110,12 +110,12 @@ void CloseCpu (void) {
 		AlwaysOnTopWindow(hMainWindow);
 		AlwaysOnTop = Temp;
 	}
-	for (count = 0; count < 20; count ++ ) {
+	for (count = 0; count < 54; count ++ ) {
 		CPU_Action.CloseCPU = TRUE;
 		CPU_Action.Stepping = FALSE;
 		CPU_Action.DoSomething = TRUE;
 		PulseEvent( CPU_Action.hStepping );
-		if (WaitForSingleObject(hCPU,3) == WAIT_OBJECT_0) {
+		if (WaitForSingleObject(hCPU,1) == WAIT_OBJECT_0) {
 			GetExitCodeThread(hCPU, &ExitCode);
 			if (ExitCode != STILL_ACTIVE) {
 				hCPU = NULL;
@@ -1556,8 +1556,6 @@ void StartEmulation ( void ) {
 	LoadCheats();
 	strcpy(LoadFileName,"");
 	strcpy(SaveAsFileName,"");
-	CPURunning = TRUE;
-	SetupMenu(hMainWindow);
 	ResetAudio(hMainWindow);
 	AlwaysOnTopWindow(hMainWindow);
 	switch (CPU_Type) {

@@ -23,6 +23,9 @@ BruceIV's Project64 1.6.2 Installer Wizard
 Load SFX icon from the file->PJ64.ico
 
 Text to display in SFX window
+https://discord.gg/cHDxa9vzQM Discord Report Center for reporting issues/problems you experience whilst running Project64 1.6.2 to either get fixed in the future, or at least become documented about/recorded.
+
+
 Project64 1.6.2 is a 3rd party deployment-ready dual-core/level Nintendo 64 software emulator developed by Edwin Bruce Shankle IV from the source code of Project64 1.6.1/1.6 Plus in this fork. This is not a friendly fork, this is a divergent fork made with the intent to provide an update for Project64 1.6/1.6.1 accoording to my vision. This does not target anywhere near hardware-level accuracy or Public Domain ROMs. Project64 1.6.2's specialty is with playing non-hardware compatible ROMhacks (typically older one's) and running on low-end Windows computers which lack the necessary specs required for accurate emulation, although this emulator is capable of relatively accurate emulation with the right settings and plugins being used (Icepir8 plugins). Project64 1.6.2 is very flexible in terms of what it can support by utilizing the included plugin library. This emulator has received one vulnerability fix, but there could be other vulnerabilities highlighted in the future so be on the lookout! See the SECURITY.MD file on the GitHub repository for more details here: https://github.com/BruceShankleIV/Project64-1.6.2/blob/main/SECURITY.MD
 
 

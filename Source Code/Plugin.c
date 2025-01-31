@@ -511,6 +511,7 @@ void SetupPluginScreen (HWND hDlg) {
 	SetDlgItemText(hDlg,IDC_GFX_NAME,GS(PLUG_GFX));
 	SetDlgItemText(hDlg,IDC_AUDIO_NAME,GS(PLUG_AUDIO));
 	SetDlgItemText(hDlg,IDC_CONT_NAME,GS(PLUG_CTRL));
+	SetDlgItemText(hDlg,IDC_PLUGINS,GS(PLUGINS));
 	GetPluginDir(SearchsStr);
 	strcat(SearchsStr,"*.dll");
 	hFind = FindFirstFile(SearchsStr, &FindData);

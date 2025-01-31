@@ -296,3 +296,4 @@ char * GS               ( int StringID );
 #define REGISTRY			247
 #define NUMBER_2		        248
 #define NUMBER_3		        249
+#define PLUGINS				250
