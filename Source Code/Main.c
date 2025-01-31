@@ -538,7 +538,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		break;
 	case WM_SETFOCUS:
 		if (hWnd == hHiddenWin) { break; }
-		if (AutoSleep && !ManualPaused && (CPU_Paused || CPU_Action.Pause)) { PauseCpu(); }
+		if (!ManualPaused && (CPU_Paused || CPU_Action.Pause)) { PauseCpu(); }
 		RomList_SetFocus();
 		break;
 	case WM_KILLFOCUS:
@@ -1101,7 +1101,10 @@ LRESULT CALLBACK Main_Proc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		case ID_OPTIONS_CONFIG_AUDIO: AiDllConfig(hWnd); break;
 		case ID_OPTIONS_CONFIG_RSP: RSPDllConfig(hWnd); break;
 		case ID_OPTIONS_CONFIG_CONTROL: ContConfig(hWnd); break;
-		case ID_OPTIONS_SETTINGS: ChangeSettings(hWnd); break;
+		case ID_OPTIONS_SETTINGS:
+			if (!AutoSleep) PauseCpu();
+			ChangeSettings(hWnd);
+			break;
 		case ID_OPTIONS_CHEATS: ManageCheats(NULL); break;
 		case ID_HELP_GUIDE:
 			{
