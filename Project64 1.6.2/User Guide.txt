@@ -303,8 +303,6 @@ Shankle's LINK's AziAudio [SEP2023] (1.0) - Supports dual HLE / LLE sound. Use S
 
 Input (controller) plugin:
 
-Adaptoid Plugin v1.0 - This plugin can handle up to 4 Adaptoids with support for various types of packs.
-
 Jabo's DirectInput7 Ver1.6.2 - Great general-use plugin, it's ok for most keyboard and controller users.
 			       Be mindful that the back shoulder buttons cannot hold Z/R simultaneously.
 
