@@ -115,7 +115,7 @@ void CloseCpu (void) {
 		CPU_Action.Stepping = FALSE;
 		CPU_Action.DoSomething = TRUE;
 		PulseEvent( CPU_Action.hStepping );
-		if (WaitForSingleObject(hCPU, 1) == WAIT_OBJECT_0) {
+		if (WaitForSingleObject(hCPU,3) == WAIT_OBJECT_0) {
 			GetExitCodeThread(hCPU, &ExitCode);
 			if (ExitCode != STILL_ACTIVE) {
 				hCPU = NULL;
