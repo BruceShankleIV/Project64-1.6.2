@@ -538,7 +538,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		break;
 	case WM_SETFOCUS:
 		if (hWnd == hHiddenWin) { break; }
-		if ((AutoSleep && !ManualPaused && (CPU_Paused || CPU_Action.Pause)) { PauseCpu(); }
+		if (AutoSleep && !ManualPaused && (CPU_Paused || CPU_Action.Pause)) { PauseCpu(); }
 		RomList_SetFocus();
 		break;
 	case WM_KILLFOCUS:
