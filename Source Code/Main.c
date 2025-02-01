@@ -1101,7 +1101,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		case ID_OPTIONS_CONFIG_AUDIO: AiDllConfig(hWnd); break;
 		case ID_OPTIONS_CONFIG_RSP: RSPDllConfig(hWnd); break;
 		case ID_OPTIONS_CONFIG_CONTROL: ContConfig(hWnd); break;
-		case ID_OPTIONS_SETTINGS: ChangeSettings(hWnd); break;
+		case ID_OPTIONS_SETTINGS: if (!AutoSleep && !CPU_Paused && CPURunning) PauseCpu(); ChangeSettings(hWnd); break;
 		case ID_OPTIONS_CHEATS: ManageCheats(NULL); break;
 		case ID_HELP_GUIDE:
 			{

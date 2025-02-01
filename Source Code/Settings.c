@@ -142,7 +142,7 @@ void ChangeSettings(HWND hwndOwner) {
 	PropertySheet(&psh);
 	LoadSettings();
 	SetupMenu(hMainWindow);
-	if (!AutoSleep && !ManualPaused && (CPU_Paused || CPU_Action.Pause) || !AutoSleep && !CPU_Paused && CPURunning) PauseCpu();
+	if (!AutoSleep && !ManualPaused && (CPU_Paused || CPU_Action.Pause) PauseCpu();
 	return;
 }
 void SetFlagControl (HWND hDlg, BOOL * Flag, WORD CtrlID, int StringID) {
