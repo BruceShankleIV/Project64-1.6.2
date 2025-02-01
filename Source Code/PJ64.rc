@@ -480,7 +480,7 @@ BEGIN
             MENUITEM "37\tShift+Ctrl+7",       ID_CURRENTSAVE_37
             MENUITEM "38\tShift+Ctrl+8",       ID_CURRENTSAVE_38
             MENUITEM "39\tShift+Ctrl+9",       ID_CURRENTSAVE_39
-            MENUITEM "40\tShift+Alt+0",              ID_CURRENTSAVE_40
+            MENUITEM "40\tShift+Ctrl+0",             ID_CURRENTSAVE_40
             MENUITEM "41\tShift+Alt+1",              ID_CURRENTSAVE_41
             MENUITEM "42\tShift+Alt+2",              ID_CURRENTSAVE_42
             MENUITEM "43\tShift+Alt+3",              ID_CURRENTSAVE_43
