@@ -680,66 +680,6 @@ LRESULT CALLBACK Main_Proc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		case ID_CURRENTSAVE_30:
 			SendMessage(hStatusWnd, SB_SETTEXT, 0, (LPARAM)GS(MENUDES_GAME_SLOT));
 			break;
-		case ID_CURRENTSAVE_31:
-			SendMessage(hStatusWnd, SB_SETTEXT, 0, (LPARAM)GS(MENUDES_GAME_SLOT));
-			break;
-		case ID_CURRENTSAVE_32:
-			SendMessage(hStatusWnd, SB_SETTEXT, 0, (LPARAM)GS(MENUDES_GAME_SLOT));
-			break;
-		case ID_CURRENTSAVE_33:
-			SendMessage(hStatusWnd, SB_SETTEXT, 0, (LPARAM)GS(MENUDES_GAME_SLOT));
-			break;
-		case ID_CURRENTSAVE_34:
-			SendMessage(hStatusWnd, SB_SETTEXT, 0, (LPARAM)GS(MENUDES_GAME_SLOT));
-			break;
-		case ID_CURRENTSAVE_35:
-			SendMessage(hStatusWnd, SB_SETTEXT, 0, (LPARAM)GS(MENUDES_GAME_SLOT));
-			break;
-		case ID_CURRENTSAVE_36:
-			SendMessage(hStatusWnd, SB_SETTEXT, 0, (LPARAM)GS(MENUDES_GAME_SLOT));
-			break;
-		case ID_CURRENTSAVE_37:
-			SendMessage(hStatusWnd, SB_SETTEXT, 0, (LPARAM)GS(MENUDES_GAME_SLOT));
-			break;
-		case ID_CURRENTSAVE_38:
-			SendMessage(hStatusWnd, SB_SETTEXT, 0, (LPARAM)GS(MENUDES_GAME_SLOT));
-			break;
-		case ID_CURRENTSAVE_39:
-			SendMessage(hStatusWnd, SB_SETTEXT, 0, (LPARAM)GS(MENUDES_GAME_SLOT));
-			break;
-		case ID_CURRENTSAVE_40:
-			SendMessage(hStatusWnd, SB_SETTEXT, 0, (LPARAM)GS(MENUDES_GAME_SLOT));
-			break;
-		case ID_CURRENTSAVE_41:
-			SendMessage(hStatusWnd, SB_SETTEXT, 0, (LPARAM)GS(MENUDES_GAME_SLOT));
-			break;
-		case ID_CURRENTSAVE_42:
-			SendMessage(hStatusWnd, SB_SETTEXT, 0, (LPARAM)GS(MENUDES_GAME_SLOT));
-			break;
-		case ID_CURRENTSAVE_43:
-			SendMessage(hStatusWnd, SB_SETTEXT, 0, (LPARAM)GS(MENUDES_GAME_SLOT));
-			break;
-		case ID_CURRENTSAVE_44:
-			SendMessage(hStatusWnd, SB_SETTEXT, 0, (LPARAM)GS(MENUDES_GAME_SLOT));
-			break;
-		case ID_CURRENTSAVE_45:
-			SendMessage(hStatusWnd, SB_SETTEXT, 0, (LPARAM)GS(MENUDES_GAME_SLOT));
-			break;
-		case ID_CURRENTSAVE_46:
-			SendMessage(hStatusWnd, SB_SETTEXT, 0, (LPARAM)GS(MENUDES_GAME_SLOT));
-			break;
-		case ID_CURRENTSAVE_47:
-			SendMessage(hStatusWnd, SB_SETTEXT, 0, (LPARAM)GS(MENUDES_GAME_SLOT));
-			break;
-		case ID_CURRENTSAVE_48:
-			SendMessage(hStatusWnd, SB_SETTEXT, 0, (LPARAM)GS(MENUDES_GAME_SLOT));
-			break;
-		case ID_CURRENTSAVE_49:
-			SendMessage(hStatusWnd, SB_SETTEXT, 0, (LPARAM)GS(MENUDES_GAME_SLOT));
-			break;
-		case ID_CURRENTSAVE_50:
-			SendMessage(hStatusWnd, SB_SETTEXT, 0, (LPARAM)GS(MENUDES_GAME_SLOT));
-			break;
 		default:
 			if (LOWORD(wParam) >= ID_FILE_RECENT_FILE && LOWORD(wParam) <= (ID_FILE_RECENT_FILE + RomsToRemember)) {
 				SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MENUDES_RECENT_ROM));
@@ -1008,66 +948,6 @@ LRESULT CALLBACK Main_Proc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 					SetCurrentSaveState(hWnd, LOWORD(wParam));
 					break;
 				case ID_CURRENTSAVE_30:
-					SetCurrentSaveState(hWnd, LOWORD(wParam));
-					break;
-				case ID_CURRENTSAVE_31:
-					SetCurrentSaveState(hWnd, LOWORD(wParam));
-					break;
-				case ID_CURRENTSAVE_32:
-					SetCurrentSaveState(hWnd, LOWORD(wParam));
-					break;
-				case ID_CURRENTSAVE_33:
-					SetCurrentSaveState(hWnd, LOWORD(wParam));
-					break;
-				case ID_CURRENTSAVE_34:
-					SetCurrentSaveState(hWnd, LOWORD(wParam));
-					break;
-				case ID_CURRENTSAVE_35:
-					SetCurrentSaveState(hWnd, LOWORD(wParam));
-					break;
-				case ID_CURRENTSAVE_36:
-					SetCurrentSaveState(hWnd, LOWORD(wParam));
-					break;
-				case ID_CURRENTSAVE_37:
-					SetCurrentSaveState(hWnd, LOWORD(wParam));
-					break;
-				case ID_CURRENTSAVE_38:
-					SetCurrentSaveState(hWnd, LOWORD(wParam));
-					break;
-				case ID_CURRENTSAVE_39:
-					SetCurrentSaveState(hWnd, LOWORD(wParam));
-					break;
-				case ID_CURRENTSAVE_40:
-					SetCurrentSaveState(hWnd, LOWORD(wParam));
-					break;
-				case ID_CURRENTSAVE_41:
-					SetCurrentSaveState(hWnd, LOWORD(wParam));
-					break;
-				case ID_CURRENTSAVE_42:
-					SetCurrentSaveState(hWnd, LOWORD(wParam));
-					break;
-				case ID_CURRENTSAVE_43:
-					SetCurrentSaveState(hWnd, LOWORD(wParam));
-					break;
-				case ID_CURRENTSAVE_44:
-					SetCurrentSaveState(hWnd, LOWORD(wParam));
-					break;
-				case ID_CURRENTSAVE_45:
-					SetCurrentSaveState(hWnd, LOWORD(wParam));
-					break;
-				case ID_CURRENTSAVE_46:
-					SetCurrentSaveState(hWnd, LOWORD(wParam));
-					break;
-				case ID_CURRENTSAVE_47:
-					SetCurrentSaveState(hWnd, LOWORD(wParam));
-					break;
-				case ID_CURRENTSAVE_48:
-					SetCurrentSaveState(hWnd, LOWORD(wParam));
-					break;
-				case ID_CURRENTSAVE_49:
-					SetCurrentSaveState(hWnd, LOWORD(wParam));
-					break;
-				case ID_CURRENTSAVE_50:
 					SetCurrentSaveState(hWnd, LOWORD(wParam));
 					break;
 		case ID_SYSTEM_GSBUTTON:
@@ -1399,26 +1279,6 @@ void SetCurrentSaveState (HWND hWnd, int State) {
 	CheckMenuItem(hMenu, ID_CURRENTSAVE_28, MF_BYCOMMAND | MFS_UNCHECKED);
 	CheckMenuItem(hMenu, ID_CURRENTSAVE_29, MF_BYCOMMAND | MFS_UNCHECKED);
 	CheckMenuItem(hMenu, ID_CURRENTSAVE_30, MF_BYCOMMAND | MFS_UNCHECKED);
-	CheckMenuItem(hMenu, ID_CURRENTSAVE_31, MF_BYCOMMAND | MFS_UNCHECKED);
-	CheckMenuItem(hMenu, ID_CURRENTSAVE_32, MF_BYCOMMAND | MFS_UNCHECKED);
-	CheckMenuItem(hMenu, ID_CURRENTSAVE_33, MF_BYCOMMAND | MFS_UNCHECKED);
-	CheckMenuItem(hMenu, ID_CURRENTSAVE_34, MF_BYCOMMAND | MFS_UNCHECKED);
-	CheckMenuItem(hMenu, ID_CURRENTSAVE_35, MF_BYCOMMAND | MFS_UNCHECKED);
-	CheckMenuItem(hMenu, ID_CURRENTSAVE_36, MF_BYCOMMAND | MFS_UNCHECKED);
-	CheckMenuItem(hMenu, ID_CURRENTSAVE_37, MF_BYCOMMAND | MFS_UNCHECKED);
-	CheckMenuItem(hMenu, ID_CURRENTSAVE_38, MF_BYCOMMAND | MFS_UNCHECKED);
-	CheckMenuItem(hMenu, ID_CURRENTSAVE_39, MF_BYCOMMAND | MFS_UNCHECKED);
-	CheckMenuItem(hMenu, ID_CURRENTSAVE_40, MF_BYCOMMAND | MFS_UNCHECKED);
-	CheckMenuItem(hMenu, ID_CURRENTSAVE_41, MF_BYCOMMAND | MFS_UNCHECKED);
-	CheckMenuItem(hMenu, ID_CURRENTSAVE_42, MF_BYCOMMAND | MFS_UNCHECKED);
-	CheckMenuItem(hMenu, ID_CURRENTSAVE_43, MF_BYCOMMAND | MFS_UNCHECKED);
-	CheckMenuItem(hMenu, ID_CURRENTSAVE_44, MF_BYCOMMAND | MFS_UNCHECKED);
-	CheckMenuItem(hMenu, ID_CURRENTSAVE_45, MF_BYCOMMAND | MFS_UNCHECKED);
-	CheckMenuItem(hMenu, ID_CURRENTSAVE_46, MF_BYCOMMAND | MFS_UNCHECKED);
-	CheckMenuItem(hMenu, ID_CURRENTSAVE_47, MF_BYCOMMAND | MFS_UNCHECKED);
-	CheckMenuItem(hMenu, ID_CURRENTSAVE_48, MF_BYCOMMAND | MFS_UNCHECKED);
-	CheckMenuItem(hMenu, ID_CURRENTSAVE_49, MF_BYCOMMAND | MFS_UNCHECKED);
-	CheckMenuItem(hMenu, ID_CURRENTSAVE_50, MF_BYCOMMAND | MFS_UNCHECKED);
 	CheckMenuItem(hMenu, State, MF_BYCOMMAND | MFS_CHECKED);
 	if (strlen(RomName) == 0) { return; }
 	strcpy(CurrentSave,RomName);
@@ -1512,66 +1372,6 @@ void SetCurrentSaveState (HWND hWnd, int State) {
 		break;
 	case ID_CURRENTSAVE_30:
 		strcat(CurrentSave, " 30.st");
-		break;
-	case ID_CURRENTSAVE_31:
-		strcat(CurrentSave, " 31.st");
-		break;
-	case ID_CURRENTSAVE_32:
-		strcat(CurrentSave, " 32.st");
-		break;
-	case ID_CURRENTSAVE_33:
-		strcat(CurrentSave, " 33.st");
-		break;
-	case ID_CURRENTSAVE_34:
-		strcat(CurrentSave, " 34.st");
-		break;
-	case ID_CURRENTSAVE_35:
-		strcat(CurrentSave, " 35.st");
-		break;
-	case ID_CURRENTSAVE_36:
-		strcat(CurrentSave, " 36.st");
-		break;
-	case ID_CURRENTSAVE_37:
-		strcat(CurrentSave, " 37.st");
-		break;
-	case ID_CURRENTSAVE_38:
-		strcat(CurrentSave, " 38.st");
-		break;
-	case ID_CURRENTSAVE_39:
-		strcat(CurrentSave, " 39.st");
-		break;
-	case ID_CURRENTSAVE_40:
-		strcat(CurrentSave, " 40.st");
-		break;
-	case ID_CURRENTSAVE_41:
-		strcat(CurrentSave, " 41.st");
-		break;
-	case ID_CURRENTSAVE_42:
-		strcat(CurrentSave, " 42.st");
-		break;
-	case ID_CURRENTSAVE_43:
-		strcat(CurrentSave, " 43.st");
-		break;
-	case ID_CURRENTSAVE_44:
-		strcat(CurrentSave, " 44.st");
-		break;
-	case ID_CURRENTSAVE_45:
-		strcat(CurrentSave, " 45.st");
-		break;
-	case ID_CURRENTSAVE_46:
-		strcat(CurrentSave, " 46.st");
-		break;
-	case ID_CURRENTSAVE_47:
-		strcat(CurrentSave, " 47.st");
-		break;
-	case ID_CURRENTSAVE_48:
-		strcat(CurrentSave, " 48.st");
-		break;
-	case ID_CURRENTSAVE_49:
-		strcat(CurrentSave, " 49.st");
-		break;
-	case ID_CURRENTSAVE_50:
-		strcat(CurrentSave, " 50.st");
 		break;
 	}
 	sprintf(String,"%s",CurrentSave);

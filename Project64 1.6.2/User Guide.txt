@@ -121,7 +121,7 @@ Changed the way resetting is done to fix Jabo FSAA flickering on reset in fullsc
 
 Changed Good Name->Game Name in the browser and in what word it uses to identify what to display in RDB.
 
-Changed maximum savestate count per game from 10 to 50 to account for games that share the same ROMname.
+Changed maximum savestate count per game from 10 to 30 to account for games that share the same ROMname.
 
 Disabled ABL dropdown menu and set to off by default, essential in helping reducing the total file size.
 
