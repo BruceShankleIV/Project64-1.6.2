@@ -272,6 +272,7 @@ void CreateRecentDirList (HMENU hMenu) {
 		MENUITEMINFO menuinfo;
 		hSubMenu = GetSubMenu(hMenu,0);
 		DeleteMenu(hSubMenu, MenuLocOfUsedDirs, MF_BYPOSITION);
+		if (!RomListVisible()) return;
 		memset(&menuinfo, 0, sizeof(MENUITEMINFO));
 		menuinfo.cbSize = sizeof(MENUITEMINFO);
 		menuinfo.fMask = MIIM_TYPE|MIIM_ID;
@@ -313,16 +314,37 @@ void CreateRecentFileList(HMENU hMenu) {
 		DWORD Type, Bytes;
 		for (count = 0; count < RomsToRemember; count++) {
 			Bytes = sizeof(LastRoms[count]);
-			sprintf(String,"RecentFile%d",count+1);
-			lResult = RegQueryValueEx(hKeyResults,String,0,&Type,(LPBYTE)LastRoms[count],&Bytes);
+			sprintf(String, "RecentFile%d", count + 1);
+			lResult = RegQueryValueEx(hKeyResults, String, 0, &Type, (LPBYTE)LastRoms[count], &Bytes);
 			if (lResult != ERROR_SUCCESS) {
-				memset(LastRoms[count],0,sizeof(LastRoms[count]));
+				memset(LastRoms[count], 0, sizeof(LastRoms[count]));
 				break;
 			}
 		}
 		RegCloseKey(hKeyResults);
 	}
-	{
+		if (!RomListVisible()) {
+		HMENU hSubMenu;
+		MENUITEMINFO menuinfo;
+		hSubMenu = GetSubMenu(hMenu,0);
+		DeleteMenu(hSubMenu, MenuLocOfUsedFiles, MF_BYPOSITION);
+		if (strlen(LastRoms[0]) == 0) {
+			DeleteMenu(hSubMenu, MenuLocOfUsedFiles, MF_BYPOSITION);
+		}
+		memset(&menuinfo, 0, sizeof(MENUITEMINFO));
+		menuinfo.cbSize = sizeof(MENUITEMINFO);
+		menuinfo.fMask = MIIM_TYPE|MIIM_ID;
+		menuinfo.fType = MFT_STRING;
+		menuinfo.fState = MFS_ENABLED;
+		menuinfo.dwTypeData = String;
+		menuinfo.cch = 256;
+		for (count = 0; count < RomsToRemember; count ++ ) {
+			if (strlen(LastRoms[count]) == 0) { break; }
+			menuinfo.wID = ID_FILE_RECENT_FILE + count;
+			sprintf(String,"&%d %s",(count + 1) % 10,LastRoms[count]);
+			InsertMenuItem(hSubMenu, MenuLocOfUsedFiles + count, TRUE, &menuinfo);
+		}
+	} else {
 		HMENU hSubMenu;
 		MENUITEMINFO menuinfo;
 		memset(&menuinfo, 0, sizeof(MENUITEMINFO));
@@ -367,6 +389,7 @@ void LoadRecentRom (DWORD Index) {
 BOOL LoadRomHeader ( void ) {
 	char drive[_MAX_DRIVE] ,FileName[_MAX_DIR],dir[_MAX_DIR], ext[_MAX_EXT];
 	BYTE Test[4];
+	int count;
 	if (_strnicmp(&CurrentFileName[strlen(CurrentFileName)-4], ".ZIP",4) == 0 ){
 		int port = 0, FoundRom;
 	    unz_file_info info;
@@ -421,9 +444,7 @@ BOOL LoadRomHeader ( void ) {
 		hFile = CreateFile(CurrentFileName,GENERIC_READ,FILE_SHARE_READ,NULL,
 			OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL | FILE_FLAG_RANDOM_ACCESS,
 			NULL);
-		if (hFile == INVALID_HANDLE_VALUE) {
-			return FALSE;
-		}
+		if (hFile == INVALID_HANDLE_VALUE) return FALSE;
 		SetFilePointer(hFile,0,0,FILE_BEGIN);
 		ReadFile(hFile,Test,4,&dwRead,NULL);
 		if (!IsValidRomImage(Test)) {
@@ -438,6 +459,22 @@ BOOL LoadRomHeader ( void ) {
 	}
 	ByteSwapRom(RomHeader,sizeof(RomHeader));
 	memcpy(&RomName, &FileName, 60);
+	for( count = 0 ; count < 20; count += 4 ) {
+		RomName[count] ^= RomName[count+3];
+		RomName[count + 3] ^= RomName[count];
+		RomName[count] ^= RomName[count+3];
+		RomName[count + 1] ^= RomName[count + 2];
+		RomName[count + 2] ^= RomName[count + 1];
+		RomName[count + 1] ^= RomName[count + 2];
+	}
+	for( count = 19 ; count >= 0; count -- ) {
+		if (RomName[count] == ' ') {
+			RomName[count] = '\0';
+		} else if (RomName[count] == '\0') {
+		} else {
+			count = -1;
+		}
+	}
 	RomName[60] = '\0';
 	if (strlen(RomName) == 0) { strcpy(RomName,FileName); }
 	return FALSE;
@@ -749,6 +786,7 @@ void OpenChosenFile ( void ) {
 		TotalRead = 0;
 		for (count = 0; count < (int)RomFileSize; count += ReadFromRomSection) {
 			dwToRead = RomFileSize - count;
+			if (dwToRead > ReadFromRomSection) dwToRead = ReadFromRomSection;
 			if (!ReadFile(hFile, &ROM[count], dwToRead, &dwRead, NULL)) {
 				CloseHandle( hFile );
 				CheckRbRefresh();
@@ -756,6 +794,12 @@ void OpenChosenFile ( void ) {
 			}
 			TotalRead += dwRead;
 		}
+	dwRead = TotalRead;
+	if (RomFileSize != dwRead) {
+	CloseHandle( hFile );
+	CheckRbRefresh();
+	return;
+}
 		CloseHandle( hFile );
 		AddRecentFile(hMainWindow,CurrentFileName);
 		_splitpath( CurrentFileName, drive, dir, FileName, ext );
@@ -797,13 +841,12 @@ void OpenChosenFile ( void ) {
 	}
 	SetWindowText(hMainWindow,WinTitle);
 	if (!RememberCheats) { DisableAllCheats(); }
+	CPURunning = TRUE;
+	SetupMenu(hMainWindow);
         SetCurrentSaveState(hMainWindow,ID_CURRENTSAVE_DEFAULT);
 	SendMessage( hStatusWnd, SB_SETTEXT, 0, (LPARAM)"");
-	if (AutoStart) {
 		StartEmulation();
-		if (AutoFullScreen)
-				SendMessage(hMainWindow,WM_COMMAND,ID_OPTIONS_FULLSCREEN,0);
-	}
+		if (AutoFullScreen) SendMessage(hMainWindow,WM_COMMAND,ID_OPTIONS_FULLSCREEN,0);
 }
 void SaveRecentDirs (void) {
 	long lResult;

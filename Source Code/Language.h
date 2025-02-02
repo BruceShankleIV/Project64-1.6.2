@@ -160,7 +160,7 @@ char * GS               ( int StringID );
 #define RB_DOWN				133
 #define ADVANCE_INFO			134
 #define ADVANCE_DEFAULTS		135
-#define ADVANCE_AUTO_START		136
+#define USERDB				136
 #define NUMBER_1			137
 #define ROM_CPU_STYLE			138
 #define ROM_SMCM			139
@@ -297,4 +297,3 @@ char * GS               ( int StringID );
 #define NUMBER_2		        248
 #define NUMBER_3		        249
 #define PLUGINS				250
-#define USERDB				251

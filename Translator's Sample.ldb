@@ -134,7 +134,7 @@
 #134# "Note Interpreter is not affected by the following settings:
 SCM, ABL, Larger Compile Buffer, and Register Caching"
 #135# "Default"
-#136# "Start Emulation Upon ROM Opening"
+#136# "Use RDB"
 #137# "1 (Lagless, Unstable)"
 #138# "CPU Core Style:"
 #139# "Self-modifying Code Method:"
@@ -276,4 +276,3 @@ Exiting thread
 #250# "Icepir8's Legacy LLE = High-end LLE Graphics
 Jabo's Direct3D8 1.6.2 = Low-end HLE Graphics
 ANGLE GLideN64 = SM64 ROMhacks Graphics"
-#251# "Use RDB"

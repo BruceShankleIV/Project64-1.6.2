@@ -1551,8 +1551,6 @@ void StartEmulation ( void ) {
 	Timer_Start();
 	LoadRomOptions();
 	LoadCheats();
-	CPURunning = TRUE;
-	SetupMenu(hMainWindow);
 	strcpy(LoadFileName,"");
 	strcpy(SaveAsFileName,"");
 	ResetAudio(hMainWindow);

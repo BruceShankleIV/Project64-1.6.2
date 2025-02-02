@@ -37,8 +37,7 @@
 #include "htmlHelp.h"
 #include "resource.h"
 LARGE_INTEGER Frequency, Frames[8], LastFrame;
-BOOL 	AutoStart,
-	AutoSleep, DisableRegCaching, UseIni, UseTlb, UseLinking, RomBrowser,
+BOOL AutoSleep, DisableRegCaching, UseIni, UseTlb, UseLinking, RomBrowser,
 	IgnoreMove, Rercursion, LimitFPS,
 	AutoFullScreen, SystemCF, AlwaysOnTop, BasicMode, DelaySI, RememberCheats,
 	DelayRDP, ForceClose;
@@ -349,7 +348,6 @@ void LoadSettings (void) {
 	SystemSelfModCheck = Default_SelfModCheck;
 	SystemRDRAMsize = Default_RDRAMsize;
 	SystemCF = Default_CountPerOp;
-	AutoStart = Default_AutoStart;
 	AutoSleep = Default_AutoSleep;
 	DisableRegCaching = Default_DisableRegCaching;
 	UseIni = Default_UseIni;
@@ -382,8 +380,6 @@ void LoadSettings (void) {
 			if (Type != REG_DWORD || lResult != ERROR_SUCCESS) { RomsToRemember = Default_RomsToRemember; }
 			lResult = RegQueryValueEx(hKeyResults,"Max # of ROM Dirs Remembered",0,&Type,(BYTE *)(&RomDirsToRemember),&Bytes);
 			if (Type != REG_DWORD || lResult != ERROR_SUCCESS) { RomDirsToRemember = Default_RomsDirsToRemember; }
-			lResult = RegQueryValueEx(hKeyResults,"Start Emulation Upon ROM Opening",0,&Type,(BYTE *)(&AutoStart),&Bytes);
-			if (Type != REG_DWORD || lResult != ERROR_SUCCESS) { AutoStart = Default_AutoStart; }
 			lResult = RegQueryValueEx(hKeyResults,"ROM Browser",0,&Type,(BYTE *)(&RomBrowser),&Bytes);
 			if (Type != REG_DWORD || lResult != ERROR_SUCCESS) { RomBrowser = Default_UseRB; }
 			lResult = RegQueryValueEx(hKeyResults,"Directory Recursion",0,&Type,(BYTE *)(&Rercursion),&Bytes);

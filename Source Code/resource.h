@@ -54,7 +54,6 @@
 #define IDC_SNAP_DIR                    1079
 #define IDC_SNAP_DEFAULT                1080
 #define IDC_SELECT_SNAP_DIR             1081
-#define IDC_START_ON_ROM_OPEN           1084
 #define IDC_USE_TLB                     1084
 #define IDC_SELFMOD                     1085
 #define IDC_BLOCK_LINKING               1086

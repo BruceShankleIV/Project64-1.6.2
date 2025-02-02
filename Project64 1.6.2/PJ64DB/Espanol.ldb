@@ -128,7 +128,7 @@
 #134# "Nota: El Interprete no se ve afectado por los siguientes ajustes:
 SCM, ABL, Bufer de Compilacion Grande y Cache de Registros"
 #135# "Predeterminado"
-#136# "Iniciar Emulacion cuando Abra la ROM"
+#136# "Usa RDB"
 #137# "1 (Menor Lag, No Estable)"
 #138# "Estilo del Nucleo del CPU:"
 #139# "Metodo de trabajar codigo:"
@@ -262,4 +262,3 @@ Salir del hilo
 #250# "Icepir8's Legacy LLE = Graficos LLE de gama alta
 Jabo's Direct3D8 1.6.2 = Graficos HLE de gama baja
 ANGLE GLideN64 = Graficos para ROMhacks de SM64"
-#251# "Usa RDB"

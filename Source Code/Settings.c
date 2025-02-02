@@ -201,7 +201,6 @@ BOOL CALLBACK DefaultOptionsProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lP
 		SetDlgItemText(hDlg,IDC_TEXT3,GS(ROM_SMCM));
 		SetDlgItemText(hDlg,IDC_TEXT4,GS(ROM_MEM_SIZE));
 		SetDlgItemText(hDlg,IDC_TEXT5,GS(ROM_COUNTER_FACTOR));
-		SetFlagControl(hDlg,&AutoStart, IDC_START_ON_ROM_OPEN, ADVANCE_AUTO_START);
 		SetFlagControl(hDlg,&UseIni, IDC_USEINI, USERDB);
 		AddDropDownItem(hDlg,IDC_CPU_TYPE,CORE_INTERPRETER,CPU_Interpreter,&SystemCPU_Type);
 		AddDropDownItem(hDlg,IDC_CPU_TYPE,CORE_RECOMPILER,CPU_Recompiler,&SystemCPU_Type);
@@ -228,9 +227,6 @@ BOOL CALLBACK DefaultOptionsProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lP
 			lResult = RegCreateKeyEx( HKEY_CURRENT_USER, String,0,"", REG_OPTION_NON_VOLATILE,
 				KEY_ALL_ACCESS,NULL, &hKeyResults,&Disposition);
 			if (lResult == ERROR_SUCCESS) {
-				AutoStart = SendMessage(GetDlgItem(hDlg,IDC_START_ON_ROM_OPEN),BM_GETSTATE, 0,0) == BST_CHECKED?TRUE:FALSE;
-				RegSetValueEx(hKeyResults,"Start Emulation Upon ROM Opening",0,REG_DWORD,(BYTE *)&AutoStart,sizeof(DWORD));
-				UseIni = SendMessage(GetDlgItem(hDlg,IDC_USEINI),BM_GETSTATE, 0,0) == BST_CHECKED?TRUE:FALSE;
 				RegSetValueEx(hKeyResults,"RDB ROM Settings",0,REG_DWORD,(BYTE *)&UseIni,sizeof(DWORD));
 				indx = SendMessage(GetDlgItem(hDlg,IDC_CPU_TYPE),CB_GETCURSEL,0,0);
 				SystemCPU_Type = SendMessage(GetDlgItem(hDlg,IDC_CPU_TYPE),CB_GETITEMDATA,indx,0);

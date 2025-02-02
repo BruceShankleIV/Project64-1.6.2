@@ -164,7 +164,7 @@ LANG_STR DefaultString[] = {
 
 	{ ADVANCE_INFO,        "Note Interpreter is not affected by the following settings:\nSCM, ABL, Larger Compile Buffer, and Register Caching"},
 	{ ADVANCE_DEFAULTS,    "Default"},
-	{ ADVANCE_AUTO_START,  "Start Emulation Upon ROM Opening"},
+	{ USERDB,	       "Use RDB"},
 	{ NUMBER_1,	       "1 (Lagless, Unstable)"},
 	{ ROM_CPU_STYLE,       "CPU Core Style:"},
 	{ ROM_SMCM,            "Self-modifying Code Method:"},
@@ -301,7 +301,6 @@ LANG_STR DefaultString[] = {
 	{ NUMBER_2,		  "2 (Laggy, Semi-stable)"},
 	{ NUMBER_3,               "3 (Laggard, Stable)"},
 	{ PLUGINS,		  "Icepir8's Legacy LLE = High-end LLE Graphics\nJabo's Direct3D8 1.6.2 = Low-end HLE Graphics\nANGLE GLideN64 = SM64 ROMhacks Graphics"},
-	{ USERDB,		  "Use RDB"},
 };
 class CLanguage  {
 	void FindLangName  ( int Index );

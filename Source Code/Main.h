@@ -40,7 +40,6 @@ extern "C" {
 #define IniName						"PJ64.rdb"
 #define CheatIniName				"PJ64.cdb"
 #define LangFileName				"PJ64.ldb"
-#define Default_AutoStart			TRUE
 #define Default_AutoSleep			TRUE
 #define Default_DisableRegCaching	FALSE
 #define Default_RDRAMsize			0x800000
@@ -76,8 +75,7 @@ extern "C" {
 #define Default_Rercursion			TRUE
 /********* Global Variables **********/
 extern LARGE_INTEGER Frequency, Frames[8], LastFrame;
-extern BOOL AutoStart,
-	AutoSleep, DisableRegCaching, UseIni, UseTlb, UseLinking, RomBrowser,
+extern BOOL AutoSleep, DisableRegCaching, UseIni, UseTlb, UseLinking, RomBrowser,
 	IgnoreMove, Rercursion, LimitFPS,
 	AutoFullScreen, SystemCF, AlwaysOnTop, BasicMode, DelaySI, RememberCheats,
 	DelayRDP;
