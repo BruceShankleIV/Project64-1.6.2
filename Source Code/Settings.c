@@ -202,7 +202,7 @@ BOOL CALLBACK DefaultOptionsProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lP
 		SetDlgItemText(hDlg,IDC_TEXT4,GS(ROM_MEM_SIZE));
 		SetDlgItemText(hDlg,IDC_TEXT5,GS(ROM_COUNTER_FACTOR));
 		SetFlagControl(hDlg,&AutoStart, IDC_START_ON_ROM_OPEN, ADVANCE_AUTO_START);
-		SetFlagControl(hDlg,&UseIni, IDC_USEINI, ADVANCE_DEFAULTS);
+		SetFlagControl(hDlg,&UseIni, IDC_USEINI, USERDB);
 		AddDropDownItem(hDlg,IDC_CPU_TYPE,CORE_INTERPRETER,CPU_Interpreter,&SystemCPU_Type);
 		AddDropDownItem(hDlg,IDC_CPU_TYPE,CORE_RECOMPILER,CPU_Recompiler,&SystemCPU_Type);
 		AddDropDownItem(hDlg,IDC_SELFMOD,SMCM_NONE,ModCode_None,&SystemSelfModCheck);

@@ -180,6 +180,7 @@ LANG_STR DefaultString[] = {
 	{ ROM_SAVE,	       "Autodetected"},
 	{ LIMITFPS_OFF,	       "Limit FPS off"},
 	{ ROM_DELAY_RDP,       "Delay RDP Interrupt"},
+	{ TELLINTENTIONALPAUSE,"CPU pausing to prevent swap errors"},
 	{ MENU_SLOW,	       "LLE Slow Mode (Experimental)"},
 //Core Styles
 	{ CORE_INTERPRETER,    "Interpreter"},
@@ -300,6 +301,7 @@ LANG_STR DefaultString[] = {
 	{ NUMBER_2,		  "2 (Laggy, Semi-stable)"},
 	{ NUMBER_3,               "3 (Laggard, Stable)"},
 	{ PLUGINS,		  "Icepir8's Legacy LLE = High-end LLE Graphics\nJabo's Direct3D8 1.6.2 = Low-end HLE Graphics\nANGLE GLideN64 = SM64 ROMhacks Graphics"},
+	{ USERDB,		  "Use RDB"},
 };
 class CLanguage  {
 	void FindLangName  ( int Index );

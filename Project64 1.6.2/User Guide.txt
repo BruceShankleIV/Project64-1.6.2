@@ -202,7 +202,8 @@ For your information, here's some issues I have experienced with Project64 "Lega
 * Loading a savestate can ruin all of the graphics if you try to load states just after a ROM is opened.
 * Persistently annoying stuttering in Ocarina of Time which hurts the quality of my gameplay experience.
 
-Note that all the issues mentioned above about Project64 Legacy are not issues in this Project64 V1.6.2.
+Note that all the issues mentioned above about Project64 Legacy are either issues in Project64 Ver1.6.2,
+or said issues have been alleviated to a degree not found in the Project64 Legacy emulator as of V1.6.4.
 
 For the reasons listed above, I consider the legacy project to be a failed experiment that could've been
 succesful in "finishing" what they started, as they put it. But unfortunately, it doesn't quite hold up.
@@ -548,8 +549,6 @@ CPU=
 MB= 
 (User's selected core setting, 8 by default)
 RDP= 
-(Off)
-RSP= 
 (Off)
 Save= 
 (First Used)

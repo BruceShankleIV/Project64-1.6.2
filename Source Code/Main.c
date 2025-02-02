@@ -746,9 +746,12 @@ LRESULT CALLBACK Main_Proc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		case ID_FILE_OPEN_ROM: OpenN64Image(); break;
 		case ID_FILE_ROM_INFO: RomInfo(); break;
 		case ID_FILE_STARTEMULATION: {
-			DWORD ThreadID;
-			strcpy(CurrentFileName, LastRoms[0]);
-			CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)OpenChosenFile, NULL, 0, &ThreadID);
+			if (UseIni) {
+				DWORD ThreadID;
+				strcpy(CurrentFileName, LastRoms[0]);
+				CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)OpenChosenFile, NULL, 0, &ThreadID);
+			}
+			else { HideRomBrowser(); StartEmulation(); }
 			}
 			break;
 		case ID_FILE_ENDEMULATION:
@@ -981,7 +984,9 @@ LRESULT CALLBACK Main_Proc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		case ID_OPTIONS_CONFIG_AUDIO: AiDllConfig(hWnd); break;
 		case ID_OPTIONS_CONFIG_RSP: RSPDllConfig(hWnd); break;
 		case ID_OPTIONS_CONFIG_CONTROL: ContConfig(hWnd); break;
-		case ID_OPTIONS_SETTINGS: if (!AutoSleep && !CPU_Paused && CPURunning) PauseCpu(); ChangeSettings(hWnd); break;
+		case ID_OPTIONS_SETTINGS: if (!AutoSleep && !CPU_Paused && CPURunning) { PauseCpu(); SendMessage(hStatusWnd, SB_SETTEXT, 0, (LPARAM)GS(TELLINTENTIONALPAUSE)); }
+		ChangeSettings(hWnd);
+		break;
 		case ID_OPTIONS_CHEATS: ManageCheats(NULL); break;
 		case ID_HELP_GUIDE:
 			{

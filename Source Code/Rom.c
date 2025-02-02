@@ -749,7 +749,12 @@ void OpenChosenFile ( void ) {
 		TotalRead = 0;
 		for (count = 0; count < (int)RomFileSize; count += ReadFromRomSection) {
 			dwToRead = RomFileSize - count;
-			if (!ReadFile(hFile, &ROM[count], dwToRead, &dwRead, NULL));
+			if (!ReadFile(hFile, &ROM[count], dwToRead, &dwRead, NULL)) {
+				CloseHandle( hFile );
+				CheckRbRefresh();
+				return;
+			}
+			TotalRead += dwRead;
 		}
 		CloseHandle( hFile );
 		AddRecentFile(hMainWindow,CurrentFileName);
@@ -792,8 +797,6 @@ void OpenChosenFile ( void ) {
 	}
 	SetWindowText(hMainWindow,WinTitle);
 	if (!RememberCheats) { DisableAllCheats(); }
-	CPURunning = TRUE;
-	SetupMenu(hMainWindow);
         SetCurrentSaveState(hMainWindow,ID_CURRENTSAVE_DEFAULT);
 	SendMessage( hStatusWnd, SB_SETTEXT, 0, (LPARAM)"");
 	if (AutoStart) {

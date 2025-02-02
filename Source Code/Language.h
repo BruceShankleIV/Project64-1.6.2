@@ -176,6 +176,7 @@ char * GS               ( int StringID );
 #define ROM_SAVE			149
 #define LIMITFPS_OFF			150
 #define ROM_DELAY_RDP			151
+#define TELLINTENTIONALPAUSE		152
 #define MENU_SLOW			153
 //Core Styles
 #define CORE_INTERPRETER		154
@@ -296,3 +297,4 @@ char * GS               ( int StringID );
 #define NUMBER_2		        248
 #define NUMBER_3		        249
 #define PLUGINS				250
+#define USERDB				251

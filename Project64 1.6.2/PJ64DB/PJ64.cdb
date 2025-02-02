@@ -1537,25 +1537,6 @@ Cheat3_N=Press Reset and enjoy!
 Cheat3_O=$2B Level 01,$2F Level 02,$33 Level 03,$37 Level 04,$3B Level 05,$3D Level 06,$40 Level 07,$43 Level 08,$46 Level 09,$49 Level 10,$4C Level 11,$4F Level 12,$51 Level 12.5,$53 Level 13,$18 Credits 1,$19 Credits 2,$1A Credits 3
 Cheat4="Secret Beta 2 Player Test Mode",D00D5115 0015,800D5115 0055
 Cheat4_N=Press Reset and enjoy! Secret 2 Player Test Mode? The Second Player doesn't move ;(
-[0375CF67-56A93FAA-C:4A]
-Cheat0="Infinite Goth",8119610E FFFF
-Cheat1="Max Goth",8119610C 0098,8119610E 967F
-Cheat2="Open All Paths",81196120 01FF,81196122 677F,81196124 FCFF
-Cheat3="Finish All Levels",81196126 5454,81196128 5140,8119612A 4555,8119612C 9514,8119612E 5515
-Cheat4="Always Have Retreat & Elem Pedra Opened",D01A1312 0000,811A1312 0003
-Cheat4_N=Do not put this on until in-game or the game will freeze. Note
-Cheat5="Hour Always",801960CD 00??
-Cheat5_O=$00 (0 Hour - 24:00 PM - Midnight),$01 (01:00 AM),$02 (02:00 AM),$03 (03:00 AM),$04 (04:00 AM),$05 (05:00 AM),$06 (06:00 AM),$07 (07:00 AM),$08 (08:00 AM),$09 (09:00 AM),$0A (10:00 AM),$0B (11:00 AM),$0C (12:00 PM - Noon),$0D (13:00 - 1 PM),$0E (14:00 - 2 PM),$0F (15:00 - 3 PM),$10 (16:00 - 4 PM),$11 (17:00 - 5 PM),$12 (18:00 - 6 PM),$13 (19:00 - 7 PM),$14 (20:00 - 8 PM),$15 (21:00 - 9 PM),$16 (22:00 - 10 PM),$17 (23:00 - 11 PM)
-Cheat6="Day Always 00",811F008C 0000
-Cheat7="Magnus\Level 99",801932AB 0063
-Cheat8="Magnus\Max HP",811932AE 03E7
-Cheat9="Magnus\Infinite HP",811932B0 03E7
-Cheat10="Magnus\Max Str",811932B4 03E7
-Cheat11="Magnus\Max Vit",811932B6 03E7
-Cheat12="Magnus\Max Int",811932B8 03E7
-Cheat13="Magnus\Max Mem",811932BA 03E7
-Cheat14="Magnus\Max Agi",811932BC 03E7
-Cheat15="Magnus\Max Dex",811932BE 3E77
 [96747EB4-104BB243-C:4A]
 Cheat0="Have All Weapons\Player 1",80206B60 0007,801EDB60 0007,801D4B60 0007
 Cheat0_N=This code is for all Low/High Res Solo & Multi-Player Level ;) Enjoy
@@ -6747,26 +6728,6 @@ Cheat5="Inf HP\In Battle All Pokemon\Player 1",81285A18 03E7
 Cheat6="Inf HP\In Battle All Pokemon\Player 2",81286438 03E7
 Cheat7="Ultimate Code",81171F3C FF01,81171F3E FF01,81171F40 FF01,81171F42 FF01,81171F44 FF01
 Cheat7_N=what's so ultimate about this code is it raises your Pokemon to its full potential. Even at Level 100, most Pokemon still Have\a way to go to raise their stats to the max. But with this code, you can instantly boost any Pokemon to its greatest potential!!!
-[9C8FB2FA-9B84A09B-C:45]
-Cheat0="Pokemon\Max HP\Player 1",810AE586 03E7,810AE5DA 03E7,810AE62E 03E7
-Cheat1="Pokemon\Max HP\Player 2",810AE7A2 03E7,810AE7F6 03E7,810AE84A 03E7
-Cheat2="Pokemon\Inf Spells\Player 1",810AE580 FFFF,810AE582 FFFF,810AE5D4 FFFF,810AE5D6 FFFF,810AE628 FFFF,810AE62A FFFF
-Cheat3="Pokemon\Inf Spells\Player 2",810AE79C FFFF,810AE79E FFFF,810AE7F0 FFFF,810AE7F2 FFFF,810AE844 FFFF,810AE846 FFFF
-Cheat4="Have All Pikachus Magnemites",801183BC 0000,801183BD 0000,801183BE 0000
-Cheat5="Inf HP\In Battle All Pokemon\Player 1",81285A18 03E7
-Cheat6="Inf HP\In Battle All Pokemon\Player 2",81286438 03E7
-Cheat7="Ultimate Code",81171F3C FF01,81171F3E FF01,81171F40 FF01,81171F42 FF01,81171F44 FF01
-Cheat7_N=what's so ultimate about this code is it raises your Pokemon to its full potential. Even at Level 100, most Pokemon still have a way to go to raise their stats to the max. But with this code, you can instantly boost any Pokemon to its greatest potential!!!
-[1A122D43-C17DAF0F-C:45]
-Cheat0="Pokemon\Max HP\Player 1",810AE586 03E7,810AE5DA 03E7,810AE62E 03E7
-Cheat1="Pokemon\Max HP\Player 2",810AE7A2 03E7,810AE7F6 03E7,810AE84A 03E7
-Cheat2="Pokemon\Inf Spells\Player 1",810AE580 FFFF,810AE582 FFFF,810AE5D4 FFFF,810AE5D6 FFFF,810AE628 FFFF,810AE62A FFFF
-Cheat3="Pokemon\Inf Spells\Player 2",810AE79C FFFF,810AE79E FFFF,810AE7F0 FFFF,810AE7F2 FFFF,810AE844 FFFF,810AE846 FFFF
-Cheat4="Have All Pikachus Magnemites",801183BC 0000,801183BD 0000,801183BE 0000
-Cheat5="Inf HP\In Battle All Pokemon\Player 1",81285A18 03E7
-Cheat6="Inf HP\In Battle All Pokemon\Player 2",81286438 03E7
-Cheat7="Ultimate Code",81171F3C FF01,81171F3E FF01,81171F40 FF01,81171F42 FF01,81171F44 FF01
-Cheat7_N=what's so ultimate about this code is it raises your Pokemon to its full potential. Even at Level 100, most Pokemon still have a way to go to raise their stats to the max. But with this code, you can instantly boost any Pokemon to its greatest potential!!!
 [03571182-892FD06D-C:45]
 Cheat0="One Hit KO",8014576F 0000,801457C7 0000,8014581F 0000
 Cheat0_N=To Win you must get at least one hit or just return your pokemon.

@@ -150,6 +150,7 @@ SCM, ABL, Larger Compile Buffer, and Register Caching"
 #149# "Autodetected"
 #150# "Limit FPS off"
 #151# "Delay RDP Interrupt"
+#152# "CPU pausing to prevent swap errors"
 #153# "LLE Slow Mode (Experimental)"
 #154# "Interpreter"
 #155# "Recompiler"
@@ -275,3 +276,4 @@ Exiting thread
 #250# "Icepir8's Legacy LLE = High-end LLE Graphics
 Jabo's Direct3D8 1.6.2 = Low-end HLE Graphics
 ANGLE GLideN64 = SM64 ROMhacks Graphics"
+#251# "Use RDB"

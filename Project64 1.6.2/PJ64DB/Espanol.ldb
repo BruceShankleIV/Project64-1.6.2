@@ -142,6 +142,7 @@ SCM, ABL, Bufer de Compilacion Grande y Cache de Registros"
 #149# "Autodetectado"
 #150# "Limitar FPS desactivado"
 #151# "Retrasar Interrupcion RDP"
+#152# "Pausando CPU para evitar errores de cambio"
 #153# "Modo LLE Lento (Experimental)"
 #154# "Interprete"
 #155# "Recompilador"
@@ -261,3 +262,4 @@ Salir del hilo
 #250# "Icepir8's Legacy LLE = Graficos LLE de gama alta
 Jabo's Direct3D8 1.6.2 = Graficos HLE de gama baja
 ANGLE GLideN64 = Graficos para ROMhacks de SM64"
+#251# "Usa RDB"
