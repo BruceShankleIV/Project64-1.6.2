@@ -152,10 +152,6 @@ void ChangeSpStatus (void) {
 		ChangeTimer(RspTimer, 0x900);
 		return;
 	}
-	if (DelayRSP == TRUE && *( DWORD *)(DMEM + 0xFC0) == 2) {
-		ChangeTimer(RspTimer, 0x900);
-		return;
-	}
 	RunRsp();
 }
 void ChangeDpcStatus (void) {

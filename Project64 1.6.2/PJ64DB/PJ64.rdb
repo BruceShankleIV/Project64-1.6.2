@@ -1,6 +1,6 @@
 //ESSENTIAL SPACE
 [Meta]
-Author=Bruce Shankle IV x Smiff
+Author=Bruce Shankle IV x Nekokabu x Smiff
 Date=January 2025
 Version=1.6.2 (2025) WIP
 [Microcode Identifiers]
@@ -2534,9 +2534,8 @@ CPU=Recompiler
 SCM=Protect Memory
 Status=Compatible
 Plugin Note=Graphic issues with Jabo plugins
-RSP=On
 [5F2763C4-62412AE5-C:45]
-Game Name=International Superstar Soccer 64 (U)
+Game Name=International Superstar Soccer '98 (U)
 MB=4
 CF=1
 CPU=Recompiler

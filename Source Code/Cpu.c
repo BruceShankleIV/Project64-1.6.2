@@ -117,10 +117,7 @@ void CloseCpu (void) {
 		PulseEvent( CPU_Action.hStepping );
 		if (WaitForSingleObject(hCPU,1) == WAIT_OBJECT_0) {
 			GetExitCodeThread(hCPU, &ExitCode);
-			if (ExitCode != STILL_ACTIVE) {
-				hCPU = NULL;
-				break;
-			}
+			if (ExitCode != STILL_ACTIVE) hCPU = NULL;
 		}
 	}
 	if (hCPU != NULL) {  TerminateThread(hCPU,0); hCPU = NULL; }

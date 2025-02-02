@@ -1647,10 +1647,6 @@ int r4300i_SW_NonMemory ( DWORD PAddr, DWORD Value ) {
 				ChangeTimer(RspTimer, 0x900);
 				break;
 			}
-			if (DelayRSP == TRUE && *( DWORD *)(DMEM + 0xFC0) == 2) {
-				ChangeTimer(RspTimer, 0x900);
-				break;
-			}
 			RunRsp();
 			break;
 		case 0x0404001C: SP_SEMAPHORE_REG = 0; break;

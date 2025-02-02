@@ -180,7 +180,6 @@ LANG_STR DefaultString[] = {
 	{ ROM_SAVE,	       "Autodetected"},
 	{ LIMITFPS_OFF,	       "Limit FPS off"},
 	{ ROM_DELAY_RDP,       "Delay RDP Interrupt"},
-	{ ROM_DELAY_RSP,       "Delay RSP Interrupt"},
 	{ MENU_SLOW,	       "LLE Slow Mode (Experimental)"},
 //Core Styles
 	{ CORE_INTERPRETER,    "Interpreter"},
