@@ -274,11 +274,7 @@ void SP_DMA_READ (void) {
 		SP_STATUS_REG  &= ~SP_STATUS_DMA_BUSY;
 		return;
 	}
-	if (SP_RD_LEN_REG + 1  + (SP_MEM_ADDR_REG & 0xFFF) > 0x1000) {
-		SP_DMA_BUSY_REG = 0;
-		SP_STATUS_REG  &= ~SP_STATUS_DMA_BUSY;
-		return;
-	}
+	if (SP_RD_LEN_REG + 1  + (SP_MEM_ADDR_REG & 0xFFF) > 0x1000) return;
 	if ((SP_MEM_ADDR_REG & 3) != 0 || (SP_DRAM_ADDR_REG & 3) != 0 || ((SP_RD_LEN_REG + 1) & 3) != 0) ExitThread(0);
 	memcpy( DMEM + (SP_MEM_ADDR_REG & 0x1FFF), N64MEM + SP_DRAM_ADDR_REG,
 		SP_RD_LEN_REG + 1 );
