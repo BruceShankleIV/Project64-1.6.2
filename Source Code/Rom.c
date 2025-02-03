@@ -389,7 +389,6 @@ void LoadRecentRom (DWORD Index) {
 BOOL LoadRomHeader ( void ) {
 	char drive[_MAX_DRIVE] ,FileName[_MAX_DIR],dir[_MAX_DIR], ext[_MAX_EXT];
 	BYTE Test[4];
-	int count;
 	if (_strnicmp(&CurrentFileName[strlen(CurrentFileName)-4], ".ZIP",4) == 0 ){
 		int port = 0, FoundRom;
 	    unz_file_info info;
@@ -459,22 +458,6 @@ BOOL LoadRomHeader ( void ) {
 	}
 	ByteSwapRom(RomHeader,sizeof(RomHeader));
 	memcpy(&RomName, &FileName, 60);
-	for( count = 0 ; count < 20; count += 4 ) {
-		RomName[count] ^= RomName[count+3];
-		RomName[count + 3] ^= RomName[count];
-		RomName[count] ^= RomName[count+3];
-		RomName[count + 1] ^= RomName[count + 2];
-		RomName[count + 2] ^= RomName[count + 1];
-		RomName[count + 1] ^= RomName[count + 2];
-	}
-	for( count = 19 ; count >= 0; count -- ) {
-		if (RomName[count] == ' ') {
-			RomName[count] = '\0';
-		} else if (RomName[count] == '\0') {
-		} else {
-			count = -1;
-		}
-	}
 	RomName[60] = '\0';
 	if (strlen(RomName) == 0) { strcpy(RomName,FileName); }
 	return FALSE;

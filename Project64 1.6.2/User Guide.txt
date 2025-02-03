@@ -323,6 +323,7 @@ either the ROM header data above the internal name, or the baseROM's internal na
 
 Section#06 Known Issues
 --------------------------------------------------------------------------------------------------------
+Pokemon Stadium does not work anymore, this is a regression from PJ64 1.6 Plus/1.6.1 and could be fixed.
 Limit FPS off doesn't work on Icepir8's Legacy LLE in DirectX8 render mode with fullscreen mode entered.
 Depending on the PC hardware, Jabo's Direct3D8 can sometimes freeze, though the ROM still stays running.
 The rom browser is a bit buggy but this shouldn't affect your gaming experience so it's not a big issue.
