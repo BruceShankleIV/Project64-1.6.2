@@ -3955,8 +3955,9 @@ MB=4
 Save=16
 CPU=Recompiler
 SCM=Check Memory Advance
-Status=Semicompatible
+Status=Compatible
 CF=2
+Plugin Note=Graphic issues with Jabo plugins
 [30EAD54F-31620BF6-C:45]
 Game Name=NFL Blitz - Special Edition (U)
 MB=4
@@ -7079,6 +7080,7 @@ CPU=Recompiler
 SCM=Protect Memory
 Status=Semicompatible
 RDP=On
+Plugin Note=Graphic issues with Jabo plugins
 [D3F97D49-6924135B-C:50]
 Game Name=Yoshi's Story (E)
 MB=4
