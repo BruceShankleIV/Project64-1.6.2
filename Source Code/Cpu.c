@@ -1526,56 +1526,6 @@ void SetCoreToRunning ( void ) {
 void SetCoreToStepping ( void ) {
 	CPU_Action.Stepping = TRUE;
 }
-void StartEmulation ( void ) {
-	char drive[_MAX_DRIVE],dir[_MAX_DIR], fname[_MAX_FNAME],ext[_MAX_EXT];
-	char SaveFile[255];
-	DWORD ThreadID, count;
-	memset(&CPU_Action,0,sizeof(CPU_Action));
-	CPU_Action.hStepping = CreateEvent( NULL, FALSE, FALSE, NULL);
-	WrittenToRom = FALSE;
-	memset(N64MEM, 0, RDRAMsize);
-	InitilizeTLB();
-	InitalizeR4300iRegisters(LoadPifRom(*(ROM + 0x3D)),*(ROM + 0x3D),GetCicChipID(ROM));
-	BuildInterpreter();
-	RecompPos = RecompCode;
-	Timers.CurrentTimerType = -1;
-	Timers.Timer = 0;
-	CurrentFrame = 0;
-	for (count = 0; count < MaxTimers; count ++) { Timers.Active[count] = FALSE; }
-	ChangeTimer(ViTimer, 5000);
-	ChangeCompareTimer();
-	ViFieldSerration = 0;
-	DMAUsed = FALSE;
-	CPU_Paused = FALSE;
-	ManualPaused = FALSE;
-	Timer_Start();
-	LoadRomOptions();
-	LoadCheats();
-	strcpy(LoadFileName,"");
-	strcpy(SaveAsFileName,"");
-	ResetAudio(hMainWindow);
-	AlwaysOnTopWindow(hMainWindow);
-	switch (CPU_Type) {
-	case CPU_Interpreter: hCPU = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)StartInterpreterCPU, NULL, 0, &ThreadID); break;
-	case CPU_Recompiler: hCPU = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)StartRecompilerCPU, NULL, 0, &ThreadID);	break;
-	}
-	const char* fixedDir;
-	OSVERSIONINFO osvi;
-	ZeroMemory(&osvi, sizeof(OSVERSIONINFO));
-	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
-	GetVersionEx(&osvi);
-    	if (osvi.dwMajorVersion >= 6) {
-        // Windows Vista and later
-        fixedDir = "C:\\ProgramData\\";
-    	} else {
-      	// Windows XP
-      	fixedDir = "C:\\Documents and Settings\\All Users\\Application Data\\";
-   	}
-	_splitpath( SaveFile, drive, dir, fname, ext );
-	_makepath(SaveFile, drive, fixedDir, (GS(MSG_EMULATION_STARTED)), "");
-	strcpy(SaveAsFileName,SaveFile);
-	CPU_Action.SaveState = TRUE;
-}
 void CheckRbRefresh ( void ) {
 	if (RomBrowser) { ShowRomList(hMainWindow); RefreshRomBrowser();
 	} else SetupMenu(hMainWindow);

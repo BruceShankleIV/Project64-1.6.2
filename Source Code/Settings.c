@@ -800,12 +800,12 @@ BOOL CALLBACK RomNotesProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 			}
 			{
 				char CoreNotes[800];
-				_GetPrivateProfileString(Identifier,"Core Note","",CoreNotes,sizeof(CoreNotes),IniFile);
+				_GetPrivateProfileString(Identifier,"Core","",CoreNotes,sizeof(CoreNotes),IniFile);
 				SetDlgItemText(hDlg,IDC_CORE_NOTES,CoreNotes);
 			}
 			{
 				char PluginNotes[800];
-				_GetPrivateProfileString(Identifier,"Plugin Note","",PluginNotes,sizeof(PluginNotes),IniFile);
+				_GetPrivateProfileString(Identifier,"Plugin","",PluginNotes,sizeof(PluginNotes),IniFile);
 				SetDlgItemText(hDlg,IDC_PLUGIN_NOTE,PluginNotes);
 			}
 		}
@@ -827,9 +827,9 @@ BOOL CALLBACK RomNotesProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 			if (strlen(string) == 0) { strcpy(string, GS(RB_NOT_IN_RDB)); }
 			_WritePrivateProfileString(Identifier,"Status",string,IniFile);
 			GetWindowText(GetDlgItem(hDlg, IDC_CORE_NOTES), string, sizeof(string));
-			_WritePrivateProfileString(Identifier,"Core Note",string,IniFile);
+			_WritePrivateProfileString(Identifier,"Core",string,IniFile);
 			GetWindowText(GetDlgItem(hDlg, IDC_PLUGIN_NOTE), string, sizeof(string));
-			_WritePrivateProfileString(Identifier,"Plugin Note",string,IniFile);
+			_WritePrivateProfileString(Identifier,"Plugin",string,IniFile);
 		}
 		break;
 	default:

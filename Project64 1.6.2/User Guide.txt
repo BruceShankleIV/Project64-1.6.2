@@ -658,9 +658,7 @@ on the other. In order from fastest to most secure these are:
 None, Cache, Check Memory & Cache, Check Memory Advance, Change Memory & Cache, Check Memory & Return,
 Protect Memory.
 
-Note from Bruce IV: I suggest avoiding pairing Protect Memory with ABL on and avoid pairing ABL off with
-Change Memory & Cache. If you don't listen to this suggestion, there may be stuttering or weird crashes.
-I've also resorted the list of fastest to most secure self-modifying code method based on my experience.
+Note from Bruce IV: I've resorted the list of fastest to most secure SCM methods based on my experience.
 Keep in mind that even though one method may be listed to be more secure than another, it is HIGHLY game
 dependent as to what method will work better for it! Example, Check Memory & Return is great for Ocarina
 of Time, but freezes on Animal Crossing before getting past the intro cutscene. Use ROM Settings wisely!

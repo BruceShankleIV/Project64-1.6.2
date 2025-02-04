@@ -742,12 +742,9 @@ LRESULT CALLBACK Main_Proc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		case ID_FILE_OPEN_ROM: OpenN64Image(); break;
 		case ID_FILE_ROM_INFO: RomInfo(); break;
 		case ID_FILE_STARTEMULATION: {
-			if (UseIni) {
 				DWORD ThreadID;
 				strcpy(CurrentFileName, LastRoms[0]);
 				CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)OpenChosenFile, NULL, 0, &ThreadID);
-			}
-			else { HideRomBrowser(); StartEmulation(); }
 			}
 			break;
 		case ID_FILE_ENDEMULATION:

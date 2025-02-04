@@ -17,7 +17,7 @@ typedef struct {
 LANG_STR DefaultString[] = {
     { LANGUAGE_AUTHOR,     "Bruce Shankle IV"		  },
     { LANGUAGE_VERSION,    "1.6.2 (2025)"                 },
-    { LANGUAGE_DATE,       "January 2025"                 },
+    { LANGUAGE_DATE,       "February 2025"                },
 	{ INI_CURRENT_LANG,    "Language Database (.LDB)" },
 	{ INI_AUTHOR,          "Author"                   },
 	{ INI_VERSION,         "Version"                  },

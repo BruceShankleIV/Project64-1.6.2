@@ -557,7 +557,7 @@ void ReadRomOptions (void) {
 		char String[100];
 		IniFileName = GetIniFileName();
 		sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD *)(&RomHeader[0x10]),*(DWORD *)(&RomHeader[0x14]),RomHeader[0x3D]);
-		if (UseIni) { ROMRAMsize = _GetPrivateProfileInt(Identifier,"MB",-1,IniFileName); }
+		if (UseIni) { ROMRAMsize = _GetPrivateProfileInt(Identifier,"MEM",-1,IniFileName); }
 		if (ROMRAMsize == 4 || ROMRAMsize == 8) {
 			ROMRAMsize *= 0x100000;
 		} else {
@@ -824,12 +824,61 @@ void OpenChosenFile ( void ) {
 	}
 	SetWindowText(hMainWindow,WinTitle);
 	if (!RememberCheats) { DisableAllCheats(); }
-	CPURunning = TRUE;
-	SetupMenu(hMainWindow);
+	if (!CPURunning) { CPURunning = TRUE; SetupMenu(hMainWindow); }
         SetCurrentSaveState(hMainWindow,ID_CURRENTSAVE_DEFAULT);
 	SendMessage( hStatusWnd, SB_SETTEXT, 0, (LPARAM)"");
-		StartEmulation();
-		if (AutoFullScreen) SendMessage(hMainWindow,WM_COMMAND,ID_OPTIONS_FULLSCREEN,0);
+	{
+		char drive[_MAX_DRIVE], dir[_MAX_DIR], fname[_MAX_FNAME], ext[_MAX_EXT];
+		char SaveFile[255];
+		DWORD ThreadID, count;
+		memset(&CPU_Action, 0, sizeof(CPU_Action));
+		CPU_Action.hStepping = CreateEvent(NULL, FALSE, FALSE, NULL);
+		WrittenToRom = FALSE;
+		memset(N64MEM, 0, RDRAMsize);
+		InitilizeTLB();
+		InitalizeR4300iRegisters(LoadPifRom(*(ROM + 0x3D)), *(ROM + 0x3D), GetCicChipID(ROM));
+		BuildInterpreter();
+		RecompPos = RecompCode;
+		Timers.CurrentTimerType = -1;
+		Timers.Timer = 0;
+		CurrentFrame = 0;
+		for (count = 0; count < MaxTimers; count++) { Timers.Active[count] = FALSE; }
+		ChangeTimer(ViTimer, 5000);
+		ChangeCompareTimer();
+		ViFieldSerration = 0;
+		DMAUsed = FALSE;
+		CPU_Paused = FALSE;
+		ManualPaused = FALSE;
+		Timer_Start();
+		LoadRomOptions();
+		LoadCheats();
+		strcpy(LoadFileName, "");
+		strcpy(SaveAsFileName, "");
+		ResetAudio(hMainWindow);
+		AlwaysOnTopWindow(hMainWindow);
+		switch (CPU_Type) {
+		case CPU_Interpreter: hCPU = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)StartInterpreterCPU, NULL, 0, &ThreadID); break;
+		case CPU_Recompiler: hCPU = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)StartRecompilerCPU, NULL, 0, &ThreadID);	break;
+		}
+		const char* fixedDir;
+		OSVERSIONINFO osvi;
+		ZeroMemory(&osvi, sizeof(OSVERSIONINFO));
+		osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
+		GetVersionEx(&osvi);
+		if (osvi.dwMajorVersion >= 6) {
+			// Windows Vista and later
+			fixedDir = "C:\\ProgramData\\";
+		}
+		else {
+			// Windows XP
+			fixedDir = "C:\\Documents and Settings\\All Users\\Application Data\\";
+		}
+		_splitpath(SaveFile, drive, dir, fname, ext);
+		_makepath(SaveFile, drive, fixedDir, (GS(MSG_EMULATION_STARTED)), "");
+		strcpy(SaveAsFileName, SaveFile);
+		CPU_Action.SaveState = TRUE;
+	}
+	if (AutoFullScreen) SendMessage(hMainWindow,WM_COMMAND,ID_OPTIONS_FULLSCREEN,0);
 }
 void SaveRecentDirs (void) {
 	long lResult;
@@ -874,7 +923,7 @@ void SaveRomOptions (void) {
 	if (strlen(RomName) == 0) { return; }
 	IniFileName = GetIniFileName();
 	sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD *)(&RomHeader[0x10]),*(DWORD *)(&RomHeader[0x14]),RomHeader[0x3D]);
-	_WritePrivateProfileString(Identifier, "ABL", RomUseLinking ? " " : "On", GetIniFileName());
+	_WritePrivateProfileString(Identifier, "ABL", RomUseLinking ? "On" : " ", GetIniFileName());
 	_WritePrivateProfileString(Identifier, "Buffer", RomUseLargeBuffer ? "On" : " ", GetIniFileName());
 	_WritePrivateProfileString(Identifier, "Caching", RomUseCache ? " " : "On", GetIniFileName());
 	switch (RomCF) {
@@ -893,7 +942,7 @@ void SaveRomOptions (void) {
 	case 0x800000: strcpy(String,"8"); break;
 	default: strcpy(String," "); break;
 	}
-	_WritePrivateProfileString(Identifier,"MB",String,GetIniFileName());
+	_WritePrivateProfileString(Identifier,"MEM",String,GetIniFileName());
 	_WritePrivateProfileString(Identifier, "RDP", RomDelayRDP ? "On" : " ", GetIniFileName());
 	switch (RomSaveUsing) {
 	case eepROM_4K: sprintf(String,"4"); break;
