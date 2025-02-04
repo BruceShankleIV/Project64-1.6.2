@@ -269,9 +269,9 @@ LINK's DirectInput7 1.6.2 - A wrapper for Jabo's DirectInput7. Can't save regist
 			    keyboard binding via the F/G keys, which makes it possible to do things like
 			    aiming. Additionally, it shares registry configurations with Jabo's DInput7.
 
-N-Rage's DirectInput8 Ver1.83 - Solid DirectInput plugin with tons of features. You can receive profiles
-				for this plugin from the author which have very fine tuned configuration
-				profiles for the ROMs Goldeneye, Duke Nukem, as well as Duke Nukem Zero.
+N-Rage's DirectInput8 Ver1.82a - Good DirectInput plugin with tons of features. You can receive profiles
+				 for this plugin from the author which have got fine tuned configuration
+				 profiles for all these games: Goldeneye, Duke Nukem, & Duke Nukem Zero.
 
 Shankle's Octomino SDL2 Input 0.1.1 (1.0) - Very suggested choice if this plugin is compatible with your
 					    controller. Supports a limited configuration user interface,
