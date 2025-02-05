@@ -1776,7 +1776,7 @@ BOOL GenerateX86Code (BLOCK_SECTION * Section, DWORD Test) {
 	NextInstruction = NORMAL;
 	do {
 		__try {
-			if (!r4300i_LW_VAddr(Section->CompilePC, &Opcode.Hex)) ExitThread(0);
+			if (!r4300i_LW_VAddr_NonCPU(Section->CompilePC, &Opcode.Hex)) ExitThread(0);
 		} __except( r4300i_CPU_MemoryFilter( GetExceptionCode(), GetExceptionInformation()) ) {
 			DisplayError(GS(MSG_UNKNOWN_MEM_ACTION));
 			ExitThread(0);

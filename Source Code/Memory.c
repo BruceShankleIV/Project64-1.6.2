@@ -1470,6 +1470,34 @@ BOOL r4300i_LW_VAddr ( DWORD VAddr, DWORD * Value ) {
 	*Value = *(DWORD *)(TLB_ReadMap[VAddr >> 12] + VAddr);
 	return TRUE;
 }
+BOOL r4300i_LW_VAddr_NonCPU_impl ( DWORD VAddr, DWORD * Value ) {
+	if (TLB_ReadMap[VAddr >> 12] == 0) { return FALSE; }
+	*Value = *(DWORD *)(TLB_ReadMap[VAddr >> 12] + VAddr);
+	return TRUE;
+}
+BOOL r4300i_LW_VAddr_NonCPU(DWORD VAddr, DWORD* Value) {
+	OPCODE opcode;
+	BOOL ok = r4300i_LW_VAddr_NonCPU_impl(VAddr, &opcode.Hex);
+	if (!ok) return FALSE;
+	{
+		if (opcode.Hex == 0x14200005 && (VAddr & 0xFF000000) == 0x80000000)
+		{
+				const DWORD sBusyLoopPrologue[] = { 0x3C02A440, 0xA7380000, 0x8C830000, 0x34420010, 0x3C0CA440, 0x8C680008, 0x8D090004, 0xAC69000C, 0x8C4A0000, 0x2D41000B };
+				int sCheckSize = sizeof(sBusyLoopPrologue) / sizeof(*sBusyLoopPrologue);
+				int i;
+				for (i = 0; i < sCheckSize; i++)
+				{
+					DWORD ivaddr = VAddr - (sCheckSize - i) * 4;
+					DWORD val;
+					if (!r4300i_LW_VAddr_NonCPU_impl(ivaddr, &val)) break;
+					if (val != sBusyLoopPrologue[i]) break;
+				}
+				if (i == sCheckSize) opcode.Hex = 0x10000005;
+		}
+	}
+	*Value = opcode.Hex;
+	return TRUE;
+}
 int r4300i_SB_NonMemory ( DWORD PAddr, BYTE Value ) {
 	switch (PAddr & 0xFFF00000) {
 	case 0x00000000:

@@ -20,7 +20,7 @@ Section#11 The End
 Section#12 Extra (Part 1), Suggestions
 Section#13 Extra (Part 2), How to Develop Project64 1.6 + BEWARE of MiB/PJ64Team!
 Section#14 Extra (Part 3), Technical Documentation
-Section#15 Extra (Part 4), Theoretial ROM Browser Usage
+Section#15 Extra (Part 4), The ROM Browser Setup
 
 (just ctrl-f the name to navigate to your desired section)
 ********************************************************************************************************
@@ -137,6 +137,8 @@ Disabled show CPU usage. This is something already present in Windows, it is a b
 Disabled plugin directory selection because changing your plugin directory could have unintended issues.
 
 Disabled end emulation in fullscreen mode because it's crashing.
+
+Faster resets and loads/bootups.
 
 Fixed "Always On Top" not being togglable from within the ROM browser.
 
@@ -378,14 +380,14 @@ Section#08 Credits
 While I won't be able to recall every single person whose work has been used to help develop PJ64 1.6.2,
 I will still try to name as many people as I can and label their contribution appropriately. As follows,
 
-Bruce Shankle IV - RC/Beta Tester, tons of plugins, databases, application optimizations, documentation.
-Glitchy / glitchydorime - RC/Beta Tester, translation support
-lilycatx - RC/Beta Tester
-grimmer420 - RC/Beta Tester
-caseytopaz - RC/Beta Tester
-l0lgamez - RC/Beta Tester
-theluigidude2007 - RC/Beta Tester
-woot - RC/Beta Tester
+Bruce Shankle IV - Beta Tester, tons of plugins, databases, application optimizations, documentation.
+Glitchy / glitchydorime - Beta Tester, translation support
+lilycatx - Beta Tester
+grimmer420 - Beta Tester
+caseytopaz - Beta Tester
+l0lgamez - Beta Tester
+theluigidude2007 - Beta Tester
+woot - Beta Tester
 Alcaro and idc8580 - Flips en masse patch applying (Alcaro made flips, idc made en masse patch applying)
 
 Project64 1.6 Plus Project64 Team:
@@ -399,7 +401,8 @@ Azimer - Azimer's Audio Plugin and the original Mupen RSP which M64P RSP is base
 Hacktaurux - The original Mupen RSP which M64P RSP is based off of
 Clements, Rice, Gonetz, Malcolm, Dave2001, cryhlove, icepir8, zilmar, Azimer, StrmnNrmn, Orkin - glN64
 (glN64 served as the foundation for projects like Direct64, bettergln64, GLideN64, and ANGLE GLideN64)
-Denis Kopyrin/aglab2 - Azimer's Audio config fix and ANGLE GLideN64, ACE Security Vulnerability Insight
+Denis Kopyrin/aglab2 - Azimer's Audio config fix and ANGLE GLideN64, ACE Security Vulnerability Insight,
+Graphics glitch fix when loading savestates, coded faster ROM opens in the Legacy RH fork used in 1.6.2.
 weinerschnitzel, bsmiles32, ecsv, richard42, and rlabrecque - Mupen64Plus HLE RSP Plugin
 Jelta and Nekokabu - RDB Codes
 Microsoft - Visual Studio Versions 2013 and 2022, Windows OS
@@ -470,7 +473,7 @@ https://github.com/project64/project64/pull/354
 
 Section#10 Special Thanks & Shoutouts
 --------------------------------------------------------------------------------------------------------
-These are my special thanks and memorable quotes from users for their work, assistance, and/or kindness:
+These are my special thanks and shoutouts to awesome people for their work, assistance, and/or kindness:
 
 Bruce Shankle III - For helping me learn to use Visual Studio when I first started this project, and for
                     helping  me obtain an Uninterruptible Power Supply which has helped me tremendously.
@@ -483,6 +486,8 @@ l0lgamez - Although the alternative OoT config you tested for has got scrapped, 
 
 aglab2 - I'm so glad that you researched and documented about the vulnerability inside of N64 emulators.
 	 Without you, this project wouldn't have ever existed and I cannot thank people like you enough.
+	 Not only that, but your Legacy fork was referenced for Project64 V1.6.2 to get improvements in.
+	 Thank you for contributing valuable code which shall be used to improve everyone's experiences.
 
 gaudy-twinned0z@icloud.com / clickdevin - Thanks so much for developing the Octomino SDL plugin, and for
 					  giving me the tip I needed for building. You really rock dude!
@@ -490,10 +495,11 @@ gaudy-twinned0z@icloud.com / clickdevin - Thanks so much for developing the Octo
 TrulyNan - "1.6 Shankle's Final Cut Gigachad Version will save us all." I love that enthusiasm of yours!
 
 glitchydorime - I really appreciate your warm comments about this project. 10/10?!? I love hearing that!
+		And you're a very good translator. Thanks for being there every step of the way with me.
 
 Emmanuel - For giving me a piece of candy he found at the bottom of a vending machine. What a great guy!
 
-lilycatx - You're the sweetest person ever lily, thanks for being the best friend a friend could have!💖
+lilycatx - You're the sweetest person ever Lily, thanks for being the best friend a friend could have!💖
 --------------------------------------------------------------------------------------------------------
 
 Section#11 The End
@@ -508,7 +514,9 @@ Section#12 Extra (Part 1), Suggestions
 --------------------------------------------------------------------------------------------------------
 Additionally, if you decide to develop a new revision of Ver1.6.2 or make a Ver1.6.3, I'd suggest fixing
 the following issues with this emulator:
-
+--------------------------------------------------------------------------------------------------------
+* Missing Pokemon Stadium support (this regression was introduced in 1.6.1). May get fixed by comparing
+  with secondary sources like deathdroid's Project64 1.6 or Project64 Legacy to determine what's needed.
 * Missing netplay support.
 * Missing kaillera support.
 * Missing debugger support.
@@ -516,7 +524,6 @@ the following issues with this emulator:
 * Missing disk drive support.
 * Missing N64 mouse ROMs support.
 * Missing language translations support besides spanish (but only for languages w/ english characters).
-* Resetting could be made instantaneous, as evident by aglab2's PJ64Fixups RSP.
 * Save data never gets created when playing newer versions of Ocarina of Time GZ.
 * Save data being stored as ROM's internal name->Change to store by CRC instead to eliminate issues.
 * Some controllers don't work with any known input plugins (someone please make a perfect input plugin).
@@ -537,30 +544,30 @@ entries, because if you do, then you are just wasting space, assuming you leave 
 (In paranthesis, I am telling you what the setting is set to when it is left empty like this as a guide)
 
 
-ABL= 
-(Off)
-Buffer= 
-(Off)
-Caching= 
-(On)
-CF= 
-(User's selected core setting, 2 by default)
 CPU= 
 (User's selected core setting, Recompiler by default)
-MB= 
+MEM= 
 (User's selected core setting, 8 by default)
-RDP= 
-(Off)
-Save= 
-(First Used)
 SCM= 
 (User's selected core setting, Check Memory Advance by default)
-SI= 
+CF= 
+(User's selected core setting, 2 by default)
+Save= 
+(Autodetected)
+Caching= 
+(On)
+Buffer= 
 (Off)
-SP= 
+ABL= 
+(Off)
+RDP= 
 (Off)
 TLB= 
 (On)
+SP= 
+(Off)
+SI= 
+(Off)
 --------------------------------------------------------------------------------------------------------
 
 Section#13 Extra (Part 2), How to Develop Project64 1.6 + BEWARE of MiB/PJ64Team!
@@ -687,7 +694,7 @@ turning it off when not needed, and strangely, some games require it disabled to
 Note from Bruce IV: TLB must be disabled for some older Ocarina of Time romhacks.
 --------------------------------------------------------------------------------------------------------
 
-Section#15 Extra (Part 4), ROM Browser Usage
+Section#15 Extra (Part 4), The ROM Browser Setup
 --------------------------------------------------------------------------------------------------------
 The ROM browser system, controlled by PJ64.RDB is supposed to work like this:
 
@@ -704,5 +711,5 @@ Red - Incompatible
 
 That's the theory anyways. Most games are Compatible or Semicompatible, only rarely is one Incompatible.
 The user should refer to the plugin note if given for Semicompatible games to see what plugin(s) to use.
-However, the RDB is inherently flawed and is always in need of work so this is just the RDB theory/idea.
+However, the RDB is currently in beta and is always in need of work so this is just the RDB theory/idea.
 --------------------------------------------------------------------------------------------------------

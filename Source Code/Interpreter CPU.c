@@ -652,7 +652,7 @@ void BuildInterpreter (void ) {
 	R4300i_CoP1_L[63] = R4300i_UnknownOpcode;
 }
 void ExecuteInterpreterOpCode (void) {
-	if (!r4300i_LW_VAddr(PROGRAM_COUNTER, &Opcode.Hex)) {
+	if (!r4300i_LW_VAddr_NonCPU(PROGRAM_COUNTER, &Opcode.Hex)) {
 		DoTLBMiss(NextInstruction == JUMP,PROGRAM_COUNTER);
 		NextInstruction = NORMAL;
 		return;

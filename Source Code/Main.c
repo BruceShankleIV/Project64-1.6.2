@@ -218,7 +218,7 @@ void FixMenuLang (HMENU hMenu) {
 	MenuSetText(hSubMenu, 0, GS(MENU_OPEN), "Ctrl+O");
 	MenuSetText(hSubMenu, 1, GS(MENU_ROM_INFO), NULL);
 	MenuSetText(hSubMenu, 3, GS(MENU_START), "F11");
-	MenuSetText(hSubMenu, 4, GS(MENU_END), "F12");
+	MenuSetText(hSubMenu, 4, GS(MENU_END), "F11");
 	MenuSetText(hSubMenu, 6, GS(MENU_LANGUAGE), NULL);
 	MenuSetText(hSubMenu, 8, GS(MENU_CHOOSE_ROM), NULL);
 	MenuSetText(hSubMenu, 9, GS(MENU_REFRESH), "F5");
@@ -384,7 +384,7 @@ void LoadSettings (void) {
 			if (Type != REG_DWORD || lResult != ERROR_SUCCESS) { RomBrowser = Default_UseRB; }
 			lResult = RegQueryValueEx(hKeyResults,"Directory Recursion",0,&Type,(BYTE *)(&Rercursion),&Bytes);
 			if (Type != REG_DWORD || lResult != ERROR_SUCCESS) { Rercursion = Default_Rercursion; }
-			lResult = RegQueryValueEx(hKeyResults,"RDB ROM Settings",0,&Type,(BYTE *)(&UseIni),&Bytes);
+			lResult = RegQueryValueEx(hKeyResults,"Use RDB",0,&Type,(BYTE *)(&UseIni),&Bytes);
 			if (Type != REG_DWORD || lResult != ERROR_SUCCESS) { UseIni = Default_UseIni; }
 			lResult = RegQueryValueEx(hKeyResults,"CPU Core Style",0,&Type,(BYTE *)(&SystemCPU_Type),&Bytes);
 			if (Type != REG_DWORD || lResult != ERROR_SUCCESS) { SystemCPU_Type = Default_CPU; }

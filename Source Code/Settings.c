@@ -227,7 +227,8 @@ BOOL CALLBACK DefaultOptionsProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lP
 			lResult = RegCreateKeyEx( HKEY_CURRENT_USER, String,0,"", REG_OPTION_NON_VOLATILE,
 				KEY_ALL_ACCESS,NULL, &hKeyResults,&Disposition);
 			if (lResult == ERROR_SUCCESS) {
-				RegSetValueEx(hKeyResults,"RDB ROM Settings",0,REG_DWORD,(BYTE *)&UseIni,sizeof(DWORD));
+				UseIni = SendMessage(GetDlgItem(hDlg,IDC_USEINI),BM_GETSTATE, 0,0) == BST_CHECKED?TRUE:FALSE;
+				RegSetValueEx(hKeyResults,"Use RDB",0,REG_DWORD,(BYTE *)&UseIni,sizeof(DWORD));
 				indx = SendMessage(GetDlgItem(hDlg,IDC_CPU_TYPE),CB_GETCURSEL,0,0);
 				SystemCPU_Type = SendMessage(GetDlgItem(hDlg,IDC_CPU_TYPE),CB_GETITEMDATA,indx,0);
 				RegSetValueEx(hKeyResults,"CPU Core Style",0,REG_DWORD,(BYTE *)&SystemCPU_Type,sizeof(DWORD));

@@ -654,7 +654,7 @@ void OpenChosenFile ( void ) {
 		}
 		DrawMenuBar(hMainWindow);
 	}
-	if (CPURunning) CloseCpu();
+	if (CPURunning) { CloseCpu(); memset(N64MEM, 0, RDRAMsize); }
 	SetNewFileDirectory();
 	strcpy(MapFile,CurrentFileName);
 	if (_strnicmp(&CurrentFileName[strlen(CurrentFileName)-4], ".ZIP",4) == 0 ){
@@ -834,7 +834,6 @@ void OpenChosenFile ( void ) {
 		memset(&CPU_Action, 0, sizeof(CPU_Action));
 		CPU_Action.hStepping = CreateEvent(NULL, FALSE, FALSE, NULL);
 		WrittenToRom = FALSE;
-		memset(N64MEM, 0, RDRAMsize);
 		InitilizeTLB();
 		InitalizeR4300iRegisters(LoadPifRom(*(ROM + 0x3D)), *(ROM + 0x3D), GetCicChipID(ROM));
 		BuildInterpreter();
@@ -923,14 +922,6 @@ void SaveRomOptions (void) {
 	if (strlen(RomName) == 0) { return; }
 	IniFileName = GetIniFileName();
 	sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD *)(&RomHeader[0x10]),*(DWORD *)(&RomHeader[0x14]),RomHeader[0x3D]);
-	_WritePrivateProfileString(Identifier, "ABL", RomUseLinking ? "On" : " ", GetIniFileName());
-	_WritePrivateProfileString(Identifier, "Buffer", RomUseLargeBuffer ? "On" : " ", GetIniFileName());
-	_WritePrivateProfileString(Identifier, "Caching", RomUseCache ? " " : "On", GetIniFileName());
-	switch (RomCF) {
-	case 1: case 2: case 3: sprintf(String, "%d", RomCF); break;
-	default: sprintf(String, " "); break;
-	}
-	_WritePrivateProfileString(Identifier, "CF", String, GetIniFileName());
 	switch (RomCPUType) {
 	case CPU_Interpreter: sprintf(String, "Interpreter"); break;
 	case CPU_Recompiler: sprintf(String, "Recompiler"); break;
@@ -943,15 +934,6 @@ void SaveRomOptions (void) {
 	default: strcpy(String," "); break;
 	}
 	_WritePrivateProfileString(Identifier,"MEM",String,GetIniFileName());
-	_WritePrivateProfileString(Identifier, "RDP", RomDelayRDP ? "On" : " ", GetIniFileName());
-	switch (RomSaveUsing) {
-	case eepROM_4K: sprintf(String,"4"); break;
-	case eepROM_16K: sprintf(String,"16"); break;
-	case SRAM: sprintf(String,"SRAM"); break;
-	case FlashRAM: sprintf(String,"FlashRAM"); break;
-	default: sprintf(String," "); break;
-	}
-	_WritePrivateProfileString(Identifier,"Save",String,GetIniFileName());
 	switch (RomSelfMod) {
 	case ModCode_Cache: sprintf(String,"Cache"); break;
 	case ModCode_ChangeMemory: sprintf(String, "Change Memory & Cache"); break;
@@ -963,9 +945,26 @@ void SaveRomOptions (void) {
 	default: sprintf(String," "); break;
 	}
 	_WritePrivateProfileString(Identifier,"SCM",String,GetIniFileName());
-	_WritePrivateProfileString(Identifier, "SI", RomDelaySI ? "On" : " ", GetIniFileName());
+	switch (RomCF) {
+	case 1: case 2: case 3: sprintf(String, "%d", RomCF); break;
+	default: sprintf(String, " "); break;
+	}
+	_WritePrivateProfileString(Identifier, "CF", String, GetIniFileName());
+	switch (RomSaveUsing) {
+	case eepROM_4K: sprintf(String,"4"); break;
+	case eepROM_16K: sprintf(String,"16"); break;
+	case SRAM: sprintf(String,"SRAM"); break;
+	case FlashRAM: sprintf(String,"FlashRAM"); break;
+	default: sprintf(String," "); break;
+	}
+	_WritePrivateProfileString(Identifier, "Save",String,GetIniFileName());
+	_WritePrivateProfileString(Identifier, "Caching", RomUseCache ? " " : "On", GetIniFileName());
+	_WritePrivateProfileString(Identifier, "Buffer", RomUseLargeBuffer ? "On" : " ", GetIniFileName());
+	_WritePrivateProfileString(Identifier, "ABL", RomUseLinking ? "On" : " ", GetIniFileName());
+	_WritePrivateProfileString(Identifier, "RDP", RomDelayRDP ? "On" : " ", GetIniFileName());
+	_WritePrivateProfileString(Identifier, "TLB",RomUseTlb?" ":"Off",GetIniFileName());
 	_WritePrivateProfileString(Identifier, "SP", RomSPHack ? "On" : " ", GetIniFileName());
-	_WritePrivateProfileString(Identifier,"TLB",RomUseTlb?" ":"Off",GetIniFileName());
+	_WritePrivateProfileString(Identifier, "SI", RomDelaySI ? "On" : " ", GetIniFileName());
 }
 void SetRecentRomDir (DWORD Index) {
 	Index -= ID_FILE_RECENT_DIR;

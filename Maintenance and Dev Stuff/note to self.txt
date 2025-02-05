@@ -1,5 +1,0 @@
-we need to use the project64 dd archive in order to get pokemon stadium compatibility:
-project64 1.6.1 lost pokemon stadium compatibility. however we obviously can't develop
-off of project64 dd because it has its own bugs (star road pipe crash for example) and
-would take too long to implement improvements made for project64 1.6.1. our mission is
-to find what in this code exists to get compatibility with pokemon stadium (U) (v1.0).

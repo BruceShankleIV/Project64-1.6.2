@@ -2,7 +2,7 @@
 [Meta]
 Author=Bruce Shankle IV x Nekokabu x Smiff
 Date=February 2025
-Version=1.6.2 (2025) WIP
+Version=1.6.2 (BETA)
 [Microcode Identifiers]
 38221D7F=0//SD Hiryuu no Ken Densetsu (J), near start (Smiff)
 56D032C9=8//Fox Sports College Hoops 99 (U) (Duncan)
@@ -310,7 +310,7 @@ Game Name=Army Men - Air Combat (U)
 MEM=8
 CPU=Recompiler
 SCM=Check Memory Advance
-Status=Semicompatible
+Status=Compatible
 Plugin=Icepir8's LLE suggested
 CF=2
 [B210DF19-98B58D1A-C:50]
@@ -339,7 +339,7 @@ Game Name=Asteroids Hyper 64 (U)
 MEM=8
 CPU=Recompiler
 SCM=Cache
-Status=Semicompatible
+Status=Compatible
 Plugin=Icepir8's LLE suggested
 CF=2
 [FC7797BF-4A95E83C-C:50]
@@ -371,13 +371,13 @@ CF=1
 CPU=Recompiler
 SCM=Protect Memory
 Status=Semicompatible
-Plugin=Icepir8's LLE suggested
+Plugin=ANGLE GLideN64 ONLY
 [E73C7C4F-AF93B838-C:4A]
 Game Name=Baku Bomberman 2 (J)
 MEM=4
 CPU=Recompiler
 SCM=Protect Memory
-Status=Semicompatible
+Status=Compatible
 Plugin=Icepir8's LLE suggested
 CF=2
 [DF98B95D-58840978-C:4A]
@@ -668,7 +668,7 @@ Game Name=Bomberman 64 - The Second Attack! (U)
 MEM=8
 CPU=Recompiler
 SCM=Protect Memory
-Status=Semicompatible
+Status=Compatible
 Plugin=Icepir8's LLE suggested
 CF=2
 [5A160336-BC7B37B0-C:50]
@@ -693,7 +693,7 @@ CF=1
 CPU=Recompiler
 SCM=Change Memory & Cache
 Status=Semicompatible
-Plugin=Icepir8's LLE suggested
+Plugin=Icepir8's LLE or ANGLE GLideN64 ONLY
 [67FF12CC-76BF0212-C:4A]
 Game Name=Bomberman Hero - Mirian Oujo wo Sukue! (J)
 MEM=4
@@ -1151,6 +1151,7 @@ MEM=4
 CPU=Recompiler
 SCM=Cache
 Status=Semicompatible
+Plugin=Icepir8's LLE or ANGLE GLideN64 ONLY
 CF=2
 [E8FC8EA1-9F738391-C:45]
 Game Name=CyberTiger (U)
@@ -1158,6 +1159,7 @@ MEM=4
 CPU=Recompiler
 SCM=Cache
 Status=Semicompatible
+Plugin=Icepir8's LLE or ANGLE GLideN64 ONLY
 CF=2
 //dROMs
 [7188F445-84410A68-C:4A]
@@ -1165,7 +1167,7 @@ Game Name=Dance Dance Revolution - Disney Dancing Museum (J)
 MEM=4
 CPU=Recompiler
 SCM=Change Memory & Cache
-Status=Semicompatible
+Status=Compatible
 Plugin=Icepir8's LLE suggested
 CF=2
 [7ED67CD4-B4415E6D-C:50]
@@ -1436,7 +1438,7 @@ Game Name=Doubutsu no Mori (J)
 MEM=4
 CPU=Recompiler
 SCM=Check Memory Advance
-Status=Semicompatible
+Status=Compatible
 Plugin=Icepir8's LLE suggested
 Cheat0=810D141C 0280//Subscreen Delay Fix
 CF=2
@@ -1757,7 +1759,7 @@ Game Name=Famista 64 (J)
 MEM=4
 CPU=Recompiler
 SCM=Check Memory & Cache
-Status=Semicompatible
+Status=Compatible
 Plugin=Icepir8's LLE suggested
 CF=2
 [53CCAD28-AEA6EDA2-C:45]
@@ -2008,7 +2010,7 @@ MEM=8
 CPU=Recompiler
 SCM=Change Memory & Cache
 Status=Semicompatible
-Plugin=Icepir8's LLE suggested
+Plugin=Icepir8's LLE ONLY
 CF=2
 [21FFFD0A-FA0D1D98-C:4A]
 Game Name=Ganbare! Nippon! Olympics 2000 (J)
@@ -2024,7 +2026,7 @@ CF=1
 CPU=Recompiler
 SCM=Protect Memory
 Status=Semicompatible
-Plugin=Icepir8's LLE suggested
+Plugin=D3D8 ONLY
 [70B0260E-6716D04C-C:4A]
 Game Name=Gauntlet Legends (J)
 MEM=8
@@ -2032,21 +2034,22 @@ CF=1
 CPU=Recompiler
 SCM=Protect Memory
 Status=Semicompatible
-Plugin=Icepir8's LLE suggested
+Plugin=D3D8 ONLY
 [729B5E32-B728D980-C:45]
 Game Name=Gauntlet Legends (U)
 MEM=8
 CF=1
-CPU=Recompiler
+CPU
+=Recompiler
 SCM=Check Memory Advance
 Status=Semicompatible
-Plugin=Icepir8's LLE suggested
+Plugin=D3D8 ONLY
 [489C84E6-4C6E49F9-C:4A]
 Game Name=Getter Love!! - Cho Ren-ai Party Game (J)
 MEM=4
 CPU=Recompiler
 SCM=Protect Memory
-Status=Semicompatible
+Status=Compatible
 Plugin=Icepir8's LLE suggested
 CF=2
 [99179359-2FE7EBC3-C:50]
@@ -2212,10 +2215,11 @@ Game Name=Heiwa Pachinko World 64 (J)
 MEM=4
 CPU=Recompiler
 SCM=Protect Memory
-Status=Compatible
-Plugin=Icepir8's LLE suggested
+Status=Semicompatible
+Plugin=Icepir8's LLE ONLY
 RDP=On
 CF=2
+Core=Crashes after title screen
 [AE90DBEB-79B89123-C:50]
 Game Name=Hercules - The Legendary Journeys (E)
 MEM=4
@@ -2238,7 +2242,7 @@ MEM=4
 CF=1
 CPU=Recompiler
 SCM=Cache
-Status=Semicompatible
+Status=Compatible
 Plugin=Icepir8's LLE suggested
 [5C1B5FBD-7E961634-C:46]
 Game Name=Hexen (F)
@@ -2246,7 +2250,7 @@ MEM=4
 CF=1
 CPU=Recompiler
 SCM=Cache
-Status=Semicompatible
+Status=Compatible
 Plugin=Icepir8's LLE suggested
 [9AB3B50A-BC666105-C:44]
 Game Name=Hexen (G)
@@ -2254,7 +2258,7 @@ MEM=4
 CF=1
 CPU=Recompiler
 SCM=Cache
-Status=Semicompatible
+Status=Compatible
 Plugin=Icepir8's LLE suggested
 [66751A57-54A29D6E-C:4A]
 Game Name=Hexen (J)
@@ -2262,7 +2266,7 @@ MEM=4
 CF=1
 CPU=Recompiler
 SCM=Cache
-Status=Semicompatible
+Status=Compatible
 Plugin=Icepir8's LLE suggested
 [9CAB6AEA-87C61C00-C:45]
 Game Name=Hexen (U)
@@ -2270,7 +2274,7 @@ MEM=4
 CF=1
 CPU=Recompiler
 SCM=Cache
-Status=Semicompatible
+Status=Compatible
 Plugin=Icepir8's LLE suggested
 [D3F10E5D-052EA579-C:45]
 Game Name=Hey You, Pikachu! (U)
@@ -2311,7 +2315,7 @@ CF=1
 CPU=Recompiler
 SCM=Check Memory Advance
 Plugin=Icepir8's LLE suggested
-Status=Semicompatible
+Status=Compatible
 [C1D702BD-6D416547-C:4A]
 Game Name=Hoshi no Kirby 64 (J) (v1.0)
 MEM=4
@@ -2436,7 +2440,7 @@ Save=16
 CPU=Recompiler
 SCM=Protect Memory
 Status=Compatible
-Plugin=Icepir8's LLE suggested
+Plugin=Icepir8's LLE or ANGLE GLideN64 ONLY
 RDP=On
 CF=2
 [69458B9E-FC95F936-C:4A]
@@ -2659,7 +2663,7 @@ Game Name=Jangou Simulation Mahjong Dou 64 (J)
 MEM=4
 CPU=Recompiler
 SCM=Protect Memory
-Status=Semicompatible
+Status=Compatible
 CF=2
 Core=Freezes after title screen
 [69256460-B9A3F586-C:45]
@@ -2852,13 +2856,14 @@ CPU=Recompiler
 SCM=Check Memory & Cache
 Status=Semicompatible
 CF=2
+Plugin=D3D8 or ANGLE GLideN64 ONLY
 [9E8FE2BA-8B270770-C:45]
 Game Name=Killer Instinct Gold (U) (v1.0)
 MEM=4
 CPU=Recompiler
 SCM=Check Memory & Cache
 Status=Semicompatible
-Plugin=Icepir8's LLE suggested
+Plugin=D3D8 or ANGLE GLideN64 ONLY
 CF=2
 [9E8FCDFA-49F5652B-C:45]
 Game Name=Killer Instinct Gold (U) (v1.1)
@@ -2866,7 +2871,7 @@ MEM=4
 CPU=Recompiler
 SCM=Check Memory & Cache
 Status=Semicompatible
-Plugin=Icepir8's LLE suggested
+Plugin=D3D8 or ANGLE GLideN64 ONLY
 CF=2
 [F908CA4C-36464327-C:45]
 Game Name=Killer Instinct Gold (U) (v1.2)
@@ -2874,7 +2879,7 @@ MEM=4
 CPU=Recompiler
 SCM=Check Memory & Cache
 Status=Semicompatible
-Plugin=Icepir8's LLE suggested
+Plugin=D3D8 or ANGLE GLideN64 ONLY
 CF=2
 [519EA4E1-EB7584E8-C:4A]
 Game Name=King Hill 64 - Extreme Snowboarding (J)
@@ -2964,8 +2969,8 @@ MEM=4
 CPU=Recompiler
 SCM=Protect Memory
 Buffer=On
-Status=Compatible
-Plugin=Icepir8's LLE suggested
+Status=Semicompatible
+Plugin=ANGLE GLideN64 ONLY
 CF=2
 [0160E9E5-29A4CB68-C:45]
 Game Name=Last Legion UX (T-Eng)
@@ -2973,8 +2978,8 @@ MEM=4
 CPU=Recompiler
 SCM=Protect Memory
 Buffer=On
-Status=Compatible
-Plugin=Icepir8's LLE suggested
+Status=Semicompatible
+Plugin=ANGLE GLideN64 ONLY
 CF=2
 [F478D8B3-9716DD6D-C:50]
 Game Name=LEGO Racers (E)
@@ -3177,7 +3182,7 @@ Game Name=Mahjong Master (J)
 MEM=4
 CPU=Recompiler
 SCM=Change Memory & Cache
-Status=Semicompatible
+Status=Compatible
 Plugin=Icepir8's LLE suggested
 CF=2
 [CDB998BE-1024A5C8-C:50]
@@ -3186,16 +3191,15 @@ MEM=4
 CPU=Recompiler
 SCM=Check Memory & Cache
 Status=Semicompatible
-Plugin=Icepir8's LLE suggested
+Plugin=ANGLE GLideN64 ONLY
 CF=2
 [80C1C05C-EA065EF4-C:45]
 Game Name=Major League Baseball Featuring Ken Griffey Jr. (U)
 MEM=4
 CPU=Recompiler
 SCM=Check Memory & Cache
-ABL=On
 Status=Semicompatible
-Plugin=Icepir8's LLE suggested
+Plugin=ANGLE GLideN64 ONLY
 CF=2
 [62E957D0-7FC15A5D-C:50]
 Game Name=Mario Golf (E)
@@ -3395,8 +3399,8 @@ MEM=4
 CPU=Recompiler
 SCM=Check Memory Advance
 Buffer=On
-Status=Compatible
-Plugin=Icepir8's LLE suggested
+Status=Semicompatible
+Plugin=Icepir8's LLE and ANGLE GLideN64 ONLY
 CF=2
 [E36166C2-8613A2E5-C:58]
 Game Name=Michael Owens WLS 2000 (E)
@@ -3404,8 +3408,8 @@ MEM=8
 CPU=Recompiler
 SCM=Check Memory Advance
 Buffer=On
-Status=Compatible
-Plugin=Icepir8's LLE suggested
+Status=Semicompatible
+Plugin=Icepir8's LLE ONLY
 CF=2
 [736AE6AF-4117E9C7-C:4A]
 Game Name=Mickey no Racing Challenge USA (J)
@@ -3452,7 +3456,7 @@ Game Name=Midway's Greatest Arcade Hits Volume 1 (U)
 MEM=4
 CPU=Recompiler
 SCM=Check Memory & Cache
-Status=Semicompatible
+Status=Compatible
 Plugin=Icepir8's LLE suggested
 CF=2
 [09D53E16-3AB268B9-C:45]
@@ -3682,7 +3686,7 @@ Game Name=Mystical Ninja Starring Goemon (E)
 MEM=8
 CPU=Recompiler
 SCM=Change Memory & Cache
-Status=Semicompatible
+Status=Compatible
 CF=2
 Plugin=Icepir8's LLE suggested
 [FCBCCB21-72903C6B-C:45]
@@ -3690,7 +3694,7 @@ Game Name=Mystical Ninja Starring Goemon (U)
 MEM=8
 CPU=Recompiler
 SCM=Change Memory & Cache
-Status=Semicompatible
+Status=Compatible
 Plugin=Icepir8's LLE suggested
 CF=2
 [7F9345D3-841ECADE-C:50]
@@ -3700,6 +3704,7 @@ CF=1
 CPU=Recompiler
 SCM=Check Memory & Cache
 Status=Compatible
+Plugin=Icepir8's LLE suggested
 [28705FA5-B509690E-C:50]
 Game Name=Monaco Grand Prix - Racing Simulation 2 (E)
 MEM=4
@@ -3730,7 +3735,8 @@ Game Name=Namco Museum 64 (U)
 MEM=4
 CPU=Recompiler
 SCM=Protect Memory
-Status=Semicompatible
+Status=Compatible
+Plugin=Icepir8's LLE suggested
 CF=2
 [DF331A18-5FD4E044-C:45]
 Game Name=NASCAR 2000 (U)
@@ -3975,18 +3981,9 @@ Status=Compatible
 CF=2
 [4B629EF4-99B21D9B-C:50]
 Game Name=NFL Quarterback Club 98 (E)
-MEM=4
-CPU=Recompiler
-SCM=Protect Memory
-Status=Compatible
-CF=2
+Status=Incompatible
 [D89BE2F8-99C97ADF-C:45]
 Game Name=NFL Quarterback Club 98 (U)
-MEM=4
-CPU=Recompiler
-SCM=Protect Memory
-Status=Compatible
-CF=2
 [52A3CF47-4EC13BFC-C:50]
 Game Name=NFL Quarterback Club 99 (E)
 MEM=8
@@ -4077,7 +4074,7 @@ MEM=4
 CF=1
 CPU=Recompiler
 SCM=Check Memory & Cache
-Status=Semicompatible
+Status=Compatible
 Plugin=Icepir8's LLE suggested
 [67D20729-F696774C-C:4A]
 Game Name=Nintendo All-Star! Dairantou Smash Brothers (J)
@@ -4115,7 +4112,7 @@ CF=1
 CPU=Recompiler
 SCM=Protect Memory
 Status=Semicompatible
-Plugin=Icepir8's LLE suggested
+Plugin=Icepir8's LLE or ANGLE GLideN64 ONLY
 [D83BB920-CC406416-C:4A]
 Game Name=Nushi Tsuri 64 64 (J) (v1.0)
 MEM=4
@@ -4123,7 +4120,7 @@ CF=1
 CPU=Recompiler
 SCM=Check Memory & Cache
 Status=Semicompatible
-Plugin=Icepir8's LLE suggested
+Plugin=Icepir8's LLE ONLY
 [C5F1DE79-5D4BEB6E-C:4A]
 Game Name=Nushi Tsuri 64 (J) (v1.1)
 MEM=4
@@ -4131,7 +4128,7 @@ CF=1
 CPU=Recompiler
 SCM=Check Memory & Cache
 Status=Semicompatible
-Plugin=Icepir8's LLE suggested
+Plugin=Icepir8's LLE ONLY
 //oROMs
 [AE2D3A35-24F0D41A-C:50]
 Game Name=Olympic Hockey Nagano '98 (E)
@@ -4159,14 +4156,15 @@ Game Name=Off Road Challenge (E)
 MEM=4
 CPU=Recompiler
 SCM=Check Memory & Cache
-Status=Semicompatible
+Status=Compatible
+Plugin=Icepir8's LLE suggested
 CF=2
 [319093EC-0FC209EF-C:45]
 Game Name=Off Road Challenge (U)
 MEM=4
 CPU=Recompiler
 SCM=Check Memory & Cache
-Status=Semicompatible
+Status=Compatible
 Plugin=Icepir8's LLE suggested
 CF=2
 [E6419BC5-69011DE3-C:45]
@@ -4174,7 +4172,7 @@ Game Name=Ogre Battle 64 - Person of Lordly Caliber (U) (v1.0)
 MEM=4
 CPU=Recompiler
 SCM=Check Memory Advance
-Status=Semicompatible
+Status=Compatible
 Plugin=Icepir8's LLE suggested
 CF=2
 [0ADAECA7-B17F9795-C:45]
@@ -4182,7 +4180,7 @@ Game Name=Ogre Battle 64 - Person of Lordly Caliber (U) (v1.1)
 MEM=4
 CPU=Recompiler
 SCM=Check Memory Advance
-Status=Semicompatible
+Status=Compatible
 Plugin=Icepir8's LLE suggested
 CF=2
 [DC649466-572FF0D9-C:4A]
@@ -4197,7 +4195,7 @@ Game Name=Operation WinBack (E)
 MEM=4
 CPU=Recompiler
 SCM=Cache
-Status=Semicompatible
+Status=Compatible
 Plugin=Icepir8's LLE suggested
 CF=2
 //pROMs
@@ -4214,7 +4212,7 @@ MEM=4
 CPU=Recompiler
 SCM=Change Memory & Cache
 Status=Semicompatible
-Plugin=Icepir8's LLE suggested
+Plugin=ANGLE GLideN64 ONLY
 CF=2
 [19AB29AF-C71BCD28-C:50]
 Game Name=Paper Mario (E)
@@ -4255,7 +4253,7 @@ Save=16
 CPU=Recompiler
 SCM=Check Memory Advance
 Status=Semicompatible
-Plugin=Icepir8's LLE suggested
+Plugin=Icepir8's LLE or ANGLE GLideN64 suggested
 CF=2
 [F468118C-E32EE44E-C:4A]
 Game Name=PD Ultraman Battle Collection 64 (J)
@@ -4349,6 +4347,7 @@ CPU=Recompiler
 SCM=Cache
 Status=Semicompatible
 CF=2
+Plugin=Icepir8's LLE ONLY
 [1AA05AD5-46F52D80-C:50]
 Game Name=Pilotwings 64 (E)
 MEM=4
@@ -4666,7 +4665,7 @@ MEM=4
 CPU=Recompiler
 SCM=Cache
 Status=Semicompatible
-Plugin=Icepir8's LLE suggested
+Plugin=Icepir8's LLE or ANGLE GLideN64 ONLY
 CF=2
 [CF8957AD-96D57EA9-C:45]
 Game Name=Power Rangers - Lightspeed Rescue (U)
@@ -4674,7 +4673,7 @@ MEM=4
 CPU=Recompiler
 SCM=Cache
 Status=Semicompatible
-Plugin=Icepir8's LLE suggested
+Plugin=Icepir8's LLE or ANGLE GLideN64 ONLY
 CF=2
 [F3D27F54-C111ACF9-C:50]
 Game Name=Premier Manager 64 (E)
@@ -4698,14 +4697,14 @@ CF=1
 CPU=Recompiler
 SCM=Protect Memory
 Status=Semicompatible
-Plugin=Icepir8's LLE suggested
+Plugin=D3D8 ONLY
 [4B4672B9-2DBE5DE7-C:4A]
 Game Name=Puyo Puyo 4 - Puyo Puyo Party
 MEM=4
 CPU=Recompiler
 SCM=Cache
 Status=Semicompatible
-Plugin=Icepir8's LLE suggested
+Plugin=Icepir8's LLE or ANGLE GLideN64 ONLY
 CF=2
 [94807E6B-60CC62E4-C:4A]
 Game Name=Puyo Puyo Sun 64 (J)
@@ -4728,7 +4727,7 @@ Game Name=Quake 64 (E)
 MEM=4
 CPU=Recompiler
 SCM=Cache
-Status=Semicompatible
+Status=Compatible
 Plugin=Icepir8's LLE suggested
 CF=2
 [9F5BF79C-D2FE08A0-C:45]
@@ -4736,7 +4735,7 @@ Game Name=Quake 64 (U)
 MEM=4
 CPU=Recompiler
 SCM=Cache
-Status=Semicompatible
+Status=Compatible
 Plugin=Icepir8's LLE suggested
 CF=2
 [7433D9D7-2C4322D0-C:50]
@@ -4745,7 +4744,7 @@ MEM=8
 CF=1
 CPU=Recompiler
 SCM=Check Memory & Cache
-Status=Semicompatible
+Status=Compatible
 Plugin=Icepir8's LLE suggested
 [BDA8F143-B1AF2D62-C:45]
 Game Name=Quake II (U)
@@ -4753,7 +4752,7 @@ MEM=8
 CF=1
 CPU=Recompiler
 SCM=Check Memory & Cache
-Status=Semicompatible
+Status=Compatible
 Plugin=Icepir8's LLE suggested
 [C8BB4DD9-CC5F430B-C:45]
 Game Name=Quest 64 (U)
@@ -4769,7 +4768,7 @@ Game Name=Racing Simulation 2 (G)
 MEM=4
 CPU=Recompiler
 SCM=Check Memory & Cache
-Status=Semicompatible
+Status=Compatible
 Plugin=Icepir8's LLE suggested
 CF=2
 [67D21868-C5424061-C:50]
@@ -4794,7 +4793,7 @@ MEM=4
 CPU=Recompiler
 SCM=Check Memory & Cache
 ABL=On
-Status=Semicompatible
+Status=Compatible
 Plugin=Icepir8's LLE suggested
 CF=2
 [73A88E3D-3AC5C571-C:45]
@@ -5033,7 +5032,7 @@ MEM=4
 CPU=Recompiler
 SCM=Protect Memory
 Status=Semicompatible
-Plugin=Icepir8's LLE suggested
+Plugin=Icepir8's LLE ONLY
 CF=2
 [451ACA0F-7863BC8A-C:44]
 Game Name=Rugrats - Die grosse Schatzsuche (G)
@@ -5061,7 +5060,8 @@ Game Name=Rugrats in Paris - The Movie (E)
 MEM=4
 CPU=Recompiler
 SCM=Protect Memory
-Status=Semicompatible
+Status=Compatible
+Plugin=ANGLE GLideN64 suggested
 CF=2
 [1FC21532-0B6466D4-C:45]
 Game Name=Rugrats in Paris - The Movie (U)
@@ -5069,6 +5069,7 @@ MEM=4
 CPU=Recompiler
 SCM=Protect Memory
 Status=Semicompatible
+Plugin=ANGLE GLideN64 suggested
 CF=2
 [B7CF2136-FA0AA715-C:50]
 Game Name=Rush 2 - Extreme Racing USA (E)
@@ -5105,7 +5106,7 @@ MEM=4
 CPU=Recompiler
 SCM=Check Memory & Cache
 Status=Semicompatible
-Plugin=Icepir8's LLE suggested
+Plugin=Icepir8's LLE ONLY
 CF=2
 [61D116B0-FA24D60C-C:50]
 Game Name=San Francisco Rush - Extreme Racing (E)
@@ -5134,15 +5135,16 @@ MEM=8
 CF=1
 CPU=Recompiler
 SCM=Check Memory & Cache
-Status=Semicompatible
+Status=Compatible
+Plugin=Icepir8's LLE suggested
 [B9A9ECA2-17AAE48E-C:45]
 Game Name=San Francisco Rush 2049 (U)
 MEM=8
 CF=1
 CPU=Recompiler
 SCM=Check Memory & Cache
-ABL=On
-Status=Semicompatible
+Status=Compatible
+Plugin=Icepir8's LLE suggested
 [E3BD221D-3C0834D3-C:50]
 Game Name=Scooby-Doo - Classic Creep Capers (E)
 MEM=4
@@ -5170,7 +5172,7 @@ MEM=4
 CPU=Recompiler
 SCM=Change Memory & Cache
 Status=Semicompatible
-Plugin=Icepir8's LLE suggested
+Plugin=Icepir8's LLE ONLY
 CF=2
 [60C437E5-A2251EE3-C:50]
 Game Name=Shadow Man (E)
@@ -5236,21 +5238,21 @@ SCM=Check Memory & Cache
 Status=Compatible
 CF=2
 [EF703CA4-4D4A9AC9-C:4A]
-Game Name=Shin Nihon Pro wrestling Toukon Road - Brave Spirits (J)
+Game Name=Shin Nihon Pro Wrestling Toukon Road - Brave Spirits (J)
 MEM=4
 CPU=Recompiler
 SCM=Protect Memory
 Status=Semicompatible
-Plugin=Icepir8's LLE suggested
+Plugin=Icepir8's LLE or ANGLE GLideN64 ONLY
 SI=On
 CF=2
 [551C7F43-9149831C-C:4A]
-Game Name=Shin Nihon Pro wrestling Toukon Road 2 - The Next Generation (J)
+Game Name=Shin Nihon Pro Wrestling Toukon Road 2 - The Next Generation (J)
 MEM=4
 CPU=Recompiler
 SCM=Protect Memory
 Status=Semicompatible
-Plugin=Icepir8's LLE suggested
+Plugin=Icepir8's LLE or ANGLE GLideN64 ONLY
 CF=2
 [B1D5280C-4BA7BC2A-C:4A]
 Game Name=Sim City 2000 (J)
@@ -5372,7 +5374,7 @@ MEM=4
 CPU=Recompiler
 SCM=Protect Memory
 Status=Semicompatible
-Plugin=Icepir8's LLE suggested
+Plugin=Icepir8's LLE or ANGLE GLideN64 ONLY
 CF=2
 [EBFE2397-FF74DA34-C:45]
 Game Name=Space Invaders (U)
@@ -5387,7 +5389,7 @@ MEM=4
 CPU=Recompiler
 SCM=Check Memory & Cache
 Status=Semicompatible
-Plugin=Icepir8's LLE suggested
+Plugin=Icepir8's LLE ONLY
 CF=2
 [BFE23884-EF48EAAF-C:45]
 Game Name=Space Station Silicon Valley (U) (v1.0)
@@ -5395,7 +5397,7 @@ MEM=8
 CPU=Recompiler
 SCM=Check Memory & Cache
 Status=Semicompatible
-Plugin=Icepir8's LLE suggested
+Plugin=Icepir8's LLE ONLY
 CF=2
 [FC70E272-08FFE7AA-C:45]
 Game Name=Space Station Silicon Valley (U) (v1.1)
@@ -5403,7 +5405,7 @@ MEM=8
 CPU=Recompiler
 SCM=Check Memory & Cache
 Status=Semicompatible
-Plugin=Icepir8's LLE suggested
+Plugin=Icepir8's LLE ONLY
 CF=2
 [A60ED171-3D85D06E-C:45]
 Game Name=Spider-Man (U)
@@ -5535,7 +5537,7 @@ MEM=8
 CPU=Recompiler
 SCM=Protect Memory
 Status=Semicompatible
-Plugin=Icepir8's LLE suggested
+Plugin=Icepir8's LLE ONLY
 CF=2
 [EAE6ACE2-020B4384-C:50]
 Game Name=Star Wars Episode I - Battle for Naboo (E)
@@ -5626,7 +5628,7 @@ MEM=4
 CPU=Recompiler
 SCM=Check Memory & Cache
 Status=Compatible
-Plugin=Icepir8's LLE suggested
+Plugin=Icepir8's LLE ONLY
 CF=2
 [AA1D215A-91CBBE9A-C:45]
 Game Name=Super Bowling 64 (U)
@@ -5634,7 +5636,7 @@ MEM=4
 CPU=Recompiler
 SCM=Check Memory & Cache
 Status=Semicompatible
-Plugin=Icepir8's LLE suggested
+Plugin=Icepir8's LLE ONLY
 CF=2
 [A03CF036-BCC1C5D2-C:50]
 Game Name=Super Mario 64 (E)
@@ -5681,8 +5683,7 @@ Game Name=Super Robot Taisen 64 (J)
 MEM=4
 CPU=Recompiler
 SCM=Protect Memory
-Status=Semicompatible
-Plugin=Icepir8's LLE suggested
+Status=Compatible
 CF=2
 [DD26FDA1-CB4A6BE3-C:55]
 Game Name=Super Smash Bros. (A)
@@ -5754,7 +5755,7 @@ MEM=4
 CPU=Recompiler
 SCM=Protect Memory
 Status=Semicompatible
-Plugin=Icepir8's LLE suggested
+Plugin=Icepir8's LLE or ANGLE GLideN64 suggested
 CF=2
 //tROMs
 [B6BE20A5-FACAF66D-C:58]
@@ -5792,7 +5793,8 @@ MEM=8
 CF=1
 CPU=Recompiler
 SCM=Check Memory & Cache
-Status=Compatible
+Status=Semicompatible
+Plugin=ANGLE GLideN64 ONLY
 RDP=On
 [D9042FBB-FCFF997C-C:46]
 Game Name=Telefoot Soccer 2000 (F)
@@ -6103,31 +6105,31 @@ Game Name=Top Gear Hyper Bike (E)
 MEM=8
 CPU=Recompiler
 SCM=Check Memory & Cache
-Status=Semicompatible
+Status=Compatible
 Plugin=Icepir8's LLE suggested
 RDP=On
-Cheat0=D10021EE 0001,810021EE 0000//Game Fix
 CF=2
+Core=Plugin hot swap crash
 [845B0269-57DE9502-C:4A]
 Game Name=Top Gear Hyper Bike (J)
 MEM=8
 CPU=Recompiler
 SCM=Check Memory & Cache
-Status=Semicompatible
+Status=Compatible
 Plugin=Icepir8's LLE suggested
 RDP=On
-Cheat0=D100225A 0001,8100225A 0000//Game Fix
 CF=2
+Core=Plugin hot swap crash
 [8ECC02F0-7F8BDE81-C:45]
 Game Name=Top Gear Hyper Bike (U)
 MEM=8
 CPU=Recompiler
 SCM=Check Memory & Cache
-Status=Semicompatible
+Status=Compatible
 Plugin=Icepir8's LLE suggested
 RDP=On
-Cheat0=D10021EA 0001,810021EA 0000//Game Fix
 CF=2
+Core=Plugin hot swap crash
 [D09BA538-1C1A5489-C:50]
 Game Name=Top Gear Overdrive (E)
 MEM=8
@@ -6136,7 +6138,7 @@ CPU=Recompiler
 SCM=Check Memory & Cache
 Buffer=On
 Status=Semicompatible
-Plugin=Icepir8's LLE suggested
+Plugin=Icepir8's LLE ONLY
 RDP=On
 [0578F24F-9175BF17-C:4A]
 Game Name=Top Gear Overdrive (J)
@@ -6145,7 +6147,7 @@ CF=1
 CPU=Recompiler
 SCM=Check Memory & Cache
 Status=Semicompatible
-Plugin=Icepir8's LLE suggested
+Plugin=Icepir8's LLE ONLY
 RDP=On
 [D741CD80-ACA9B912-C:45]
 Game Name=Top Gear Overdrive (U)
@@ -6155,7 +6157,7 @@ CPU=Recompiler
 SCM=Check Memory & Cache
 Buffer=On
 Status=Semicompatible
-Plugin=Icepir8's LLE suggested
+Plugin=Icepir8's LLE ONLY
 RDP=On
 [7F43E701-536328D1-C:50]
 Game Name=Top Gear Rally (E)
@@ -6189,7 +6191,7 @@ Game Name=Top Gear Rally 2 (E)
 MEM=8
 CPU=Recompiler
 SCM=Check Memory & Cache
-Status=Semicompatible
+Status=Compatible
 CF=2
 [CFEF2CD6-C9E973E6-C:4A]
 Game Name=Top Gear Rally 2 (J)
@@ -6411,7 +6413,7 @@ Game Name=Twisted Edge Extreme Snowboarding (E)
 MEM=4
 CPU=Recompiler
 SCM=Check Memory & Cache
-Status=Semicompatible
+Status=Compatible
 Plugin=Icepir8's LLE suggested
 CF=2
 RDP=On
@@ -6420,20 +6422,14 @@ Game Name=Twisted Edge Extreme Snowboarding (U)
 MEM=4
 CPU=Recompiler
 SCM=Check Memory & Cache
-Status=Semicompatible
+Status=Compatible
 Plugin=Icepir8's LLE suggested
 CF=2
 RDP=On
 //uROMs
 [28D5562D-E4D5AE50-C:4A]
 Game Name=Ucchan Nanchan no Hono no Challenger - Denryuu Ira Ira Bou (J)
-MEM=4
-CF=1
-CPU=Recompiler
-SCM=Protect Memory
-Plugin=Icepir8's LLE suggested
-SI=On
-Status=Semicompatible
+Status=Incompatible
 //vROMs
 [DD10BC7E-F900B351-C:50]
 Game Name=Vigilante 8 - 2nd Offense (E)
@@ -6442,8 +6438,9 @@ CF=1
 CPU=Recompiler
 SCM=Check Memory Advance
 Caching=Off
-Status=Semicompatible
+Status=Compatible
 Plugin=Icepir8's LLE suggested
+Core=Plugin hot swap crash
 [F5C5866D-052713D9-C:45]
 Game Name=Vigilante 8 - 2nd Offense (U)
 MEM=8
@@ -6451,8 +6448,9 @@ CF=1
 CPU=Recompiler
 SCM=Check Memory Advance
 Caching=Off
-Status=Semicompatible
+Status=Compatible
 Plugin=Icepir8's LLE suggested
+Core=Plugin hot swap crash
 [151F79F4-8EEDC8E5-C:50]
 Game Name=Vigilante 8 (E)
 MEM=8
@@ -6460,8 +6458,9 @@ CF=1
 CPU=Recompiler
 SCM=Check Memory & Cache
 Caching=Off
-Status=Semicompatible
+Status=Compatible
 Plugin=Icepir8's LLE suggested
+Core=Plugin hot swap crash
 [E2BC82A2-591CD694-C:46]
 Game Name=Vigilante 8 (F)
 MEM=8
@@ -6469,8 +6468,9 @@ CF=1
 CPU=Recompiler
 SCM=Check Memory & Cache
 Caching=Off
-Status=Semicompatible
+Status=Compatible
 Plugin=Icepir8's LLE suggested
+Core=Plugin hot swap crash
 [6EDA5178-D396FEC1-C:44]
 Game Name=Vigilante 8 (G)
 MEM=8
@@ -6478,17 +6478,19 @@ CF=1
 CPU=Recompiler
 SCM=Check Memory & Cache
 Caching=Off
-Status=Semicompatible
+Status=Compatible
 Plugin=Icepir8's LLE suggested
+Core=Plugin hot swap crash
 [EA71056A-E4214847-C:45]
 Game Name=Vigilante 8 (U)
 MEM=8
 CF=1
 CPU=Recompiler
 Caching=Off
-Status=Semicompatible
-SCM=Check Memory & Cache
+Status=Compatible
 Plugin=Icepir8's LLE suggested
+Core=Plugin hot swap crash
+SCM=Check Memory & Cache
 [60006C98-2605A381-C:4A]
 Game Name=Violence Killer - Turok New Generation (J)
 MEM=8
@@ -6534,7 +6536,7 @@ SCM=Check Memory Advance
 Buffer=On
 SP=On
 Status=Semicompatible
-Plugin=Icepir8's LLE suggested
+Plugin=Icepir8's LLE ONLY
 [CD094235-88074B62-C:4A]
 Game Name=Virtual Pro Wrestling 2 - Oudou Keishou (J)
 MEM=4
@@ -6547,7 +6549,7 @@ Game Name=V-Rally Edition 99 (E)
 MEM=4
 CPU=Recompiler
 SCM=Check Memory & Cache
-Status=Semicompatible
+Status=Compatible
 Plugin=Icepir8's LLE suggested
 CF=2
 [4D0224A5-1BEB5794-C:4A]
@@ -6555,7 +6557,7 @@ Game Name=V-Rally Edition 99 (J)
 MEM=4
 CPU=Recompiler
 SCM=Check Memory & Cache
-Status=Semicompatible
+Status=Compatible
 Plugin=Icepir8's LLE suggested
 CF=2
 [3C059038-C8BF2182-C:45]
@@ -6563,7 +6565,7 @@ Game Name=V-Rally Edition 99 (U)
 MEM=4
 CPU=Recompiler
 SCM=Check Memory & Cache
-Status=Semicompatible
+Status=Compatible
 Plugin=Icepir8's LLE suggested
 CF=2
 //wROMs
@@ -6748,7 +6750,7 @@ MEM=4
 CPU=Recompiler
 SCM=Check Memory Advance
 Status=Semicompatible
-Plugin=Icepir8's LLE suggested
+Plugin=Icepir8's LLE ONLY
 CF=2
 [2C3E19BD-5113EE5E-C:45]
 Game Name=WCW vs. nWo - World Tour (U) (v1.0)
@@ -6756,7 +6758,7 @@ MEM=4
 CPU=Recompiler
 SCM=Check Memory Advance
 Status=Semicompatible
-Plugin=Icepir8's LLE suggested
+Plugin=Icepir8's LLE ONLY
 CF=2
 [71BE60B9-1DDBFB3C-C:45]
 Game Name=WCW vs. nWo - World Tour (U) (v1.1)
@@ -6764,7 +6766,7 @@ MEM=4
 CPU=Recompiler
 SCM=Check Memory Advance
 Status=Semicompatible
-Plugin=Icepir8's LLE suggested
+Plugin=Icepir8's LLE ONLY
 CF=2
 [68E8A875-0CE7A486-C:50]
 Game Name=WCW-nWo Revenge (E)
@@ -6823,7 +6825,7 @@ Game Name=WinBack (J) (v1.0)
 MEM=4
 CPU=Recompiler
 SCM=Cache
-Status=Semicompatible
+Status=Compatible
 Plugin=Icepir8's LLE suggested
 CF=2
 [C52E0BC6-56BC6556-C:4A]
@@ -6839,7 +6841,7 @@ Game Name=WinBack - Covert Operations (U)
 MEM=4
 CPU=Recompiler
 SCM=Cache
-Status=Semicompatible
+Status=Compatible
 Plugin=Icepir8's LLE suggested
 CF=2
 [54310E7D-6B5430D8-C:50]
@@ -7025,7 +7027,7 @@ CPU=Recompiler
 SCM=Protect Memory
 Status=Semicompatible
 RDP=On
-Plugin=Icepir8's LLE suggested
+Plugin=Icepir8's LLE ONLY
 [D3F97D49-6924135B-C:50]
 Game Name=Yoshi's Story (E)
 MEM=4
@@ -7192,7 +7194,7 @@ TLB=Off
 Status=Compatible
 Plugin=Icepir8's LLE suggested/D3D8 ONLY
 Cheat0=D0210BA1 0002,8022414B 0002,D0210BA1 0002,80210BA1 0003//Subscreen crash fix
-Core=Requires recompiler core with TLB off for ROMhacks/Emulator crashes without Direct3D8 within an iron knuckle room in Dungeon 1
+Core=Requires recompiler core with TLB off for ROMhacks/Emulator crashes without D3D8 within an iron knuckle room in Dungeon 1
 CF=2
 //Hacks
 [FAFD18BA-A63F937B-C:45]
@@ -7201,7 +7203,7 @@ MEM=8
 CPU=Recompiler
 SCM=Check Memory Advance
 TLB=Off
-Core=Requires recompiler core with TLB off for ROMhacks/Emulator crashes without Direct3D8 within an iron knuckle room in Dungeon 1
+Core=Requires recompiler core with TLB off for ROMhacks/Emulator crashes without D3D8 within an iron knuckle room in Dungeon 1
 CF=1
 Status=Compatible
 Plugin=Icepir8's LLE suggested/D3D8 ONLY
@@ -7223,13 +7225,93 @@ Cheat0=D109C5AC 0C02,8109C5AC 2400//Subscreen Delay Fix
 Cheat1=D138E8CC 0C0E,8138E8CC 2400//Equipment Screen Delay Fix
 Status=Compatible
 CF=2
+[ECFBE337-AAE69FDF-C:45]
+Game Name=(Hack) Dungeon Rush
+CF=2
+CPU=Recompiler
+MEM=4
+SCM=Check Memory & Return
+Status=Compatible
+Cheat0=D109C5AC 0C02,8109C5AC 2400//Subscreen Delay Fix
+Cheat1=D138E8CC 0C0E,8138E8CC 2400//Equipment Screen Delay Fix
+[D1AA799D-489144F5-C:45]
+Game Name=(Hack) Ocarina of Time 1.0 (U) GZ Practice ROM
+MEM=8
+CPU=Interpreter
+Status=Compatible
+Cheat0=D109C5AC 0C02,8109C5AC 2400//Subscreen Delay Fix
+Cheat1=D138E8CC 0C0E,8138E8CC 2400//Equipment Screen Delay Fix
+CF=2
+[D1E7C5D7-17CAC125-C:45]
+Game Name=(Hack) Ocarina of Time 1.1 (U) GZ Practice ROM
+MEM=8
+CPU=Interpreter
+Status=Compatible
+Cheat0=D109C5BC 0C02,8109C5BC 2400//Subscreen Delay Fix
+Cheat1=D138EA6C 0C0E,8138EA6C 2400//Equipment Screen Delay Fix
+CF=2
+[2CE1A4BD-C9DC765A-C:45]
+Game Name=(Hack) Ocarina of Time 1.2 (U) GZ Practice ROM
+MEM=8
+CPU=Interpreter
+Status=Compatible
+Cheat0=D109CC9C 0C02,8109CC9C 2400//Subscreen Delay Fix
+Cheat1=D138F07C 0C0E,8138F07C 2400//Equipment Screen Delay Fix
+CF=2
+[D1AA799D-489144F5-C:4A]
+Game Name=(Hack) Ocarina of Time 1.0 (J) GZ Practice ROM
+MEM=8
+CPU=Interpreter
+Status=Compatible
+Cheat0=D109C5AC 0C02,8109C5AC 2400//Subscreen Delay Fix
+Cheat1=D138E8CC 0C0E,8138E8CC 2400//Equipment Screen Delay Fix
+CF=2
+[D1E7C5D7-17CAC125-C:4A]
+Game Name=(Hack) Ocarina of Time 1.1 (J) GZ Practice ROM
+MEM=8
+CPU=Interpreter
+Status=Compatible
+Cheat0=D109C5BC 0C02,8109C5BC 2400//Subscreen Delay Fix
+Cheat1=D138EA6C 0C0E,8138EA6C 2400//Equipment Screen Delay Fix
+CF=2
+[2CE1A4BD-C9DC765A-C:4A]
+Game Name=(Hack) Ocarina of Time 1.2 (J) GZ Practice ROM
+MEM=8
+CPU=Interpreter
+Status=Compatible
+Cheat0=D109CC9C 0C02,8109CC9C 2400//Subscreen Delay Fix
+Cheat1=D138F07C 0C0E,8138F07C 2400//Equipment Screen Delay Fix
+CF=2
+[1EDEA0DE-4C0056DE-C:45]
+Game Name=(Hack) Cosmic Goddess
+MEM=8
+CPU=Interpreter
+Plugin=ANGLE GLideN64 ONLY
+Status=Semicompatible
+Core=Uses Interpreter CPU w/custom F3DEX3 microcode spec baked into modern GLideN64
+CF=2
+[B5E15592-0CA2FE00-C:45]
+Game Name=(Hack) Dawn & Dusk Practice ROM
+MEM=8
+CPU=Interpreter
+Status=Compatible
+Cheat0=D138E8CC 0C0E,8138E8CC 2400//Equipment Screen Delay Fix
+CF=2
+[05F2807D-615555AA-C:45]
+Game Name=(Hack) Dawn & Dusk
+MEM=4
+CPU=Recompiler
+SCM=Check Memory & Return
+Status=Compatible
+Cheat0=D138E8CC 0C0E,8138E8CC 2400//Equipment Screen Delay Fix
+CF=2
 [F099270C-B3639549-C:45]
 Game Name=(Hack) Master of Time
 MEM=4
 CPU=Recompiler
 SCM=Check Memory & Return
 Status=Compatible
-Plugin=Use Jabo 1.6.1, possible display list error?
+Plugin=Use D3D8, possible display list error?
 Cheat0=D138E8CC 0C0E,8138E8CC 2400//Equipment Screen Delay Fix
 CF=2
 [F0B7CBCC-0ABE720A-C:45]
@@ -7255,29 +7337,6 @@ CPU=Recompiler
 SCM=Check Memory & Return
 Status=Compatible
 Cheat0=D138E8CC 0C0E,8138E8CC 2400//Equipment Screen Delay Fix
-CF=2
-[05F2807D-615555AA-C:45]
-Game Name=(Hack) Dawn & Dusk
-MEM=4
-CPU=Recompiler
-SCM=Check Memory & Return
-Status=Compatible
-Cheat0=D138E8CC 0C0E,8138E8CC 2400//Equipment Screen Delay Fix
-CF=2
-[B5E15592-0CA2FE00-C:45]
-Game Name=(Hack) Dawn & Dusk Practice ROM
-MEM=8
-CPU=Interpreter
-Status=Compatible
-Cheat0=D138E8CC 0C0E,8138E8CC 2400//Equipment Screen Delay Fix
-CF=2
-[1EDEA0DE-4C0056DE-C:45]
-Game Name=(Hack) Cosmic Goddess
-MEM=8
-CPU=Interpreter
-Plugin=ANGLE GLideN64 ONLY
-Status=Semicompatible
-Core=Uses Interpreter CPU w/custom F3DEX3 microcode spec baked into modern GLideN64
 CF=2
 [EC340D12-EA9AD3F3-C:45]
 Game Name=(Hack) Super Mario Star Road Multiplayer
@@ -7333,6 +7392,29 @@ SCM=Cache
 Status=Compatible
 Plugin=ANGLE GLideN64 suggested
 Cheat0=802473A7 00BC,802473B3 0000,8024748E 0000,80247966 0000,80247996 0000,8027B4F6 0000,8027B46A 0000,8027B4AA 0000,8027B582 0000,8027C99F 00BC,8027C9AB 0000//Cropfix
+[E5E9F5FB-E1C4551D-C:45]
+Game Name=(Hack) Mario 64 60fps
+MEM=8
+CF=1
+CPU=Recompiler
+SCM=Cache
+Status=Compatible
+[8FC5DBE2-1BA945BC-C:0]
+Game Name=(Hack) Return to Yoshi's Island Demo 2
+MEM=8
+CF=1
+CPU=Recompiler
+SCM=Cache
+Status=Compatible
+Plugin=ANGLE GLideN64 suggested
+[91085973-E32B4E16-C:45]
+Game Name=(Hack) That Time I Became Friends With The Royal Scuttlebug Family And Fell From Space
+MEM=8
+CF=1
+CPU=Recompiler
+SCM=Cache
+Status=Compatible
+Plugin=ANGLE GLideN64 suggested
 [36F2DB16-DF63D3BE-C:45]
 Game Name=(Hack) Pumkin Tower
 CF=1
@@ -7356,54 +7438,6 @@ CPU=Recompiler
 SCM=Check Memory Advance
 Plugin=Icepir8's LLE suggested
 Status=Compatible
-CF=2
-[D1AA799D-489144F5-C:45]
-Game Name=(Hack) Ocarina of Time 1.0 (U) GZ Practice ROM
-MEM=8
-CPU=Interpreter
-Status=Compatible
-Cheat0=D109C5AC 0C02,8109C5AC 2400//Subscreen Delay Fix
-Cheat1=D138E8CC 0C0E,8138E8CC 2400//Equipment Screen Delay Fix
-CF=2
-[D1E7C5D7-17CAC125-C:45]
-Game Name=(Hack) Ocarina of Time 1.1 (U) GZ Practice ROM
-MEM=8
-CPU=Interpreter
-Status=Compatible
-Cheat0=D109C5BC 0C02,8109C5BC 2400//Subscreen Delay Fix
-Cheat1=D138EA6C 0C0E,8138EA6C 2400//Equipment Screen Delay Fix
-CF=2
-[2CE1A4BD-C9DC765A-C:45]
-Game Name=(Hack) Ocarina of Time 1.2 (U) GZ Practice ROM
-MEM=8
-CPU=Interpreter
-Status=Compatible
-Cheat0=D109CC9C 0C02,8109CC9C 2400//Subscreen Delay Fix
-Cheat1=D138F07C 0C0E,8138F07C 2400//Equipment Screen Delay Fix
-CF=2
-[D1AA799D-489144F5-C:4A]
-Game Name=(Hack) Ocarina of Time 1.0 (J) GZ Practice ROM
-MEM=8
-CPU=Interpreter
-Status=Compatible
-Cheat0=D109C5AC 0C02,8109C5AC 2400//Subscreen Delay Fix
-Cheat1=D138E8CC 0C0E,8138E8CC 2400//Equipment Screen Delay Fix
-CF=2
-[D1E7C5D7-17CAC125-C:4A]
-Game Name=(Hack) Ocarina of Time 1.1 (J) GZ Practice ROM
-MEM=8
-CPU=Interpreter
-Status=Compatible
-Cheat0=D109C5BC 0C02,8109C5BC 2400//Subscreen Delay Fix
-Cheat1=D138EA6C 0C0E,8138EA6C 2400//Equipment Screen Delay Fix
-CF=2
-[2CE1A4BD-C9DC765A-C:4A]
-Game Name=(Hack) Ocarina of Time 1.2 (J) GZ Practice ROM
-MEM=8
-CPU=Interpreter
-Status=Compatible
-Cheat0=D109CC9C 0C02,8109CC9C 2400//Subscreen Delay Fix
-Cheat1=D138F07C 0C0E,8138F07C 2400//Equipment Screen Delay Fix
 CF=2
 [55194B11-551010B5-C:45]
 Game Name=(Hack) Zelda Revival
@@ -7444,7 +7478,7 @@ CPU=Recompiler
 SCM=Check Memory Advance
 Status=Compatible
 Plugin=D3D8 ONLY
-Core=Emulator crashes without Direct3D8 upon death in Dungeon 1
+Core=Emulator crashes without D3D8 upon death in Dungeon 1
 CF=1
 [CF2E9419-6F97E25D-C:45]
 Game Name=(Hack) Dark Hyrule Fantasy
@@ -7453,7 +7487,7 @@ CPU=Recompiler
 SCM=Check Memory Advance
 Status=Compatible
 Plugin=D3D8 ONLY
-Core=Emulator crashes without Direct3D8 upon death in Dungeon 1 Boss
+Core=Emulator crashes without D3D8 upon death in Dungeon 1 Boss
 CF=2
 [5A091FA5-5AAA78FE-C:45]
 Game Name=(Hack) Sands of Time
@@ -7463,36 +7497,12 @@ SCM=Check Memory Advance
 Status=Compatible
 Plugin=Icepir8's LLE suggested
 CF=2
-[E5E9F5FB-E1C4551D-C:45]
-Game Name=(Hack) Mario 64 60fps
+[900090E7-04E62042-C:45]
+Game Name=(Hack) FD Mask in OoT
 MEM=8
-CF=1
 CPU=Recompiler
-SCM=Cache
+SCM=Check Memory Advance
 Status=Compatible
-[8FC5DBE2-1BA945BC-C:0]
-Game Name=(Hack) Return to Yoshi's Island Demo 2
-MEM=8
-CF=1
-CPU=Recompiler
-SCM=Cache
-Status=Compatible
-Plugin=ANGLE GLideN64 suggested
-[91085973-E32B4E16-C:45]
-Game Name=(Hack) That Time I Became Friends With The Royal Scuttlebug Family And Fell From Space
-MEM=8
-CF=1
-CPU=Recompiler
-SCM=Cache
-Status=Compatible
-Plugin=ANGLE GLideN64 suggested
-[ECFBE337-AAE69FDF-C:45]
-Game Name=(Hack) Dungeon Rush
+Plugin=Icepir8's LLE suggested
 CF=2
-CPU=Recompiler
-MEM=4
-SCM=Check Memory & Return
-Status=Compatible
-Cheat0=D109C5AC 0C02,8109C5AC 2400//Subscreen Delay Fix
-Cheat1=D138E8CC 0C0E,8138E8CC 2400//Equipment Screen Delay Fix
 //ESSENTIAL SPACE
