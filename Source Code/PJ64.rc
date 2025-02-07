@@ -406,7 +406,7 @@ BEGIN
         MENUITEM "a",                   ID_FILE_OPEN_ROM
         MENUITEM "a",                   ID_FILE_ROM_INFO, GRAYED
         MENUITEM SEPARATOR
-        MENUITEM "a",        ID_FILE_STARTEMULATION, GRAYED
+        MENUITEM "a",         ID_FILE_STARTEMULATION
         MENUITEM "a",         ID_FILE_ENDEMULATION, GRAYED
         MENUITEM SEPARATOR
         MENUITEM "a",                    1

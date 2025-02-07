@@ -782,7 +782,7 @@ void OpenChosenFile ( void ) {
 	CloseHandle( hFile );
 	CheckRbRefresh();
 	return;
-}
+	}
 		CloseHandle( hFile );
 		AddRecentFile(hMainWindow,CurrentFileName);
 		_splitpath( CurrentFileName, drive, dir, FileName, ext );

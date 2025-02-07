@@ -1,0 +1,65 @@
+RDB
+-
+MEM=4
+CPU=Recompiler
+SCM=Change Memory & Cache
+Status=Compatible
+Plugin=Icepir8's LLE suggested
+CF=2
+
+
+CDB
+-
+[84077275-57315B9C-C:50]
+Cheat0="Infinite Health\Stadium\Free Battle",80287D79 0064
+Cheat1="Infinite Health\Stadium\Poke Cup",80285399 0064
+Cheat2="Infinite Health\Stadium\Pica Cup",80284659 0064
+Cheat3="Infinite Health\Stadium\Prime Cup",80285FE9 0064
+Cheat4="Infinite Health\Stadium\Petit Cup",80286C29 0064
+Cheat5="Infinite Health\Stadium\Mewto",802825B9 0064
+Cheat6="Gym Leader Castle\Elite Four & Rival",80286859 00A1
+Cheat7="Gym Leader Castle\Brock",80287539 00A1
+Cheat8="Gym Leader Castle\Misty",80287E79 00A1
+Cheat9="Gym Leader Castle\Surge",80286BD9 00A1
+Cheat10="Gym Leader Castle\Erika",80286BA9 00A1
+Cheat11="Gym Leader Castle\Koga",80287519 00A1
+Cheat12="Gym Leader Castle\Sabrina",802870A9 00A1
+Cheat13="Gym Leader Castle\Blaine",80286B69 00A1
+Cheat14="Gym Leader Castle\Giovani",80287169 00A1
+Cheat15="Infinite Health\Player 1",810AE686 03E7,810AE6AA 03E7,810AE6DA 03E7,810AE6FE 03E7
+Cheat16="All Pokemon Level 100\Player 1",50000654 0000,800AE654 0064
+Cheat17="Infinite Attacks All Pokemon\Player 1",50000654 0000,810AE650 6363,50000654 0000,810AE652 6363
+Cheat18="Infinite Attacks All Pokemon\Player 2",50000654 0000,810AE86C FFFF,50000654 0000,810AE86E FFFF
+Cheat19="Infinite Attacks All Pokemon\Player 3",50000654 0000,810AE86C FFFF,50000654 0000,810AE86E FFFF
+Cheat20="Infinite Attacks All Pokemon\Player 4",50000654 0000,810AEA88 FFFF,50000654 0000,810AEA8A FFFF
+Cheat21="Game Difficulty",D312FC40 FD70,D312FC40 A528,8112FC40 00??
+Cheat21_O=$00 Hard,$01 Normal,$02 Easy,$0F Extra Hard
+Cheat22="Catch\Mew on GB Tower",80171E17 0015
+Cheat23="Catch\Mewtwo on GB Tower",80171E17 0083
+Cheat24="Infinite coins for coin case",801723E3 0099
+Cheat25="Infinite cash",81172186 9999
+Cheat26="Pokemon beach stop code",D00488A1 0020,80202BB5 0001
+Cheat27="Clefairy Says\Infinite Health\Player 1",8118F438 0064
+Cheat28="Clefairy Says\Extended Life Bar\Player 1",8118F43A 0049
+Cheat29="Clefairy Says\Infinite Health\Player 2",8118F5F8 0064
+Cheat30="Clefairy Says\Extended Life Bar\Player 2",8118F5FA 0049
+Cheat31="Clefairy Says\Infinite Health\Player 3",8118F7B8 0064
+Cheat32="Clefairy Says\Extended Life Bar\Player 3",8118F7BA 0049
+Cheat33="Clefairy Says\Infinite Health\Player 4",8118F978 0064
+Cheat34="Clefairy Says\Extended Life Bar\Player 4",8118F97A 0049
+Cheat35="Rock Harden\Infinite Armour\Player 1",81193B78 0190
+Cheat36="Rock Harden\Infinite Armour\Player 2",81193E2C 0190
+Cheat37="Rock Harden\Infinite Armour\Player 3",811940E0 0190
+Cheat38="Rock Harden\Infinite Armour\Player 4",81194394 0190
+Cheat39="Infinite Health against Mew Two",810AE632 FFFF,812823E8 FFFF
+Cheat40="All Pokmon Have\Max Hp",81285AE8 0096
+[90F5D9B3-9D0EDCF0-C:45]
+Cheat0="Pokemon\Max HP\Player 1",810AE586 03E7,810AE5DA 03E7,810AE62E 03E7
+Cheat1="Pokemon\Max HP\Player 2",810AE7A2 03E7,810AE7F6 03E7,810AE84A 03E7
+Cheat2="Pokemon\Inf Spells\Player 1",810AE580 FFFF,810AE582 FFFF,810AE5D4 FFFF,810AE5D6 FFFF,810AE628 FFFF,810AE62A FFFF
+Cheat3="Pokemon\Inf Spells\Player 2",810AE79C FFFF,810AE79E FFFF,810AE7F0 FFFF,810AE7F2 FFFF,810AE844 FFFF,810AE846 FFFF
+Cheat4="Have All Pikachus Magnemites",801183BC 0000,801183BD 0000,801183BE 0000
+Cheat5="Inf HP\In Battle All Pokemon\Player 1",81285A18 03E7
+Cheat6="Inf HP\In Battle All Pokemon\Player 2",81286438 03E7
+Cheat7="Ultimate Code",81171F3C FF01,81171F3E FF01,81171F40 FF01,81171F42 FF01,81171F44 FF01
+Cheat7_N=what's so ultimate about this code is it raises your Pokemon to its full potential. Even at Level 100, most Pokemon still Have\a way to go to raise their stats to the max. But with this code, you can instantly boost any Pokemon to its greatest potential!!!

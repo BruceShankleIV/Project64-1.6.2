@@ -65,8 +65,8 @@ LANG_STR DefaultString[] = {
 // Menu Descriptions
         { MENUDES_OPEN, "Lets you open N64 ROMs" },
         { MENUDES_ROM_INFO, "Displays ROM-specific information about a running ROM" },
-        { MENUDES_START, "Starts emulation of the most recently opened ROM within this instance" },
-        { MENUDES_END, "Ends emulation of the most recently opened ROM within this instance" },
+        { MENUDES_START, "Starts emulation of the most recently opened ROM" },
+        { MENUDES_END, "Ends emulation of the most recently opened ROM" },
         { MENUDES_CHOOSE_ROM, "Lets you choose a ROM directory (ROMs folder by default)" },
         { MENUDES_REFRESH, "Refreshes current list of ROMs in the ROM browser" },
         { MENUDES_EXIT, "Closes Project64" },

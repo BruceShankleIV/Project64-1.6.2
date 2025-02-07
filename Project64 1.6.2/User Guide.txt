@@ -581,7 +581,7 @@ Section#14 Extra (Part 3), Technical Documentation
 --------------------------------------------------------------------------------------------------------
 Surreal64 Documentation for Project64 1.4 from here http://surreal64ce.wikidot.com/settings:pj64settings
 
-With this documentation and clever text editing, you can fix many general emulation issues you encounter 
+With this documentation and clever text editing, you can fix many general emulation issues you encounter
 by adjusting your ROM Settings as appropriate. This documentation is from the Surreal64 website for V1.4
 but it applies here as well. Simply open up the PJ64.rdb file in your favorite text editor and you'll be
 able to individually tweak how the program emulates ROMs, particularly using the SCM/Self-modifying Code

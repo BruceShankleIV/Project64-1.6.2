@@ -749,9 +749,9 @@ LRESULT CALLBACK Main_Proc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 			break;
 		case ID_FILE_ENDEMULATION:
 			CloseCpu();
+			memset(N64MEM, 0, RDRAMsize);
 			SendMessage(hStatusWnd, SB_SETTEXT, 0, (LPARAM)GS(MSG_EMULATION_ENDED));
 			hMenu = GetMenu(hMainWindow);
-			EnableMenuItem(hMenu,ID_FILE_STARTEMULATION,MFS_ENABLED|MF_BYCOMMAND);
 			if (DrawScreen != NULL) { DrawScreen(); }
 			CloseCheatWindow();
 			CheckRbRefresh();
