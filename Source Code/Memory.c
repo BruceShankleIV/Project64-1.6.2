@@ -1414,7 +1414,6 @@ int r4300i_LW_NonMemory ( DWORD PAddr, DWORD * Value ) {
 		break;
 	case 0x05000000:
 		switch (PAddr) {
-		case 0x05000508: *Value = 0x0000000000000000; break;
 		default:
 			*Value = PAddr & 0xFFFF;
 			*Value = (*Value << 16) | *Value;
