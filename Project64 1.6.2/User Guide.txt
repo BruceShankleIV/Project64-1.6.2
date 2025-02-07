@@ -288,9 +288,13 @@ Icepir8's Legacy RSP - Pairing Ice's RSP with Icepir8's Legacy LLE is necessary 
 		       Stunt Racer, World Driver Championship, also Indiana Jones. Otherwise, don't ever
 		       bother using this plugin because it's prone to weak performance (game dependent).
 
-Shankle's Dual Level Sound MP RSP v1.0 - You can cycle between HLE and LLE sound in the config. Not much
-					 else to set it apart from 1.6 RSP other than that it seems more
-					 accurate and doesn't crash when configuring with a running ROM.
+RSP emulation plugin - Though some may consider other RSP plugins as better, the original Project64 V1.6
+		       RSP is reliable and has strong performance. Though this plugin is limited to HLE,
+		       it outperforms more accurate RSP's like Icepir8's Legacy RSP a lot, while running
+		       games like Pokemon Stadium (albeit with some errors) which Mupen64Plus could not.
+		       You can configure the RSP to use HLE or LLE sound with "send Audio Lists to audio
+		       plugin", giving you HLE audio (not compatible with Jabo!), while the other option
+		       is effectively broken, don't click on it or the emulator can freeze/lockup/crash.
 --------------------------------------------------------------------------------------------------------
 
 Section#05 RUNNING ROMHACKS
@@ -397,13 +401,11 @@ raw.githubusercontent.com/BruceShankleIV/Project64-1.6.2/7ff51997c16e35a1c0685cc
 N-Rage - Input Plugin
 clickdevin & wermi - Octomino SDL2 Input Plugin
 Gonetz/Sergey Lipskiy, Olivieryuyu, Ryan Rosser, yongzh, Hiroshi Morii, ziggy - GLideN64 Plugin Credits
-Azimer - Azimer's Audio Plugin and the original Mupen RSP which M64P RSP is based off of
-Hacktaurux - The original Mupen RSP which M64P RSP is based off of
+Azimer - Azimer's Audio Plugin
 Clements, Rice, Gonetz, Malcolm, Dave2001, cryhlove, icepir8, zilmar, Azimer, StrmnNrmn, Orkin - glN64
 (glN64 served as the foundation for projects like Direct64, bettergln64, GLideN64, and ANGLE GLideN64)
 Denis Kopyrin/aglab2 - Azimer's Audio config fix and ANGLE GLideN64, ACE Security Vulnerability Insight,
 Graphics glitch fix when loading savestates, coded faster ROM opens in the Legacy RH fork used in 1.6.2.
-weinerschnitzel, bsmiles32, ecsv, richard42, and rlabrecque - Mupen64Plus HLE RSP Plugin
 Jelta and Nekokabu - RDB Codes
 Microsoft - Visual Studio Versions 2013 and 2022, Windows OS
 All of the contributors of MSYS2, SDL 2.0.12 Library, etc. - Octomino SDL builds toolchain
