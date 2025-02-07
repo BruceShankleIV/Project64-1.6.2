@@ -789,7 +789,6 @@ void OpenChosenFile ( void ) {
 	}
 	ByteSwapRom(ROM, RomFileSize);
 	memcpy(RomHeader,ROM,sizeof(RomHeader));
-	RecalculateCRCs();
 	SendMessage( hStatusWnd, SB_SETTEXT, 0, (LPARAM)"" );
 	memcpy(&RomName[0],(void *)(ROM + 0x20),20);
 	for( count = 0 ; count < 20; count += 4 ) {
@@ -984,68 +983,5 @@ void SetRomDirectory ( char * Directory ) {
 		RegSetValueEx(hKeyResults,"Rom Directory",0,REG_SZ,(LPBYTE)Directory,strlen(Directory));
 		AddRecentDir(hMainWindow,Directory);
 		RegCloseKey(hKeyResults);
-	}
-}
-void RecalculateCRCs ( void ) {
-	int bootcode, i;
-	unsigned int seed, crc[2];
-	unsigned int t1, t2, t3, t4, t5, t6, r, d, j;
-	switch ((bootcode = 6100 + GetCicChipID(ROM))) {
-	case 6101:
-	case 6102:
-		seed = 0xF8CA4DDC; break;
-	case 6103:
-		seed = 0xA3886759; break;
-	case 6105:
-		seed = 0xDF26F436; break;
-	case 6106:
-		seed = 0x1FEA617A; break;
-	default:
-		return;
-	}
-	t1 = t2 = t3 = t4 = t5 = t6 = seed;
-	for (i = 0x00001000; i < 0x00101000; i += 4) {
-		if ((unsigned int)(i + 3) > RomFileSize)
-			d = 0;
-		else
-			d = ROM[i + 3] << 24 | ROM[i + 2] << 16 | ROM[i + 1] << 8 | ROM[i];
-		if ((t6 + d) < t6)
-			t4++;
-		t6 += d;
-		t3 ^= d;
-		r = (d << (d & 0x1F)) | (d >> (32 - (d & 0x1F)));
-		t5 += r;
-		if (t2 > d)
-			t2 ^= r;
-		else
-			t2 ^= t6 ^ d;
-		if (bootcode == 6105) {
-			j = 0x40 + 0x0710 + (i & 0xFF);
-			t1 += (ROM[j + 3] << 24 | ROM[j + 2] << 16 | ROM[j + 1] << 8 | ROM[j]) ^ d;
-		}
-		else
-			t1 += t5 ^ d;
-	}
-	if (bootcode == 6103) {
-		crc[0] = (t6 ^ t4) + t3;
-		crc[1] = (t5 ^ t2) + t1;
-	}
-	else if (bootcode == 6106) {
-		crc[0] = (t6 * t4) + t3;
-		crc[1] = (t5 * t2) + t1;
-	}
-	else {
-		crc[0] = t6 ^ t4 ^ t3;
-		crc[1] = t5 ^ t2 ^ t1;
-	}
-	if (*(DWORD *)&ROM[0x10] != crc[0] || *(DWORD *)&ROM[0x14] != crc[1]) {
-		ROM[0x13] = (crc[0] & 0xFF000000) >> 24;
-		ROM[0x12] = (crc[0] & 0x00FF0000) >> 16;
-		ROM[0x11] = (crc[0] & 0x0000FF00) >> 8;
-		ROM[0x10] = (crc[0] & 0x000000FF);
-		ROM[0x17] = (crc[1] & 0xFF000000) >> 24;
-		ROM[0x16] = (crc[1] & 0x00FF0000) >> 16;
-		ROM[0x15] = (crc[1] & 0x0000FF00) >> 8;
-		ROM[0x14] = (crc[1] & 0x000000FF);
 	}
 }
