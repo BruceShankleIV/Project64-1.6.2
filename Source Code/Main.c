@@ -453,7 +453,6 @@ void CheckedMenuItem(UINT uMenuID, BOOL * Flag, char * FlagName) {
 	RegCloseKey(hKeyResults);
 }
 LRESULT CALLBACK Main_Proc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
-	HMENU hMenu;
 	switch (uMsg) {
 	case WM_CREATE:
 		if ( hHiddenWin ) {
@@ -751,7 +750,6 @@ LRESULT CALLBACK Main_Proc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 			CloseCpu();
 			memset(N64MEM, 0, RDRAMsize);
 			SendMessage(hStatusWnd, SB_SETTEXT, 0, (LPARAM)GS(MSG_EMULATION_ENDED));
-			hMenu = GetMenu(hMainWindow);
 			if (DrawScreen != NULL) { DrawScreen(); }
 			CloseCheatWindow();
 			CheckRbRefresh();
@@ -1558,6 +1556,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszArgs,
 			ShowWindow(hMainWindow, nWinMode);
 		}
 		if (!LimitFPS) SendMessage(hStatusWnd, SB_SETTEXT, 0, (LPARAM)GS(LIMITFPS_OFF));
+		HMENU hMenu;
+		hMenu = GetMenu(hMainWindow);
+		if (strlen(LastRoms[0]) == 0) EnableMenuItem(hMenu, ID_FILE_STARTEMULATION, MFS_DISABLED | MF_BYCOMMAND);
 	}
 	while (GetMessage(&msg,NULL,0,0)) {
 		if (!CPURunning && TranslateAccelerator(hMainWindow,AccelRomBrowser,&msg)) { continue; }
