@@ -3102,7 +3102,8 @@ Cheat14="Access All Moves",8037C3A0 0001,8037C3A1 007F,8037C3A2 00FF,8037C3A3 00
 Cheat15="Secret Items ",81283400 ????
 Cheat15_O=$FFFF Have All Collected,$0000 Have None
 Cheat16="Have Everything Unlocked",803831AD 00FF,813831AE FFFF,803831B0 00FF,813831B2 FFFF,803831B7 00FF,803831C4 8005,803831BF 00A2
-Cheat17="Unlock Framerate",802808DC 0080
+Cheat17="Unlock Framerate (Native 60FPS)",802808DC 0080
+Cheat17_N=Reset the game when revoking this cheat.
 [CD7559AC-B26CF5AE-C:45]
 Cheat0="Infinite\Eggs",80385187 00FF
 Cheat1="Infinite\Lives",803851AB 0009
@@ -3177,7 +3178,6 @@ Cheat24="Multi-Player\Infinite Health\Player 1",80135531 0064
 Cheat25="Multi-Player\Infinite Health\Player 2",80135535 0064
 Cheat26="Multi-Player\Infinite Health\Player 3",80135539 0064
 Cheat27="Multi-Player\Infinite Health\Player 4",8013553D 0064
-Cheat28="Unlock Framerate",8007913C 0080
 [BCFACCAA-B814D8EF-C:45]
 Cheat0="Player 1 Max Score (Casting Game)",8107A412 FFFF
 Cheat1="Player 2 Max Score (Casting Game)",8107A416 FFFF
