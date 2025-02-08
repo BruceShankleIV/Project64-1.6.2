@@ -4407,8 +4407,7 @@ MEM=4
 CPU=Recompiler
 SCM=Check Memory & Cache
 Status=Compatible
-Cheat0=D1382D1C 802C,80382D0F 0000//Pass 1st Level and Controller Fix
-Cheat1=D11E3C44 2881,811E3C44 2001,D11E3C46 0098,811E3C46 0001//Make Picture selectable
+Cheat0=D1382D1C 802C,80382D0F 0000,D11E3C44 2881,811E3C44 2001,D11E3C46 0098,811E3C46 0001//Pass 1st Level and Controller Fix+Make Picture selectable
 CF=2
 [4FF5976F-ACF559D8-C:50]
 Game Name=Pokemon Snap (E)
@@ -4416,8 +4415,7 @@ MEM=4
 CPU=Recompiler
 SCM=Check Memory & Cache
 Status=Compatible
-Cheat0=D1381BFC 802C,80381BEF 0000//Pass 1st Level and Controller Fix
-Cheat1=D11E3824 2881,811E3824 2001,D11E3826 0098,811E3826 0001//Make Picture selectable
+Cheat0=D1381BFC 802C,80381BEF 0000,D11E3824 2881,811E3824 2001,D11E3826 0098,811E3826 0001//Pass 1st Level and Controller Fix+Make Picture selectable
 CF=2
 [BA6C293A-9FAFA338-C:46]
 Game Name=Pokemon Snap (F)
@@ -4425,8 +4423,7 @@ MEM=4
 CPU=Recompiler
 SCM=Check Memory & Cache
 Status=Compatible
-Cheat0=D1381BFC 802C,80381BEF 0000//Pass 1st Level and Controller Fix
-Cheat1=D11E3744 2881,811E3744 2001,D11E3746 0098,811E3746 0001//Make Picture selectable
+Cheat0=D1381BFC 802C,80381BEF 0000,D11E3744 2881,811E3744 2001,D11E3746 0098,811E3746 0001//Pass 1st Level and Controller Fix+Make Picture selectable
 CF=2
 [5753720D-2A8A884D-C:44]
 Game Name=Pokemon Snap (G)
@@ -4434,8 +4431,7 @@ MEM=4
 CPU=Recompiler
 SCM=Check Memory & Cache
 Status=Compatible
-Cheat0=D1381BDC 802C,80381BCF 0000//Pass 1st Level and Controller Fix
-Cheat1=D11E3744 2881,811E3744 2001,D11E3746 0098,811E3746 0001//Make Picture selectable
+Cheat0=D1381BDC 802C,80381BCF 0000,D11E3744 2881,811E3744 2001,D11E3746 0098,811E3746 0001//Pass 1st Level and Controller Fix+Make Picture selectable
 CF=2
 [C0C85046-61051B05-C:49]
 Game Name=Pokemon Snap (I)
@@ -4443,8 +4439,7 @@ MEM=4
 CPU=Recompiler
 SCM=Check Memory & Cache
 Status=Compatible
-Cheat0=D1381BFC 802C,80381BEF 0000//Pass 1st Level and Controller Fix
-Cheat1=D11E3994 2881,811E3994 2001,D11E3996 0098,811E3996 0001//Make Picture selectable
+Cheat0=D1381BFC 802C,80381BEF 0000,D11E3994 2881,811E3994 2001,D11E3996 0098,811E3996 0001//Pass 1st Level and Controller Fix+Make Picture selectable
 CF=2
 [EC0F690D-32A7438C-C:4A]
 Game Name=Pokemon Snap (J) (v1.0)
@@ -4452,8 +4447,7 @@ MEM=4
 CPU=Recompiler
 SCM=Check Memory & Cache
 Status=Compatible
-Cheat0=D136D22C 802A,8036D21F 0000//Pass 1st Level and Controller Fix
-Cheat1=D11E1EC4 2881,811E1EC4 2001,D11E1EC6 0098,811E1EC6 0001//Make Picture selectable
+Cheat0=D136D22C 802A,8036D21F 0000,D11E1EC4 2881,811E1EC4 2001,D11E1EC6 0098,811E1EC6 0001//Pass 1st Level and Controller Fix+Make Picture selectable
 CF=2
 [E0044E9E-CD659D0D-C:4A]
 Game Name=Pokemon Snap (J) (v1.1)
@@ -4461,8 +4455,7 @@ MEM=4
 CPU=Recompiler
 SCM=Check Memory & Cache
 Status=Compatible
-Cheat0=D136D22C 802A,8036D21F 0000//Pass 1st Level and Controller Fix
-Cheat1=D11E1EC4 2881,811E1EC4 2001,D11E1EC6 0098,811E1EC6 0001//Make Picture selectable
+Cheat0=D136D22C 802A,8036D21F 0000,D11E1EC4 2881,811E1EC4 2001,D11E1EC6 0098,811E1EC6 0001//Pass 1st Level and Controller Fix+Make Picture selectable
 CF=2
 [817D286A-EF417416-C:53]
 Game Name=Pokemon Snap (S)
@@ -4470,8 +4463,7 @@ MEM=4
 CPU=Recompiler
 SCM=Check Memory & Cache
 Status=Compatible
-Cheat0=D1381BFC 802C,80381BEF 0000//Pass 1st Level and Controller Fix
-Cheat1=D11E38C4 2881,811E38C4 2001,D11E38C6 0098,811E38C6 0001//Make Picture selectable
+Cheat0=D1381BFC 802C,80381BEF 0000,D11E38C4 2881,811E38C4 2001,D11E38C6 0098,811E38C6 0001//Pass 1st Level and Controller Fix+Make Picture selectable
 CF=2
 [CA12B547-71FA4EE4-C:45]
 Game Name=Pokemon Snap (U)
@@ -4479,8 +4471,7 @@ MEM=4
 CPU=Recompiler
 SCM=Check Memory & Cache
 Status=Compatible
-Cheat0=D1382D1C 802C,80382D0F 0000//Pass 1st Level and Controller Fix
-Cheat1=D11E3184 2881,811E3184 2001,D11E3186 0098,811E3186 0001//Make Picture selectable
+Cheat0=D1382D1C 802C,80382D0F 0000,D11E3184 2881,811E3184 2001,D11E3186 0098,811E3186 0001//Pass 1st Level and Controller Fix+Make Picture selectable
 CF=2
 [39119872-07722E9F-C:45]
 Game Name=Pokemon Snap Station (U)
@@ -4488,8 +4479,7 @@ MEM=4
 CPU=Recompiler
 SCM=Check Memory & Cache
 Status=Compatible
-Cheat0=D1382D1C 802C,80382D0F 0000//Pass 1st Level and Controller Fix
-Cheat1=D11E30F4 2881,811E30F4 2001,D11E30F6 0098,811E30F6 0001//Make Picture selectable
+Cheat0=D1382D1C 802C,80382D0F 0000,D11E30F4 2881,811E30F4 2001,D11E30F6 0098,811E30F6 0001//Pass 1st Level and Controller Fix+Make Picture selectable
 CF=2
 [84077275-57315B9C-C:50]
 Game Name=Pokemon Stadium (E) (v1.0)
@@ -5887,8 +5877,7 @@ MEM=4
 CPU=Recompiler
 SCM=Check Memory & Return
 Status=Compatible
-Cheat0=D109C5AC 0C02,8109C5AC 2400//Subscreen Delay Fix
-Cheat1=D138E8CC 0C0E,8138E8CC 2400//Equipment Screen Delay Fix
+Cheat0=D109C5AC 0C02,8109C5AC 2400,D138E8CC 0C0E,8138E8CC 2400//Subscreen Fixes
 CF=2
 [D43DA81F-021E1E19-C:45]
 Game Name=The Legend of Zelda - Ocarina of Time (U) (v1.1)
@@ -5896,8 +5885,7 @@ MEM=4
 CPU=Recompiler
 SCM=Check Memory & Return
 Status=Compatible
-Cheat0=D109C5BC 0C02,8109C5BC 2400//Subscreen Delay Fix
-Cheat1=D138EA6C 0C0E,8138EA6C 2400//Equipment Screen Delay Fix
+Cheat0=D109C5BC 0C02,8109C5BC 2400,D138EA6C 0C0E,8138EA6C 2400//Subscreen Fixes
 CF=2
 [693BA2AE-B7F14E9F-C:45]
 Game Name=The Legend of Zelda - Ocarina of Time (U) (v1.2)
@@ -5905,8 +5893,7 @@ MEM=4
 CPU=Recompiler
 SCM=Check Memory & Return
 Status=Compatible
-Cheat0=D109CC9C 0C02,8109CC9C 2400//Subscreen Delay Fix
-Cheat1=D138F07C 0C0E,8138F07C 2400//Equipment Screen Delay Fix
+Cheat0=D109CC9C 0C02,8109CC9C 2400,D138F07C 0C0E,8138F07C 2400//Subscreen Fixes
 CF=2
 [09465AC3-F8CB501B-C:50]
 Game Name=The Legend of Zelda - Ocarina of Time GC (E)
@@ -7068,8 +7055,7 @@ MEM=4
 CPU=Recompiler
 SCM=Check Memory & Return
 Status=Compatible
-Cheat0=D109C5AC 0C02,8109C5AC 2400//Subscreen Delay Fix
-Cheat1=D138E8CC 0C0E,8138E8CC 2400//Equipment Screen Delay Fix
+Cheat0=D109C5AC 0C02,8109C5AC 2400,D138E8CC 0C0E,8138E8CC 2400//Subscreen Fixes
 CF=2
 [D43DA81F-021E1E19-C:4A]
 Game Name=Zelda no Densetsu - Toki no Ocarina (J) (v1.1)
@@ -7077,8 +7063,7 @@ MEM=4
 CPU=Recompiler
 SCM=Check Memory & Return
 Status=Compatible
-Cheat0=D109C5BC 0C02,8109C5BC 2400//Subscreen Delay Fix
-Cheat1=D138EA6C 0C0E,8138EA6C 2400//Equipment Screen Delay Fix
+Cheat0=D109C5BC 0C02,8109C5BC 2400,D138EA6C 0C0E,8138EA6C 2400//Subscreen Fixes
 CF=2
 [693BA2AE-B7F14E9F-C:4A]
 Game Name=Zelda no Densetsu - Toki no Ocarina (J) (v1.2)
@@ -7086,8 +7071,7 @@ MEM=4
 CPU=Recompiler
 SCM=Check Memory & Return
 Status=Compatible
-Cheat0=D109CC9C 0C02,8109CC9C 2400//Subscreen Delay Fix
-Cheat1=D138F07C 0C0E,8138F07C 2400//Equipment Screen Delay Fix
+Cheat0=D109CC9C 0C02,8109CC9C 2400,D138F07C 0C0E,8138F07C 2400//Subscreen Fixes
 CF=2
 [F611F4BA-C584135C-C:4A]
 Game Name=Zelda no Densetsu - Toki no Ocarina GC (J)
@@ -7212,8 +7196,7 @@ Game Name=(Hack) Nimpize Adventure
 MEM=4
 CPU=Recompiler
 SCM=Check Memory & Return
-Cheat0=D109C5AC 0C02,8109C5AC 2400//Subscreen Delay Fix
-Cheat1=D138E8CC 0C0E,8138E8CC 2400//Equipment Screen Delay Fix
+Cheat0=D109C5AC 0C02,8109C5AC 2400,D138E8CC 0C0E,8138E8CC 2400//Subscreen Fixes
 Status=Compatible
 CF=2
 [ECFBE337-AAE69FDF-C:45]
@@ -7223,15 +7206,13 @@ CPU=Recompiler
 MEM=4
 SCM=Check Memory & Return
 Status=Compatible
-Cheat0=D109C5AC 0C02,8109C5AC 2400//Subscreen Delay Fix
-Cheat1=D138E8CC 0C0E,8138E8CC 2400//Equipment Screen Delay Fix
+Cheat0=D109C5AC 0C02,8109C5AC 2400,D138E8CC 0C0E,8138E8CC 2400//Subscreen Fixes
 [D1AA799D-489144F5-C:45]
 Game Name=(Hack) Ocarina of Time 1.0 (U) GZ Practice ROM
 MEM=8
 CPU=Interpreter
 Status=Compatible
-Cheat0=D109C5AC 0C02,8109C5AC 2400//Subscreen Delay Fix
-Cheat1=D138E8CC 0C0E,8138E8CC 2400//Equipment Screen Delay Fix
+Cheat0=D109C5AC 0C02,8109C5AC 2400,D138E8CC 0C0E,8138E8CC 2400//Subscreen Fixes
 CF=2
 [D1E7C5D7-17CAC125-C:45]
 Game Name=(Hack) Ocarina of Time 1.1 (U) GZ Practice ROM
@@ -7254,8 +7235,7 @@ Game Name=(Hack) Ocarina of Time 1.0 (J) GZ Practice ROM
 MEM=8
 CPU=Interpreter
 Status=Compatible
-Cheat0=D109C5AC 0C02,8109C5AC 2400//Subscreen Delay Fix
-Cheat1=D138E8CC 0C0E,8138E8CC 2400//Equipment Screen Delay Fix
+Cheat0=D109C5AC 0C02,8109C5AC 2400,D138E8CC 0C0E,8138E8CC 2400//Subscreen Fixes
 CF=2
 [D1E7C5D7-17CAC125-C:4A]
 Game Name=(Hack) Ocarina of Time 1.1 (J) GZ Practice ROM
