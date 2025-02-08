@@ -117,7 +117,7 @@ that something is wrong and not giving the user any idea on how to fix the probl
 
 Changed the FPS display to round to whole numbers, de-acronym the term, and display even if not running.
 
-Changed the way resetting is done to fix Jabo FSAA flickering on reset in fullscreen and GLideN64 crash.
+Changed the way resetting is done to fix Jabo FSAA flickering on reset in fullscreen and plugin crashes.
 
 Changed Good Name->Game Name in the browser and in what word it uses to identify what to display in RDB.
 
@@ -295,6 +295,7 @@ RSP emulation plugin - Though some may consider other RSP plugins as better, the
 		       You can configure the RSP to use HLE or LLE sound with "send Audio Lists to audio
 		       plugin", giving you HLE audio (not compatible with Jabo!), while the other option
 		       is effectively broken, don't click on it or the emulator can freeze/lockup/crash.
+			Note: This is a Hex edit of PJ64 V1.6's RSP with different registry directories.
 --------------------------------------------------------------------------------------------------------
 
 Section#05 RUNNING ROMHACKS
