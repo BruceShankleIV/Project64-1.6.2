@@ -217,8 +217,8 @@ void FixMenuLang (HMENU hMenu) {
 	hSubMenu = GetSubMenu(hMenu,0);
 	MenuSetText(hSubMenu, 0, GS(MENU_OPEN), "Ctrl+O");
 	MenuSetText(hSubMenu, 1, GS(MENU_ROM_INFO), NULL);
-	MenuSetText(hSubMenu, 3, GS(MENU_START), "F11");
-	MenuSetText(hSubMenu, 4, GS(MENU_END), "F11");
+	MenuSetText(hSubMenu, 3, GS(MENU_START), "F11/F12");
+	MenuSetText(hSubMenu, 4, GS(MENU_END), "F11/F12");
 	MenuSetText(hSubMenu, 6, GS(MENU_LANGUAGE), NULL);
 	MenuSetText(hSubMenu, 8, GS(MENU_CHOOSE_ROM), NULL);
 	MenuSetText(hSubMenu, 9, GS(MENU_REFRESH), "F5");

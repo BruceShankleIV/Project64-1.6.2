@@ -3,6 +3,11 @@
 Author=Bruce Shankle IV x Gent
 Date=February 2025
 Version=1.6.2 (BETA)
+[28D5562D-E4D5AE50-C:4A]
+Cheat0="Press F9 to Refresh Timer to 80",890760CA 0400
+Cheat0_N=When time is running low, just press F9 to refresh the timer back to 80.
+Cheat1="Silence Shouting Commentator",80076171 0001
+Cheat1_N=This shuts off the Shouting Commentary, giving you the much much needed silence.
 [84077275-57315B9C-C:50]
 Cheat0="Infinite Health\Stadium\Free Battle",80287D79 0064
 Cheat1="Infinite Health\Stadium\Poke Cup",80285399 0064

@@ -1,0 +1,6 @@
+NFL Quarterback Club 98
+
+get this game working and update the RDB if so.
+maybe this is also related to memory.c, it could be a bad break; line like it was with stadium
+
+perhaps we could also get Mario no Photopie (J) working as well

@@ -110,7 +110,7 @@ void CloseCpu (void) {
 		AlwaysOnTopWindow(hMainWindow);
 		AlwaysOnTop = Temp;
 	}
-	for (count = 0; count < 50;/*Note to self, setting this any higher than 50 can cause plugin hot swaps to crash*/count ++ ) {
+	for (count = 0; count < 41; count ++ ) {
 		CPU_Action.CloseCPU = TRUE;
 		CPU_Action.Stepping = FALSE;
 		CPU_Action.DoSomething = TRUE;
