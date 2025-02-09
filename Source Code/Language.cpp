@@ -262,7 +262,7 @@ LANG_STR DefaultString[] = {
 	{ MSG_FAIL_INIT_CONTROL,  "The default or selected input plugin is missing or invalid.\n\nYou need to go into Settings and select an input (controller) plugin"},
 	{ MSG_FAIL_LOAD_PLUGIN,   "Failed to load plugin"},
 	{ MENU_ADVANCE_DESC,	  "Advances through a game in single frames at a time (Sync game to Audio suggested)"},
-	{ MSG_FAIL_OPEN_SAVE,     "Failed to save this savestate. You should ensure you aren't saving a savestate marked as read-only"},
+	{ MSG_FAIL_OPEN_SAVE,     "Failed to save this savestate. Most likely reason for this is an attempt to load a savestate with a mismatched header which returned FALSE/wouldn't load. Save your savestate in a new file or slot, or exit and re-enter Project64 to deal with the issue"},
         { MSG_FAIL_OPEN_FLASH,    "Cannot access save data. You may be running the application from an admin rights directory, or you may have multiple instances of Project64 open. Stop doing either of those to make this error go away"},
 	{ MSG_FAIL_OPEN_ZIP,      "Attempt to open zip file failed.\n\nPotentially is a corrupt zip file - try unzipping ROM manually"},
 	{ MSG_RB_INFO,		  "Displays ROM-specific information about a selected ROM"},

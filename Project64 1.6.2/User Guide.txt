@@ -7,7 +7,7 @@ running Project64 1.6.2 to either get fixed in the future, or at least become do
 ---------------------------
 Section#00 Hardware Compatibility
 Section#01 IP Notice
-Section#02 Notable Changes Between Project64 Version 1.6.1 & Project64 Version 1.6.2
+Section#02 Notable Changes Between Project64 Version 1.6.1 & My Project64 Version 1.6.2
 Section#03 Project64 Legacy is an unfinished emulator with concerning issues to be aware of if using it!
 Section#04 Plugin Details
 Section#05 RUNNING ROMHACKS
@@ -49,7 +49,7 @@ it does not come with ROM's (.z64, .n64) nor is it compiled with code that I can
 This emulator also won't circumvent any encryption whatsoever, further attesting to its legality status.
 --------------------------------------------------------------------------------------------------------
 
-Section#02 Notable Changes Between Project64 Version 1.6.1 & Project64 Version 1.6.2
+Section#02 Notable Changes Between Project64 Version 1.6.1 & My Project64 Version 1.6.2
 --------------------------------------------------------------------------------------------------------
 This section will be divided into two parts to give fair credit where it is due: one part is for changes
 from Plus (https://github.com/pj64team/Project64-1.6-Plus/tree/7ff51997c16e35a1c0685cc076b085ee6eda1b64)
@@ -78,7 +78,7 @@ Max 10 Recent ROM Dir as default
 
 ROM Dir Recursion as default, this allows sub-directories to be included in ROM browser
 
-(Undocumented) Checksum mismatch bypassment to allow Jabo video to apply per game hacks for romhacks.
+(Undocumented) Recalculate CRC's function when opening ROMs, beneficial for playing ROMhacks with D3D8.
 
 (Undocumented) Several new regressions and problems introduced which were later fixed in Ver1.6.2.
 
@@ -157,6 +157,8 @@ Fixed slot states not being able to manually load.
 Fixed multiple crashes upon start of emulation.
 
 Massive updates to databases.
+
+Workarounds for loading a savestate with a mismatched header without breaking any ROMhack compatibility.
 
 ***TONS more other stuff has been changed, but it would be too much to explain all of it here, sorry!***
 --------------------------------------------------------------------------------------------------------
@@ -296,7 +298,7 @@ RSP emulation plugin - Though some may consider other RSP plugins as better, the
 		       You can configure the RSP to use HLE or LLE sound with "send Audio Lists to audio
 		       plugin", giving you HLE audio (not compatible with Jabo!), while the other option
 		       is effectively broken, don't click on it or the emulator can freeze/lockup/crash.
-			Note: This is a Hex edit of PJ64 V1.6's RSP with different registry directories.
+			Note: This is a Hex edit of PJ64 V1.6's RSP w/ a workaround for dumb DMA errors.
 --------------------------------------------------------------------------------------------------------
 
 Section#05 RUNNING ROMHACKS

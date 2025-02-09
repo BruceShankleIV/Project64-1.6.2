@@ -209,7 +209,7 @@ Necesitas ir a Configuracion y seleccionar un plugin RSP"
 Necesitas ir a Configuracion y seleccionar un complemento de Controles (Inputs)"
 #210# "Error al cargar el plugin"
 #211# "Avanza a traves del juego en un frame a la vez  (Sincronizar juego al Audio sugerido)"
-#212# "Falla al guardar el estado de guardado. Asegurate de que no estes guardando un estado de guardado marcado como solo lectura"
+#212# "Falla al guardar el estado de guardado. La razon mas probable es un intento de cargar un savestate con una cabecera no coincidente que devolvio FALSE/no se cargo. Guarde su savestate en un nuevo archivo o ranura, o salga y vuelva a entrar en Project64 para solucionar el problema."
 #213# "No se puede acceder a los datos de guardado. Puede que estes ejecutando una aplicacion desde un directorio con permisos de admin, o puedes tener multiples instancias de Project64 abiertas. Deten cualquiera de las dos para hacer que este error desaparezca"
 #214# "Intento de abrir el archivo zip fallido.
 

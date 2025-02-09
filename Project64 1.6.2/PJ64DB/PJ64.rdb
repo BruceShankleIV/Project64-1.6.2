@@ -1,6 +1,6 @@
 //ESSENTIAL SPACE
 [Meta]
-Author=Bruce Shankle IV x Nekokabu x Smiff
+Author=Bruce Shankle IV x Nekokabu & MASA & jelta x Smiff
 Date=February 2025
 Version=1.6.2 (BETA)
 [Microcode Identifiers]
@@ -2107,15 +2107,6 @@ Game Name=Glover (U)
 MEM=4
 CPU=Recompiler
 SCM=Cache
-Status=Compatible
-Plugin=Icepir8's LLE suggested
-CF=2
-[B7F40BCF-553556A5-C:45]
-Game Name=Glover 2 (U)
-MEM=4
-CPU=Recompiler
-SCM=Check Memory Advance
-RDP=On
 Status=Compatible
 Plugin=Icepir8's LLE suggested
 CF=2
@@ -7315,53 +7306,8 @@ SCM=Check Memory & Return
 Status=Compatible
 Cheat0=D138E8CC 0C0E,8138E8CC 2400//Equipment Screen Delay Fix
 CF=2
-[EC340D12-EA9AD3F3-C:45]
-Game Name=(Hack) Super Mario Star Road Multiplayer
-MEM=8
-CF=1
-CPU=Recompiler
-SCM=Cache
-Status=Compatible
-Plugin=ANGLE GLideN64 suggested
-Cheat0=802473A7 00BC,802473B3 0000,8024748E 0000,80247966 0000,80247996 0000,8027B4F6 0000,8027B46A 0000,8027B4AA 0000,8027B582 0000,8027C99F 00BC,8027C9AB 0000//Cropfix
-[FAADE031-7BA332DC-C:45]
-Game Name=(Hack) Super Mario Star Road Original
-MEM=8
-CF=1
-CPU=Recompiler
-SCM=Cache
-Status=Compatible
-Plugin=ANGLE GLideN64 suggested
-Cheat0=802473A7 00BC,802473B3 0000,8024748E 0000,80247966 0000,80247996 0000,8027B4F6 0000,8027B46A 0000,8027B4AA 0000,8027B582 0000,8027C99F 00BC,8027C9AB 0000//Cropfix
-[D9DBF5ED-F58A4E97-C:45]
-Game Name=(Hack) Super Mario Star Road Beta
-MEM=8
-CF=1
-CPU=Recompiler
-SCM=Cache
-Status=Compatible
-Plugin=ANGLE GLideN64 suggested
-Cheat0=802473A7 00BC,802473B3 0000,8024748E 0000,80247966 0000,80247996 0000,8027B4F6 0000,8027B46A 0000,8027B4AA 0000,8027B582 0000,8027C99F 00BC,8027C9AB 0000//Cropfix
-[56CA3E01-7364C208-C:45]
-Game Name=(Hack) Super Mario Star Road French
-MEM=8
-CF=1
-CPU=Recompiler
-SCM=Cache
-Status=Compatible
-Plugin=ANGLE GLideN64 suggested
-Cheat0=802473A7 00BC,802473B3 0000,8024748E 0000,80247966 0000,80247996 0000,8027B4F6 0000,8027B46A 0000,8027B4AA 0000,8027B582 0000,8027C99F 00BC,8027C9AB 0000//Cropfix
 [9CC44345-D6DF4426-C:45]
-Game Name=(Hack) Super Mario Star Road Final
-MEM=8
-CF=1
-CPU=Recompiler
-SCM=Cache
-Status=Compatible
-Plugin=ANGLE GLideN64 suggested
-Cheat0=802473A7 00BC,802473B3 0000,8024748E 0000,80247966 0000,80247996 0000,8027B4F6 0000,8027B46A 0000,8027B4AA 0000,8027B582 0000,8027C99F 00BC,8027C9AB 0000//Cropfix
-[79BC362E-C7C8B112-C:45]
-Game Name=(Hack) Super Mario Star Road Deluxe
+Game Name=(Hack) Super Mario Star Road
 MEM=8
 CF=1
 CPU=Recompiler
@@ -7378,8 +7324,8 @@ SCM=Cache
 Status=Compatible
 Plugin=ANGLE GLideN64 suggested
 Cheat0=802473A7 00BC,802473B3 0000,8024748E 0000,80247966 0000,80247996 0000,8027B4F6 0000,8027B46A 0000,8027B4AA 0000,8027B582 0000,8027C99F 00BC,8027C9AB 0000//Cropfix
-[B9730816-0285077B-C:45]
-Game Name=(Hack) SM64: BEYOND THE CURSED MIRROR
+[BE6D3C09-3BDD25D5-C:45]
+Game Name=(Hack) SM64 ROYAL LEGACY
 MEM=8
 CF=1
 CPU=Recompiler
@@ -7387,7 +7333,15 @@ SCM=Cache
 Status=Compatible
 Plugin=ANGLE GLideN64 suggested
 [BF06E602-C3DE68E2-C:45]
-Game Name=(Hack) SM64 ROYAL LEGACY DX
+Game Name=(Hack) SM64 ROYAL LEGACY Definitive Edition
+MEM=8
+CF=1
+CPU=Recompiler
+SCM=Cache
+Status=Compatible
+Plugin=ANGLE GLideN64 suggested
+[B9730816-0285077B-C:45]
+Game Name=(Hack) SM64: BEYOND THE CURSED MIRROR
 MEM=8
 CF=1
 CPU=Recompiler
