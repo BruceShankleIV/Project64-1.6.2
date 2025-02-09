@@ -175,6 +175,7 @@ CPU=Recompiler
 SCM=Check Memory Advance
 Status=Compatible
 Cheat0=81068FCE 0000//freeze fix by Jelta
+Plugin=Icepir8's LLE ONLY
 CF=2
 [2DC4FFCC-C8FF5A21-C:50]
 Game Name=Aidyn Chronicles - The First Mage (E)

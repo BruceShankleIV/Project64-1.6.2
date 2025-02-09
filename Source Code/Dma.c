@@ -37,12 +37,10 @@ void FirstDMA (void) {
 	case 6: *(DWORD *)&N64MEM[0x318] = RDRAMsize; break;
 	case 9: *(DWORD *)&N64MEM[0x318] = RDRAMsize; break;
 	default: 
-		*(DWORD *)&N64MEM[0x318] = RdramSize;
+		*(DWORD *)&N64MEM[0x318] = RDRAMsize;
 	}
 }
 void PI_DMA_READ (void) {
-	PI_DRAM_ADDR_REG &= 0x1FFFFFFF;
-	PI_RD_LEN_REG = (PI_RD_LEN_REG & 1) ? PI_RD_LEN_REG : PI_RD_LEN_REG + 1;	// Fix for Ai Shogi 3
 	if ( PI_DRAM_ADDR_REG + PI_RD_LEN_REG + 1 > RDRAMsize) {
 		PI_STATUS_REG &= ~PI_STATUS_DMA_BUSY;
 		MI_INTR_REG |= MI_INTR_PI;
