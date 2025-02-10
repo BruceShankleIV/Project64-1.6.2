@@ -38,7 +38,7 @@
 #define MenuLocOfUsedDirs	(MenuLocOfUsedFiles + 1)
 DWORD RomFileSize, ROMRAMsize, RomSaveUsing, RomCPUType, RomSelfMod,
 RomUseTlb, RomUseLinking, RomCF, RomUseLargeBuffer, RomUseCache,
-	RomDelaySI, RomSPHack, RomDelayRDP;
+	RomDelaySI, RomSPHack, RomDelayRDP, RomDelayRSP;
 char CurrentFileName[MAX_PATH+1] = {""}, RomName[MAX_PATH+1] = {""}, RomHeader[0x1000];
 char LastRoms[10][MAX_PATH+1], LastDirs[10][MAX_PATH+1];
 BOOL IsValidRomImage ( BYTE Test[4] );
@@ -510,6 +510,7 @@ void LoadRomOptions ( void ) {
 	UseTlb = RomUseTlb;
 	DelaySI = RomDelaySI;
 	DelayRDP = RomDelayRDP;
+	DelayRSP = RomDelayRSP;
 	SPHack = RomSPHack;
 	UseLinking = RomUseLinking;
 	DisableRegCaching = !RomUseCache;
@@ -551,6 +552,7 @@ void ReadRomOptions (void) {
 	RomUseCache       = TRUE;
 	RomUseLargeBuffer = FALSE;
 	RomDelayRDP       = FALSE;
+	RomDelayRSP       = FALSE;
 	if (strlen(RomName) != 0) {
 		char Identifier[100];
 		LPSTR IniFileName;
@@ -598,6 +600,8 @@ void ReadRomOptions (void) {
 		if (strcmp(String,"On") == 0) { RomUseLargeBuffer = TRUE; }
 		_GetPrivateProfileString(Identifier,"ABL","",String,sizeof(String),IniFileName);
 		if (strcmp(String,"On") == 0) { RomUseLinking = TRUE; }
+		_GetPrivateProfileString(Identifier, "RSP", "", String, sizeof(String), IniFileName);
+		if (strcmp(String, "On") == 0 ) { RomDelayRSP = TRUE; }
 		_GetPrivateProfileString(Identifier, "RDP", "", String, sizeof(String), IniFileName);
 		if (strcmp(String, "On") == 0 ) { RomDelayRDP = TRUE; }
 	}
@@ -1022,6 +1026,7 @@ void SaveRomOptions (void) {
 	_WritePrivateProfileString(Identifier, "Buffer", RomUseLargeBuffer ? "On" : " ", GetIniFileName());
 	_WritePrivateProfileString(Identifier, "ABL", RomUseLinking ? "On" : " ", GetIniFileName());
 	_WritePrivateProfileString(Identifier, "RDP", RomDelayRDP ? "On" : " ", GetIniFileName());
+	_WritePrivateProfileString(Identifier, "RSP", RomDelayRSP ? "On" : " ", GetIniFileName());
 	_WritePrivateProfileString(Identifier, "TLB",RomUseTlb?" ":"Off",GetIniFileName());
 	_WritePrivateProfileString(Identifier, "SP", RomSPHack ? "On" : " ", GetIniFileName());
 	_WritePrivateProfileString(Identifier, "SI", RomDelaySI ? "On" : " ", GetIniFileName());

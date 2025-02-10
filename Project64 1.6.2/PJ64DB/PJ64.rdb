@@ -2520,6 +2520,14 @@ CPU=Recompiler
 SCM=Protect Memory
 Status=Compatible
 Plugin=Icepir8's LLE suggested
+[5F2763C4-62412AE5-C:45]
+Game Name=International Superstar Soccer 64 (U)
+MEM=4
+CF=1
+CPU=Recompiler
+SCM=Protect Memory
+Status=Compatible
+Plugin=Icepir8's LLE suggested
 [F41B6343-C10661E6-C:50]
 Game Name=International Superstar Soccer '98 (E)
 MEM=4
@@ -2659,6 +2667,7 @@ SCM=Protect Memory
 Status=Compatible
 CF=2
 Core=Freezes after title screen
+Plugin=Icepir8's LLE suggested
 [69256460-B9A3F586-C:45]
 Game Name=Jeopardy! (U)
 MEM=4
@@ -3974,9 +3983,22 @@ Status=Compatible
 CF=2
 [4B629EF4-99B21D9B-C:50]
 Game Name=NFL Quarterback Club 98 (E)
-Status=Incompatible
+CPU=Recompiler
+MEM=4
+SCM=Check Memory & Cache
+CF=2
+Status=Compatible
+Plugin=Icepir8's LLE suggested
+RSP=On
 [D89BE2F8-99C97ADF-C:45]
 Game Name=NFL Quarterback Club 98 (U)
+CPU=Recompiler
+MEM=4
+SCM=Check Memory & Cache
+CF=2
+Status=Compatible
+Plugin=Icepir8's LLE suggested
+RSP=On
 [52A3CF47-4EC13BFC-C:50]
 Game Name=NFL Quarterback Club 99 (E)
 MEM=8

@@ -179,8 +179,8 @@ LANG_STR DefaultString[] = {
 	{ ROM_SP_HACK,         "SP Hack"},
 	{ ROM_SAVE,	       "Autodetected"},
 	{ LIMITFPS_OFF,	       "Limit FPS off"},
-	{ ROM_DELAY_RDP,       "Delay RDP Interrupt"},
-	{ TELLINTENTIONALPAUSE,"CPU pausing to prevent swap errors"},
+	{ ROM_DELAY_RDP,       "Delay RDP"},
+	{ ROM_DELAY_RSP,       "Delay RSP"},
 	{ MENU_SLOW,	       "LLE Slow Mode (Experimental)"},
 //Core Styles
 	{ CORE_INTERPRETER,    "Interpreter"},

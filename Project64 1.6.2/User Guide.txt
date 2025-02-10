@@ -123,12 +123,9 @@ Changed Good Name->Game Name in the browser and in what word it uses to identify
 
 Changed maximum savestate count per game from 10 to 30 to account for games that share the same ROMname.
 
-Disabled ABL dropdown menu and set to off by default, essential in helping reducing the total file size.
+Disabled ABL's dropdown menu and set off by default. Essential in helping reduce stuttering and crashes.
 
 Disabled ROM database extension (RDX) because it does not improve gameplay experience and adds to bloat.
-
-Disabled savestate ROMheader mismatch prompt, this allows for loading a savestate with an unintended ROM
-but this's beneficial when playing ROMhacks that use hacked checksums to activate jabo's per-game hacks.
 
 Disabled state compressions because you should have enough drive space reserved for uncompressed states.
 
@@ -138,7 +135,7 @@ Disabled plugin directory selection because changing your plugin directory could
 
 Disabled end emulation in fullscreen mode because it's crashing.
 
-Faster resets and loads/bootups.
+Faster resets and loads/bootups (thanks to aglab2!).
 
 Fixed "Always On Top" not being togglable from within the ROM browser.
 
@@ -207,7 +204,7 @@ For your information, here's some issues I have experienced with Project64 "Lega
 * Persistently annoying stuttering in Ocarina of Time which hurts the quality of my gameplay experience.
 
 Honestly the list can go on. Everytime I try to use Legacy it is like I encounter a new bug. RIP Legacy.
-Note that all the issues mentioned above about Project64 Legacy are either issues in Project64 Ver1.6.2,
+Note that all issues mentioned above about Project64 Legacy are either non-issues in Project64 Ver1.6.2,
 or said issues have been alleviated to a degree not found in the Project64 Legacy emulator as of V1.6.4.
 
 For the reasons listed above, I consider the legacy project to be a failed experiment that could've been
@@ -229,6 +226,7 @@ Icepir8's Legacy LLE - This video plugin should be used where Jabo's Direct3D8 w
 		       very accurate but you sometimes need to pair it with its corresponding RSP plugin
 		       in order to avoid crashes and instances where games like World Driver don't boot.
 		       It was created by Icepir8 for the unfinished "Legacy" experiment, but works here.
+		       HOWEVER, with some games it can crash the emulator, so sometimes ANGLE is needed.
 
 Jabo's Direct3D8 1.6.2 - This is the default plugin due to low specs requirements/good pc compatibility.
 			 However, it also has many graphics emulation issues, and if your PC can support
@@ -294,7 +292,7 @@ Icepir8's Legacy RSP - Pairing Ice's RSP with Icepir8's Legacy LLE is necessary 
 RSP emulation plugin - Though some may consider other RSP plugins as better, the original Project64 V1.6
 		       RSP is reliable and has strong performance. Though this plugin is limited to HLE,
 		       it outperforms more accurate RSP's like Icepir8's Legacy RSP a lot, while running
-		       games like Pokemon Stadium (albeit with some errors) which Mupen64Plus could not.
+		       games like Pokemon Stadium (but with dummy errors) which M64P has problems doing.
 		       You can configure the RSP to use HLE or LLE sound with "send Audio Lists to audio
 		       plugin", giving you HLE audio (not compatible with Jabo!), while the other option
 		       is effectively broken, don't click on it or the emulator can freeze/lockup/crash.
@@ -333,6 +331,7 @@ either the ROM header data above the internal name, or the baseROM's internal na
 
 Section#06 Known Issues
 --------------------------------------------------------------------------------------------------------
+The "Display Lists to Graphics Plugin" option with the default RSP freezes up the emulator when toggled.
 Limit FPS off is kind of broken, does not work at all or can cause strange errors (very game dependent).
 Depending on the PC hardware, Jabo's Direct3D8 can sometimes freeze, though the ROM still stays running.
 The rom browser is a bit buggy but this shouldn't affect your gaming experience so it's not a big issue.
@@ -342,8 +341,8 @@ There are some controllers which are not supported by any known input plugins an
 Some error messages do not get translated into other languages due to them being part of the plugin dll.
 Some cheats act up in ROMhacks with shared CRC values (sometimes needed to get Direct3D8 per ROM hacks).
 In some ROMhacks, they never get a save data file even made for them and they do not ever save progress.
-Having protected memory self modifying code method enabled causes stuttering on certain weaker hardware.
-Having advanced block linking and protected memory self modifying code method enabled causes stuttering.
+Having protect memory self modifying code method enabled causes stuttering on specific weaker computers.
+Having advanced block linking and protect memory self-modifying code method enabled results in stutters.
 Having advanced block linking enabled causes some ROMs to not boot up at all and get stuck on blackness.
 Jabo's plugins don't have shadows on intel cards. However, this can be worked around using 3DAnalyzer w/
 24 bit zbuffer (without stensil) to help workaround the issue, but there will still be other gfx issues.
@@ -520,8 +519,6 @@ Section#12 Extra (Part 1), Suggestions
 Additionally, if you decide to develop a new revision of Ver1.6.2 or make a Ver1.6.3, I'd suggest fixing
 the following issues with this emulator:
 --------------------------------------------------------------------------------------------------------
-* Missing Pokemon Stadium support (this regression was introduced in 1.6.1). May get fixed by comparing
-  with secondary sources like deathdroid's Project64 1.6 or Project64 Legacy to determine what's needed.
 * Missing netplay support.
 * Missing kaillera support.
 * Missing debugger support.
@@ -530,13 +527,12 @@ the following issues with this emulator:
 * Missing N64 mouse ROMs support.
 * Missing language translations support besides spanish (but only for languages w/ english characters).
 * Save data never gets created when playing newer versions of Ocarina of Time GZ.
-* Save data being stored as ROM's internal name->Change to store by CRC instead to eliminate issues.
 * Some controllers don't work with any known input plugins (someone please make a perfect input plugin).
 * Both the ROM and cheat database could be very greatly improved and expanded upon. However, there is no
   need to add support for ROMs or games that won't get usage w/ Ver1.6.2. Because if you do, then you're
   just adding unneeded bloat to the file size which is something you never want to do as Ver1.6.2 should
-  be as portable as it possibly can be, ideally not much more than 11MB once compressed inside of a RAR.
-* Ocarina of Time and Ocarina of Time ROMhacks can crash when pausing the ROM by using Counter Factor 1.
+  be as portable as it possibly can be, ideally not much more than ~8MB once compressed inside of a ZIP.
+* Ocarina of Time and Ocarina of Time ROMhacks crash when entering the subscreen with CF1 (situational).
 * Ocarina of Time subscreen delay is currently handled via the RDB file, and thus there is going to be a
   delay still with ROMhacks that don't incorporate a subscreen delay fix of their own. Maybe someone can
   integrate the subscreen delay fix coding into the emulator so the subscreen delay fix's can be removed
@@ -566,6 +562,8 @@ Buffer=
 ABL= 
 (Off)
 RDP= 
+(Off)
+RSP=
 (Off)
 TLB= 
 (On)

@@ -40,7 +40,7 @@ LARGE_INTEGER Frequency, Frames[8], LastFrame;
 BOOL AutoSleep, DisableRegCaching, UseIni, UseTlb, UseLinking, RomBrowser,
 	IgnoreMove, Rercursion, LimitFPS,
 	AutoFullScreen, SystemCF, AlwaysOnTop, BasicMode, DelaySI, RememberCheats,
-	DelayRDP, ForceClose;
+	DelayRDP, DelayRSP, ForceClose;
 DWORD CurrentFrame, CPU_Type, SystemCPU_Type, SelfModCheck, SystemSelfModCheck,
 	RomsToRemember, RomDirsToRemember;
 HWND hMainWindow, hHiddenWin, hStatusWnd;
@@ -975,7 +975,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		case ID_OPTIONS_CONFIG_AUDIO: AiDllConfig(hWnd); break;
 		case ID_OPTIONS_CONFIG_RSP: RSPDllConfig(hWnd); break;
 		case ID_OPTIONS_CONFIG_CONTROL: ContConfig(hWnd); break;
-		case ID_OPTIONS_SETTINGS: if (!AutoSleep && !CPU_Paused && CPURunning) { PauseCpu(); SendMessage(hStatusWnd, SB_SETTEXT, 0, (LPARAM)GS(TELLINTENTIONALPAUSE)); }
+		case ID_OPTIONS_SETTINGS: if (!AutoSleep && !CPU_Paused && CPURunning) PauseCpu();
 		ChangeSettings(hWnd);
 		break;
 		case ID_OPTIONS_CHEATS: ManageCheats(NULL); break;

@@ -1266,7 +1266,7 @@ BOOL Machine_LoadState(void) {
 	if (!LoadedZipFile) {
 		hSaveFile = CreateFile(FileName,GENERIC_WRITE | GENERIC_READ, FILE_SHARE_READ,NULL,OPEN_EXISTING,
 			FILE_ATTRIBUTE_NORMAL | FILE_FLAG_RANDOM_ACCESS, NULL);
-		if (hSaveFile == INVALID_HANDLE_VALUE || memcmp(LoadHeader, RomHeader, 0x40) != 0 && RDRAMsize == 0x400000) {
+		if (hSaveFile == INVALID_HANDLE_VALUE) {
 			_splitpath( FileName, drive, dir, ZipFile, ext );
 			sprintf(String,"%s %s%s",GS(MSG_UNABLED_LOAD_STATE),ZipFile,ext);
 			SendMessage( hStatusWnd, SB_SETTEXT, 0, (LPARAM)String );
