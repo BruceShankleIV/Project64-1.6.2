@@ -7238,16 +7238,14 @@ Game Name=(Hack) Ocarina of Time 1.1 (U) GZ Practice ROM
 MEM=8
 CPU=Interpreter
 Status=Compatible
-Cheat0=D109C5BC 0C02,8109C5BC 2400//Subscreen Delay Fix
-Cheat1=D138EA6C 0C0E,8138EA6C 2400//Equipment Screen Delay Fix
+Cheat0=D109C5BC 0C02,8109C5BC 2400,D138EA6C 0C0E,8138EA6C 2400//Subscreen Fixes
 CF=2
 [2CE1A4BD-C9DC765A-C:45]
 Game Name=(Hack) Ocarina of Time 1.2 (U) GZ Practice ROM
 MEM=8
 CPU=Interpreter
 Status=Compatible
-Cheat0=D109CC9C 0C02,8109CC9C 2400//Subscreen Delay Fix
-Cheat1=D138F07C 0C0E,8138F07C 2400//Equipment Screen Delay Fix
+Cheat0=D109CC9C 0C02,8109CC9C 2400,D138F07C 0C0E,8138F07C 2400//Subscreen Fixes
 CF=2
 [D1AA799D-489144F5-C:4A]
 Game Name=(Hack) Ocarina of Time 1.0 (J) GZ Practice ROM
@@ -7261,16 +7259,14 @@ Game Name=(Hack) Ocarina of Time 1.1 (J) GZ Practice ROM
 MEM=8
 CPU=Interpreter
 Status=Compatible
-Cheat0=D109C5BC 0C02,8109C5BC 2400//Subscreen Delay Fix
-Cheat1=D138EA6C 0C0E,8138EA6C 2400//Equipment Screen Delay Fix
+Cheat0=D109C5BC 0C02,8109C5BC 2400,D138EA6C 0C0E,8138EA6C 2400//Subscreen Fixes
 CF=2
 [2CE1A4BD-C9DC765A-C:4A]
 Game Name=(Hack) Ocarina of Time 1.2 (J) GZ Practice ROM
 MEM=8
 CPU=Interpreter
 Status=Compatible
-Cheat0=D109CC9C 0C02,8109CC9C 2400//Subscreen Delay Fix
-Cheat1=D138F07C 0C0E,8138F07C 2400//Equipment Screen Delay Fix
+Cheat0=D109CC9C 0C02,8109CC9C 2400,D138F07C 0C0E,8138F07C 2400//Subscreen Fixes
 CF=2
 [1EDEA0DE-4C0056DE-C:45]
 Game Name=(Hack) Cosmic Goddess
