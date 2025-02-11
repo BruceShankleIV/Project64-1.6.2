@@ -231,6 +231,7 @@ void Compile_R4300i_BranchLikely (BLOCK_SECTION * Section, void (*CompareFunc)(B
 		for (count = 1; count < 10; count ++) { x86Protected(count) = FALSE; }
 		memcpy(&Section->Cont.RegSet,&Section->RegWorking,sizeof(REG_INFO));
 		if (Section->Cont.FallThrough)  {
+			if (Section->Jump.LinkLocation != NULL) {}
 			GenerateSectionLinkage(Section);
 			NextInstruction = END_BLOCK;
 		} else {

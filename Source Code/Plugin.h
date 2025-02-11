@@ -26,7 +26,7 @@
 #ifndef __Plugin_h
 #define __Plugin_h
 #define DefaultGFXDll				"DefaultVideo.dll"
-#define DefaultRSPDll				"DefaultRSP.dll"
+#define DefaultRSPDll				"RSP.dll"
 #define DefaultAudioDll				"DefaultAudio.dll"
 #define DefaultControllerDll		"DefaultInput.dll"
 #define PLUGIN_TYPE_RSP				1

@@ -2,6 +2,8 @@ https://discord.gg/cHDxa9vzQM Discord Report Center for reporting issues/problem
 -
 Current BETA build for my Project64 1.6.2 emulator, a fork of Project64 1.6.1 which has been renamed as "1.6 Plus".
 -
+PLEASE READ: THIS IS AN UNFINISHED BUILD! I REALIZED THE 1.6 RSP PLUGIN HAS SOME INIT ISSUES. SO AS A TEMPORARY REPLACEMENT, MY OLD FORK OF THE MUPEN64PLUS HLE RSP IS INCLUDED INSTEAD. THIS ISN'T PERMANENT, THIS IS JUST A HOTFIX/WORKAROUND SO YOU MAY ENJOY THE EMULATOR WHILE I CONTINUE TO WORK OUT THE KINKS!
+-
 To the casual player, download the InstallerWiz. To translators, download the Translator's Sample to make your translation off of (english characters only, delete any lines which mean the same in english/aren't any different in your language). To people with bad PC's who are unable to use more demanding plugins needed to emulate certain graphical effects that aren't handled properly by Jabo's Direct3D8, either upgrade your specs or try out the Bad plugins for bad PC's patch (⚠but beware that these plugins are bad because they are unstable/prone to crashes ⚠).
 
 Beware of windows virus false positives. Please read this:

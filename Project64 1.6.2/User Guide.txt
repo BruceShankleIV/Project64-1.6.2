@@ -372,8 +372,8 @@ if you want to only display retail, official N64 games/ROMs you haven't placed i
 You can change the default plugins by simply renaming the dll you would like to use by default to.......
 DefaultAudio.dll
 DefaultInput.dll
-DefaultRSP.dll
 DefaultVideo.dll
+RSP.dll
 
 Project64 Ver1.6.2 is portable and if you would like to say, transfer everything to a new PC, you can do
 so by compressing the Project64 Ver1.6.2 folder on your PC into a .zip file, pasting it into a USB stick

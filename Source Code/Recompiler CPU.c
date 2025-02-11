@@ -84,6 +84,7 @@ void _fastcall AddParent(BLOCK_SECTION * Section, BLOCK_SECTION * Parent){
 			memcpy(&Section->RegStart,&Parent->Cont.RegSet,sizeof(REG_INFO));
 		} else if (Parent->JumpSection == Section) {
 			memcpy(&Section->RegStart,&Parent->Jump.RegSet,sizeof(REG_INFO));
+		} else {
 		}
 		memcpy(&Section->RegWorking,&Section->RegStart,sizeof(REG_INFO));
 	} else {
@@ -2028,6 +2029,7 @@ BOOL GenerateX86Code (BLOCK_SECTION * Section, DWORD Test) {
 		for (count = 1; count < 10; count ++) { x86Protected(count) = FALSE; }
 		UnMap_AllFPRs(Section);
 		if ((Section->CompilePC &0xFFC) == 0xFFC) {
+			if (NextInstruction == DO_DELAY_SLOT) {}
 			if (NextInstruction == NORMAL) {
 				CompileExit (Section->CompilePC + 4,Section->RegWorking,Normal,TRUE,NULL);
 				NextInstruction = END_BLOCK;
@@ -2135,6 +2137,7 @@ BOOL InheritParentInfo (BLOCK_SECTION * Section) {
 		Parent = Section->ParentSection[0];
 		if (Section == Parent->ContinueSection) { JumpInfo = &Parent->Cont; }
 		else if (Section == Parent->JumpSection) { JumpInfo = &Parent->Jump; }
+		else {}
 		memcpy(&Section->RegStart,&JumpInfo->RegSet,sizeof(REG_INFO));
 		if (JumpInfo->LinkLocation != NULL) {
 			CPU_Message("   Section_%d:",Section->SectionID);
@@ -2737,12 +2740,12 @@ void SyncRegState (BLOCK_SECTION * Section, REG_INFO * SyncTo) {
 				break;
 			case STATE_CONST_64:
 				if (MipsReg(count) != SyncTo->MIPS_RegVal[count].UDW) {
-					continue;
 				}
+					continue;
 			case STATE_CONST_32:
 				if (MipsRegLo(count) != SyncTo->MIPS_RegVal[count].UW[0]) {
-					continue;
 				}
+					continue;
 			}
 		}
 		changed = TRUE;
