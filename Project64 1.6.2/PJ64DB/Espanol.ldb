@@ -137,7 +137,7 @@ SCM, ABL, Bufer de Compilacion Grande y Cache de Registros"
 #143# "Factor de Contador:"
 #144# "Bufer de Compilacion Grande"
 #146# "Cache de Registro"
-#147# "Retrasar Interrupcion SI"
+#147# "Retrasar SI"
 #148# "Hack de SP"
 #149# "Autodetectado"
 #150# "Limitar FPS desactivado"
@@ -209,7 +209,7 @@ Necesitas ir a Configuracion y seleccionar un plugin RSP"
 Necesitas ir a Configuracion y seleccionar un complemento de Controles (Inputs)"
 #210# "Error al cargar el plugin"
 #211# "Avanza a traves del juego en un frame a la vez  (Sincronizar juego al Audio sugerido)"
-#212# "Falla al guardar el estado de guardado. La razon mas probable es un intento de cargar un savestate con una cabecera no coincidente que devolvio FALSE/no se cargo. Guarde su savestate en un nuevo archivo o ranura, o salga y vuelva a entrar en Project64 para solucionar el problema."
+#212# "Falla al guardar el estado de guardado. Guarde su savestate en un nuevo archivo o ranura, o salga y vuelva a entrar en Project64 para solucionar el problema."
 #213# "No se puede acceder a los datos de guardado. Puede que estes ejecutando una aplicacion desde un directorio con permisos de admin, o puedes tener multiples instancias de Project64 abiertas. Deten cualquiera de las dos para hacer que este error desaparezca"
 #214# "Intento de abrir el archivo zip fallido.
 
@@ -262,3 +262,4 @@ Salir del hilo
 #250# "Icepir8's Legacy LLE = Graficos LLE de gama alta
 Jabo's Direct3D8 1.6.2 = Graficos HLE de gama baja
 ANGLE GLideN64 = Graficos para ROMhacks de SM64"
+#251# "Alinear DMA"

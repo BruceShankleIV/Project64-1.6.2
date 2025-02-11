@@ -163,6 +163,7 @@
 #define IDC_LANG_SEL                    1219
 #define IDC_DELAY_RDP                   1238
 #define IDC_DELAY_RSP                   1239
+#define IDC_ALIGN_DMA			1240
 #define ID_FILE_OPEN_ROM                40001
 #define ID_FILE_ROM_INFO                40002
 #define ID_FILE_EXIT                    40005

@@ -38,7 +38,7 @@
 #define MenuLocOfUsedDirs	(MenuLocOfUsedFiles + 1)
 DWORD RomFileSize, ROMRAMsize, RomSaveUsing, RomCPUType, RomSelfMod,
 RomUseTlb, RomUseLinking, RomCF, RomUseLargeBuffer, RomUseCache,
-	RomDelaySI, RomSPHack, RomDelayRDP, RomDelayRSP;
+	RomDelaySI, RomSPHack, RomDelayRDP, RomDelayRSP, RomAlignDMA;
 char CurrentFileName[MAX_PATH+1] = {""}, RomName[MAX_PATH+1] = {""}, RomHeader[0x1000];
 char LastRoms[10][MAX_PATH+1], LastDirs[10][MAX_PATH+1];
 BOOL IsValidRomImage ( BYTE Test[4] );
@@ -511,6 +511,7 @@ void LoadRomOptions ( void ) {
 	DelaySI = RomDelaySI;
 	DelayRDP = RomDelayRDP;
 	DelayRSP = RomDelayRSP;
+	AlignDMA = RomAlignDMA;
 	SPHack = RomSPHack;
 	UseLinking = RomUseLinking;
 	DisableRegCaching = !RomUseCache;
@@ -553,6 +554,7 @@ void ReadRomOptions (void) {
 	RomUseLargeBuffer = FALSE;
 	RomDelayRDP       = FALSE;
 	RomDelayRSP       = FALSE;
+	RomAlignDMA	  = FALSE;
 	if (strlen(RomName) != 0) {
 		char Identifier[100];
 		LPSTR IniFileName;
@@ -592,7 +594,7 @@ void ReadRomOptions (void) {
 		if (strcmp(String,"Off") == 0) { RomUseTlb = FALSE; }
 		_GetPrivateProfileString(Identifier,"SI","",String,sizeof(String),IniFileName);
 		if (strcmp(String,"On") == 0) { RomDelaySI = TRUE; }
-		_GetPrivateProfileString(Identifier,"SP","",String,sizeof(String),IniFileName);
+		_GetPrivateProfileString(Identifier,"SPH","",String,sizeof(String),IniFileName);
 		if (strcmp(String,"On") == 0) { RomSPHack = TRUE; }
 		_GetPrivateProfileString(Identifier,"Caching","",String,sizeof(String),IniFileName);
 		if (strcmp(String,"Off") == 0) { RomUseCache = FALSE; }
@@ -604,6 +606,8 @@ void ReadRomOptions (void) {
 		if (strcmp(String, "On") == 0 ) { RomDelayRSP = TRUE; }
 		_GetPrivateProfileString(Identifier, "RDP", "", String, sizeof(String), IniFileName);
 		if (strcmp(String, "On") == 0 ) { RomDelayRDP = TRUE; }
+		_GetPrivateProfileString(Identifier, "DMA", "", String, sizeof(String), IniFileName);
+		if (strcmp(String, "On") == 0 ) { RomAlignDMA = TRUE; }
 	}
 }
 void OpenN64Image ( void ) {
@@ -1024,11 +1028,12 @@ void SaveRomOptions (void) {
 	_WritePrivateProfileString(Identifier, "Save",String,GetIniFileName());
 	_WritePrivateProfileString(Identifier, "Caching", RomUseCache ? " " : "On", GetIniFileName());
 	_WritePrivateProfileString(Identifier, "Buffer", RomUseLargeBuffer ? "On" : " ", GetIniFileName());
+	_WritePrivateProfileString(Identifier, "DMA", RomAlignDMA ? "On" : " ", GetIniFileName());
+	_WritePrivateProfileString(Identifier, "TLB",RomUseTlb?" ":"Off",GetIniFileName());
 	_WritePrivateProfileString(Identifier, "ABL", RomUseLinking ? "On" : " ", GetIniFileName());
+	_WritePrivateProfileString(Identifier, "SPH", RomSPHack ? "On" : " ", GetIniFileName());
 	_WritePrivateProfileString(Identifier, "RDP", RomDelayRDP ? "On" : " ", GetIniFileName());
 	_WritePrivateProfileString(Identifier, "RSP", RomDelayRSP ? "On" : " ", GetIniFileName());
-	_WritePrivateProfileString(Identifier, "TLB",RomUseTlb?" ":"Off",GetIniFileName());
-	_WritePrivateProfileString(Identifier, "SP", RomSPHack ? "On" : " ", GetIniFileName());
 	_WritePrivateProfileString(Identifier, "SI", RomDelaySI ? "On" : " ", GetIniFileName());
 }
 void SetRecentRomDir (DWORD Index) {

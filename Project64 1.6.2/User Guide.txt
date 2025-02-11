@@ -228,7 +228,7 @@ Icepir8's Legacy LLE - This video plugin should be used where Jabo's Direct3D8 w
 		       It was created by Icepir8 for the unfinished "Legacy" experiment, but works here.
 		       HOWEVER, with some games it can crash the emulator, so sometimes ANGLE is needed.
 
-Jabo's Direct3D8 1.6.2 - This is the default plugin due to low specs requirements/good pc compatibility.
+Jabo's Direct3D8 1.6.2 - This is the default plugin due to low specs requirements/good PC compatibility.
 			 However, it also has many graphics emulation issues, and if your PC can support
 			 Icepir8's Legacy LLE video plugin, I'd highly suggest using that plugin instead
 			 if you experience bad graphic issues with the ROMs/hacks you're trying to play.
@@ -559,15 +559,17 @@ Caching=
 (On)
 Buffer= 
 (Off)
+DMA=
+(Off)
+TLB= 
+(On)
 ABL= 
+(Off)
+SPH= 
 (Off)
 RDP= 
 (Off)
 RSP=
-(Off)
-TLB= 
-(On)
-SP= 
 (Off)
 SI= 
 (Off)

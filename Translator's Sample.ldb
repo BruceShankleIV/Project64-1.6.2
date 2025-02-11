@@ -145,7 +145,7 @@ SCM, ABL, Larger Compile Buffer, and Register Caching"
 #144# "Larger Compile Buffer"
 #145# "TLB"
 #146# "Register Caching"
-#147# "Delay SI Interrupt"
+#147# "Delay SI"
 #148# "SP Hack"
 #149# "Autodetected"
 #150# "Limit FPS off"
@@ -222,7 +222,7 @@ You need to go into Settings and select an RSP plugin"
 You need to go into Settings and select an input (controller) plugin"
 #210# "Failed to load plugin"
 #211# "Advances through a game in single frames at a time (Sync game to Audio suggested)"
-#212# "Failed to save this savestate. Most likely reason for this is an attempt to load a savestate with a mismatched header which returned FALSE/wouldn't load. Save your savestate in a new file or slot, or exit and re-enter Project64 to deal with the issue"
+#212# "Failed to save this savestate. Save your savestate in a new file or slot, or exit and re-enter Project64 to deal with the issue"
 #213# "Cannot access save data. You may be running the application from an admin rights directory, or you may have multiple instances of Project64 open. Stop doing either of those to make this error go away"
 #214# "Attempt to open zip file failed.
 
@@ -276,3 +276,4 @@ Exiting thread
 #250# "Icepir8's Legacy LLE = High-end LLE Graphics
 Jabo's Direct3D8 1.6.2 = Low-end HLE Graphics
 ANGLE GLideN64 = SM64 ROMhacks Graphics"
+#251# "Align DMA"

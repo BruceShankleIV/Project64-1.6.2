@@ -40,7 +40,7 @@ LARGE_INTEGER Frequency, Frames[8], LastFrame;
 BOOL AutoSleep, DisableRegCaching, UseIni, UseTlb, UseLinking, RomBrowser,
 	IgnoreMove, Rercursion, LimitFPS,
 	AutoFullScreen, SystemCF, AlwaysOnTop, BasicMode, DelaySI, RememberCheats,
-	DelayRDP, DelayRSP, ForceClose;
+	DelayRDP, DelayRSP, AlignDMA, ForceClose;
 DWORD CurrentFrame, CPU_Type, SystemCPU_Type, SelfModCheck, SystemSelfModCheck,
 	RomsToRemember, RomDirsToRemember;
 HWND hMainWindow, hHiddenWin, hStatusWnd;
@@ -1539,9 +1539,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszArgs,
 	);
         DragAcceptFiles(hMainWindow, TRUE);
 	if ( !hMainWindow ) { return FALSE; }
+	SetupPlugins(hMainWindow);
 	if (__argc > 1) {
 		DWORD ThreadID;
-		SetupPlugins(hMainWindow);
 		SetupMenu(hMainWindow);
 		ShowWindow(hMainWindow, nWinMode);
 		strcpy(CurrentFileName, __argv[1]);
@@ -1551,7 +1551,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszArgs,
 			ShowRomList(hMainWindow);
 			RefreshRomBrowser();
 		} else {
-			SetupPlugins(hMainWindow);
 			SetupMenu(hMainWindow);
 			ShowWindow(hMainWindow, nWinMode);
 		}

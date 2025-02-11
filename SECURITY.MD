@@ -1,5 +1,7 @@
 Rumor has it that there are more vulnerabilities in Project64 1.6.2, of which have not had their technical workings explained yet. If you can confirm a vulnerability and explain the technical workings of a vulnerability present in Project64 1.6.2, please DM me on discord at bruceshankle or open an issue about it on GitHub and make sure I am notified so I am made aware of it, then we can start thinking about how it might be able to be fixed. However, if it is not addressed right away, do not fret, as Project64 1.6.2 has multiple failesafe mechanisms in the event of a vulnerability exploitation by a malicious ROM.
 
+In addition to said failesafe mechanism's, it would be much more difficult to take advantage of any vulnerability in Project64 1.6.2 compared to the original Project64 1.6 due to 1.6.2 building with ALSR (which randomizes addresses).
+
 What failesafe mechanism's does Project64 1.6.2 have exactly? I'll let GitHub tell you in its own words. But the key point is: "Overall, these measures help mitigate the impact of a vulnerability exploitation by containing the process's behavior and reducing its ability to perform harmful actions."
 
 

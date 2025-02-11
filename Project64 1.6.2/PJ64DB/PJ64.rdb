@@ -2133,7 +2133,7 @@ CPU=Recompiler
 SCM=Change Memory & Cache
 Buffer=On
 Status=Compatible
-SP=On
+SPH=On
 [A24F4CF1-A82327BA-C:4A]
 Game Name=Goldeneye 007 (J)
 MEM=4
@@ -2142,7 +2142,7 @@ CPU=Recompiler
 SCM=Change Memory & Cache
 Buffer=On
 Status=Compatible
-SP=On
+SPH=On
 [DCBC50D1-09FD1AA3-C:45]
 Game Name=Goldeneye 007 (U)
 MEM=4
@@ -2151,7 +2151,7 @@ CPU=Recompiler
 SCM=Change Memory & Cache
 Buffer=On
 Status=Compatible
-SP=On
+SPH=On
 [7A65FDEC-50296300-C:45]
 Game Name=Goldeneye 007 (B)
 MEM=4
@@ -2160,7 +2160,7 @@ CPU=Recompiler
 SCM=Change Memory & Cache
 Buffer=On
 Status=Compatible
-SP=On
+SPH=On
 [EE4A0E33-8FD588C9-C:50]
 Game Name=GT 64 - Championship Edition (E)
 MEM=8
@@ -5797,8 +5797,9 @@ CF=1
 CPU=Recompiler
 SCM=Check Memory & Cache
 Status=Semicompatible
-Plugin=ANGLE GLideN64 ONLY
+Plugin=Icepir8's LLE suggested
 RDP=On
+DMA=On
 [D9042FBB-FCFF997C-C:46]
 Game Name=Telefoot Soccer 2000 (F)
 MEM=8
@@ -5891,7 +5892,7 @@ MEM=4
 CPU=Recompiler
 SCM=Check Memory & Return
 Status=Compatible
-Cheat0=D109C5AC 0C02,8109C5AC 2400,D138E8CC 0C0E,8138E8CC 2400//Subscreen Fixes
+Cheat0=D109C5AC 0C02,8109C5AC 2400,D138E8CC 0C0E,8138E8CC 2400//D3D8 CF2 Subscreen Fixes
 CF=2
 [D43DA81F-021E1E19-C:45]
 Game Name=The Legend of Zelda - Ocarina of Time (U) (v1.1)
@@ -5899,7 +5900,7 @@ MEM=4
 CPU=Recompiler
 SCM=Check Memory & Return
 Status=Compatible
-Cheat0=D109C5BC 0C02,8109C5BC 2400,D138EA6C 0C0E,8138EA6C 2400//Subscreen Fixes
+Cheat0=D109C5BC 0C02,8109C5BC 2400,D138EA6C 0C0E,8138EA6C 2400//D3D8 CF2 Subscreen Fixes
 CF=2
 [693BA2AE-B7F14E9F-C:45]
 Game Name=The Legend of Zelda - Ocarina of Time (U) (v1.2)
@@ -5907,7 +5908,7 @@ MEM=4
 CPU=Recompiler
 SCM=Check Memory & Return
 Status=Compatible
-Cheat0=D109CC9C 0C02,8109CC9C 2400,D138F07C 0C0E,8138F07C 2400//Subscreen Fixes
+Cheat0=D109CC9C 0C02,8109CC9C 2400,D138F07C 0C0E,8138F07C 2400//D3D8 CF2 Subscreen Fixes
 CF=2
 [09465AC3-F8CB501B-C:50]
 Game Name=The Legend of Zelda - Ocarina of Time GC (E)
@@ -6539,7 +6540,7 @@ CF=1
 CPU=Recompiler
 SCM=Check Memory Advance
 Buffer=On
-SP=On
+SPH=On
 Status=Semicompatible
 Plugin=Icepir8's LLE ONLY
 [CD094235-88074B62-C:4A]
@@ -7074,7 +7075,7 @@ MEM=4
 CPU=Recompiler
 SCM=Check Memory & Return
 Status=Compatible
-Cheat0=D109C5AC 0C02,8109C5AC 2400,D138E8CC 0C0E,8138E8CC 2400//Subscreen Fixes
+Cheat0=D109C5AC 0C02,8109C5AC 2400,D138E8CC 0C0E,8138E8CC 2400//D3D8 CF2 Subscreen Fixes
 CF=2
 [D43DA81F-021E1E19-C:4A]
 Game Name=Zelda no Densetsu - Toki no Ocarina (J) (v1.1)
@@ -7082,7 +7083,7 @@ MEM=4
 CPU=Recompiler
 SCM=Check Memory & Return
 Status=Compatible
-Cheat0=D109C5BC 0C02,8109C5BC 2400,D138EA6C 0C0E,8138EA6C 2400//Subscreen Fixes
+Cheat0=D109C5BC 0C02,8109C5BC 2400,D138EA6C 0C0E,8138EA6C 2400//D3D8 CF2 Subscreen Fixes
 CF=2
 [693BA2AE-B7F14E9F-C:4A]
 Game Name=Zelda no Densetsu - Toki no Ocarina (J) (v1.2)
@@ -7090,7 +7091,7 @@ MEM=4
 CPU=Recompiler
 SCM=Check Memory & Return
 Status=Compatible
-Cheat0=D109CC9C 0C02,8109CC9C 2400,D138F07C 0C0E,8138F07C 2400//Subscreen Fixes
+Cheat0=D109CC9C 0C02,8109CC9C 2400,D138F07C 0C0E,8138F07C 2400//D3D8 CF2 Subscreen Fixes
 CF=2
 [F611F4BA-C584135C-C:4A]
 Game Name=Zelda no Densetsu - Toki no Ocarina GC (J)
@@ -7215,7 +7216,7 @@ Game Name=(Hack) Nimpize Adventure
 MEM=4
 CPU=Recompiler
 SCM=Check Memory & Return
-Cheat0=D109C5AC 0C02,8109C5AC 2400,D138E8CC 0C0E,8138E8CC 2400//Subscreen Fixes
+Cheat0=D109C5AC 0C02,8109C5AC 2400,D138E8CC 0C0E,8138E8CC 2400//D3D8 CF2 Subscreen Fixes
 Status=Compatible
 CF=2
 [ECFBE337-AAE69FDF-C:45]
@@ -7225,48 +7226,48 @@ CPU=Recompiler
 MEM=4
 SCM=Check Memory & Return
 Status=Compatible
-Cheat0=D109C5AC 0C02,8109C5AC 2400,D138E8CC 0C0E,8138E8CC 2400//Subscreen Fixes
+Cheat0=D109C5AC 0C02,8109C5AC 2400,D138E8CC 0C0E,8138E8CC 2400//D3D8 CF2 Subscreen Fixes
 [D1AA799D-489144F5-C:45]
 Game Name=(Hack) Ocarina of Time 1.0 (U) GZ Practice ROM
 MEM=8
 CPU=Interpreter
 Status=Compatible
-Cheat0=D109C5AC 0C02,8109C5AC 2400,D138E8CC 0C0E,8138E8CC 2400//Subscreen Fixes
+Cheat0=D109C5AC 0C02,8109C5AC 2400,D138E8CC 0C0E,8138E8CC 2400//D3D8 CF2 Subscreen Fixes
 CF=2
 [D1E7C5D7-17CAC125-C:45]
 Game Name=(Hack) Ocarina of Time 1.1 (U) GZ Practice ROM
 MEM=8
 CPU=Interpreter
 Status=Compatible
-Cheat0=D109C5BC 0C02,8109C5BC 2400,D138EA6C 0C0E,8138EA6C 2400//Subscreen Fixes
+Cheat0=D109C5BC 0C02,8109C5BC 2400,D138EA6C 0C0E,8138EA6C 2400//D3D8 CF2 Subscreen Fixes
 CF=2
 [2CE1A4BD-C9DC765A-C:45]
 Game Name=(Hack) Ocarina of Time 1.2 (U) GZ Practice ROM
 MEM=8
 CPU=Interpreter
 Status=Compatible
-Cheat0=D109CC9C 0C02,8109CC9C 2400,D138F07C 0C0E,8138F07C 2400//Subscreen Fixes
+Cheat0=D109CC9C 0C02,8109CC9C 2400,D138F07C 0C0E,8138F07C 2400//D3D8 CF2 Subscreen Fixes
 CF=2
 [D1AA799D-489144F5-C:4A]
 Game Name=(Hack) Ocarina of Time 1.0 (J) GZ Practice ROM
 MEM=8
 CPU=Interpreter
 Status=Compatible
-Cheat0=D109C5AC 0C02,8109C5AC 2400,D138E8CC 0C0E,8138E8CC 2400//Subscreen Fixes
+Cheat0=D109C5AC 0C02,8109C5AC 2400,D138E8CC 0C0E,8138E8CC 2400//D3D8 CF2 Subscreen Fixes
 CF=2
 [D1E7C5D7-17CAC125-C:4A]
 Game Name=(Hack) Ocarina of Time 1.1 (J) GZ Practice ROM
 MEM=8
 CPU=Interpreter
 Status=Compatible
-Cheat0=D109C5BC 0C02,8109C5BC 2400,D138EA6C 0C0E,8138EA6C 2400//Subscreen Fixes
+Cheat0=D109C5BC 0C02,8109C5BC 2400,D138EA6C 0C0E,8138EA6C 2400//D3D8 CF2 Subscreen Fixes
 CF=2
 [2CE1A4BD-C9DC765A-C:4A]
 Game Name=(Hack) Ocarina of Time 1.2 (J) GZ Practice ROM
 MEM=8
 CPU=Interpreter
 Status=Compatible
-Cheat0=D109CC9C 0C02,8109CC9C 2400,D138F07C 0C0E,8138F07C 2400//Subscreen Fixes
+Cheat0=D109CC9C 0C02,8109CC9C 2400,D138F07C 0C0E,8138F07C 2400//D3D8 CF2 Subscreen Fixes
 CF=2
 [1EDEA0DE-4C0056DE-C:45]
 Game Name=(Hack) Cosmic Goddess
@@ -7281,7 +7282,7 @@ Game Name=(Hack) Dawn & Dusk Practice ROM
 MEM=8
 CPU=Interpreter
 Status=Compatible
-Cheat0=D138E8CC 0C0E,8138E8CC 2400//Equipment Screen Delay Fix
+Cheat0=D138E8CC 0C0E,8138E8CC 2400//D3D8 Equip Flash Fix
 CF=2
 [3C1CA1D5-BE199CC1-C:45]
 Game Name=(Hack) Dawn & Dusk
@@ -7289,7 +7290,7 @@ MEM=4
 CPU=Recompiler
 SCM=Check Memory & Return
 Status=Compatible
-Cheat0=D138E8CC 0C0E,8138E8CC 2400//Equipment Screen Delay Fix
+Cheat0=D138E8CC 0C0E,8138E8CC 2400//D3D8 Equip Flash Fix
 CF=2
 [F099270C-B3639549-C:45]
 Game Name=(Hack) Master of Time
@@ -7298,7 +7299,7 @@ CPU=Recompiler
 SCM=Check Memory & Return
 Status=Compatible
 Plugin=Use D3D8, possible display list error?
-Cheat0=D138E8CC 0C0E,8138E8CC 2400//Equipment Screen Delay Fix
+Cheat0=D138E8CC 0C0E,8138E8CC 2400//D3D8 Equip Flash Fix
 CF=2
 [F0B7CBCC-0ABE720A-C:45]
 Game Name=(Hack) Master of Time Updated
@@ -7306,7 +7307,7 @@ MEM=4
 CPU=Recompiler
 SCM=Check Memory & Return
 Status=Compatible
-Cheat0=D138E8CC 0C0E,8138E8CC 2400//Equipment Screen Delay Fix
+Cheat0=D138E8CC 0C0E,8138E8CC 2400//D3D8 Equip Flash Fix
 CF=2
 [DDFC36FA-8F164F91-C:45]
 Game Name=(Hack) Puzzling
@@ -7314,7 +7315,7 @@ MEM=4
 CPU=Recompiler
 SCM=Check Memory & Return
 Status=Compatible
-Cheat0=D138E8CC 0C0E,8138E8CC 2400//Equipment Screen Delay Fix
+Cheat0=D138E8CC 0C0E,8138E8CC 2400//D3D8 Equip Flash Fix
 CF=2
 [1E3E437F-5F1C663A-C:45]
 Game Name=(Hack) The Fate of the Bombiwa
@@ -7322,10 +7323,19 @@ MEM=4
 CPU=Recompiler
 SCM=Check Memory & Return
 Status=Compatible
-Cheat0=D138E8CC 0C0E,8138E8CC 2400//Equipment Screen Delay Fix
+Cheat0=D138E8CC 0C0E,8138E8CC 2400//D3D8 Equip Flash Fix
 CF=2
 [9CC44345-D6DF4426-C:45]
 Game Name=(Hack) Super Mario Star Road
+MEM=8
+CF=1
+CPU=Recompiler
+SCM=Cache
+Status=Compatible
+Plugin=ANGLE GLideN64 suggested
+Cheat0=802473A7 00BC,802473B3 0000,8024748E 0000,80247966 0000,80247996 0000,8027B4F6 0000,8027B46A 0000,8027B4AA 0000,8027B582 0000,8027C99F 00BC,8027C9AB 0000//Cropfix
+[84BA9B8A-3080826F-C:45]
+Game Name=(Hack) SM64 Halloween Mayhem
 MEM=8
 CF=1
 CPU=Recompiler
@@ -7359,7 +7369,7 @@ SCM=Cache
 Status=Compatible
 Plugin=ANGLE GLideN64 suggested
 [B9730816-0285077B-C:45]
-Game Name=(Hack) SM64: BEYOND THE CURSED MIRROR
+Game Name=(Hack) SM64 BEYOND THE CURSED MIRROR
 MEM=8
 CF=1
 CPU=Recompiler
@@ -7367,7 +7377,7 @@ SCM=Cache
 Status=Compatible
 Plugin=ANGLE GLideN64 suggested
 [E5E9F5FB-E1C4551D-C:45]
-Game Name=(Hack) Mario 64 60fps
+Game Name=(Hack) SM64 60fps
 MEM=8
 CF=1
 CPU=Recompiler

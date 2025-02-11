@@ -78,7 +78,7 @@ extern LARGE_INTEGER Frequency, Frames[8], LastFrame;
 extern BOOL AutoSleep, DisableRegCaching, UseIni, UseTlb, UseLinking, RomBrowser,
 	IgnoreMove, Rercursion, LimitFPS,
 	AutoFullScreen, SystemCF, AlwaysOnTop, BasicMode, DelaySI, RememberCheats,
-	DelayRDP, DelayRSP;
+	DelayRDP, DelayRSP, AlignDMA;
 extern DWORD CurrentFrame, CPU_Type, SystemCPU_Type, SelfModCheck, SystemSelfModCheck,
 	RomsToRemember, RomDirsToRemember;
 extern HWND hMainWindow, hHiddenWin, hStatusWnd;

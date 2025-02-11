@@ -297,3 +297,4 @@ char * GS               ( int StringID );
 #define NUMBER_2		        248
 #define NUMBER_3		        249
 #define PLUGINS				250
+#define ROM_ALIGN_DMA			251

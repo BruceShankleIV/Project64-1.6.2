@@ -175,7 +175,7 @@ LANG_STR DefaultString[] = {
 	{ ROM_LARGE_BUFFER,    "Larger Compile Buffer"},
 	{ ROM_USE_TLB,         "TLB"},
 	{ ROM_REG_CACHE,       "Register Caching"},
-	{ ROM_DELAY_SI,        "Delay SI Interrupt"},
+	{ ROM_DELAY_SI,        "Delay SI"},
 	{ ROM_SP_HACK,         "SP Hack"},
 	{ ROM_SAVE,	       "Autodetected"},
 	{ LIMITFPS_OFF,	       "Limit FPS off"},
@@ -262,7 +262,7 @@ LANG_STR DefaultString[] = {
 	{ MSG_FAIL_INIT_CONTROL,  "The default or selected input plugin is missing or invalid.\n\nYou need to go into Settings and select an input (controller) plugin"},
 	{ MSG_FAIL_LOAD_PLUGIN,   "Failed to load plugin"},
 	{ MENU_ADVANCE_DESC,	  "Advances through a game in single frames at a time (Sync game to Audio suggested)"},
-	{ MSG_FAIL_OPEN_SAVE,     "Failed to save this savestate. Most likely reason for this is an attempt to load a savestate with a mismatched header which returned FALSE/wouldn't load. Save your savestate in a new file or slot, or exit and re-enter Project64 to deal with the issue"},
+	{ MSG_FAIL_OPEN_SAVE,     "Failed to save this savestate. Save your savestate in a new file or slot, or exit and re-enter Project64 to deal with the issue"},
         { MSG_FAIL_OPEN_FLASH,    "Cannot access save data. You may be running the application from an admin rights directory, or you may have multiple instances of Project64 open. Stop doing either of those to make this error go away"},
 	{ MSG_FAIL_OPEN_ZIP,      "Attempt to open zip file failed.\n\nPotentially is a corrupt zip file - try unzipping ROM manually"},
 	{ MSG_RB_INFO,		  "Displays ROM-specific information about a selected ROM"},
@@ -301,6 +301,7 @@ LANG_STR DefaultString[] = {
 	{ NUMBER_2,		  "2 (Laggy, Semi-stable)"},
 	{ NUMBER_3,               "3 (Laggard, Stable)"},
 	{ PLUGINS,		  "Icepir8's Legacy LLE = High-end LLE Graphics\nJabo's Direct3D8 1.6.2 = Low-end HLE Graphics\nANGLE GLideN64 = SM64 ROMhacks Graphics"},
+	{ ROM_ALIGN_DMA,	  "Align DMA"},
 };
 class CLanguage  {
 	void FindLangName  ( int Index );

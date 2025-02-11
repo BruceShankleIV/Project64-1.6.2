@@ -41,6 +41,7 @@ void FirstDMA (void) {
 	}
 }
 void PI_DMA_READ (void) {
+	if (AlignDMA) { PI_CART_ADDR_REG &= ~1; PI_DRAM_ADDR_REG &= ~7; }
 	if ( PI_DRAM_ADDR_REG + PI_RD_LEN_REG + 1 > RDRAMsize) {
 		PI_STATUS_REG &= ~PI_STATUS_DMA_BUSY;
 		MI_INTR_REG |= MI_INTR_PI;
@@ -85,6 +86,7 @@ void PI_DMA_READ (void) {
 }
 void PI_DMA_WRITE (void) {
 	DWORD i;
+	if (AlignDMA) { PI_CART_ADDR_REG &= ~1; PI_DRAM_ADDR_REG &= ~7; }
 	PI_STATUS_REG |= PI_STATUS_DMA_BUSY;
 	if ( PI_DRAM_ADDR_REG + PI_WR_LEN_REG + 1 > RDRAMsize) {
 		PI_STATUS_REG &= ~PI_STATUS_DMA_BUSY;

@@ -600,7 +600,6 @@ BOOL CALLBACK PluginSelectProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
 				strcpy(LoadFileName,SaveFile);
 				CPU_Action.RestoreState = TRUE;
 			} else {
-				ShutdownPlugins();
 				if (!RomBrowser) { SetupPlugins(hMainWindow); }
 				if (RomBrowser) { SetupPlugins(hHiddenWin); }
 			}
@@ -879,6 +878,7 @@ BOOL CALLBACK RomSettingsProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 		SetFlagControl(hDlg,&RomDelaySI, IDC_DELAY_SI, ROM_DELAY_SI);
 		SetFlagControl(hDlg,&RomDelayRDP, IDC_DELAY_RDP, ROM_DELAY_RDP);
 		SetFlagControl(hDlg,&RomDelayRSP, IDC_DELAY_RSP, ROM_DELAY_RSP);
+		SetFlagControl(hDlg,&RomAlignDMA, IDC_ALIGN_DMA, ROM_ALIGN_DMA);
 		SetFlagControl(hDlg,&RomSPHack, IDC_ROM_SPHACK, ROM_SP_HACK);
 		if (strlen(RomName) == 0 || !UseIni) {
 			EnableWindow(GetDlgItem(hDlg,IDC_MEMORY_SIZE_TEXT),FALSE);
@@ -895,6 +895,7 @@ BOOL CALLBACK RomSettingsProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 			EnableWindow(GetDlgItem(hDlg,IDC_DELAY_SI),FALSE);
 			EnableWindow(GetDlgItem(hDlg,IDC_DELAY_RDP),FALSE);
 			EnableWindow(GetDlgItem(hDlg,IDC_DELAY_RSP),FALSE);
+			EnableWindow(GetDlgItem(hDlg,IDC_ALIGN_DMA),FALSE);
 			EnableWindow(GetDlgItem(hDlg,IDC_ROM_SPHACK),FALSE);
 			EnableWindow(GetDlgItem(hDlg,IDC_ROM_REGCACHE),FALSE);
 			EnableWindow(GetDlgItem(hDlg,IDC_BLOCK_LINKING),FALSE);
@@ -904,8 +905,7 @@ BOOL CALLBACK RomSettingsProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 		break;
 	case WM_NOTIFY:
 		if (((NMHDR FAR *) lParam)->code == PSN_APPLY) {
-			if (strlen(RomName) == 0) { break; }
-			if (!UseIni) { break; }
+			if (strlen(RomName) == 0 || !UseIni) { break; }
 			indx = SendMessage(GetDlgItem(hDlg,IDC_RDRAM_SIZE),CB_GETCURSEL,0,0);
 			ROMRAMsize = SendMessage(GetDlgItem(hDlg,IDC_RDRAM_SIZE),CB_GETITEMDATA,indx,0);
 			indx = SendMessage(GetDlgItem(hDlg,IDC_SAVE_TYPE),CB_GETCURSEL,0,0);
@@ -920,6 +920,7 @@ BOOL CALLBACK RomSettingsProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 			RomDelaySI = SendMessage(GetDlgItem(hDlg,IDC_DELAY_SI),BM_GETSTATE, 0,0) == BST_CHECKED?TRUE:FALSE;
 			RomDelayRDP = SendMessage(GetDlgItem(hDlg,IDC_DELAY_RDP),BM_GETSTATE, 0,0) == BST_CHECKED?TRUE:FALSE;
 			RomDelayRSP = SendMessage(GetDlgItem(hDlg,IDC_DELAY_RSP),BM_GETSTATE, 0,0) == BST_CHECKED?TRUE:FALSE;
+			RomAlignDMA = SendMessage(GetDlgItem(hDlg,IDC_ALIGN_DMA),BM_GETSTATE, 0,0) == BST_CHECKED?TRUE:FALSE;
 			RomSPHack = SendMessage(GetDlgItem(hDlg,IDC_ROM_SPHACK),BM_GETSTATE, 0,0) == BST_CHECKED?TRUE:FALSE;
 			RomUseTlb = SendMessage(GetDlgItem(hDlg,IDC_USE_TLB),BM_GETSTATE, 0,0) == BST_CHECKED?TRUE:FALSE;
 			RomUseCache = SendMessage(GetDlgItem(hDlg,IDC_ROM_REGCACHE),BM_GETSTATE, 0,0) == BST_CHECKED?TRUE:FALSE;

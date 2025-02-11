@@ -1670,11 +1670,11 @@ int r4300i_SW_NonMemory ( DWORD PAddr, DWORD Value ) {
 			if ( ( Value & SP_SET_SIG6 ) != 0) { SP_STATUS_REG |= SP_STATUS_SIG6;  }
 			if ( ( Value & SP_CLR_SIG7 ) != 0) { SP_STATUS_REG &= ~SP_STATUS_SIG7; }
 			if ( ( Value & SP_SET_SIG7 ) != 0) { SP_STATUS_REG |= SP_STATUS_SIG7;  }
-			if (DelayRDP == TRUE && *( DWORD *)(DMEM + 0xFC0) == 1) {
+			if (DelayRDP && *( DWORD *)(DMEM + 0xFC0) == 1) {
 				ChangeTimer(RspTimer, 0x900);
 				break;
 			}
-			if (DelayRSP == TRUE && *( DWORD *)(DMEM + 0xFC0) == 2) {
+			if (DelayRSP && *( DWORD *)(DMEM + 0xFC0) == 2) {
 				ChangeTimer(RspTimer, 0x900);
 				break;
 			}
