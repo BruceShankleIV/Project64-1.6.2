@@ -60,7 +60,6 @@ SETTINGS_TAB SettingsTabsBasic[] = {
 	{ TAB_DIRECTORY,IDD_Settings_Directory,DirSelectProc              },
 	{ MENU_OPTIONS,IDD_Settings_General,GeneralOptionsProc             },
 	{ TAB_ROMSELECTION,IDD_Settings_RomBrowser,RomBrowserProc         },
-	{ TAB_ROMSETTINGS,IDD_Settings_Rom,RomSettingsProc                },
 	{ TAB_ROMNOTES,IDD_Settings_RomNotes,RomNotesProc                 },
 	{ TAB_SHELLINTERGATION,IDD_Settings_ShellInt,ShellIntegrationProc },
 };

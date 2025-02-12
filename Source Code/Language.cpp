@@ -15,8 +15,8 @@ typedef struct {
 	char   Str[MAX_STRING_LEN];
 } LANG_STR;
 LANG_STR DefaultString[] = {
-    { LANGUAGE_AUTHOR,     "Bruce Shankle IV"		  },
-    { LANGUAGE_VERSION,    "1.6.2 (BETA)"                 },
+    { LANGUAGE_AUTHOR,     "Bruce IV"			  },
+    { LANGUAGE_VERSION,    "1.6.2 Canary"                 },
     { LANGUAGE_DATE,       "February 2025"                },
 	{ INI_CURRENT_LANG,    "Language Database (.LDB)" },
 	{ INI_AUTHOR,          "Author"                   },
@@ -258,7 +258,7 @@ LANG_STR DefaultString[] = {
 	{ MSG_MEM_ALLOC_ERROR,    "Failed to allocate memory.\n\nExiting thread"},
 	{ MSG_FAIL_INIT_GFX,      "The default or selected video plugin is missing or invalid.\n\nYou need to go into Settings and select a video (graphics) plugin"},
 	{ MSG_FAIL_INIT_AUDIO,    "The default or selected audio plugin is missing or invalid.\n\nYou need to go into Settings and select an audio (sound) plugin"},
-	{ MSG_FAIL_INIT_RSP,      "The default or selected RSP plugin is missing or invalid.\n\nYou need to go into Settings and select an RSP plugin"},
+	{ MSG_FAIL_INIT_RSP,      "The default or selected RSP plugin is missing or invalid.\n\nYou need to go into Settings and select an RSP plugin\n\n(A possible cause of this error can be Data Execution Prevention interfering with plugin initialization)"},
 	{ MSG_FAIL_INIT_CONTROL,  "The default or selected input plugin is missing or invalid.\n\nYou need to go into Settings and select an input (controller) plugin"},
 	{ MSG_FAIL_LOAD_PLUGIN,   "Failed to load plugin"},
 	{ MENU_ADVANCE_DESC,	  "Advances through a game in single frames at a time (Sync game to Audio suggested)"},

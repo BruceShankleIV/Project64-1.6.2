@@ -216,7 +216,9 @@ You need to go into Settings and select a video (graphics) plugin"
 You need to go into Settings and select an audio (sound) plugin"
 #208# "The default or selected RSP plugin is missing or invalid.
 
-You need to go into Settings and select an RSP plugin"
+You need to go into Settings and select an RSP plugin
+
+(A possible cause of this error can be Data Execution Prevention interfering with plugin initialization)"
 #209# "The default or selected input plugin is missing or invalid.
 
 You need to go into Settings and select an input (controller) plugin"

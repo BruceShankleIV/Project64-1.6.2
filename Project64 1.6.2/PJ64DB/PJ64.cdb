@@ -1,8 +1,8 @@
 //ESSENTIAL SPACE
 [Meta]
-Author=Bruce Shankle IV x Gent
+Author=Bruce IV x Gent
 Date=February 2025
-Version=1.6.2 (BETA)
+Version=1.6.2 Canary
 [28D5562D-E4D5AE50-C:4A]
 Cheat0="Press F9 to Refresh Timer to 80",890760CA 0400
 Cheat0_N=When time is running low, just press F9 to refresh the timer back to 80.
@@ -7949,10 +7949,10 @@ Cheat15="MARIO D File\Emptied mote",8020785A 007E
 Cheat16="Level Select",D033AFA1 0020,A032DDF9 00??
 Cheat16_N=Hold L while entering a level through any course select to warp to your desired level.
 Cheat16_O=$09 Bob-omb Battlefield,$18 Whomp's Fortress,$0C Jolly Roger Bay,$05 Cool, Cool Mountain,$04 Big Boo's Haunt,$07 Hazy Maze Cave,$16 Lethal Lava Land,$08 Shifting Sand Land,$17 Dire Dire Docks,$0A Snowman's Land,$0B Wet Dry World,$24 Tall Tall Mountain,$0D Tiny Huge Island,$0E Tick Tock Clock,$0F Rainbow Ride,$11 Bowser in the Dark World,$1E Bowser in the Dark World Boss,$13 Bowser in the Fire Sea,$21 Bowser in the Fire Sea Boss,$15 Bowser in the Sky,$22 Bowser in the Sky Boss,$1B The Princess's Secret Slide,$14 The Secret Aquarium,$1D Tower of The Wing Cap,$1C Cavern of The Metal Cap,$12 Vanish Cap Under The Moat,$1F Wing Mario Over The Rainbow
-Cheat21="Crop Fix",802473A7 00BC,802473B3 0000,8024748E 0000,80247966 0000,80247996 0000,8027B4F6 0000,8027B46A 0000,8027B4AA 0000,8027B582 0000,8027C99F 00BC,8027C9AB 0000
-Cheat21_N=This causes the credits to visually glitch but is an otherwise harmless fix to the cropping at the top and bottom of the display. Reset the game when applying or revoking this cheat.
-Cheat22="Widescreen",8127D55E 47E0,8127BD20 3C07,8127BD22 3FE3,D11A3E40 8FA7,811A3E40 3C07,D11A3E42 0054,811A3E42 3FE3
-Cheat22_N=Reset the game when applying or revoking this cheat.
+Cheat17="Crop Fix",802473A7 00BC,802473B3 0000,8024748E 0000,80247966 0000,80247996 0000,8027B4F6 0000,8027B46A 0000,8027B4AA 0000,8027B582 0000,8027C99F 00BC,8027C9AB 0000
+Cheat17_N=This causes the credits to visually glitch but is an otherwise harmless fix to the cropping at the top and bottom of the display. Reset the game when applying or revoking this cheat.
+Cheat18="Widescreen",8127D55E 47E0,8127BD20 3C07,8127BD22 3FE3,D11A3E40 8FA7,811A3E40 3C07,D11A3E42 0054,811A3E42 3FE3
+Cheat18_N=Reset the game when applying or revoking this cheat.
 [A2E8F35B-C9DC87D9-C:45]
 Cheat0="Fly Through 1st & Last Ring Only To Complete Challenge",801442E9 0063
 Cheat1="Infinite Freezing Breath",8122CDE8 42C8
@@ -15548,4 +15548,14 @@ Cheat8="MARIO C File 120 Stars",80207803 0001,802077EB 00C7,50001101 0000,802077
 Cheat9="MARIO D File 120 Stars",80207873 0001,8020785B 00C7,50001101 0000,8020785C 00FF
 Cheat10="Widescreen",8127D55E 47E0,8127BD20 3C07,8127BD22 3FE3,D11A3E40 8FA7,811A3E40 3C07,D11A3E42 0054,811A3E42 3FE3
 Cheat10_N=Reset the game when applying or revoking this cheat.
+[E2ECA4F2-9335BD40-C:45]
+Cheat0="Infinite\Lives",8033B21D 0064
+Cheat1="Infinite\Energy",8033B21E 0008
+Cheat2="Mario's Cap Options",8033B177 00??
+Cheat2_O=$10 Normal,$19 Flying Mario
+Cheat3="Press L to Levitate",D033AFA1 0020,8133B1BC 4220,D033AFA1 0020,8133B17C 0300,D033AFA1 0020,8133B17E 0880
+Cheat4="MARIO A File 120 Stars",80207723 0001,8020770B 00C7,50001101 0000,8020770C 00FF
+Cheat5="MARIO B File 120 Stars",80207793 0001,8020777B 00C7,50001101 0000,8020777C 00FF
+Cheat6="MARIO C File 120 Stars",80207803 0001,802077EB 00C7,50001101 0000,802077EC 00FF
+Cheat7="MARIO D File 120 Stars",80207873 0001,8020785B 00C7,50001101 0000,8020785C 00FF
 //ESSENTIAL SPACE

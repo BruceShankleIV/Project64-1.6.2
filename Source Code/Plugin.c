@@ -36,7 +36,7 @@ DWORD PluginCount, RspTaskValue, AudioIntrReg;
 WORD RSPVersion,ContVersion;
 HANDLE hAudioThread = NULL;
 CONTROL Controllers[4];
-BOOL PluginsInitilized = FALSE;
+BOOL PluginsInitialized = FALSE;
 BOOL PluginsChanged ( HWND hDlg );
 BOOL ValidPluginVersion ( PLUGIN_INFO * PluginInfo );
 void AudioThread (void) {
@@ -274,7 +274,7 @@ void ResetAudio(HWND hWnd) {
 		ProcessAList     = NULL;
 		AiRomClosed      = NULL;
 		DisplayError(GS(MSG_FAIL_INIT_AUDIO));
-		PluginsInitilized = FALSE;
+		PluginsInitialized = FALSE;
 	} else {
 		AUDIO_INFO AudioInfo;
 		AudioInfo.hwnd = hWnd;
@@ -302,7 +302,7 @@ void ResetAudio(HWND hWnd) {
 			ProcessAList     = NULL;
 			AiRomClosed      = NULL;
 			DisplayError(GS(MSG_FAIL_INIT_AUDIO));
-			PluginsInitilized = FALSE;
+			PluginsInitialized = FALSE;
 		}
 		if (AiUpdate) {
 			DWORD ThreadID;
@@ -314,10 +314,10 @@ void SetupPlugins (HWND hWnd) {
 	static DWORD AI_DUMMY = 0;
 	ShutdownPlugins();
 	GetCurrentDlls();
-	PluginsInitilized = TRUE;
+	PluginsInitialized = TRUE;
 	if (!LoadGFXDll(GfxDLL)) {
 		DisplayError(GS(MSG_FAIL_INIT_GFX));
-		PluginsInitilized = FALSE;
+		PluginsInitialized = FALSE;
 	} else {
 		GFX_INFO GfxInfo;
 		GfxInfo.MemoryBswaped = TRUE;
@@ -353,7 +353,7 @@ void SetupPlugins (HWND hWnd) {
 		GfxInfo.VI__Y_SCALE_REG = &VI_Y_SCALE_REG;
 		if (!InitiateGFX(GfxInfo) ) {
 			DisplayError(GS(MSG_FAIL_INIT_GFX));
-			PluginsInitilized = FALSE;
+			PluginsInitialized = FALSE;
 		}
 	}
 	if (!LoadAudioDll(AudioDLL) ) {
@@ -366,7 +366,7 @@ void SetupPlugins (HWND hWnd) {
 		ProcessAList     = NULL;
 		AiRomClosed      = NULL;
 		DisplayError(GS(MSG_FAIL_INIT_AUDIO));
-		PluginsInitilized = FALSE;
+		PluginsInitialized = FALSE;
 	} else {
 		AUDIO_INFO AudioInfo;
 		AudioInfo.hwnd = hWnd;
@@ -394,7 +394,7 @@ void SetupPlugins (HWND hWnd) {
 			ProcessAList     = NULL;
 			AiRomClosed      = NULL;
 			DisplayError(GS(MSG_FAIL_INIT_AUDIO));
-			PluginsInitilized = FALSE;
+			PluginsInitialized = FALSE;
 		}
 		if (AiUpdate) {
 			DWORD ThreadID;
@@ -403,7 +403,7 @@ void SetupPlugins (HWND hWnd) {
 	}
 	if (!LoadRSPDll(RspDLL)) {
 		DisplayError(GS(MSG_FAIL_INIT_RSP));
-		PluginsInitilized = FALSE;
+		PluginsInitialized = FALSE;
 	} else {
 		RSP_INFO_1_0 RspInfo10;
 		RSP_INFO_1_1 RspInfo11;
@@ -467,7 +467,7 @@ void SetupPlugins (HWND hWnd) {
 	}
 	if (!LoadControllerDll(ControllerDLL)) {
 		DisplayError(GS(MSG_FAIL_INIT_CONTROL));
-		PluginsInitilized = FALSE;
+		PluginsInitialized = FALSE;
 	} else {
 		Controllers[0].Present = FALSE;
 		Controllers[0].RawData = FALSE;
@@ -494,7 +494,7 @@ void SetupPlugins (HWND hWnd) {
 			InitiateControllers_1_1(ControlInfo);
 		}
 	}
-	if (!PluginsInitilized) { ChangeSettings(hMainWindow); }
+	if (!PluginsInitialized) { ChangeSettings(hMainWindow); }
 }
 void SetupPluginScreen (HWND hDlg) {
 	WIN32_FIND_DATA FindData;
@@ -615,7 +615,7 @@ void ShutdownPlugins (void) {
 	FreeLibrary(hControllerDll);
 	FreeLibrary(hGfxDll);
 	FreeLibrary(hRspDll);
-	PluginsInitilized = FALSE;
+	PluginsInitialized = FALSE;
 }
 BOOL ValidPluginVersion ( PLUGIN_INFO * PluginInfo ) {
 	switch (PluginInfo->Type) {

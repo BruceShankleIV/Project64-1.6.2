@@ -645,7 +645,7 @@ void OpenChosenFile ( void ) {
 	char Message[100];
 	BYTE Test[4];
 	int count;
-	if (!PluginsInitilized) {
+	if (!PluginsInitialized) {
 		DisplayError(GS(MSG_PLUGIN_NOT_INIT));
 		return;
 	}
@@ -902,7 +902,7 @@ void OpenChosenFile ( void ) {
 		memset(&CPU_Action, 0, sizeof(CPU_Action));
 		CPU_Action.hStepping = CreateEvent(NULL, FALSE, FALSE, NULL);
 		WrittenToRom = FALSE;
-		InitilizeTLB();
+		InitializeTLB();
 		InitalizeR4300iRegisters(LoadPifRom(*(ROM + 0x3D)), *(ROM + 0x3D), GetCicChipID(ROM));
 		BuildInterpreter();
 		RecompPos = RecompCode;

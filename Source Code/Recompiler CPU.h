@@ -168,7 +168,7 @@ void FixRandomReg           ( void );
 void FreeSection            ( BLOCK_SECTION * Section, BLOCK_SECTION * Parent);
 void StartRecompilerCPU     ( void );
 void GenerateSectionLinkage ( BLOCK_SECTION * Section );
-void InitilizeInitialCompilerVariable ( void);
+void InitializeInitialCompilerVariable ( void);
 extern DWORD TLBLoadAddress, TargetIndex;
 extern ORIGINAL_MEMMARKER * OrigMem;
 extern TARGET_INFO * TargetInfo;

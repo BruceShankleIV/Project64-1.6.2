@@ -81,7 +81,7 @@ typedef struct {
 extern FASTTLB FastTlb[64];
 extern TLB tlb[32];
 BOOL AddressDefined ( DWORD VAddr);
-void InitilizeTLB   ( void );
+void InitializeTLB   ( void );
 void SetupTLB       ( void );
 void TLB_Probe      ( void );
 void TLB_Read       ( void );

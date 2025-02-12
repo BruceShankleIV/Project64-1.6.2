@@ -38,19 +38,23 @@ Windows Security's Virus & threat protection can interfere with this installer w
 
 
 
-Avoid loading decompressed roms into the emulator or they can misbehave/crash. When I say decompressed I don't mean extracted from a .zip/compression format, but when the .z64/.n64 file itself has not been compressed.
+Windows DEP (Data Execution Prevention) can also interfere with Project64.exe by tampering with plugin initialization. If you don't know what that is, don't worry because it should be disabled, and even if you do have DEP enabled it's not going to break Project64, but it will make your life harder.
+
+
+
+Avoid loading decompressed ROMs into the emulator or they can misbehave/crash. When I say decompressed I don't mean extracted from a .zip/compression format, but when the .z64/.n64 file itself has not been compressed.
 
 
 The default video plugin can have flickering issues with N64 games on modern hardware. Use Icepir8's Legacy LLE to prevent flickering problems in games like Paper Mario.
 
 
-The default input plugin is just for general-use, if you play on keyboard you should use LINK's DirectInput7 which has key binding on the F and G keys (but does not save its config, you can save its config with Jabo's DirectInput7 though), while controller users should try the Octomino SDL2 plugin and configure it after opening a rom, though Octomino SDL2 lacks pak support which is required by some games like GoldenEye.
+The default input plugin is just for general-use, if you play on keyboard you should use LINK's DirectInput7 which has key binding on the F and G keys (but does not save its config, you can save its config with Jabo's DirectInput7 though), while controller users should try the Octomino SDL2 plugin and configure it after opening a ROM, though Octomino SDL2 lacks pak support which is required by some games like GoldenEye.
 
 
-Project64 1.6 was not designed to support romhacks. If you want to use this emulator with romhacks, you may need to use specific rom settings, update your RDB, or use a specific video plugin. Please see the user guide for more info about this.
+Project64 1.6 was not designed to support ROMhacks. If you want to use this emulator with ROMhacks, you may need to use specific ROM settings, update your RDB, or use a specific video plugin. Please see the user guide for more info about this.
 
 
-If you plan on using this as your main emulator, I strongly suggest right clicking an N64 rom (.n64, .z64 file), Open with, make sure "Always use this app to open .z64/.n64 files" is checked, More apps, Look for another app on this PC, and then select the Project64.exe. If you already have a different version of Project64 setup to do this, it might just open up inside of the other version of Project64 instead due to a bug in Windows. To fix this Windows' bug, you can rename the Project64.exe that isn't in the Project64 1.6.2 folder. I also advise right clicking on the Project64 1.6.2 icon in your taskbar and pinning it to the taskbar to quickly launch it.
+If you plan on using this as your main emulator, I strongly suggest right clicking an N64 ROM (.n64, .z64 file), Open with, make sure "Always use this app to open .z64/.n64 files" is checked, More apps, Look for another app on this PC, and then select the Project64.exe. If you already have a different version of Project64 setup to do this, it might just open up inside of the other version of Project64 instead due to a bug in Windows. To fix this Windows' bug, you can rename the Project64.exe that isn't in the Project64 1.6.2 folder. I also advise right clicking on the Project64 1.6.2 icon in your taskbar and pinning it to the taskbar to quickly launch it.
 
 
 

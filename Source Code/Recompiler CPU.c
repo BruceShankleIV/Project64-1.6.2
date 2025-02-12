@@ -41,7 +41,7 @@ DWORD GetNewTestValue( void );
 void _fastcall InheritConstants(BLOCK_SECTION * Section);
 BOOL InheritParentInfo (BLOCK_SECTION * Section);
 void _fastcall InitilzeSection(BLOCK_SECTION * Section, BLOCK_SECTION * Parent, DWORD StartAddr, DWORD ID);
-void InitilizeRegSet(REG_INFO * RegSet);
+void InitializeRegSet(REG_INFO * RegSet);
 BOOL IsAllParentLoops(BLOCK_SECTION * Section, BLOCK_SECTION * Parent, BOOL IgnoreIfCompiled, DWORD Test);
 void MarkCodeBlock (DWORD PAddr);
 void SyncRegState (BLOCK_SECTION * Section, REG_INFO * SyncTo);
@@ -49,7 +49,7 @@ DWORD TLBLoadAddress, TargetIndex;
 TARGET_INFO * TargetInfo = NULL;
 BLOCK_INFO BlockInfo;
 ORIGINAL_MEMMARKER * OrigMem = NULL;
-void InitilizeInitialCompilerVariable ( void)
+void InitializeInitialCompilerVariable ( void)
 {
 	memset(&BlockInfo,0,sizeof(BlockInfo));
 }
@@ -57,7 +57,7 @@ void _fastcall AddParent(BLOCK_SECTION * Section, BLOCK_SECTION * Parent){
 	int NoOfParents, count;
 	if (Section == NULL) { return; }
 	if (Parent == NULL) {
-		InitilizeRegSet(&Section->RegStart);
+		InitializeRegSet(&Section->RegStart);
 		memcpy(&Section->RegWorking,&Section->RegStart,sizeof(REG_INFO));
 		return;
 	}
@@ -206,7 +206,7 @@ BYTE * CompileDelaySlot(void) {
 	CPU_Message("Delay Slot location: %X",PROGRAM_COUNTER );
 	CPU_Message("====== recompiled code ======");
 	InitilzeSection (Section, NULL, PROGRAM_COUNTER, 0);
-	InitilizeRegSet(&Section->RegStart);
+	InitializeRegSet(&Section->RegStart);
 	memcpy(&Section->RegWorking,&Section->RegStart,sizeof(REG_INFO));
 	BlockCycleCount += CountPerOp;
 	BlockRandomModifier += 1;
@@ -2059,7 +2059,7 @@ DWORD GetNewTestValue(void) {
 	LastTest += 1;
 	return LastTest;
 }
-void InitilizeRegSet(REG_INFO * RegSet) {
+void InitializeRegSet(REG_INFO * RegSet) {
 	int count;
 	RegSet->MIPS_RegState[0]  = STATE_CONST_32;
 	RegSet->MIPS_RegVal[0].DW = 0;
@@ -2088,7 +2088,7 @@ void _fastcall InheritConstants(BLOCK_SECTION * Section) {
 	BLOCK_SECTION * Parent;
 	REG_INFO * RegSet;
 	if (Section->ParentSection == NULL) {
-		InitilizeRegSet(&Section->RegStart);
+		InitializeRegSet(&Section->RegStart);
 		memcpy(&Section->RegWorking,&Section->RegStart,sizeof(REG_INFO));
 		return;
 	}
@@ -2122,7 +2122,7 @@ BOOL InheritParentInfo (BLOCK_SECTION * Section) {
 	BOOL NeedSync;
 	DisplaySectionInformation(Section,Section->SectionID,GetNewTestValue());
 	if (Section->ParentSection == NULL) {
-		InitilizeRegSet(&Section->RegStart);
+		InitializeRegSet(&Section->RegStart);
 		memcpy(&Section->RegWorking,&Section->RegStart,sizeof(REG_INFO));
 		return TRUE;
 	}

@@ -218,7 +218,7 @@ void FixMenuLang (HMENU hMenu) {
 	MenuSetText(hSubMenu, 0, GS(MENU_OPEN), "Ctrl+O");
 	MenuSetText(hSubMenu, 1, GS(MENU_ROM_INFO), NULL);
 	MenuSetText(hSubMenu, 3, GS(MENU_START), "F11/F12");
-	MenuSetText(hSubMenu, 4, GS(MENU_END), "F11/F12");
+	MenuSetText(hSubMenu, 4, GS(MENU_END), NULL);
 	MenuSetText(hSubMenu, 6, GS(MENU_LANGUAGE), NULL);
 	MenuSetText(hSubMenu, 8, GS(MENU_CHOOSE_ROM), NULL);
 	MenuSetText(hSubMenu, 9, GS(MENU_REFRESH), "F5");
@@ -243,15 +243,16 @@ void FixMenuLang (HMENU hMenu) {
 	hSubMenu = GetSubMenu(hMenu,2);
 	MenuSetText(hSubMenu, 0, GS(MENU_FULL_SCREEN), "Esc/Alt+Enter");
 	MenuSetText(hSubMenu, 1, GS(MENU_ON_TOP), "Ctrl+A");
-	MenuSetText(hSubMenu, 3, GS(MENU_CONFIG_GFX), "Ctrl+V");
-	MenuSetText(hSubMenu, 4, GS(MENU_CONFIG_AUDIO), "Ctrl+B");
-	MenuSetText(hSubMenu, 5, GS(MENU_CONFIG_CTRL), "Ctrl+D");
-	MenuSetText(hSubMenu, 6, GS(MENU_CONFIG_RSP), "Ctrl+R");
-	MenuSetText(hSubMenu, 8, GS(REGISTRY), NULL);
+	MenuSetText(hSubMenu, 3, GS(REGISTRY), NULL);
+	MenuSetText(hSubMenu, 5, GS(MENU_CONFIG_GFX), "Ctrl+V");
+	MenuSetText(hSubMenu, 6, GS(MENU_CONFIG_AUDIO), "Ctrl+B");
+	MenuSetText(hSubMenu, 7, GS(MENU_CONFIG_CTRL), "Ctrl+D");
+	MenuSetText(hSubMenu, 8, GS(MENU_CONFIG_RSP), "Ctrl+R");
 	MenuSetText(hSubMenu, 10, GS(MENU_SETTINGS), "Ctrl+T");
+	if (BasicMode) DeleteMenu(hSubMenu, 8, MF_BYPOSITION);
 	//Registry
 	hSubMenu = GetSubMenu(hMenu, 2);
-	hSubMenu = GetSubMenu(hSubMenu, 8);
+	hSubMenu = GetSubMenu(hSubMenu, 3);
 	MenuSetText(hSubMenu, 0, GS(MENU_UNINSTALL), "Shift+F1");
 	MenuSetText(hSubMenu, 1, GS(MENU_STANDARD), "Shift+F2");
 	MenuSetText(hSubMenu, 2, GS(MENU_SM64), "Shift+F3");
@@ -425,7 +426,7 @@ int InitalizeApplication ( HINSTANCE hInstance ) {
 	SetupRegisters(&Registers);
 	QueryPerformanceFrequency(&Frequency);
 	LoadRomBrowserColoumnInfo ();
-	InitilizeInitialCompilerVariable();
+	InitializeInitialCompilerVariable();
 	return TRUE;
 }
 void CheckedMenuItem(UINT uMenuID, BOOL * Flag, char * FlagName) {

@@ -42,7 +42,7 @@ BOOL AddressDefined ( DWORD VAddr) {
 	}
 	return FALSE;
 }
-void InitilizeTLB (void) {
+void InitializeTLB (void) {
 	DWORD count;
 	for (count = 0; count < 32; count++) { tlb[count].EntryDefined = FALSE; }
 	for (count = 0; count < 64; count++) { FastTlb[count].ValidEntry = FALSE; }

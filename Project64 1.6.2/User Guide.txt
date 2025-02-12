@@ -89,7 +89,7 @@ Project64 1.6.2:
 
 Added and removed plugins (too much to list the specifics here, please see later sections of the guide).
 
-Added cheat support for a ton of Zelda64 ROMhacks as well as a great mod known as Super Mario Star Road.
+Added cheat support for several ROMhack fan games of Ocarina of Time, Majora's Mask, and Super Mario 64.
 
 Added custom-made "Check Memory & Return" self-modifying code method to help support games like OoT 1.x.
 
@@ -100,13 +100,12 @@ Added frame advance option under the System tab to let users advance through gam
 Added plugin hot swapping support which allows the user to change plugins in real-time without problems.
 
 Added new Registry section under the Options tab with various different registry options for you to try.
-(Use standard mode to gracefully exit from custom modes to better support different kinds of N64 games!)
 
-Added ROM browser refresh polling (refreshing everytime the rom browser is loaded, fine for ROM format).
+Added ROM browser refresh polling (refreshing everytime the ROM browser is loaded, fine for ROM format).
 
-Added shortcuts for Graphics, Audio, Controller, and RSP plugins, CPU Pause, and a Frame advance option.
+Added shortcuts for plugins and frame advance, with additional shortcuts for the user's own convenience.
 
-Added vcruntime140 from MS VC Redistributable 2022 to support one of the new plugins that has got added.
+Added vcruntime140 from MSVC Redistributable 2022 to support one of the new plugins that has been added.
 
 Added vulnerability failesafes which prevent various things a cyber attacker may attempt to pull on you.
 
@@ -119,11 +118,9 @@ Changed the FPS display to round to whole numbers, de-acronym the term, and disp
 
 Changed the way resetting is done to fix Jabo FSAA flickering on reset in fullscreen and plugin crashes.
 
-Changed Good Name->Game Name in the browser and in what word it uses to identify what to display in RDB.
-
 Changed maximum savestate count per game from 10 to 30 to account for games that share the same ROMname.
 
-Disabled ABL's dropdown menu and set off by default. Essential in helping reduce stuttering and crashes.
+Disabled Advanced Block Linking by default, essentially helping to reduce stutter and ensure smoothness.
 
 Disabled ROM database extension (RDX) because it does not improve gameplay experience and adds to bloat.
 
@@ -155,7 +152,7 @@ Fixed multiple crashes upon start of emulation.
 
 Massive updates to databases.
 
-Workarounds for loading a savestate with a mismatched header without breaking any ROMhack compatibility.
+Workaround for dummy DMA RSP errors.
 
 ***TONS more other stuff has been changed, but it would be too much to explain all of it here, sorry!***
 --------------------------------------------------------------------------------------------------------
@@ -202,8 +199,9 @@ For your information, here's some issues I have experienced with Project64 "Lega
 * Star manager is no longer compatible out of the gate due to a regression with the executable filename.
 * Loading a savestate can ruin all of the graphics if you try to load states just after a ROM is opened.
 * Persistently annoying stuttering in Ocarina of Time which hurts the quality of my gameplay experience.
+* Generally I always ran into some kind of error whenever I used Legacy for any extended period of time.
 
-Honestly the list can go on. Everytime I try to use Legacy it is like I encounter a new bug. RIP Legacy.
+
 Note that all issues mentioned above about Project64 Legacy are either non-issues in Project64 Ver1.6.2,
 or said issues have been alleviated to a degree not found in the Project64 Legacy emulator as of V1.6.4.
 
@@ -232,6 +230,7 @@ Jabo's Direct3D8 1.6.2 - This is the default plugin due to low specs requirement
 			 However, it also has many graphics emulation issues, and if your PC can support
 			 Icepir8's Legacy LLE video plugin, I'd highly suggest using that plugin instead
 			 if you experience bad graphic issues with the ROMs/hacks you're trying to play.
+			 But Icepir8's LLE usually has issues with SM64 hacks so don't use it for those.
 			 Do not enable "Copy framebuffer to RDRAM" or you will suffer evil consequences.
 			 Avoid enabling full-scene anti aliasing if possible because it causes problems.
 			 If you want try out native widescreen, try enabling this from the Advanced tab:
@@ -289,11 +288,7 @@ Icepir8's Legacy RSP - Pairing Ice's RSP with Icepir8's Legacy LLE is necessary 
 		       Stunt Racer, World Driver Championship, also Indiana Jones. Otherwise, don't ever
 		       bother using this plugin because it's prone to weak performance (game dependent).
 
-RSP emulation plugin - Though some may consider other RSP plugins as better, the original Project64 V1.6
-		       RSP is reliable and has strong performance. Though this plugin is limited to HLE,
-		       it outperforms more accurate RSP's like Icepir8's Legacy RSP a lot, while running
-		       games like Pokemon Stadium (but with dummy errors) which M64P has problems doing.
-		       You can configure the RSP to use HLE or LLE sound with "send Audio Lists to audio
+Project64 V1.6.2 RSP - You can configure the RSP to use HLE or LLE sound with "send Audio Lists to audio
 		       plugin", giving you HLE audio (not compatible with Jabo!), while the other option
 		       is effectively broken, don't click on it or the emulator can freeze/lockup/crash.
 			Note: This is a Hex edit of PJ64 V1.6's RSP w/ a workaround for dumb DMA errors.
@@ -332,9 +327,9 @@ either the ROM header data above the internal name, or the baseROM's internal na
 Section#06 Known Issues
 --------------------------------------------------------------------------------------------------------
 The "Display Lists to Graphics Plugin" option with the default RSP freezes up the emulator when toggled.
-Limit FPS off is kind of broken, does not work at all or can cause strange errors (very game dependent).
+Limit FPS can be kind of broken, does not work at all or can cause strange errors (very game dependent).
 Depending on the PC hardware, Jabo's Direct3D8 can sometimes freeze, though the ROM still stays running.
-The rom browser is a bit buggy but this shouldn't affect your gaming experience so it's not a big issue.
+The ROM browser is a bit buggy but this shouldn't affect your gaming experience so it's not a big issue.
 Special characters aren't supported when it comes to language database translations for other languages.
 The .exe shall fail to properly close if you leave Octomino SDL2 config window open and close Project64.
 There are some controllers which are not supported by any known input plugins and will mandate keyboard.
@@ -358,27 +353,24 @@ The display will be frozen if you either sleep or lock your computer while using
 
 Section#07 Tips and Tricks
 --------------------------------------------------------------------------------------------------------
-Try using Counter Factor 1 by default if the only ROMhacks you play are Super Mario 64 or Majora's Mask.
-(this can also apply to playing any other games which benefit from counter factor by 1 without crashing)
-
 You can get better default ROM settings (applies to ROMhacks) by disabling hide advanced settings in the
 options to access the advanced tab to fine tune the core settings. You can also lower your RAM to 4MB by
 default to get smaller savestate sizes and better performance but this only applies for supported games.
 
 If you're using the ROM browser and you have your ROMhacks sorted into it's own folder inside the folder
 where you have retail ROMs, you can disable directory recursion from the ROM Selection tab from settings
-if you want to only display retail, official N64 games/ROMs you haven't placed inside your Hacks folder.
+if you want to only display retail/official N64 games/ROMs you have not placed inside your Hacks folder.
 
 You can change the default plugins by simply renaming the dll you would like to use by default to.......
-DefaultAudio.dll
-DefaultInput.dll
-DefaultVideo.dll
+Audio.dll
+Input.dll
+Video.dll
 RSP.dll
 
 Project64 Ver1.6.2 is portable and if you would like to say, transfer everything to a new PC, you can do
 so by compressing the Project64 Ver1.6.2 folder on your PC into a .zip file, pasting it into a USB stick
 or uploading it to a cloud storage platform, and then downloading/copying it onto a new PC's hard drive.
-However, Project64 1.6 and Jabo plugin configuration settings won't transfer! Same for Shankle AziAudio.
+Project64 Ver1.6.2 and Jabo plugin config settings will not transfer however! Same for Shankle AziAudio.
 --------------------------------------------------------------------------------------------------------
 
 Section#08 Credits
@@ -408,7 +400,7 @@ Clements, Rice, Gonetz, Malcolm, Dave2001, cryhlove, icepir8, zilmar, Azimer, St
 (glN64 served as the foundation for projects like Direct64, bettergln64, GLideN64, and ANGLE GLideN64)
 Denis Kopyrin/aglab2 - Azimer's Audio config fix and ANGLE GLideN64, ACE Security Vulnerability Insight,
 Graphics glitch fix when loading savestates, coded faster ROM opens in the Legacy RH fork used in 1.6.2.
-Jelta and Nekokabu - RDB Codes
+MASA, Jelta, and Nekokabu - Developing the Smiff RDB
 Microsoft - Visual Studio Versions 2013 and 2022, Windows OS
 All of the contributors of MSYS2, SDL 2.0.12 Library, etc. - Octomino SDL builds toolchain
 Maël Hörz - HxD
@@ -518,7 +510,6 @@ Section#12 Extra (Part 1), Suggestions
 --------------------------------------------------------------------------------------------------------
 Additionally, if you decide to develop a new revision of Ver1.6.2 or make a Ver1.6.3, I'd suggest fixing
 the following issues with this emulator:
---------------------------------------------------------------------------------------------------------
 * Missing netplay support.
 * Missing kaillera support.
 * Missing debugger support.
@@ -613,7 +604,7 @@ an Interpreter in a general sense is beyond the scope of this document, sufffici
 Recompiler is (usually much) faster but (a little) less compatible, the Interpreter (usually much)
 slower but (a little) more compatible.
 
-Note from Bruce IV: Recompiler must be used for a few older Ocarina of Time and Super Mario 64 romhacks.
+Note from Bruce IV: Recompiler must be used for a few older Ocarina of Time and Super Mario 64 ROMhacks.
 
 
 Advanced Block Linking
@@ -623,7 +614,7 @@ performance increase without negative side effects. However (this is why this ca
 basis) some games run badly with this On, and some games don't work at all if On. Similarly, some
 games have been found to not work if this is Off.
 
-Note from Bruce IV: Linking as well as TLB must be disabled for some older Ocarina of Time romhacks.
+Note from Bruce IV: Linking as well as TLB must be disabled for some older Ocarina of Time ROMhacks.
 
 
 Memory Size
@@ -635,7 +626,7 @@ If 8, the system will have an emulated RDRAM size of 8MB, which represents an N6
 memory expansion accessory installed. This results in larger state saves and lower performance, but is
 required by some games.
 
-Note from Bruce IV: 8 is the best default because most romhacks (which get default settings) need 8MB.
+Note from Bruce IV: 8 is the best default because most ROMhacks (which get default settings) need 8MB.
 
 
 Register Caching
@@ -696,7 +687,7 @@ without knowing or by trial and error) then TLB must be enabled or the game will
 messages, usually soon after boot. TLB is an option mainly because you can gain some performance by
 turning it off when not needed, and strangely, some games require it disabled to work.
 
-Note from Bruce IV: TLB must be disabled for some older Ocarina of Time romhacks.
+Note from Bruce IV: TLB must be disabled for some older Ocarina of Time ROMhacks.
 --------------------------------------------------------------------------------------------------------
 
 Section#15 Extra (Part 4), The ROM Browser Setup
@@ -704,7 +695,7 @@ Section#15 Extra (Part 4), The ROM Browser Setup
 The ROM browser system, controlled by PJ64.RDB is supposed to work like this:
 
 You select your ROM directory and then all those ROMs will be loaded in the ROM browser. They get marked
-by colors based on compatibility. Green should indicate that the game is functional, no delay or freeze.
+by colors based on compatibility. Green should indicate that the game works with included video plugins.
 Yellow should indicate that a special video (and possibly RSP plugin) is necessary for the user to enjoy
 playing the game without bad issues. Red should indicate the game can't be played. The colors mean this:
 
@@ -716,5 +707,4 @@ Red - Incompatible
 
 That's the theory anyways. Most games are Compatible or Semicompatible, only rarely is one Incompatible.
 The user should refer to the plugin note if given for Semicompatible games to see what plugin(s) to use.
-However, the RDB is currently in beta and is always in need of work so this is just the RDB theory/idea.
 --------------------------------------------------------------------------------------------------------

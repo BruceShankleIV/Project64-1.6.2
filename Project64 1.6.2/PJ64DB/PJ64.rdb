@@ -1,8 +1,8 @@
 //ESSENTIAL SPACE
 [Meta]
-Author=Bruce Shankle IV x Nekokabu & MASA & jelta x Smiff
+Author=Bruce IV x Nekokabu + MASA + Jelta x Smiff
 Date=February 2025
-Version=1.6.2 (BETA)
+Version=1.6.2 Canary
 [Microcode Identifiers]
 38221D7F=0//SD Hiryuu no Ken Densetsu (J), near start (Smiff)
 56D032C9=8//Fox Sports College Hoops 99 (U) (Duncan)
@@ -7325,6 +7325,15 @@ SCM=Check Memory & Return
 Status=Compatible
 Cheat0=D138E8CC 0C0E,8138E8CC 2400//D3D8 Equip Flash Fix
 CF=2
+[E2ECA4F2-9335BD40-C:45]
+Game Name=(Hack) Super Banjo Kazooie 64 Redux Demo
+MEM=8
+CF=1
+CPU=Recompiler
+SCM=Cache
+Status=Compatible
+Plugin=D3D8 suggested
+Cheat0=802473A7 00BC,802473B3 0000,8024748E 0000,80247966 0000,80247996 0000,8027B4F6 0000,8027B46A 0000,8027B4AA 0000,8027B582 0000,8027C99F 00BC,8027C9AB 0000//Cropfix
 [9CC44345-D6DF4426-C:45]
 Game Name=(Hack) Super Mario Star Road
 MEM=8

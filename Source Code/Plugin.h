@@ -25,10 +25,10 @@
  */
 #ifndef __Plugin_h
 #define __Plugin_h
-#define DefaultGFXDll				"DefaultVideo.dll"
+#define DefaultGFXDll				"Video.dll"
 #define DefaultRSPDll				"RSP.dll"
-#define DefaultAudioDll				"DefaultAudio.dll"
-#define DefaultControllerDll		"DefaultInput.dll"
+#define DefaultAudioDll				"Audio.dll"
+#define DefaultControllerDll		"Input.dll"
 #define PLUGIN_TYPE_RSP				1
 #define PLUGIN_TYPE_GFX				2
 #define PLUGIN_TYPE_AUDIO			3
@@ -279,5 +279,5 @@ extern char RspDLL[100], GfxDLL[100], AudioDLL[100],ControllerDLL[100], * Plugin
 extern DWORD PluginCount, RspTaskValue, AudioIntrReg;
 extern CONTROL Controllers[4];
 extern WORD RSPVersion;
-extern BOOL PluginsInitilized;
+extern BOOL PluginsInitialized;
 #endif
