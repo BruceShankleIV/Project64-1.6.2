@@ -537,33 +537,33 @@ entries, because if you do, then you are just wasting space, assuming you leave 
 
 
 CPU= 
-(User's selected core setting, Recompiler by default)
+(User's default setting from the advanced tab, Recompiler by default)
 MEM= 
-(User's selected core setting, 8 by default)
+(User's default setting from the advanced tab, 8 by default)
 SCM= 
-(User's selected core setting, Check Memory Advance by default)
+(User's default setting from the advanced tab, Check Memory & Return by default)
 CF= 
-(User's selected core setting, 2 by default)
-Save= 
+(User's default setting from the advanced tab, 2 by default)
+SAVE= 
 (Autodetected)
-Caching= 
-(On)
-Buffer= 
-(Off)
+CACHING= 
+(ON)
+BUFFER= 
+(OFF)
 DMA=
-(Off)
+(OFF)
 TLB= 
-(On)
+(ON)
 ABL= 
-(Off)
+(OFF)
 SPH= 
-(Off)
+(OFF)
 RDP= 
-(Off)
+(OFF)
 RSP=
-(Off)
+(OFF)
 SI= 
-(Off)
+(OFF)
 --------------------------------------------------------------------------------------------------------
 
 Section#13 Extra (Part 2), How to Develop Project64 1.6 + BEWARE of MiB/PJ64Team!

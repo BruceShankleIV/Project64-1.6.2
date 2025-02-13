@@ -97,7 +97,7 @@ char* GetLangFileName     ( void );
 int   GetStoredWinPos     ( char * WinName, DWORD * X, DWORD * Y );
 int   GetStoredWinSize    ( char * WinName, DWORD * Width, DWORD * Height );
 void  LoadSettings        ( void );
-void  MenuSetText         ( HMENU hMenu, int MenuPos, char * Title, char * ShotCut );
+void  MenuSetText         ( HMENU hMenu, int MenuPos, char * Title, char * Shortcut );
 void  RegisterExtension   ( char * Extension, BOOL RegisterWithPj64 );
 void  SetCurrentSaveState ( HWND hWnd, int State);
 void  SetupMenu           ( HWND hWnd );

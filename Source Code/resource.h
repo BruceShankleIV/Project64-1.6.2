@@ -234,3 +234,4 @@
 #define ID_CURRENTSAVE_29               40222
 #define ID_CURRENTSAVE_30               40223
 #define IDC_PLUGINS			40245
+#define IDC_ROMSETTWARN			40246

@@ -47,7 +47,7 @@ HWND hMainWindow, hHiddenWin, hStatusWnd;
 char CurrentSave[256];
 HMENU hMainMenu;
 HINSTANCE hInst;
-void MenuSetText ( HMENU hMenu, int MenuPos, char * Title, char * ShotCut );
+void MenuSetText ( HMENU hMenu, int MenuPos, char * Title, char * Shortcut );
 void RomInfo     ( void );
 void SetupMenu   ( HWND hWnd );
 void UninstallApplication(HWND hWnd);
@@ -218,7 +218,7 @@ void FixMenuLang (HMENU hMenu) {
 	MenuSetText(hSubMenu, 0, GS(MENU_OPEN), "Ctrl+O");
 	MenuSetText(hSubMenu, 1, GS(MENU_ROM_INFO), NULL);
 	MenuSetText(hSubMenu, 3, GS(MENU_START), "F11/F12");
-	MenuSetText(hSubMenu, 4, GS(MENU_END), NULL);
+	MenuSetText(hSubMenu, 4, GS(MENU_END), "F11/F12");
 	MenuSetText(hSubMenu, 6, GS(MENU_LANGUAGE), NULL);
 	MenuSetText(hSubMenu, 8, GS(MENU_CHOOSE_ROM), NULL);
 	MenuSetText(hSubMenu, 9, GS(MENU_REFRESH), "F5");
@@ -1028,7 +1028,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	}
 	return TRUE;
 }
-void MenuSetText ( HMENU hMenu, int MenuPos, char * Title, char * ShotCut) {
+void MenuSetText ( HMENU hMenu, int MenuPos, char * Title, char * Shortcut) {
 	MENUITEMINFO MenuInfo;
 	char String[256];
 	if (Title == NULL || strlen(Title) == 0) { return; }
@@ -1042,7 +1042,7 @@ void MenuSetText ( HMENU hMenu, int MenuPos, char * Title, char * ShotCut) {
 	GetMenuItemInfo(hMenu,MenuPos,TRUE,&MenuInfo);
 	if (strchr(Title,'\t') != NULL) { *(strchr(Title,'\t')) = '\0'; }
 	strcpy(String,Title);
-	if (ShotCut) { sprintf(String,"%s\t%s",String,ShotCut); }
+	if (Shortcut) { sprintf(String,"%s\t%s",String,Shortcut); }
 	SetMenuItemInfo(hMenu,MenuPos,TRUE,&MenuInfo);
 }
 void RegisterExtension ( char * Extension, BOOL RegisterWithPj64 ) {

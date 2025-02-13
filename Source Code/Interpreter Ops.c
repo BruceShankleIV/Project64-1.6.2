@@ -245,9 +245,7 @@ void _fastcall r4300i_LHU (void) {
 	if ((Address & 1) != 0) { ADDRESS_ERROR_EXCEPTION(Address,TRUE); }
 	if (!r4300i_LH_VAddr(Address,&GPR[Opcode.rt].UHW[0])) {
 		TLB_READ_EXCEPTION(Address);
-	} else {
-		GPR[Opcode.rt].UDW = GPR[Opcode.rt].UHW[0];
-	}
+	} else GPR[Opcode.rt].UDW = GPR[Opcode.rt].UHW[0];
 }
 DWORD LWR_MASK[4] = { 0xFFFFFF00, 0xFFFF0000, 0xFF000000, 0 };
 int LWR_SHIFT[4] = { 24, 16 ,8, 0 };
@@ -367,9 +365,7 @@ void _fastcall r4300i_LL (void) {
 	if (Opcode.rt == 0) { return; }
 	if (!r4300i_LW_VAddr(Address,&GPR[Opcode.rt].UW[0])) {
 		TLB_READ_EXCEPTION(Address);
-	} else {
-		GPR[Opcode.rt].DW = GPR[Opcode.rt].W[0];
-	}
+	} else GPR[Opcode.rt].DW = GPR[Opcode.rt].W[0];
 	LLBit = 1;
 	LLAddr = Address;
 	TranslateVaddr(&LLAddr);
@@ -497,12 +493,14 @@ void _fastcall r4300i_SPECIAL_DIV (void) {
 	if ( GPR[Opcode.rt].UDW != 0 ) {
 		LO.DW = GPR[Opcode.rs].W[0] / GPR[Opcode.rt].W[0];
 		HI.DW = GPR[Opcode.rs].W[0] % GPR[Opcode.rt].W[0];
+		} else {
 	}
 }
 void _fastcall r4300i_SPECIAL_DIVU (void) {
 	if ( GPR[Opcode.rt].UDW != 0 ) {
 		LO.DW = (int)(GPR[Opcode.rs].UW[0] / GPR[Opcode.rt].UW[0]);
 		HI.DW = (int)(GPR[Opcode.rs].UW[0] % GPR[Opcode.rt].UW[0]);
+		} else {
 	}
 }
 void _fastcall r4300i_SPECIAL_DMULT (void) {
@@ -529,12 +527,14 @@ void _fastcall r4300i_SPECIAL_DDIV (void) {
 	if ( GPR[Opcode.rt].UDW != 0 ) {
 		LO.DW = GPR[Opcode.rs].DW / GPR[Opcode.rt].DW;
 		HI.DW = GPR[Opcode.rs].DW % GPR[Opcode.rt].DW;
+		} else {
 	}
 }
 void _fastcall r4300i_SPECIAL_DDIVU (void) {
 	if ( GPR[Opcode.rt].UDW != 0 ) {
 		LO.UDW = GPR[Opcode.rs].UDW / GPR[Opcode.rt].UDW;
 		HI.UDW = GPR[Opcode.rs].UDW % GPR[Opcode.rt].UDW;
+		} else {
 	}
 }
 void _fastcall r4300i_SPECIAL_ADD (void) {

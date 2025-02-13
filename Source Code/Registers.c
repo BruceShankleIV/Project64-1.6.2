@@ -269,6 +269,7 @@ void InitalizeR4300iRegisters (int UsePif, int Country, int CIC_Chip) {
 	memset(RegSI,0,sizeof(Registers.SI));
 	memset(GPR,0,sizeof(Registers.GPR));
 	memset(FPR,0,sizeof(Registers.FPR));
+	if (CIC_Chip < 0) CIC_Chip = 2;
 	LO.DW                 = 0x0;
 	HI.DW                 = 0x0;
 	RANDOM_REGISTER	  = 0x1F;

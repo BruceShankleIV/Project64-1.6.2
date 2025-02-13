@@ -210,18 +210,18 @@ Exiting thread"
 Exiting thread"
 #206# "The default or selected video plugin is missing or invalid.
 
-You need to go into Settings and select a video (graphics) plugin"
+You need to select a video (graphics) plugin"
 #207# "The default or selected audio plugin is missing or invalid.
 
-You need to go into Settings and select an audio (sound) plugin"
+You need to select an audio (sound) plugin"
 #208# "The default or selected RSP plugin is missing or invalid.
 
-You need to go into Settings and select an RSP plugin
+You need to select an RSP plugin
 
 (A possible cause of this error can be Data Execution Prevention interfering with plugin initialization)"
 #209# "The default or selected input plugin is missing or invalid.
 
-You need to go into Settings and select an input (controller) plugin"
+You need to select an input (controller) plugin"
 #210# "Failed to load plugin"
 #211# "Advances through a game in single frames at a time (Sync game to Audio suggested)"
 #212# "Failed to save this savestate. Save your savestate in a new file or slot, or exit and re-enter Project64 to deal with the issue"
@@ -279,3 +279,5 @@ Exiting thread
 Jabo's Direct3D8 1.6.2 = Low-end HLE Graphics
 ANGLE GLideN64 = SM64 ROMhacks Graphics"
 #251# "Align DMA"
+#252# "These settings affect how a ROM is emulated.
+Change with utmost caution and awareness."

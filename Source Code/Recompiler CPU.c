@@ -150,6 +150,7 @@ BYTE * Compiler4300iBlock(void) {
 		CPU_Message("====== IMEM: block (%d) ======", N64_Blocks.NoOfIMEMBlocks);
 	} else if (StartAddress >= 0x1FC00000 && StartAddress <= 0x1FC00800) {
 		CPU_Message("====== PIF ROM: block ======");
+	} else { ExitThread(0);
 	}
 	CPU_Message("x86 code at: %X",BlockInfo.CompiledLocation);
 	CPU_Message("Start of Block: %X",BlockInfo.StartVAddr );
@@ -200,6 +201,7 @@ BYTE * CompileDelaySlot(void) {
 		CPU_Message("====== IMEM: Delay Slot ======");
 	} else if (StartAddress >= 0x1FC00000 && StartAddress <= 0x1FC00800) {
 		CPU_Message("====== PIF ROM: Delay Slot ======");
+	} else { ExitThread(0);
 	}
 	MarkCodeBlock(StartAddress);
 	CPU_Message("x86 code at: %X",Block);
@@ -489,7 +491,7 @@ void CompileExit (DWORD TargetPC, REG_INFO ExitRegSet, int reason, int CompileNo
 		Call_Direct(DoTLBMiss,"DoTLBMiss");
 		Ret();
 		break;
-		case TLBWriteMiss:
+	case TLBWriteMiss:
 		MoveConstToX86reg(NextInstruction == JUMP || NextInstruction == DELAY_SLOT, x86_ECX);
 		MoveVariableToX86reg(&TLBLoadAddress, "TLBLoadAddress", x86_EDX);
 		Call_Direct(DoTLBMiss, "DoTLBMiss");

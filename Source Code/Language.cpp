@@ -256,10 +256,10 @@ LANG_STR DefaultString[] = {
 	{ MSG_CPU_RESUMED,        "CPU resumed"},
 	{ MSG_PERM_LOOP,          "In a permanent loop that cannot be exited.\n\nExiting thread"},
 	{ MSG_MEM_ALLOC_ERROR,    "Failed to allocate memory.\n\nExiting thread"},
-	{ MSG_FAIL_INIT_GFX,      "The default or selected video plugin is missing or invalid.\n\nYou need to go into Settings and select a video (graphics) plugin"},
-	{ MSG_FAIL_INIT_AUDIO,    "The default or selected audio plugin is missing or invalid.\n\nYou need to go into Settings and select an audio (sound) plugin"},
-	{ MSG_FAIL_INIT_RSP,      "The default or selected RSP plugin is missing or invalid.\n\nYou need to go into Settings and select an RSP plugin\n\n(A possible cause of this error can be Data Execution Prevention interfering with plugin initialization)"},
-	{ MSG_FAIL_INIT_CONTROL,  "The default or selected input plugin is missing or invalid.\n\nYou need to go into Settings and select an input (controller) plugin"},
+	{ MSG_FAIL_INIT_GFX,      "The default or selected video plugin is missing or invalid.\n\nYou need to select a video (graphics) plugin"},
+	{ MSG_FAIL_INIT_AUDIO,    "The default or selected audio plugin is missing or invalid.\n\nYou need to select an audio (sound) plugin"},
+	{ MSG_FAIL_INIT_RSP,      "The default or selected RSP plugin is missing or invalid.\n\nYou need to select an RSP plugin\n\n(A possible cause of this error can be Data Execution Prevention interfering with plugin initialization)"},
+	{ MSG_FAIL_INIT_CONTROL,  "The default or selected input plugin is missing or invalid.\n\nYou need to select an input (controller) plugin"},
 	{ MSG_FAIL_LOAD_PLUGIN,   "Failed to load plugin"},
 	{ MENU_ADVANCE_DESC,	  "Advances through a game in single frames at a time (Sync game to Audio suggested)"},
 	{ MSG_FAIL_OPEN_SAVE,     "Failed to save this savestate. Save your savestate in a new file or slot, or exit and re-enter Project64 to deal with the issue"},
@@ -302,6 +302,7 @@ LANG_STR DefaultString[] = {
 	{ NUMBER_3,               "3 (Laggard, Stable)"},
 	{ PLUGINS,		  "Icepir8's Legacy LLE = High-end LLE Graphics\nJabo's Direct3D8 1.6.2 = Low-end HLE Graphics\nANGLE GLideN64 = SM64 ROMhacks Graphics"},
 	{ ROM_ALIGN_DMA,	  "Align DMA"},
+	{ ROMSETTWARN,		  "These settings affect how a ROM is emulated.\nChange with utmost caution and awareness."},
 };
 class CLanguage  {
 	void FindLangName  ( int Index );

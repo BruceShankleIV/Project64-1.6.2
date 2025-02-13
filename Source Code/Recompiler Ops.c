@@ -195,6 +195,7 @@ void Compile_R4300i_Branch (BLOCK_SECTION * Section, void (*CompareFunc)(BLOCK_S
 		}
 		GenerateSectionLinkage(Section);
 		NextInstruction = END_BLOCK;
+	} else {
 	}
 }
 void Compile_R4300i_BranchLikely (BLOCK_SECTION * Section, void (*CompareFunc)(BLOCK_SECTION * Section), BOOL Link) {
@@ -271,6 +272,7 @@ void Compile_R4300i_BranchLikely (BLOCK_SECTION * Section, void (*CompareFunc)(B
 		memcpy(&Section->Jump.RegSet,&Section->RegWorking,sizeof(REG_INFO));
 		GenerateSectionLinkage(Section);
 		NextInstruction = END_BLOCK;
+	} else {
 	}
 }
 void BNE_Compare (BLOCK_SECTION * Section) {
@@ -1026,6 +1028,7 @@ void Compile_R4300i_J (BLOCK_SECTION * Section) {
 		memcpy(&Section->Jump.RegSet,&Section->RegWorking,sizeof(REG_INFO));
 		GenerateSectionLinkage(Section);
 		NextInstruction = END_BLOCK;
+	} else {
 	}
 }
 void Compile_R4300i_JAL (BLOCK_SECTION * Section) {
@@ -1054,6 +1057,7 @@ void Compile_R4300i_JAL (BLOCK_SECTION * Section) {
 		MoveConstToVariable((Section->CompilePC & 0xF0000000) + (Opcode.target << 2),&PROGRAM_COUNTER,"PROGRAM_COUNTER");
 		CompileExit((DWORD)-1,Section->RegWorking,Normal,TRUE,NULL);
 		NextInstruction = END_BLOCK;
+	} else {
 	}
 	return;
 	if ( NextInstruction == NORMAL ) {
@@ -1081,6 +1085,7 @@ void Compile_R4300i_JAL (BLOCK_SECTION * Section) {
 		memcpy(&Section->Jump.RegSet,&Section->RegWorking,sizeof(REG_INFO));
 		GenerateSectionLinkage(Section);
 		NextInstruction = END_BLOCK;
+	} else {
 	}
 }
 void Compile_R4300i_ADDI (BLOCK_SECTION * Section) {
@@ -2152,6 +2157,7 @@ void _fastcall ClearRecompilerCache (DWORD Address) {
 			memset(JumpTable + (Block << 10),0,0x1000);
 			*(DelaySlotTable + Block) = NULL;
 		}
+	} else {
 	}
 }
 void Compile_R4300i_CACHE (BLOCK_SECTION * Section){
@@ -2746,6 +2752,7 @@ void Compile_R4300i_SPECIAL_JALR (BLOCK_SECTION * Section) {
 			CompileExit((DWORD)-1,Section->RegWorking,Normal,TRUE,NULL);
 		}
 		NextInstruction = END_BLOCK;
+	} else {
 	}
 }
 void Compile_R4300i_SPECIAL_SYSCALL (BLOCK_SECTION * Section) {

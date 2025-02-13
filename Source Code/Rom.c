@@ -569,7 +569,7 @@ void ReadRomOptions (void) {
 		}
 		RomCF = _GetPrivateProfileInt(Identifier,"CF",-1,IniFileName);
 		if (RomCF > 3) { RomCF = -1; }
-		_GetPrivateProfileString(Identifier,"Save","",String,sizeof(String),IniFileName);
+		_GetPrivateProfileString(Identifier,"SAVE","",String,sizeof(String),IniFileName);
 		if (strcmp(String,"4") == 0)       { RomSaveUsing = eepROM_4K; }
 		else if (strcmp(String,"16") == 0) { RomSaveUsing = eepROM_16K; }
 		else if (strcmp(String,"SRAM") == 0)          { RomSaveUsing = SRAM; }
@@ -591,23 +591,23 @@ void ReadRomOptions (void) {
 			else                                                 { RomSelfMod = ModCode_Default; }
 		}
 		_GetPrivateProfileString(Identifier,"TLB","",String,sizeof(String),IniFileName);
-		if (strcmp(String,"Off") == 0) { RomUseTlb = FALSE; }
+		if (strcmp(String,"OFF") == 0) { RomUseTlb = FALSE; }
 		_GetPrivateProfileString(Identifier,"SI","",String,sizeof(String),IniFileName);
-		if (strcmp(String,"On") == 0) { RomDelaySI = TRUE; }
+		if (strcmp(String,"ON") == 0) { RomDelaySI = TRUE; }
 		_GetPrivateProfileString(Identifier,"SPH","",String,sizeof(String),IniFileName);
-		if (strcmp(String,"On") == 0) { RomSPHack = TRUE; }
-		_GetPrivateProfileString(Identifier,"Caching","",String,sizeof(String),IniFileName);
-		if (strcmp(String,"Off") == 0) { RomUseCache = FALSE; }
-		_GetPrivateProfileString(Identifier,"Buffer","",String,sizeof(String),IniFileName);
-		if (strcmp(String,"On") == 0) { RomUseLargeBuffer = TRUE; }
+		if (strcmp(String,"ON") == 0) { RomSPHack = TRUE; }
+		_GetPrivateProfileString(Identifier,"CACHING","",String,sizeof(String),IniFileName);
+		if (strcmp(String,"OFF") == 0) { RomUseCache = FALSE; }
+		_GetPrivateProfileString(Identifier,"BUFFER","",String,sizeof(String),IniFileName);
+		if (strcmp(String,"ON") == 0) { RomUseLargeBuffer = TRUE; }
 		_GetPrivateProfileString(Identifier,"ABL","",String,sizeof(String),IniFileName);
-		if (strcmp(String,"On") == 0) { RomUseLinking = TRUE; }
+		if (strcmp(String,"ON") == 0) { RomUseLinking = TRUE; }
 		_GetPrivateProfileString(Identifier, "RSP", "", String, sizeof(String), IniFileName);
-		if (strcmp(String, "On") == 0 ) { RomDelayRSP = TRUE; }
+		if (strcmp(String, "ON") == 0 ) { RomDelayRSP = TRUE; }
 		_GetPrivateProfileString(Identifier, "RDP", "", String, sizeof(String), IniFileName);
-		if (strcmp(String, "On") == 0 ) { RomDelayRDP = TRUE; }
+		if (strcmp(String, "ON") == 0 ) { RomDelayRDP = TRUE; }
 		_GetPrivateProfileString(Identifier, "DMA", "", String, sizeof(String), IniFileName);
-		if (strcmp(String, "On") == 0 ) { RomAlignDMA = TRUE; }
+		if (strcmp(String, "ON") == 0 ) { RomAlignDMA = TRUE; }
 	}
 }
 void OpenN64Image ( void ) {
@@ -667,7 +667,7 @@ void OpenChosenFile ( void ) {
 	strcpy(MapFile,CurrentFileName);
 	if (_strnicmp(&CurrentFileName[strlen(CurrentFileName)-4], ".ZIP",4) == 0 ){
 		int len, port = 0, FoundRom;
-	    unz_file_info info;
+	    	unz_file_info info;
 		char zname[132];
 		unzFile file;
 		file = unzOpen(CurrentFileName);
@@ -797,67 +797,7 @@ void OpenChosenFile ( void ) {
 	}
 	ByteSwapRom(ROM, RomFileSize);
 	memcpy(RomHeader,ROM,sizeof(RomHeader));
-	int bootcode, i;
-	unsigned int seed, crc[2];
-	unsigned int t1, t2, t3, t4, t5, t6, r, d, j;
-	switch ((bootcode = 6100 + GetCicChipID(ROM))) {
-	case 6101:
-	case 6102:
-		seed = 0xF8CA4DDC; break;
-	case 6103:
-		seed = 0xA3886759; break;
-	case 6105:
-		seed = 0xDF26F436; break;
-	case 6106:
-		seed = 0x1FEA617A; break;
-	default:
-		return;
-	}
-	t1 = t2 = t3 = t4 = t5 = t6 = seed;
-	for (i = 0x00001000; i < 0x00101000; i += 4) {
-		if ((unsigned int)(i + 3) > RomFileSize)
-			d = 0;
-		else
-			d = ROM[i + 3] << 24 | ROM[i + 2] << 16 | ROM[i + 1] << 8 | ROM[i];
-		if ((t6 + d) < t6)
-			t4++;
-		t6 += d;
-		t3 ^= d;
-		r = (d << (d & 0x1F)) | (d >> (32 - (d & 0x1F)));
-		t5 += r;
-		if (t2 > d)
-			t2 ^= r;
-		else
-			t2 ^= t6 ^ d;
-		if (bootcode == 6105) {
-			j = 0x40 + 0x0710 + (i & 0xFF);
-			t1 += (ROM[j + 3] << 24 | ROM[j + 2] << 16 | ROM[j + 1] << 8 | ROM[j]) ^ d;
-		}
-		else
-			t1 += t5 ^ d;
-	}
-	if (bootcode == 6103) {
-		crc[0] = (t6 ^ t4) + t3;
-		crc[1] = (t5 ^ t2) + t1;
-	}
-	else if (bootcode == 6106) {
-		crc[0] = (t6 * t4) + t3;
-		crc[1] = (t5 * t2) + t1;
-	}
-	else {
-		crc[0] = t6 ^ t4 ^ t3;
-		crc[1] = t5 ^ t2 ^ t1;
-	}
-	if (*(DWORD *)&ROM[0x10] != crc[0] || *(DWORD *)&ROM[0x14] != crc[1]) {
-		ROM[0x13] = (crc[0] & 0xFF000000) >> 24;
-		ROM[0x12] = (crc[0] & 0x00FF0000) >> 16;
-		ROM[0x11] = (crc[0] & 0x0000FF00) >> 8;
-		ROM[0x10] = (crc[0] & 0x000000FF);
-		ROM[0x17] = (crc[1] & 0xFF000000) >> 24;
-		ROM[0x16] = (crc[1] & 0x00FF0000) >> 16;
-		ROM[0x15] = (crc[1] & 0x0000FF00) >> 8;
-		ROM[0x14] = (crc[1] & 0x000000FF);
-	}
+	RecalculateCRCs();
 	SendMessage( hStatusWnd, SB_SETTEXT, 0, (LPARAM)"" );
 	memcpy(&RomName[0],(void *)(ROM + 0x20),20);
 	for( count = 0 ; count < 20; count += 4 ) {
@@ -947,6 +887,69 @@ void OpenChosenFile ( void ) {
 	}
 	if (AutoFullScreen) SendMessage(hMainWindow,WM_COMMAND,ID_OPTIONS_FULLSCREEN,0);
 }
+void RecalculateCRCs ( void ) {
+	int bootcode, i;
+	unsigned int seed, crc[2];
+	unsigned int t1, t2, t3, t4, t5, t6, r, d, j;
+	switch ((bootcode = 6100 + GetCicChipID(ROM))) {
+	case 6101:
+	case 6102:
+		seed = 0xF8CA4DDC; break;
+	case 6103:
+		seed = 0xA3886759; break;
+	case 6105:
+		seed = 0xDF26F436; break;
+	case 6106:
+		seed = 0x1FEA617A; break;
+	default:
+		return;
+	}
+	t1 = t2 = t3 = t4 = t5 = t6 = seed;
+	for (i = 0x00001000; i < 0x00101000; i += 4) {
+		if ((unsigned int)(i + 3) > RomFileSize)
+			d = 0;
+		else
+			d = ROM[i + 3] << 24 | ROM[i + 2] << 16 | ROM[i + 1] << 8 | ROM[i];
+		if ((t6 + d) < t6)
+			t4++;
+		t6 += d;
+		t3 ^= d;
+		r = (d << (d & 0x1F)) | (d >> (32 - (d & 0x1F)));
+		t5 += r;
+		if (t2 > d)
+			t2 ^= r;
+		else
+			t2 ^= t6 ^ d;
+		if (bootcode == 6105) {
+			j = 0x40 + 0x0710 + (i & 0xFF);
+			t1 += (ROM[j + 3] << 24 | ROM[j + 2] << 16 | ROM[j + 1] << 8 | ROM[j]) ^ d;
+		}
+		else
+			t1 += t5 ^ d;
+	}
+	if (bootcode == 6103) {
+		crc[0] = (t6 ^ t4) + t3;
+		crc[1] = (t5 ^ t2) + t1;
+	}
+	else if (bootcode == 6106) {
+		crc[0] = (t6 * t4) + t3;
+		crc[1] = (t5 * t2) + t1;
+	}
+	else {
+		crc[0] = t6 ^ t4 ^ t3;
+		crc[1] = t5 ^ t2 ^ t1;
+	}
+	if (*(DWORD *)&ROM[0x10] != crc[0] || *(DWORD *)&ROM[0x14] != crc[1]) {
+		ROM[0x13] = (crc[0] & 0xFF000000) >> 24;
+		ROM[0x12] = (crc[0] & 0x00FF0000) >> 16;
+		ROM[0x11] = (crc[0] & 0x0000FF00) >> 8;
+		ROM[0x10] = (crc[0] & 0x000000FF);
+		ROM[0x17] = (crc[1] & 0xFF000000) >> 24;
+		ROM[0x16] = (crc[1] & 0x00FF0000) >> 16;
+		ROM[0x15] = (crc[1] & 0x0000FF00) >> 8;
+		ROM[0x14] = (crc[1] & 0x000000FF);
+	}
+}
 void SaveRecentDirs (void) {
 	long lResult;
 	HKEY hKeyResults = 0;
@@ -1025,16 +1028,16 @@ void SaveRomOptions (void) {
 	case FlashRAM: sprintf(String,"FlashRAM"); break;
 	default: sprintf(String," "); break;
 	}
-	_WritePrivateProfileString(Identifier, "Save",String,GetIniFileName());
-	_WritePrivateProfileString(Identifier, "Caching", RomUseCache ? " " : "On", GetIniFileName());
-	_WritePrivateProfileString(Identifier, "Buffer", RomUseLargeBuffer ? "On" : " ", GetIniFileName());
-	_WritePrivateProfileString(Identifier, "DMA", RomAlignDMA ? "On" : " ", GetIniFileName());
-	_WritePrivateProfileString(Identifier, "TLB",RomUseTlb?" ":"Off",GetIniFileName());
-	_WritePrivateProfileString(Identifier, "ABL", RomUseLinking ? "On" : " ", GetIniFileName());
-	_WritePrivateProfileString(Identifier, "SPH", RomSPHack ? "On" : " ", GetIniFileName());
-	_WritePrivateProfileString(Identifier, "RDP", RomDelayRDP ? "On" : " ", GetIniFileName());
-	_WritePrivateProfileString(Identifier, "RSP", RomDelayRSP ? "On" : " ", GetIniFileName());
-	_WritePrivateProfileString(Identifier, "SI", RomDelaySI ? "On" : " ", GetIniFileName());
+	_WritePrivateProfileString(Identifier, "SAVE",String,GetIniFileName());
+	_WritePrivateProfileString(Identifier, "CACHING", RomUseCache ? " " : "ON", GetIniFileName());
+	_WritePrivateProfileString(Identifier, "BUFFER", RomUseLargeBuffer ? "ON" : " ", GetIniFileName());
+	_WritePrivateProfileString(Identifier, "DMA", RomAlignDMA ? "ON" : " ", GetIniFileName());
+	_WritePrivateProfileString(Identifier, "TLB",RomUseTlb?" ":"OFF",GetIniFileName());
+	_WritePrivateProfileString(Identifier, "ABL", RomUseLinking ? "ON" : " ", GetIniFileName());
+	_WritePrivateProfileString(Identifier, "SPH", RomSPHack ? "ON" : " ", GetIniFileName());
+	_WritePrivateProfileString(Identifier, "RDP", RomDelayRDP ? "ON" : " ", GetIniFileName());
+	_WritePrivateProfileString(Identifier, "RSP", RomDelayRSP ? "ON" : " ", GetIniFileName());
+	_WritePrivateProfileString(Identifier, "SI", RomDelaySI ? "ON" : " ", GetIniFileName());
 }
 void SetRecentRomDir (DWORD Index) {
 	Index -= ID_FILE_RECENT_DIR;

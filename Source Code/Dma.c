@@ -30,14 +30,10 @@
 int DMAUsed;
 void FirstDMA (void) {
 	switch (GetCicChipID(ROM)) {
-	case 1: *(DWORD *)&N64MEM[0x318] = RDRAMsize; break;
-	case 2: *(DWORD *)&N64MEM[0x318] = RDRAMsize; break;
-	case 3: *(DWORD *)&N64MEM[0x318] = RDRAMsize; break;
 	case 5: *(DWORD *)&N64MEM[0x3F0] = RDRAMsize; break;
-	case 6: *(DWORD *)&N64MEM[0x318] = RDRAMsize; break;
-	case 9: *(DWORD *)&N64MEM[0x318] = RDRAMsize; break;
 	default: 
 		*(DWORD *)&N64MEM[0x318] = RDRAMsize;
+		break;
 	}
 }
 void PI_DMA_READ (void) {
@@ -285,12 +281,8 @@ void SP_DMA_READ (void) {
 	SP_STATUS_REG  &= ~SP_STATUS_DMA_BUSY;
 }
 void SP_DMA_WRITE (void) {
-	if (SP_DRAM_ADDR_REG > RDRAMsize) {
-		return;
-	}
-	if (SP_WR_LEN_REG + 1 + (SP_MEM_ADDR_REG & 0xFFF) > 0x1000) {
-		return;
-	}
+	if (SP_DRAM_ADDR_REG > RDRAMsize) return;
+	if (SP_WR_LEN_REG + 1 + (SP_MEM_ADDR_REG & 0xFFF) > 0x1000) return;
 	if ((SP_MEM_ADDR_REG & 3) != 0) { _asm int 3 }
 	if ((SP_DRAM_ADDR_REG & 3) != 0) { _asm int 3 }
 	if (((SP_WR_LEN_REG + 1) & 3) != 0) { _asm int 3 }

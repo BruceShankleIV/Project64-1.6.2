@@ -42,6 +42,7 @@ void OpenChosenFile	         ( void );
 void ReadRomOptions          ( void );
 void RemoveRecentList        ( HWND hWnd );
 void OpenN64Image            ( void );
+void RecalculateCRCs         ( void );
 void SaveRecentDirs          ( void );
 void SaveRecentFiles         ( void );
 void SaveRomOptions          ( void );

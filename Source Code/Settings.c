@@ -842,6 +842,7 @@ BOOL CALLBACK RomSettingsProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 	case WM_INITDIALOG:
 		ReadRomOptions();
 		SetDlgItemText(hDlg, IDC_INFO, GS(ADVANCE_INFO));
+		SetDlgItemText(hDlg, IDC_ROMSETTWARN, GS(ROMSETTWARN));
 		SetDlgItemText(hDlg,IDC_CPU_TYPE_TEXT,GS(ROM_CPU_STYLE));
 		SetDlgItemText(hDlg,IDC_SELFMOD_TEXT,GS(ROM_SMCM));
 		SetDlgItemText(hDlg,IDC_MEMORY_SIZE_TEXT,GS(ROM_MEM_SIZE));
