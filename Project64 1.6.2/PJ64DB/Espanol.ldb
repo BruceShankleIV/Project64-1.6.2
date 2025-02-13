@@ -197,16 +197,16 @@ Salir del hilo"
 Salir del hilo"
 #206# "El plugin de Graficos predeterminado o seleccionado falta o no es valido.
 
-Necesitas ir seleccionar un plugin de Graficos (Video)"
+Necesitas ir a seleccionar un plugin de Graficos (Video)"
 #207# "El plugin de Audio predeterminado o seleccionado falta o no es valido.
 
-Necesitas ir seleccionar un plugin de Audio (Sonido)"
+Necesitas ir a seleccionar un plugin de Audio (Sonido)"
 #208# "El plugin RSP predeterminado o seleccionado falta o no es valido.
 
-Necesitas ir seleccionar un plugin RSP"
+Necesitas ir a seleccionar un plugin RSP"
 #209# "El plugin de Controles predeterminado o seleccionado falta o no es valido.
 
-Necesitas ir seleccionar un complemento de Controles (Inputs)
+Necesitas ir a seleccionar un complemento de Controles (Inputs)
 
 (Una posible causa de este error puede ser Prevencion de Ejecucion de Data interfiriendo con la inicializacion del plugin)"
 #210# "Error al cargar el plugin"
