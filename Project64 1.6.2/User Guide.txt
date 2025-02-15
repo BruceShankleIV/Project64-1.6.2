@@ -105,6 +105,8 @@ Added ROM browser refresh polling (refreshing everytime the ROM browser is loade
 
 Added shortcuts for plugins and frame advance, with additional shortcuts for the user's own convenience.
 
+Advanced Block Linking CLEANSED from the RDB. This reduces stutters. You can turn on if you really want. 
+
 Added vcruntime140 from MSVC Redistributable 2022 to support one of the new plugins that has been added.
 
 Added vulnerability failesafes which prevent various things a cyber attacker may attempt to pull on you.
@@ -329,6 +331,7 @@ Section#06 Known Issues
 The "Display Lists to Graphics Plugin" option with the default RSP freezes up the emulator when toggled.
 Limit FPS can be kind of broken, does not work at all or can cause strange errors (very game dependent).
 Depending on the PC hardware, Jabo's Direct3D8 can sometimes freeze, though the ROM still stays running.
+Jabo's Direct3D8's Direct3D pipeline and wireframe modes do not save in the registries like they should.
 The ROM browser is a bit buggy but this shouldn't affect your gaming experience so it's not a big issue.
 Special characters aren't supported when it comes to language database translations for other languages.
 The .exe shall fail to properly close if you leave Octomino SDL2 config window open and close Project64.
@@ -366,6 +369,9 @@ Audio.dll
 Input.dll
 Video.dll
 RSP.dll
+
+It's possible to properly fix cropping in SM64 without cheats by enabling Direct3D pipeline and Only per
+frame from the Advanced and ROM Settings tabs. Direct3D pipeline doesn't save in the registries however.
 
 Project64 Ver1.6.2 is portable and if you would like to say, transfer everything to a new PC, you can do
 so by compressing the Project64 Ver1.6.2 folder on your PC into a .zip file, pasting it into a USB stick
@@ -408,6 +414,7 @@ Don Ho - Notepad++
 info@redketchup.io - redketchup.io
 listdiff.com
 GitHub Copilot - Helped me write some of the new code added in Project64 1.6.2
+BlueToonYoshi - Initial code and concept for a takeoff/flying cheat for SM64
 --------------------------------------------------------------------------------------------------------
 
 Section#09 Don't "Support Project64"

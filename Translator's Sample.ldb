@@ -1,6 +1,6 @@
 #1# "(Your Language in Your Language Here)/(Your Language in English Here)"
-#2# "(Your Name Here) x Bruce Shankle IV"
-#3# "(Version and Build Name Here)"
+#2# "(Your Name Here) x Bruce IV"
+#3# "(Build Name Here)"
 #4# "(Date of Your Translation Here)"
 #5# "Language Database (.LDB)"
 #6# "Author"
@@ -99,7 +99,8 @@
 #99# "ROM Selection"
 #100# "Advanced"
 #101# "ROM Settings"
-#102# "Shell Integration"
+#102# "These settings affect how a ROM is emulated.
+Change with utmost caution and awareness."
 #103# "ROM Notes"
 #104# "About"
 #105# " Reality Signal Processor plugin: "
@@ -134,7 +135,7 @@
 #134# "Note Interpreter is not affected by the following settings:
 SCM, ABL, Larger Compile Buffer, and Register Caching"
 #135# "Default"
-#136# "Use RDB"
+#136# "RDB Overwrites Defaults"
 #137# "1 (Lagless, Unstable)"
 #138# "CPU Core Style:"
 #139# "Self-modifying Code Method:"
@@ -279,5 +280,3 @@ Exiting thread
 Jabo's Direct3D8 1.6.2 = Low-end HLE Graphics
 ANGLE GLideN64 = SM64 ROMhacks Graphics"
 #251# "Align DMA"
-#252# "These settings affect how a ROM is emulated.
-Change with utmost caution and awareness."

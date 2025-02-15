@@ -740,6 +740,7 @@ LRESULT CALLBACK CheatAddProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 				SetDlgItemText(hDlg,IDC_NOTES,"");
 				EnableWindow(GetDlgItem(hDlg, IDC_ADD), FALSE);
 			}
+			EndDialog(hDlg, 0);
 			break;
 		case IDC_NEWCHEAT:
 			{

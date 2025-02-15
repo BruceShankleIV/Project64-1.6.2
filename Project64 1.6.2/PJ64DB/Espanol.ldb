@@ -95,7 +95,8 @@
 #99# "Seleccion de la ROM"
 #100# "Avanzado"
 #101# "Configuracion de la ROM"
-#102# "Integracion con Shell"
+#102# "Esta configuracion afecta como la ROM es emulada.
+Cambiar con extrema caucion y atencion."
 #103# "Notas de la ROM"
 #104# "Sobre"
 #105# " Plugin de Procesador de Senal de Realidad: "
@@ -128,7 +129,7 @@
 #134# "Nota: El Interprete no se ve afectado por los siguientes ajustes:
 SCM, ABL, Bufer de Compilacion Grande y Cache de Registros"
 #135# "Predeterminado"
-#136# "Usa RDB"
+#136# "RDB sobrescribe valores por defecto"
 #137# "1 (Menor Lag, No Estable)"
 #138# "Estilo del Nucleo del CPU:"
 #139# "Metodo de trabajar codigo:"
@@ -265,5 +266,3 @@ Salir del hilo
 Jabo's Direct3D8 1.6.2 = Graficos HLE de gama baja
 ANGLE GLideN64 = Graficos para ROMhacks de SM64"
 #251# "Alinear DMA"
-#252# "Esta configuracion afecta como la ROM es emulada.
-Cambiar con extrema caucion y atencion."

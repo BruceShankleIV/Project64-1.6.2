@@ -39,7 +39,6 @@ BOOL CALLBACK PluginSelectProc     ( HWND, UINT, WPARAM, LPARAM );
 BOOL CALLBACK RomBrowserProc       ( HWND, UINT, WPARAM, LPARAM );
 BOOL CALLBACK RomSettingsProc      ( HWND, UINT, WPARAM, LPARAM );
 BOOL CALLBACK RomNotesProc         ( HWND, UINT, WPARAM, LPARAM );
-BOOL CALLBACK ShellIntegrationProc ( HWND, UINT, WPARAM, LPARAM );
 typedef struct {
 	int     LanguageID;
 	WORD    TemplateID;
@@ -53,7 +52,6 @@ SETTINGS_TAB SettingsTabs[] = {
 	{ TAB_ADVANCED,        IDD_Settings_Options,   DefaultOptionsProc   },
 	{ TAB_ROMSETTINGS,     IDD_Settings_Rom,       RomSettingsProc      },
 	{ TAB_ROMNOTES,        IDD_Settings_RomNotes,  RomNotesProc         },
-	{ TAB_SHELLINTERGATION,IDD_Settings_ShellInt,  ShellIntegrationProc }
 };
 SETTINGS_TAB SettingsTabsBasic[] = {
 	{ TAB_PLUGIN, IDD_Settings_PlugSel,PluginSelectProc               },
@@ -61,7 +59,6 @@ SETTINGS_TAB SettingsTabsBasic[] = {
 	{ MENU_OPTIONS,IDD_Settings_General,GeneralOptionsProc             },
 	{ TAB_ROMSELECTION,IDD_Settings_RomBrowser,RomBrowserProc         },
 	{ TAB_ROMNOTES,IDD_Settings_RomNotes,RomNotesProc                 },
-	{ TAB_SHELLINTERGATION,IDD_Settings_ShellInt,ShellIntegrationProc },
 };
 SETTINGS_TAB SettingsTabsRom[] = {
 	{ TAB_ROMSETTINGS, IDD_Settings_Rom,      RomSettingsProc  },
@@ -880,7 +877,7 @@ BOOL CALLBACK RomSettingsProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 		SetFlagControl(hDlg,&RomDelayRSP, IDC_DELAY_RSP, ROM_DELAY_RSP);
 		SetFlagControl(hDlg,&RomAlignDMA, IDC_ALIGN_DMA, ROM_ALIGN_DMA);
 		SetFlagControl(hDlg,&RomSPHack, IDC_ROM_SPHACK, ROM_SP_HACK);
-		if (strlen(RomName) == 0 || !UseIni) {
+		if (strlen(RomName) == 0) {
 			EnableWindow(GetDlgItem(hDlg,IDC_MEMORY_SIZE_TEXT),FALSE);
 			EnableWindow(GetDlgItem(hDlg,IDC_RDRAM_SIZE),FALSE);
 			EnableWindow(GetDlgItem(hDlg,IDC_SAVE_TYPE_TEXT),FALSE);
@@ -902,58 +899,54 @@ BOOL CALLBACK RomSettingsProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 			EnableWindow(GetDlgItem(hDlg,IDC_LARGE_COMPILE_BUFFER),FALSE);
 			EnableWindow(GetDlgItem(hDlg,IDC_NOTES),FALSE);
 		}
-		break;
-	case WM_NOTIFY:
-		if (((NMHDR FAR *) lParam)->code == PSN_APPLY) {
-			if (strlen(RomName) == 0 || !UseIni) { break; }
-			indx = SendMessage(GetDlgItem(hDlg,IDC_RDRAM_SIZE),CB_GETCURSEL,0,0);
-			ROMRAMsize = SendMessage(GetDlgItem(hDlg,IDC_RDRAM_SIZE),CB_GETITEMDATA,indx,0);
-			indx = SendMessage(GetDlgItem(hDlg,IDC_SAVE_TYPE),CB_GETCURSEL,0,0);
-			RomSaveUsing = SendMessage(GetDlgItem(hDlg,IDC_SAVE_TYPE),CB_GETITEMDATA,indx,0);
-			indx = SendMessage(GetDlgItem(hDlg,IDC_COUNTFACT),CB_GETCURSEL,0,0);
-			RomCF = SendMessage(GetDlgItem(hDlg,IDC_COUNTFACT),CB_GETITEMDATA,indx,0);
-			indx = SendMessage(GetDlgItem(hDlg,IDC_CPU_TYPE),CB_GETCURSEL,0,0);
-			RomCPUType = SendMessage(GetDlgItem(hDlg,IDC_CPU_TYPE),CB_GETITEMDATA,indx,0);
-			indx = SendMessage(GetDlgItem(hDlg,IDC_SELFMOD),CB_GETCURSEL,0,0);
-			RomSelfMod = SendMessage(GetDlgItem(hDlg,IDC_SELFMOD),CB_GETITEMDATA,indx,0);
-			RomUseLinking = SendMessage(GetDlgItem(hDlg,IDC_BLOCK_LINKING),BM_GETSTATE, 0,0) == BST_CHECKED?TRUE:FALSE;
-			RomDelaySI = SendMessage(GetDlgItem(hDlg,IDC_DELAY_SI),BM_GETSTATE, 0,0) == BST_CHECKED?TRUE:FALSE;
-			RomDelayRDP = SendMessage(GetDlgItem(hDlg,IDC_DELAY_RDP),BM_GETSTATE, 0,0) == BST_CHECKED?TRUE:FALSE;
-			RomDelayRSP = SendMessage(GetDlgItem(hDlg,IDC_DELAY_RSP),BM_GETSTATE, 0,0) == BST_CHECKED?TRUE:FALSE;
-			RomAlignDMA = SendMessage(GetDlgItem(hDlg,IDC_ALIGN_DMA),BM_GETSTATE, 0,0) == BST_CHECKED?TRUE:FALSE;
-			RomSPHack = SendMessage(GetDlgItem(hDlg,IDC_ROM_SPHACK),BM_GETSTATE, 0,0) == BST_CHECKED?TRUE:FALSE;
-			RomUseTlb = SendMessage(GetDlgItem(hDlg,IDC_USE_TLB),BM_GETSTATE, 0,0) == BST_CHECKED?TRUE:FALSE;
-			RomUseCache = SendMessage(GetDlgItem(hDlg,IDC_ROM_REGCACHE),BM_GETSTATE, 0,0) == BST_CHECKED?TRUE:FALSE;
-			RomUseLargeBuffer = SendMessage(GetDlgItem(hDlg,IDC_LARGE_COMPILE_BUFFER),BM_GETSTATE, 0,0) == BST_CHECKED?TRUE:FALSE;
-			SaveRomOptions();
+		if (!UseIni) {
+			EnableWindow(GetDlgItem(hDlg, IDC_MEMORY_SIZE_TEXT), FALSE);
+			EnableWindow(GetDlgItem(hDlg, IDC_RDRAM_SIZE), FALSE);
+			EnableWindow(GetDlgItem(hDlg, IDC_COUNTFACT_TEXT), FALSE);
+			EnableWindow(GetDlgItem(hDlg, IDC_COUNTFACT), FALSE);
+			EnableWindow(GetDlgItem(hDlg, IDC_CPU_TYPE_TEXT), FALSE);
+			EnableWindow(GetDlgItem(hDlg, IDC_CPU_TYPE), FALSE);
+			EnableWindow(GetDlgItem(hDlg, IDC_SELFMOD_TEXT), FALSE);
+			EnableWindow(GetDlgItem(hDlg, IDC_SELFMOD), FALSE);
 		}
 		break;
-	default:
-		return FALSE;
-	}
-	return TRUE;
-}
-BOOL CALLBACK ShellIntegrationProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam) {
-	switch (uMsg) {
-	case WM_INITDIALOG:
-		SetDlgItemText(hDlg,IDC_SHELL_INT_TEXT,GS(SHELL_TEXT));
-		if (TestExtensionRegistered(".v64")) { SendMessage(GetDlgItem(hDlg,IDC_V64),BM_SETCHECK, BST_CHECKED,0); }
-		if (TestExtensionRegistered(".z64")) { SendMessage(GetDlgItem(hDlg,IDC_Z64),BM_SETCHECK, BST_CHECKED,0); }
-		if (TestExtensionRegistered(".n64")) { SendMessage(GetDlgItem(hDlg,IDC_N64),BM_SETCHECK, BST_CHECKED,0); }
-		if (TestExtensionRegistered(".rom")) { SendMessage(GetDlgItem(hDlg,IDC_ROM),BM_SETCHECK, BST_CHECKED,0); }
-		if (TestExtensionRegistered(".jap")) { SendMessage(GetDlgItem(hDlg,IDC_JAP),BM_SETCHECK, BST_CHECKED,0); }
-		if (TestExtensionRegistered(".pal")) { SendMessage(GetDlgItem(hDlg,IDC_PAL),BM_SETCHECK, BST_CHECKED,0); }
-		if (TestExtensionRegistered(".usa")) { SendMessage(GetDlgItem(hDlg,IDC_USA),BM_SETCHECK, BST_CHECKED,0); }
-		break;
 	case WM_NOTIFY:
-		if (((NMHDR FAR *) lParam)->code == PSN_APPLY) {
-			RegisterExtension(".v64",SendMessage(GetDlgItem(hDlg,IDC_V64),BM_GETSTATE, 0,0) == BST_CHECKED?TRUE:FALSE);
-			RegisterExtension(".z64",SendMessage(GetDlgItem(hDlg,IDC_Z64),BM_GETSTATE, 0,0) == BST_CHECKED?TRUE:FALSE);
-			RegisterExtension(".n64",SendMessage(GetDlgItem(hDlg,IDC_N64),BM_GETSTATE, 0,0) == BST_CHECKED?TRUE:FALSE);
-			RegisterExtension(".rom",SendMessage(GetDlgItem(hDlg,IDC_ROM),BM_GETSTATE, 0,0) == BST_CHECKED?TRUE:FALSE);
-			RegisterExtension(".jap",SendMessage(GetDlgItem(hDlg,IDC_JAP),BM_GETSTATE, 0,0) == BST_CHECKED?TRUE:FALSE);
-			RegisterExtension(".pal",SendMessage(GetDlgItem(hDlg,IDC_PAL),BM_GETSTATE, 0,0) == BST_CHECKED?TRUE:FALSE);
-			RegisterExtension(".usa",SendMessage(GetDlgItem(hDlg,IDC_USA),BM_GETSTATE, 0,0) == BST_CHECKED?TRUE:FALSE);
+		if (((NMHDR FAR*) lParam)->code == PSN_APPLY) {
+			if (strlen(RomName) == 0) break;
+			if (!UseIni) {
+				indx = SendMessage(GetDlgItem(hDlg, IDC_SAVE_TYPE), CB_GETCURSEL, 0, 0);
+				RomSaveUsing = SendMessage(GetDlgItem(hDlg, IDC_SAVE_TYPE), CB_GETITEMDATA, indx, 0);
+				RomUseLinking = SendMessage(GetDlgItem(hDlg, IDC_BLOCK_LINKING), BM_GETSTATE, 0, 0) == BST_CHECKED ? TRUE : FALSE;
+				RomDelaySI = SendMessage(GetDlgItem(hDlg, IDC_DELAY_SI), BM_GETSTATE, 0, 0) == BST_CHECKED ? TRUE : FALSE;
+				RomDelayRDP = SendMessage(GetDlgItem(hDlg, IDC_DELAY_RDP), BM_GETSTATE, 0, 0) == BST_CHECKED ? TRUE : FALSE;
+				RomDelayRSP = SendMessage(GetDlgItem(hDlg, IDC_DELAY_RSP), BM_GETSTATE, 0, 0) == BST_CHECKED ? TRUE : FALSE;
+				RomAlignDMA = SendMessage(GetDlgItem(hDlg, IDC_ALIGN_DMA), BM_GETSTATE, 0, 0) == BST_CHECKED ? TRUE : FALSE;
+				RomSPHack = SendMessage(GetDlgItem(hDlg, IDC_ROM_SPHACK), BM_GETSTATE, 0, 0) == BST_CHECKED ? TRUE : FALSE;
+				RomUseTlb = SendMessage(GetDlgItem(hDlg, IDC_USE_TLB), BM_GETSTATE, 0, 0) == BST_CHECKED ? TRUE : FALSE;
+				RomUseCache = SendMessage(GetDlgItem(hDlg, IDC_ROM_REGCACHE), BM_GETSTATE, 0, 0) == BST_CHECKED ? TRUE : FALSE;
+				RomUseLargeBuffer = SendMessage(GetDlgItem(hDlg, IDC_LARGE_COMPILE_BUFFER), BM_GETSTATE, 0, 0) == BST_CHECKED ? TRUE : FALSE;
+			} else {
+				indx = SendMessage(GetDlgItem(hDlg, IDC_RDRAM_SIZE), CB_GETCURSEL, 0, 0);
+				ROMRAMsize = SendMessage(GetDlgItem(hDlg, IDC_RDRAM_SIZE), CB_GETITEMDATA, indx, 0);
+				indx = SendMessage(GetDlgItem(hDlg, IDC_SAVE_TYPE), CB_GETCURSEL, 0, 0);
+				RomSaveUsing = SendMessage(GetDlgItem(hDlg, IDC_SAVE_TYPE), CB_GETITEMDATA, indx, 0);
+				indx = SendMessage(GetDlgItem(hDlg, IDC_COUNTFACT), CB_GETCURSEL, 0, 0);
+				RomCF = SendMessage(GetDlgItem(hDlg, IDC_COUNTFACT), CB_GETITEMDATA, indx, 0);
+				indx = SendMessage(GetDlgItem(hDlg, IDC_CPU_TYPE), CB_GETCURSEL, 0, 0);
+				RomCPUType = SendMessage(GetDlgItem(hDlg, IDC_CPU_TYPE), CB_GETITEMDATA, indx, 0);
+				indx = SendMessage(GetDlgItem(hDlg, IDC_SELFMOD), CB_GETCURSEL, 0, 0);
+				RomSelfMod = SendMessage(GetDlgItem(hDlg, IDC_SELFMOD), CB_GETITEMDATA, indx, 0);
+				RomUseLinking = SendMessage(GetDlgItem(hDlg, IDC_BLOCK_LINKING), BM_GETSTATE, 0, 0) == BST_CHECKED ? TRUE : FALSE;
+				RomDelaySI = SendMessage(GetDlgItem(hDlg, IDC_DELAY_SI), BM_GETSTATE, 0, 0) == BST_CHECKED ? TRUE : FALSE;
+				RomDelayRDP = SendMessage(GetDlgItem(hDlg, IDC_DELAY_RDP), BM_GETSTATE, 0, 0) == BST_CHECKED ? TRUE : FALSE;
+				RomDelayRSP = SendMessage(GetDlgItem(hDlg, IDC_DELAY_RSP), BM_GETSTATE, 0, 0) == BST_CHECKED ? TRUE : FALSE;
+				RomAlignDMA = SendMessage(GetDlgItem(hDlg, IDC_ALIGN_DMA), BM_GETSTATE, 0, 0) == BST_CHECKED ? TRUE : FALSE;
+				RomSPHack = SendMessage(GetDlgItem(hDlg, IDC_ROM_SPHACK), BM_GETSTATE, 0, 0) == BST_CHECKED ? TRUE : FALSE;
+				RomUseTlb = SendMessage(GetDlgItem(hDlg, IDC_USE_TLB), BM_GETSTATE, 0, 0) == BST_CHECKED ? TRUE : FALSE;
+				RomUseCache = SendMessage(GetDlgItem(hDlg, IDC_ROM_REGCACHE), BM_GETSTATE, 0, 0) == BST_CHECKED ? TRUE : FALSE;
+				RomUseLargeBuffer = SendMessage(GetDlgItem(hDlg, IDC_LARGE_COMPILE_BUFFER), BM_GETSTATE, 0, 0) == BST_CHECKED ? TRUE : FALSE;
+			}
+			SaveRomOptions();
 		}
 		break;
 	default:

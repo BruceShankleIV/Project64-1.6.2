@@ -258,6 +258,10 @@ void FixMenuLang (HMENU hMenu) {
 	MenuSetText(hSubMenu, 2, GS(MENU_SM64), "Shift+F3");
 	MenuSetText(hSubMenu, 3, GS(MENU_SLOW), "Shift+F4");
 	MenuSetText(hSubMenu, 5, GS(OPEN_REGEDIT), "Shift+R");
+	if (BasicMode) {
+	DeleteMenu(hSubMenu, 4, MF_BYPOSITION);
+	DeleteMenu(hSubMenu, 5, MF_BYPOSITION);
+	}
 	//Help Menu
 	hSubMenu = GetSubMenu(hMenu,3);
 	MenuSetText(hSubMenu, 0, GS(MENU_USER_GUIDE), NULL);
@@ -964,8 +968,13 @@ LRESULT CALLBACK Main_Proc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 			}
 			break;
                 case ID_SYSTEM_ALTERNATEPAUSE: {
-			if (!CPU_Paused) { PauseCpu (); }
-			else { PauseCpu(); Sleep(3); PauseCpu(); }
+			if (!CPU_Paused) PauseCpu ();
+			else {
+			PauseCpu();
+			timeBeginPeriod(16);
+			Sleep(3);
+			timeEndPeriod(16);
+			PauseCpu(); }
 			}
 			break;
 		case ID_OPTIONS_ALWAYSONTOP:
@@ -1233,7 +1242,8 @@ void SetupMenu ( HWND hWnd ) {
 	State = CPURunning?MFS_DISABLED:MFS_ENABLED;
 	EnableMenuItem(hMenu,ID_FILE_ROMDIRECTORY,State|MF_BYCOMMAND);
 	EnableMenuItem(hMenu,ID_FILE_REFRESHROMLIST,State|MF_BYCOMMAND);
-	if (State == MFS_DISABLED) { EnableMenuItem(hMenu,ID_FILE_STARTEMULATION,State|MF_BYCOMMAND); }
+	EnableMenuItem(hMenu,ID_REGEDIT,State|MF_BYCOMMAND);
+	EnableMenuItem(hMenu,ID_FILE_STARTEMULATION,State|MF_BYCOMMAND);
 	SetMenu(hWnd, hMenu);
 	DrawMenuBar(hWnd);
 	hMainMenu = hMenu;

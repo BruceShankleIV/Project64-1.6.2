@@ -117,13 +117,13 @@ char * GS               ( int StringID );
 /*********************************************************************************
 * Options                                                                        *
 *********************************************************************************/
-//Tabs
+
 #define TAB_PLUGIN			97
 #define TAB_DIRECTORY			98
 #define TAB_ROMSELECTION		99
 #define TAB_ADVANCED			100
 #define TAB_ROMSETTINGS			101
-#define TAB_SHELLINTERGATION	        102
+#define ROMSETTWARN			102
 #define TAB_ROMNOTES			103
 //Plugin Dialog
 #define PLUG_ABOUT			104
@@ -298,4 +298,3 @@ char * GS               ( int StringID );
 #define NUMBER_3		        249
 #define PLUGINS				250
 #define ROM_ALIGN_DMA			251
-#define ROMSETTWARN			252

@@ -567,8 +567,8 @@ void ReadRomOptions (void) {
 		} else {
 			ROMRAMsize = -1;
 		}
-		RomCF = _GetPrivateProfileInt(Identifier,"CF",-1,IniFileName);
-		if (RomCF > 3) { RomCF = -1; }
+		if (UseIni) RomCF = _GetPrivateProfileInt(Identifier,"CF",-1,IniFileName);
+		else RomCF = -1;
 		_GetPrivateProfileString(Identifier,"SAVE","",String,sizeof(String),IniFileName);
 		if (strcmp(String,"4") == 0)       { RomSaveUsing = eepROM_4K; }
 		else if (strcmp(String,"16") == 0) { RomSaveUsing = eepROM_16K; }
@@ -993,34 +993,36 @@ void SaveRomOptions (void) {
 	if (strlen(RomName) == 0) { return; }
 	IniFileName = GetIniFileName();
 	sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD *)(&RomHeader[0x10]),*(DWORD *)(&RomHeader[0x14]),RomHeader[0x3D]);
-	switch (RomCPUType) {
-	case CPU_Interpreter: sprintf(String, "Interpreter"); break;
-	case CPU_Recompiler: sprintf(String, "Recompiler"); break;
-	default: sprintf(String, " "); break;
+	if (UseIni) {
+		switch (RomCPUType) {
+		case CPU_Interpreter: sprintf(String, "Interpreter"); break;
+		case CPU_Recompiler: sprintf(String, "Recompiler"); break;
+		default: sprintf(String, " "); break;
+		}
+		_WritePrivateProfileString(Identifier, "CPU", String, GetIniFileName());
+		switch (ROMRAMsize) {
+		case 0x400000: strcpy(String, "4"); break;
+		case 0x800000: strcpy(String, "8"); break;
+		default: strcpy(String, " "); break;
+		}
+		_WritePrivateProfileString(Identifier, "MEM", String, GetIniFileName());
+		switch (RomSelfMod) {
+		case ModCode_Cache: sprintf(String, "Cache"); break;
+		case ModCode_ChangeMemory: sprintf(String, "Change Memory & Cache"); break;
+		case ModCode_CheckMemoryCache: sprintf(String, "Check Memory & Cache"); break;
+		case ModCode_CheckMemoryReturn: sprintf(String, "Check Memory & Return"); break;
+		case ModCode_CheckMemoryAdvance: sprintf(String, "Check Memory Advance"); break;
+		case ModCode_None: sprintf(String, "None"); break;
+		case ModCode_ProtectedMemory: sprintf(String, "Protect Memory"); break;
+		default: sprintf(String, " "); break;
+		}
+		_WritePrivateProfileString(Identifier, "SCM", String, GetIniFileName());
+		switch (RomCF) {
+		case 1: case 2: case 3: sprintf(String, "%d", RomCF); break;
+		default: sprintf(String, " "); break;
+		}
+		_WritePrivateProfileString(Identifier, "CF", String, GetIniFileName());
 	}
-	_WritePrivateProfileString(Identifier, "CPU", String, GetIniFileName());
-	switch (ROMRAMsize) {
-	case 0x400000: strcpy(String,"4"); break;
-	case 0x800000: strcpy(String,"8"); break;
-	default: strcpy(String," "); break;
-	}
-	_WritePrivateProfileString(Identifier,"MEM",String,GetIniFileName());
-	switch (RomSelfMod) {
-	case ModCode_Cache: sprintf(String,"Cache"); break;
-	case ModCode_ChangeMemory: sprintf(String, "Change Memory & Cache"); break;
-	case ModCode_CheckMemoryCache: sprintf(String, "Check Memory & Cache"); break;
-	case ModCode_CheckMemoryReturn: sprintf(String, "Check Memory & Return"); break;
-	case ModCode_CheckMemoryAdvance: sprintf(String, "Check Memory Advance"); break;
-	case ModCode_None: sprintf(String, "None"); break;
-	case ModCode_ProtectedMemory: sprintf(String,"Protect Memory"); break;
-	default: sprintf(String," "); break;
-	}
-	_WritePrivateProfileString(Identifier,"SCM",String,GetIniFileName());
-	switch (RomCF) {
-	case 1: case 2: case 3: sprintf(String, "%d", RomCF); break;
-	default: sprintf(String, " "); break;
-	}
-	_WritePrivateProfileString(Identifier, "CF", String, GetIniFileName());
 	switch (RomSaveUsing) {
 	case eepROM_4K: sprintf(String,"4"); break;
 	case eepROM_16K: sprintf(String,"16"); break;
@@ -1029,7 +1031,7 @@ void SaveRomOptions (void) {
 	default: sprintf(String," "); break;
 	}
 	_WritePrivateProfileString(Identifier, "SAVE",String,GetIniFileName());
-	_WritePrivateProfileString(Identifier, "CACHING", RomUseCache ? " " : "ON", GetIniFileName());
+	_WritePrivateProfileString(Identifier, "CACHING", RomUseCache ? " " : "OFF", GetIniFileName());
 	_WritePrivateProfileString(Identifier, "BUFFER", RomUseLargeBuffer ? "ON" : " ", GetIniFileName());
 	_WritePrivateProfileString(Identifier, "DMA", RomAlignDMA ? "ON" : " ", GetIniFileName());
 	_WritePrivateProfileString(Identifier, "TLB",RomUseTlb?" ":"OFF",GetIniFileName());

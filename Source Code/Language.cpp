@@ -16,7 +16,7 @@ typedef struct {
 } LANG_STR;
 LANG_STR DefaultString[] = {
     { LANGUAGE_AUTHOR,     "Bruce IV"			  },
-    { LANGUAGE_VERSION,    "1.6.2 Canary"                 },
+    { LANGUAGE_VERSION,    "Canary"			  },
     { LANGUAGE_DATE,       "February 2025"                },
 	{ INI_CURRENT_LANG,    "Language Database (.LDB)" },
 	{ INI_AUTHOR,          "Author"                   },
@@ -119,13 +119,13 @@ LANG_STR DefaultString[] = {
 /*********************************************************************************
 * Options                                                                        *
 *********************************************************************************/
-//Tabs
+
 	{ TAB_PLUGIN,"Plugins"},
 	{ TAB_DIRECTORY,"Directories"},
 	{ TAB_ROMSELECTION,"ROM Selection"},
 	{ TAB_ADVANCED,"Advanced"},
 	{ TAB_ROMSETTINGS,"ROM Settings"},
-	{ TAB_SHELLINTERGATION,"Shell Integration"},
+	{ ROMSETTWARN,"These settings affect how a ROM is emulated.\nChange with utmost caution and awareness."},
 	{ TAB_ROMNOTES,"ROM Notes"},
 //Plugin Dialog
 	{ PLUG_ABOUT, "About"},
@@ -164,7 +164,7 @@ LANG_STR DefaultString[] = {
 
 	{ ADVANCE_INFO,        "Note Interpreter is not affected by the following settings:\nSCM, ABL, Larger Compile Buffer, and Register Caching"},
 	{ ADVANCE_DEFAULTS,    "Default"},
-	{ USERDB,	       "Use RDB"},
+	{ USERDB,	       "RDB Overwrites Defaults"},
 	{ NUMBER_1,	       "1 (Lagless, Unstable)"},
 	{ ROM_CPU_STYLE,       "CPU Core Style:"},
 	{ ROM_SMCM,            "Self-modifying Code Method:"},
@@ -302,7 +302,6 @@ LANG_STR DefaultString[] = {
 	{ NUMBER_3,               "3 (Laggard, Stable)"},
 	{ PLUGINS,		  "Icepir8's Legacy LLE = High-end LLE Graphics\nJabo's Direct3D8 1.6.2 = Low-end HLE Graphics\nANGLE GLideN64 = SM64 ROMhacks Graphics"},
 	{ ROM_ALIGN_DMA,	  "Align DMA"},
-	{ ROMSETTWARN,		  "These settings affect how a ROM is emulated.\nChange with utmost caution and awareness."},
 };
 class CLanguage  {
 	void FindLangName  ( int Index );

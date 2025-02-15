@@ -9,7 +9,6 @@
 #define IDD_Cheats_List                 135
 #define IDD_Cheats_CodeEx               136
 #define IDD_Cheats_Add                  138
-#define IDD_Settings_ShellInt           139
 #define IDR_ROMBROWSER                  140
 #define IDD_Settings_RomBrowser         140
 #define IDR_CPURUNNING                  141
