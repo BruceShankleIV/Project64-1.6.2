@@ -235,7 +235,7 @@ LANG_STR DefaultString[] = {
 	{ CHEAT_ADDCHEAT_CODE,   "Code:"},
 	{ CHEAT_ADDCHEAT_NOTES,  " Cheat Notes: "},
 	{ CHEAT_ADDCHEAT_ADD,    "Add Cheat"},
-	{ CHEAT_ADDCHEAT_NEW,    "New Cheat"},
+	{ CHEAT_ADDCHEAT_NEW,    "Clear All"},
 	{ CHEAT_ADDCHEAT_CODEDES,"<address> <value>"},
 	{ CHEAT_ADDCHEAT_OPT,    "Options:"},
 	{ CHEAT_ADDCHEAT_OPTDES, "<value> <label>"},
@@ -245,8 +245,8 @@ LANG_STR DefaultString[] = {
 //Edit Cheat
 	{ CHEAT_EDITCHEAT_WINDOW,"Edit Cheat"},
 	{ CHEAT_EDITCHEAT_UPDATE,"Update Cheat"},
-//Cheat Popup Menu
-	{ CHEAT_ADDNEW,          "Add New Cheat"},
+
+	{ ROM_ALIGN_DMA,	 "Align DMA"},
 	{ CHEAT_EDIT,            "Edit"},
 	{ CHEAT_DELETE,          "Delete"},
 /*********************************************************************************
@@ -301,7 +301,6 @@ LANG_STR DefaultString[] = {
 	{ NUMBER_2,		  "2 (Laggy, Semi-stable)"},
 	{ NUMBER_3,               "3 (Laggard, Stable)"},
 	{ PLUGINS,		  "Icepir8's Legacy LLE = High-end LLE Graphics\nJabo's Direct3D8 1.6.2 = Low-end HLE Graphics\nANGLE GLideN64 = SM64 ROMhacks Graphics"},
-	{ ROM_ALIGN_DMA,	  "Align DMA"},
 };
 class CLanguage  {
 	void FindLangName  ( int Index );

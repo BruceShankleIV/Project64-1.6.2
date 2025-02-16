@@ -241,8 +241,8 @@ char * GS               ( int StringID );
 //Edit Cheat
 #define CHEAT_EDITCHEAT_WINDOW	        197
 #define CHEAT_EDITCHEAT_UPDATE	        198
-//Cheat Popup Menu
-#define CHEAT_ADDNEW			199
+
+#define ROM_ALIGN_DMA			199
 #define CHEAT_EDIT			200
 #define CHEAT_DELETE			201
 /*********************************************************************************
@@ -297,4 +297,3 @@ char * GS               ( int StringID );
 #define NUMBER_2		        248
 #define NUMBER_3		        249
 #define PLUGINS				250
-#define ROM_ALIGN_DMA			251

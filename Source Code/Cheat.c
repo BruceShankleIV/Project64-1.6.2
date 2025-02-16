@@ -1055,7 +1055,7 @@ LRESULT CALLBACK CheatListProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
 					HMENU hPopupMenu = GetSubMenu(hMenu,0);
 					POINT Mouse;
 					GetCursorPos(&Mouse);
-					MenuSetText(hPopupMenu, 0, GS(CHEAT_ADDNEW), NULL);
+					MenuSetText(hPopupMenu, 0, GS(CHEAT_ADDCHEAT_ADD), NULL);
 					MenuSetText(hPopupMenu, 1, GS(CHEAT_EDIT), NULL);
 					MenuSetText(hPopupMenu, 3, GS(CHEAT_DELETE), NULL);
 					if (hSelectedItem == NULL || TreeView_GetChild(hCheatTree,hSelectedItem) != NULL) {
