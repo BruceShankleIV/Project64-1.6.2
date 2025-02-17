@@ -7324,8 +7324,8 @@ MEM=8
 CF=1
 CPU=Recompiler
 SCM=Cache
-Status=Compatible
-Plugin=D3D8 suggested
+Status=Semicompatible
+Plugin=D3D8 ONLY
 [BE6D3C09-3BDD25D5-C:45]
 Game Name=(Hack) SM64 ROYAL LEGACY
 MEM=8
