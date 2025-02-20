@@ -6,7 +6,7 @@ RAR4 BEST COMPRESSION
 Advanced->SFX options...
 
 Path to extract
-%USERPROFILE%\Desktop
+%USERPROFILE%\Desktop\Project64 1.6.2
 
 Update->Overwrite all files
 
@@ -22,7 +22,7 @@ Select the location of your Project64 1.6.2 folder if it is not located on your 
 Direct64 v0.5 ALPHA
 Jabo's Direct3D6 1.5.2
 Jabo's Direct3D8 1.6
-Jabo's Direct3D8 1.7.0.471 V1.6.2 Can.
+Jabo's Direct3D8 1.7.0.471 V1.6.2 Fin.
 Glide64 'Napalm WX' release 1
 Mk3 GLideN64#42d65694
 

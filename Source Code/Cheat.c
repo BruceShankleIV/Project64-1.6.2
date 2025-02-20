@@ -401,9 +401,9 @@ LRESULT CALLBACK CheatsCodeExProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM l
 			char * String = NULL, Identifier[100], CheatName[300],CheatExt[300], * ReadPos;
 			LPSTR IniFileName;
 			DWORD len;
-			SetWindowText(hDlg, GS(CHEAT_CODE_EXT_TITLE));
-			SetDlgItemText(hDlg,IDC_NOTE, GS(CHEAT_CODE_EXT_TXT));
-			SetDlgItemText(hDlg, IDOK, GS(MENU_SAVE));
+			SetWindowText(hDlg, "Code Extensions");
+			SetDlgItemText(hDlg,IDC_NOTE, "Please choose a value to be used for:");
+			SetDlgItemText(hDlg, IDOK, "OK");
 			GetCheatName(CheatNo,CheatName,sizeof(CheatName));
 			SetDlgItemText(hDlg,IDC_CHEAT_NAME,CheatName);
 			LoadCheatExt(CheatName,CheatExt,sizeof(CheatExt));
@@ -626,15 +626,15 @@ LRESULT CALLBACK CheatAddProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 	char str[1024];
 	switch (uMsg) {
 	case WM_INITDIALOG:
-		SetWindowText(hDlg,GS(CHEAT_ADDCHEAT_ADD));
-		SetWindowText(GetDlgItem(hDlg,IDC_NAME),GS(CHEAT_ADDCHEAT_NAME));
-		SetWindowText(GetDlgItem(hDlg,IDC_CODE),GS(CHEAT_ADDCHEAT_CODE));
-		SetWindowText(GetDlgItem(hDlg,IDC_LABEL_OPTIONS),GS(CHEAT_ADDCHEAT_OPT));
-		SetWindowText(GetDlgItem(hDlg,IDC_CODE_DES),GS(CHEAT_ADDCHEAT_CODEDES));
-		SetWindowText(GetDlgItem(hDlg,IDC_LABEL_OPTIONS_FORMAT),GS(CHEAT_ADDCHEAT_OPTDES));
-		SetWindowText(GetDlgItem(hDlg,IDC_CHEATNOTES),GS(CHEAT_ADDCHEAT_NOTES));
-		SetWindowText(GetDlgItem(hDlg,IDC_NEWCHEAT),GS(CHEAT_ADDCHEAT_NEW));
-		SetWindowText(GetDlgItem(hDlg,IDC_ADD),GS(CHEAT_ADDCHEAT_ADD));
+		SetWindowText(hDlg,"Add Cheat");
+		SetWindowText(GetDlgItem(hDlg,IDC_NAME),"Name:");
+		SetWindowText(GetDlgItem(hDlg,IDC_CODE),"Code:");
+		SetWindowText(GetDlgItem(hDlg,IDC_LABEL_OPTIONS),"Options:");
+		SetWindowText(GetDlgItem(hDlg,IDC_CODE_DES),"<address> <value>");
+		SetWindowText(GetDlgItem(hDlg,IDC_LABEL_OPTIONS_FORMAT),"<value> <label>");
+		SetWindowText(GetDlgItem(hDlg,IDC_CHEATNOTES)," Cheat Notes: ");
+		SetWindowText(GetDlgItem(hDlg,IDC_NEWCHEAT),"Clear All");
+		SetWindowText(GetDlgItem(hDlg,IDC_ADD),"Add Cheat");
 		validcodes = FALSE;
 		break;
 	case WM_COMMAND:
@@ -699,13 +699,13 @@ LRESULT CALLBACK CheatAddProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 						break;
 					}
 					if (strcmp(CheatName,NewCheatName) == 0) {
-						DisplayError(GS(MSG_CHEAT_NAME_IN_USE));
+						DisplayError,"Cheat name is currently in use";
 						SetFocus(GetDlgItem(hDlg,IDC_CODE_NAME));
 						return TRUE;
 					}
 				}
 				if (count == MaxCheats) {
-					DisplayError(GS(MSG_MAX_CHEATS));
+					DisplayError,"You have reached the maximum amount of cheats allowed for this ROM";
 					return TRUE;
 				}
 				CheatLen = strlen(NewCheatName) + strlen(codestring);
@@ -762,14 +762,14 @@ LRESULT CALLBACK CheatEditProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
 	static int CheatNo;
 	switch (uMsg) {
 	case WM_INITDIALOG:
-		SetWindowText(hDlg,GS(CHEAT_EDITCHEAT_WINDOW));
-		SetWindowText(GetDlgItem(hDlg,IDC_NAME),GS(CHEAT_ADDCHEAT_NAME));
-		SetWindowText(GetDlgItem(hDlg,IDC_CODE),GS(CHEAT_ADDCHEAT_CODE));
-		SetWindowText(GetDlgItem(hDlg,IDC_LABEL_OPTIONS),GS(CHEAT_ADDCHEAT_OPT));
-		SetWindowText(GetDlgItem(hDlg,IDC_CODE_DES),GS(CHEAT_ADDCHEAT_CODEDES));
-		SetWindowText(GetDlgItem(hDlg,IDC_LABEL_OPTIONS_FORMAT),GS(CHEAT_ADDCHEAT_OPTDES));
-		SetWindowText(GetDlgItem(hDlg,IDC_CHEATNOTES),GS(CHEAT_ADDCHEAT_NOTES));
-		SetWindowText(GetDlgItem(hDlg,IDC_ADD),GS(CHEAT_EDITCHEAT_UPDATE));
+		SetWindowText(hDlg,"Edit Cheat");
+		SetWindowText(GetDlgItem(hDlg,IDC_NAME),"Name:");
+		SetWindowText(GetDlgItem(hDlg,IDC_CODE),"Code:");
+		SetWindowText(GetDlgItem(hDlg,IDC_LABEL_OPTIONS),"Options:");
+		SetWindowText(GetDlgItem(hDlg,IDC_CODE_DES),"<address> <value>");
+		SetWindowText(GetDlgItem(hDlg,IDC_LABEL_OPTIONS_FORMAT),"<value> <label>");
+		SetWindowText(GetDlgItem(hDlg,IDC_CHEATNOTES)," Cheat Notes: ");
+		SetWindowText(GetDlgItem(hDlg,IDC_ADD),"Update Cheat");
 		{
 			char * String = NULL,* ReadPos, *Buffer, Identifier[100], CheatName[500];
 			LPSTR IniFileName;
@@ -976,9 +976,9 @@ LRESULT CALLBACK CheatListProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
 			DWORD Style;
 			RECT rcList;
 			RECT rcButton;
-			SetWindowText(GetDlgItem(hDlg,IDC_CHEATSFRAME),GS(CHEAT_LIST_FRAME));
-			SetWindowText(GetDlgItem(hDlg,IDC_NOTESFRAME),GS(CHEAT_NOTES_FRAME));
-			SetWindowText(GetDlgItem(hDlg,IDC_UNMARK),GS(CHEAT_MARK_NONE));
+			SetWindowText(GetDlgItem(hDlg,IDC_CHEATSFRAME),"Cheats:");
+			SetWindowText(GetDlgItem(hDlg,IDC_NOTESFRAME)," Notes: ");
+			SetWindowText(GetDlgItem(hDlg,IDC_UNMARK),"Unmark All");
 			GetWindowRect(GetDlgItem(hDlg, IDC_CHEATSFRAME), &rcList);
 			GetWindowRect(GetDlgItem(hDlg, IDC_UNMARK), &rcButton);
 			hCheatTree = CreateWindowEx(WS_EX_CLIENTEDGE,WC_TREEVIEW,"",
@@ -1055,9 +1055,9 @@ LRESULT CALLBACK CheatListProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
 					HMENU hPopupMenu = GetSubMenu(hMenu,0);
 					POINT Mouse;
 					GetCursorPos(&Mouse);
-					MenuSetText(hPopupMenu, 0, GS(CHEAT_ADDCHEAT_ADD), NULL);
-					MenuSetText(hPopupMenu, 1, GS(CHEAT_EDIT), NULL);
-					MenuSetText(hPopupMenu, 3, GS(CHEAT_DELETE), NULL);
+					MenuSetText(hPopupMenu, 0, "Add Cheat", NULL);
+					MenuSetText(hPopupMenu, 1, "Edit Cheat", NULL);
+					MenuSetText(hPopupMenu, 3, "Delete Cheat", NULL);
 					if (hSelectedItem == NULL || TreeView_GetChild(hCheatTree,hSelectedItem) != NULL) {
 						DeleteMenu(hPopupMenu,3,MF_BYPOSITION);
 						DeleteMenu(hPopupMenu,2,MF_BYPOSITION);
@@ -1443,7 +1443,7 @@ void ManageCheats (HWND hParent) {
 		Y = (GetSystemMetrics( SM_CYSCREEN ) - WindowHeight) / 2;
 	}
 	{ Style = WS_SIZEBOX|WS_SYSMENU; }
-	hManageWindow = CreateWindow("PJ64.Cheats", GS(MENU_CHEAT),Style,
+	hManageWindow = CreateWindow("PJ64.Cheats", "Cheats",Style,
 		X,Y,WindowWidth,WindowHeight,hParent,NULL,hInst,NULL);
 	RefreshCheatManager();
 	ShowWindow(hManageWindow,SW_SHOW);
@@ -1546,7 +1546,7 @@ LRESULT CALLBACK ManageCheatsProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM l
 			WndPlac.length = sizeof(WndPlac);
 			GetWindowPlacement(hDlg, &WndPlac);
 			rc = &WndPlac.rcNormalPosition;
-			SetWindowText(hDlg, GS(MENU_CHEAT));
+			SetWindowText(hDlg, "Cheats");
 			hSelectCheat = CreateDialog(hInst, MAKEINTRESOURCE(IDD_Cheats_List),hDlg,(DLGPROC)CheatListProc);
 			SetWindowPos(hSelectCheat,HWND_TOP, 5, 8, 0, 0, SWP_NOSIZE);
 			ShowWindow(hSelectCheat,SW_SHOW);

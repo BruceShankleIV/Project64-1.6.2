@@ -909,6 +909,13 @@ BOOL CALLBACK RomSettingsProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 			EnableWindow(GetDlgItem(hDlg, IDC_SELFMOD_TEXT), FALSE);
 			EnableWindow(GetDlgItem(hDlg, IDC_SELFMOD), FALSE);
 		}
+		if (RomCPUType == CPU_Interpreter || RomCPUType == CPU_Default && CPU_Type == CPU_Interpreter) {
+			EnableWindow(GetDlgItem(hDlg, IDC_SELFMOD_TEXT), FALSE);
+			EnableWindow(GetDlgItem(hDlg, IDC_SELFMOD), FALSE);
+			EnableWindow(GetDlgItem(hDlg, IDC_ROM_REGCACHE), FALSE);
+			EnableWindow(GetDlgItem(hDlg, IDC_BLOCK_LINKING), FALSE);
+			EnableWindow(GetDlgItem(hDlg, IDC_LARGE_COMPILE_BUFFER), FALSE);
+		}
 		break;
 	case WM_NOTIFY:
 		if (((NMHDR FAR*) lParam)->code == PSN_APPLY) {

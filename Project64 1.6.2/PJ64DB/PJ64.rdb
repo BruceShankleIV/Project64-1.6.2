@@ -2,7 +2,7 @@
 [Meta]
 Author=Bruce IV x Nekokabu + MASA + Jelta x Smiff
 Date=February 2025
-Version=Canary
+Version=Finale
 [Microcode Identifiers]
 38221D7F=0//SD Hiryuu no Ken Densetsu (J), near start (Smiff)
 56D032C9=8//Fox Sports College Hoops 99 (U) (Duncan)
@@ -1999,7 +1999,6 @@ CF=2
 Game Name=Ganbare Goemon - Neo Momoyama Bakufu no Odori (J)
 CPU=Recompiler
 MEM=8
-CPU=Recompiler
 SCM=Change Memory & Cache
 Status=Semicompatible
 Plugin=Icepir8's LLE ONLY
@@ -4371,35 +4370,35 @@ SCM=Cache
 Status=Compatible
 Plugin=Icepir8's LLE suggested
 [4A1CD153-D830AEF8-C:50]
-Game Name=Pokemon Puzzle League (E)
+Game Name=Pokémon Puzzle League (E)
 MEM=4
 CPU=Recompiler
 SCM=Check Memory & Cache
 Status=Compatible
 CF=2
 [3EB2E6F3-062F9EFE-C:46]
-Game Name=Pokemon Puzzle League (F)
+Game Name=Pokémon Puzzle League (F)
 MEM=4
 CPU=Recompiler
 SCM=Check Memory & Cache
 Status=Compatible
 CF=2
 [7A4747AC-44EEEC23-C:44]
-Game Name=Pokemon Puzzle League (G)
+Game Name=Pokémon Puzzle League (G)
 MEM=4
 CPU=Recompiler
 SCM=Check Memory & Cache
 Status=Compatible
 CF=2
 [19C553A7-A70F4B52-C:45]
-Game Name=Pokemon Puzzle League (U)
+Game Name=Pokémon Puzzle League (U)
 CPU=Recompiler
 MEM=4
 SCM=Check Memory & Cache
 Status=Compatible
 CF=2
 [7BB18D40-83138559-C:55]
-Game Name=Pokemon Snap (A)
+Game Name=Pokémon Snap (A)
 MEM=4
 CPU=Recompiler
 SCM=Check Memory & Cache
@@ -4407,7 +4406,7 @@ Status=Compatible
 Cheat0=D1382D1C 802C,80382D0F 0000,D11E3C44 2881,811E3C44 2001,D11E3C46 0098,811E3C46 0001//Pass 1st Level and Controller Fix+Make Picture selectable
 CF=2
 [4FF5976F-ACF559D8-C:50]
-Game Name=Pokemon Snap (E)
+Game Name=Pokémon Snap (E)
 MEM=4
 CPU=Recompiler
 SCM=Check Memory & Cache
@@ -4415,7 +4414,7 @@ Status=Compatible
 Cheat0=D1381BFC 802C,80381BEF 0000,D11E3824 2881,811E3824 2001,D11E3826 0098,811E3826 0001//Pass 1st Level and Controller Fix+Make Picture selectable
 CF=2
 [BA6C293A-9FAFA338-C:46]
-Game Name=Pokemon Snap (F)
+Game Name=Pokémon Snap (F)
 MEM=4
 CPU=Recompiler
 SCM=Check Memory & Cache
@@ -4423,7 +4422,7 @@ Status=Compatible
 Cheat0=D1381BFC 802C,80381BEF 0000,D11E3744 2881,811E3744 2001,D11E3746 0098,811E3746 0001//Pass 1st Level and Controller Fix+Make Picture selectable
 CF=2
 [5753720D-2A8A884D-C:44]
-Game Name=Pokemon Snap (G)
+Game Name=Pokémon Snap (G)
 MEM=4
 CPU=Recompiler
 SCM=Check Memory & Cache
@@ -4431,7 +4430,7 @@ Status=Compatible
 Cheat0=D1381BDC 802C,80381BCF 0000,D11E3744 2881,811E3744 2001,D11E3746 0098,811E3746 0001//Pass 1st Level and Controller Fix+Make Picture selectable
 CF=2
 [C0C85046-61051B05-C:49]
-Game Name=Pokemon Snap (I)
+Game Name=Pokémon Snap (I)
 MEM=4
 CPU=Recompiler
 SCM=Check Memory & Cache
@@ -4439,7 +4438,7 @@ Status=Compatible
 Cheat0=D1381BFC 802C,80381BEF 0000,D11E3994 2881,811E3994 2001,D11E3996 0098,811E3996 0001//Pass 1st Level and Controller Fix+Make Picture selectable
 CF=2
 [EC0F690D-32A7438C-C:4A]
-Game Name=Pokemon Snap (J) (v1.0)
+Game Name=Pokémon Snap (J) (v1.0)
 MEM=4
 CPU=Recompiler
 SCM=Check Memory & Cache
@@ -4447,7 +4446,7 @@ Status=Compatible
 Cheat0=D136D22C 802A,8036D21F 0000,D11E1EC4 2881,811E1EC4 2001,D11E1EC6 0098,811E1EC6 0001//Pass 1st Level and Controller Fix+Make Picture selectable
 CF=2
 [E0044E9E-CD659D0D-C:4A]
-Game Name=Pokemon Snap (J) (v1.1)
+Game Name=Pokémon Snap (J) (v1.1)
 MEM=4
 CPU=Recompiler
 SCM=Check Memory & Cache
@@ -4455,7 +4454,7 @@ Status=Compatible
 Cheat0=D136D22C 802A,8036D21F 0000,D11E1EC4 2881,811E1EC4 2001,D11E1EC6 0098,811E1EC6 0001//Pass 1st Level and Controller Fix+Make Picture selectable
 CF=2
 [817D286A-EF417416-C:53]
-Game Name=Pokemon Snap (S)
+Game Name=Pokémon Snap (S)
 MEM=4
 CPU=Recompiler
 SCM=Check Memory & Cache
@@ -4463,7 +4462,7 @@ Status=Compatible
 Cheat0=D1381BFC 802C,80381BEF 0000,D11E38C4 2881,811E38C4 2001,D11E38C6 0098,811E38C6 0001//Pass 1st Level and Controller Fix+Make Picture selectable
 CF=2
 [CA12B547-71FA4EE4-C:45]
-Game Name=Pokemon Snap (U)
+Game Name=Pokémon Snap (U)
 MEM=4
 CPU=Recompiler
 SCM=Check Memory & Cache
@@ -4471,7 +4470,7 @@ Status=Compatible
 Cheat0=D1382D1C 802C,80382D0F 0000,D11E3184 2881,811E3184 2001,D11E3186 0098,811E3186 0001//Pass 1st Level and Controller Fix+Make Picture selectable
 CF=2
 [39119872-07722E9F-C:45]
-Game Name=Pokemon Snap Station (U)
+Game Name=Pokémon Snap Station (U)
 MEM=4
 CPU=Recompiler
 SCM=Check Memory & Cache
@@ -4479,7 +4478,7 @@ Status=Compatible
 Cheat0=D1382D1C 802C,80382D0F 0000,D11E30F4 2881,811E30F4 2001,D11E30F6 0098,811E30F6 0001//Pass 1st Level and Controller Fix+Make Picture selectable
 CF=2
 [84077275-57315B9C-C:50]
-Game Name=Pokemon Stadium (E) (v1.0)
+Game Name=Pokémon Stadium (E) (v1.0)
 MEM=4
 CPU=Recompiler
 SCM=Change Memory & Cache
@@ -4487,7 +4486,7 @@ Status=Compatible
 Plugin=Icepir8's LLE suggested
 CF=2
 [91C9E05D-AD3AAFB9-C:50]
-Game Name=Pokemon Stadium (E) (v1.1)
+Game Name=Pokémon Stadium (E) (v1.1)
 MEM=4
 CPU=Recompiler
 SCM=Change Memory & Cache
@@ -4495,7 +4494,7 @@ Status=Compatible
 Plugin=Icepir8's LLE suggested
 CF=2
 [A23553A3-42BF2D39-C:46]
-Game Name=Pokemon Stadium (F)
+Game Name=Pokémon Stadium (F)
 MEM=4
 CPU=Recompiler
 SCM=Change Memory & Cache
@@ -4503,7 +4502,7 @@ Status=Compatible
 Plugin=Icepir8's LLE suggested
 CF=2
 [42011E1B-E3552DB5-C:44]
-Game Name=Pokemon Stadium (G)
+Game Name=Pokémon Stadium (G)
 MEM=4
 CPU=Recompiler
 SCM=Change Memory & Cache
@@ -4511,7 +4510,7 @@ Status=Compatible
 Plugin=Icepir8's LLE suggested
 CF=2
 [A53FA82D-DAE2C15D-C:49]
-Game Name=Pokemon Stadium (I)
+Game Name=Pokémon Stadium (I)
 MEM=4
 CPU=Recompiler
 SCM=Change Memory & Cache
@@ -4519,7 +4518,7 @@ Status=Compatible
 Plugin=Icepir8's LLE suggested
 CF=2
 [665E8259-D098BD1D-C:4A]
-Game Name=Pokemon Stadium (J)
+Game Name=Pokémon Stadium (J)
 MEM=4
 CPU=Recompiler
 SCM=Change Memory & Cache
@@ -4527,7 +4526,7 @@ Status=Compatible
 Plugin=Icepir8's LLE suggested
 CF=2
 [B6E549CE-DC8134C0-C:53]
-Game Name=Pokemon Stadium (S)
+Game Name=Pokémon Stadium (S)
 MEM=4
 CPU=Recompiler
 SCM=Change Memory & Cache
@@ -4535,7 +4534,7 @@ Status=Compatible
 Plugin=Icepir8's LLE suggested
 CF=2
 [9C8FB2FA-9B84A09B-C:45]
-Game Name=Pokemon Stadium (U) (v1.2)
+Game Name=Pokémon Stadium (U) (v1.2)
 MEM=4
 CPU=Recompiler
 SCM=Change Memory & Cache
@@ -4543,7 +4542,7 @@ Status=Compatible
 Plugin=Icepir8's LLE suggested
 CF=2
 [1A122D43-C17DAF0F-C:45]
-Game Name=Pokemon Stadium - Kiosk (U) (v1.1)
+Game Name=Pokémon Stadium - Kiosk (U) (v1.1)
 MEM=4
 CPU=Recompiler
 SCM=Change Memory & Cache
@@ -4551,7 +4550,7 @@ Status=Compatible
 Plugin=Icepir8's LLE suggested
 CF=2
 [90F5D9B3-9D0EDCF0-C:45]
-Game Name=Pokemon Stadium (U) (v1.0)
+Game Name=Pokémon Stadium (U) (v1.0)
 MEM=4
 CPU=Recompiler
 SCM=Change Memory & Cache
@@ -4559,7 +4558,7 @@ Status=Compatible
 Plugin=Icepir8's LLE suggested
 CF=2
 [2952369C-B6E4C3A8-C:50]
-Game Name=Pokemon Stadium 2 (E)
+Game Name=Pokémon Stadium 2 (E)
 MEM=8
 CPU=Recompiler
 SCM=Protect Memory
@@ -4568,7 +4567,7 @@ BUFFER=ON
 Plugin=Icepir8's LLE Suggested
 CF=2
 [AC5AA5C7-A9B0CDC3-C:46]
-Game Name=Pokemon Stadium 2 (F)
+Game Name=Pokémon Stadium 2 (F)
 MEM=8
 CPU=Recompiler
 SCM=Protect Memory
@@ -4577,7 +4576,7 @@ Status=Compatible
 Plugin=Icepir8's LLE Suggested
 CF=2
 [439B7E7E-C1A1495D-C:44]
-Game Name=Pokemon Stadium 2 (G)
+Game Name=Pokémon Stadium 2 (G)
 MEM=8
 CPU=Recompiler
 SCM=Protect Memory
@@ -4586,7 +4585,7 @@ Plugin=Icepir8's LLE Suggested
 BUFFER=ON
 CF=2
 [EFCEAF00-22094848-C:49]
-Game Name=Pokemon Stadium 2 (I)
+Game Name=Pokémon Stadium 2 (I)
 MEM=8
 CPU=Recompiler
 SCM=Protect Memory
@@ -4595,7 +4594,7 @@ Plugin=Icepir8's LLE Suggested
 BUFFER=ON
 CF=2
 [63775886-5FB80E7B-C:4A]
-Game Name=Pokemon Stadium 2 (J)
+Game Name=Pokémon Stadium 2 (J)
 MEM=8
 CPU=Recompiler
 SCM=Protect Memory
@@ -4604,7 +4603,7 @@ Status=Compatible
 Plugin=Icepir8's LLE Suggested
 CF=2
 [D0A1FC5B-2FB8074B-C:53]
-Game Name=Pokemon Stadium 2 (S)
+Game Name=Pokémon Stadium 2 (S)
 MEM=8
 CPU=Recompiler
 SCM=Protect Memory
@@ -4613,7 +4612,7 @@ Plugin=Icepir8's LLE Suggested
 BUFFER=ON
 CF=2
 [03571182-892FD06D-C:45]
-Game Name=Pokemon Stadium 2 (U) (v1.1)
+Game Name=Pokémon Stadium 2 (U) (v1.1)
 MEM=8
 CPU=Recompiler
 SCM=Protect Memory
@@ -4622,7 +4621,7 @@ Status=Compatible
 Plugin=Icepir8's LLE Suggested
 CF=2
 [EE4FD7C2-9CF1D938-C:4A]
-Game Name=Pokemon Stadium Kin Gin (J)
+Game Name=Pokémon Stadium Kin Gin (J)
 MEM=8
 CPU=Recompiler
 SCM=Protect Memory
@@ -7282,14 +7281,14 @@ SCM=Check Memory & Return
 Status=Compatible
 Cheat0=D138E8CC 0C0E,8138E8CC 2400//D3D8 Equip Flash Fix
 CF=2
-[9CC44345-D6DF4426-C:45]
+[78FAE057-D8837421-C:45]
 Game Name=(Hack) Super Mario Star Road
 MEM=8
 CF=1
 CPU=Recompiler
 SCM=Cache
-Status=Compatible
-Plugin=ANGLE GLideN64 suggested
+Status=Semicompatible
+Plugin=ANGLE GLideN64 or D3D8 ONLY
 Cheat0=802473A7 00BC,802473B3 0000,8024748E 0000,80247966 0000,80247996 0000,8027B4F6 0000,8027B46A 0000,8027B4AA 0000,8027B582 0000,8027C99F 00BC,8027C9AB 0000//Cropfix
 [EC8D8DCA-BAE538F2-C:45]
 Game Name=(Hack) SM64 SAPPHIRE
@@ -7297,8 +7296,8 @@ MEM=8
 CF=1
 CPU=Recompiler
 SCM=Cache
-Status=Compatible
-Plugin=ANGLE GLideN64 suggested
+Status=Semicompatible
+Plugin=ANGLE GLideN64 or D3D8 ONLY
 Cheat0=802473A7 00BC,802473B3 0000,8024748E 0000,80247966 0000,80247996 0000,8027B4F6 0000,8027B46A 0000,8027B4AA 0000,8027B582 0000,8027C99F 00BC,8027C9AB 0000//Cropfix
 [84BA9B8A-3080826F-C:45]
 Game Name=(Hack) SM64 Halloween Mayhem
@@ -7306,8 +7305,8 @@ MEM=8
 CF=1
 CPU=Recompiler
 SCM=Cache
-Status=Compatible
-Plugin=ANGLE GLideN64 suggested
+Status=Semicompatible
+Plugin=ANGLE GLideN64 or D3D8 ONLY
 Cheat0=802473A7 00BC,802473B3 0000,8024748E 0000,80247966 0000,80247996 0000,8027B4F6 0000,8027B46A 0000,8027B4AA 0000,8027B582 0000,8027C99F 00BC,8027C9AB 0000//Cropfix
 [E2ECA4F2-9335BD40-C:45]
 Game Name=(Hack) Super Banjo Kazooie 64 Redux Demo
@@ -7315,8 +7314,8 @@ MEM=8
 CF=1
 CPU=Recompiler
 SCM=Cache
-Status=Compatible
-Plugin=D3D8 suggested
+Status=Semicompatible
+Plugin=D3D8 ONLY
 Cheat0=802473A7 00BC,802473B3 0000,8024748E 0000,80247966 0000,80247996 0000,8027B4F6 0000,8027B46A 0000,8027B4AA 0000,8027B582 0000,8027C99F 00BC,8027C9AB 0000//Cropfix
 [5C2E242D-9B73A97C-C:45]
 Game Name=(Hack) SM64 Last Impact
@@ -7364,16 +7363,16 @@ MEM=8
 CF=1
 CPU=Recompiler
 SCM=Cache
-Status=Compatible
-Plugin=ANGLE GLideN64 suggested
+Status=Semicompatible
+Plugin=ANGLE GLideN64 ONLY
 [91085973-E32B4E16-C:45]
 Game Name=(Hack) That Time I Became Friends With The Royal Scuttlebug Family And Fell From Space
 MEM=8
 CF=1
 CPU=Recompiler
 SCM=Cache
-Status=Compatible
-Plugin=ANGLE GLideN64 suggested
+Status=Semicompatible
+Plugin=ANGLE GLideN64 ONLY
 [36F2DB16-DF63D3BE-C:45]
 Game Name=(Hack) Pumkin Tower
 CF=1

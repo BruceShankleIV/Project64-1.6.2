@@ -210,7 +210,7 @@ char * GS               ( int StringID );
 *********************************************************************************/
 //Rom Info Title
 #define INFO_TITLE			175
-//Rom Info Text
+
 #define INFO_ROM_NAME_TEXT		176
 #define INFO_FILE_NAME_TEXT		177
 #define INFO_LOCATION_TEXT		178
@@ -219,32 +219,7 @@ char * GS               ( int StringID );
 #define INFO_CRC1_TEXT			181
 #define INFO_CRC2_TEXT			182
 #define INFO_CIC_CHIP_TEXT		183
-/*********************************************************************************
-* Cheats                                                                         *
-*********************************************************************************/
-//Cheat List
-#define CHEAT_LIST_FRAME		184
-#define CHEAT_NOTES_FRAME		185
-#define CHEAT_MARK_NONE			186
-//Add Cheat
-#define CHEAT_ADDCHEAT_NAME		187
-#define CHEAT_ADDCHEAT_CODE		188
-#define CHEAT_ADDCHEAT_NOTES	        189
-#define CHEAT_ADDCHEAT_ADD 		190
-#define CHEAT_ADDCHEAT_NEW 		191
-#define CHEAT_ADDCHEAT_CODEDES 	        192
-#define CHEAT_ADDCHEAT_OPT 		193
-#define CHEAT_ADDCHEAT_OPTDES 	        194
-//Code extension
-#define CHEAT_CODE_EXT_TITLE	        195
-#define CHEAT_CODE_EXT_TXT		196
-//Edit Cheat
-#define CHEAT_EDITCHEAT_WINDOW	        197
-#define CHEAT_EDITCHEAT_UPDATE	        198
-
 #define ROM_ALIGN_DMA			199
-#define CHEAT_EDIT			200
-#define CHEAT_DELETE			201
 /*********************************************************************************
 * Messages                                                                       *
 *********************************************************************************/
@@ -276,8 +251,6 @@ char * GS               ( int StringID );
 #define MSG_UNABLED_LOAD_STATE          227
 #define MSG_EMULATION_ENDED             228
 #define MSG_PLUGIN_NOT_INIT             229
-#define MSG_CHEAT_NAME_IN_USE           230
-#define MSG_MAX_CHEATS                  231
 #define GZ_ROMS				232
 #define MSG_CONFIRMATION_UNINSTALL      233
 #define MSG_PLUGIN_HOT_SWAP             234

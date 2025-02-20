@@ -16,7 +16,7 @@ typedef struct {
 } LANG_STR;
 LANG_STR DefaultString[] = {
     { LANGUAGE_AUTHOR,     "Bruce IV"			  },
-    { LANGUAGE_VERSION,    "Canary"			  },
+    { LANGUAGE_VERSION,    "Finale"			  },
     { LANGUAGE_DATE,       "February 2025"                },
 	{ INI_CURRENT_LANG,    "Language Database (.LDB)" },
 	{ INI_AUTHOR,          "Author"                   },
@@ -214,7 +214,7 @@ LANG_STR DefaultString[] = {
 *********************************************************************************/
 //ROM Info Title
 	{ INFO_TITLE,             "ROM Information"},
-//ROM Info Text
+
 	{ INFO_ROM_NAME_TEXT,     "ROM Name:"},
 	{ INFO_FILE_NAME_TEXT,    "File Name:"},
 	{ INFO_LOCATION_TEXT,     "Location:"},
@@ -223,32 +223,7 @@ LANG_STR DefaultString[] = {
 	{ INFO_CRC1_TEXT,         "1st CRC:"},
 	{ INFO_CRC2_TEXT,         "2nd CRC:"},
 	{ INFO_CIC_CHIP_TEXT,     "CIC Chip:"},
-/*********************************************************************************
-* Cheats                                                                         *
-*********************************************************************************/
-//Cheat List
-	{ CHEAT_LIST_FRAME,      "Cheats:"},
-	{ CHEAT_NOTES_FRAME,     " Notes: "},
-	{ CHEAT_MARK_NONE,       "Unmark All"},
-//Add Cheat
-	{ CHEAT_ADDCHEAT_NAME,   "Name:"},
-	{ CHEAT_ADDCHEAT_CODE,   "Code:"},
-	{ CHEAT_ADDCHEAT_NOTES,  " Cheat Notes: "},
-	{ CHEAT_ADDCHEAT_ADD,    "Add Cheat"},
-	{ CHEAT_ADDCHEAT_NEW,    "Clear All"},
-	{ CHEAT_ADDCHEAT_CODEDES,"<address> <value>"},
-	{ CHEAT_ADDCHEAT_OPT,    "Options:"},
-	{ CHEAT_ADDCHEAT_OPTDES, "<value> <label>"},
-//Code extension
-	{ CHEAT_CODE_EXT_TITLE,  "Code Extensions"},
-	{ CHEAT_CODE_EXT_TXT,    "Please choose a value to be used for:"},
-//Edit Cheat
-	{ CHEAT_EDITCHEAT_WINDOW,"Edit Cheat"},
-	{ CHEAT_EDITCHEAT_UPDATE,"Update Cheat"},
-
 	{ ROM_ALIGN_DMA,	 "Align DMA"},
-	{ CHEAT_EDIT,            "Edit"},
-	{ CHEAT_DELETE,          "Delete"},
 /*********************************************************************************
 * Messages                                                                       *
 *********************************************************************************/
@@ -280,8 +255,6 @@ LANG_STR DefaultString[] = {
         { MSG_UNABLED_LOAD_STATE, "Unable to load save state"},
         { MSG_EMULATION_ENDED,    "Emulation ended"},
 	{ MSG_PLUGIN_NOT_INIT,    "Cannot open a ROM because plugins haven't successfully initialized"},
-	{ MSG_CHEAT_NAME_IN_USE,  "Cheat name is currently in use"},
-	{ MSG_MAX_CHEATS,         "You have reached the maximum amount of cheats allowed for this ROM"},
 	{ GZ_ROMS,                "Exiting thread\n(Try Check Memory & Return)\n(Try Interpreter CPU Core Style)"},
         { MSG_CONFIRMATION_UNINSTALL, "This action will attempt to terminate this instance and factory reset included registry configurations"},
         { MSG_PLUGIN_HOT_SWAP,    "Plugin hot swapping in progress"},

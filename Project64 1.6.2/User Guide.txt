@@ -142,6 +142,8 @@ Fixed certain ROMhacks having their save file get deleted upon being saved (Indi
 
 Fixed loadstate glitches.
 
+Fixed Pokémon Stadium regression.
+
 Fixed ROM extension association.
 
 Fixed ROM loading plugin init freezes (no more plugin-related crashes on or just after ROM open).
@@ -202,6 +204,11 @@ For your information, here's some issues I have experienced with Project64 "Lega
 * Loading a savestate can ruin all of the graphics if you try to load states just after a ROM is opened.
 * Persistently annoying stuttering in Ocarina of Time which hurts the quality of my gameplay experience.
 * Generally I always ran into some kind of error whenever I used Legacy for any extended period of time.
+
+I seriously hate Project64 Legacy. I went to use it today and everytime I tried to load a savestate, the
+game would crash and this was extremely frustrating. Whoever was responsible for making Project64 Legacy
+clearly does not understand Project64 and I suggest they either figure things out, or stop working on it
+altogether and just suggest people to use a better emulator because it always gives me a bad experience.
 
 
 Note that all issues mentioned above about Project64 Legacy are either non-issues in Project64 Ver1.6.2,
@@ -328,6 +335,8 @@ either the ROM header data above the internal name, or the baseROM's internal na
 
 Section#06 Known Issues
 --------------------------------------------------------------------------------------------------------
+Switching to specific video plugins in some buggy ROMhacks can cause seemingly random crashes to happen.
+When updating a cheat, changes don't take effect right away if it is already checked and not re-checked.
 The "Display Lists to Graphics Plugin" option with the default RSP freezes up the emulator when toggled.
 Limit FPS can be kind of broken, does not work at all or can cause strange errors (very game dependent).
 Depending on the PC hardware, Jabo's Direct3D8 can sometimes freeze, though the ROM still stays running.
@@ -372,6 +381,7 @@ RSP.dll
 
 It's possible to properly fix cropping in SM64 without cheats by enabling Direct3D pipeline and Only per
 frame from the Advanced and ROM Settings tabs. Direct3D pipeline doesn't save in the registries however.
+Additionally, this does cause some very minor graphical issues so this is not at all a fullproof method.
 
 Project64 Ver1.6.2 is portable and if you would like to say, transfer everything to a new PC, you can do
 so by compressing the Project64 Ver1.6.2 folder on your PC into a .zip file, pasting it into a USB stick

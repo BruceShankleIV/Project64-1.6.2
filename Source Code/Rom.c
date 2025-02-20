@@ -1006,6 +1006,7 @@ void SaveRomOptions (void) {
 		default: strcpy(String, " "); break;
 		}
 		_WritePrivateProfileString(Identifier, "MEM", String, GetIniFileName());
+		if (RomCPUType != CPU_Interpreter || RomCPUType == CPU_Default && CPU_Type != CPU_Interpreter) {
 		switch (RomSelfMod) {
 		case ModCode_Cache: sprintf(String, "Cache"); break;
 		case ModCode_ChangeMemory: sprintf(String, "Change Memory & Cache"); break;
@@ -1017,6 +1018,7 @@ void SaveRomOptions (void) {
 		default: sprintf(String, " "); break;
 		}
 		_WritePrivateProfileString(Identifier, "SCM", String, GetIniFileName());
+		}
 		switch (RomCF) {
 		case 1: case 2: case 3: sprintf(String, "%d", RomCF); break;
 		default: sprintf(String, " "); break;
@@ -1031,11 +1033,15 @@ void SaveRomOptions (void) {
 	default: sprintf(String," "); break;
 	}
 	_WritePrivateProfileString(Identifier, "SAVE",String,GetIniFileName());
+	if (RomCPUType != CPU_Interpreter || RomCPUType == CPU_Default && CPU_Type != CPU_Interpreter) {
 	_WritePrivateProfileString(Identifier, "CACHING", RomUseCache ? " " : "OFF", GetIniFileName());
 	_WritePrivateProfileString(Identifier, "BUFFER", RomUseLargeBuffer ? "ON" : " ", GetIniFileName());
+	}
 	_WritePrivateProfileString(Identifier, "DMA", RomAlignDMA ? "ON" : " ", GetIniFileName());
 	_WritePrivateProfileString(Identifier, "TLB",RomUseTlb?" ":"OFF",GetIniFileName());
+	if (RomCPUType != CPU_Interpreter || RomCPUType == CPU_Default && CPU_Type != CPU_Interpreter) {
 	_WritePrivateProfileString(Identifier, "ABL", RomUseLinking ? "ON" : " ", GetIniFileName());
+	}
 	_WritePrivateProfileString(Identifier, "SPH", RomSPHack ? "ON" : " ", GetIniFileName());
 	_WritePrivateProfileString(Identifier, "RDP", RomDelayRDP ? "ON" : " ", GetIniFileName());
 	_WritePrivateProfileString(Identifier, "RSP", RomDelayRSP ? "ON" : " ", GetIniFileName());
