@@ -1,5 +1,4 @@
 https://github.com/mdqinc/SDL_GameControllerDB/blob/master/gamecontrollerdb.txt
-https://www.youtube.com/watch?v=rYWtGcdsrcY
 https://github.com/krm01/oot-indigo-mod/releases
 https://github.com/RichieUltimate/ultimate-trial/releases
 https://github.com/Javarooster-png/PumkinPatch/releases
@@ -31,7 +30,6 @@ Sands of Time Jan 9, 2025
 Pumkin Tower July 31st 2024
 Ultimate Trial September 16th 2024
 Indigo Chapter 2 Sep 16 2024
-Shadows of Eldoria 10/31/2024
 gamecontrollerdb 26f70da feb 5 2025
 
 NOTE: I have included the Return to Yoshi's Island Demo 2, but I don't plan to upstream it
