@@ -273,7 +273,7 @@ LANG_STR DefaultString[] = {
 	{ REGISTRY,		  "Configure Registries"},
 	{ NUMBER_2,		  "2 (Laggy, Semi-stable)"},
 	{ NUMBER_3,               "3 (Laggard, Stable)"},
-	{ PLUGINS,		  "Icepir8's Legacy LLE = High-end LLE Graphics\nJabo's Direct3D8 1.6.2 = Low-end HLE Graphics\nANGLE GLideN64 = SM64 ROMhacks Graphics"},
+	{ PLUGINS,		  "Icepir8's Legacy LLE = High-end LLE Graphics\nJabo's Direct3D8 1.6.2 = Low-end HLE Graphics\nANGLE GLideN64 = Most SM64 ROMhacks Graphics"},
 };
 class CLanguage  {
 	void FindLangName  ( int Index );

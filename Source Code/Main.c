@@ -257,11 +257,8 @@ void FixMenuLang (HMENU hMenu) {
 	MenuSetText(hSubMenu, 1, GS(MENU_STANDARD), "Shift+F2");
 	MenuSetText(hSubMenu, 2, GS(MENU_SM64), "Shift+F3");
 	MenuSetText(hSubMenu, 3, GS(MENU_SLOW), "Shift+F4");
-	MenuSetText(hSubMenu, 5, GS(OPEN_REGEDIT), "Shift+R");
-	if (BasicMode) {
-	DeleteMenu(hSubMenu, 4, MF_BYPOSITION);
-	DeleteMenu(hSubMenu, 5, MF_BYPOSITION);
-	}
+	MenuSetText(hSubMenu, 4, GS(OPEN_REGEDIT), "Shift+R");
+	if (BasicMode) DeleteMenu(hSubMenu, 4, MF_BYPOSITION);
 	//Help Menu
 	hSubMenu = GetSubMenu(hMenu,3);
 	MenuSetText(hSubMenu, 0, GS(MENU_USER_GUIDE), NULL);

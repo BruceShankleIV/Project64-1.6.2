@@ -183,80 +183,80 @@ SCM, ABL, Larger Compile Buffer, and Register Caching"
 #181# "1st CRC:"
 #182# "2nd CRC:"
 #183# "CIC Chip:"
-#199# "Align DMA"
-#202# "CPU paused"
-#203# "CPU resumed"
-#204# "In a permanent loop that cannot be exited.
+#184# "Align DMA"
+#185# "CPU paused"
+#186# "CPU resumed"
+#187# "In a permanent loop that cannot be exited.
 
 Exiting thread"
-#205# "Failed to allocate memory.
+#188# "Failed to allocate memory.
 
 Exiting thread"
-#206# "The default or selected video plugin is missing or invalid.
+#189# "The default or selected video plugin is missing or invalid.
 
 You need to select a video (graphics) plugin"
-#207# "The default or selected audio plugin is missing or invalid.
+#190# "The default or selected audio plugin is missing or invalid.
 
 You need to select an audio (sound) plugin"
-#208# "The default or selected RSP plugin is missing or invalid.
+#191# "The default or selected RSP plugin is missing or invalid.
 
 You need to select an RSP plugin
 
 (A possible cause of this error can be Data Execution Prevention interfering with plugin initialization)"
-#209# "The default or selected input plugin is missing or invalid.
+#192# "The default or selected input plugin is missing or invalid.
 
 You need to select an input (controller) plugin"
-#210# "Failed to load plugin"
-#211# "Advances through a game in single frames at a time (Sync game to Audio suggested)"
-#212# "Failed to save this savestate. Save your savestate in a new file or slot, or exit and re-enter Project64 to deal with the issue"
-#213# "Cannot access save data. You may be running the application from an admin rights directory, or you may have multiple instances of Project64 open. Stop doing either of those to make this error go away"
-#214# "Attempt to open zip file failed.
+#193# "Failed to load plugin"
+#194# "Advances through a game in single frames at a time (Sync game to Audio suggested)"
+#195# "Failed to save this savestate. Save your savestate in a new file or slot, or exit and re-enter Project64 to deal with the issue"
+#196# "Cannot access save data. You may be running the application from an admin rights directory, or you may have multiple instances of Project64 open. Stop doing either of those to make this error go away"
+#197# "Attempt to open zip file failed.
 
 Potentially is a corrupt zip file - try unzipping ROM manually"
-#215# "Displays ROM-specific information about a selected ROM"
-#216# "Error occured when trying to open zip file"
-#217# "File loaded does not appear to be a valid ROM.
+#198# "Displays ROM-specific information about a selected ROM"
+#199# "Error occured when trying to open zip file"
+#200# "File loaded does not appear to be a valid ROM.
 
 Verify that your ROM's checksum is valid"
-#218# "Unknown file format"
-#219# "Unknown memory action.
+#201# "Unknown file format"
+#202# "Unknown memory action.
 
 Exiting thread"
-#220# "Unhandled R4300i OpCode at"
-#221# "Failed to open mempak"
-#222# "Executing from non-mapped space.
+#203# "Unhandled R4300i OpCode at"
+#204# "Failed to open mempak"
+#205# "Executing from non-mapped space.
 
 Exiting thread
 (Try another RSP plugin)
 (Try Check Memory & Return)
 (Try 8MB Memory Size)"
-#223# "Error"
-#224# "Copyright sequence not found in LUT. Game will no longer function"
-#225# "Copy Protection Failure"
-#226# "Emulation started"
-#227# "Unable to load save state"
-#228# "Emulation ended"
-#229# "Cannot open a ROM because plugins haven't successfully initialized"
-#232# "Exiting thread
+#206# "Error"
+#207# "Copyright sequence not found in LUT. Game will no longer function"
+#208# "Copy Protection Failure"
+#209# "Emulation started"
+#210# "Unable to load save state"
+#211# "Emulation ended"
+#212# "Cannot open a ROM because plugins haven't successfully initialized"
+#213# "Exiting thread
 (Try Check Memory & Return)
 (Try Interpreter CPU Core Style)"
-#233# "This action will attempt to terminate this instance and factory reset included registry configurations"
-#234# "Plugin hot swapping in progress"
-#235# "Plugin hot swapping completed"
-#236# "Fullscreen mode entered"
-#237# "GS button pressed"
-#238# "Frames Per Second"
-#239# "Open REGEDIT"
-#240# "This action will attempt to terminate this instance and set various LLE slow registry configurations (Interpreter x CF3 x Icepir8's plugins). It's experimental, you should only use this mode if you are having technical difficulties getting a ROM to work properly and you don't know what settings to use"
-#241# "SM64 ROMhacks Mode"
-#242# "Attempts to terminate this instance and set various SM64 registry configurations"
-#243# "This action will attempt to terminate this instance and set various SM64 registry configurations for SM64 ROMhacks settings. Change to a lower-end video plugin like Jabo's Direct3D8 1.6.2 after the registries have been reconfigured if your PC does not support GLideN64"
-#244# "Standard Mode"
-#245# "Attempts to terminate this instance and set various standard registry configurations"
-#246# "This action will attempt to terminate this instance and set various standard registry configurations for standard settings"
-#247# "Configure Registries"
-#248# "2 (Laggy, Semi-stable)"
-#249# "3 (Laggard, Stable)"
-#250# "Icepir8's Legacy LLE = High-end LLE Graphics
+#214# "This action will attempt to terminate this instance and factory reset included registry configurations"
+#215# "Plugin hot swapping in progress"
+#216# "Plugin hot swapping completed"
+#217# "Fullscreen mode entered"
+#218# "GS button pressed"
+#219# "Frames Per Second"
+#220# "Open REGEDIT"
+#221# "This action will attempt to terminate this instance and set various LLE slow registry configurations (Interpreter x CF3 x Icepir8's plugins). It's experimental, you should only use this mode if you are having technical difficulties getting a ROM to work properly and you don't know what settings to use"
+#222# "SM64 ROMhacks Mode"
+#223# "Attempts to terminate this instance and set various SM64 registry configurations"
+#224# "This action will attempt to terminate this instance and set various SM64 registry configurations for SM64 ROMhacks settings. Change to a lower-end video plugin like Jabo's Direct3D8 1.6.2 after the registries have been reconfigured if your PC does not support GLideN64"
+#225# "Standard Mode"
+#226# "Attempts to terminate this instance and set various standard registry configurations"
+#227# "This action will attempt to terminate this instance and set various standard registry configurations for standard settings"
+#228# "Configure Registries"
+#229# "2 (Laggy, Semi-stable)"
+#230# "3 (Laggard, Stable)"
+#231# "Icepir8's Legacy LLE = High-end LLE Graphics
 Jabo's Direct3D8 1.6.2 = Low-end HLE Graphics
-ANGLE GLideN64 = SM64 ROMhacks Graphics"
+ANGLE GLideN64 = Most SM64 ROMhacks Graphics"

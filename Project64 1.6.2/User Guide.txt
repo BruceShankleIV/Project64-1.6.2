@@ -547,40 +547,7 @@ the following issues with this emulator:
   from the RDB and eliminate the issue altogether. For now though, Legacy LLE video is an ok workaround.
 
 
-Also, if you develop the ROM database, please do not ever include any of the following lines in your RDB
-entries, because if you do, then you are just wasting space, assuming you leave internal defaults alone:
-
-(In paranthesis, I am telling you what the setting is set to when it is left empty like this as a guide)
-
-
-CPU= 
-(User's default setting from the advanced tab, Recompiler by default)
-MEM= 
-(User's default setting from the advanced tab, 8 by default)
-SCM= 
-(User's default setting from the advanced tab, Check Memory & Return by default)
-CF= 
-(User's default setting from the advanced tab, 2 by default)
-SAVE= 
-(Autodetected)
-CACHING= 
-(ON)
-BUFFER= 
-(OFF)
-DMA=
-(OFF)
-TLB= 
-(ON)
-ABL= 
-(OFF)
-SPH= 
-(OFF)
-RDP= 
-(OFF)
-RSP=
-(OFF)
-SI= 
-(OFF)
+Also, if you develop the ROM database, please bookmark =Default and remove all of those lines with NP++.
 --------------------------------------------------------------------------------------------------------
 
 Section#13 Extra (Part 2), How to Develop Project64 1.6 + BEWARE of MiB/PJ64Team!

@@ -838,6 +838,7 @@ BOOL CALLBACK RomSettingsProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 	switch (uMsg) {
 	case WM_INITDIALOG:
 		ReadRomOptions();
+		if (RomCPUType == CPU_Interpreter || RomCPUType == CPU_Default && CPU_Type == CPU_Interpreter)
 		SetDlgItemText(hDlg, IDC_INFO, GS(ADVANCE_INFO));
 		SetDlgItemText(hDlg, IDC_ROMSETTWARN, GS(ROMSETTWARN));
 		SetDlgItemText(hDlg,IDC_CPU_TYPE_TEXT,GS(ROM_CPU_STYLE));

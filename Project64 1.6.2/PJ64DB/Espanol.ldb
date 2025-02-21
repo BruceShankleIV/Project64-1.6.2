@@ -170,79 +170,79 @@ SCM, ABL, Bufer de Compilacion Grande y Cache de Registros"
 #181# "1er CRC:"
 #182# "2do CRC:"
 #183# "Chip CIC:"
-#199# "Alinear DMA"
-#202# "CPU pausada"
-#203# "CPU reanudada"
-#204# "La emulacion se atasco en un bucle permanente.
+#184# "Alinear DMA"
+#185# "CPU pausada"
+#186# "CPU reanudada"
+#187# "La emulacion se atasco en un bucle permanente.
 
 Salir del hilo"
-#205# "Error al asignar memoria.
+#188# "Error al asignar memoria.
 
 Salir del hilo"
-#206# "El plugin de Graficos predeterminado o seleccionado falta o no es valido.
+#189# "El plugin de Graficos predeterminado o seleccionado falta o no es valido.
 
 Necesitas ir a seleccionar un plugin de Graficos (Video)"
-#207# "El plugin de Audio predeterminado o seleccionado falta o no es valido.
+#190# "El plugin de Audio predeterminado o seleccionado falta o no es valido.
 
 Necesitas ir a seleccionar un plugin de Audio (Sonido)"
-#208# "El plugin RSP predeterminado o seleccionado falta o no es valido.
+#191# "El plugin RSP predeterminado o seleccionado falta o no es valido.
 
 Necesitas ir a seleccionar un plugin RSP"
-#209# "El plugin de Controles predeterminado o seleccionado falta o no es valido.
+#192# "El plugin de Controles predeterminado o seleccionado falta o no es valido.
 
 Necesitas ir a seleccionar un complemento de Controles (Inputs)
 
 (Una posible causa de este error puede ser Prevencion de Ejecucion de Data interfiriendo con la inicializacion del plugin)"
-#210# "Error al cargar el plugin"
-#211# "Avanza a traves del juego en un frame a la vez  (Sincronizar juego al Audio sugerido)"
-#212# "Falla al guardar el estado de guardado. Guarde su savestate en un nuevo archivo o ranura, o salga y vuelva a entrar en Project64 para solucionar el problema."
-#213# "No se puede acceder a los datos de guardado. Puede que estes ejecutando una aplicacion desde un directorio con permisos de admin, o puedes tener multiples instancias de Project64 abiertas. Deten cualquiera de las dos para hacer que este error desaparezca"
-#214# "Intento de abrir el archivo zip fallido.
+#193# "Error al cargar el plugin"
+#194# "Avanza a traves del juego en un frame a la vez  (Sincronizar juego al Audio sugerido)"
+#195# "Falla al guardar el estado de guardado. Guarde su savestate en un nuevo archivo o ranura, o salga y vuelva a entrar en Project64 para solucionar el problema."
+#196# "No se puede acceder a los datos de guardado. Puede que estes ejecutando una aplicacion desde un directorio con permisos de admin, o puedes tener multiples instancias de Project64 abiertas. Deten cualquiera de las dos para hacer que este error desaparezca"
+#197# "Intento de abrir el archivo zip fallido.
 
 Potencialmente es un archivo .zip corrupto: intenta descomprimir ROM manualmente"
-#215# "Muestra informacion especifica sobre una ROM seleccionada"
-#216# "Error ocurrido al intentar abrir archivo .zip"
-#217# "El archivo cargado no parece ser una ROM valida.
+#198# "Muestra informacion especifica sobre una ROM seleccionada"
+#199# "Error ocurrido al intentar abrir archivo .zip"
+#200# "El archivo cargado no parece ser una ROM valida.
 
 Verifica que el checksum de tu ROM sea valido"
-#218# "Formato de archivo desconocido"
-#219# "Accion de memoria desconocida.
+#201# "Formato de archivo desconocido"
+#202# "Accion de memoria desconocida.
 
 Salir del hilo"
-#220# "Codigo de operacion R4300i no controlado en"
-#221# "Error al abrir mempak"
-#222# "Ejecutando desde espacio no asignado.
+#203# "Codigo de operacion R4300i no controlado en"
+#204# "Error al abrir mempak"
+#205# "Ejecutando desde espacio no asignado.
 
 Salir del hilo
 (Pruebe otro plugin RSP)
 (Intenta Revisar Memoria y Devolver)
 (Intenta Tamano de Memoria de 8MB)"
-#224# "Secuencia de copyright no encontrada en LUT. El juego ya no funcionara"
-#225# "Fallo de Proteccion de Copia"
-#226# "Emulacion iniciada"
-#227# "No se puede cargar el estado de Guardado"
-#228# "Salir del hilo"
-#229# "No se puede abrir una ROM porque los plugins no se han inicializado correctamente"
-#232# "Salir del hilo
+#207# "Secuencia de copyright no encontrada en LUT. El juego ya no funcionara"
+#208# "Fallo de Proteccion de Copia"
+#209# "Emulacion iniciada"
+#210# "No se puede cargar el estado de Guardado"
+#211# "Salir del hilo"
+#212# "No se puede abrir una ROM porque los plugins no se han inicializado correctamente"
+#213# "Salir del hilo
 (Intenta Revisar Memoria y Devolver)
 (Intenta Estilo de Nucleo de CPU Interprete)"
-#233# "Esta accion intentara detener esta instancia y resetea de fabrica todo junto la configuracion de registro"
-#234# "Cambio rapido de Plugin en progreso"
-#235# "Cambio rapido de plugin completado"
-#236# "Modo de Pantalla Completa activado"
-#237# "Boton GS presionado"
-#238# "Frames Por Segundo"
-#239# "Abrir REGEDIT"
-#240# "Esta accion intentara detener esta instancia y coloca varias configuraciones de registro lento LLE (Interpretador x CF3 x plugins de Icepir8's). Es experimental, solo deberias usarlo si estas teniendo problemas tecnicos consiguiendo que una ROM trabaje correctamente y no sabes que configuracion usar"
-#241# "Modo de ROMhacks de SM64"
-#242# "Intenta detener esta instancia y coloca varias configuraciones de registro para SM64"
-#243# "Esta accion intentara detener esta instancia y coloca varios registros de configuracion para los ajustes de ROMhacks de SM64. Cambia a un plugin de gama baja como Jabo's Direct3D8 1.6.2 despues de que los registros hayan sido reconfigurados si tu PC no soporta GLideN64"
-#244# "Modo Estandar"
-#245# "Intenta detener esta instancia y coloca varias configuraciones estandares de registro"
-#246# "Esta accion intentara detener esta instancia y coloca varias configuraciones estandares de registro para la configuracion estandar"
-#247# "Configurar Registros"
-#248# "2 (Con Lag, Semi-estable)"
-#249# "3 (Mucho Lag, Estable)"
-#250# "Icepir8's Legacy LLE = Graficos LLE de gama alta
+#214# "Esta accion intentara detener esta instancia y resetea de fabrica todo junto la configuracion de registro"
+#215# "Cambio rapido de Plugin en progreso"
+#216# "Cambio rapido de plugin completado"
+#217# "Modo de Pantalla Completa activado"
+#218# "Boton GS presionado"
+#219# "Frames Por Segundo"
+#220# "Abrir REGEDIT"
+#221# "Esta accion intentara detener esta instancia y coloca varias configuraciones de registro lento LLE (Interpretador x CF3 x plugins de Icepir8's). Es experimental, solo deberias usarlo si estas teniendo problemas tecnicos consiguiendo que una ROM trabaje correctamente y no sabes que configuracion usar"
+#222# "Modo de ROMhacks de SM64"
+#223# "Intenta detener esta instancia y coloca varias configuraciones de registro para SM64"
+#224# "Esta accion intentara detener esta instancia y coloca varios registros de configuracion para los ajustes de ROMhacks de SM64. Cambia a un plugin de gama baja como Jabo's Direct3D8 1.6.2 despues de que los registros hayan sido reconfigurados si tu PC no soporta GLideN64"
+#225# "Modo Estandar"
+#226# "Intenta detener esta instancia y coloca varias configuraciones estandares de registro"
+#227# "Esta accion intentara detener esta instancia y coloca varias configuraciones estandares de registro para la configuracion estandar"
+#228# "Configurar Registros"
+#229# "2 (Con Lag, Semi-estable)"
+#230# "3 (Mucho Lag, Estable)"
+#231# "Icepir8's Legacy LLE = Graficos LLE de gama alta
 Jabo's Direct3D8 1.6.2 = Graficos HLE de gama baja
-ANGLE GLideN64 = Graficos para ROMhacks de SM64"
+ANGLE GLideN64 = "Graficos de la Mayoria de ROMhacks de SM64"
