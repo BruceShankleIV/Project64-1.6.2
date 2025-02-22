@@ -15582,4 +15582,22 @@ Cheat6="Mute\Music",81222618 E000
 Cheat7="Press L For 99 Coins (easy 100 coin stars)",D133AFA0 0020,8133B218 0063
 Cheat8="Automated Textboxes",812DA3A8 1000
 Cheat9="No Fall Damage",E8870584 5942,E98708D0 504F
+[FD691D1F-EA37D4B9-C:45]
+Cheat0="Invulnerable to Most Enemy Damage",A033B197 0001
+Cheat1="Infinite Energy",8133B21E 08FF
+Cheat2="Mario's Cap Options",8033B177 00??
+Cheat2_O=$09 Capless,$10 Normal,$12 Invisible Mario,$15 Metal Mario,$16 Invisible Metal Mario,$19 Flying Mario
+Cheat3="Press L to Levitate",D033AFA1 0020,8133B1BC 4220,D033AFA1 0020,8133B17C 0300,D033AFA1 0020,8133B17E 0881
+Cheat4="MARIO A File 120 Stars",80207723 0001,8020770B 00C7,50001101 0000,8020770C 00FF
+Cheat5="MARIO B File 120 Stars",80207793 0001,8020777B 00C7,50001101 0000,8020777C 00FF
+Cheat6="MARIO C File 120 Stars",80207803 0001,802077EB 00C7,50001101 0000,802077EC 00FF
+Cheat7="MARIO D File 120 Stars",80207873 0001,8020785B 00C7,50001101 0000,8020785C 00FF
+Cheat8="Level Select",D033AFA1 0020,A032DDF9 00??
+Cheat8_N=Hold L while entering a level entrance (NOT A LEVEL EXIT) through any course select to warp to your desired level.
+Cheat8_O=$09 Springpath Valley,$18 Sanzu River Fields,$0C Abandoned Graveyard,$05 Magma Cavern of Iseki,$04 Forest of Magic,$07 Bamboo Forest,$16 Hakurei Bridges,$08 Makai Fields,$17 Unnamed Dream World,$0A Skyhigh Ruins,$0B Shining Needle Castle,$24 Dreamy Space Tunnel,$0D Clownish Moon Surface,$0E Sea of Tranquility,$0F Scriosadh Battles,$11 Eientei?,$1E Eientei? Boss,$13 Youkai Mountain,$21 Youkai Mountain Boss,$15 Bullgetsu's Arena,$1B SMB2 W1-1,$1C Blue Realm,$12 Secret Space Tunnel,$14 Great Mausoleum,$1D The Moon Trials,$1F Scarlet Devil Mansion
+Cheat9="Press L to Takeoff (see notes)",D133AFA0 0020,80336C62 00ED,D133AFA0 0020,8133B1C4 423E,D133AFA0 0000,81336C62 FD70,D133AFA0 4020,8133B1C4 42BE,D133AFA0 0020,8133B17C 0300,D133AFA0 0020,8133B17E 0880
+Cheat9_N=ATTENTION: DO NOT HOLD L WHEN A NEW AREA IS BEING LOADED (entering a course/castle, die'ing). Use B to boost and let go of L to exit from flight.
+Cheat10="Mute\Mario Voice SFX",803331C2 0000
+Cheat11="Mute\Music",81222618 E000
+Cheat12="Automated Textboxes",812DA3A8 1000
 //ESSENTIAL SPACE

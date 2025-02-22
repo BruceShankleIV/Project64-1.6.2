@@ -34,17 +34,11 @@ void CloseSRAM (void) {
 		hSRAMFile = NULL;
 	}
 }
-  BOOL LoadSRAM (void) {
-  int i = 0;
-  char File[255], Directory[255];
-  LPVOID lpMsgBuf;
-  GetAutoSaveDir(Directory);
-  sprintf(File,"%s%s.sra",Directory,RomName);
-  for(;File[i] != 0;i++)
-  {
-    if(File[i] == '*' || File[i]== ';')
-      File[i] = '_';
-  }
+BOOL LoadSRAM (void) {
+	char File[255], Directory[255];
+	LPVOID lpMsgBuf;
+	GetAutoSaveDir(Directory);
+	sprintf(File,"%s%s.sra",Directory,RomName);
 	hSRAMFile = CreateFile(File,GENERIC_WRITE | GENERIC_READ, FILE_SHARE_READ,NULL,OPEN_ALWAYS,
 		FILE_ATTRIBUTE_NORMAL | FILE_FLAG_RANDOM_ACCESS, NULL);
 	if (hSRAMFile == INVALID_HANDLE_VALUE) {

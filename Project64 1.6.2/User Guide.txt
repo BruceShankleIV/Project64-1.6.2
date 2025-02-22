@@ -234,6 +234,7 @@ Icepir8's Legacy LLE - This video plugin should be used where Jabo's Direct3D8 w
 		       in order to avoid crashes and instances where games like World Driver don't boot.
 		       It was created by Icepir8 for the unfinished "Legacy" experiment, but works here.
 		       HOWEVER, with some games it can crash the emulator, so sometimes ANGLE is needed.
+		       Note that the plugin has some input lag not seen in other included video plugins.
 
 Jabo's Direct3D8 1.6.2 - This is the default plugin due to low specs requirements/good PC compatibility.
 			 However, it also has many graphics emulation issues, and if your PC can support
@@ -548,6 +549,7 @@ the following issues with this emulator:
 
 
 Also, if you develop the ROM database, please bookmark =Default and remove all of those lines with NP++.
+Make sure you set Counter Factor to 1 to all games compatible with it to help reduce both lag and delay.
 --------------------------------------------------------------------------------------------------------
 
 Section#13 Extra (Part 2), How to Develop Project64 1.6 + BEWARE of MiB/PJ64Team!

@@ -1103,7 +1103,7 @@ void GetAutoSaveDir( char * Directory ) {
 	HKEY hKeyResults = 0;
 	GetModuleFileName(NULL,path_buffer,sizeof(path_buffer));
 	_splitpath( path_buffer, drive, dir, fname, ext );
-	sprintf(Directory,"%s%sSave Data\\",drive,dir);
+	sprintf(Directory,"%s%sSave\\Data\\",drive,dir);
 	sprintf(Group,"N64 Software\\%s",AppName);
 	lResult = RegOpenKeyEx( HKEY_CURRENT_USER,Group,0,KEY_ALL_ACCESS,
 		&hKeyResults);
@@ -1127,7 +1127,7 @@ void GetInstantSaveDir( char * Directory ) {
 	HKEY hKeyResults = 0;
 	GetModuleFileName(NULL,path_buffer,sizeof(path_buffer));
 	_splitpath( path_buffer, drive, dir, fname, ext );
-	sprintf(Directory,"%s%sSave States\\",drive,dir);
+	sprintf(Directory,"%s%sSave\\States\\",drive,dir);
 	sprintf(Group,"N64 Software\\%s",AppName);
 	lResult = RegOpenKeyEx( HKEY_CURRENT_USER,Group,0,KEY_ALL_ACCESS,
 		&hKeyResults);

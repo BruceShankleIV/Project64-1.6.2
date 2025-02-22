@@ -280,12 +280,12 @@ void CreateRecentDirList (HMENU hMenu) {
 		menuinfo.fState = MFS_ENABLED;
 		menuinfo.dwTypeData = String;
 		menuinfo.cch = 256;
-		sprintf(String,"None");
+		sprintf(String," ");
 		InsertMenuItem(hSubMenu, MenuLocOfUsedDirs, TRUE, &menuinfo);
 		hSubMenu = CreateMenu();
 		if (strlen(LastDirs[0]) == 0) {
 			menuinfo.wID = ID_FILE_RECENT_DIR;
-			sprintf(String,"None");
+			sprintf(String," ");
 			InsertMenuItem(hSubMenu, 0, TRUE, &menuinfo);
 		}
 		menuinfo.fMask = MIIM_TYPE|MIIM_ID;
@@ -356,12 +356,12 @@ void CreateRecentFileList(HMENU hMenu) {
 		menuinfo.cch = 256;
 		hSubMenu = GetSubMenu(hMenu,0);
 		DeleteMenu(hSubMenu, MenuLocOfUsedFiles, MF_BYPOSITION);
-		sprintf(String,"None");
+		sprintf(String," ");
 		InsertMenuItem(hSubMenu, MenuLocOfUsedFiles, TRUE, &menuinfo);
 		hSubMenu = CreateMenu();
 		if (strlen(LastRoms[0]) == 0) {
 			menuinfo.wID = ID_FILE_RECENT_DIR;
-			sprintf(String,"None");
+			sprintf(String," ");
 			InsertMenuItem(hSubMenu, 0, TRUE, &menuinfo);
 		}
 		menuinfo.fMask = MIIM_TYPE|MIIM_ID;
@@ -587,7 +587,7 @@ void ReadRomOptions (void) {
 			else if (strcmp(String,"Check") == 0) { RomSelfMod = ModCode_CheckMemoryCache; }
 			else if (strcmp(String,"Return") == 0){ RomSelfMod = ModCode_CheckMemoryReturn; }
 			else if (strcmp(String,"Advance") == 0) { RomSelfMod = ModCode_CheckMemoryAdvance; }
-			else if (strcmp(String,"None") == 0)                      { RomSelfMod = ModCode_None; }
+			else if (strcmp(String," ") == 0)                      { RomSelfMod = ModCode_None; }
 			else if (strcmp(String,"Protect") == 0)       { RomSelfMod = ModCode_ProtectedMemory; }
 			else                                                 { RomSelfMod = ModCode_Default; }
 			}
@@ -1017,7 +1017,7 @@ void SaveRomOptions (void) {
 		case ModCode_CheckMemoryCache: sprintf(String, "Check"); break;
 		case ModCode_CheckMemoryReturn: sprintf(String, "Return"); break;
 		case ModCode_CheckMemoryAdvance: sprintf(String, "Advance"); break;
-		case ModCode_None: sprintf(String, "None"); break;
+		case ModCode_None: sprintf(String, " "); break;
 		case ModCode_ProtectedMemory: sprintf(String, "Protect"); break;
 		default: sprintf(String, "Default"); break;
 		}
