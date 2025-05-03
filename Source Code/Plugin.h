@@ -25,10 +25,10 @@
  */
 #ifndef __Plugin_h
 #define __Plugin_h
-#define DefaultGFXDll				"Video.dll"
-#define DefaultRSPDll				"RSP.dll"
-#define DefaultAudioDll				"Audio.dll"
-#define DefaultControllerDll		"Input.dll"
+#define DefaultGFXDll				"Jabo_Direct3D8.dll"
+#define DefaultRSPDll				"Shankle_RSP.dll"
+#define DefaultAudioDll				"AziAudio.dll"
+#define DefaultControllerDll			"Shankle_Input.dll"
 #define PLUGIN_TYPE_RSP				1
 #define PLUGIN_TYPE_GFX				2
 #define PLUGIN_TYPE_AUDIO			3
@@ -212,6 +212,7 @@ typedef union {
 #define PLUGIN_RAW					5 // the controller plugin is passed in raw data
 /******** Global DLL Function **************/
 void (__cdecl *GetDllInfo)             ( PLUGIN_INFO * PluginInfo );
+void GetCurrentDlls		   ( void );
 /********** RSP DLL Functions *********************/
 void (__cdecl *RSPCloseDLL)        ( void );
 void (__cdecl *RSPDllAbout)        ( HWND hWnd );

@@ -35,22 +35,26 @@ extern "C" {
 #include "rombrowser.h"
 #include "Language.h"
 /********* General Defaults **********/
-#define AppVer   "Finale"
-#define AppName  "Project64 Version 1.6.2 Finale"
+#define AppVer   "WIP 09"
+#define AppName  "Bruce's Project64 1.6.2 WIP 09"
 #define IniName						"PJ64.rdb"
 #define CheatIniName				"PJ64.cdb"
-#define LangFileName				"PJ64.ldb"
+#define LangFileName				"Bruce IV.txt"
 #define Default_AutoSleep			TRUE
-#define Default_DisableRegCaching	FALSE
 #define Default_RDRAMsize			0x800000
-#define Default_UseIni				TRUE
 #define Default_LimitFPS			TRUE
-#define Default_AlwaysOnTop			FALSE
+#define Default_SpeedCap			FALSE
+#define Default_UsuallyonTop		FALSE
 #define Default_BasicMode			TRUE
 #define Default_RememberCheats		TRUE
 #define Default_RomsToRemember		10
 #define Default_RomsDirsToRemember	10
-#define Default_CountPerOp		2
+#define Default_CountPerOp		2 // DO NOT EVER CHANGE THIS!
+#define Default_ForceDisableTLB		FALSE
+#define Default_ForceEnableDMA		FALSE
+#define Default_ForceEnableCaching	FALSE
+#define Default_ForceEnableDelayRDP	FALSE
+#define Default_ForceAuto16			FALSE
 /*********** Menu Stuff **************/
 #define ID_FILE_RECENT_FILE		1000
 #define ID_FILE_RECENT_DIR		1100
@@ -69,15 +73,15 @@ extern "C" {
 #define ModCode_CheckMemoryAdvance	4
 #define ModCode_None			5
 #define ModCode_ProtectedMemory		6
-#define Default_SelfModCheck		ModCode_CheckMemoryReturn
+#define Default_SelfModCheck		ModCode_CheckMemoryReturn // DO NOT EVER CHANGE THIS!
 /********** Rom Browser **************/
 #define Default_UseRB				TRUE
 #define Default_Rercursion			TRUE
 /********* Global Variables **********/
 extern LARGE_INTEGER Frequency, Frames[8], LastFrame;
-extern BOOL AutoSleep, DisableRegCaching, UseIni, UseTlb, UseLinking, RomBrowser,
-	IgnoreMove, Rercursion, LimitFPS,
-	AutoFullScreen, SystemCF, AlwaysOnTop, BasicMode, DelaySI, RememberCheats,
+extern BOOL AutoSleep, UseTlb, AudioSignal, ForceDisableTLB, ForceEnableDMA, ForceEnableCaching, ForceEnableDelayRDP, ForceAuto16,
+	IgnoreMove, Rercursion, LimitFPS, SpeedCap,
+	AutoFullScreen, SystemCF, UsuallyonTop, BasicMode, DelaySI, RememberCheats,
 	DelayRDP, DelayRSP, AlignDMA;
 extern DWORD CurrentFrame, CPU_Type, SystemCPU_Type, SelfModCheck, SystemSelfModCheck,
 	RomsToRemember, RomDirsToRemember;
@@ -87,11 +91,15 @@ extern HMENU hMainMenu;
 extern HINSTANCE hInst;
 /******** Function Prototype *********/
 DWORD AsciiToHex          ( char * HexValue );
-void AlwaysOnTopWindow    ( HWND hWnd );
+void UsuallyonTopWindow    ( HWND hWnd );
+void NotUsuallyonTopWindow ( HWND hWnd );
+void HandleStartup1	   ( HWND hWnd );
+void HandleStartup2	   ( HWND hWnd );
 void  __cdecl DisplayError       ( char * Message, ... );
-void  __cdecl DisplayErrorFatal  ( char * Message, ... );
 void ChangeWinSize        ( HWND hWnd, long width, long height, HWND hStatusBar );
 void  DisplayFPS          ( void );
+void  LimitFPSLogic	  ( void );
+void  SpeedCapLogic	  ( void );
 char* GetIniFileName      ( void );
 char* GetLangFileName     ( void );
 int   GetStoredWinPos     ( char * WinName, DWORD * X, DWORD * Y );

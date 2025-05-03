@@ -39,7 +39,7 @@ DWORD FlashRAM_Offset, FlashFlag = FlashRAM_MODE_NOPES;
 static HANDLE hFlashRAMFile = NULL;
 BYTE * FlashRAMPointer;
 QWORD FlashStatus = 0;
-void DmaFromFlashRAM(BYTE * dest, int StartOffset, int len) {
+void DMAfromFlashRAM(BYTE * dest, int StartOffset, int len) {
 	BYTE FlipBuffer[0x10000];
 	DWORD dwRead, count;
 	switch (FlashFlag) {
@@ -82,7 +82,7 @@ void DmaFromFlashRAM(BYTE * dest, int StartOffset, int len) {
 		break;
 	}
 }
-void DmaToFlashRAM(BYTE * Source, int StartOffset, int len) {
+void DMAtoFlashRAM(BYTE * Source, int StartOffset, int len) {
 	switch (FlashFlag) {
 	case FlashRAM_MODE_WRITE:
 		FlashRAMPointer = Source;

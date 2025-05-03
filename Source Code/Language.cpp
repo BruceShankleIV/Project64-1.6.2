@@ -16,9 +16,9 @@ typedef struct {
 } LANG_STR;
 LANG_STR DefaultString[] = {
     { LANGUAGE_AUTHOR,     "Bruce IV"			  },
-    { LANGUAGE_VERSION,    "Finale"			  },
-    { LANGUAGE_DATE,       "February 2025"                },
-	{ INI_CURRENT_LANG,    "Language Database (.LDB)" },
+    { LANGUAGE_VERSION,    "WIP 09"			  },
+    { LANGUAGE_DATE,       "2025"			  },
+	{ INI_CURRENT_LANG,    "Language Database (.TXT)" },
 	{ INI_AUTHOR,          "Author"                   },
 	{ INI_VERSION,         "Version"                  },
 	{ INI_DATE,            "Date"                     },
@@ -50,7 +50,7 @@ LANG_STR DefaultString[] = {
 		{ MENU_RESUME,      "Resume"                 },
 	        { MENU_OPTIONS,  "Options"                   },
 		{ MENU_FULL_SCREEN, "Full Screen"                 },
-		{ MENU_ON_TOP,      "Always On Top"               },
+		{ MENU_ON_TOP,      "Usually on Top"              },
 		{ MENU_CONFIG_GFX,   "Configure Graphics Plugin"  },
 		{ MENU_CONFIG_AUDIO, "Configure Audio Plugin"     },
 		{ MENU_CONFIG_CTRL,  "Configure Controller Plugin"},
@@ -64,15 +64,15 @@ LANG_STR DefaultString[] = {
 		{ MENU_UNINSTALL,   "Factory Reset"               },
 // Menu Descriptions
         { MENUDES_OPEN, "Lets you open N64 ROMs" },
-        { MENUDES_ROM_INFO, "Displays ROM-specific information about a running ROM" },
+        { MENUDES_ROM_INFO, "Displays ROM-specific information" },
         { MENUDES_START, "Starts emulation of the most recently opened ROM" },
         { MENUDES_END, "Ends emulation of the most recently opened ROM" },
-        { MENUDES_CHOOSE_ROM, "Lets you choose a ROM directory (ROMs folder by default)" },
+        { MENUDES_CHOOSE_ROM, "Lets you choose a ROM directory" },
         { MENUDES_REFRESH, "Refreshes current list of ROMs in the ROM browser" },
         { MENUDES_EXIT, "Closes Project64" },
         { MENUDES_RESET, "Resets the current ROM" },
         { MENUDES_PAUSE, "Pauses/resumes emulation of the current ROM" },
-        { MENUDES_BITMAP, "Attempts to screenshot (plugin-dependent, freezes on D3D8 1.7 plugins w/FSAA)" },
+        { MENUDES_BITMAP, "Takes a screenshot (plugin-dependent)" },
         { MENUDES_LIMIT_FPS, "Lets you toggle >100% speeds without Sync game to Audio" },
         { MENUDES_SAVE, "Saves last selected save state slot" },
         { MENUDES_SAVE_AS, "Lets you choose a directory to make a save state" },
@@ -80,20 +80,19 @@ LANG_STR DefaultString[] = {
         { MENUDES_LOAD, "Lets you choose a save state to load" },
         { MENUDES_CHEAT, "Enables/disables GameShark cheats" },
         { MENUDES_GS_BUTTON, "Activates GS cheats when enabled in the cheat menu" },
-        { MENUDES_FULL_SCREEN, "Enters current plugin's fullscreen mode (problems with D3D8)" },
-        { MENUDES_ON_TOP, "Makes Project64 stay in front of all other windows" },
+        { MENUDES_FULL_SCREEN, "Enters current plugin's fullscreen mode" },
+        { MENUDES_ON_TOP, "Usually makes Project64 stay on top of all other windows" },
         { MENUDES_CONFIG_GFX, "Lets you change settings inside the Graphics plugin" },
         { MENUDES_CONFIG_AUDIO, "Lets you change settings inside the Audio plugin" },
         { MENUDES_CONFIG_CTRL, "Lets you change settings inside the Controller plugin" },
         { MENUDES_CONFIG_RSP, "Lets you change settings inside the RSP plugin" },
         { MENUDES_SETTINGS, "Lets you change settings for Project64" },
-        { MENUDES_USER_GUIDE, "Opens the user guide" },
+        { MENUDES_USER_GUIDE, "Opens the user guide (always contains credits)" },
         { MENUDES_ABOUT_INI, "Displays metadata for Project64 databases" },
         { MENUDES_RECENT_ROM, "Lets you open a previously opened ROM path" },
         { MENUDES_RECENT_DIR, "Lets you choose a ROM directory" },
         { MENUDES_LANGUAGES, "Lets you swap to a different language database if provided" },
         { MENUDES_GAME_SLOT, "Selects a save state slot" },
-        { MENUDES_GAME_SETTINGS, "Lets you edit ROM settings for a selected ROM" },
         { MENUDES_GAME_CHEATS, "Lets you edit cheat codes for a selected ROM (available when remembered)" },
         { MENUDES_UNINSTALLAPP, "Attempts to terminate this instance and factory reset included registry configurations" },
 	{ FULLSCREEN_EXITED, "Fullscreen mode exited"},
@@ -106,8 +105,6 @@ LANG_STR DefaultString[] = {
 	{ RB_GAMENAME,     "Game Name" },
 	{ RB_STATUS,       "Status" },
 	{ RB_ROMSIZE,      "Size" },
-	{ RB_NOTES_CORE,   "Core Note" },
-	{ RB_NOTES_PLUGIN, "Plugin Note" },
 	{ RB_CART_ID,      "ID" },
 	{ RB_CRC1,         "1st CRC" },
 	{ RB_CRC2,         "2nd CRC" },
@@ -125,11 +122,11 @@ LANG_STR DefaultString[] = {
 	{ TAB_ROMSELECTION,"ROM Selection"},
 	{ TAB_ADVANCED,"Advanced"},
 	{ TAB_ROMSETTINGS,"ROM Settings"},
-	{ ROMSETTWARN,"These settings affect how a ROM is emulated.\nChange with utmost caution and awareness."},
+	{ ROMSETTWARN,"Reset or start emulation again to apply any changes"},
 	{ TAB_ROMNOTES,"ROM Notes"},
 //Plugin Dialog
 	{ PLUG_ABOUT, "About"},
-	{ PLUG_RSP,   " Reality Signal Processor plugin: "},
+	{ PLUG_RSP,   " RSP (reality signal processor) plugin: "},
 	{ PLUG_GFX,   " Video (graphics) plugin: "},
 	{ PLUG_AUDIO, " Audio (sound) plugin: "},
 	{ PLUG_CTRL,  " Input (controller) plugin: "},
@@ -138,7 +135,7 @@ LANG_STR DefaultString[] = {
 	{ DIR_AUTO_SAVE,     "Save Data"},
 	{ DIR_INSTANT_SAVE,  "Save States"},
         { DIR_SCREEN_SHOT,   "Screenshots"},
-	{ SCREENSHOT_TAKEN,  "Screenshotting attempted"},
+	{ SCREENSHOT_TAKEN,  "Screenshot taken"},
 	{ DIR_SELECT_ROM,    "Select ROM Directory"},
 	{ DIR_SELECT_AUTO,   "Select Save Data Directory"},
 	{ DIR_SELECT_INSTANT,"Select Save States Directory"},
@@ -148,12 +145,12 @@ LANG_STR DefaultString[] = {
 	{ OPTION_AUTO_FULLSCREEN, "Enter Fullscreen Mode Upon ROM Opening"},
 	{ OPTION_BASIC_MODE,      "Hide Advanced Settings"},
 	{ OPTION_REMEMBER_CHEAT,  "Remember Selected Cheats"},
-//ROM Browser Tab
+
 	{ RB_MAX_ROMS,         "Max # of ROMs Remembered (Max 10):"},
 	{ RB_ROMS,             "ROMs"},
 	{ RB_MAX_DIRS,         "Max # of ROM Dirs Remembered (Max 10):"},
 	{ RB_DIRS,             "Dirs"},
-	{ RB_USE,              "ROM Browser"},
+	{ FORCE_ENABLE_DELAYRDP,"Always Enable Delay RDP"},
 	{ RB_DIR_RECURSION,    "Directory Recursion"},
 	{ RB_AVAILABLE_FIELDS, "Available fields:"},
 	{ RB_SHOW_FIELDS,      "Show fields in this order:"},
@@ -162,14 +159,14 @@ LANG_STR DefaultString[] = {
 	{ RB_UP,               "Up"},
 	{ RB_DOWN,             "Down"},
 
-	{ ADVANCE_INFO,        "Note Interpreter is not affected by the following settings:\nSCM, ABL, Larger Compile Buffer, and Register Caching"},
+	{ ADVANCE_INFO,        "Note: Interpreter is not affected by these 4 settings:\nSCM, SPH, Register Caching, and Larger Compile Buffer"},
 	{ ADVANCE_DEFAULTS,    "Default"},
-	{ USERDB,	       "RDB Overwrites Defaults"},
-	{ NUMBER_1,	       "1 (Lagless, Unstable)"},
+		{ FORCE_AUTO16,		  "Always Autodetect With 16kbit" },
+	{ NUMBER_1,	       "1 (Lagless/Unstable)"},
 	{ ROM_CPU_STYLE,       "CPU Core Style:"},
 	{ ROM_SMCM,            "Self-modifying Code Method:"},
 	{ ROM_MEM_SIZE,        "Memory Size:" },
-	{ ROM_ABL,             "ABL"},
+	{ ROM_AUDIO_SIGNAL,             "Signal"},
 	{ ROM_SAVE_TYPE,       "Save Type:"},
 	{ ROM_COUNTER_FACTOR,  "Counter Factor:"},
 	{ ROM_LARGE_BUFFER,    "Larger Compile Buffer"},
@@ -197,14 +194,12 @@ LANG_STR DefaultString[] = {
 	{ SMCM_CHECK_ADV,      "Check Memory Advance"},
 
 	{ MENUDES_SLOW,	       "Attempts to terminate this instance and set various slow registry configurations"},
-	{ REGEDIT_MENUDES,     "Opens the registry editor to view/edit/export registries"},
+	{ FORCE_DISABLE_TLB,   "Always Disable TLB"},
 	{ SMCM_CHECK_RETURN,   "Check Memory & Return"},
-	{ SAVE_4K_eepROM,      "4kbit eepROM"},
-	{ SAVE_16K_eepROM,     "16kbit eepROM"},
+	{ SAVE_4K_eepROM,      "4kbit EEPROM"},
+	{ SAVE_16K_eepROM,     "16kbit EEPROM"},
 	{ SAVE_SRAM,           "32kbytes SRAM"},
 	{ SAVE_FlashRAM,       "FlashRAM"},
-//Shell Intergration Tab
-	{ SHELL_TEXT,          "File extension association:"},
 //ROM Notes
 	{ NOTE_STATUS,         "ROM Status:"},
 	{ NOTE_CORE,           "Core Note:"},
@@ -229,51 +224,62 @@ LANG_STR DefaultString[] = {
 *********************************************************************************/
 	{ MSG_CPU_PAUSED,         "CPU paused"},
 	{ MSG_CPU_RESUMED,        "CPU resumed"},
-	{ MSG_PERM_LOOP,          "In a permanent loop that cannot be exited.\n\nExiting thread"},
+	//{ MSG_PERM_LOOP,          "In a permanent loop that cannot be exited.\n\nExiting thread"},
 	{ MSG_MEM_ALLOC_ERROR,    "Failed to allocate memory.\n\nExiting thread"},
 	{ MSG_FAIL_INIT_GFX,      "The default or selected video plugin is missing or invalid.\n\nYou need to select a video (graphics) plugin"},
 	{ MSG_FAIL_INIT_AUDIO,    "The default or selected audio plugin is missing or invalid.\n\nYou need to select an audio (sound) plugin"},
-	{ MSG_FAIL_INIT_RSP,      "The default or selected RSP plugin is missing or invalid.\n\nYou need to select an RSP plugin\n\n(A possible cause of this error can be Data Execution Prevention interfering with plugin initialization)"},
+	{ MSG_FAIL_INIT_RSP,      "The default or selected RSP plugin is missing or invalid.\n\nYou need to select a reality signal processor (RSP) plugin"},
 	{ MSG_FAIL_INIT_CONTROL,  "The default or selected input plugin is missing or invalid.\n\nYou need to select an input (controller) plugin"},
 	{ MSG_FAIL_LOAD_PLUGIN,   "Failed to load plugin"},
-	{ MENU_ADVANCE_DESC,	  "Advances through a game in single frames at a time (Sync game to Audio suggested)"},
-	{ MSG_FAIL_OPEN_SAVE,     "Failed to save this savestate. Save your savestate in a new file or slot, or exit and re-enter Project64 to deal with the issue"},
+	{ MENU_ADVANCE_DESC,	  "Advances through a game in single frames at a time"},
+	{ MSG_FAIL_OPEN_SAVE,     "Failed to save this savestate"},
         { MSG_FAIL_OPEN_FLASH,    "Cannot access save data. You may be running the application from an admin rights directory, or you may have multiple instances of Project64 open. Stop doing either of those to make this error go away"},
 	{ MSG_FAIL_OPEN_ZIP,      "Attempt to open zip file failed.\n\nPotentially is a corrupt zip file - try unzipping ROM manually"},
 	{ MSG_RB_INFO,		  "Displays ROM-specific information about a selected ROM"},
 	{ MSG_FAIL_ZIP,           "Error occured when trying to open zip file"},
 	{ MSG_FAIL_IMAGE,         "File loaded does not appear to be a valid ROM.\n\nVerify that your ROM's checksum is valid"},
 	{ MSG_UNKNOWN_FILE_FORMAT,"Unknown file format"},
-	{ MSG_UNKNOWN_MEM_ACTION, "Unknown memory action.\n\nExiting thread"},
-	{ MSG_UNHANDLED_OP,       "Unhandled R4300i OpCode at"},
+	//{ MSG_UNKNOWN_MEM_ACTION, "Unknown memory action.\n\nExiting thread"},
         { MSG_FAIL_OPEN_MEMPAK,   "Failed to open mempak"},
-	{ MSG_NONMAPPED_SPACE,    "Executing from non-mapped space.\n\nExiting thread\n(Try another RSP plugin)\n(Try Check Memory & Return)\n(Try 8MB Memory Size)"},
-	{ MSG_MSGBOX_TITLE,       "Error"},
+	//{ MSG_NONMAPPED_SPACE,    "Executing from non-mapped space.\n\nExiting thread"},
+	{ MSG_MSGBOX_TITLE,       "App Error"},
 	{ MSG_PIF2_ERROR,         "Copyright sequence not found in LUT. Game will no longer function"},
 	{ MSG_PIF2_TITLE,         "Copy Protection Failure"},
 	{ MSG_EMULATION_STARTED,  "Emulation started"},
         { MSG_UNABLED_LOAD_STATE, "Unable to load save state"},
         { MSG_EMULATION_ENDED,    "Emulation ended"},
 	{ MSG_PLUGIN_NOT_INIT,    "Cannot open a ROM because plugins haven't successfully initialized"},
-	{ GZ_ROMS,                "Exiting thread\n(Try Check Memory & Return)\n(Try Interpreter CPU Core Style)"},
         { MSG_CONFIRMATION_UNINSTALL, "This action will attempt to terminate this instance and factory reset included registry configurations"},
-        { MSG_PLUGIN_HOT_SWAP,    "Plugin hot swapping in progress"},
         { HOT_SWAP_COMPLETE,      "Plugin hot swapping completed"},
         { FULLSCREEN_ENTERED,     "Fullscreen mode entered"},
         { GS_PRESS,               "GS button pressed"},
 	{ FPS_DISPLAY,            "Frames Per Second"},
-	{ OPEN_REGEDIT,		  "Open REGEDIT"},
-	{ SLOW_WARN,		  "This action will attempt to terminate this instance and set various LLE slow registry configurations (Interpreter x CF3 x Icepir8's plugins). It's experimental, you should only use this mode if you are having technical difficulties getting a ROM to work properly and you don't know what settings to use"},
+	{ FORCE_ENABLE_DMA,		  "Always Enable Align DMA"},
+	{ SLOW_WARN,		  "This action will attempt to terminate this instance and set various LLE slow registry configurations (Interpreter x Icepir8's plugins). It's experimental, you should only use this mode if you are having technical difficulties getting a ROM to work properly and you don't know what settings to use"},
 	{ MENU_SM64,		  "SM64 ROMhacks Mode"},
 	{ MENUDES_SM64,		  "Attempts to terminate this instance and set various SM64 registry configurations"},
-	{ SM64_WARN,		  "This action will attempt to terminate this instance and set various SM64 registry configurations for SM64 ROMhacks settings. Change to a lower-end video plugin like Jabo's Direct3D8 1.6.2 after the registries have been reconfigured if your PC does not support GLideN64"},
+	{ SM64_WARN,		  "This action will attempt to terminate this instance and set various SM64 registry configurations for SM64 ROMhacks settings. Change to a lower-end video plugin like Jabo's Direct3D8 after the registries have been reconfigured if your PC does not support GLideN64"},
 	{ MENU_STANDARD,	  "Standard Mode"},
 	{ MENUDES_STANDARD,	  "Attempts to terminate this instance and set various standard registry configurations"},
 	{ STANDARD_WARN,	  "This action will attempt to terminate this instance and set various standard registry configurations for standard settings"},
 	{ REGISTRY,		  "Configure Registries"},
-	{ NUMBER_2,		  "2 (Laggy, Semi-stable)"},
-	{ NUMBER_3,               "3 (Laggard, Stable)"},
-	{ PLUGINS,		  "Icepir8's Legacy LLE = High-end LLE Graphics\nJabo's Direct3D8 1.6.2 = Low-end HLE Graphics\nANGLE GLideN64 = Most SM64 ROMhacks Graphics"},
+	{ NUMBER_2,		  "2 (Laggy/Semi-stable)"},
+	{ NUMBER_3,               "3 (Laggard/Stable)"},
+	{ PLUGINS,		  "Jabo's Direct3D8 = Low-end HLE Graphics\nProject64 Legacy Icepir8's LLE = High-end LLE Graphics\nANGLE GLideN64 = Most SM64 ROMhacks Graphics"},
+	{ MENUDES_GAME_SETTINGS,  "Lets you read the ROM's notes (plugin/core/status)"},
+	{ OKPOSTSWAP,		  "OK"},
+	{ OKPRESWAP,		  "OK/SWAP"},
+	{ MSG_EMULATION_RESET,	  "Emulation reset"},
+	{ MSG_OCTOMINO,		  "You must start emulation to configure this plugin"},
+	{ SPEEDCAP,		  "300% Speed Cap"},
+	{ SPEEDCAP_ON,		  "300% Speed Cap applied to Limit FPS off"},
+	{ SPEEDCAP_OFF,		  "300% Speed Cap revoked from Limit FPS off"},
+	{ SPEEDCAP_DESC,	  "Caps Limit FPS off's maximum speed to 300% full speed"},
+	{ AllocateCompile_SD,	  "Manage SD Space"},
+	{ AllocateCompile_SD_MENUDES,"Attempts to allocate or compile 254MB of space for virtual SD card emulation"},
+	{ Allocate_SD_Info,	  "This action will attempt to Allocate 254MB of SD space on your hard drive in an SDCARD0 partition after decompiling AUTO0.\n\nYou will not be able to save to or load from your virtual SD card until you compile virtual SD card space back into AUTO0 by using this option again"},
+	{ Compile_SD_Info,	  "This action will attempt to compile virtual SD card space back into AUTO0.\n\nShould this action fail, if the SDCARD0 partition is still present on your PC, manually eject it from a right click and then execute SdCardMounter from Project64 1.6.2's root.\n\nYou will be able to save to or load from your virtual SD card again if this action is successful"},
+	{ FORCE_ENABLE_REGISTERCACHING, "Always Enable Register Caching"},
 };
 class CLanguage  {
 	void FindLangName  ( int Index );
@@ -354,7 +360,7 @@ void CLanguage::CreateLangList ( HMENU hMenu, int uPosition, int MenuID ) {
 	menuinfo.cch = sizeof(String);
 	if (GetNumberLang() == 0) {
 		menuinfo.wID = MenuID;
-		strcpy(String,"English");
+		strcpy(String,"App English");
 		InsertMenuItem(hSubMenu, 0, TRUE, &menuinfo);
 		CheckMenuItem(hSubMenu, MenuID, MF_BYCOMMAND | MFS_CHECKED );
 		EnableMenuItem(hSubMenu,MenuID, MFS_DISABLED|MF_BYCOMMAND);
@@ -383,7 +389,7 @@ void CLanguage::LoadLangList (void) {
 		GetModuleFileName(NULL,path_buffer,sizeof(path_buffer));
 		_splitpath( path_buffer, drive, dir, fname, ext );
 		sprintf(Directory,"%s%sPJ64DB\\",drive,dir);
-		sprintf(SearchString,"%s*.ldb",Directory);
+		sprintf(SearchString,"%s*.txt",Directory);
 	}
 	WIN32_FIND_DATA find_data;
 	HANDLE   search_handle;
@@ -478,6 +484,7 @@ void CLanguage::SaveCurrentLang ( char * String ) {
 			break;
 		}
 	}
+	SetupMenu(hMainWindow);
 }
 void CLanguage::SetCurrentLang ( HMENU hMenu, int MenuIndx ) {
 	MENUITEMINFO menuinfo;

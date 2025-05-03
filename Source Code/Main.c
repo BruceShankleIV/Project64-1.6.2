@@ -36,10 +36,11 @@
 #include "Settings.h"
 #include "htmlHelp.h"
 #include "resource.h"
+#include "SummerCart.h"
 LARGE_INTEGER Frequency, Frames[8], LastFrame;
-BOOL AutoSleep, DisableRegCaching, UseIni, UseTlb, UseLinking, RomBrowser,
-	IgnoreMove, Rercursion, LimitFPS,
-	AutoFullScreen, SystemCF, AlwaysOnTop, BasicMode, DelaySI, RememberCheats,
+BOOL AutoSleep, UseTlb, AudioSignal, ForceDisableTLB, ForceEnableDMA, ForceEnableCaching, ForceEnableDelayRDP, ForceAuto16,
+	IgnoreMove, Rercursion, LimitFPS, SpeedCap,
+	AutoFullScreen, SystemCF, UsuallyonTop, BasicMode, DelaySI, RememberCheats,
 	DelayRDP, DelayRSP, AlignDMA, ForceClose;
 DWORD CurrentFrame, CPU_Type, SystemCPU_Type, SelfModCheck, SystemSelfModCheck,
 	RomsToRemember, RomDirsToRemember;
@@ -54,9 +55,29 @@ void UninstallApplication(HWND hWnd);
 void SM64settings(HWND hWnd);
 void SLOWsettings(HWND hWnd);
 void Standardsettings(HWND hWnd);
+void HandleAllocationCompilationOfSD(HWND hWnd);
 LRESULT CALLBACK AboutIniBoxProc ( HWND, UINT, WPARAM, LPARAM );
 LRESULT CALLBACK Main_Proc       ( HWND, UINT, WPARAM, LPARAM );
 LRESULT CALLBACK RomInfoProc     ( HWND, UINT, WPARAM, LPARAM );
+int ChooseN64RomToOpen ( void ) {
+	OPENFILENAME openfilename;
+	char FileName[256],Directory[255];
+	memset(&FileName, 0, sizeof(FileName));
+	memset(&openfilename, 0, sizeof(openfilename));
+	GetRomDirectory( Directory );
+	openfilename.lStructSize  = sizeof( openfilename );
+	openfilename.hwndOwner    = hMainWindow;
+	openfilename.lpstrFilter  = "N64 ROMs (*.zip, *.z64, *.v64, *.n64)\0*.zip;*.z64;*.v64;*.n64\0All files (*.*)\0*.*\0";
+	openfilename.lpstrFile    = FileName;
+	openfilename.lpstrInitialDir    = Directory;
+	openfilename.nMaxFile     = MAX_PATH;
+	openfilename.Flags        = OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
+	if (GetOpenFileName (&openfilename)) {
+		strcpy(CurrentFileName,FileName);
+		return TRUE;
+	}
+	return FALSE;
+}
 void AboutIniBox (void) {
 	DialogBox(hInst, MAKEINTRESOURCE(IDD_About_Ini), hMainWindow, (DLGPROC)AboutIniBoxProc);
 }
@@ -125,8 +146,61 @@ LRESULT CALLBACK AboutIniBoxProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lP
 	}
 	return TRUE;
 }
-void AlwaysOnTopWindow(HWND hWnd) {
-	SetWindowPos(hWnd,(AlwaysOnTop?HWND_TOPMOST:HWND_NOTOPMOST),0,0,0,0,SWP_NOMOVE|SWP_NOREPOSITION|SWP_NOSIZE);
+void UsuallyonTopWindow(HWND hWnd) {
+	if (hManageWindow != NULL) {
+		if (UsuallyonTop) SetWindowPos(hManageWindow, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+		else SetWindowPos(hManageWindow, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+	}
+	SetWindowPos(hWnd,(UsuallyonTop?HWND_TOPMOST:HWND_NOTOPMOST),0,0,0,0,SWP_NOMOVE|SWP_NOREPOSITION|SWP_NOSIZE);
+}
+void NotUsuallyonTopWindow(HWND hWnd) {
+	if (UsuallyonTop) SetWindowPos(hWnd, (UsuallyonTop ? HWND_NOTOPMOST : HWND_TOPMOST), 0, 0, 0, 0, SWP_NOMOVE | SWP_NOREPOSITION | SWP_NOSIZE);
+}
+void HandleStartup1(HWND hWnd) {
+	HMENU hMenu = GetMenu(hWnd);
+	EnableMenuItem(hMenu, ID_FILE_OPEN_ROM, MFS_DISABLED | MF_BYCOMMAND);
+	EnableMenuItem(hMenu, ID_FILE_ENDEMULATION, MFS_DISABLED | MF_BYCOMMAND);
+	EnableMenuItem(hMenu, ID_CPU_RESET, MFS_DISABLED | MF_BYCOMMAND);
+	EnableMenuItem(hMenu, ID_CPU_PAUSE, MFS_DISABLED | MF_BYCOMMAND);
+	EnableMenuItem(hMenu, ID_SYSTEM_ALTERNATEPAUSE, MFS_DISABLED | MF_BYCOMMAND);
+	EnableMenuItem(hMenu, ID_SYSTEM_GENERATEBITMAP, MFS_DISABLED | MF_BYCOMMAND);
+	EnableMenuItem(hMenu, ID_SYSTEM_LIMITFPS, MFS_DISABLED | MF_BYCOMMAND);
+	EnableMenuItem(hMenu, ID_SYSTEM_SPEEDCAP, MFS_DISABLED | MF_BYCOMMAND);
+	EnableMenuItem(hMenu, ID_CPU_SAVE, MFS_DISABLED | MF_BYCOMMAND);
+	EnableMenuItem(hMenu, ID_CPU_SAVEAS, MFS_DISABLED | MF_BYCOMMAND);
+	EnableMenuItem(hMenu, ID_CPU_RESTORE, MFS_DISABLED | MF_BYCOMMAND);
+	EnableMenuItem(hMenu, ID_CPU_LOAD, MFS_DISABLED | MF_BYCOMMAND);
+	EnableMenuItem(hMenu, ID_OPTIONS_CHEATS, MFS_DISABLED | MF_BYCOMMAND);
+	EnableMenuItem(hMenu, ID_SYSTEM_GSBUTTON, MFS_DISABLED | MF_BYCOMMAND);
+	EnableMenuItem(hMenu, ID_OPTIONS_FULLSCREEN, MFS_DISABLED | MF_BYCOMMAND);
+	EnableMenuItem(hMenu, ID_OPTIONS_CONFIG_GFX, MFS_DISABLED | MF_BYCOMMAND);
+	EnableMenuItem(hMenu, ID_OPTIONS_CONFIG_AUDIO, MFS_DISABLED | MF_BYCOMMAND);
+	EnableMenuItem(hMenu, ID_OPTIONS_CONFIG_CONTROL, MFS_DISABLED | MF_BYCOMMAND);
+	EnableMenuItem(hMenu, ID_OPTIONS_CONFIG_RSP, MFS_DISABLED | MF_BYCOMMAND);
+	EnableMenuItem(hMenu, ID_OPTIONS_SETTINGS, MFS_DISABLED | MF_BYCOMMAND);
+}
+void HandleStartup2(HWND hWnd) {
+	HMENU hMenu = GetMenu(hWnd);
+	EnableMenuItem(hMenu, ID_FILE_OPEN_ROM, MFS_ENABLED | MF_BYCOMMAND);
+	EnableMenuItem(hMenu, ID_FILE_ENDEMULATION, MFS_ENABLED | MF_BYCOMMAND);
+	EnableMenuItem(hMenu, ID_CPU_RESET, MFS_ENABLED | MF_BYCOMMAND);
+	EnableMenuItem(hMenu, ID_CPU_PAUSE, MFS_ENABLED | MF_BYCOMMAND);
+	EnableMenuItem(hMenu, ID_SYSTEM_ALTERNATEPAUSE, MFS_ENABLED | MF_BYCOMMAND);
+	EnableMenuItem(hMenu, ID_SYSTEM_GENERATEBITMAP, MFS_ENABLED | MF_BYCOMMAND);
+	EnableMenuItem(hMenu, ID_SYSTEM_LIMITFPS, MFS_ENABLED | MF_BYCOMMAND);
+	EnableMenuItem(hMenu, ID_SYSTEM_SPEEDCAP, MFS_ENABLED | MF_BYCOMMAND);
+	EnableMenuItem(hMenu, ID_CPU_SAVE, MFS_ENABLED | MF_BYCOMMAND);
+	EnableMenuItem(hMenu, ID_CPU_SAVEAS, MFS_ENABLED | MF_BYCOMMAND);
+	EnableMenuItem(hMenu, ID_CPU_RESTORE, MFS_ENABLED | MF_BYCOMMAND);
+	EnableMenuItem(hMenu, ID_CPU_LOAD, MFS_ENABLED | MF_BYCOMMAND);
+	EnableMenuItem(hMenu, ID_OPTIONS_CHEATS, MFS_ENABLED | MF_BYCOMMAND);
+	EnableMenuItem(hMenu, ID_SYSTEM_GSBUTTON, MFS_ENABLED | MF_BYCOMMAND);
+	EnableMenuItem(hMenu, ID_OPTIONS_FULLSCREEN, MFS_ENABLED | MF_BYCOMMAND);
+	EnableMenuItem(hMenu, ID_OPTIONS_CONFIG_GFX, MFS_ENABLED | MF_BYCOMMAND);
+	EnableMenuItem(hMenu, ID_OPTIONS_CONFIG_AUDIO, MFS_ENABLED | MF_BYCOMMAND);
+	EnableMenuItem(hMenu, ID_OPTIONS_CONFIG_CONTROL, MFS_ENABLED | MF_BYCOMMAND);
+	EnableMenuItem(hMenu, ID_OPTIONS_CONFIG_RSP, MFS_ENABLED | MF_BYCOMMAND);
+	EnableMenuItem(hMenu, ID_OPTIONS_SETTINGS, MFS_ENABLED | MF_BYCOMMAND);
 }
 DWORD AsciiToHex (char * HexValue) {
 	DWORD Count, Finish, Value = 0;
@@ -181,18 +255,10 @@ void __cdecl DisplayError (char * Message, ...) {
 	va_start( ap, Message );
 	vsprintf( Msg, Message, ap );
 	va_end( ap );
+	NotUsuallyonTopWindow(hMainWindow);
 	MessageBox(NULL,Msg,GS(MSG_MSGBOX_TITLE),MB_OK|MB_ICONERROR|MB_SETFOREGROUND);
 	SetActiveWindow(hMainWindow);
-}
-void __cdecl DisplayErrorFatal (char * Message, ...) {
-	char Msg[1000];
-	va_list ap;
-	if (inFullScreen) { return; }
-	va_start( ap, Message );
-	vsprintf( Msg, Message, ap );
-	va_end( ap );
-	MessageBox(NULL,Msg,GS(MSG_MSGBOX_TITLE),MB_OK|MB_ICONERROR|MB_SETFOREGROUND);
-	SetActiveWindow(hMainWindow);
+	UsuallyonTopWindow(hMainWindow);
 }
 void DisplayFPS (void) {
 	if (CurrentFrame > (8 << 3)) {
@@ -232,33 +298,32 @@ void FixMenuLang (HMENU hMenu) {
 	MenuSetText(hSubMenu, 2, GS(MENU_ADVANCE),"Caps Lock");
         MenuSetText(hSubMenu, 3, GS(MENU_BITMAP),"F3");
 	MenuSetText(hSubMenu, 5, GS(MENU_LIMIT_FPS),"F4");
-	MenuSetText(hSubMenu, 7, GS(MENU_SAVE),"F5");
-	MenuSetText(hSubMenu, 8, GS(MENU_SAVE_AS),"Ctrl+S");
-	MenuSetText(hSubMenu, 9, GS(MENU_RESTORE),"F7");
-	MenuSetText(hSubMenu, 10, GS(MENU_LOAD),"Ctrl+L");
-	MenuSetText(hSubMenu, 12, GS(MENU_CURRENT_SAVE),NULL);
-	MenuSetText(hSubMenu, 14, GS(MENU_CHEAT),"Ctrl+C");
-	MenuSetText(hSubMenu, 15, GS(MENU_GS_BUTTON),"F9");
+	MenuSetText(hSubMenu, 6, GS(SPEEDCAP), "Shift+F4");
+	MenuSetText(hSubMenu, 8, GS(MENU_SAVE),"F5");
+	MenuSetText(hSubMenu, 9, GS(MENU_SAVE_AS),"Ctrl+S");
+	MenuSetText(hSubMenu, 10, GS(MENU_RESTORE),"F7");
+	MenuSetText(hSubMenu, 11, GS(MENU_LOAD),"Ctrl+L");
+	MenuSetText(hSubMenu, 13, GS(MENU_CURRENT_SAVE),NULL);
+	MenuSetText(hSubMenu, 15, GS(MENU_CHEAT),"Ctrl+C");
+	MenuSetText(hSubMenu, 16, GS(MENU_GS_BUTTON),"F9");
 	//Options
 	hSubMenu = GetSubMenu(hMenu,2);
 	MenuSetText(hSubMenu, 0, GS(MENU_FULL_SCREEN), "Esc/Alt+Enter");
-	MenuSetText(hSubMenu, 1, GS(MENU_ON_TOP), "Ctrl+A");
-	MenuSetText(hSubMenu, 3, GS(REGISTRY), NULL);
+	MenuSetText(hSubMenu, 1, GS(AllocateCompile_SD), "Ctrl+M");
+	MenuSetText(hSubMenu, 3, GS(MENU_ON_TOP), "Ctrl+U");
 	MenuSetText(hSubMenu, 5, GS(MENU_CONFIG_GFX), "Ctrl+V");
 	MenuSetText(hSubMenu, 6, GS(MENU_CONFIG_AUDIO), "Ctrl+B");
 	MenuSetText(hSubMenu, 7, GS(MENU_CONFIG_CTRL), "Ctrl+D");
 	MenuSetText(hSubMenu, 8, GS(MENU_CONFIG_RSP), "Ctrl+R");
-	MenuSetText(hSubMenu, 10, GS(MENU_SETTINGS), "Ctrl+T");
-	if (BasicMode) DeleteMenu(hSubMenu, 8, MF_BYPOSITION);
+	MenuSetText(hSubMenu, 10, GS(REGISTRY), NULL);
+	MenuSetText(hSubMenu, 12, GS(MENU_SETTINGS), "Ctrl+T");
 	//Registry
 	hSubMenu = GetSubMenu(hMenu, 2);
-	hSubMenu = GetSubMenu(hSubMenu, 3);
+	hSubMenu = GetSubMenu(hSubMenu, 10);
 	MenuSetText(hSubMenu, 0, GS(MENU_UNINSTALL), "Shift+F1");
 	MenuSetText(hSubMenu, 1, GS(MENU_STANDARD), "Shift+F2");
 	MenuSetText(hSubMenu, 2, GS(MENU_SM64), "Shift+F3");
 	MenuSetText(hSubMenu, 3, GS(MENU_SLOW), "Shift+F4");
-	MenuSetText(hSubMenu, 4, GS(OPEN_REGEDIT), "Shift+R");
-	if (BasicMode) DeleteMenu(hSubMenu, 4, MF_BYPOSITION);
 	//Help Menu
 	hSubMenu = GetSubMenu(hMenu,3);
 	MenuSetText(hSubMenu, 0, GS(MENU_USER_GUIDE), NULL);
@@ -286,7 +351,7 @@ int GetStoredWinPos( char * WinName, DWORD * X, DWORD * Y ) {
 	long lResult;
 	HKEY hKeyResults = 0;
 	char String[200];
-	sprintf(String,"N64 Software\\%s\\Page Setup",AppName);
+	sprintf(String,"PJ64 V 1.6.2\\%s\\Page Setup",AppName);
 	lResult = RegOpenKeyEx( HKEY_CURRENT_USER,String,0, KEY_ALL_ACCESS,&hKeyResults);
 	if (lResult == ERROR_SUCCESS) {
 		DWORD Type, Value, Bytes = 4;
@@ -315,7 +380,7 @@ int GetStoredWinSize( char * WinName, DWORD * Width, DWORD * Height ) {
 	long lResult;
 	HKEY hKeyResults = 0;
 	char String[200];
-	sprintf(String,"N64 Software\\%s\\Page Setup",AppName);
+	sprintf(String,"PJ64 V 1.6.2\\%s\\Page Setup",AppName);
 	lResult = RegOpenKeyEx( HKEY_CURRENT_USER,String,0, KEY_ALL_ACCESS,&hKeyResults);
 	if (lResult == ERROR_SUCCESS) {
 		DWORD Type, Value, Bytes = 4;
@@ -351,18 +416,21 @@ void LoadSettings (void) {
 	SystemRDRAMsize = Default_RDRAMsize;
 	SystemCF = Default_CountPerOp;
 	AutoSleep = Default_AutoSleep;
-	DisableRegCaching = Default_DisableRegCaching;
-	UseIni = Default_UseIni;
+	ForceDisableTLB = Default_ForceDisableTLB;
+	ForceEnableDMA = Default_ForceEnableDMA;
+	ForceEnableCaching = Default_ForceEnableCaching;
+	ForceEnableDelayRDP = Default_ForceEnableDelayRDP;
+	ForceAuto16 = Default_ForceAuto16;
 	AutoFullScreen = FALSE;
 	RomsToRemember = Default_RomsToRemember;
 	RomDirsToRemember = Default_RomsDirsToRemember;
 	LimitFPS = Default_LimitFPS;
-	AlwaysOnTop = Default_AlwaysOnTop;
+	SpeedCap = Default_SpeedCap;
+	UsuallyonTop = Default_UsuallyonTop;
 	BasicMode = Default_BasicMode;
 	RememberCheats = Default_RememberCheats;
-	RomBrowser = Default_UseRB;
 	Rercursion = Default_Rercursion;
-	sprintf(String,"N64 Software\\%s",AppName);
+	sprintf(String,"PJ64 V 1.6.2\\%s",AppName);
 	lResult = RegOpenKeyEx( HKEY_CURRENT_USER,String,0,KEY_ALL_ACCESS,
 		&hKeyResults);
 	if (lResult == ERROR_SUCCESS) {
@@ -378,16 +446,24 @@ void LoadSettings (void) {
 		{
 			lResult = RegQueryValueEx(hKeyResults,"Limit FPS",0,&Type,(LPBYTE)(&LimitFPS),&Bytes);
 			if (Type != REG_DWORD || lResult != ERROR_SUCCESS) { LimitFPS = Default_LimitFPS;	}
+			lResult = RegQueryValueEx(hKeyResults,"Speed Cap",0,&Type,(LPBYTE)(&SpeedCap),&Bytes);
+			if (Type != REG_DWORD || lResult != ERROR_SUCCESS) { SpeedCap = Default_SpeedCap;	}
 			lResult = RegQueryValueEx(hKeyResults,"Max # of ROMs Remembered",0,&Type,(BYTE *)(&RomsToRemember),&Bytes);
 			if (Type != REG_DWORD || lResult != ERROR_SUCCESS) { RomsToRemember = Default_RomsToRemember; }
 			lResult = RegQueryValueEx(hKeyResults,"Max # of ROM Dirs Remembered",0,&Type,(BYTE *)(&RomDirsToRemember),&Bytes);
 			if (Type != REG_DWORD || lResult != ERROR_SUCCESS) { RomDirsToRemember = Default_RomsDirsToRemember; }
-			lResult = RegQueryValueEx(hKeyResults,"ROM Browser",0,&Type,(BYTE *)(&RomBrowser),&Bytes);
-			if (Type != REG_DWORD || lResult != ERROR_SUCCESS) { RomBrowser = Default_UseRB; }
 			lResult = RegQueryValueEx(hKeyResults,"Directory Recursion",0,&Type,(BYTE *)(&Rercursion),&Bytes);
 			if (Type != REG_DWORD || lResult != ERROR_SUCCESS) { Rercursion = Default_Rercursion; }
-			lResult = RegQueryValueEx(hKeyResults,"Use RDB",0,&Type,(BYTE *)(&UseIni),&Bytes);
-			if (Type != REG_DWORD || lResult != ERROR_SUCCESS) { UseIni = Default_UseIni; }
+			lResult = RegQueryValueEx(hKeyResults, "Always Disable TLB", 0, &Type, (BYTE*)(&ForceDisableTLB), &Bytes);
+			if (Type != REG_DWORD || lResult != ERROR_SUCCESS) { ForceDisableTLB = Default_ForceDisableTLB; }
+			lResult = RegQueryValueEx(hKeyResults, "Always Enable Align DMA", 0, &Type, (BYTE*)(&ForceEnableDMA), &Bytes);
+			if (Type != REG_DWORD || lResult != ERROR_SUCCESS) { ForceEnableDMA = Default_ForceEnableDMA; }
+			lResult = RegQueryValueEx(hKeyResults, "Always Enable Register Caching", 0, &Type, (BYTE*)(&ForceEnableCaching), &Bytes);
+			if (Type != REG_DWORD || lResult != ERROR_SUCCESS) { ForceEnableCaching = Default_ForceEnableCaching; }
+			lResult = RegQueryValueEx(hKeyResults, "Always Enable Delay RDP", 0, &Type, (BYTE*)(&ForceEnableDelayRDP), &Bytes);
+			if (Type != REG_DWORD || lResult != ERROR_SUCCESS) { ForceEnableDelayRDP = Default_ForceEnableDelayRDP; }
+			lResult = RegQueryValueEx(hKeyResults, "Always Autodetect With 16kbit", 0, &Type, (BYTE*)(&ForceAuto16), &Bytes);
+			if (Type != REG_DWORD || lResult != ERROR_SUCCESS) { ForceAuto16 = Default_ForceAuto16; }
 			lResult = RegQueryValueEx(hKeyResults,"CPU Core Style",0,&Type,(BYTE *)(&SystemCPU_Type),&Bytes);
 			if (Type != REG_DWORD || lResult != ERROR_SUCCESS) { SystemCPU_Type = Default_CPU; }
 			lResult = RegQueryValueEx(hKeyResults,"Self-modifying Code Method",0,&Type,(LPBYTE)(&SystemSelfModCheck),&Bytes);
@@ -396,13 +472,13 @@ void LoadSettings (void) {
 			if (Type != REG_DWORD || lResult != ERROR_SUCCESS) { SystemCF = Default_CountPerOp; }
 			lResult = RegQueryValueEx(hKeyResults,"Memory Size",0,&Type,(LPBYTE)(&SystemRDRAMsize),&Bytes);
 			if (Type != REG_DWORD || lResult != ERROR_SUCCESS) { SystemRDRAMsize = Default_RDRAMsize; }
-			lResult = RegQueryValueEx(hKeyResults,"Always On Top",0,&Type,(LPBYTE)(&AlwaysOnTop),&Bytes);
-			if (Type != REG_DWORD || lResult != ERROR_SUCCESS) { AlwaysOnTop = Default_AlwaysOnTop;	}
+			lResult = RegQueryValueEx(hKeyResults,"Usually on Top",0,&Type,(LPBYTE)(&UsuallyonTop),&Bytes);
+			if (Type != REG_DWORD || lResult != ERROR_SUCCESS) { UsuallyonTop = Default_UsuallyonTop;	}
 		}
 		RegCloseKey(hKeyResults);
 	}
 }
-int InitalizeApplication ( HINSTANCE hInstance ) {
+int InitializeApplication ( HINSTANCE hInstance ) {
 	INITCOMMONCONTROLSEX IntComStruct;
 	HKEY hKeyResults = 0;
 	CoInitialize(NULL);
@@ -413,7 +489,7 @@ int InitalizeApplication ( HINSTANCE hInstance ) {
 	hInst = hInstance;
 	{
 		char String[200];
-		sprintf(String,"N64 Software\\%s",AppName);
+		sprintf(String,"PJ64 V 1.6.2\\%s",AppName);
 		//Language selection if none found
 		LoadLanguage(String);
 	}
@@ -421,6 +497,8 @@ int InitalizeApplication ( HINSTANCE hInstance ) {
 		DisplayError(GS(MSG_MEM_ALLOC_ERROR));
 		return FALSE;
 	}
+	init_summercart(&SummerCart);
+	poweron_summercart(&SummerCart);
 	hPauseMutex = CreateMutex(NULL,FALSE,NULL);
 	INITIALIZECPUFlags();
 	LoadSettings();
@@ -446,7 +524,7 @@ void CheckedMenuItem(UINT uMenuID, BOOL * Flag, char * FlagName) {
 		CheckMenuItem( hMainMenu, uMenuID, MF_BYCOMMAND | MFS_CHECKED );
 		*Flag = TRUE;
 	}
-	sprintf(String,"N64 Software\\%s",AppName);
+	sprintf(String,"PJ64 V 1.6.2\\%s",AppName);
 	lResult = RegCreateKeyEx( HKEY_CURRENT_USER,String,0,"",
 		REG_OPTION_NON_VOLATILE,KEY_ALL_ACCESS,NULL,&hKeyResults,&Disposition);
 	if (lResult == ERROR_SUCCESS) {
@@ -490,8 +568,8 @@ LRESULT CALLBACK Main_Proc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		__try {
 			if (CPU_Paused && DrawScreen != NULL) { DrawScreen(); }
 		} __except( r4300i_CPU_MemoryFilter( GetExceptionCode(), GetExceptionInformation()) ) {
-			DisplayError(GS(MSG_UNKNOWN_MEM_ACTION));
-			ExitThread(0);
+			//DisplayError(GS(MSG_UNKNOWN_MEM_ACTION));
+			//ExitThread(0);
 		}
 		ValidateRect(hWnd,NULL);
 		break;
@@ -502,10 +580,10 @@ LRESULT CALLBACK Main_Proc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 			MoveScreen((int)(short) LOWORD(lParam), (int)(short) HIWORD(lParam));
 		}
 		if (IsIconic(hWnd)) {
-			if (!CPU_Paused && !inFullScreen) { PauseCpu(); break; }
+			if (!CPU_Paused && !inFullScreen) { PauseCpu(); Timer_Start(); break; }
 			break;
 		} else {
-			if (!ManualPaused && (CPU_Paused || CPU_Action.Pause)) { PauseCpu(); break; }
+			if (!ManualPaused && (CPU_Paused || CPU_Action.Pause)) { PauseCpu(); Timer_Start(); break; }
 		}
 		if (!RomListVisible() || (RomListVisible() && !IsRomBrowserMaximized())) {
 			StoreCurrentWinPos("Main", hWnd );
@@ -532,15 +610,16 @@ LRESULT CALLBACK Main_Proc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 				SetRomBrowserSize(LOWORD(lParam),HIWORD( lParam ));
 			}
 		}
+		SendMessage(hMainWindow, WM_NCPAINT, 0, 0);
 		break;
 	case WM_SETFOCUS:
 		if (hWnd == hHiddenWin) { break; }
-		if (AutoSleep && !ManualPaused && (CPU_Paused || CPU_Action.Pause)) { PauseCpu(); }
+		if (AutoSleep && !ManualPaused && (CPU_Paused || CPU_Action.Pause)) { PauseCpu(); Timer_Start(); }
 		RomList_SetFocus();
 		break;
 	case WM_KILLFOCUS:
 		if (hWnd == hHiddenWin) { break; }
-		if (AutoSleep && !CPU_Paused) { PauseCpu(); }
+		if (AutoSleep && !CPU_Paused) { PauseCpu(); Timer_Start(); }
 		break;
 	case WM_NOTIFY:
 		if (wParam == IDC_ROMLIST) { RomListNotify((LPNMHDR)lParam); }
@@ -553,7 +632,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		switch (LOWORD(wParam)) {
 		case ID_PLAYGAME: SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MENUDES_START)); break;
 		case ID_POPUPMENU_ROMINFORMATION: SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MSG_RB_INFO)); break;
-		case ID_EDITSETTINGS: SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MENUDES_GAME_SETTINGS)); break;
+		case ID_BROWSERNOTES: SendMessage(hStatusWnd, SB_SETTEXT, 0, (LPARAM)GS(MENUDES_GAME_SETTINGS)); break;
 		case ID_EDITCHEATS: SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MENUDES_GAME_CHEATS)); break;
 		case ID_FILE_OPEN_ROM: SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MENUDES_OPEN)); break;
 		case ID_FILE_ROM_INFO: SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MENUDES_ROM_INFO)); break;
@@ -567,6 +646,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
                 case ID_SYSTEM_GENERATEBITMAP: SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MENUDES_BITMAP)); break;
 		case ID_SYSTEM_ALTERNATEPAUSE: SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MENU_ADVANCE_DESC)); break;
 		case ID_SYSTEM_LIMITFPS: SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MENUDES_LIMIT_FPS)); break;
+		case ID_SYSTEM_SPEEDCAP:SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(SPEEDCAP_DESC)); break;
 		case ID_CPU_SAVE: SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MENUDES_SAVE)); break;
 		case ID_CPU_SAVEAS: SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MENUDES_SAVE_AS)); break;
 		case ID_CPU_RESTORE: SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MENUDES_RESTORE)); break;
@@ -574,18 +654,18 @@ LRESULT CALLBACK Main_Proc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		case ID_OPTIONS_CHEATS: SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MENUDES_CHEAT)); break;
 		case ID_SYSTEM_GSBUTTON: SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MENUDES_GS_BUTTON)); break;
 		case ID_OPTIONS_FULLSCREEN: SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MENUDES_FULL_SCREEN)); break;
-		case ID_OPTIONS_ALWAYSONTOP: SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MENUDES_ON_TOP)); break;
+		case ID_OPTIONS_UsuallyonTop: SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MENUDES_ON_TOP)); break;
 		case ID_OPTIONS_CONFIG_GFX: SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MENUDES_CONFIG_GFX)); break;
 		case ID_OPTIONS_CONFIG_AUDIO: SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MENUDES_CONFIG_AUDIO)); break;
 		case ID_OPTIONS_CONFIG_CONTROL: SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MENUDES_CONFIG_CTRL)); break;
 		case ID_OPTIONS_CONFIG_RSP: SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MENUDES_CONFIG_RSP)); break;
 		case ID_OPTIONS_SETTINGS: SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MENUDES_SETTINGS)); break;
 		case ID_HELP_GUIDE: SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MENUDES_USER_GUIDE)); break;
-		case ID_REGEDIT: SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(REGEDIT_MENUDES)); break;
 		case ID_HELP_ABOUTSETTINGFILES: SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MENUDES_ABOUT_INI)); break;
 		case ID_HELP_UNINSTALL: SendMessage(hStatusWnd, SB_SETTEXT, 0, (LPARAM)GS(MENUDES_UNINSTALLAPP)); break;
 		case ID_HELP_STANDARD: SendMessage(hStatusWnd, SB_SETTEXT, 0, (LPARAM)GS(MENUDES_STANDARD)); break;
 		case ID_HELP_SM64: SendMessage(hStatusWnd, SB_SETTEXT, 0, (LPARAM)GS(MENUDES_SM64)); break;
+		case ID_ALLOCATE_COMPILE_SD: SendMessage(hStatusWnd, SB_SETTEXT, 0, (LPARAM)GS(AllocateCompile_SD_MENUDES)); break;
 		case ID_HELP_SLOW: SendMessage(hStatusWnd, SB_SETTEXT, 0, (LPARAM)GS(MENUDES_SLOW)); break;
 		case ID_CURRENTSAVE_DEFAULT:
 			SendMessage(hStatusWnd, SB_SETTEXT, 0, (LPARAM)GS(MENUDES_GAME_SLOT));
@@ -716,8 +796,8 @@ LRESULT CALLBACK Main_Proc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 				CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)OpenChosenFile,NULL,0, &ThreadID);
 			}
 			break;
-		case ID_EDITSETTINGS: ChangeRomSettings(hWnd); break;
 		case ID_EDITCHEATS: ChangeRomCheats(hMainWindow); break;
+		case ID_BROWSERNOTES: ChangeRomSettings(hWnd); break;
 		case ID_POPUPMENU_ROMINFORMATION:
 			{
 				char OrigRomName[sizeof(RomName)], OrigFileName[sizeof(CurrentFileName)];
@@ -740,7 +820,11 @@ LRESULT CALLBACK Main_Proc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 				RomFileSize = OrigFileSize;
 			}
 			break;
-		case ID_FILE_OPEN_ROM: OpenN64Image(); break;
+		case ID_FILE_OPEN_ROM: {
+				DWORD ThreadID;
+				if (ChooseN64RomToOpen()) CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)OpenChosenFile,NULL,0, &ThreadID);
+				}
+				break;
 		case ID_FILE_ROM_INFO: RomInfo(); break;
 		case ID_FILE_STARTEMULATION: {
 				DWORD ThreadID;
@@ -749,38 +833,64 @@ LRESULT CALLBACK Main_Proc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 			}
 			break;
 		case ID_FILE_ENDEMULATION:
+			CloseCheatWindow();
 			CloseCpu();
-			memset(N64MEM, 0, RDRAMsize);
 			SendMessage(hStatusWnd, SB_SETTEXT, 0, (LPARAM)GS(MSG_EMULATION_ENDED));
 			if (DrawScreen != NULL) { DrawScreen(); }
-			CloseCheatWindow();
-			CheckRbRefresh();
+			HandleShutdown();
 			break;
 		case ID_FILE_ROMDIRECTORY: SelectRomDir(); break;
 		case ID_FILE_REFRESHROMLIST: RefreshRomBrowser(); break;
 		case ID_FILE_EXIT: DestroyWindow(hWnd);	break;
-		case ID_CPU_RESET: {
-		char drive[_MAX_DRIVE],dir[_MAX_DIR], fname[_MAX_FNAME],ext[_MAX_EXT];
-		char SaveFile[255];
-		const char* fixedDir;
-		OSVERSIONINFO osvi;
-		ZeroMemory(&osvi, sizeof(OSVERSIONINFO));
-		osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
-		GetVersionEx(&osvi);
-    		if (osvi.dwMajorVersion >= 6) {
-        	// Windows Vista and later
-        	fixedDir = "C:\\ProgramData\\";
-    		} else {
-      		// Windows XP
-      		fixedDir = "C:\\Documents and Settings\\All Users\\Application Data\\";
-   		}
-		_splitpath(SaveFile, drive, dir, fname, ext);
-		_makepath(SaveFile, drive, fixedDir, (GS(MSG_EMULATION_STARTED)), "");
-		strcpy(LoadFileName,SaveFile);
-		CPU_Action.RestoreState = TRUE;
+		case ID_CPU_RESET:
+		{
+			HMENU hMenu = GetMenu(hWnd);
+			DWORD ThreadID, count;
+			EnableMenuItem(hMenu, ID_CPU_RESET, MFS_DISABLED | MF_BYCOMMAND);
+			SendMessage(hStatusWnd, SB_SETTEXT, 0, (LPARAM)"");
+			CloseCpu();
+			memset(N64MEM, 0, RDRAMsize);
+			memset(&CPU_Action, 0, sizeof(CPU_Action));
+			CPU_Action.hStepping = CreateEvent(NULL, FALSE, FALSE, NULL);
+			WrittenToRom = FALSE;
+			InitializeR4300iRegisters(LoadPifRom(*(ROM + 0x3D)), *(ROM + 0x3D), GetCicChipID(ROM));
+			RecompPos = RecompCode;
+			Timers.CurrentTimerType = -1;
+			Timers.Timer = 0;
+			CurrentFrame = 0;
+			for (count = 0; count < MaxTimers; count++) { Timers.Active[count] = FALSE; }
+			ChangeTimer(ViTimer, 5000);
+			ChangeCompareTimer();
+			ViFieldSerration = 0;
+			DMAUsed = FALSE;
+			Timer_Start();
+			LoadRomOptions();
+			if (!inFullScreen) {
+				SetupPlugins(hMainWindow);
+				if (strcmp(GfxDLL, "Icepir8sLegacyLLE.dll") == 0) {
+					ShowRomList(hMainWindow);
+					HideRomBrowser();
+					SetupMenu(hMainWindow);
+				}
+			} else ResetAudio(hMainWindow);
+			switch (CPU_Type) {
+			case CPU_Interpreter: hCPU = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)StartInterpreterCPU, NULL, 0, &ThreadID); break;
+			case CPU_Recompiler: hCPU = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)StartRecompilerCPU, NULL, 0, &ThreadID);	break;
 			}
+			SendMessage(hStatusWnd, SB_SETTEXT, 0, (LPARAM)GS(MSG_EMULATION_RESET));
+			/*if (strcmp(GfxDLL, "Mk3GLN64.dll") == 0) {
+				timeBeginPeriod(16);
+				Sleep(30);
+				timeEndPeriod(16);
+			}*/
+			EnableMenuItem(hMenu, ID_CPU_RESET, MFS_ENABLED | MF_BYCOMMAND);
+		}
 			break;
-		case ID_CPU_PAUSE: ManualPaused = TRUE; PauseCpu(); break;
+		case ID_CPU_PAUSE:
+			ManualPaused = TRUE;
+			PauseCpu();
+			if (!CPU_Paused) Timer_Start();
+			break;
 		case ID_CPU_SAVE:
 			if (CPU_Paused) {
 				if (!Machine_SaveState()) {
@@ -845,16 +955,22 @@ LRESULT CALLBACK Main_Proc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 			}
 			break;
 		case ID_SYSTEM_GENERATEBITMAP:
-			if (CaptureScreen) {
+				if (CaptureScreen) {
 				char Directory[255];
 				GetSnapShotDir(Directory);
-				SendMessage(hStatusWnd, SB_SETTEXT, 0, (LPARAM)GS(SCREENSHOT_TAKEN));
 				CaptureScreen(Directory);
+				SendMessage(hStatusWnd, SB_SETTEXT, 0, (LPARAM)GS(SCREENSHOT_TAKEN));
 			}
 			break;
 		case ID_SYSTEM_LIMITFPS:
 			CheckedMenuItem(ID_SYSTEM_LIMITFPS,&LimitFPS,"Limit FPS");
 			if (LimitFPS) SendMessage(hStatusWnd, SB_SETTEXT, 0, (LPARAM)GS(LIMITFPS_ON)); else SendMessage(hStatusWnd, SB_SETTEXT, 0, (LPARAM)GS(LIMITFPS_OFF));
+			LimitFPSLogic();
+			break;
+		case ID_SYSTEM_SPEEDCAP:
+			CheckedMenuItem(ID_SYSTEM_SPEEDCAP,&SpeedCap,"Speed Cap");
+			if (SpeedCap) SendMessage(hStatusWnd, SB_SETTEXT, 0, (LPARAM)GS(SPEEDCAP_ON)); else SendMessage(hStatusWnd, SB_SETTEXT, 0, (LPARAM)GS(SPEEDCAP_OFF));
+			SpeedCapLogic();
 			break;
 				case ID_CURRENTSAVE_DEFAULT:
 					SetCurrentSaveState(hWnd, LOWORD(wParam));
@@ -956,7 +1072,8 @@ LRESULT CALLBACK Main_Proc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 				if (ChangeWindow) {
 					ChangeWindow();
 					inFullScreen = !inFullScreen;
-					AlwaysOnTopWindow(hMainWindow);
+					UsuallyonTopWindow(hMainWindow);
+					DrawMenuBar(hMainWindow);
 					SendMessage(hStatusWnd, SB_SETTEXT, 0, (LPARAM)GS(FULLSCREEN_EXITED));
 				}
 			} else {
@@ -964,26 +1081,48 @@ LRESULT CALLBACK Main_Proc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 				SendMessage(hStatusWnd, SB_SETTEXT, 0, (LPARAM)GS(FULLSCREEN_ENTERED));
 			}
 			break;
-                case ID_SYSTEM_ALTERNATEPAUSE: {
-			if (!CPU_Paused) PauseCpu ();
-			else {
-			PauseCpu();
-			timeBeginPeriod(16);
-			Sleep(3);
-			timeEndPeriod(16);
-			PauseCpu(); }
-			}
+                case ID_SYSTEM_ALTERNATEPAUSE:
+			if (CPU_Paused) {
+				PauseCpu();
+				Timer_Start();
+				timeBeginPeriod(16);
+				Sleep(3);
+				timeEndPeriod(16);
+				PauseCpu();
+			} else PauseCpu();
 			break;
-		case ID_OPTIONS_ALWAYSONTOP:
-			CheckedMenuItem(ID_OPTIONS_ALWAYSONTOP,&AlwaysOnTop,"Always On Top");
-			AlwaysOnTopWindow(hWnd);
+		case ID_OPTIONS_UsuallyonTop:
+			CheckedMenuItem(ID_OPTIONS_UsuallyonTop,&UsuallyonTop,"Usually on Top");
+			UsuallyonTopWindow(hWnd);
 			break;
-		case ID_OPTIONS_CONFIG_GFX: GFXDllConfig(hWnd); break;
+		case ID_OPTIONS_CONFIG_GFX:
+		/*if (strcmp(GfxDLL, "Mk3GLN64.dll") == 0) {
+			NotUsuallyonTopWindow(hMainWindow);
+			GFXDllConfig(hWnd);
+			UsuallyonTopWindow(hMainWindow);
+		} else */GFXDllConfig(hWnd);
+		break;
 		case ID_OPTIONS_CONFIG_AUDIO: AiDllConfig(hWnd); break;
 		case ID_OPTIONS_CONFIG_RSP: RSPDllConfig(hWnd); break;
-		case ID_OPTIONS_CONFIG_CONTROL: ContConfig(hWnd); break;
+		case ID_OPTIONS_CONFIG_CONTROL:
+		if (strcmp(ControllerDLL, "shankle-sdl2-input.dll") == 0) {
+				NotUsuallyonTopWindow(hMainWindow);
+				EnableWindow(hWnd, FALSE);
+				if (CPURunning) ContConfig(hWnd);
+				else MessageBox(NULL, GS(MSG_OCTOMINO), AppName, MB_OK | MB_ICONEXCLAMATION | MB_SETFOREGROUND);
+				EnableWindow(hWnd, TRUE);
+				SetActiveWindow(hMainWindow);
+				UsuallyonTopWindow(hMainWindow);
+		} else ContConfig(hWnd);
+		break;
 		case ID_OPTIONS_SETTINGS: if (!AutoSleep && !CPU_Paused && CPURunning) PauseCpu();
 		ChangeSettings(hWnd);
+		if (!CPURunning) {
+			ShowRomList(hMainWindow);
+			RefreshRomBrowser();
+		}
+		if (CPURunning && strcmp(GfxDLL, "Icepir8sLegacyLLE.dll") == 0) SetWindowLong(hMainWindow, GWL_EXSTYLE, GetWindowLong(hMainWindow, GWL_EXSTYLE) | WS_EX_COMPOSITED);
+		SetupMenu(hMainWindow);
 		break;
 		case ID_OPTIONS_CHEATS: ManageCheats(NULL); break;
 		case ID_HELP_GUIDE:
@@ -998,11 +1137,11 @@ LRESULT CALLBACK Main_Proc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 				}
 			}
 		break;
-		case ID_REGEDIT: ShellExecute(NULL, "open", "regedit", NULL, NULL, SW_SHOWNORMAL); break;
 		case ID_HELP_UNINSTALL: UninstallApplication(hWnd); break;
 		case ID_HELP_STANDARD: Standardsettings(hWnd); break;
 		case ID_HELP_SM64: SM64settings(hWnd); break;
-		case ID_HELP_SLOW: SLOWsettings(hWnd); break;
+		case ID_ALLOCATE_COMPILE_SD: HandleAllocationCompilationOfSD(hWnd); break;
+		case ID_HELP_SLOW: if (!BasicMode) SLOWsettings(hWnd); break;
 		case ID_HELP_ABOUTSETTINGFILES: AboutIniBox(); break;
 		default:
 			if (LOWORD(wParam) >= ID_FILE_RECENT_FILE && LOWORD(wParam) <= (ID_FILE_RECENT_FILE + RomsToRemember)) {
@@ -1193,6 +1332,7 @@ BOOL TestExtensionRegistered ( char * Extension ) {
 void SetupMenu ( HWND hWnd ) {
 	HMENU hMenu = GetMenu(hWnd), hSubMenu;
 	int State;
+	if (!CPURunning) UsuallyonTopWindow(hMainWindow);
 	DestroyMenu(hMenu);
 	hMenu = LoadMenu(hInst,MAKEINTRESOURCE(MAIN_MENU));
 	FixMenuLang(hMenu);
@@ -1203,19 +1343,17 @@ void SetupMenu ( HWND hWnd ) {
 	if (LimitFPS) {
 		CheckMenuItem( hMenu, ID_SYSTEM_LIMITFPS, MF_BYCOMMAND | MFS_CHECKED );
 	}
-	if (AlwaysOnTop) {
-		CheckMenuItem( hMenu, ID_OPTIONS_ALWAYSONTOP, MF_BYCOMMAND | MFS_CHECKED );
+	if (SpeedCap) {
+		CheckMenuItem( hMenu, ID_SYSTEM_SPEEDCAP, MF_BYCOMMAND | MFS_CHECKED );
 	}
-	EnableMenuItem(hMenu, ID_OPTIONS_ALWAYSONTOP, MF_BYCOMMAND);
+	if (UsuallyonTop) {
+		CheckMenuItem( hMenu, ID_OPTIONS_UsuallyonTop, MF_BYCOMMAND | MFS_CHECKED );
+	}
 	EnableMenuItem(hMenu, ID_OPTIONS_CONFIG_AUDIO, MF_BYCOMMAND | (AiDllConfig == NULL?MF_GRAYED:MF_ENABLED));
 	EnableMenuItem(hMenu, ID_OPTIONS_CONFIG_GFX, MF_BYCOMMAND | (GFXDllConfig == NULL?MF_GRAYED:MF_ENABLED));
 	EnableMenuItem(hMenu, ID_OPTIONS_CONFIG_RSP, MF_BYCOMMAND | (RSPDllConfig == NULL?MF_GRAYED:MF_ENABLED));
 	EnableMenuItem(hMenu, ID_OPTIONS_CONFIG_CONTROL, MF_BYCOMMAND | (ContConfig == NULL?MF_GRAYED:MF_ENABLED));
-	if (strlen(RomName) > 0) {
-		EnableMenuItem(hMenu,ID_FILE_ROM_INFO,MFS_ENABLED|MF_BYCOMMAND);
-		EnableMenuItem(hMenu,ID_FILE_STARTEMULATION,MFS_ENABLED|MF_BYCOMMAND);
-		EnableMenuItem(hMenu,ID_SYSTEM_GSBUTTON,MFS_ENABLED|MF_BYCOMMAND);						//added by Witten on 10/03/2002
-	}
+	if (strlen(RomName) > 0) EnableMenuItem(hMenu,ID_FILE_ROM_INFO,MFS_ENABLED|MF_BYCOMMAND);
 	//Enable if cpu is running
 	State = CPURunning?MFS_ENABLED:MFS_DISABLED;
 	EnableMenuItem(hMenu,ID_FILE_ENDEMULATION,State|MF_BYCOMMAND);
@@ -1228,24 +1366,27 @@ void SetupMenu ( HWND hWnd ) {
 	EnableMenuItem(hMenu,ID_CPU_SAVEAS,State|MF_BYCOMMAND);
 	EnableMenuItem(hMenu,ID_CPU_RESTORE,State|MF_BYCOMMAND);
 	EnableMenuItem(hMenu,ID_CPU_LOAD,State|MF_BYCOMMAND);
+	EnableMenuItem(hMenu, ID_SYSTEM_GSBUTTON, State | MF_BYCOMMAND);
 	if (CPURunning && CaptureScreen != NULL) {
 		EnableMenuItem(hMenu,ID_SYSTEM_GENERATEBITMAP,MFS_ENABLED|MF_BYCOMMAND);
 	} else {
 		EnableMenuItem(hMenu,ID_SYSTEM_GENERATEBITMAP,MFS_DISABLED|MF_BYCOMMAND);
 	}
 	hSubMenu = GetSubMenu(hMenu,1); 	//System
-	EnableMenuItem(hSubMenu,12,State|MF_BYPOSITION);  //Save State
+	EnableMenuItem(hSubMenu,13,State|MF_BYPOSITION);  //Save State
 	//Disable if cpu is running
 	State = CPURunning?MFS_DISABLED:MFS_ENABLED;
 	EnableMenuItem(hMenu,ID_FILE_ROMDIRECTORY,State|MF_BYCOMMAND);
 	EnableMenuItem(hMenu,ID_FILE_REFRESHROMLIST,State|MF_BYCOMMAND);
-	EnableMenuItem(hMenu,ID_REGEDIT,State|MF_BYCOMMAND);
 	EnableMenuItem(hMenu,ID_FILE_STARTEMULATION,State|MF_BYCOMMAND);
+	hSubMenu = GetSubMenu(hMenu, 0); //File
 	SetMenu(hWnd, hMenu);
 	DrawMenuBar(hWnd);
 	hMainMenu = hMenu;
-	hSubMenu = GetSubMenu(hMenu, 0);
-	if (!RomBrowser) { DeleteMenu(hSubMenu, 9, MF_BYPOSITION); }
+	if (strlen(LastRoms[0]) == 0) EnableMenuItem(hMenu, ID_FILE_STARTEMULATION, MFS_DISABLED | MF_BYCOMMAND);
+	hSubMenu = GetSubMenu(hMenu, 2);
+	hSubMenu = GetSubMenu(hSubMenu, 10);
+	if (BasicMode) DeleteMenu(hSubMenu, 3, MF_BYPOSITION);
 }
 void SetCurrentSaveState (HWND hWnd, int State) {
 	char String[256];
@@ -1383,6 +1524,8 @@ void SetCurrentSaveState (HWND hWnd, int State) {
 	CurrentSaveSlot = State;
 }
 void UninstallApplication(HWND hWnd) {
+NotUsuallyonTopWindow(hMainWindow);
+EnableWindow(hWnd, FALSE);
 	if (MessageBox(NULL, GS(MSG_CONFIRMATION_UNINSTALL), AppName, MB_OKCANCEL | MB_ICONEXCLAMATION | MB_SETFOREGROUND) ==  IDOK) {
 		char path_buffer[_MAX_PATH], drive[_MAX_DRIVE], dir[_MAX_DIR];
 		char fname[_MAX_FNAME], ext[_MAX_EXT], HelpFileName[_MAX_PATH];
@@ -1394,8 +1537,13 @@ void UninstallApplication(HWND hWnd) {
 		}
 		DestroyWindow(hWnd);
 	}
+EnableWindow(hWnd, TRUE);
+SetActiveWindow(hMainWindow);
+UsuallyonTopWindow(hMainWindow);
 }
 void SM64settings(HWND hWnd) {
+NotUsuallyonTopWindow(hMainWindow);
+EnableWindow(hWnd, FALSE);
 	if (MessageBox(NULL, GS(SM64_WARN), AppName, MB_OKCANCEL | MB_ICONEXCLAMATION | MB_SETFOREGROUND) ==  IDOK) {
 		char path_buffer[_MAX_PATH], drive[_MAX_DRIVE], dir[_MAX_DIR];
 		char fname[_MAX_FNAME], ext[_MAX_EXT], HelpFileName[_MAX_PATH];
@@ -1407,8 +1555,13 @@ void SM64settings(HWND hWnd) {
 		}
 		DestroyWindow(hWnd);
 	}
+EnableWindow(hWnd, TRUE);
+SetActiveWindow(hMainWindow);
+UsuallyonTopWindow(hMainWindow);
 }
 void SLOWsettings(HWND hWnd) {
+NotUsuallyonTopWindow(hMainWindow);
+EnableWindow(hWnd, FALSE);
 	if (MessageBox(NULL, GS(SLOW_WARN), AppName, MB_OKCANCEL | MB_ICONEXCLAMATION | MB_SETFOREGROUND) ==  IDOK) {
 		char path_buffer[_MAX_PATH], drive[_MAX_DRIVE], dir[_MAX_DIR];
 		char fname[_MAX_FNAME], ext[_MAX_EXT], HelpFileName[_MAX_PATH];
@@ -1420,8 +1573,13 @@ void SLOWsettings(HWND hWnd) {
 		}
 		DestroyWindow(hWnd);
 	}
+EnableWindow(hWnd, TRUE);
+SetActiveWindow(hMainWindow);
+UsuallyonTopWindow(hMainWindow);
 }
 void Standardsettings(HWND hWnd) {
+NotUsuallyonTopWindow(hMainWindow);
+EnableWindow(hWnd, FALSE);
 	if (MessageBox(NULL, GS(STANDARD_WARN), AppName, MB_OKCANCEL | MB_ICONEXCLAMATION | MB_SETFOREGROUND) ==  IDOK) {
 		char path_buffer[_MAX_PATH], drive[_MAX_DRIVE], dir[_MAX_DIR];
 		char fname[_MAX_FNAME], ext[_MAX_EXT], HelpFileName[_MAX_PATH];
@@ -1433,14 +1591,49 @@ void Standardsettings(HWND hWnd) {
 		}
 		DestroyWindow(hWnd);
 	}
+EnableWindow(hWnd, TRUE);
+SetActiveWindow(hMainWindow);
+UsuallyonTopWindow(hMainWindow);
+}
+void HandleAllocationCompilationOfSD(HWND hWnd) {
+	static char isoFilePath[1024];
+	NotUsuallyonTopWindow(hMainWindow);
+	EnableWindow(hWnd, FALSE);
+	SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, 0, isoFilePath);
+	strcat(isoFilePath, "\\PJ64 1.6.2\\AUTO0.iso");
+	if (GetFileAttributes(isoFilePath) != INVALID_FILE_ATTRIBUTES) {
+		if (MessageBox(NULL, GS(Allocate_SD_Info), AppName, MB_OKCANCEL | MB_ICONEXCLAMATION | MB_SETFOREGROUND) == IDOK) {
+			char path_buffer[_MAX_PATH], drive[_MAX_DRIVE], dir[_MAX_DIR];
+			char fname[_MAX_FNAME], ext[_MAX_EXT], HelpFileName[_MAX_PATH];
+			GetModuleFileName(NULL, path_buffer, sizeof(path_buffer));
+			_splitpath(path_buffer, drive, dir, fname, ext);
+			_makepath(HelpFileName, drive, dir, "SD_Allocate", "bat");
+			if (HtmlHelp(hWnd, HelpFileName, HH_DISPLAY_INDEX, 0) == NULL) {
+				ShellExecute(hWnd, "runas", HelpFileName, NULL, NULL, SW_SHOW);
+			}
+		}
+	} else {
+		if (MessageBox(NULL, GS(Compile_SD_Info), AppName, MB_OKCANCEL | MB_ICONEXCLAMATION | MB_SETFOREGROUND) == IDOK) {
+			char path_buffer[_MAX_PATH], drive[_MAX_DRIVE], dir[_MAX_DIR];
+			char fname[_MAX_FNAME], ext[_MAX_EXT], HelpFileName[_MAX_PATH];
+			GetModuleFileName(NULL, path_buffer, sizeof(path_buffer));
+			_splitpath(path_buffer, drive, dir, fname, ext);
+			_makepath(HelpFileName, drive, dir, "SD_Compile", "bat");
+			if (HtmlHelp(hWnd, HelpFileName, HH_DISPLAY_INDEX, 0) == NULL) {
+				ShellExecute(hWnd, "runas", HelpFileName, NULL, NULL, SW_SHOW);
+			}
+		}
+	}
+	EnableWindow(hWnd, TRUE);
+	SetActiveWindow(hMainWindow);
+	UsuallyonTopWindow(hMainWindow);
 }
 void ShutdownApplication ( void ) {
 	CloseCpu();
-	if (TargetInfo != NULL) { VirtualFree(TargetInfo,0,MEM_RELEASE); }
+	if (TargetInfo != NULL) VirtualFree(TargetInfo,0,MEM_RELEASE);
 	FreeRomBrowser();
 	ShutdownPlugins();
-	if (!ForceClose)
-		SaveRecentFiles();
+	if (!ForceClose) SaveRecentFiles();
 	Release_Memory();
 	CloseHandle(hPauseMutex);
 	CoUninitialize();
@@ -1452,7 +1645,7 @@ void StoreCurrentWinPos (  char * WinName, HWND hWnd ) {
 	RECT WinRect;
 	char String[200];
 	GetWindowRect(hWnd, &WinRect );
-	sprintf(String,"N64 Software\\%s\\Page Setup",AppName);
+	sprintf(String,"PJ64 V 1.6.2\\%s\\Page Setup",AppName);
 	lResult = RegCreateKeyEx( HKEY_CURRENT_USER, String,0,"", REG_OPTION_NON_VOLATILE,
 		KEY_ALL_ACCESS,NULL, &hKeyResults,&Disposition);
 	if (lResult == ERROR_SUCCESS) {
@@ -1474,7 +1667,7 @@ void StoreCurrentWinSize (  char * WinName, HWND hWnd ) {
 	GetWindowRect(hWnd, &WinRect );
 	WinRect.bottom -= WinRect.top;
 	WinRect.right -= WinRect.left;
-	sprintf(String,"N64 Software\\%s\\Page Setup",AppName);
+	sprintf(String,"PJ64 V 1.6.2\\%s\\Page Setup",AppName);
 	lResult = RegCreateKeyEx( HKEY_CURRENT_USER, String,0,"", REG_OPTION_NON_VOLATILE,
 		KEY_ALL_ACCESS,NULL, &hKeyResults,&Disposition);
 	if (lResult == ERROR_SUCCESS) {
@@ -1527,7 +1720,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszArgs,
 	HACCEL AccelWinMode, AccelCPURunning, AccelRomBrowser;
 	DWORD X, Y;
 	MSG msg;
-	if ( !InitalizeApplication (hInstance) ) { return FALSE; }
+	if ( !InitializeApplication (hInstance) ) { return FALSE; }
 	if ( !RegisterWinClass () ) { return FALSE; }
 	if ( !GetStoredWinPos( "Main", &X, &Y ) ) {
   		X = (GetSystemMetrics( SM_CXSCREEN ) - WindowWidth) / 2;
@@ -1547,26 +1740,36 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszArgs,
 	);
         DragAcceptFiles(hMainWindow, TRUE);
 	if ( !hMainWindow ) { return FALSE; }
+	{
+		HKEY hKey;
+		DWORD dwDisposition;
+		DWORD dwData = 0x00000016; // Value to set
+		LONG lRet;
+		lRet = RegOpenKeyEx(HKEY_CURRENT_USER, "PJ64 V 1.6.2\\Jabo Ver1.6.2 Regs\\Direct3D8 1.6.2", 0, KEY_READ, &hKey);
+		if (lRet != ERROR_SUCCESS) {
+			lRet = RegCreateKeyEx(HKEY_CURRENT_USER, "PJ64 V 1.6.2\\Jabo Ver1.6.2 Regs\\Direct3D8 1.6.2", 0, NULL, REG_OPTION_NON_VOLATILE, KEY_WRITE, NULL, &hKey, &dwDisposition);
+			if (lRet == ERROR_SUCCESS) {
+				RegSetValueEx(hKey, "Full Screen Format", 0, REG_DWORD, (const BYTE*)&dwData, sizeof(dwData));
+			}
+			RegCloseKey(hKey);
+		}
+		lRet = RegOpenKeyEx(HKEY_CURRENT_USER, "PJ64 V 1.6.2\\Jabo Ver1.6.2 Regs\\Direct3D8 1.7.0.471", 0, KEY_READ, &hKey);
+		if (lRet != ERROR_SUCCESS) {
+			lRet = RegCreateKeyEx(HKEY_CURRENT_USER, "PJ64 V 1.6.2\\Jabo Ver1.6.2 Regs\\Direct3D8 1.7.0.471", 0, NULL, REG_OPTION_NON_VOLATILE, KEY_WRITE, NULL, &hKey, &dwDisposition);
+			if (lRet == ERROR_SUCCESS) {
+				RegSetValueEx(hKey, "Full Screen Format", 0, REG_DWORD, (const BYTE*)&dwData, sizeof(dwData));
+			}
+			RegCloseKey(hKey);
+		}
+	}
 	SetupPlugins(hMainWindow);
 	if (__argc > 1) {
-		DWORD ThreadID;
-		SetupMenu(hMainWindow);
 		ShowWindow(hMainWindow, nWinMode);
+		if (strcmp(GfxDLL, "Icepir8sLegacyLLE.dll") == 0) ShowRomList(hMainWindow);
+		DWORD ThreadID;
 		strcpy(CurrentFileName, __argv[1]);
 		CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)OpenChosenFile,NULL,0, &ThreadID);
-	} else {
-		if (RomBrowser) {
-			ShowRomList(hMainWindow);
-			RefreshRomBrowser();
-		} else {
-			SetupMenu(hMainWindow);
-			ShowWindow(hMainWindow, nWinMode);
-		}
-		if (!LimitFPS) SendMessage(hStatusWnd, SB_SETTEXT, 0, (LPARAM)GS(LIMITFPS_OFF));
-		HMENU hMenu;
-		hMenu = GetMenu(hMainWindow);
-		if (strlen(LastRoms[0]) == 0) EnableMenuItem(hMenu, ID_FILE_STARTEMULATION, MFS_DISABLED | MF_BYCOMMAND);
-	}
+	} else HandleShutdown();
 	while (GetMessage(&msg,NULL,0,0)) {
 		if (!CPURunning && TranslateAccelerator(hMainWindow,AccelRomBrowser,&msg)) { continue; }
 		if (CPURunning) {

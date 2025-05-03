@@ -40,7 +40,7 @@ BOOL GenerateX86Code (BLOCK_SECTION * Section, DWORD Test );
 DWORD GetNewTestValue( void );
 void _fastcall InheritConstants(BLOCK_SECTION * Section);
 BOOL InheritParentInfo (BLOCK_SECTION * Section);
-void _fastcall InitilzeSection(BLOCK_SECTION * Section, BLOCK_SECTION * Parent, DWORD StartAddr, DWORD ID);
+void _fastcall InitializeSection(BLOCK_SECTION * Section, BLOCK_SECTION * Parent, DWORD StartAddr, DWORD ID);
 void InitializeRegSet(REG_INFO * RegSet);
 BOOL IsAllParentLoops(BLOCK_SECTION * Section, BLOCK_SECTION * Parent, BOOL IgnoreIfCompiled, DWORD Test);
 void MarkCodeBlock (DWORD PAddr);
@@ -106,18 +106,9 @@ void _fastcall AddParent(BLOCK_SECTION * Section, BLOCK_SECTION * Parent){
 	}
 }
 void AnalyseBlock (void) {
-	int Changed;
 	BLOCK_SECTION * Section = &BlockInfo.BlockInfo;
 	BlockInfo.NoOfSections = 1;
-	InitilzeSection (Section, NULL, BlockInfo.StartVAddr, BlockInfo.NoOfSections);
-	if (UseLinking) {
-		CreateSectionLinkage (Section);
-		DetermineLoop(Section,GetNewTestValue(),GetNewTestValue(), Section->SectionID);
-		do {
-			Changed = FALSE;
-			FixConstants(Section,GetNewTestValue(),&Changed);
-		} while (Changed == TRUE);
-	}
+	InitializeSection (Section, NULL, BlockInfo.StartVAddr, BlockInfo.NoOfSections);
 }
 int ConstantsType (__int64 Value) {
 	if (((Value >> 32) == -1) && ((Value & 0x80000000) != 0)) { return STATE_CONST_32; }
@@ -150,17 +141,16 @@ BYTE * Compiler4300iBlock(void) {
 		CPU_Message("====== IMEM: block (%d) ======", N64_Blocks.NoOfIMEMBlocks);
 	} else if (StartAddress >= 0x1FC00000 && StartAddress <= 0x1FC00800) {
 		CPU_Message("====== PIF ROM: block ======");
-	} else { ExitThread(0);
+	} else {
+/* Is this needed?#ifndef ROM_IN_MAPSPACE
+ExitThread(0);
+#endifIs this needed? */
 	}
 	CPU_Message("x86 code at: %X",BlockInfo.CompiledLocation);
 	CPU_Message("Start of Block: %X",BlockInfo.StartVAddr );
 	CPU_Message("No of Sections: %d",BlockInfo.NoOfSections );
 	CPU_Message("====== recompiled code ======");
-	if (UseLinking) {
-		while (GenerateX86Code(&BlockInfo.BlockInfo,GetNewTestValue()));
-	} else {
 		GenerateX86Code(&BlockInfo.BlockInfo,GetNewTestValue());
-	}
 	for (count = 0; count < BlockInfo.ExitCount; count ++) {
 		CPU_Message("");
 		CPU_Message("      $Exit_%d",count);
@@ -187,10 +177,10 @@ BYTE * CompileDelaySlot(void) {
 	int count, x86Reg;
 	Section = &DelaySection;
 	if ((StartAddress & 0xFFC) != 0) {
-		ExitThread(0);
+		//ExitThread(0);
 	}
 	if (!r4300i_LW_VAddr(StartAddress, &Opcode.Hex)) {
-		ExitThread(0);
+		//ExitThread(0);
 	}
 	TranslateVaddr(&StartAddress);
 	if (StartAddress < RDRAMsize) {
@@ -201,13 +191,16 @@ BYTE * CompileDelaySlot(void) {
 		CPU_Message("====== IMEM: Delay Slot ======");
 	} else if (StartAddress >= 0x1FC00000 && StartAddress <= 0x1FC00800) {
 		CPU_Message("====== PIF ROM: Delay Slot ======");
-	} else { ExitThread(0);
+	} else {
+/* Is this needed?#ifndef ROM_IN_MAPSPACE
+ExitThread(0);
+#endifIs this needed? */
 	}
 	MarkCodeBlock(StartAddress);
 	CPU_Message("x86 code at: %X",Block);
 	CPU_Message("Delay Slot location: %X",PROGRAM_COUNTER );
 	CPU_Message("====== recompiled code ======");
-	InitilzeSection (Section, NULL, PROGRAM_COUNTER, 0);
+	InitializeSection (Section, NULL, PROGRAM_COUNTER, 0);
 	InitializeRegSet(&Section->RegStart);
 	memcpy(&Section->RegWorking,&Section->RegStart,sizeof(REG_INFO));
 	BlockCycleCount += CountPerOp;
@@ -215,7 +208,6 @@ BYTE * CompileDelaySlot(void) {
 	switch (Opcode.op) {
 	case R4300i_SPECIAL:
 		switch (Opcode.funct) {
-		case R4300i_SPECIAL_SYNC: break;
 		case R4300i_SPECIAL_SLL: Compile_R4300i_SPECIAL_SLL(Section); break;
 		case R4300i_SPECIAL_SRL: Compile_R4300i_SPECIAL_SRL(Section); break;
 		case R4300i_SPECIAL_SRA: Compile_R4300i_SPECIAL_SRA(Section); break;
@@ -246,7 +238,7 @@ BYTE * CompileDelaySlot(void) {
 		case R4300i_SPECIAL_DSLL32: Compile_R4300i_SPECIAL_DSLL32(Section); break;
 		case R4300i_SPECIAL_DSRA32: Compile_R4300i_SPECIAL_DSRA32(Section); break;
 		default:
-			Compile_R4300i_UnknownOpcode(Section); break;
+			break;
 		}
 		break;
 	case R4300i_ADDI: Compile_R4300i_ADDI(Section); break;
@@ -287,7 +279,7 @@ BYTE * CompileDelaySlot(void) {
 			case R4300i_COP1_FUNCT_C_LE:  case R4300i_COP1_FUNCT_C_NGT:
 				Compile_R4300i_COP1_S_CMP(Section); break;
 			default:
-				Compile_R4300i_UnknownOpcode(Section); break;
+				break;
 			}
 			break;
 		case R4300i_COP1_D:
@@ -313,7 +305,7 @@ BYTE * CompileDelaySlot(void) {
 			case R4300i_COP1_FUNCT_C_LE:  case R4300i_COP1_FUNCT_C_NGT:
 				Compile_R4300i_COP1_D_CMP(Section); break;
 			default:
-				Compile_R4300i_UnknownOpcode(Section); break;
+				break;
 			}
 			break;
 		case R4300i_COP1_W:
@@ -321,11 +313,11 @@ BYTE * CompileDelaySlot(void) {
 			case R4300i_COP1_FUNCT_CVT_S: Compile_R4300i_COP1_W_CVT_S(Section); break;
 			case R4300i_COP1_FUNCT_CVT_D: Compile_R4300i_COP1_W_CVT_D(Section); break;
 			default:
-				Compile_R4300i_UnknownOpcode(Section); break;
+				break;
 			}
 			break;
 		default:
-			Compile_R4300i_UnknownOpcode(Section); break;
+			break;
 		}
 		break;
 	case R4300i_LB: Compile_R4300i_LB(Section); break;
@@ -345,7 +337,7 @@ BYTE * CompileDelaySlot(void) {
 	case R4300i_SDC1: Compile_R4300i_SDC1(Section); break;
 	case R4300i_SD: Compile_R4300i_SD(Section); break;
 	default:
-		Compile_R4300i_UnknownOpcode(Section); break;
+		break;
 	}
 	for (count = 1; count < 10; count ++) { x86Protected(count) = FALSE; }
 	WriteBackRegisters(Section);
@@ -373,7 +365,7 @@ void CompileExit (DWORD TargetPC, REG_INFO ExitRegSet, int reason, int CompileNo
 		}
 		sprintf(String,"Exit_%d",BlockInfo.ExitCount);
 		if (x86Jmp == NULL) {
-			ExitThread(0);
+			//ExitThread(0);
 		}
 		x86Jmp(String,0);
 		BlockInfo.ExitInfo[BlockInfo.ExitCount] = malloc(sizeof(EXIT_INFO));
@@ -385,7 +377,7 @@ void CompileExit (DWORD TargetPC, REG_INFO ExitRegSet, int reason, int CompileNo
 		BlockInfo.ExitCount += 1;
 		return;
 	}
-	InitilzeSection (&Section, NULL, (DWORD)-1, 0);
+	InitializeSection (&Section, NULL, (DWORD)-1, 0);
 	memcpy(&Section.RegWorking, &ExitRegSet, sizeof(REG_INFO));
 	if (TargetPC != (DWORD)-1) { MoveConstToVariable(TargetPC,&PROGRAM_COUNTER,"PROGRAM_COUNTER"); }
 	if (ExitRegSet.CycleCount != 0) {
@@ -400,7 +392,7 @@ void CompileExit (DWORD TargetPC, REG_INFO ExitRegSet, int reason, int CompileNo
 		Section.RegWorking.CycleCount = 0;
 		if (reason == Normal) { CompileSystemCheck(0,(DWORD)-1,Section.RegWorking);	}
 		if (SelfModCheck == ModCode_ChangeMemory) {
-			BYTE * Jump, * Jump2;
+			BYTE* Jump = NULL, * Jump2 = NULL;
 			if (TargetPC >= 0x80000000 && TargetPC < 0xC0000000) {
 				DWORD pAddr = TargetPC & 0x1FFFFFFF;
 				MoveVariableToX86reg((BYTE *)N64MEM + pAddr,"N64MEM + pAddr",x86_EAX);
@@ -432,7 +424,7 @@ void CompileExit (DWORD TargetPC, REG_INFO ExitRegSet, int reason, int CompileNo
 			}
 		} else if (SelfModCheck == ModCode_CheckMemoryCache || SelfModCheck == ModCode_CheckMemoryAdvance || SelfModCheck == ModCode_CheckMemoryReturn) {
 		} else {
-			BYTE * Jump, * Jump2;
+			BYTE* Jump = NULL, * Jump2 = NULL;
 			if (TargetPC >= 0x80000000 && TargetPC < 0x90000000) {
 				DWORD pAddr = TargetPC & 0x1FFFFFFF;
 				MoveVariableToX86reg((BYTE *)JumpTable + pAddr,"JumpTable + pAddr",x86_ECX);
@@ -501,7 +493,7 @@ void CompileExit (DWORD TargetPC, REG_INFO ExitRegSet, int reason, int CompileNo
 }
 void CompileSystemCheck (DWORD TimerModifier, DWORD TargetPC, REG_INFO RegSet) {
 	BLOCK_SECTION Section;
-	BYTE *Jump, *Jump2;
+	BYTE* Jump = NULL, * Jump2 = NULL;
 	// Timer
 	if (TimerModifier != 0) {
 		SubConstFromVariable(TimerModifier,&Timers.Timer,"Timer");
@@ -512,7 +504,7 @@ void CompileSystemCheck (DWORD TimerModifier, DWORD TargetPC, REG_INFO RegSet) {
 	Jump = RecompPos - 4;
 	Pushad();
 	if (TargetPC != (DWORD)-1) { MoveConstToVariable(TargetPC,&PROGRAM_COUNTER,"PROGRAM_COUNTER"); }
-	InitilzeSection (&Section, NULL, (DWORD)-1, 0);
+	InitializeSection (&Section, NULL, (DWORD)-1, 0);
 	memcpy(&Section.RegWorking, &RegSet, sizeof(REG_INFO));
 	WriteBackRegisters(&Section);
 	Call_Direct(TimerDone,"TimerDone");
@@ -534,7 +526,7 @@ void CompileSystemCheck (DWORD TimerModifier, DWORD TargetPC, REG_INFO RegSet) {
 	JeLabel32("Continue_From_Interrupt_Test",0);
 	Jump = RecompPos - 4;
 	if (TargetPC != (DWORD)-1) { MoveConstToVariable(TargetPC,&PROGRAM_COUNTER,"PROGRAM_COUNTER"); }
-	InitilzeSection (&Section, NULL, (DWORD)-1, 0);
+	InitializeSection (&Section, NULL, (DWORD)-1, 0);
 	memcpy(&Section.RegWorking, &RegSet, sizeof(REG_INFO));
 	WriteBackRegisters(&Section);
 	CompileExit(-1,Section.RegWorking,DoCPU_Action,TRUE,NULL);
@@ -550,8 +542,8 @@ void _fastcall CreateSectionLinkage (BLOCK_SECTION * Section) {
 	__try {
 		FillSectionInfo(Section);
 	} __except( r4300i_CPU_MemoryFilter( GetExceptionCode(), GetExceptionInformation()) ) {
-		DisplayError(GS(MSG_UNKNOWN_MEM_ACTION));
-		ExitThread(0);
+		//DisplayError(GS(MSG_UNKNOWN_MEM_ACTION));
+		//ExitThread(0);
 	}
 	if (Section->Jump.TargetPC < Section->Cont.TargetPC) {
 		TargetSection[0] = (BLOCK_SECTION **)&Section->JumpSection;
@@ -573,7 +565,7 @@ void _fastcall CreateSectionLinkage (BLOCK_SECTION * Section) {
 			if (*TargetSection[count] == NULL) {
 				BlockInfo.NoOfSections += 1;
 				*TargetSection[count] = malloc(sizeof(BLOCK_SECTION));
-				InitilzeSection (*TargetSection[count], Section, *TargetPC[count], BlockInfo.NoOfSections);
+				InitializeSection (*TargetSection[count], Section, *TargetPC[count], BlockInfo.NoOfSections);
 				CreateSectionLinkage(*TargetSection[count]);
 			} else {
 				AddParent(*TargetSection[count],Section);
@@ -656,7 +648,7 @@ void _fastcall FillSectionInfo(BLOCK_SECTION * Section) {
 	memcpy(&Section->RegWorking,&Section->RegStart,sizeof(REG_INFO));
 	NextInstruction = NORMAL;
 	do {
-		if (!r4300i_LW_VAddr(Section->CompilePC, &Command.Hex)) ExitThread(0);
+		if (!r4300i_LW_VAddr(Section->CompilePC, &Command.Hex)) /*ExitThread(0)*/;
 		if (SelfModCheck == ModCode_ChangeMemory) {
 			if ( (Command.Hex >> 16) == 0x7C7C) {
 				Command.Hex = OrigMem[(Command.Hex & 0xFFFF)].OriginalValue;
@@ -1269,7 +1261,7 @@ void _fastcall FillSectionInfo(BLOCK_SECTION * Section) {
 					if (Section->CompilePC == Section->Jump.TargetPC) {
 						int EffectDelaySlot;
 						OPCODE NewCommand;
-						if (!r4300i_LW_VAddr(Section->CompilePC + 4, &NewCommand.Hex)) ExitThread(0);
+						if (!r4300i_LW_VAddr(Section->CompilePC + 4, &NewCommand.Hex)) /*ExitThread(0)*/;
 						EffectDelaySlot = FALSE;
 						if (NewCommand.op == R4300i_CP1) {
 							if (NewCommand.fmt == R4300i_COP1_S && (NewCommand.funct & 0x30) == 0x30 ) {
@@ -1501,7 +1493,7 @@ void GenerateBasicSectionLinkage (BLOCK_SECTION * Section) {
 void GenerateSectionLinkage (BLOCK_SECTION * Section) {
 	BLOCK_SECTION * TargetSection[2], *Parent;
 	JUMP_INFO * JumpInfo[2];
-	BYTE * Jump;
+	BYTE * Jump = NULL;
 	int count;
 	TargetSection[0] = Section->ContinueSection;
 	TargetSection[1] = Section->JumpSection;
@@ -1562,7 +1554,6 @@ void GenerateSectionLinkage (BLOCK_SECTION * Section) {
 		Ret();
 		return;
 	}
-	if (!UseLinking) {
 		if (Section->CompilePC == Section->Jump.TargetPC && (Section->Cont.TargetPC == -1)) {
 			if (!DelaySlotEffectsJump(Section->CompilePC)) {
 				WriteBackRegisters(Section);
@@ -1570,7 +1561,6 @@ void GenerateSectionLinkage (BLOCK_SECTION * Section) {
 				Call_Direct(InPermLoop,"InPermLoop");
 			}
 		}
-	}
 	if (TargetSection[0] != TargetSection[1] || TargetSection[0] == NULL) {
 		for (count = 0; count < 2; count ++) {
 			if (JumpInfo[count]->LinkLocation == NULL && JumpInfo[count]->FallThrough == FALSE) {
@@ -1779,10 +1769,11 @@ BOOL GenerateX86Code (BLOCK_SECTION * Section, DWORD Test) {
 	NextInstruction = NORMAL;
 	do {
 		__try {
-			if (!r4300i_LW_VAddr_NonCPU(Section->CompilePC, &Opcode.Hex)) ExitThread(0);
+			if (BlockCycleCount > 1 && CountPerOp == 1) BlockCycleCount = 1; // For true CF1 lagless, needed for 60fps supported games and certain hacks
+			if (!r4300i_LW_VAddr_NonCPU(Section->CompilePC, &Opcode.Hex)) /*ExitThread(0)*/;
 		} __except( r4300i_CPU_MemoryFilter( GetExceptionCode(), GetExceptionInformation()) ) {
-			DisplayError(GS(MSG_UNKNOWN_MEM_ACTION));
-			ExitThread(0);
+			//DisplayError(GS(MSG_UNKNOWN_MEM_ACTION));
+			//ExitThread(0);
 		}
 		if (SelfModCheck == ModCode_ChangeMemory) {
 			if ( (Opcode.Hex >> 16) == 0x7C7C) {
@@ -1795,7 +1786,6 @@ BOOL GenerateX86Code (BLOCK_SECTION * Section, DWORD Test) {
 		switch (Opcode.op) {
 		case R4300i_SPECIAL:
 			switch (Opcode.funct) {
-			case R4300i_SPECIAL_SYNC: break;
 			case R4300i_SPECIAL_SLL: Compile_R4300i_SPECIAL_SLL(Section); break;
 			case R4300i_SPECIAL_SRL: Compile_R4300i_SPECIAL_SRL(Section); break;
 			case R4300i_SPECIAL_SRA: Compile_R4300i_SPECIAL_SRA(Section); break;
@@ -1841,7 +1831,7 @@ BOOL GenerateX86Code (BLOCK_SECTION * Section, DWORD Test) {
 			case R4300i_SPECIAL_DSRL32: Compile_R4300i_SPECIAL_DSRL32(Section); break;
 			case R4300i_SPECIAL_DSRA32: Compile_R4300i_SPECIAL_DSRA32(Section); break;
 			default:
-				Compile_R4300i_UnknownOpcode(Section); break;
+				break;
 			}
 			break;
 		case R4300i_REGIMM:
@@ -1853,7 +1843,7 @@ BOOL GenerateX86Code (BLOCK_SECTION * Section, DWORD Test) {
 			case R4300i_REGIMM_BLTZAL:Compile_R4300i_Branch(Section,BLTZ_Compare,BranchTypeRs, TRUE); break;
 			case R4300i_REGIMM_BGEZAL:Compile_R4300i_Branch(Section,BGEZ_Compare,BranchTypeRs, TRUE); break;
 			default:
-				Compile_R4300i_UnknownOpcode(Section); break;
+				break;
 			}
 			break;
 		case R4300i_BEQ: Compile_R4300i_Branch(Section,BEQ_Compare,BranchTypeRsRt,FALSE); break;
@@ -1882,10 +1872,9 @@ BOOL GenerateX86Code (BLOCK_SECTION * Section, DWORD Test) {
 					case R4300i_COP0_CO_TLBWR: Compile_R4300i_COP0_CO_TLBWR(Section); break;
 					case R4300i_COP0_CO_TLBP: Compile_R4300i_COP0_CO_TLBP(Section); break;
 					case R4300i_COP0_CO_ERET: Compile_R4300i_COP0_CO_ERET(Section); break;
-					default: Compile_R4300i_UnknownOpcode(Section); break;
+					default: break;
 					}
 				} else {
-					Compile_R4300i_UnknownOpcode(Section);
 				}
 			}
 			break;
@@ -1904,7 +1893,7 @@ BOOL GenerateX86Code (BLOCK_SECTION * Section, DWORD Test) {
 				case R4300i_COP1_BC_BCFL: Compile_R4300i_BranchLikely(Section,COP1_BCF_Compare,FALSE); break;
 				case R4300i_COP1_BC_BCTL: Compile_R4300i_BranchLikely(Section,COP1_BCT_Compare,FALSE); break;
 				default:
-					Compile_R4300i_UnknownOpcode(Section); break;
+					break;
 				}
 				break;
 			case R4300i_COP1_S:
@@ -1937,7 +1926,7 @@ BOOL GenerateX86Code (BLOCK_SECTION * Section, DWORD Test) {
 				case R4300i_COP1_FUNCT_C_LE:  case R4300i_COP1_FUNCT_C_NGT:
 					Compile_R4300i_COP1_S_CMP(Section); break;
 				default:
-					Compile_R4300i_UnknownOpcode(Section); break;
+					break;
 				}
 				break;
 			case R4300i_COP1_D:
@@ -1970,7 +1959,7 @@ BOOL GenerateX86Code (BLOCK_SECTION * Section, DWORD Test) {
 				case R4300i_COP1_FUNCT_C_LE:  case R4300i_COP1_FUNCT_C_NGT:
 					Compile_R4300i_COP1_D_CMP(Section); break;
 				default:
-					Compile_R4300i_UnknownOpcode(Section); break;
+					break;
 				}
 				break;
 			case R4300i_COP1_W:
@@ -1978,7 +1967,7 @@ BOOL GenerateX86Code (BLOCK_SECTION * Section, DWORD Test) {
 				case R4300i_COP1_FUNCT_CVT_S: Compile_R4300i_COP1_W_CVT_S(Section); break;
 				case R4300i_COP1_FUNCT_CVT_D: Compile_R4300i_COP1_W_CVT_D(Section); break;
 				default:
-					Compile_R4300i_UnknownOpcode(Section); break;
+					break;
 				}
 				break;
 			case R4300i_COP1_L:
@@ -1986,11 +1975,11 @@ BOOL GenerateX86Code (BLOCK_SECTION * Section, DWORD Test) {
 				case R4300i_COP1_FUNCT_CVT_S: Compile_R4300i_COP1_L_CVT_S(Section); break;
 				case R4300i_COP1_FUNCT_CVT_D: Compile_R4300i_COP1_L_CVT_D(Section); break;
 				default:
-					Compile_R4300i_UnknownOpcode(Section); break;
+					break;
 				}
 				break;
 			default:
-				Compile_R4300i_UnknownOpcode(Section); break;
+				break;
 			}
 			break;
 		case R4300i_BEQL: Compile_R4300i_BranchLikely(Section,BEQ_Compare,FALSE); break;
@@ -2025,9 +2014,9 @@ BOOL GenerateX86Code (BLOCK_SECTION * Section, DWORD Test) {
 		case R4300i_SDC1: Compile_R4300i_SDC1(Section); break;
 		case R4300i_SD: Compile_R4300i_SD(Section); break;
 		default:
-			Compile_R4300i_UnknownOpcode(Section); break;
+			break;
 		}
-		if (DisableRegCaching) { WriteBackRegisters(Section); }
+		if (!RomUseCache && !ForceEnableCaching) { WriteBackRegisters(Section); }
 		for (count = 1; count < 10; count ++) { x86Protected(count) = FALSE; }
 		UnMap_AllFPRs(Section);
 		if ((Section->CompilePC &0xFFC) == 0xFFC) {
@@ -2119,7 +2108,7 @@ BOOL InheritParentInfo (BLOCK_SECTION * Section) {
 	int count, start, NoOfParents, NoOfCompiledParents, FirstParent,CurrentParent;
 	BLOCK_PARENT * SectionParents;
 	BLOCK_SECTION * Parent;
-	JUMP_INFO * JumpInfo;
+	JUMP_INFO* JumpInfo = NULL;
 	char Label[100];
 	BOOL NeedSync;
 	DisplaySectionInformation(Section,Section->SectionID,GetNewTestValue());
@@ -2395,7 +2384,7 @@ BOOL IsAllParentLoops(BLOCK_SECTION * Section, BLOCK_SECTION * Parent, BOOL Igno
 	}
 	return TRUE;
 }
-void _fastcall InitilzeSection (BLOCK_SECTION * Section, BLOCK_SECTION * Parent, DWORD StartAddr, DWORD ID) {
+void _fastcall InitializeSection (BLOCK_SECTION * Section, BLOCK_SECTION * Parent, DWORD StartAddr, DWORD ID) {
 	Section->ParentSection      = NULL;
 	Section->JumpSection        = NULL;
 	Section->ContinueSection    = NULL;
@@ -2430,19 +2419,21 @@ void MarkCodeBlock (DWORD PAddr) {
 	} else if (PAddr >= 0x1FC00000 && PAddr <= 0x1FC00800) {
 		N64_Blocks.NoOfPifRomBlocks += 1;
 	} else {
+/* Is this needed?#ifndef ROM_IN_MAPSPACE
 		ExitThread(0);
+#endifIs this needed? */
 	}
 }
 void StartRecompilerCPU (void ) {
 	DWORD Addr;
-	BYTE * Block;
+	BYTE* Block = NULL;
 	CoInitialize(NULL);
 	if (ModCode_CheckMemoryCache || ModCode_CheckMemoryAdvance || ModCode_CheckMemoryReturn) {// *** Add in Build 53
 		if (TargetInfo == NULL) {
 			TargetInfo = VirtualAlloc(NULL,MaxCodeBlocks * sizeof(TARGET_INFO),MEM_COMMIT|MEM_RESERVE,PAGE_READWRITE);
 			if (TargetInfo == NULL) {
-				DisplayError(GS(MSG_MEM_ALLOC_ERROR));
-				ExitThread(0);
+				//DisplayError(GS(MSG_MEM_ALLOC_ERROR));
+				//ExitThread(0);
 			}
 		}
 		TargetIndex = 0;
@@ -2451,8 +2442,8 @@ void StartRecompilerCPU (void ) {
 		if (OrigMem == NULL) {
 			OrigMem = VirtualAlloc(NULL,MaxOrigMem * sizeof(ORIGINAL_MEMMARKER),MEM_COMMIT|MEM_RESERVE,PAGE_READWRITE);
 			if (TargetInfo == NULL) {
-				DisplayError(GS(MSG_MEM_ALLOC_ERROR));
-				ExitThread(0);
+				//DisplayError(GS(MSG_MEM_ALLOC_ERROR));
+				//ExitThread(0);
 			}
 		}
 		TargetIndex = 0;
@@ -2472,23 +2463,23 @@ void StartRecompilerCPU (void ) {
 			DWORD Value;
 			for (;;) {
 				Addr = PROGRAM_COUNTER;
-				if (UseTlb) {
+				if (UseTlb && !ForceDisableTLB) {
 					if (!TranslateVaddr(&Addr)) {
 						DoTLBMiss(NextInstruction == DELAY_SLOT,PROGRAM_COUNTER);
 						NextInstruction = NORMAL;
 						Addr = PROGRAM_COUNTER;
 						if (!TranslateVaddr(&Addr)) {
-							ExitThread(0);
+							//ExitThread(0);
 						}
 					}
-				} else {
+				} if (!UseTlb || ForceDisableTLB) {
 					Addr &= 0x1FFFFFFF;
 				}
 				if (NextInstruction == DELAY_SLOT) {
 					__try {
 						Value = (DWORD)(*(DelaySlotTable + (Addr >> 12)));
 					} __except(EXCEPTION_EXECUTE_HANDLER) {
-						ExitThread(0);
+						//ExitThread(0);
 					}
 					if ( (Value >> 16) == 0x7C7C) {
 						DWORD Index = (Value & 0xFFFF);
@@ -2535,8 +2526,8 @@ void StartRecompilerCPU (void ) {
 						Block = NULL;
 					}
 				} __except(EXCEPTION_EXECUTE_HANDLER) {
-					DisplayError(GS(MSG_NONMAPPED_SPACE));
-					ExitThread(0);
+					//DisplayError(GS(MSG_NONMAPPED_SPACE));
+					//ExitThread(0);
 				}
 				if (Block == NULL) {
 					DWORD MemValue;
@@ -2573,24 +2564,24 @@ void StartRecompilerCPU (void ) {
 		} // end if (SelfModCheck == ModCode_ChangeMemory) {
 		for (;;) {
 			Addr = PROGRAM_COUNTER;
-			if (UseTlb) {
+			if (UseTlb && !ForceDisableTLB) {
 				if (!TranslateVaddr(&Addr)) {
 					DoTLBMiss(NextInstruction == DELAY_SLOT,PROGRAM_COUNTER);
 					NextInstruction = NORMAL;
 					Addr = PROGRAM_COUNTER;
 					if (!TranslateVaddr(&Addr)) {
-						ExitThread(0);
+						//ExitThread(0);
 					}
 				}
-			} else {
+			} if (!UseTlb || ForceDisableTLB) {
 				Addr &= 0x1FFFFFFF;
 			}
 			if (NextInstruction == DELAY_SLOT) {
 				__try {
 					Block = *(DelaySlotTable + (Addr >> 12));
 				} __except(EXCEPTION_EXECUTE_HANDLER) {
-					DisplayError(GS(MSG_NONMAPPED_SPACE));
-					ExitThread(0);
+					//DisplayError(GS(MSG_NONMAPPED_SPACE));
+					//ExitThread(0);
 				}
 				if (Block == NULL) {
 					DWORD OldProtect;
@@ -2617,8 +2608,8 @@ void StartRecompilerCPU (void ) {
 						}
 						continue;
 					} else {
-						DisplayError(GS(MSG_NONMAPPED_SPACE));
-						ExitThread(0);
+						//DisplayError(GS(MSG_NONMAPPED_SPACE));
+						//ExitThread(0);
 					}
 				}
 				Block = *(JumpTable + (Addr >> 2));
@@ -2629,8 +2620,8 @@ void StartRecompilerCPU (void ) {
 					}
 					continue;
 				} else {
-					DisplayError(GS(MSG_NONMAPPED_SPACE));
-					ExitThread(0);
+					//DisplayError(GS(MSG_NONMAPPED_SPACE));
+					//ExitThread(0);
 				}
 			}
 			if (SelfModCheck == ModCode_CheckMemoryCache && Block != NULL) {
@@ -2694,8 +2685,8 @@ void StartRecompilerCPU (void ) {
 			}
 		}
 	} __except( r4300i_CPU_MemoryFilter( GetExceptionCode(), GetExceptionInformation()) ) {
-		DisplayError(GS(MSG_UNKNOWN_MEM_ACTION));
-		ExitThread(0);
+		//DisplayError(GS(MSG_UNKNOWN_MEM_ACTION));
+		//ExitThread(0);
 	}
 }
 void SyncRegState (BLOCK_SECTION * Section, REG_INFO * SyncTo) {

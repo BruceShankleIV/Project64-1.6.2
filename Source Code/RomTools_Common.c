@@ -8,7 +8,6 @@ int RomRegion (BYTE Country) {
 		case 0x46: // French
 		case 0x49: // Italian
 		case 0x50: // Europe
-		case 0x4C: // Lodgenet (PAL)
 		case 0x53: // Spanish
 		case 0x55: // Australia
 		case 0x58: // X (PAL)

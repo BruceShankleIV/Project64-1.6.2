@@ -55,13 +55,12 @@
 #define IDC_SELECT_SNAP_DIR             1081
 #define IDC_USE_TLB                     1084
 #define IDC_SELFMOD                     1085
-#define IDC_BLOCK_LINKING               1086
+#define IDC_AUDIO_SIGNAL               1086
 #define IDC_RDRAM_SIZE                  1087
 #define IDC_CPU_TYPE                    1088
 #define IDC_SAVE_TYPE                   1089
 #define IDC_MEMORY_SIZE_TEXT            1090
 #define IDC_CF                          1090
-#define IDC_USEINI                      1091
 #define IDC_SAVE_TYPE_TEXT              1091
 #define IDC_CPU_TYPE_TEXT               1092
 #define IDC_SELFMOD_TEXT                1093
@@ -99,7 +98,6 @@
 #define IDC_VALUE                       1124
 #define IDC_ADD                         1126
 #define IDC_CODE_NAME                   1130
-#define IDC_USE_ROMBROWSER              1133
 #define IDC_USING                       1134
 #define IDC_AVAILABLE                   1135
 #define IDC_REMOVE                      1137
@@ -194,14 +192,14 @@
 #define ID_CPU_LOAD                     40135
 #define ID_FILE_ROMDIRECTORY            40137
 #define ID_FILE_REFRESHROMLIST          40138
+#define ID_SYSTEM_SPEEDCAP				40139
 #define ID_SYSTEM_LIMITFPS              40141
 #define ID_HELP_GUIDE                   40142
-#define ID_REGEDIT			40143
 #define ID_HELP_ABOUTSETTINGFILES       40146
 #define ID_SYSTEM_GSBUTTON              40148
-#define ID_OPTIONS_ALWAYSONTOP          40150
+#define ID_OPTIONS_UsuallyonTop          40150
 #define ID_PLAYGAME                     40152
-#define ID_EDITSETTINGS                 40153
+#define ID_BROWSERNOTES                 40153
 #define ID_EDITCHEATS                   40154
 #define ID_POPUPMENU_ROMINFORMATION     40155
 #define ID_POPUP_ADDNEWCHEAT            40161
@@ -211,6 +209,7 @@
 #define ID_HELP_STANDARD		40168
 #define ID_HELP_SM64			40169
 #define ID_HELP_SLOW			40170
+#define ID_ALLOCATE_COMPILE_SD	40171
 #define ID_CURRENTSAVE_10               40203
 #define ID_CURRENTSAVE_11               40204
 #define ID_CURRENTSAVE_12               40205
@@ -234,3 +233,8 @@
 #define ID_CURRENTSAVE_30               40223
 #define IDC_PLUGINS			40245
 #define IDC_ROMSETTWARN			40246
+#define IDC_ForceDisableTLB				40247
+#define IDC_ForceEnableDMA				40248
+#define IDC_ForceEnableCaching			40249
+#define IDC_ForceEnableDelayRDP			40250
+#define IDC_ForceAuto16					40251

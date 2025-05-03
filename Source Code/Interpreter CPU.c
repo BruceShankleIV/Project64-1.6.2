@@ -151,7 +151,7 @@ void BuildInterpreter (void ) {
 	R4300i_Special[10] = R4300i_UnknownOpcode;
 	R4300i_Special[11] = R4300i_UnknownOpcode;
 	R4300i_Special[12] = r4300i_SPECIAL_SYSCALL;
-	R4300i_Special[13] = R4300i_UnknownOpcode;
+	R4300i_Special[13] = r4300i_SPECIAL_BREAK;
 	R4300i_Special[14] = R4300i_UnknownOpcode;
 	R4300i_Special[15] = r4300i_SPECIAL_SYNC;
 	R4300i_Special[16] = r4300i_SPECIAL_MFHI;
@@ -692,8 +692,8 @@ void StartInterpreterCPU (void ) {
 			ExecuteInterpreterOpCode();
 		}
 	} __except( r4300i_CPU_MemoryFilter( GetExceptionCode(), GetExceptionInformation()) ) {
-		DisplayError(GS(MSG_UNKNOWN_MEM_ACTION));
-		ExitThread(0);
+		//DisplayError(GS(MSG_UNKNOWN_MEM_ACTION));
+		//ExitThread(0);
 	}
 }
 void TestInterpreterJump (DWORD PC, DWORD TargetPC, int Reg1, int Reg2) {

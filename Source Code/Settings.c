@@ -61,7 +61,6 @@ SETTINGS_TAB SettingsTabsBasic[] = {
 	{ TAB_ROMNOTES,IDD_Settings_RomNotes,RomNotesProc                 },
 };
 SETTINGS_TAB SettingsTabsRom[] = {
-	{ TAB_ROMSETTINGS, IDD_Settings_Rom,      RomSettingsProc  },
 	{ TAB_ROMNOTES,    IDD_Settings_RomNotes, RomNotesProc     },
 };
 void ChangeRomSettings(HWND hwndOwner) {
@@ -137,8 +136,10 @@ void ChangeSettings(HWND hwndOwner) {
     psh.pfnCallback = NULL;
 	PropertySheet(&psh);
 	LoadSettings();
-	SetupMenu(hMainWindow);
-	if (!AutoSleep && !ManualPaused && (CPU_Paused || CPU_Action.Pause)) PauseCpu();
+	if (!AutoSleep && !ManualPaused && (CPU_Paused || CPU_Action.Pause)) {
+		PauseCpu();
+		Timer_Start();
+	}
 	return;
 }
 void SetFlagControl (HWND hDlg, BOOL * Flag, WORD CtrlID, int StringID) {
@@ -159,7 +160,7 @@ BOOL CALLBACK GeneralOptionsProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lP
 			HKEY hKeyResults = 0;
 			DWORD Disposition = 0;
 			char String[200];
-			sprintf(String,"N64 Software\\%s",AppName);
+			sprintf(String,"PJ64 V 1.6.2\\%s",AppName);
 			lResult = RegCreateKeyEx( HKEY_CURRENT_USER, String,0,"", REG_OPTION_NON_VOLATILE,
 				KEY_ALL_ACCESS,NULL, &hKeyResults,&Disposition);
 			if (lResult == ERROR_SUCCESS) {
@@ -197,7 +198,11 @@ BOOL CALLBACK DefaultOptionsProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lP
 		SetDlgItemText(hDlg,IDC_TEXT3,GS(ROM_SMCM));
 		SetDlgItemText(hDlg,IDC_TEXT4,GS(ROM_MEM_SIZE));
 		SetDlgItemText(hDlg,IDC_TEXT5,GS(ROM_COUNTER_FACTOR));
-		SetFlagControl(hDlg,&UseIni, IDC_USEINI, USERDB);
+		SetFlagControl(hDlg, &ForceDisableTLB, IDC_ForceDisableTLB, FORCE_DISABLE_TLB);
+		SetFlagControl(hDlg, &ForceEnableDMA, IDC_ForceEnableDMA, FORCE_ENABLE_DMA);
+		SetFlagControl(hDlg, &ForceEnableCaching, IDC_ForceEnableCaching, FORCE_ENABLE_REGISTERCACHING);
+		SetFlagControl(hDlg, &ForceEnableDelayRDP, IDC_ForceEnableDelayRDP, FORCE_ENABLE_DELAYRDP);
+		SetFlagControl(hDlg, &ForceAuto16, IDC_ForceAuto16, FORCE_AUTO16);
 		AddDropDownItem(hDlg,IDC_CPU_TYPE,CORE_INTERPRETER,CPU_Interpreter,&SystemCPU_Type);
 		AddDropDownItem(hDlg,IDC_CPU_TYPE,CORE_RECOMPILER,CPU_Recompiler,&SystemCPU_Type);
 		AddDropDownItem(hDlg,IDC_SELFMOD,SMCM_NONE,ModCode_None,&SystemSelfModCheck);
@@ -219,12 +224,20 @@ BOOL CALLBACK DefaultOptionsProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lP
 			HKEY hKeyResults = 0;
 			DWORD Disposition = 0;
 			char String[200];
-			sprintf(String,"N64 Software\\%s",AppName);
+			sprintf(String,"PJ64 V 1.6.2\\%s",AppName);
 			lResult = RegCreateKeyEx( HKEY_CURRENT_USER, String,0,"", REG_OPTION_NON_VOLATILE,
 				KEY_ALL_ACCESS,NULL, &hKeyResults,&Disposition);
 			if (lResult == ERROR_SUCCESS) {
-				UseIni = SendMessage(GetDlgItem(hDlg,IDC_USEINI),BM_GETSTATE, 0,0) == BST_CHECKED?TRUE:FALSE;
-				RegSetValueEx(hKeyResults,"Use RDB",0,REG_DWORD,(BYTE *)&UseIni,sizeof(DWORD));
+				ForceDisableTLB = SendMessage(GetDlgItem(hDlg, IDC_ForceDisableTLB), BM_GETSTATE, 0, 0) == BST_CHECKED ? TRUE : FALSE;
+				RegSetValueEx(hKeyResults, "Always Disable TLB", 0, REG_DWORD, (BYTE*)&ForceDisableTLB, sizeof(DWORD));
+				ForceEnableDMA = SendMessage(GetDlgItem(hDlg, IDC_ForceEnableDMA), BM_GETSTATE, 0, 0) == BST_CHECKED ? TRUE : FALSE;
+				RegSetValueEx(hKeyResults, "Always Enable Align DMA", 0, REG_DWORD, (BYTE*)&ForceEnableDMA, sizeof(DWORD));
+				ForceEnableCaching = SendMessage(GetDlgItem(hDlg, IDC_ForceEnableCaching), BM_GETSTATE, 0, 0) == BST_CHECKED ? TRUE : FALSE;
+				RegSetValueEx(hKeyResults, "Always Enable Register Caching", 0, REG_DWORD, (BYTE*)&ForceEnableCaching, sizeof(DWORD));
+				ForceEnableDelayRDP = SendMessage(GetDlgItem(hDlg, IDC_ForceEnableDelayRDP), BM_GETSTATE, 0, 0) == BST_CHECKED ? TRUE : FALSE;
+				RegSetValueEx(hKeyResults, "Always Enable Delay RDP", 0, REG_DWORD, (BYTE*)&ForceEnableDelayRDP, sizeof(DWORD));
+				ForceAuto16 = SendMessage(GetDlgItem(hDlg, IDC_ForceAuto16), BM_GETSTATE, 0, 0) == BST_CHECKED ? TRUE : FALSE;
+				RegSetValueEx(hKeyResults, "Always Autodetect With 16kbit", 0, REG_DWORD, (BYTE*)&ForceAuto16, sizeof(DWORD));
 				indx = SendMessage(GetDlgItem(hDlg,IDC_CPU_TYPE),CB_GETCURSEL,0,0);
 				SystemCPU_Type = SendMessage(GetDlgItem(hDlg,IDC_CPU_TYPE),CB_GETITEMDATA,indx,0);
 				RegSetValueEx(hKeyResults,"CPU Core Style",0,REG_DWORD,(BYTE *)&SystemCPU_Type,sizeof(DWORD));
@@ -268,7 +281,7 @@ BOOL CALLBACK DirSelectProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			char String[256];
 			char Directory[255];
 			long lResult;
-			sprintf(String,"N64 Software\\%s",AppName);
+			sprintf(String,"PJ64 V 1.6.2\\%s",AppName);
 			lResult = RegOpenKeyEx( HKEY_CURRENT_USER,String,0, KEY_ALL_ACCESS,&hKeyResults);
 			if (lResult == ERROR_SUCCESS) {
 				DWORD Type, Value, Bytes = 4;
@@ -390,7 +403,7 @@ BOOL CALLBACK DirSelectProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			HKEY hKeyResults = 0;
 			DWORD Disposition = 0;
 			char String[200];
-			sprintf(String,"N64 Software\\%s",AppName);
+			sprintf(String,"PJ64 V 1.6.2\\%s",AppName);
 			lResult = RegCreateKeyEx( HKEY_CURRENT_USER, String,0,"", REG_OPTION_NON_VOLATILE,
 				KEY_ALL_ACCESS,NULL, &hKeyResults,&Disposition);
 			if (lResult == ERROR_SUCCESS) {
@@ -429,6 +442,7 @@ BOOL CALLBACK DirSelectProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	return TRUE;
 }
 BOOL PluginsChanged ( HWND hDlg ) {
+	if (CPURunning) SetDlgItemText(GetParent(hDlg), IDOK, GS(OKPOSTSWAP));
 	DWORD index;
 	index = SendMessage(GetDlgItem(hDlg,RSP_LIST),CB_GETCURSEL,0,0);
 	index = SendMessage(GetDlgItem(hDlg,RSP_LIST),CB_GETITEMDATA,(WPARAM)index,0);
@@ -466,6 +480,7 @@ BOOL CALLBACK PluginSelectProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
 	switch (uMsg) {
 	case WM_INITDIALOG:
 		SetupPluginScreen(hDlg);
+		if (CPURunning) SetDlgItemText(GetParent(hDlg), IDOK, GS(OKPRESWAP));
 		break;
 	case WM_COMMAND:
 		switch (LOWORD(wParam)) {
@@ -534,7 +549,7 @@ BOOL CALLBACK PluginSelectProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
 			DWORD Disposition = 0;
 			char String[200];
 			if (PluginsChanged(hDlg) == FALSE) { FreePluginList(); break; }
-			sprintf(String,"N64 Software\\%s\\Dll",AppName);
+			sprintf(String,"PJ64 V 1.6.2\\%s\\Dll",AppName);
 			lResult = RegCreateKeyEx( HKEY_CURRENT_USER, String,0,"", REG_OPTION_NON_VOLATILE,
 				KEY_ALL_ACCESS,NULL, &hKeyResults,&Disposition);
 			if (lResult == ERROR_SUCCESS) {
@@ -562,46 +577,47 @@ BOOL CALLBACK PluginSelectProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPar
 			}
 			RegCloseKey(hKeyResults);
 			if (CPURunning) {
-				char drive[_MAX_DRIVE],dir[_MAX_DIR], fname[_MAX_FNAME],ext[_MAX_EXT];
-				char SaveFile[255];
-				const char* fixedDir;
-				OSVERSIONINFO osvi;
-				ZeroMemory(&osvi, sizeof(OSVERSIONINFO));
-				osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
-				GetVersionEx(&osvi);
-    				if (osvi.dwMajorVersion >= 6) {
-        			// Windows Vista and later
-        			fixedDir = "C:\\ProgramData\\";
-    				} else {
-      				// Windows XP
-      				fixedDir = "C:\\Documents and Settings\\All Users\\Application Data\\";
-   				}
-				_splitpath( SaveFile, drive, dir, fname, ext );
-				_makepath(SaveFile, drive, fixedDir, (GS(HOT_SWAP_COMPLETE)), "");
-				strcpy(SaveAsFileName,SaveFile);
-				CPU_Action.SaveState = TRUE;
-                CloseCpu();
-                SendMessage( hStatusWnd, SB_SETTEXT, 0, (LPARAM)GS(MSG_PLUGIN_HOT_SWAP));
-				SetupPlugins(hMainWindow);
-				DWORD ThreadID;
-				memset(&CPU_Action,0,sizeof(CPU_Action));
-        		LoadRomOptions();
-				switch (CPU_Type) {
-				case CPU_Interpreter: hCPU = CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)StartInterpreterCPU,NULL,0, &ThreadID); break;
-				case CPU_Recompiler: hCPU = CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)StartRecompilerCPU,NULL,0, &ThreadID);	break;
-				}
-        		CPURunning = TRUE;
-				_splitpath(SaveFile, drive, dir, fname, ext);
-				_makepath(SaveFile, drive, dir, (GS(HOT_SWAP_COMPLETE)), "");
-				strcpy(LoadFileName,SaveFile);
-				CPU_Action.RestoreState = TRUE;
-			} else {
-				if (!RomBrowser) { SetupPlugins(hMainWindow); }
-				if (RomBrowser) { SetupPlugins(hHiddenWin); }
-			}
-			FreePluginList();
-		}
-		if (((NMHDR FAR *) lParam)->code == PSN_RESET) {
+				DestroyWindow(hDlg);
+					char drive[_MAX_DRIVE], dir[_MAX_DIR], fname[_MAX_FNAME], ext[_MAX_EXT];
+					char SaveFile[255], Directory[255];
+					GetInstantSaveDir(Directory);
+					_splitpath(SaveFile, drive, dir, fname, ext);
+					_makepath(SaveFile, drive, Directory, (GS(HOT_SWAP_COMPLETE)), "");
+					strcpy(SaveAsFileName, SaveFile);
+					CPU_Action.SaveState = TRUE;
+					CloseCpu();
+					DWORD ThreadID;
+					memset(&CPU_Action, 0, sizeof(CPU_Action));
+					LoadRomOptions();
+					if (strcmp(GfxDLL, "Icepir8sLegacyLLE.dll") == 0) GetCurrentDlls();
+					if (strcmp(GfxDLL, "Icepir8sLegacyLLE.dll") != 0) HideRomBrowser();
+					SetupPlugins(hMainWindow);
+					/*if (strcmp(GfxDLL, "Icepir8sLegacyLLE.dll") == 0) {
+						ShowRomList(hMainWindow);
+						NotUsuallyonTopWindow(hMainWindow);
+					}*/
+					switch (CPU_Type) {
+					case CPU_Interpreter: hCPU = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)StartInterpreterCPU, NULL, 0, &ThreadID); break;
+					case CPU_Recompiler: hCPU = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)StartRecompilerCPU, NULL, 0, &ThreadID); break;
+					}
+					/*if (strcmp(GfxDLL, "Icepir8sLegacyLLE.dll") == 0) {
+						CPURunning = FALSE;
+						timeBeginPeriod(16);
+						Sleep(10);
+						timeEndPeriod(16);
+						HideRomBrowser();
+						CPURunning = TRUE;
+						SetupMenu(hMainWindow);
+					}*/
+					_splitpath(SaveFile, drive, dir, fname, ext);
+					_makepath(SaveFile, drive, dir, (GS(HOT_SWAP_COMPLETE)), "");
+					strcpy(LoadFileName, SaveFile);
+					CPU_Action.RestoreState = TRUE;
+					if (AutoSleep) {
+						PauseCpu();
+						Timer_Start();
+					} else Timer_Start();
+			} else SetupPlugins(hHiddenWin);
 			FreePluginList();
 		}
 		break;
@@ -625,7 +641,6 @@ void RomAddFieldToList (HWND hDlg, char * Name, int Pos, int ID) {
 BOOL CALLBACK RomBrowserProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	switch (uMsg) {
 	case WM_INITDIALOG:
-		if (RomBrowser) { SendMessage(GetDlgItem(hDlg,IDC_USE_ROMBROWSER),BM_SETCHECK, BST_CHECKED,0); }
 		if (Rercursion) { SendMessage(GetDlgItem(hDlg,IDC_RECURSION),BM_SETCHECK, BST_CHECKED,0); }
 		{
 			int count;
@@ -643,7 +658,6 @@ BOOL CALLBACK RomBrowserProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
 			SetDlgItemText(hDlg,IDC_ROMSEL_TEXT2,GS(RB_ROMS));
 			SetDlgItemText(hDlg,IDC_ROMSEL_TEXT3,GS(RB_MAX_DIRS));
 			SetDlgItemText(hDlg,IDC_ROMSEL_TEXT4,GS(RB_DIRS));
-			SetDlgItemText(hDlg,IDC_USE_ROMBROWSER,GS(RB_USE));
 			SetDlgItemText(hDlg,IDC_RECURSION,GS(RB_DIR_RECURSION));
 			SetDlgItemText(hDlg,IDC_ROMSEL_TEXT5,GS(RB_AVAILABLE_FIELDS));
 			SetDlgItemText(hDlg,IDC_ROMSEL_TEXT6,GS(RB_SHOW_FIELDS));
@@ -725,15 +739,11 @@ BOOL CALLBACK RomBrowserProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
 			DWORD Disposition = 0;
 			HKEY hKeyResults = 0;
 			long lResult;
-			RomBrowser = SendMessage(GetDlgItem(hDlg,IDC_USE_ROMBROWSER),BM_GETSTATE, 0,0) == BST_CHECKED?TRUE:FALSE;
 			Rercursion = SendMessage(GetDlgItem(hDlg,IDC_RECURSION),BM_GETSTATE, 0,0) == BST_CHECKED?TRUE:FALSE;
-			sprintf(String,"N64 Software\\%s",AppName);
+			sprintf(String,"PJ64 V 1.6.2\\%s",AppName);
 			lResult = RegCreateKeyEx( HKEY_CURRENT_USER, String,0,"", REG_OPTION_NON_VOLATILE,
 				KEY_ALL_ACCESS,NULL, &hKeyResults,&Disposition);
-			if (lResult == ERROR_SUCCESS) {
-				RegSetValueEx(hKeyResults,"ROM Browser",0,REG_DWORD,(BYTE *)&RomBrowser,sizeof(DWORD));
-				RegSetValueEx(hKeyResults,"Directory Recursion",0,REG_DWORD,(BYTE *)&Rercursion,sizeof(DWORD));
-			}
+			if (lResult == ERROR_SUCCESS) RegSetValueEx(hKeyResults,"Directory Recursion",0,REG_DWORD,(BYTE *)&Rercursion,sizeof(DWORD));
 			SaveRomBrowserColoumnInfo(); // Any coloumn width changes get saved
 			listCount = SendDlgItemMessage(hDlg,IDC_USING,LB_GETCOUNT,0,0);
 			for (Pos = 0; Pos < listCount; Pos ++ ){
@@ -748,8 +758,6 @@ BOOL CALLBACK RomBrowserProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
 			}
 			LoadRomBrowserColoumnInfo();
 			ResetRomBrowserColomuns();
-			if (RomBrowser) { ShowRomList(hMainWindow); RefreshRomBrowser();
-			} else HideRomBrowser();
 			RemoveRecentList(hMainWindow);
 			RomsToRemember = GetDlgItemInt(hDlg,IDC_REMEMBER,NULL,FALSE);
 			if (RomsToRemember < 0) { RomsToRemember = 0; }
@@ -805,7 +813,7 @@ BOOL CALLBACK RomNotesProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 				SetDlgItemText(hDlg,IDC_PLUGIN_NOTE,PluginNotes);
 			}
 		}
-		if (strlen(RomName) == 0) {
+		if (!CPURunning) {
 			EnableWindow(GetDlgItem(hDlg,IDC_STATUS_TEXT),FALSE);
 			EnableWindow(GetDlgItem(hDlg,IDC_STATUS),FALSE);
 			EnableWindow(GetDlgItem(hDlg,IDC_CORE),FALSE);
@@ -838,9 +846,10 @@ BOOL CALLBACK RomSettingsProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 	switch (uMsg) {
 	case WM_INITDIALOG:
 		ReadRomOptions();
-		if (RomCPUType == CPU_Interpreter || RomCPUType == CPU_Default && CPU_Type == CPU_Interpreter)
-		SetDlgItemText(hDlg, IDC_INFO, GS(ADVANCE_INFO));
-		SetDlgItemText(hDlg, IDC_ROMSETTWARN, GS(ROMSETTWARN));
+		if (strlen(RomName) != 0) {
+			SetDlgItemText(hDlg, IDC_ROMSETTWARN, GS(ROMSETTWARN));
+			SetDlgItemText(hDlg, IDC_INFO, GS(ADVANCE_INFO));
+		}
 		SetDlgItemText(hDlg,IDC_CPU_TYPE_TEXT,GS(ROM_CPU_STYLE));
 		SetDlgItemText(hDlg,IDC_SELFMOD_TEXT,GS(ROM_SMCM));
 		SetDlgItemText(hDlg,IDC_MEMORY_SIZE_TEXT,GS(ROM_MEM_SIZE));
@@ -869,7 +878,7 @@ BOOL CALLBACK RomSettingsProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 		AddDropDownItem(hDlg,IDC_COUNTFACT,NUMBER_1,1,&RomCF);
 		AddDropDownItem(hDlg,IDC_COUNTFACT,NUMBER_2,2,&RomCF);
 		AddDropDownItem(hDlg,IDC_COUNTFACT,NUMBER_3,3,&RomCF);
-		SetFlagControl(hDlg,&RomUseLinking,IDC_BLOCK_LINKING,ROM_ABL);
+		SetFlagControl(hDlg,&RomAudioSignal,IDC_AUDIO_SIGNAL,ROM_AUDIO_SIGNAL);
 		SetFlagControl(hDlg,&RomUseLargeBuffer, IDC_LARGE_COMPILE_BUFFER, ROM_LARGE_BUFFER);
 		SetFlagControl(hDlg,&RomUseTlb, IDC_USE_TLB, ROM_USE_TLB);
 		SetFlagControl(hDlg,&RomUseCache, IDC_ROM_REGCACHE, ROM_REG_CACHE);
@@ -879,61 +888,34 @@ BOOL CALLBACK RomSettingsProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 		SetFlagControl(hDlg,&RomAlignDMA, IDC_ALIGN_DMA, ROM_ALIGN_DMA);
 		SetFlagControl(hDlg,&RomSPHack, IDC_ROM_SPHACK, ROM_SP_HACK);
 		if (strlen(RomName) == 0) {
-			EnableWindow(GetDlgItem(hDlg,IDC_MEMORY_SIZE_TEXT),FALSE);
-			EnableWindow(GetDlgItem(hDlg,IDC_RDRAM_SIZE),FALSE);
 			EnableWindow(GetDlgItem(hDlg,IDC_SAVE_TYPE_TEXT),FALSE);
 			EnableWindow(GetDlgItem(hDlg,IDC_SAVE_TYPE),FALSE);
-			EnableWindow(GetDlgItem(hDlg,IDC_COUNTFACT_TEXT),FALSE);
-			EnableWindow(GetDlgItem(hDlg,IDC_COUNTFACT),FALSE);
-			EnableWindow(GetDlgItem(hDlg,IDC_CPU_TYPE_TEXT),FALSE);
-			EnableWindow(GetDlgItem(hDlg,IDC_CPU_TYPE),FALSE);
-			EnableWindow(GetDlgItem(hDlg,IDC_SELFMOD_TEXT),FALSE);
-			EnableWindow(GetDlgItem(hDlg,IDC_SELFMOD),FALSE);
-			EnableWindow(GetDlgItem(hDlg,IDC_USE_TLB),FALSE);
 			EnableWindow(GetDlgItem(hDlg,IDC_DELAY_SI),FALSE);
 			EnableWindow(GetDlgItem(hDlg,IDC_DELAY_RDP),FALSE);
 			EnableWindow(GetDlgItem(hDlg,IDC_DELAY_RSP),FALSE);
-			EnableWindow(GetDlgItem(hDlg,IDC_ALIGN_DMA),FALSE);
 			EnableWindow(GetDlgItem(hDlg,IDC_ROM_SPHACK),FALSE);
 			EnableWindow(GetDlgItem(hDlg,IDC_ROM_REGCACHE),FALSE);
-			EnableWindow(GetDlgItem(hDlg,IDC_BLOCK_LINKING),FALSE);
+			EnableWindow(GetDlgItem(hDlg,IDC_AUDIO_SIGNAL),FALSE);
 			EnableWindow(GetDlgItem(hDlg,IDC_LARGE_COMPILE_BUFFER),FALSE);
 			EnableWindow(GetDlgItem(hDlg,IDC_NOTES),FALSE);
-		}
-		if (!UseIni) {
-			EnableWindow(GetDlgItem(hDlg, IDC_MEMORY_SIZE_TEXT), FALSE);
-			EnableWindow(GetDlgItem(hDlg, IDC_RDRAM_SIZE), FALSE);
-			EnableWindow(GetDlgItem(hDlg, IDC_COUNTFACT_TEXT), FALSE);
-			EnableWindow(GetDlgItem(hDlg, IDC_COUNTFACT), FALSE);
-			EnableWindow(GetDlgItem(hDlg, IDC_CPU_TYPE_TEXT), FALSE);
 			EnableWindow(GetDlgItem(hDlg, IDC_CPU_TYPE), FALSE);
-			EnableWindow(GetDlgItem(hDlg, IDC_SELFMOD_TEXT), FALSE);
+			EnableWindow(GetDlgItem(hDlg, IDC_RDRAM_SIZE), FALSE);
+			EnableWindow(GetDlgItem(hDlg, IDC_COUNTFACT), FALSE);
 			EnableWindow(GetDlgItem(hDlg, IDC_SELFMOD), FALSE);
-		}
-		if (RomCPUType == CPU_Interpreter || RomCPUType == CPU_Default && CPU_Type == CPU_Interpreter) {
+			EnableWindow(GetDlgItem(hDlg, IDC_CPU_TYPE_TEXT), FALSE);
+			EnableWindow(GetDlgItem(hDlg, IDC_MEMORY_SIZE_TEXT), FALSE);
+			EnableWindow(GetDlgItem(hDlg, IDC_COUNTFACT_TEXT), FALSE);
 			EnableWindow(GetDlgItem(hDlg, IDC_SELFMOD_TEXT), FALSE);
-			EnableWindow(GetDlgItem(hDlg, IDC_SELFMOD), FALSE);
-			EnableWindow(GetDlgItem(hDlg, IDC_ROM_REGCACHE), FALSE);
-			EnableWindow(GetDlgItem(hDlg, IDC_BLOCK_LINKING), FALSE);
-			EnableWindow(GetDlgItem(hDlg, IDC_LARGE_COMPILE_BUFFER), FALSE);
 		}
+		if (strlen(RomName) == 0 || ForceDisableTLB) EnableWindow(GetDlgItem(hDlg, IDC_USE_TLB), FALSE);
+		if (strlen(RomName) == 0 || ForceEnableDMA) EnableWindow(GetDlgItem(hDlg, IDC_ALIGN_DMA), FALSE);
+		if (strlen(RomName) == 0 || ForceEnableCaching) EnableWindow(GetDlgItem(hDlg, IDC_ForceEnableCaching), FALSE);
+		if (strlen(RomName) == 0 || ForceEnableDelayRDP) EnableWindow(GetDlgItem(hDlg, IDC_ForceEnableDelayRDP), FALSE);
 		break;
 	case WM_NOTIFY:
 		if (((NMHDR FAR*) lParam)->code == PSN_APPLY) {
 			if (strlen(RomName) == 0) break;
-			if (!UseIni) {
-				indx = SendMessage(GetDlgItem(hDlg, IDC_SAVE_TYPE), CB_GETCURSEL, 0, 0);
-				RomSaveUsing = SendMessage(GetDlgItem(hDlg, IDC_SAVE_TYPE), CB_GETITEMDATA, indx, 0);
-				RomUseLinking = SendMessage(GetDlgItem(hDlg, IDC_BLOCK_LINKING), BM_GETSTATE, 0, 0) == BST_CHECKED ? TRUE : FALSE;
-				RomDelaySI = SendMessage(GetDlgItem(hDlg, IDC_DELAY_SI), BM_GETSTATE, 0, 0) == BST_CHECKED ? TRUE : FALSE;
-				RomDelayRDP = SendMessage(GetDlgItem(hDlg, IDC_DELAY_RDP), BM_GETSTATE, 0, 0) == BST_CHECKED ? TRUE : FALSE;
-				RomDelayRSP = SendMessage(GetDlgItem(hDlg, IDC_DELAY_RSP), BM_GETSTATE, 0, 0) == BST_CHECKED ? TRUE : FALSE;
-				RomAlignDMA = SendMessage(GetDlgItem(hDlg, IDC_ALIGN_DMA), BM_GETSTATE, 0, 0) == BST_CHECKED ? TRUE : FALSE;
-				RomSPHack = SendMessage(GetDlgItem(hDlg, IDC_ROM_SPHACK), BM_GETSTATE, 0, 0) == BST_CHECKED ? TRUE : FALSE;
-				RomUseTlb = SendMessage(GetDlgItem(hDlg, IDC_USE_TLB), BM_GETSTATE, 0, 0) == BST_CHECKED ? TRUE : FALSE;
-				RomUseCache = SendMessage(GetDlgItem(hDlg, IDC_ROM_REGCACHE), BM_GETSTATE, 0, 0) == BST_CHECKED ? TRUE : FALSE;
-				RomUseLargeBuffer = SendMessage(GetDlgItem(hDlg, IDC_LARGE_COMPILE_BUFFER), BM_GETSTATE, 0, 0) == BST_CHECKED ? TRUE : FALSE;
-			} else {
+			{
 				indx = SendMessage(GetDlgItem(hDlg, IDC_RDRAM_SIZE), CB_GETCURSEL, 0, 0);
 				ROMRAMsize = SendMessage(GetDlgItem(hDlg, IDC_RDRAM_SIZE), CB_GETITEMDATA, indx, 0);
 				indx = SendMessage(GetDlgItem(hDlg, IDC_SAVE_TYPE), CB_GETCURSEL, 0, 0);
@@ -944,7 +926,7 @@ BOOL CALLBACK RomSettingsProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 				RomCPUType = SendMessage(GetDlgItem(hDlg, IDC_CPU_TYPE), CB_GETITEMDATA, indx, 0);
 				indx = SendMessage(GetDlgItem(hDlg, IDC_SELFMOD), CB_GETCURSEL, 0, 0);
 				RomSelfMod = SendMessage(GetDlgItem(hDlg, IDC_SELFMOD), CB_GETITEMDATA, indx, 0);
-				RomUseLinking = SendMessage(GetDlgItem(hDlg, IDC_BLOCK_LINKING), BM_GETSTATE, 0, 0) == BST_CHECKED ? TRUE : FALSE;
+				RomAudioSignal = SendMessage(GetDlgItem(hDlg, IDC_AUDIO_SIGNAL), BM_GETSTATE, 0, 0) == BST_CHECKED ? TRUE : FALSE;
 				RomDelaySI = SendMessage(GetDlgItem(hDlg, IDC_DELAY_SI), BM_GETSTATE, 0, 0) == BST_CHECKED ? TRUE : FALSE;
 				RomDelayRDP = SendMessage(GetDlgItem(hDlg, IDC_DELAY_RDP), BM_GETSTATE, 0, 0) == BST_CHECKED ? TRUE : FALSE;
 				RomDelayRSP = SendMessage(GetDlgItem(hDlg, IDC_DELAY_RSP), BM_GETSTATE, 0, 0) == BST_CHECKED ? TRUE : FALSE;

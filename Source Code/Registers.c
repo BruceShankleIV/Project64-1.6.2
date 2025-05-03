@@ -148,7 +148,12 @@ void ChangeSpStatus (void) {
 	if ( ( RegModValue & SP_SET_SIG6 ) != 0) { SP_STATUS_REG |= SP_STATUS_SIG6;  }
 	if ( ( RegModValue & SP_CLR_SIG7 ) != 0) { SP_STATUS_REG &= ~SP_STATUS_SIG7; }
 	if ( ( RegModValue & SP_SET_SIG7 ) != 0) { SP_STATUS_REG |= SP_STATUS_SIG7;  }
-	if (DelayRDP && *( DWORD *)(DMEM + 0xFC0) == 1) {
+	if ( ( RegModValue & SP_SET_SIG0 ) != 0 && AudioSignal)
+	{
+		MI_INTR_REG |= MI_INTR_SP; 
+		CheckInterrupts();				
+	}
+	if ((DelayRDP || ForceEnableDelayRDP) && *( DWORD *)(DMEM + 0xFC0) == 1) {
 		ChangeTimer(RspTimer, 0x900);
 		return;
 	}
@@ -158,7 +163,7 @@ void ChangeSpStatus (void) {
 	}
 	RunRsp();
 }
-void ChangeDpcStatus (void) {
+/* Is this needed?void ChangeDpcStatus (void) {
 	if ( ( RegModValue & DPC_CLR_XBUS_DMEM_DMA ) != 0) { DPC_STATUS_REG &= ~DPC_STATUS_XBUS_DMEM_DMA; }
 	if ( ( RegModValue & DPC_SET_XBUS_DMEM_DMA ) != 0) { DPC_STATUS_REG |= DPC_STATUS_XBUS_DMEM_DMA;  }
 	if ( ( RegModValue & DPC_CLR_FREEZE ) != 0) { DPC_STATUS_REG &= ~DPC_STATUS_FREEZE; }
@@ -175,7 +180,7 @@ void ChangeDpcStatus (void) {
 			}
 		}
 	}
-}
+}Is this needed? */
 int Free8BitX86Reg (BLOCK_SECTION * Section) {
 	int x86Reg, count, MapCount[10], MapReg[10];
 	if (x86Mapped(x86_EBX) == NotMapped && !x86Protected(x86_EBX)) {return x86_EBX; }
@@ -255,7 +260,7 @@ int FreeX86Reg (BLOCK_SECTION * Section) {
 	}
 	return -1;
 }
-void InitalizeR4300iRegisters (int UsePif, int Country, int CIC_Chip) {
+void InitializeR4300iRegisters (int UsePif, int Country, int CIC_Chip) {
 	memset(CP0,0,sizeof(Registers.CP0));
 	memset(FPCR,0,sizeof(Registers.FPCR));
 	memset(RegRDRAM,0,sizeof(Registers.RDRAM));
@@ -447,7 +452,7 @@ void InitalizeR4300iRegisters (int UsePif, int Country, int CIC_Chip) {
 			GPR[22].DW=0x0000000000000085;
 			GPR[25].DW=0x00000000465E3F72;
 			break;
-		case 9:
+		/* Is this needed?case 9:
 			GPR[1].DW=0x0000000000000001;
 			GPR[2].DW=0x000000000EBDA536;
 			GPR[3].DW=0x000000000EBDA536;
@@ -457,7 +462,7 @@ void InitalizeR4300iRegisters (int UsePif, int Country, int CIC_Chip) {
 			GPR[15].DW=0x000000003103E121;
 			GPR[22].DW=0x00000000000000DD;
 			GPR[25].DW=0xFFFFFFFF9DEBB54F;
-			break;
+			break;Is this needed? */
 		}
 	}
 	MemoryStack = (DWORD)(N64MEM+(GPR[29].W[0] & 0x1FFFFFFF));

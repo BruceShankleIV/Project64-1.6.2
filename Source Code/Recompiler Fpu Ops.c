@@ -71,10 +71,10 @@ void Compile_R4300i_LWC1 (BLOCK_SECTION * Section) {
 		return;
 	}
 	if (IsMapped(Opcode.base) && Opcode.offset == 0) {
-		if (UseTlb) {
+		if (UseTlb && !ForceDisableTLB) {
 			ProtectGPR(Section,Opcode.base);
 			TempReg1 = MipsRegLo(Opcode.base);
-		} else {
+		} if (!UseTlb || ForceDisableTLB) {
 			TempReg1 = Map_TempReg(Section,x86_Any,Opcode.base,FALSE);
 		}
 	} else {
@@ -100,14 +100,14 @@ void Compile_R4300i_LWC1 (BLOCK_SECTION * Section) {
 		}
 	}
 	TempReg2 = Map_TempReg(Section,x86_Any,-1,FALSE);
-	if (UseTlb) {
+	if (UseTlb && !ForceDisableTLB) {
 		MoveX86RegToX86Reg(TempReg1, TempReg2);
 		ShiftRightUnsignImmed(TempReg2,12);
 		MoveVariableDispToX86Reg(TLB_ReadMap,"TLB_ReadMap",TempReg2,TempReg2,4);
 		CompileReadTLBMiss(Section,TempReg1,TempReg2);
 		TempReg3 = Map_TempReg(Section,x86_Any,-1,FALSE);
 		MoveX86regPointerToX86reg(TempReg1, TempReg2,TempReg3);
-	} else {
+	} if (!UseTlb || ForceDisableTLB) {
 		AndConstToX86Reg(TempReg1,0x1FFFFFFF);
 		TempReg3 = Map_TempReg(Section,x86_Any,-1,FALSE);
 		MoveN64MemToX86reg(TempReg3,TempReg1);
@@ -137,10 +137,10 @@ void Compile_R4300i_LDC1 (BLOCK_SECTION * Section) {
 		return;
 	}
 	if (IsMapped(Opcode.base) && Opcode.offset == 0) {
-		if (UseTlb) {
+		if (UseTlb && !ForceDisableTLB) {
 			ProtectGPR(Section,Opcode.base);
 			TempReg1 = MipsRegLo(Opcode.base);
-		} else {
+		} if (!UseTlb || ForceDisableTLB) {
 			TempReg1 = Map_TempReg(Section,x86_Any,Opcode.base,FALSE);
 		}
 	} else {
@@ -165,7 +165,7 @@ void Compile_R4300i_LDC1 (BLOCK_SECTION * Section) {
 		}
 	}
 	TempReg2 = Map_TempReg(Section,x86_Any,-1,FALSE);
-	if (UseTlb) {
+	if (UseTlb && !ForceDisableTLB) {
 		MoveX86RegToX86Reg(TempReg1, TempReg2);
 		ShiftRightUnsignImmed(TempReg2,12);
 		MoveVariableDispToX86Reg(TLB_ReadMap,"TLB_ReadMap",TempReg2,TempReg2,4);
@@ -182,7 +182,7 @@ void Compile_R4300i_LDC1 (BLOCK_SECTION * Section) {
 		sprintf(Name,"FPRFloatLocation[%d]",Opcode.ft);
 		MoveVariableToX86reg(&FPRDoubleLocation[Opcode.ft],Name,TempReg2);
 		MoveX86regToX86Pointer(TempReg3,TempReg2);
-	} else {
+	} if (!UseTlb || ForceDisableTLB) {
 		AndConstToX86Reg(TempReg1,0x1FFFFFFF);
 		TempReg3 = Map_TempReg(Section,x86_Any,-1,FALSE);
 		MoveN64MemToX86reg(TempReg3,TempReg1);
@@ -229,7 +229,7 @@ void Compile_R4300i_SWC1 (BLOCK_SECTION * Section){
 			AddConstToX86Reg(TempReg1,(short)Opcode.immediate);
 		}
 	}
-	if (UseTlb) {
+	if (UseTlb && !ForceDisableTLB) {
 		TempReg2 = Map_TempReg(Section,x86_Any,-1,FALSE);
 		MoveX86RegToX86Reg(TempReg1, TempReg2);
 		ShiftRightUnsignImmed(TempReg2,12);
@@ -240,7 +240,7 @@ void Compile_R4300i_SWC1 (BLOCK_SECTION * Section){
 		MoveVariableToX86reg(&FPRFloatLocation[Opcode.ft],Name,TempReg3);
 		MoveX86PointerToX86reg(TempReg3,TempReg3);
 		MoveX86regToX86regPointer(TempReg3,TempReg1, TempReg2);
-	} else {
+	} if (!UseTlb || ForceDisableTLB) {
 		TempReg2 = Map_TempReg(Section,x86_Any,-1,FALSE);
 		UnMap_FPR(Section,Opcode.ft,TRUE);
 		sprintf(Name,"FPRFloatLocation[%d]",Opcode.ft);
@@ -287,7 +287,7 @@ void Compile_R4300i_SDC1 (BLOCK_SECTION * Section){
 			AddConstToX86Reg(TempReg1,(short)Opcode.immediate);
 		}
 	}
-	if (UseTlb) {
+	if (UseTlb && !ForceDisableTLB) {
 		TempReg2 = Map_TempReg(Section,x86_Any,-1,FALSE);
 		MoveX86RegToX86Reg(TempReg1, TempReg2);
 		ShiftRightUnsignImmed(TempReg2,12);
@@ -303,7 +303,7 @@ void Compile_R4300i_SDC1 (BLOCK_SECTION * Section){
 		MoveVariableToX86reg((BYTE *)&FPRDoubleLocation[Opcode.ft],Name,TempReg3);
 		MoveX86PointerToX86reg(TempReg3,TempReg3);
 		MoveX86regToX86regPointer(TempReg3,TempReg1, TempReg2);
-	} else {
+	} if (!UseTlb || ForceDisableTLB) {
 		AndConstToX86Reg(TempReg1,0x1FFFFFFF);
 		TempReg3 = Map_TempReg(Section,x86_Any,-1,FALSE);
 		sprintf(Name,"FPRDoubleLocation[%d]",Opcode.ft);
@@ -347,7 +347,7 @@ void Compile_R4300i_COP1_DMF (BLOCK_SECTION * Section) {
 void Compile_R4300i_COP1_CF(BLOCK_SECTION * Section) {
 	CPU_Message("  %X %s",Section->CompilePC,R4300iOpcodeName(Opcode.Hex,Section->CompilePC));
 	CompileCop1Test(Section);
-	if (Opcode.fs != 31 && Opcode.fs != 0) { Compile_R4300i_UnknownOpcode (Section); return; }
+	if (Opcode.fs != 31 && Opcode.fs != 0) return;
 	Map_GPR_32bit(Section,Opcode.rt,TRUE,-1);
 	MoveVariableToX86reg(&FPCR[Opcode.fs],FPR_Ctrl_Name[Opcode.fs],MipsRegLo(Opcode.rt));
 }
@@ -411,7 +411,7 @@ void Compile_R4300i_COP1_DMT( BLOCK_SECTION * Section) {
 void Compile_R4300i_COP1_CT(BLOCK_SECTION * Section) {
 	CPU_Message("  %X %s",Section->CompilePC,R4300iOpcodeName(Opcode.Hex,Section->CompilePC));
 	CompileCop1Test(Section);
-	if (Opcode.fs != 31) { Compile_R4300i_UnknownOpcode (Section); return; }
+	if (Opcode.fs != 31) return;
 	if (IsConst(Opcode.rt)) {
 		MoveConstToVariable(MipsRegLo(Opcode.rt),&FPCR[Opcode.fs],FPR_Ctrl_Name[Opcode.fs]);
 	} else if (IsMapped(Opcode.rt)) {

@@ -47,7 +47,7 @@ void GetCurrentDlls (void) {
 	long lResult;
 	HKEY hKeyResults = 0;
 	char String[200];
-	sprintf(String,"N64 Software\\%s\\Dll",AppName);
+	sprintf(String,"PJ64 V 1.6.2\\%s\\Dll",AppName);
 	lResult = RegOpenKeyEx( HKEY_CURRENT_USER,String,0, KEY_ALL_ACCESS,&hKeyResults);
 	if (lResult == ERROR_SUCCESS) {
 		DWORD Type, Bytes = 100;
@@ -88,7 +88,7 @@ void GetPluginDir( char * Directory ) {
 	strcpy(Directory,drive);
 	strcat(Directory, dir);
 	strcat(Directory,"Plugin\\");
-	sprintf(Group,"N64 Software\\%s",AppName);
+	sprintf(Group,"PJ64 V 1.6.2\\%s",AppName);
 	lResult = RegOpenKeyEx( HKEY_CURRENT_USER,Group,0,KEY_ALL_ACCESS, &hKeyResults);
 	RegCloseKey(hKeyResults);
 }
@@ -101,7 +101,7 @@ void GetSnapShotDir( char * Directory ) {
 	GetModuleFileName(NULL,path_buffer,sizeof(path_buffer));
 	_splitpath( path_buffer, drive, dir, fname, ext );
 	sprintf(Directory,"%s%sScreenshots\\",drive,dir);
-	sprintf(Group,"N64 Software\\%s",AppName);
+	sprintf(Group,"PJ64 V 1.6.2\\%s",AppName);
 	lResult = RegOpenKeyEx( HKEY_CURRENT_USER,Group,0,KEY_ALL_ACCESS,
 		&hKeyResults);
 	if (lResult == ERROR_SUCCESS) {
@@ -620,20 +620,17 @@ void ShutdownPlugins (void) {
 BOOL ValidPluginVersion ( PLUGIN_INFO * PluginInfo ) {
 	switch (PluginInfo->Type) {
 	case PLUGIN_TYPE_RSP:
-		if (PluginInfo->Version == 0x0001) { return TRUE; }
-		if (PluginInfo->Version == 0x0100) { return TRUE; }
-		if (PluginInfo->Version == 0x0101) { return TRUE; }
+		if (PluginInfo->Version == 0x0001 || PluginInfo->Version == 0x0100 || PluginInfo->Version == 0x0101) { return TRUE; }
 		break;
 	case PLUGIN_TYPE_GFX:
-		if (PluginInfo->Version == 0x0102) { return TRUE; }
-		if (PluginInfo->Version == 0x0103) { return TRUE; }
+		if (PluginInfo->Version == 0x0102 || PluginInfo->Version == 0x0103) { return TRUE; }
 		break;
 	case PLUGIN_TYPE_AUDIO:
 		if (PluginInfo->Version == 0x0101) { return TRUE; }
 		break;
 	case PLUGIN_TYPE_CONTROLLER:
-		if (PluginInfo->Version == 0x0100) { return TRUE; }
-		if (PluginInfo->Version == 0x0101) { return TRUE; }		// This was missing for some reason but we do have initialization code
+		if (PluginInfo->Version == 0x0100 || PluginInfo->Version == 0x0101) { return TRUE; }
+
 		break;
 	}
 	return FALSE;

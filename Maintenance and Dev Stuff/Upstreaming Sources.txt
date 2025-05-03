@@ -2,35 +2,29 @@ https://github.com/mdqinc/SDL_GameControllerDB/blob/master/gamecontrollerdb.txt
 https://github.com/krm01/oot-indigo-mod/releases
 https://github.com/RichieUltimate/ultimate-trial/releases
 https://github.com/Javarooster-png/PumkinPatch/releases
-https://drive.google.com/drive/folders/19YAUqU4EMfch8lAz2LQZxuTrmPxitaUr?usp=sharing
 https://github.com/thinedave/ocarina-demonsquest/releases
 https://hylianmodding.com/mods/oot_chaos_mod
 https://ootrandomizer.com/external?key=bq_v22
 https://github.com/Javarooster-png/curseofmoonlight
 https://github.com/krimtonz/kz/releases
 https://hylianmodding.com/mods/crystal_clocks
-https://docs.google.com/document/d/1KzLEvPh1yZ2q9yygnimzErERal88N1Ip3ygtXxSLhjI/edit?tab=t.0
 
 https://www.openallurls.com/
-^ use this to open all the url's, make sure popups are allowed/not blocked for this site
-some of these like beta quest and mm hacks necessitate hex edits to ensure user receives
-rom settings necessary to properly run the game without issue through shared rom setting
-and from Jabo applying per game hacks per checksum basis depending on what's in question
+^Use this to open all the url's, make sure popups are allowed/not blocked for this site.
 
 Current Repo Binaries Last Updated at...:
 
-Super Mario 64 Practice Rom 2023-01-01
 Crystal Clocks 7/23/2024
 kz Oct 22, 2021
 curseofmoonlight Nov 4 2024
 Beta Quest V2.2
 OoT: Chaos Mod 11/8/2023
 ocarina-demonsquest Jun 24, 2023
-Sands of Time Jan 9, 2025
 Pumkin Tower July 31st 2024
 Ultimate Trial September 16th 2024
 Indigo Chapter 2 Sep 16 2024
-gamecontrollerdb 26f70da feb 5 2025
 
 NOTE: I have included the Return to Yoshi's Island Demo 2, but I don't plan to upstream it
 because I'd rather wait until the whole game is released and then I'll just go from there.
+Also, this may not be updated regularly outside of gamecontrollerdb as the ROMhacks aren't
+being updated regularly hence they should really only be checked on every blue moon or so.

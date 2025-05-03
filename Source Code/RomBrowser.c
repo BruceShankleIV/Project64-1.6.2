@@ -32,7 +32,6 @@
 #include "cpu.h"
 #include "plugin.h"
 #include "resource.h"
-#include "Settings Api_2.h"
 #define NoOfSortKeys	3
 typedef struct {
 	char     szFullFileName[MAX_PATH+1];
@@ -41,8 +40,6 @@ typedef struct {
 	char     InternalName[22];
 	char     GameName[200];
 	char     CartID[3];
-	char     PluginNotes[250];
-	char     CoreNotes[250];
 	char     Developer[30];
 	char     ReleaseDate[30];
 	char     Genre[15];
@@ -91,12 +88,10 @@ typedef struct {
 #define RB_GameName			2
 #define RB_Status			3
 #define RB_RomSize			4
-#define RB_CoreNotes		5
-#define RB_PluginNotes		6
-#define RB_CartridgeID		7
-#define RB_Crc1				8
-#define RB_Crc2				9
-#define RB_CICChip			10
+#define RB_CartridgeID		5
+#define RB_Crc1				6
+#define RB_Crc2				7
+#define RB_CICChip			8
 char * GetSortField          ( int Index );
 void LoadRomList             ( void );
 void RomList_SortList        ( void );
@@ -122,8 +117,6 @@ ROMBROWSER_FIELDS RomBrowserFields[] =
 	"File Name",               2, RB_FileName,      101,RB_FILENAME,
 	"1st CRC",                 3, RB_Crc1,           71,RB_CRC1,
 	"Size",                    4, RB_RomSize,        58,RB_ROMSIZE,
-	"Core Note",              -1, RB_CoreNotes,     507,RB_NOTES_CORE,
-	"Plugin Note",            -1, RB_PluginNotes,   507,RB_NOTES_PLUGIN,
 	"Status",                 -1, RB_Status,         93,RB_STATUS,
 	"2nd CRC",                -1, RB_Crc2,           71,RB_CRC2,
 	"ID",                     -1, RB_CartridgeID,    23,RB_CART_ID,
@@ -147,8 +140,8 @@ void AddRomToList (char * RomLocation) {
 		ItemList.List = (ROM_INFO *)realloc(ItemList.List, ItemList.ListAlloc * sizeof(ROM_INFO));
 	}
 	if (ItemList.List == NULL) {
-		DisplayError(GS(MSG_MEM_ALLOC_ERROR));
-		ExitThread(0);
+		//DisplayError(GS(MSG_MEM_ALLOC_ERROR));
+		//ExitThread(0);
 	}
 	pRomInfo = &ItemList.List[ItemList.ListCount];
 	if (pRomInfo == NULL) { return; }
@@ -181,20 +174,22 @@ void FixRomBrowserColoumnLang (void) {
 void HideRomBrowser (void) {
 	DWORD X, Y;
 	long Style;
-	if (CPURunning) { return; }
 	if (hRomList == NULL) { return; }
 	IgnoreMove = TRUE;
-	if (IsRomBrowserMaximized()) { ShowWindow(hMainWindow,SW_RESTORE); }
+	if (IsRomBrowserMaximized() && strcmp(GfxDLL, "Icepir8sLegacyLLE.dll") != 0) { ShowWindow(hMainWindow,SW_RESTORE); }
 	ShowWindow(hMainWindow,SW_HIDE);
 	Style = GetWindowLong(hMainWindow,GWL_STYLE);
-	Style = Style &	~(WS_SIZEBOX | WS_MAXIMIZEBOX);
+	if (strcmp(GfxDLL, "Icepir8sLegacyLLE.dll") == 0) SetWindowLong(hMainWindow, GWL_EXSTYLE, GetWindowLong(hMainWindow, GWL_EXSTYLE) | WS_EX_COMPOSITED);
+	else {
+		SetWindowLong(hMainWindow, GWL_EXSTYLE, GetWindowLong(hMainWindow, GWL_EXSTYLE) & ~WS_EX_COMPOSITED);
+		Style = Style & ~(WS_SIZEBOX | WS_MAXIMIZEBOX);
+	}
 	SetWindowLong(hMainWindow,GWL_STYLE,Style);
 	if (GetStoredWinPos( "Main", &X, &Y ) ) {
 		SetWindowPos(hMainWindow,NULL,X,Y,0,0, SWP_NOZORDER | SWP_NOSIZE);
 	}
 	EnableWindow(hRomList,FALSE);
 	ShowWindow(hRomList,SW_HIDE);
-	SetupPlugins(hMainWindow);
 	SendMessage(hMainWindow,WM_USER + 17,0,0);
 	ShowWindow(hMainWindow,SW_SHOW);
 	IgnoreMove = FALSE;
@@ -203,7 +198,7 @@ BOOL IsRomBrowserMaximized (void) {
 	long lResult;
 	HKEY hKeyResults = 0;
 	char String[200];
-	sprintf(String,"N64 Software\\%s\\Page Setup",AppName);
+	sprintf(String,"PJ64 V 1.6.2\\%s\\Page Setup",AppName);
 	lResult = RegOpenKeyEx( HKEY_CURRENT_USER,String,0, KEY_ALL_ACCESS,&hKeyResults);
 	if (lResult == ERROR_SUCCESS) {
 		DWORD Type, Value, Bytes = 4;
@@ -220,7 +215,7 @@ BOOL IsSortAscending (int Index) {
 	long lResult;
 	HKEY hKeyResults = 0;
 	char String[200];
-	sprintf(String,"N64 Software\\%s\\Page Setup",AppName);
+	sprintf(String,"PJ64 V 1.6.2\\%s\\Page Setup",AppName);
 	lResult = RegOpenKeyEx( HKEY_CURRENT_USER,String,0, KEY_ALL_ACCESS,&hKeyResults);
 	if (lResult == ERROR_SUCCESS) {
 		DWORD Type, Value, Bytes = 4;
@@ -263,7 +258,7 @@ void LoadRomBrowserColoumnInfo (void) {
 	HKEY  hKeyResults = 0;
 	long  lResult;
 	NoOfFields ;
-	sprintf(String,"N64 Software\\%s\\Rom Browser",AppName);
+	sprintf(String,"PJ64 V 1.6.2\\%s\\Rom Browser",AppName);
 	lResult = RegOpenKeyEx( HKEY_CURRENT_USER,String,0, KEY_ALL_ACCESS,&hKeyResults);
 	if (lResult == ERROR_SUCCESS) {
 		DWORD Type, Value, count, Bytes = 4;
@@ -288,14 +283,11 @@ void FillRomExtensionInfo(ROM_INFO * pRomInfo) {
 	IniFileName = GetIniFileName();
 	sprintf(Identifier,"%08X-%08X-C:%X", pRomInfo->CRC1, pRomInfo->CRC2, pRomInfo->Country);
 	//Rom Settings
-	if (RomBrowserFields[RB_GameName].Pos >= 0)
-	GetString(Identifier, "Game Name", GS(RB_HACK), pRomInfo->GameName, sizeof(pRomInfo->GameName), IniFileName);
-	GetString(Identifier, "Status", GS(RB_NOT_IN_RDB), pRomInfo->Status, sizeof(pRomInfo->Status), IniFileName);
-	if (RomBrowserFields[RB_CoreNotes].Pos >= 0)
-		GetString(Identifier, "Core Note", "", pRomInfo->CoreNotes, sizeof(pRomInfo->CoreNotes), IniFileName);
-	if (RomBrowserFields[RB_PluginNotes].Pos >= 0)
-		GetString(Identifier, "Plugin Note", "", pRomInfo->PluginNotes, sizeof(pRomInfo->PluginNotes), IniFileName);
-	SetColors(pRomInfo->Status);
+	if (RomBrowserFields[RB_GameName].Pos >= 0) {
+		_GetPrivateProfileString(Identifier, "Game Name", GS(RB_HACK), pRomInfo->GameName, sizeof(pRomInfo->GameName), IniFileName);
+		_GetPrivateProfileString(Identifier, "Status", GS(RB_NOT_IN_RDB), pRomInfo->Status, sizeof(pRomInfo->Status), IniFileName);
+		SetColors(pRomInfo->Status);
+	}
 }
 BOOL FillRomInfo(ROM_INFO * pRomInfo) {
 	char drive[_MAX_DRIVE] ,dir[_MAX_DIR], ext[_MAX_EXT];
@@ -336,7 +328,7 @@ int GetRomBrowserSize ( DWORD * nWidth, DWORD * nHeight ) {
 	long lResult;
 	HKEY hKeyResults = 0;
 	char String[200];
-	sprintf(String,"N64 Software\\%s\\Page Setup",AppName);
+	sprintf(String,"PJ64 V 1.6.2\\%s\\Page Setup",AppName);
 	lResult = RegOpenKeyEx( HKEY_CURRENT_USER,String,0, KEY_ALL_ACCESS,&hKeyResults);
 	if (lResult == ERROR_SUCCESS) {
 		DWORD Type, Value, Bytes = 4;
@@ -363,7 +355,7 @@ char * GetSortField ( int Index ) {
 	static char String[400];
 	long lResult;
 	HKEY hKeyResults = 0;
-	sprintf(String,"N64 Software\\%s\\Page Setup",AppName);
+	sprintf(String,"PJ64 V 1.6.2\\%s\\Page Setup",AppName);
 	lResult = RegOpenKeyEx( HKEY_CURRENT_USER,String,0, KEY_ALL_ACCESS,&hKeyResults);
 	if (lResult == ERROR_SUCCESS) {
 		DWORD Type, Bytes = sizeof(String);
@@ -457,8 +449,6 @@ int CALLBACK RomList_CompareItems2(LPARAM lParam1, LPARAM lParam2, LPARAM lParam
 		case RB_GameName: result =  (int)lstrcmpi(pRomInfo1->GameName, pRomInfo2->GameName); break;
 		case RB_Status: result =  (int)lstrcmpi(pRomInfo1->Status, pRomInfo2->Status); break;
 		case RB_RomSize: result =  (int)pRomInfo1->RomSize - (int)pRomInfo2->RomSize; break;
-		case RB_CoreNotes: result =  (int)lstrcmpi(pRomInfo1->CoreNotes, pRomInfo2->CoreNotes); break;
-		case RB_PluginNotes: result =  (int)lstrcmpi(pRomInfo1->PluginNotes, pRomInfo2->PluginNotes); break;
 		case RB_CartridgeID: result =  (int)lstrcmpi(pRomInfo1->CartID, pRomInfo2->CartID); break;
 		case RB_Crc1: result =  (int)pRomInfo1->CRC1 - (int)pRomInfo2->CRC1; break;
 		case RB_Crc2: result =  (int)pRomInfo1->CRC2 - (int)pRomInfo2->CRC2; break;
@@ -476,8 +466,6 @@ void RomList_GetDispInfo(LPNMHDR pnmh) {
 	case RB_FileName: strncpy(lpdi->item.pszText, pRomInfo->FileName, lpdi->item.cchTextMax); break;
 	case RB_InternalName: strncpy(lpdi->item.pszText, pRomInfo->InternalName, lpdi->item.cchTextMax); break;
 	case RB_GameName: strncpy(lpdi->item.pszText, pRomInfo->GameName, lpdi->item.cchTextMax); break;
-	case RB_CoreNotes: strncpy(lpdi->item.pszText, pRomInfo->CoreNotes, lpdi->item.cchTextMax); break;
-	case RB_PluginNotes: strncpy(lpdi->item.pszText, pRomInfo->PluginNotes, lpdi->item.cchTextMax); break;
 	case RB_Status: strncpy(lpdi->item.pszText, pRomInfo->Status, lpdi->item.cchTextMax); break;
 	case RB_RomSize: sprintf(lpdi->item.pszText,"%.1f MBit",(float)pRomInfo->RomSize/0x20000); break;
 	case RB_CartridgeID: strncpy(lpdi->item.pszText, pRomInfo->CartID, lpdi->item.cchTextMax); break;
@@ -522,7 +510,7 @@ void RomList_PopupMenu(LPNMHDR pnmh) {
 	MenuSetText(hPopupMenu, 3, GS(MENU_CHOOSE_ROM), NULL);
 	MenuSetText(hPopupMenu, 4, GS(MENU_REFRESH), NULL);
 	MenuSetText(hPopupMenu, 6, GS(MENU_CHEAT), NULL);
-	MenuSetText(hPopupMenu, 7, GS(TAB_ROMSETTINGS), NULL);
+	MenuSetText(hPopupMenu, 7, GS(TAB_ROMNOTES), NULL);
 	if (strlen(CurrentRBFileName) == 0) {
 		DeleteMenu(hPopupMenu, 7, MF_BYPOSITION);
 		DeleteMenu(hPopupMenu, 6, MF_BYPOSITION);
@@ -637,7 +625,7 @@ void SaveRomBrowserColoumnInfo (void) {
 	HKEY  hKeyResults = 0;
 	char  String[200];
 	long  lResult;
-	sprintf(String,"N64 Software\\%s\\Rom Browser",AppName);
+	sprintf(String,"PJ64 V 1.6.2\\%s\\Rom Browser",AppName);
 	lResult = RegCreateKeyEx( HKEY_CURRENT_USER, String,0,"", REG_OPTION_NON_VOLATILE,
 		KEY_ALL_ACCESS,NULL, &hKeyResults,&Disposition);
 	if (lResult == ERROR_SUCCESS) {
@@ -661,7 +649,7 @@ void SaveRomBrowserColoumnPosition (int index, int Position) {
 	DWORD Disposition = 0;
 	HKEY  hKeyResults = 0;
 	long  lResult;
-	sprintf(String,"N64 Software\\%s\\Rom Browser",AppName);
+	sprintf(String,"PJ64 V 1.6.2\\%s\\Rom Browser",AppName);
 	lResult = RegCreateKeyEx( HKEY_CURRENT_USER, String,0,"", REG_OPTION_NON_VOLATILE,
 		KEY_ALL_ACCESS,NULL, &hKeyResults,&Disposition);
 	if (lResult == ERROR_SUCCESS) {
@@ -704,7 +692,6 @@ void SelectRomDir (void) {
 				strcat(Directory,"\\");
 			}
 			SetRomDirectory(Directory);
-			if (RomBrowser) RefreshRomBrowser();
 		}
 	}
 }
@@ -713,7 +700,7 @@ void SetRomBrowserMaximized (BOOL Maximized) {
 	HKEY hKeyResults = 0;
 	DWORD Disposition = 0;
 	char String[200];
-	sprintf(String,"N64 Software\\%s\\Page Setup",AppName);
+	sprintf(String,"PJ64 V 1.6.2\\%s\\Page Setup",AppName);
 	lResult = RegCreateKeyEx( HKEY_CURRENT_USER, String,0,"", REG_OPTION_NON_VOLATILE,
 		KEY_ALL_ACCESS,NULL, &hKeyResults,&Disposition);
 	if (lResult == ERROR_SUCCESS) {
@@ -726,7 +713,7 @@ void SetRomBrowserSize ( int nWidth, int nHeight ) {
 	HKEY hKeyResults = 0;
 	DWORD Disposition = 0;
 	char String[200];
-	sprintf(String,"N64 Software\\%s\\Page Setup",AppName);
+	sprintf(String,"PJ64 V 1.6.2\\%s\\Page Setup",AppName);
 	lResult = RegCreateKeyEx( HKEY_CURRENT_USER, String,0,"", REG_OPTION_NON_VOLATILE,
 		KEY_ALL_ACCESS,NULL, &hKeyResults,&Disposition);
 	if (lResult == ERROR_SUCCESS) {
@@ -740,7 +727,7 @@ void SetSortAscending (BOOL Ascending, int Index) {
 	HKEY hKeyResults = 0;
 	DWORD Disposition = 0;
 	char String[200];
-	sprintf(String,"N64 Software\\%s\\Page Setup",AppName);
+	sprintf(String,"PJ64 V 1.6.2\\%s\\Page Setup",AppName);
 	lResult = RegCreateKeyEx( HKEY_CURRENT_USER, String,0,"", REG_OPTION_NON_VOLATILE,
 		KEY_ALL_ACCESS,NULL, &hKeyResults,&Disposition);
 	if (lResult == ERROR_SUCCESS) {
@@ -755,7 +742,7 @@ void SetSortField (char * FieldName, int Index) {
 	HKEY hKeyResults = 0;
 	DWORD Disposition = 0;
 	char String[200];
-	sprintf(String,"N64 Software\\%s\\Page Setup",AppName);
+	sprintf(String,"PJ64 V 1.6.2\\%s\\Page Setup",AppName);
 	lResult = RegCreateKeyEx( HKEY_CURRENT_USER, String,0,"", REG_OPTION_NON_VOLATILE,
 		KEY_ALL_ACCESS,NULL, &hKeyResults,&Disposition);
 	if (lResult == ERROR_SUCCESS) {
@@ -803,11 +790,9 @@ void ShowRomList(HWND hParent) {
 	DWORD X, Y, Width, Height;
 	long Style;
 	int iItem;
-	if (CPURunning) { return; }
+	if (strcmp(GfxDLL, "Icepir8sLegacyLLE.dll") == 0) SetWindowLong(hMainWindow, GWL_EXSTYLE, GetWindowLong(hMainWindow, GWL_EXSTYLE) & ~WS_EX_COMPOSITED);
 	if (hRomList != NULL && IsWindowVisible(hRomList)) { return; }
-	SetupMenu(hMainWindow);
 	IgnoreMove = TRUE;
-	SetupPlugins(hHiddenWin);
 	ShowWindow(hMainWindow,SW_HIDE);
 	if (hRomList == NULL) {
 		CreateRomListControl(hParent);
@@ -827,27 +812,21 @@ void ShowRomList(HWND hParent) {
 		Y = (GetSystemMetrics( SM_CYSCREEN ) - Height) / 2;
 	}
 	SetWindowPos(hMainWindow,HWND_NOTOPMOST,X,Y,0,0,SWP_NOSIZE);
-	if (IsRomBrowserMaximized()) {
-		ShowWindow(hMainWindow,SW_MAXIMIZE);
-	} else {
+	{
 		ShowWindow(hMainWindow,SW_SHOW);
 		DrawMenuBar(hMainWindow);
 		ChangeWinSize ( hMainWindow, Width, Height, NULL );
 	}
 	IgnoreMove = FALSE;
-	SetupMenu(hMainWindow);
 	SetFocus(hRomList);
 }
-void FreeRomBrowser ( void )
-{
+void FreeRomBrowser ( void ) {
 	if (ItemList.ListAlloc != 0) {
 		free(ItemList.List);
 		ItemList.ListAlloc = 0;
 		ItemList.ListCount = 0;
 		ItemList.List = NULL;
 	}
-	FreeIndex();
-	ClearColorCache();
 }
 void AddToColorCache(COLOR_ENTRY color) {
 	// Allocate more memory if there is not enough to store the new entry.

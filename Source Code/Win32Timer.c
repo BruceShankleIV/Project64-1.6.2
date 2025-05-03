@@ -36,6 +36,8 @@ void Timer_Initialize(double Hertz) {
 void Timer_Start(void) {
 	TIMECAPS Caps;
 	timeGetDevCaps(&Caps, sizeof(Caps));
+	if (timeBeginPeriod(Caps.wPeriodMin) == TIMERR_NOCANDO)
+ 		MessageBox(NULL, "Error during timer begin", GS(MSG_MSGBOX_TITLE), MB_ICONERROR);
 	FPSTimer.Frames = 0;
 	FPSTimer.LastTime = timeGetTime();
 }

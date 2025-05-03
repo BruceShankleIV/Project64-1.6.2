@@ -24,7 +24,7 @@
  *
  */
 extern DWORD RomFileSize, ROMRAMsize, RomSaveUsing, RomCPUType, RomSelfMod,
-	RomUseTlb, RomUseLinking, RomCF, RomUseLargeBuffer, RomUseCache,
+	RomUseTlb, RomAudioSignal, RomCF, RomUseLargeBuffer, RomUseCache,
 	RomDelaySI, RomSPHack, RomDelayRDP, RomDelayRSP, RomAlignDMA;
 extern char CurrentFileName[MAX_PATH+1], RomName[MAX_PATH+1], RomHeader[0x1000];
 extern char LastRoms[10][MAX_PATH+1], LastDirs[10][MAX_PATH+1];
@@ -41,7 +41,6 @@ void LoadRomOptions          ( void );
 void OpenChosenFile	         ( void );
 void ReadRomOptions          ( void );
 void RemoveRecentList        ( HWND hWnd );
-void OpenN64Image            ( void );
 void RecalculateCRCs         ( void );
 void SaveRecentDirs          ( void );
 void SaveRecentFiles         ( void );

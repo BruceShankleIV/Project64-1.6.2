@@ -103,10 +103,19 @@ void _fastcall r4300i_ADDIU (void) {
 	GPR[Opcode.rt].DW = (GPR[Opcode.rs].W[0] + ((short)Opcode.immediate));
 }
 void _fastcall r4300i_SLTI (void) {
-	GPR[Opcode.rt].DW = GPR[Opcode.rs].DW < (__int64)((short)Opcode.immediate)?1:0;
+	if (GPR[Opcode.rs].DW < (_int64)((short)Opcode.immediate)) {
+		GPR[Opcode.rt].DW = 1;
+	} else {
+		GPR[Opcode.rt].DW = 0;
+	}
+	// I think this might be wrong? GPR[Opcode.rt].DW = GPR[Opcode.rs].DW < (__int64)((short)Opcode.immediate)?1:0;
 }
 void _fastcall r4300i_SLTIU (void) {
-	GPR[Opcode.rt].DW = GPR[Opcode.rs].UDW < (unsigned __int64)((short)Opcode.immediate)?1:0;
+	int imm32 = (short)Opcode.immediate;
+	__int64 imm64;
+	imm64 = imm32;
+	GPR[Opcode.rt].DW = GPR[Opcode.rs].UDW < (unsigned __int64)imm64?1:0;
+	// I think this might be wrong? GPR[Opcode.rt].DW = GPR[Opcode.rs].UDW < (unsigned __int64)((short)Opcode.immediate)?1:0;
 }
 void _fastcall r4300i_ANDI (void) {
 	GPR[Opcode.rt].DW = GPR[Opcode.rs].DW & Opcode.immediate;
@@ -721,11 +730,11 @@ void _fastcall r4300i_COP0_MT (void) {
 }
 /************************** COP0 CO functions ***********************/
 void _fastcall r4300i_COP0_CO_TLBR (void) {
-	if (!UseTlb) { return; }
+	if (!UseTlb || ForceDisableTLB) { return; }
 	TLB_Read();
 }
 void _fastcall r4300i_COP0_CO_TLBWI (void) {
-	if (!UseTlb) { return; }
+	if (!UseTlb || ForceDisableTLB) { return; }
 /*	if (PROGRAM_COUNTER == 0x00136260 && INDEX_REGISTER == 0x1F) {
 		DisplayError("TLBWI");
 	} else {
@@ -734,11 +743,11 @@ void _fastcall r4300i_COP0_CO_TLBWI (void) {
 	WriteTLBEntry(INDEX_REGISTER & 0x1F);
 }
 void _fastcall r4300i_COP0_CO_TLBWR (void) {
-	if (!UseTlb) { return; }
+	if (!UseTlb || ForceDisableTLB) { return; }
 	WriteTLBEntry(RANDOM_REGISTER & 0x1F);
 }
 void _fastcall r4300i_COP0_CO_TLBP (void) {
-	if (!UseTlb) { return; }
+	if (!UseTlb || ForceDisableTLB) { return; }
 	TLB_Probe();
 }
 void _fastcall r4300i_COP0_CO_ERET (void) {
@@ -1107,12 +1116,12 @@ void _fastcall r4300i_COP1_L_CVT_D (void) {
 	_controlfp(RoundingModel,_MCW_RC);
 	*(double *)FPRDoubleLocation[Opcode.fd] = (double)*(__int64 *)FPRDoubleLocation[Opcode.fs];
 }
-/************************** Unknown OpCode Function (seen in recompiler too) **************************/
+/************************** Unknown OpCode Function **************************/
 void _fastcall R4300i_UnknownOpcode (void) {
-	char Message[200];
+	/*char Message[200];
 	sprintf(Message,"%s: %08X\n%s\n\n", GS(MSG_UNHANDLED_OP), PROGRAM_COUNTER,
 		R4300iOpcodeName(Opcode.Hex,PROGRAM_COUNTER));
 	strcat(Message,GS(GZ_ROMS));
 		DisplayError(Message);
-		ExitThread(0);
+		ExitThread(0);*/
 	}

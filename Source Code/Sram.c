@@ -69,7 +69,7 @@ BOOL LoadSRAM (void) {
 	}
 	return TRUE;
 }
-void DmaFromSRAM(BYTE * dest, int StartOffset, int len) {
+void DMAfromSRAM(BYTE * dest, int StartOffset, int len) {
 	DWORD dwRead;
 	if (hSRAMFile == NULL) {
 		if (!LoadSRAM()) {
@@ -79,21 +79,15 @@ void DmaFromSRAM(BYTE * dest, int StartOffset, int len) {
 	SetFilePointer(hSRAMFile,StartOffset,NULL,FILE_BEGIN);
 	ReadFile(hSRAMFile,dest,len,&dwRead,NULL);
 }
-void DmaToSRAM(BYTE * Source, int StartOffset, int len) {
+void DMAtoSRAM(BYTE * Source, int StartOffset, int len) {
     DWORD dwWritten;
     if (hSRAMFile == NULL) {
         if (!LoadSRAM()) {
             return;
         }
     }
-    StartOffset = ((StartOffset >> 3) & 0xFFFF8000) | (StartOffset & 0x7FFF);
-    if (((StartOffset & 3) == 0) && ((((size_t)Source) & 3) == 0)) {
-        SetFilePointer(hSRAMFile, StartOffset, NULL, FILE_BEGIN);
-        WriteFile(hSRAMFile, Source, len, &dwWritten, NULL);
-    } else {
-        for (int i = 0; i < len; i++) {
-            SetFilePointer(hSRAMFile, (StartOffset + i) ^ 3, NULL, FILE_BEGIN);
-            WriteFile(hSRAMFile, (BYTE *)(((size_t)Source + i) ^ 3), 1, &dwWritten, NULL);
-        }
+    if ((StartOffset & 3) == 0) {
+	SetFilePointer(hSRAMFile,StartOffset,NULL,FILE_BEGIN);
+	WriteFile(hSRAMFile,Source,len,&dwWritten,NULL);
     }
 }

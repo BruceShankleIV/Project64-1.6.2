@@ -27,6 +27,7 @@
 #include <stdio.h>
 #include "main.h"
 #include "CPU.h"
+#include "SummerCart.h"
 int DMAUsed;
 void FirstDMA (void) {
 	switch (GetCicChipID(ROM)) {
@@ -37,7 +38,10 @@ void FirstDMA (void) {
 	}
 }
 void PI_DMA_READ (void) {
-	if (AlignDMA) { PI_CART_ADDR_REG &= ~1; PI_DRAM_ADDR_REG &= ~7; }
+	if (AlignDMA || ForceEnableDMA) {
+		PI_CART_ADDR_REG &= ~1;
+		PI_DRAM_ADDR_REG &= ~7;
+	}
 	if ( PI_DRAM_ADDR_REG + PI_RD_LEN_REG + 1 > RDRAMsize) {
 		PI_STATUS_REG &= ~PI_STATUS_DMA_BUSY;
 		MI_INTR_REG |= MI_INTR_PI;
@@ -47,7 +51,7 @@ void PI_DMA_READ (void) {
 	if ( PI_CART_ADDR_REG >= 0x08000000 && PI_CART_ADDR_REG <= 0x08010000) {
 		if (SaveUsing == Auto) { SaveUsing = SRAM; }
 		if (SaveUsing == SRAM) {
-			DmaToSRAM(
+			DMAtoSRAM(
 				N64MEM+PI_DRAM_ADDR_REG,
 				PI_CART_ADDR_REG - 0x08000000,
 				PI_RD_LEN_REG + 1
@@ -58,7 +62,7 @@ void PI_DMA_READ (void) {
 			return;
 		}
 		if (SaveUsing == FlashRAM) {
-			DmaToFlashRAM(
+			DMAtoFlashRAM(
 				N64MEM+PI_DRAM_ADDR_REG,
 				PI_CART_ADDR_REG - 0x08000000,
 				PI_WR_LEN_REG + 1
@@ -68,6 +72,66 @@ void PI_DMA_READ (void) {
 			CheckInterrupts();
 			return;
 		}
+	}
+	if (PI_CART_ADDR_REG >= 0x10000000
+ 
+
+		&& PI_CART_ADDR_REG < 0x14000000)
+ 
+
+	{
+		//CART ROM
+		DWORD length = (PI_RD_LEN_REG & 0xFFFFFF) + 1;
+		DWORD i = (PI_CART_ADDR_REG - 0x10000000);
+		DWORD romsize = 0x40000000;
+		// TODO: add proper bounds check
+		length = (i + length) > romsize ?
+			(romsize - i) : length;
+		length = (PI_DRAM_ADDR_REG + length) > 0x7FFFFF ?
+			(0x7FFFFF - PI_DRAM_ADDR_REG) : length;
+		if (i > romsize || PI_DRAM_ADDR_REG > 0x7FFFFF || !SummerCart.cfg_rom_write)
+		{
+			PI_STATUS_REG &= ~PI_STATUS_DMA_BUSY;
+			MI_INTR_REG |= MI_INTR_PI;
+			CheckInterrupts();
+			return;
+		}
+		DWORD dram_address = PI_DRAM_ADDR_REG;
+		DWORD rom_address = (PI_CART_ADDR_REG - 0x10000000);
+		BYTE* dram = RDRAM;
+		BYTE* rom = ROM;
+		for (i = 0; i < length; ++i)
+			rom[(rom_address + i) ^ 3] = dram[(dram_address + i) ^ 3];
+		PI_STATUS_REG &= ~PI_STATUS_DMA_BUSY;
+		MI_INTR_REG |= MI_INTR_PI;
+		CheckInterrupts();
+		return;
+	}
+	if (PI_CART_ADDR_REG >= 0x1ffe0000 && PI_CART_ADDR_REG < 0x1fff0000)
+	{
+		//SC64 BUFFER
+		DWORD length = (PI_RD_LEN_REG & 0xFFFFFF) + 1;
+		DWORD i = (PI_CART_ADDR_REG - 0x1ffe0000);
+		length = (i + length) > 8192 ? (8192 - i) : length;
+		length = (PI_DRAM_ADDR_REG + length) > 0x7FFFFF ?
+			(0x7FFFFF - PI_DRAM_ADDR_REG) : length;
+		if (i > 8192 || PI_DRAM_ADDR_REG > 0x7FFFFF || !SummerCart.unlock)
+		{
+			PI_STATUS_REG &= ~PI_STATUS_DMA_BUSY;
+			MI_INTR_REG |= MI_INTR_PI;
+			CheckInterrupts();
+			return;
+		}
+		DWORD dram_address = PI_DRAM_ADDR_REG;
+		DWORD rom_address = (PI_CART_ADDR_REG - 0x1ffe0000);
+		BYTE* dram = RDRAM;
+		BYTE* rom = SummerCart.buffer;
+		for (i = 0; i < length; ++i)
+			rom[(rom_address + i) ^ 3] = dram[(dram_address + i) ^ 3];
+		PI_STATUS_REG &= ~PI_STATUS_DMA_BUSY;
+		MI_INTR_REG |= MI_INTR_PI;
+		CheckInterrupts();
+		return;
 	}
 	if (SaveUsing == FlashRAM) {
 		PI_STATUS_REG &= ~PI_STATUS_DMA_BUSY;
@@ -82,7 +146,11 @@ void PI_DMA_READ (void) {
 }
 void PI_DMA_WRITE (void) {
 	DWORD i;
-	if (AlignDMA) { PI_CART_ADDR_REG &= ~1; PI_DRAM_ADDR_REG &= ~7; }
+	if (AlignDMA || ForceEnableDMA) {
+		PI_DRAM_ADDR_REG &= 0x1FFFFFFF;
+		PI_CART_ADDR_REG &= ~1;
+		PI_DRAM_ADDR_REG &= ~7;
+	}
 	PI_STATUS_REG |= PI_STATUS_DMA_BUSY;
 	if ( PI_DRAM_ADDR_REG + PI_WR_LEN_REG + 1 > RDRAMsize) {
 		PI_STATUS_REG &= ~PI_STATUS_DMA_BUSY;
@@ -93,7 +161,7 @@ void PI_DMA_WRITE (void) {
 	if ( PI_CART_ADDR_REG >= 0x08000000 && PI_CART_ADDR_REG <= 0x08010000) {
 		if (SaveUsing == Auto) { SaveUsing = SRAM; }
 		if (SaveUsing == SRAM) {
-			DmaFromSRAM(
+			DMAfromSRAM(
 				N64MEM+PI_DRAM_ADDR_REG,
 				PI_CART_ADDR_REG - 0x08000000,
 				PI_WR_LEN_REG + 1
@@ -104,7 +172,7 @@ void PI_DMA_WRITE (void) {
 			return;
 		}
 		if (SaveUsing == FlashRAM) {
-			DmaFromFlashRAM(
+			DMAfromFlashRAM(
 				N64MEM+PI_DRAM_ADDR_REG,
 				PI_CART_ADDR_REG - 0x08000000,
 				PI_WR_LEN_REG + 1
@@ -115,7 +183,7 @@ void PI_DMA_WRITE (void) {
 		}
 		return;
 	}
-	if ( PI_CART_ADDR_REG >= 0x06000000 && PI_CART_ADDR_REG < 0x08000000) {
+	/* Is this needed?if ( PI_CART_ADDR_REG >= 0x06000000 && PI_CART_ADDR_REG < 0x08000000) {
 		PI_CART_ADDR_REG -= 0x06000000;
 		if (PI_CART_ADDR_REG + PI_WR_LEN_REG + 1 < RomFileSize) {
 			for (i = 0; i < PI_WR_LEN_REG + 1; i ++) {
@@ -141,14 +209,14 @@ void PI_DMA_WRITE (void) {
 		CheckInterrupts();
 		CheckTimer();
 		return;
-	}
+	}Is this needed? */
 	if ( PI_CART_ADDR_REG >= 0x10000000 && PI_CART_ADDR_REG <= 0x1FBFFFFF) {
 		PI_CART_ADDR_REG -= 0x10000000;
 		if (PI_CART_ADDR_REG + PI_WR_LEN_REG + 1 < RomFileSize) {
 			for (i = 0; i < PI_WR_LEN_REG + 1; i ++) {
 				*(N64MEM+((PI_DRAM_ADDR_REG + i) ^ 3)) =  *(ROM+((PI_CART_ADDR_REG + i) ^ 3));
 			}
-		} else if (RomFileSize > PI_CART_ADDR_REG) {
+		} else /* Is this needed?if (RomFileSize > PI_CART_ADDR_REG)Is this needed? */ {
 			DWORD Len;
 			Len = RomFileSize - PI_CART_ADDR_REG;
 			for (i = 0; i < Len; i ++) {
@@ -163,6 +231,33 @@ void PI_DMA_WRITE (void) {
 			DMAUsed = TRUE;
 			FirstDMA();
 		}
+		PI_STATUS_REG &= ~PI_STATUS_DMA_BUSY;
+		MI_INTR_REG |= MI_INTR_PI;
+		CheckInterrupts();
+		CheckTimer();
+		return;
+	}
+	if (PI_CART_ADDR_REG >= 0x1ffe0000 && PI_CART_ADDR_REG < 0x1fff0000)
+	{
+		/* SC64 BUFFER */
+		DWORD length = (PI_WR_LEN_REG & 0xFFFFFE) + 2;
+		DWORD i = (PI_CART_ADDR_REG - 0x1ffe0000);
+		length = (i + length) > 8192 ? (8192 - i) : length;
+		length = (PI_DRAM_ADDR_REG + length) > 0x7FFFFF ?
+			(0x7FFFFF - PI_DRAM_ADDR_REG) : length;
+		if (i > 8192 || PI_DRAM_ADDR_REG > 0x7FFFFF || !SummerCart.unlock)
+		{
+			PI_STATUS_REG &= ~PI_STATUS_DMA_BUSY;
+			MI_INTR_REG |= MI_INTR_PI;
+			CheckInterrupts();
+			return;
+		}
+		DWORD dram_address = PI_DRAM_ADDR_REG;
+		DWORD rom_address = (PI_CART_ADDR_REG - 0x1ffe0000);
+		BYTE* dram = RDRAM;
+		BYTE* rom = SummerCart.buffer;
+		for (i = 0; i < length; ++i)
+			dram[(dram_address + i) ^ 3] = rom[(rom_address + i) ^ 3];
 		PI_STATUS_REG &= ~PI_STATUS_DMA_BUSY;
 		MI_INTR_REG |= MI_INTR_PI;
 		CheckInterrupts();
@@ -275,7 +370,9 @@ void SP_DMA_READ (void) {
 		return;
 	}
 	if (SP_RD_LEN_REG + 1  + (SP_MEM_ADDR_REG & 0xFFF) > 0x1000) return;
-	if ((SP_MEM_ADDR_REG & 3) != 0 || (SP_DRAM_ADDR_REG & 3) != 0 || ((SP_RD_LEN_REG + 1) & 3) != 0);
+	if ((SP_MEM_ADDR_REG & 3) != 0) { _asm int 3 }
+	if ((SP_DRAM_ADDR_REG & 3) != 0) { _asm int 3 }
+	if (((SP_RD_LEN_REG + 1) & 3) != 0) { _asm int 3 }
 	memcpy( DMEM + (SP_MEM_ADDR_REG & 0x1FFF), N64MEM + SP_DRAM_ADDR_REG, SP_RD_LEN_REG + 1 );
 	SP_DMA_BUSY_REG = 0;
 	SP_STATUS_REG  &= ~SP_STATUS_DMA_BUSY;

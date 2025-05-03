@@ -333,8 +333,8 @@ void ChangeFPURegFormat       ( BLOCK_SECTION * Section, int Reg, int OldFormat,
 void ChangeMiIntrMask         ( void );
 void ChangeMiModeReg          ( void );
 void ChangeSpStatus           ( void );
-void ChangeDpcStatus          ( void );
-void InitalizeR4300iRegisters ( int UsePif, int Country, int CIC_Chip );
+// Is this needed?void ChangeDpcStatus          ( void );
+void InitializeR4300iRegisters ( int UsePif, int Country, int CIC_Chip );
 BOOL Is8BitReg                ( int x86Reg);
 void Load_FPR_ToTop           ( BLOCK_SECTION * Section, int Reg, int RegToLoad, int Format);
 void Map_GPR_32bit            ( BLOCK_SECTION * Section, int Reg, BOOL SignValue, int MipsRegToLoad );

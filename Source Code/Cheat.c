@@ -69,8 +69,6 @@ void SaveCheat             ( char * CheatName, BOOL Active );
 void SaveCheatExt          ( char * CheatName, char * CheatExt );
 int  _TreeView_GetCheckState(HWND hwndTreeView, HTREEITEM hItem);
 BOOL _TreeView_SetCheckState(HWND hwndTreeView, HTREEITEM hItem, int State);
-DWORD ConvertXP64Address (DWORD Address); //Witten
-WORD ConvertXP64Value (WORD Value); //Witten
 LRESULT CALLBACK ManageCheatsProc (HWND, UINT, WPARAM, LPARAM );
 enum Dialog_State {
 	CONTRACTED,
@@ -102,110 +100,24 @@ void AddCheatExtension(int CheatNo, char * CheatName, int CheatNameLen) {
 	}
 	if (String) { free(String); }
 }
-/********************************************************************************************
-  ConvertXP64Address
-  Purpose: Decode encoded XP64 address to physical address
-  Author: Witten
-********************************************************************************************/
-DWORD ConvertXP64Address (DWORD Address) {
-	DWORD tmpAddress;
-	tmpAddress = (Address ^ 0x68000000) & 0xFF000000;
-	tmpAddress += ((Address + 0x002B0000) ^ 0x00810000) & 0x00FF0000;
-	tmpAddress += ((Address + 0x00002B00) ^ 0x00008200) & 0x0000FF00;
-	tmpAddress += ((Address + 0x0000002B) ^ 0x00000083) & 0x000000FF;
-	return tmpAddress;
-}
-/********************************************************************************************
-  ConvertXP64Value
-  Purpose: Decode encoded XP64 value
-  Author: Witten
-********************************************************************************************/
-WORD ConvertXP64Value (WORD Value) {
-	WORD  tmpValue;
-	tmpValue = ((Value + 0x2B00) ^ 0x8400) & 0xFF00;
-	tmpValue += ((Value + 0x002B) ^ 0x0085) & 0x00FF;
-	return tmpValue;
-}
 void ApplyGSButton (void) {
-	int count, count2, count3;
+	int count, count2;
 	DWORD Address;
-	WORD  Memory;
-	GAMESHARK_CODE PrevCode;
+
 	for (count = 0; count < NoOfCodes; count++) {
-		PrevCode.Command=0X00000000;
-		PrevCode.Value=0x0000;
 		for (count2 = 0; count2 < MaxGSEntries; count2++) {
-			if ((PrevCode.Command & 0xFF000000) == 0x50000000) {
-				int numrepeats = (PrevCode.Command & 0x0000FF00) >> 8;
-				int offset = PrevCode.Command & 0x000000FF;
-				int incr = PrevCode.Value;
-				switch (Codes[count].Code[count2].Command & 0xFF000000) {
-				// Gameshark / AR
-				case 0x88000000:
-					Address = 0x80000000 | (Codes[count].Code[count2].Command & 0xFFFFFF);
-					Memory = Codes[count].Code[count2].Value;
-					for (count3=0; count3<numrepeats; count3++) {
-						r4300i_SB_VAddr(Address, (BYTE)Memory);
-						Address += offset;
-						Memory += incr;
-					}
-					break;
-				case 0x89000000:
-					Address = 0x80000000 | (Codes[count].Code[count2].Command & 0xFFFFFF);
-					Memory = Codes[count].Code[count2].Value;
-					for (count3=0; count3<numrepeats; count3++) {
-						r4300i_SH_VAddr(Address, (WORD)Memory);
-						Address += offset;
-						Memory += incr;
-					}
-					break;
-				// Xplorer64
-				case 0xA8000000:
-					Address = 0x80000000 | (ConvertXP64Address(Codes[count].Code[count2].Command) & 0xFFFFFF);
-					Memory = ConvertXP64Value(Codes[count].Code[count2].Value);
-					for (count3=0; count3<numrepeats; count3++) {
-						r4300i_SB_VAddr(Address, (BYTE)Memory);
-						Address += offset;
-						Memory += incr;
-					}
-					break;
-				case 0xA9000000:
-					Address = 0x80000000 | (ConvertXP64Address(Codes[count].Code[count2].Command) & 0xFFFFFF);
-					Memory = ConvertXP64Value(Codes[count].Code[count2].Value);
-					for (count3=0; count3<numrepeats; count3++) {
-						r4300i_SH_VAddr(Address, (WORD)Memory);
-						Address += offset;
-						Memory += incr;
-					}
-					break;
-				}
+			switch (Codes[count].Code[count2].Command & 0xFF000000) {
+			case 0x88000000:
+				Address = 0x80000000 | (Codes[count].Code[count2].Command & 0xFFFFFF);
+				r4300i_SB_VAddr(Address,(BYTE)Codes[count].Code[count2].Value);
+				break;
+			case 0x89000000:
+				Address = 0x80000000 | (Codes[count].Code[count2].Command & 0xFFFFFF);
+				r4300i_SH_VAddr(Address,Codes[count].Code[count2].Value);
+				break;
+			default:
+				break;
 			}
-			else {
-				switch (Codes[count].Code[count2].Command & 0xFF000000) {
-				// Gameshark / AR
-				case 0x88000000:
-					Address = 0x80000000 | (Codes[count].Code[count2].Command & 0xFFFFFF);
-					r4300i_SB_VAddr(Address,(BYTE)Codes[count].Code[count2].Value);
-					break;
-				case 0x89000000:
-					Address = 0x80000000 | (Codes[count].Code[count2].Command & 0xFFFFFF);
-					r4300i_SH_VAddr(Address,Codes[count].Code[count2].Value);
-					break;
-				// Xplorer64
-				case 0xA8000000:
-					Address = 0x80000000 | (ConvertXP64Address(Codes[count].Code[count2].Command) & 0xFFFFFF);
-					r4300i_SB_VAddr(Address,(BYTE)ConvertXP64Value(Codes[count].Code[count2].Value));
-					break;
-				case 0xA9000000:
-					Address = 0x80000000 | (ConvertXP64Address(Codes[count].Code[count2].Command) & 0xFFFFFF);
-					r4300i_SH_VAddr(Address,ConvertXP64Value(Codes[count].Code[count2].Value));
-					break;
-				default:
-					break;
-				}
-			}
-			PrevCode.Command=Codes[count].Code[count2].Command;
-			PrevCode.Value=Codes[count].Code[count2].Value;
 		}
 	}
 }
@@ -216,14 +128,15 @@ void ApplyGSButton (void) {
 int ApplyCheatEntry (GAMESHARK_CODE * Code, BOOL Execute ) {
 	DWORD Address;
 	WORD  Memory;
+
 	switch (Code->Command & 0xFF000000) {
-	// Gameshark
 	case 0x50000000:													// Added by Witten (witten@pj64cheats.net)
 		{
 			int numrepeats = (Code->Command & 0x0000FF00) >> 8;
 			int offset = Code->Command & 0x000000FF;
 			int incr = Code->Value;
 			int count;
+
 			switch (Code[1].Command & 0xFF000000) {
 			case 0x80000000:
 				Address = 0x80000000 | (Code[1].Command & 0xFFFFFF);
@@ -285,57 +198,6 @@ int ApplyCheatEntry (GAMESHARK_CODE * Code, BOOL Execute ) {
 		r4300i_LH_VAddr(Address, (WORD*) &Memory);
 		if (Memory == Code->Value) { Execute = FALSE; }
 		return ApplyCheatEntry(&Code[1],Execute) + 1;
-	// Xplorer64 (Author: Witten)
-	case 0x30000000:
-	case 0x82000000:
-	case 0x84000000:
-		Address = 0x80000000 | (Code->Command & 0xFFFFFF);
-		if (Execute) { r4300i_SB_VAddr(Address,(BYTE)Code->Value); }
-		break;
-	case 0x31000000:
-	case 0x83000000:
-	case 0x85000000:
-		Address = 0x80000000 | (Code->Command & 0xFFFFFF);
-		if (Execute) { r4300i_SH_VAddr(Address,Code->Value); }
-		break;
-	case 0xE8000000:
-		Address = 0x80000000 | (ConvertXP64Address(Code->Command) & 0xFFFFFF);
-		if (Execute) { r4300i_SB_VAddr(Address,(BYTE)ConvertXP64Value(Code->Value)); }
-		break;
-	case 0xE9000000:
-		Address = 0x80000000 | (ConvertXP64Address(Code->Command) & 0xFFFFFF);
-		if (Execute) { r4300i_SH_VAddr(Address,ConvertXP64Value(Code->Value)); }
-		break;
-	case 0xC8000000:
-		Address = 0xA0000000 | (ConvertXP64Address(Code->Command) & 0xFFFFFF);
-		if (Execute) { r4300i_SB_VAddr(Address,(BYTE)Code->Value);  }
-		break;
-	case 0xC9000000:
-		Address = 0xA0000000 | (ConvertXP64Address(Code->Command) & 0xFFFFFF);
-		if (Execute) { r4300i_SH_VAddr(Address,ConvertXP64Value(Code->Value)); }
-		break;
-	case 0xB8000000:
-		Address = 0x80000000 | (ConvertXP64Address(Code->Command) & 0xFFFFFF);
-		r4300i_LB_VAddr(Address, (BYTE*) &Memory);
-		Memory &= 0x00FF;
-		if (Memory != ConvertXP64Value(Code->Value)) { Execute = FALSE; }
-		return ApplyCheatEntry(&Code[1],Execute) + 1;
-	case 0xB9000000:
-		Address = 0x80000000 | (ConvertXP64Address(Code->Command) & 0xFFFFFF);
-		r4300i_LH_VAddr(Address, (WORD*) &Memory);
-		if (Memory != ConvertXP64Value(Code->Value)) { Execute = FALSE; }
-		return ApplyCheatEntry(&Code[1],Execute) + 1;
-	case 0xBA000000:
-		Address = 0x80000000 | (ConvertXP64Address(Code->Command) & 0xFFFFFF);
-		r4300i_LB_VAddr(Address, (BYTE*) &Memory);
-		Memory &= 0x00FF;
-		if (Memory == ConvertXP64Value(Code->Value)) { Execute = FALSE; }
-		return ApplyCheatEntry(&Code[1],Execute) + 1;
-	case 0xBB000000:
-		Address = 0x80000000 | (ConvertXP64Address(Code->Command) & 0xFFFFFF);
-		r4300i_LH_VAddr(Address, (WORD*) &Memory);
-		if (Memory == ConvertXP64Value(Code->Value)) { Execute = FALSE; }
-		return ApplyCheatEntry(&Code[1],Execute) + 1;
 	case 0: return MaxGSEntries; break;
 	}
 	return 1;
@@ -381,7 +243,7 @@ BOOL CheatActive (char * Name) {
 	HKEY hKeyResults = 0;
 	long lResult;
 	sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD *)(&RomHeader[0x10]),*(DWORD *)(&RomHeader[0x14]),RomHeader[0x3D]);
-	sprintf(String,"N64 Software\\%s\\Cheats\\%s",AppName,Identifier);
+	sprintf(String,"PJ64 V 1.6.2\\%s\\Cheats\\%s",AppName,Identifier);
 	lResult = RegOpenKeyEx( HKEY_CURRENT_USER,String,0, KEY_ALL_ACCESS,&hKeyResults); // check is game ID excists in registry
 	if (lResult == ERROR_SUCCESS) {
 		DWORD Type, Bytes, Active;
@@ -1323,7 +1185,7 @@ BOOL LoadCheatExt(char * CheatName, char * CheatExt, int MaxCheatExtLen) {
 		return FALSE;
 	}
 	sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD *)(&RomHeader[0x10]),*(DWORD *)(&RomHeader[0x14]),RomHeader[0x3D]);
-	sprintf(String,"N64 Software\\%s\\Cheats\\%s",AppName,Identifier);
+	sprintf(String,"PJ64 V 1.6.2\\%s\\Cheats\\%s",AppName,Identifier);
 	lResult = RegOpenKeyEx( HKEY_CURRENT_USER,String,0, KEY_ALL_ACCESS,&hKeyResults);
 	if (lResult == ERROR_SUCCESS) {
 		DWORD Type, Bytes;
@@ -1427,24 +1289,22 @@ void LoadCheats (void) {
 	if (String) { free(String); }
 }
 void ManageCheats (HWND hParent) {
-#define DefaultWindowWidth  315
-#define DefaultWindowHeight 415
 	DWORD X, Y, WindowWidth, WindowHeight,  Style;
 	if (hManageWindow != NULL) {
 		SetForegroundWindow(hManageWindow);
 		return;
 	}
-	if ( !GetStoredWinSize( "Cheat", &WindowWidth, &WindowHeight ) ) {
-  		WindowWidth = DefaultWindowWidth;
-  		WindowHeight = DefaultWindowHeight;
-	}
+	WindowWidth = 315;
+	WindowHeight = 415;
 	if ( !GetStoredWinPos( "Cheat", &X, &Y ) ) {
   		X = (GetSystemMetrics( SM_CXSCREEN ) - WindowWidth) / 2;
 		Y = (GetSystemMetrics( SM_CYSCREEN ) - WindowHeight) / 2;
 	}
-	{ Style = WS_SIZEBOX|WS_SYSMENU; }
+	if (hParent) { Style = WS_SIZEBOX|WS_SYSMENU; }
+	if (!hParent) { Style = WS_SIZEBOX|WS_SYSMENU|WS_MINIMIZEBOX; }
 	hManageWindow = CreateWindow("PJ64.Cheats", "Cheats",Style,
 		X,Y,WindowWidth,WindowHeight,hParent,NULL,hInst,NULL);
+	if (UsuallyonTop) SetWindowPos(hManageWindow, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
 	RefreshCheatManager();
 	ShowWindow(hManageWindow,SW_SHOW);
 	if (hParent) {
@@ -1574,11 +1434,6 @@ LRESULT CALLBACK ManageCheatsProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM l
 			DestroyWindow(hDlg);
 			break;
 		case IDC_STATE:
-			{
-				WINDOWPLACEMENT WndPlac;
-				WndPlac.length = sizeof(WndPlac);
-				GetWindowPlacement(hDlg, &WndPlac);
-			}
 			break;
 		}
 		break;
@@ -1645,7 +1500,7 @@ void SaveCheat(char * CheatName, BOOL Active) {
 	HKEY hKeyResults = 0;
 	long lResult;
 	sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD *)(&RomHeader[0x10]),*(DWORD *)(&RomHeader[0x14]),RomHeader[0x3D]);
-	sprintf(String,"N64 Software\\%s\\Cheats\\%s",AppName,Identifier);
+	sprintf(String,"PJ64 V 1.6.2\\%s\\Cheats\\%s",AppName,Identifier);
 	lResult = RegCreateKeyEx( HKEY_CURRENT_USER, String,0,"", REG_OPTION_NON_VOLATILE,
 		KEY_ALL_ACCESS,NULL, &hKeyResults,&Disposition);
 	if (lResult == ERROR_SUCCESS) {
@@ -1663,7 +1518,7 @@ void SaveCheatExt(char * CheatName, char * CheatExt) {
 	HKEY hKeyResults = 0;
 	long lResult;
 	sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD *)(&RomHeader[0x10]),*(DWORD *)(&RomHeader[0x14]),RomHeader[0x3D]);
-	sprintf(String,"N64 Software\\%s\\Cheats\\%s",AppName,Identifier);
+	sprintf(String,"PJ64 V 1.6.2\\%s\\Cheats\\%s",AppName,Identifier);
 	lResult = RegCreateKeyEx( HKEY_CURRENT_USER, String,0,"", REG_OPTION_NON_VOLATILE,
 		KEY_ALL_ACCESS,NULL, &hKeyResults,&Disposition);
 	if (lResult == ERROR_SUCCESS) {

@@ -405,6 +405,7 @@ void fpuLoadReg(int * StackPos,int Reg) {
 	case x86_ST5: PUTDST16(RecompPos,0xC5D9); break;
 	case x86_ST6: PUTDST16(RecompPos,0xC6D9); break;
 	case x86_ST7: PUTDST16(RecompPos,0xC7D9); break;
+	default:
 		break;
 	}
 }
@@ -422,6 +423,7 @@ void fpuMulDwordRegPointer(int x86Pointer) {
 	case x86_EDX: PUTDST16(RecompPos,0x0AD8); break;
 	case x86_ESI: PUTDST16(RecompPos,0x0ED8); break;
 	case x86_EDI: PUTDST16(RecompPos,0x0FD8); break;
+	default:
 		break;
 	}
 }

@@ -48,7 +48,7 @@ int GetCicChipID (char * RomData) {
 	case 0x000000D6497E414B: return 3;
 	case 0x0000011A49F60E96: return 5;
 	case 0x000000D6D5BE5580: return 6;
-	case 0x000000D2E53EF008: return 9;	// Added to support N64DD IPLROM (J)
+	// Is this needed?case 0x000000D2E53EF008: return 9;	// Added to support N64DD IPLROM (J)
 	default:
 		return -1;
 	}

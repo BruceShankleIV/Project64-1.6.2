@@ -29,6 +29,7 @@
 #include "cpu.h"
 #include "x86.h"
 #include "plugin.h"
+#include "SummerCart.h"
 DWORD *TLB_ReadMap, *TLB_WriteMap, RDRAMsize, SystemRDRAMsize;
 BYTE *N64MEM, *RDRAM, *DMEM, *IMEM, *ROM;
 void ** JumpTable, ** DelaySlotTable;
@@ -180,7 +181,7 @@ void Compile_LW ( int Reg, DWORD Addr ) {
 	case 0x00500000:
 	case 0x00600000:
 	case 0x00700000:
-	case 0x06000000:  // Added for 64DD IPL
+	// Is this needed?case 0x06000000:  // Added for 64DD IPL
 	case 0x10000000:
 		sprintf(VarName,"N64MEM + %X",Addr);
 		MoveVariableToX86reg(Addr + N64MEM,VarName,Reg);
@@ -201,17 +202,17 @@ void Compile_LW ( int Reg, DWORD Addr ) {
 		}
 		break;
 	case 0x04100000:
-		switch (Addr) {
+		/* Is this needed?switch (Addr) {
 			case 0x0410000C: MoveVariableToX86reg(&DPC_STATUS_REG,"DPC_STATUS_REG",Reg); break;
 			case 0x04100010: MoveVariableToX86reg(&DPC_CLOCK_REG,"DPC_CLOCK_REG",Reg); break;
 			case 0x04100014: MoveVariableToX86reg(&DPC_BUFBUSY_REG,"DPC_BUFBUSY_REG",Reg); break;
 			case 0x04100018: MoveVariableToX86reg(&DPC_PIPEBUSY_REG,"DPC_PIPEBUSY_REG",Reg); break;
 			case 0x0410001C: MoveVariableToX86reg(&DPC_TMEM_REG,"DPC_TMEM_REG",Reg); break;
-			default:
+			default:Is this needed? */
 				sprintf(VarName,"N64MEM + %X",Addr);
 				MoveVariableToX86reg(Addr + N64MEM,VarName,Reg);
-				break;
-		}
+				/* Is this needed?break;
+		}Is this needed? */
 		break;
 	case 0x04300000:
 		switch (Addr) {
@@ -255,7 +256,7 @@ void Compile_LW ( int Reg, DWORD Addr ) {
 		break;
 	case 0x04600000:
 		switch (Addr) {
-		case 0x04600004: MoveVariableToX86reg(&PI_CART_ADDR_REG,"PI_CART_ADDR_REG", Reg); break;
+		// Is this needed?case 0x04600004: MoveVariableToX86reg(&PI_CART_ADDR_REG,"PI_CART_ADDR_REG", Reg); break;
 		case 0x04600010: MoveVariableToX86reg(&PI_STATUS_REG,"PI_STATUS_REG",Reg); break;
 		case 0x04600014: MoveVariableToX86reg(&PI_DOMAIN1_REG,"PI_DOMAIN1_REG",Reg); break;
 		case 0x04600018: MoveVariableToX86reg(&PI_BSD_DOM1_PWD_REG,"PI_BSD_DOM1_PWD_REG",Reg); break;
@@ -284,9 +285,9 @@ void Compile_LW ( int Reg, DWORD Addr ) {
 			MoveConstToX86reg(0,Reg);
 		}
 		break;
-	case 0x05000000:
+	/* Is this needed?case 0x05000000:
 		MoveConstToX86reg(0,Reg);
-		break;
+		break;Is this needed? */
 	case 0x1FC00000:
 		sprintf(VarName,"N64MEM + %X",Addr);
 		MoveVariableToX86reg(Addr + N64MEM,VarName,Reg);
@@ -377,7 +378,7 @@ void Compile_SH_Register ( int x86Reg, DWORD Addr ) {
 }
 void Compile_SW_Const ( DWORD Value, DWORD Addr ) {
 	char VarName[100];
-	BYTE * Jump;
+	BYTE* Jump = NULL;
 	if (!TranslateVaddr(&Addr)) {
 		CPU_Message("Compile_SW\nFailed to translate address %X",Addr);
 		return;
@@ -462,6 +463,13 @@ void Compile_SW_Const ( DWORD Value, DWORD Addr ) {
 				if ( ( Value & SP_SET_SIG7 ) != 0 ) { ModValue |= SP_STATUS_SIG7; }
 				if (ModValue != 0) {
 					OrConstToVariable(ModValue,&SP_STATUS_REG,"SP_STATUS_REG");
+				}
+				if ( ( Value & SP_SET_SIG0 ) != 0 && AudioSignal ) 
+				{ 
+					OrConstToVariable(MI_INTR_SP,&MI_INTR_REG,"MI_INTR_REG");
+					Pushad();
+					Call_Direct(CheckInterrupts,"CheckInterrupts");
+					Popad();
 				}
 				if ( ( Value & SP_CLR_INTR ) != 0) {
 					AndConstToVariable(~MI_INTR_SP,&MI_INTR_REG,"MI_INTR_REG");
@@ -636,7 +644,7 @@ void Compile_SW_Const ( DWORD Value, DWORD Addr ) {
 		case 0x04600018: MoveConstToVariable((Value & 0xFF),&PI_BSD_DOM1_PWD_REG,"PI_BSD_DOM1_PWD_REG"); break;
 		case 0x0460001C: MoveConstToVariable((Value & 0xFF),&PI_BSD_DOM1_PGS_REG,"PI_BSD_DOM1_PGS_REG"); break;
 		case 0x04600020: MoveConstToVariable((Value & 0xFF),&PI_BSD_DOM1_RLS_REG,"PI_BSD_DOM1_RLS_REG"); break;
-		case 0x04600024: MoveConstToVariable((Value & 0xFF),&PI_DOMAIN2_REG,"PI_DOMAIN2_REG"); break;
+		// Is this needed?case 0x04600024: MoveConstToVariable((Value & 0xFF),&PI_DOMAIN2_REG,"PI_DOMAIN2_REG"); break;
 		}
 		break;
 	case 0x04700000:
@@ -675,7 +683,7 @@ void Compile_SW_Const ( DWORD Value, DWORD Addr ) {
 }
 void Compile_SW_Register ( int x86Reg, DWORD Addr ) {
 	char VarName[100];
-	BYTE * Jump;
+	BYTE * Jump = NULL;
 	if (!TranslateVaddr(&Addr)) {
 		CPU_Message("Compile_SW_Register\nFailed to translate address %X",Addr);
 		return;
@@ -729,19 +737,19 @@ void Compile_SW_Register ( int x86Reg, DWORD Addr ) {
 		}
 		break;
 	case 0x04100000:
-		switch (Addr) {
+		/* Is this needed?switch (Addr) {
 		case 0x0410000C:
 			MoveX86regToVariable(x86Reg,&RegModValue,"RegModValue");
 			Pushad();
 			Call_Direct(ChangeDpcStatus,"ChangeDpcStatus");
 			Popad();
 			break;
-		default:
+		default:Is this needed? */
 			CPU_Message("    Should be moving %s in to %X ?!?",x86_Name(x86Reg),Addr);
 			sprintf(VarName,"N64MEM + %X",Addr);
 			MoveX86regToVariable(x86Reg,Addr + N64MEM,VarName);
-			break;
-		}
+			/* Is this needed?break;
+		}Is this needed? */
 		break;
 	case 0x04300000:
 		switch (Addr) {
@@ -885,7 +893,7 @@ void Compile_SW_Register ( int x86Reg, DWORD Addr ) {
 			MoveX86regToVariable(x86Reg,&PI_BSD_DOM1_RLS_REG,"PI_BSD_DOM1_RLS_REG");
 			AndConstToVariable(0xFF,&PI_BSD_DOM1_RLS_REG,"PI_BSD_DOM1_RLS_REG");
 			break;
-		case 0x04600024:
+		/* Is this needed?case 0x04600024:
 			MoveX86regToVariable(x86Reg,&PI_DOMAIN2_REG,"PI_DOMAIN2_REG");
 			AndConstToVariable(0xFF,&PI_DOMAIN2_REG,"PI_DOMAIN2_REG");
 			break;
@@ -900,7 +908,7 @@ void Compile_SW_Register ( int x86Reg, DWORD Addr ) {
 		case 0x04600030:
 			MoveX86regToVariable(x86Reg,&PI_BSD_DOM2_RLS_REG,"PI_BSD_DOM2_RLS_REG");
 			AndConstToVariable(0xFF,&PI_BSD_DOM2_RLS_REG,"PI_BSD_DOM2_RLS_REG");
-			break;
+			break;Is this needed? */
 		default:
 			CPU_Message("    Should be moving %s in to %X ?!?",x86_Name(x86Reg),Addr);
 		}
@@ -987,7 +995,7 @@ int r4300i_CPU_MemoryFilter( DWORD dwExptCode, LPEXCEPTION_POINTERS lpEP) {
 	DWORD MemAddress = (char *)lpEP->ExceptionRecord->ExceptionInformation[1] - (char *)N64MEM;
     EXCEPTION_RECORD exRec;
 	BYTE * ReadPos, *TypePos;
-	void * Reg;
+	void * Reg = NULL;
 	if (dwExptCode != EXCEPTION_ACCESS_VIOLATION) {
 		return EXCEPTION_CONTINUE_SEARCH;
 	}
@@ -1216,13 +1224,8 @@ int r4300i_LB_NonMemory ( DWORD PAddr, DWORD * Value, BOOL SignExtend ) {
 			return FALSE;
 		}
 	}
-	switch (PAddr & 0xFFF00000) {
-	default:
 		* Value = 0;
 		return FALSE;
-		break;
-	}
-	return TRUE;
 }
 BOOL r4300i_LB_VAddr ( DWORD VAddr, BYTE * Value ) {
 	if (TLB_ReadMap[VAddr >> 12] == 0) { return FALSE; }
@@ -1236,13 +1239,8 @@ BOOL r4300i_LD_VAddr ( DWORD VAddr, unsigned _int64 * Value ) {
 	return TRUE;
 }
 int r4300i_LH_NonMemory ( DWORD PAddr, DWORD * Value, int SignExtend ) {
-	switch (PAddr & 0xFFF00000) {
-	default:
 		* Value = 0;
 		return FALSE;
-		break;
-	}
-	return TRUE;
 }
 BOOL r4300i_LH_VAddr ( DWORD VAddr, WORD * Value ) {
 	if (TLB_ReadMap[VAddr >> 12] == 0) { return FALSE; }
@@ -1250,7 +1248,7 @@ BOOL r4300i_LH_VAddr ( DWORD VAddr, WORD * Value ) {
 	return TRUE;
 }
 int r4300i_LW_NonMemory ( DWORD PAddr, DWORD * Value ) {
-	if (PAddr >= 0x06000000 && PAddr < 0x08000000) {
+	/* Is this needed?if (PAddr >= 0x06000000 && PAddr < 0x08000000) {
 		if (WrittenToRom) {
 			*Value = WroteToRom;
 			WrittenToRom = FALSE;
@@ -1264,11 +1262,19 @@ int r4300i_LW_NonMemory ( DWORD PAddr, DWORD * Value ) {
 			*Value = (*Value << 16) | *Value;
 			return FALSE;
 		}
-	}
+	}Is this needed? */
 	if (PAddr >= 0x10000000 && PAddr < 0x16000000) {
 		if (WrittenToRom) {
 			*Value = WroteToRom;
 			WrittenToRom = FALSE;
+// Is this needed?#ifdef ROM_IN_MAPSPACE
+		{
+			DWORD OldProtect, NewProtect;
+			VirtualProtect(ROM, RomFileSize, PAGE_READONLY, &OldProtect);
+			VirtualProtect(ROM, RomFileSize, OldProtect, &NewProtect);
+			if (NewProtect != PAGE_READONLY) VirtualProtect(ROM, RomFileSize, PAGE_READONLY, &OldProtect);
+		}
+// Is this needed?#endif
 			return TRUE;
 		}
 		if ((PAddr - 0x10000000) < RomFileSize) {
@@ -1413,12 +1419,9 @@ int r4300i_LW_NonMemory ( DWORD PAddr, DWORD * Value ) {
 		}
 		break;
 	case 0x05000000:
-		switch (PAddr) {
-		default:
 			*Value = PAddr & 0xFFFF;
 			*Value = (*Value << 16) | *Value;
 			return FALSE;
-		}
 		break;
 	case 0x08000000:
 		if (SaveUsing == Auto) { SaveUsing = FlashRAM; }
@@ -1452,6 +1455,9 @@ int r4300i_LW_NonMemory ( DWORD PAddr, DWORD * Value ) {
 			* Value = 0;
 			return FALSE;
 		}
+		break;
+	case 0x1FF00000:
+		read_summercart_regs(NULL, PAddr, Value);
 		break;
 	default:
 		*Value = PAddr & 0xFFFF;
@@ -1570,6 +1576,14 @@ int r4300i_SW_NonMemory ( DWORD PAddr, DWORD Value ) {
 		if ((PAddr - 0x10000000) < RomFileSize) {
 			WrittenToRom = TRUE;
 			WroteToRom = Value;
+// Is this needed?#ifdef ROM_IN_MAPSPACE
+			{
+				DWORD OldProtect, NewProtect;
+				VirtualProtect(ROM, RomFileSize, PAGE_READONLY, &OldProtect);
+				VirtualProtect(ROM, RomFileSize, OldProtect, &NewProtect);
+				if (NewProtect != PAGE_READONLY) VirtualProtect(ROM, RomFileSize, PAGE_READONLY, &OldProtect);
+			}
+// Is this needed?#endif
 		} else {
 			return FALSE;
 		}
@@ -1670,7 +1684,12 @@ int r4300i_SW_NonMemory ( DWORD PAddr, DWORD Value ) {
 			if ( ( Value & SP_SET_SIG6 ) != 0) { SP_STATUS_REG |= SP_STATUS_SIG6;  }
 			if ( ( Value & SP_CLR_SIG7 ) != 0) { SP_STATUS_REG &= ~SP_STATUS_SIG7; }
 			if ( ( Value & SP_SET_SIG7 ) != 0) { SP_STATUS_REG |= SP_STATUS_SIG7;  }
-			if (DelayRDP && *( DWORD *)(DMEM + 0xFC0) == 1) {
+			if ( ( Value & SP_SET_SIG0 ) != 0 && AudioSignal) 
+			{ 
+				MI_INTR_REG |= MI_INTR_SP; 
+				CheckInterrupts();				
+			}
+			if ((DelayRDP || ForceEnableDelayRDP) && *( DWORD *)(DMEM + 0xFC0) == 1) {
 				ChangeTimer(RspTimer, 0x900);
 				break;
 			}
@@ -1893,6 +1912,9 @@ int r4300i_SW_NonMemory ( DWORD PAddr, DWORD Value ) {
 		}
 		return FALSE;
 		break;
+
+	case 0x1FF00000:
+		write_summercart_regs(NULL, PAddr, Value, ~0);
 	default:
 		return FALSE;
 		break;
@@ -1920,13 +1942,13 @@ void ResetMemoryStack (BLOCK_SECTION * Section) {
 	x86reg = Map_MemoryStack(Section, FALSE);
 	if (x86reg >= 0) { UnMap_X86reg(Section,x86reg); }
 	x86reg = Map_TempReg(Section,x86_Any, 29, FALSE);
-	if (UseTlb) {
+	if (UseTlb && !ForceDisableTLB) {
 	    TempReg = Map_TempReg(Section,x86_Any,-1,FALSE);
 		MoveX86RegToX86Reg(x86reg,TempReg);
 		ShiftRightUnsignImmed(TempReg,12);
 		MoveVariableDispToX86Reg(TLB_ReadMap,"TLB_ReadMap",TempReg,TempReg,4);
 		AddX86RegToX86Reg(x86reg,TempReg);
-	} else {
+	} if (!UseTlb || ForceDisableTLB) {
 		AndConstToX86Reg(x86reg,0x1FFFFFFF);
 		AddConstToX86Reg(x86reg,(DWORD)N64MEM);
 	}

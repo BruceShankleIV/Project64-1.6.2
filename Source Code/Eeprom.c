@@ -36,7 +36,10 @@ void CloseeepROM (void) {
 	}
 }
 void eepROMCommand ( BYTE * Command) {
-	if (SaveUsing == Auto) { SaveUsing = eepROM_4K; }
+	if (SaveUsing == Auto) {
+		if (ForceAuto16) SaveUsing = eepROM_16K;
+		else SaveUsing = eepROM_4K;
+	}
 	switch (Command[2]) {
 	case 0: // check
 		if (SaveUsing != eepROM_4K &&  SaveUsing != eepROM_16K) {
@@ -89,7 +92,7 @@ void LoadeepROM (void) {
 			return;
 		}
 	}
-	memset(eepROM,0xFF,sizeof(eepROM));
+	memset(eepROM,0,sizeof(eepROM));
 	SetFilePointer(heepROMFile,0,NULL,FILE_BEGIN);
 	ReadFile(heepROMFile,eepROM,sizeof(eepROM),&dwRead,NULL);
 }

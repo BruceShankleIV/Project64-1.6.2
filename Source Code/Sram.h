@@ -24,5 +24,5 @@
  *
  */
 void CloseSRAM   ( void );
-void DmaFromSRAM ( BYTE * dest, int StartOffset, int len);
-void DmaToSRAM   ( BYTE * Source, int StartOffset, int len);
+void DMAfromSRAM ( BYTE * dest, int StartOffset, int len);
+void DMAtoSRAM   ( BYTE * Source, int StartOffset, int len);

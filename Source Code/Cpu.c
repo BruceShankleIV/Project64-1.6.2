@@ -85,7 +85,7 @@ void CheckTimer (void) {
 		Timers.Timer = Timers.NextTimer[count];
 		Timers.CurrentTimerType = count;
 	}
-	if (Timers.CurrentTimerType == -1) ExitThread(0);
+	if (Timers.CurrentTimerType == -1) /*ExitThread(0)*/;
 	for (count = 0; count < MaxTimers; count++) {
 		if (!Timers.Active[count]) { continue; }
 		if (!(count == CompareTimer && Timers.NextTimer[count] == 0x7FFFFFFF)) {
@@ -100,28 +100,26 @@ void CheckTimer (void) {
 	}
 }
 void CloseCpu (void) {
-	DWORD ExitCode, count, OldProtect;
+	DWORD ExitCode, OldProtect, count;
 	if (!CPURunning) { return; }
+	if (CPU_Paused) PauseCpu();
+	SendMessage(hStatusWnd, SB_SETTEXT, 0, (LPARAM)"");
 	ManualPaused = FALSE;
-	if (CPU_Paused) { PauseCpu (); }
-	{
-		BOOL Temp = AlwaysOnTop;
-		AlwaysOnTop = FALSE;
-		AlwaysOnTopWindow(hMainWindow);
-		AlwaysOnTop = Temp;
-	}
-	for (count = 0; count < 41; count ++ ) {
+	timeBeginPeriod(16);
+	for (count = 0; count < 20; count++) {
 		CPU_Action.CloseCPU = TRUE;
 		CPU_Action.Stepping = FALSE;
 		CPU_Action.DoSomething = TRUE;
 		PulseEvent( CPU_Action.hStepping );
-		if (WaitForSingleObject(hCPU,1) == WAIT_OBJECT_0) {
-			GetExitCodeThread(hCPU, &ExitCode);
-			if (ExitCode != STILL_ACTIVE) hCPU = NULL;
+		Sleep(100);
+		GetExitCodeThread(hCPU, &ExitCode);
+		if (ExitCode != STILL_ACTIVE) {
+			hCPU = NULL;
+			count = 100;
 		}
 	}
-	if (hCPU != NULL) {  TerminateThread(hCPU,0); hCPU = NULL; }
-	CPURunning = FALSE;
+	timeEndPeriod(16);
+	if (hCPU != NULL) { TerminateThread(hCPU,0); hCPU = NULL; }
 	VirtualProtect(N64MEM,RDRAMsize,PAGE_READWRITE,&OldProtect);
 	VirtualProtect(N64MEM + 0x04000000,0x2000,PAGE_READWRITE,&OldProtect);
 	Timer_Stop();
@@ -813,7 +811,6 @@ char * R4300iOpcodeName ( DWORD OpCode, DWORD PC ) {
 int DelaySlotEffectsCompare (DWORD PC, DWORD Reg1, DWORD Reg2) {
 	OPCODE Command;
 	if (!r4300i_LW_VAddr(PC + 4, &Command.Hex)) {
-		ExitThread(0);
 		return TRUE;
 	}
 	if (SelfModCheck == ModCode_ChangeMemory) {
@@ -892,6 +889,8 @@ int DelaySlotEffectsCompare (DWORD PC, DWORD Reg1, DWORD Reg2) {
 				default:
 					return TRUE;
 				}
+			} else {
+				return TRUE;
 			}
 		}
 		break;
@@ -1055,6 +1054,7 @@ void DoSomething ( void ) {
 		CPU_Paused = TRUE;
 		SendMessage(hMainWindow,WM_COMMAND,ID_OPTIONS_FULLSCREEN,0);
 		CPU_Paused = FALSE;
+		Timer_Start();
 	}
 	if (CPU_Action.Pause) {
 		WaitForSingleObject(hPauseMutex, INFINITE);
@@ -1103,8 +1103,8 @@ void GetAutoSaveDir( char * Directory ) {
 	HKEY hKeyResults = 0;
 	GetModuleFileName(NULL,path_buffer,sizeof(path_buffer));
 	_splitpath( path_buffer, drive, dir, fname, ext );
-	sprintf(Directory,"%s%sSave\\Data\\",drive,dir);
-	sprintf(Group,"N64 Software\\%s",AppName);
+	sprintf(Directory,"%s%sSave Data\\",drive,dir);
+	sprintf(Group,"PJ64 V 1.6.2\\%s",AppName);
 	lResult = RegOpenKeyEx( HKEY_CURRENT_USER,Group,0,KEY_ALL_ACCESS,
 		&hKeyResults);
 	if (lResult == ERROR_SUCCESS) {
@@ -1127,8 +1127,8 @@ void GetInstantSaveDir( char * Directory ) {
 	HKEY hKeyResults = 0;
 	GetModuleFileName(NULL,path_buffer,sizeof(path_buffer));
 	_splitpath( path_buffer, drive, dir, fname, ext );
-	sprintf(Directory,"%s%sSave\\States\\",drive,dir);
-	sprintf(Group,"N64 Software\\%s",AppName);
+	sprintf(Directory,"%s%sSave States\\",drive,dir);
+	sprintf(Group,"PJ64 V 1.6.2\\%s",AppName);
 	lResult = RegOpenKeyEx( HKEY_CURRENT_USER,Group,0,KEY_ALL_ACCESS,
 		&hKeyResults);
 	if (lResult == ERROR_SUCCESS) {
@@ -1163,8 +1163,8 @@ InterruptsDisabled:
 	if (UpdateScreen != NULL) { UpdateScreen(); }
 	CurrentFrame = 0;
 	DisplayFPS();
-	DisplayError(GS(MSG_PERM_LOOP));
-	ExitThread(0);
+	//DisplayError(GS(MSG_PERM_LOOP));
+	//ExitThread(0);
 }
 BOOL Machine_LoadState(void) {
 	char Directory[255], FileName[255], ZipFile[255], LoadHeader[64], String[100];
@@ -1215,16 +1215,16 @@ BOOL Machine_LoadState(void) {
 			if (SaveRDRAMsize != RDRAMsize) {
 				if (RDRAMsize == 0x400000) {
 					if (VirtualAlloc(N64MEM + 0x400000, 0x400000, MEM_COMMIT, PAGE_READWRITE)==NULL) {
-						DisplayError(GS(MSG_MEM_ALLOC_ERROR));
-						ExitThread(0);
+						//DisplayError(GS(MSG_MEM_ALLOC_ERROR));
+						//ExitThread(0);
 					}
 					if (VirtualAlloc((BYTE *)JumpTable + 0x400000, 0x400000, MEM_COMMIT, PAGE_READWRITE)==NULL) {
-						DisplayError(GS(MSG_MEM_ALLOC_ERROR));
-						ExitThread(0);
+						//DisplayError(GS(MSG_MEM_ALLOC_ERROR));
+						//ExitThread(0);
 					}
 					if (VirtualAlloc((BYTE *)DelaySlotTable + (0x400000 >> 0xA), (0x400000 >> 0xA), MEM_COMMIT, PAGE_READWRITE)==NULL) {
-						DisplayError(GS(MSG_MEM_ALLOC_ERROR));
-						ExitThread(0);
+						//DisplayError(GS(MSG_MEM_ALLOC_ERROR));
+						//ExitThread(0);
 					}
 				} else {
 					VirtualFree(N64MEM + 0x400000, 0x400000,MEM_DECOMMIT);
@@ -1287,16 +1287,16 @@ BOOL Machine_LoadState(void) {
 		if (SaveRDRAMsize != RDRAMsize) {
 			if (RDRAMsize == 0x400000) {
 				if (VirtualAlloc(N64MEM + 0x400000, 0x400000, MEM_COMMIT, PAGE_READWRITE)==NULL) {
-					DisplayError(GS(MSG_MEM_ALLOC_ERROR));
-					ExitThread(0);
+					//DisplayError(GS(MSG_MEM_ALLOC_ERROR));
+					//ExitThread(0);
 				}
 				if (VirtualAlloc((BYTE *)JumpTable + 0x400000, 0x400000, MEM_COMMIT, PAGE_READWRITE)==NULL) {
-					DisplayError(GS(MSG_MEM_ALLOC_ERROR));
-					ExitThread(0);
+					//DisplayError(GS(MSG_MEM_ALLOC_ERROR));
+					//ExitThread(0);
 				}
 				if (VirtualAlloc((BYTE *)DelaySlotTable + (0x400000 >> 0xA), (0x400000 >> 0xA), MEM_COMMIT, PAGE_READWRITE)==NULL) {
-					DisplayError(GS(MSG_MEM_ALLOC_ERROR));
-					ExitThread(0);
+					//DisplayError(GS(MSG_MEM_ALLOC_ERROR));
+					//ExitThread(0);
 				}
 			} else {
 				VirtualFree(N64MEM + 0x400000, 0x400000,MEM_DECOMMIT);
@@ -1434,9 +1434,9 @@ BOOL Machine_SaveState(void) {
 	return TRUE;
 }
 void PauseCpu (void) {
-	DWORD Result;
+	//DWORD Result;
 	if (!CPURunning) { return; }
-	do {
+	/*do {
 		Result = MsgWaitForMultipleObjects(1,&hPauseMutex,FALSE,INFINITE,QS_ALLINPUT);
 		if (Result != WAIT_OBJECT_0) {
 			MSG msg;
@@ -1445,7 +1445,7 @@ void PauseCpu (void) {
 				DispatchMessage(&msg);
 			}
 		}
-	} while (Result != WAIT_OBJECT_0);
+	} while (Result != WAIT_OBJECT_0);*/
 	if (CPU_Paused || CPU_Action.Pause) {
 		HMENU hMenu = GetMenu(hMainWindow);
 		HMENU hSubMenu = GetSubMenu(hMenu,1);
@@ -1471,7 +1471,7 @@ void PauseCpu (void) {
 void RefreshScreen (void ){
 	static DWORD OLD_VI_V_SYNC_REG = 0, VI_INTR_TIME = 500000;
 	LARGE_INTEGER Time;
-	if (OLD_VI_V_SYNC_REG != VI_V_SYNC_REG) {
+	if (OLD_VI_V_SYNC_REG != VI_V_SYNC_REG) { // Should this be commented out?
 		if (VI_V_SYNC_REG == 0) {
 			VI_INTR_TIME = 500000;
 		} else {
@@ -1480,10 +1480,10 @@ void RefreshScreen (void ){
 				VI_INTR_TIME -= 38;
 			}
 		}
-	}
+	} // Should this be commented out?
 	ChangeTimer(ViTimer,Timers.Timer + Timers.NextTimer[ViTimer] + VI_INTR_TIME);
 	UpdateFieldSerration((VI_STATUS_REG & 0x40) != 0);
-	if (LimitFPS) {	Timer_Process(NULL); }
+	if (LimitFPS || SpeedCap) { Timer_Process(NULL); }
 	if ((CurrentFrame & 7) == 0) {
 		QueryPerformanceCounter(&Time);
 		Frames[(CurrentFrame >> 3) % 8].QuadPart = Time.QuadPart - LastFrame.QuadPart;
@@ -1494,7 +1494,7 @@ void RefreshScreen (void ){
 	__try {
 		if (UpdateScreen != NULL) { UpdateScreen(); }
 	}
-	__except (r4300i_CPU_MemoryFilter(GetExceptionCode(), GetExceptionInformation())) { ExitThread(0); }
+	__except (r4300i_CPU_MemoryFilter(GetExceptionCode(), GetExceptionInformation())) { /*ExitThread(0);*/ }
 	if ((STATUS_REGISTER & STATUS_IE) != 0 ) { ApplyCheats(); }
 }
 void RunRsp (void) {
@@ -1526,9 +1526,15 @@ void SetCoreToRunning ( void ) {
 void SetCoreToStepping ( void ) {
 	CPU_Action.Stepping = TRUE;
 }
-void CheckRbRefresh ( void ) {
-	if (RomBrowser) { ShowRomList(hMainWindow); RefreshRomBrowser();
-	} else SetupMenu(hMainWindow);
+void HandleShutdown ( void ) {
+	if (__argc > 1) __argc = 1;
+	if (CPURunning) {
+	CPURunning = FALSE;
+	memset(N64MEM, 0, RDRAMsize);
+	}
+	ShowRomList(hMainWindow);
+	RefreshRomBrowser();
+	SetupMenu(hMainWindow);
 }
 void StepOpcode ( void ) {
 	PulseEvent( CPU_Action.hStepping );
