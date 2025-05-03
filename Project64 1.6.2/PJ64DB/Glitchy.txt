@@ -29,7 +29,7 @@
 #30# "Restaurar desde"
 #31# "Guardado actual"
 #32# "Trucos"
-#33# "Boton GS"
+#33# "Botón GS"
 #34# "Resumir"
 #35# "Opciones"
 #36# "Pantalla completa"
