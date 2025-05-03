@@ -10,7 +10,7 @@ Windows' built-in antivirus can run into false positives and screw up your gamin
 Avoid loading decompressed ROMs into the emulator or they can misbehave/crash. When I say decompressed I don't mean extracted from a .zip/compression format, but when the .z64/.v64/.n64 file itself has not been compressed.
 
 
-If you want to play on controller, you may want to enable XInput in the N-Rage input plugin configuration or try the Octomino SDL2 input plugin, but N-Rage is suggested if you can use it as some games can't be emulated properly without it. If you're playing on keyboard, I suggest using N-Rage with F/G keys for real-time range modifiers, otherwise just use Jabo's DirectInput7 if you don't need that.
+If you want to play on controller, you may want to enable XInput in the N-Rage input plugin configuration or try the Octomino SDL2 input plugin, but N-Rage is suggested if you can use it as some games can't be emulated properly without it. If you're playing on keyboard, I suggest using N-Rage with F/G keys for real-time range modifiers.
 
 
 Project64 1.6 was not originally intended to be used with ROMhacks. If you want to use this emulator with ROMhacks, you may need to use specific ROM settings, update your RDB, or use a specific video plugin. Please see the user guide for more info about this.
