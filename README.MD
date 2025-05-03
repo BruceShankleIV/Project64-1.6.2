@@ -125,16 +125,16 @@ gaudy-twinned0z@icloud.com / [@clickdevin](https://github.com/clickdevin) - Than
 [@GlitchyDorime](https://github.com/GlitchyDorime) - I really appreciate your warm comments about this project. 10/10?!? I love hearing that!
 		And you're a very good translator. Thanks for being there every step of the way with me.
 
-[@MrsLilyCat](https://github.com/MrsLilyCat) - You're the sweetest person ever Lily, thanks for being the best friend a friend could have!💖
+[@MrsLilyCat](https://github.com/MrsLilyCat) - You're a very kind person and I especially thank you for making an awesome translation! 💖 :)
 
 [@kev4cards](https://github.com/kev4cards) - Thanks for helping me with my credits. You have given good advice which is much appreciated.
+
+[@satannintendo](https://github.com/SatanNintendo) - You have had a good attitude ever since we met, and thanks so much for your translation!
 
 Bruce Shankle III - For helping me learn to use Visual Studio when I first started this project, and for
                     helping  me obtain an Uninterruptible Power Supply which has helped me tremendously.
                     Later on, he helped hook me up with high speed internet to help with my thousands of
                     GitHub commits that I was pushing to my private repositories. You're a great father!
-
-satannintendo - You have had a good attitude ever since I met you. This world need more people like you!
 
 Emmanuel Sturdivant - He gave me candy he found at the bottom of a vending machine. A heart of kindness.
 
