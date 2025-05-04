@@ -82,8 +82,7 @@ ROMhacks (you should download these from the repository) (some ROMhacks may NOT 
 
 ## N64 Games to Play With Icepir8's LLE suggested
 
-The games listed below are expected to work well with the the Icepir8's LLE video plugin and you will have some graphical issues without it! Your
-PC may not support Icepir8's LLE, and in that case you should see the Extra Video Plugins folder and try some of those to remedy graphics issues.
+The games listed below are expected to work well with the the Icepir8's LLE video plugin and you will have some graphical issues if not using it!
 
 
 ROMhacks (you should download these from the repository) (all of these ROMhacks AREN'T suitable for kids/has dark themes/has weird stuff in it!):
@@ -104,7 +103,7 @@ Retail games with FPS unlocked (smooth in motion) (I cannot guarantee there won'
 
 To effectively make use of Project64 1.6.2 with all games, you will need to make use of the plugin system and review the plugin notes. When you open a ROM, if you are unable to play the game or there are bad graphical issues or there's a crash, it's possible that you need to change your plugins. From here, end emulation from the file tab, and then go to the ROM Notes tab. Here you may see a plugin note which tells you a specific plugin you need and/or suggest a specific plugin. If you are unable to open the ROM to access the ROM Notes tab in the settings, you can right click on the ROM in the ROM browser after selecting the directory where the ROM is and view the ROM Notes from there. However, there will be no ROM notes provided if the ROM is not logged in the ROM Database file (PJ64.rdb).
 
-HOWEVER, in spite of all that, the success of each plugin is highly PC dependent. This is in-part why the default video plugin is a low-end one (Jabo's Direct3D8) which should work across all PC's. In the event that you are unable to use the included LLE plugin due to it not working with your PC, some extra video plugins have been included in the "Extra Video Plugins" folder in the Project64 1.6.2 folder. See that folder for more details.
+HOWEVER, in spite of all that, the success of each plugin is highly PC dependent. This is in-part why the default video plugin is a low-end one (Jabo's Direct3D8) which should work across all PC's.
 
 ## Special Thanks & Shoutouts
 
