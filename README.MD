@@ -1,6 +1,6 @@
 ## Project Status
 
-I've decided to take a break from the project with WIP 09, will return later with WIP 10.
+I've decided to take a break from the project with WIP 09, will return later with WIP 10. EDIT: Been doing more work on this recently, think we will be getting french translation too perhaps. Should be ready sometime in July or before then.
 
 If you want to make your own project from this one or continue it in some capacity, press the "Fork" button to clone the repository and begin making changes. That's what the fork button is for! 🙂
 
