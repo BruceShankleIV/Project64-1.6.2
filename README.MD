@@ -1,7 +1,6 @@
 ## Project Status
 
-I've decided to take a break from the project with WIP 09, will return later with WIP 10. EDIT: Been doing more work on this recently, think we will be getting french translation too perhaps. Should be ready sometime in July or before then.
-
+I've decided to take a break from the project with WIP 09, will return later with WIP 10. EDIT: Been doing more work on this recently, think we will be getting french translation too perhaps. Should be ready sometime in August or before then. So what I'm doing is I take some time to brainstorm what I will work on next and come up with ideas, then work on it for some time and occasionally backup my work. Once I get all of my thoughts taken care of, I commit everything and release a new build with all the latest changes for you to benefit from. So the current build you see is already out of date and has already been obsoleted a while ago, but I'm still not quite finished preparing the new build either. So it requires some patience. But I really do think sometime this month, maybe next month, we can have next build ready and commit the latest changes.
 If you want to make your own project from this one or continue it in some capacity, press the "Fork" button to clone the repository and begin making changes. That's what the fork button is for! 🙂
 
 There is a discord server chatroom for Project64 1.6.2, intended for bug reports. You can chat about the project or report any issues you have in it [here](https://discord.com/invite/cHDxa9vzQM).
