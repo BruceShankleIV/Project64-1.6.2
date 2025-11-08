@@ -1,14 +1,12 @@
 ## Download Links
 
-[The download link for the emulator/up-to-date releases](https://github.com/BruceShankleIV/Project64-1.6.2/releases](https://github.com/BruceShankleIV/Project64-1.6.2/releases).
+[The download link for the emulator and its most up to date release](https://github.com/BruceShankleIV/Project64-1.6.2/releases](https://github.com/BruceShankleIV/Project64-1.6.2/releases).
 
 Get ROMhacks from [here](https://github.com/BruceShankleIV/Project64-1.6.2-ROMhacks-Collection).
 
 ## Project Status
 
-Halloween 2025 build now released, AKA Beta 10.0! Hope you enjoy this build, it's been in the works for a long time now. I am almost completely confident in it now, the project can support virtually every retail game, hack, and emulates almost everything flawlessly. That is unlike other projects which claim to be better than Project64 1.6 but fail in many ways, such as how Project64 3.0-N wouldn't play Donkey Kong 64 or Yoshi's story, while neither it nor Project64 Legacy could play the latest version of Pokémon Stadium and both of these emulators had issues with certain Zelda ROMhacks like Indigo Chapter 2 or Spaceworld '97 Experience or Ultimate Trial. Project64 Legacy also has a severe timing bug which screws up audio in some games, noticeable in select ROMhacks, and has broken ROM Settings for games like Bomberman 64. This is as of Legacy Version 1.6.4... Use of these emulators is ill-advised until they get these kinds of major regressions sorted out in future updates.
-
-Note: the Halloween 2025 build is closed-source as I am not done making changes to the code yet... You will have that when it's done and further tested.
+Working on Version 12, trying to account for intel GPU issues and finish working on the source code.
 
 ## Overall Changes to Give You an Idea of What This Project is About
 
