@@ -1,6 +1,6 @@
 ## Download Links
 
-[The download link for the emulator and its most up to date release](https://github.com/BruceShankleIV/Project64-1.6.2/releases](https://github.com/BruceShankleIV/Project64-1.6.2/releases).
+[The download link for the emulator and its most up to date release](https://github.com/BruceShankleIV/Project64-1.6.2/releases).
 
 Get ROMhacks from [here](https://github.com/BruceShankleIV/Project64-1.6.2-ROMhacks-Collection).
 
