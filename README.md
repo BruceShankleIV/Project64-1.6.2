@@ -1,6 +1,6 @@
 ## Download Links
 
-[The download link for the emulator](https://github.com/BruceShankleIV/Project64-1.6.2/releases](https://github.com/BruceShankleIV/Project64-1.6.2/releases).
+[The download link for the emulator](https://github.com/BruceShankleIV/Project64-1.6.2/releases).
 
 Get ROMhacks from [here](https://github.com/BruceShankleIV/Project64-1.6.2-ROMhacks-Collection).
 ^ If there is a ROMhack not found in this collection anywhere, let me know so it can be added.
