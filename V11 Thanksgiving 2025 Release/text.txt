@@ -1,4 +1,4 @@
-[Release Video going over ROMhack and Zelda64 Texture Pack setup](https://youtu.be/PPIimf0vTi0)
+[Release Video going over ROMhack and Zelda64 Texture Pack setup](https://youtu.be/PPIimf0vTi0).
 
 More than 20 years after the original Version 1.6 release, Project64 finally has a non-regressive update with this release of my Version 1.6.2.
 
