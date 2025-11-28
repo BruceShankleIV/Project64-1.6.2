@@ -3,10 +3,10 @@
 [The download link for the emulator](https://github.com/BruceShankleIV/Project64-1.6.2/releases).
 
 Get ROMhacks from [here](https://github.com/BruceShankleIV/Project64-1.6.2-ROMhacks-Collection).
-^ If there is a ROMhack not found in this collection anywhere, let me know so it can be added.
+< If there is a ROMhack not found in this collection anywhere, let me know so it can be added.
 
 Zelda64 Texture packs available [here](https://mega.nz/folder/hLB2jI5R#t71whplzD7iMbb3m_YfFSA).
-^ Feel free to message any not found here and I will add if it's not too big in file size.
+< Feel free to message any not found here and I will add if it's not too big in file size.
 
 These links are also in the User Guide header as you will be informed on first boot of the app.
 This way, you always have access to these resources with every copy of the emulator you download.
