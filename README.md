@@ -1,50 +1,32 @@
 ## Download Links
 
-[The download link for the emulator and its most up to date release](https://github.com/BruceShankleIV/Project64-1.6.2/releases).
+[The download link for the emulator](https://github.com/BruceShankleIV/Project64-1.6.2/releases](https://github.com/BruceShankleIV/Project64-1.6.2/releases).
 
 Get ROMhacks from [here](https://github.com/BruceShankleIV/Project64-1.6.2-ROMhacks-Collection).
+^ If there is a ROMhack not found in this collection anywhere, let me know so it can be added.
+
+Zelda64 Texture packs available [here](https://mega.nz/folder/hLB2jI5R#t71whplzD7iMbb3m_YfFSA).
+^ Feel free to message any not found here and I will add if it's not too big in file size.
+
+These links are also in the User Guide header as you will be informed on first boot of the app.
+This way, you always have access to these resources with every copy of the emulator you download.
 
 ## Project Status
 
-Working on Version 12, trying to account for intel GPU issues and finish working on the source code.
+Pretty much done with Version 11 Thanksgiving release, as I have not experienced any significant issues from using it. There will be minimal changes from me if any beyond November 27th 2025.
 
-## Overall Changes to Give You an Idea of What This Project is About
+## What This Project Is About
 
-A list of overall changes for people moving from Project64 1.6 to my 1.6.2:
+This is not a complete rewrite of the original Project64 code (which would introduce regressions), but a small evolution with improved ROMhack support, additional plugins for users with high-end devices which can suport these plugins, more settings, removing dead code and useless settings or features, and overall making it better based on my own personal usage. It has been crafted from a custom build called Version 1.6.1, hence this name. Each change has been carefully tested to make sure no issues are introduced. Other developers have been reckless about their changes and compromised game compatibility and app stability in doing so, hence why this exists. If you want to load a retail game or supported hack with a high chance of success and you don't care about hardware limitations, this is the build for you.
 
-Almost no emulation regressions, if a game works on 1.6 it should work in 1.6.2. If it doesn't work, the
-Game.ini entry for that game needs to be updated. Report the bug if this happens so it can be fixed
-
-Fixed most sound-related crashes
-
-Games will properly work/won't crash on boot or in the middle of the game
-
-Improved app security
-
-Improved app performance
-
-Improved cheat & game support
-
-Improved support for the included plugins
-
-Improved sound and graphics
-
-Improved load times
-
-Reduced file sizes
-
-Reduced lag
-
-Removed practically useless settings that contributed to crashes like Advanced Block Linking and SP Hack
-
-## N64 Games to Play
+## Suggested Games to Play (not including ROMhacks)
 
 The games listed below are expected to work decently with the default settings so you won't have to worry about updating your plugin settings.
 
 * The Legend of Zelda - Ocarina of Time (1.0/1.1/1.2)
 * The Legend of Zelda - Majora's Mask (U)
 * Super Mario 64
-* Mario Kart 64 (runs at 60FPS on (U) version)
+* Mario Kart 64 (runs at 60FPS on U version)
 * Kirby 64: The Crystal Shards
 * Banjo Kazooie
 * Banjo Tooie
@@ -53,32 +35,50 @@ The games listed below are expected to work decently with the default settings s
 
 ## Project64 1.6.2 Plugin Usage Guidelines
 
-To effectively make use of Project64 1.6.2 with all games, you will need to make use of the plugin system and review the plugin notes. When you open a ROM, if you are unable to play the game or there are bad graphical issues or there's a crash, it's possible that you need to change your plugins. From here, end emulation from the file tab, and then go to the ROM Notes tab. Here you may see a plugin note which tells you a specific plugin you need and/or suggest a specific plugin. If you are unable to open the ROM to access the ROM Notes tab in the settings, you can right click on the ROM in the ROM browser after selecting the directory where the ROM is and view the ROM Notes from there. However, there will be no ROM notes provided if the ROM is not logged in the ROM Database file (Game.ini).
+To effectively make use of Project64 1.6.2 with all games, you will need to make use of the plugin system and review the plugin notes. When you open a ROM, if you are unable to play the game or there are bad graphical issues or there's a crash, it's possible that you need to change your plugins. From here, go to the ROM Notes tab. Here you may see a plugin note which tells you a specific plugin you need and/or suggest a specific plugin. If you are unable to open the ROM to access the ROM Notes tab in the settings, you can right click on the ROM in the ROM browser after selecting the directory where the ROM is and view the ROM Notes from there. However, there will be no ROM notes provided if the ROM is not logged in the ROM Database file (Game.ini).
 
-HOWEVER, in spite of all that, the success of each plugin is highly PC dependent. This is in-part why the default video plugin is a low-end one (Jabo's Direct3D8) which should work across all PC's.
+The success of each plugin is highly PC and game dependent.
 
-## This Program is For All Games Including ROMhacks. Stay Away From The ROMhack People or They Will Try to Hurt You
-
-Unfortunately, there are a lot of heartless people involved with N64 game ROMhacking. This includes abusers who infringe upon the hard contributions of others in an attempt to reattribute ownership to themselves and/or undermine others work, all out of a desire for attention and internet fame. While some of them are so deprived and degenerate that they groom kids by normalizing sexual behaviors before attempting to manipulate them to lie about this to others by scolding them when bringing up their screwed up relationship and thanking them when they promise to "keep stuff private". Due to this and my concern for future victims of these heartless people, I strongly suggest you stay away from any areas of the internet which claim to be even remotely involved with ROMhacking.
-Examples provided at the bottom of the README.
-
-## To Supporters And Thankful Or Kind People - Thanks For Appreciating This Project And Showing Your Support!
-
-To all who subscribed to indicate support for the project, thanks so much for recognizing the high compatibility goal of my build and I hope you enjoy and have a
-good experience with the latest build. If you happen to run into an issue, be sure to report about it and I'll address it when I am available to. :)
-
-And thanks for giving me further motivation to work on this. Seriously, I probably wouldn't have gone this far without see'ing the high hopes people have for this. :3
+Note: It's ill-advised to add any dll's into the Plugin folder. Doing so will result in unknown consequences.
 
 ## What's Next?
 
-Right now, the halloween build is released but not open source yet because I am still working on further changes to the source code and reviewing said changes at this time.
-What's next will be any possible regressions introduced, if any, resolved, all games fully tested and known working, and additional ROMhack support.
+A friend of mine is working on cheat codes for Ocarina of Time 1.0 (U) version. Next build will have these if he's done with them by then.
 
-## Examples
+
+## Aknowledgements
+
+Thanks to the efforts between Zilmar & Jabo alongside their team, they delivered the original Project64.
+
+Project64 1.6.1 surfaced with a handful of improvements, but many regressions due to lack of testing. The source code was later lost and only recovered years later by Jabo. Plugins made for the project are released including Azimer's HLE Audio 0.60 WIP 2 and Jabo's 1.6.1 Video/Sound/Input.
+
+Zilmar then ruined this wonderful project with malware bundling and adware. These actions marked the end of the soul in official releases of the project.
+
+Project64 Legacy, an update of Project64 1.6 is revealed years later, created by some of the people who delivered the original Project64. Unfortunately, it too is plagued by issues (as of 1.6.4) and one of these developers was actually just a troll who impersonates themselves as a copyright holder for who knows why.
+
+Finally, after my efforts for about one year, alongside the testing of numerous friends, we have come to this. Project64 1.6.2, a mostly bug-free experience with support for ROMhacks, texture packs, all relevant plugins included, and working on all devices, with all features confirmed working.
+
+I thank Zilmar & Jabo for "Permission to use, copy, modify and distribute Project64 in both binary and source form, for non-commercial purposes", and for giving everyone this opportunity to continue Project64 in this capacity.
+
+To the developers behind Project64 Legacy, thanks for making valuable contributions in some ways which will benefit user experience with this application.
+
+To Zilmar, thanks for the spirit you put into the original Project64 and meaningful improvements.
+
+To my friends, thank you for testing the application along the way and providing feedback, reporting issues to solve, and translating to other languages.
+
+To idc5580, your patching tool is wonderful to apply lots of patches to a baseROM to quickly generate lots of ROMhacks. Thanks so much for your efforts!
+
+And thank you, the user, for benefitting from all this work. May you have a good experience with this application and the games you will play.
+
+## Should Probably Stay Away From Those ROMhackers Though - Arrogance, Content Stealing (and a lot of it), Financial Scamming, Reports of Grooming. Things seem pretty bad out there folks. Stay indoors!
+
+Yeah you saw that title correctly. People behind these fun fangames seem to be involved in the most dirty and messed up things. I encourage you to play the ROMhacks and texture packs
+with this program, but at a safe distance away from the people involved in these works if they are a stranger to you. Below I talk about some of this to show you what you're missing.
+
 
 [Bio - "That one german guy that made the Star Revenge Series and remade vanilla SM64 to be finally a good game. Been hacking SM64 since 2012 and still going at it. If you wanna see me make these hacks, then check out my Twitch streams. Also citified hater of extreme hacks, screw the level design in them. And don't question the story in my SR hacks, it's made up as I went along making them."](https://romhacking.com/user/BroDute)
 
-Above, A user states they have redone Super Mario 64 to be "finally a good game", implying that Mario 64 was never a good game and that their work is "actually good", a case of redoing something not because you liked the original work, but because you didn't like it and wish to devalue it.
+Above, A user states they have redone Super Mario 64 to be "finally a good game", implying that Mario 64 was never a good game and that their work is "actually good", a case of redoing something not because you liked the original work, but because you didn't like it and wish to devalue it by putting your work above its base. It would be like if Mario 64 DS wasn't made by Nintendo and then these DS developers told everyone that Mario 64 sucked and that they should play Mario 64 DS instead.
 
 [On christmas of 2021, Super Mario Star Road Retooled would release on YouTube](https://www.youtube.com/watch?v=HdMHkK1MPO0). In the video, it appears to be a rerelease
 of a ROMhack called Star Road originally created by a user who goes by the alias "Pyro Jay". The video opens with "Pyro Jay Presents" "Rebuilt from the ground up 10
@@ -160,17 +160,16 @@ all if you emulate with the framebuffer off. Therefore, it's best to have it on 
 In addition to this, I mentioned the ACE vulnerability which has been being used as a scare tactic has been patched right after it was found and to distirbute
 the patch for users that benefit from Project64 1.6. Instead, they continue to lie to people and omit this critical detail because that wouldn't help them control
 people's decisions through fear and to lure them into using less effective and regressive programs. Meanwhile, users on the internet behave like pedophiles by
-enabling statutory rapists and manipulators to do what they do best: abusing kids and burying the evidence, some of which is shown below.
+enabling statutory rapists and manipulators to do what they do best: abusing lonely kids and burying the evidence.
 
-In Early march of 2021, a 13 year old boy was talking to his peers about the special relationship he had been involved in and he was urged to make the
-groomer aware that other people know about this relationship they had been having. The groomer responded by urging the 13 year old to
-[convince people that they were joking about the sexual image they received from them and to lie about it:](https://drive.google.com/file/d/147QjkVFJsEXtx5UWsJkmXZH-lHy2V6C9/view?usp=sharing)
+In Early march of 2021, a 13 year old boy was talking to his peers about the special relationship he had been involved in.
+The groomer said to [convince people that they were joking about the sexual image they received from them:](https://drive.google.com/file/d/147QjkVFJsEXtx5UWsJkmXZH-lHy2V6C9/view?usp=sharing)
 
 START
 
-[Groomer](https://romhacking.com/user/Pluto): "Tell them you were joking"
+Groomer: "Tell them you were joking"
 
-[Groomer](https://romhacking.com/user/Pluto): "tell them f***ing anything to convince them"
+Groomer: "tell them f***ing anything to convince them"
 
 END
 
@@ -178,15 +177,15 @@ After this, the groomer claimed the 13 year old wanted this and that they're als
 makes these sexual acts acceptable all while scolding the boy for making people aware about this.
 Since the groomer built an attachment with the kid, this made the kid very upset and wanting to feel better [as described by somebody involved with him](https://drive.google.com/file/d/1gdytSj2K68Xw4UHdlrAGTNi_ipEMKJlx/view?usp=sharing).
 
-[More Chat Exchanges](https://drive.google.com/file/d/1DmIOdP4g5G7t4DjdFL72wVvJ6XXQGuSB/view?usp=sharing)
+[Chat](https://drive.google.com/file/d/1DmIOdP4g5G7t4DjdFL72wVvJ6XXQGuSB/view?usp=sharing)
 
 START
 
-[Groomer](https://romhacking.com/user/Pluto): "Dont do that again"
+Groomer: "Dont do that again"
 
-[Groomer](https://romhacking.com/user/Pluto): "Thats such a sh**ty thing to do"
+Groomer: "Thats such a sh**ty thing to do"
 
-[Groomer](https://romhacking.com/user/Pluto): "Im not saying you are a sh**ty person but you did something really f***ed up"
+Groomer: "Im not saying you are a sh**ty person but you did something really f***ed up"
 
 END
 
@@ -194,9 +193,9 @@ START
 
 The 13 year old: "I promise from now on I'll keep our stuff private"
 
-[Groomer](https://romhacking.com/user/Pluto): "Dont do it again though"
+Groomer: "Dont do it again though"
 
-[Groomer](https://romhacking.com/user/Pluto): "thanks"
+Groomer: "thanks"
 
 END
 
@@ -208,18 +207,19 @@ will engage in emotional manipulation: "If you tell your dad about this, he is g
 won't be able to give you gifts anymore;" "If you tell, your mom is going to get hurt." The offender may
 normalize the inappropriate behavior with the child, or even blame the child for letting the abuse happen."
 
-After this, the leader of the so-called ROMhacking community who calls himself SimpleFlips tried to downplay all this to me as "Minor's Romance" and disregarded
-this child sexual abuse coming from one of the members and Discord moderators of his so-called ROMhacking community. Despite knowing [this cognitively impaired 13
+After this, the manager of the so-called ROMhacking community who calls himself SimpleFlips tried to downplay all this to me as "Minor's Romance" and disregarded
+this child sexual abuse coming from one of the members and server moderators of his so-called "community". Despite knowing [this cognitively impaired 13
 year old boy stated their mental health is "rapidly declining" to the groomer](https://drive.google.com/file/d/1B9XmsareqAFi5Lad_rgjYC6IFqX4IDvG/view?usp=sharing)
-and that the groomer stated there's "a pretty big gap" in their age which can used for "Taking advantage" and that they stated the 13 year old was below the age of
-consent.
+and the groomer stated there's "a pretty big gap" in their age which can used for "Taking advantage" and they stated the 13 year old was below the age of consent.
 
-The Internet Bad Guys Are Everywhere:
 
-From my own interactions with multiple ROMhack Content creators/people who record videos of ROMhacks, they don't impose any restrictions on innapropriate content
-in their Discord server and see no reason to. Seohaine from OverKart64 uploads other people's content, claims it as his own, then monetizes it and impersonates
+
+This Kind of Screwed Crap is NOT Just Limited to One Place on the Internet Either:
+
+From my own interactions with multiple N64 Content creators/people who record videos of ROMhacks, they don't impose any restrictions on innapropriate content
+being posted by perverts and see no reason to. Seohaine from OverKart64 uploads other people's content, claims it as his own, then monetizes it and impersonates
 himself as the original creator of the content. CDi-Fails in Hylian Modding hijacked what was supposed to be a fair competition to see who can make the best
-ROMhack, disqualifying the best ROMhack and denying the makers the $500 USD cash reward he promised. And others...
+ROMhack, disqualifying the best ROMhack and denying the makers the $500 USD cash reward he promised.
 
 [Seohaine](https://www.youtube.com/post/UgkxCFRZmG3RAwJJX0HiPEM1G0K-hn1dwy62)
 
@@ -227,7 +227,8 @@ ROMhack, disqualifying the best ROMhack and denying the makers the $500 USD cash
 
 [CDi-Fails hijacks monetary-rewards ROMhacking competition, lies about submissions on the HM website](https://drive.google.com/file/d/18h2PhHUB7PbkNaP5omi8jj7qmdkVI7Ms/view?usp=sharing)
 
-[Zelda Source Code Decompilation is corrupt and Fig02 abuses his position to lie about contributor intentions while being negligent to deal with people like Saurean who are knowledgable of gigaleaked code](https://drive.google.com/file/d/1C8OjxAEJ4oees6GsZanxBwJ1imqpByZL/view)
+[Zelda Source Code Decompilation effort is completely corrupt and Fig02 lies about a contributor's intentions while being negligent to deal with pirates like Saurean who pirated leaked code and referenced it for their work](https://drive.google.com/file/d/1C8OjxAEJ4oees6GsZanxBwJ1imqpByZL/view)
 
-Overall, it seems that many of people involved in ROMhacking are completely heartless at worst and scummy at best. Which is why I suggest enjoying ROMhacks from a
-safe distance.
+[The author of Project64 3.0-N finds Hitler's mass genocide respectable. Not as a joke, but seriously. "Technically Hitler would've solved overpopulation" "I don't like what he did" "But there's ultimately no way to explain why what he did was objectively bad"](https://drive.google.com/file/d/1xIDOLn7r58ppRXfB_2n-b7S1IbD3h3Bc/view?usp=sharing)
+
+Yeah, this is crazy. Just stay away from this and you will avoid so much trouble.

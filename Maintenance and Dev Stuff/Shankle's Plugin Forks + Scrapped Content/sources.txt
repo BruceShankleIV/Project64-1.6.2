@@ -1,8 +1,0 @@
-https://github.com/Luna-Project64/GLideN64/tree/8db6d5a7ff3d04bb036b0b7430b79c15d9ec58d8
-https://github.com/weinerschnitzel/mupen64plus-rsp-hle/tree/84d4588ebcdb3622e44c84e783898c857ef3f539
-https://web.archive.org/web/20240313231428/https://github.com/pj64team/NRage-Legacy-Input
-https://github.com/wermipls/octomino-sdl-input/tree/15cd6ce24e5cfcf48a7dc93fcad1b8d6341268f8
-https://github.com/BruceShankleIV/Project64-1.6.2/tree/db3623c13b70759f83bddbf08bea731592c24351
-https://github.com/BruceShankleIV/Project64-1.7-2010-Archive/tree/784e9d5ac4745f51a01fcf9920180763cd0320b1/Bin/Debug/Plugin/GFX
-https://www.emulator-zone.com/doc.php/n64/project64.html
-https://github.com/Luna-Project64/AziAudio/tree/8366839f9a9d83390879cd1a6b100010a61f7811

@@ -1,7 +1,0 @@
-Hyperlinks are blocked, don't bother including them. This is for security reasons only (a site could be harmful to the end-user as it is or if it changes in the future).
-
-In the case that your plugin is required or best fit for a game, it's highly suggested you mention to the user to use your plugin as a plugin note in the RDB for all
-relevant games which benefit from your plugin. An example of this case would be ANGLE GLideN64 for most Super Mario 64 ROMhacks.
-
-You should bundle a low level RSP like ParaLLel RSP if you make a low level video plugin for this emulator as the on-board low level RSP has speed issues,
-it was only included because I wanted the most compatible RSP plugin to be able to support all the N64 games.
