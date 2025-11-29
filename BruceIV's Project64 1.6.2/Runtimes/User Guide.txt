@@ -14,6 +14,10 @@ Zelda64 texture packs hosted at...
 
 https://mega.nz/folder/hLB2jI5R#t71whplzD7iMbb3m_YfFSA
 
+and Super Mario 64 texture packs hosted at...
+
+https://mega.nz/folder/xL5BwaaQ#2yLK6SfwElrnJQtphdqXKw
+
 should also work in the latest release of this emulator. See the start of the user guide for texture pack setup instructions. Remember that texture packs can also be used with some ROMhacks!
 
 
@@ -63,7 +67,7 @@ Rice - Put the Rice format folder in Plugin\hires_texture. Uncheck Hide
 If a rice texture pack format folder does not work with a plugin, try the
 use .dat format for Glide64 and .htc format for GLideN64 for good results
 but remember to turn on Use file storage instead of memory cache for .hts
-format for GLideN64 and gache/htc/hts files placed into the cache folder!
+format for GLideN64. Remember dat/htc/hts files go into the cache folder!
 
 
 Section#0 Legality & Legitimacy Notice

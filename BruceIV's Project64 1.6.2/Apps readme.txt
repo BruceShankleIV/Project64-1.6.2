@@ -9,7 +9,10 @@ benefits the experience on the emulator (development tool).
 Convert ROMs to Big Endian .z64 format with tool64 to apply
 patches to them to play ROMhacks on the emulator.
 
-Encrypt a Project64 executable inside a WinRAR SFX archive.
+Extract from .001 files with .002 and .003 and so on beside
+it (in the same directory as it) using WinRAR. This is part
+of a multi-volume archive. When you extract from .001 file,
+it's merging the other .00 files with it and decompressing!
 
 -----------------------------------------------------------
 Not included in this folder is Visual Studio or the v120_xp

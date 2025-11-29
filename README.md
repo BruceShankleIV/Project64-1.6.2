@@ -8,12 +8,18 @@ Get ROMhacks from [here](https://github.com/BruceShankleIV/Project64-1.6.2-ROMha
 Zelda64 Texture packs available [here](https://mega.nz/folder/hLB2jI5R#t71whplzD7iMbb3m_YfFSA).
 < Feel free to message any not found here and I will add if it's not too big in file size.
 
+Super Mario 64 texture available [here](https://mega.nz/folder/xL5BwaaQ#2yLK6SfwElrnJQtphdqXKw).
+< Feel free to message any not found here and I will add if it's not too big in file size.
+
+Note: If a texture pack is big in file size, then it needs to be split up into a multi-volume
+archive, such as .001 and .002 and so forth.
+
 These links are also in the User Guide header as you will be informed on first boot of the app.
 This way, you always have access to these resources with every copy of the emulator you download.
 
 ## Project Status
 
-Pretty much done with Version 11 Thanksgiving release, as I have not experienced any significant issues from using it. There will be minimal changes from me if any beyond November 27th 2025.
+I said it was pretty much done with v11, but I wanted to do a tiny bit more, now v11.1 and probably done!
 
 ## What This Project Is About
 
