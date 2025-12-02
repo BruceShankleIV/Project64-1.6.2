@@ -142,7 +142,7 @@
 #142# "TLB"
 #143# "Register Caching:"
 #144# "Delay SI"
-#145# "CF1=CF0"
+#145# "CF1-->CF0"
 #146# "Legacy AiLenChanged"
 #147# "Limit FPS off"
 #148# "Delay RDP"
