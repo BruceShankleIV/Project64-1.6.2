@@ -2534,7 +2534,7 @@ void StartRecompilerCPU (void ) {
 					continue;
 				} else {
 					if (SetMemory406) DisplayThreadExit("StartRecompilerCPU - EXCEPTION_EXECUTE_HANDLER - PROGRAM_COUNTER >= 0xB0000000 && PROGRAM_COUNTER < (RomFileSize | 0xB0000000) - else\n\nNeeds 'SM 0x406=ON' removed?");
-					else DisplayThreadExit("StartRecompilerCPU - EXCEPTION_EXECUTE_HANDLER - PROGRAM_COUNTER >= 0xB0000000 && PROGRAM_COUNTER < (RomFileSize | 0xB0000000) - else\n\nSelf-modifying Code Method-related?");
+					else DisplayThreadExit("StartRecompilerCPU - EXCEPTION_EXECUTE_HANDLER - PROGRAM_COUNTER >= 0xB0000000 && PROGRAM_COUNTER < (RomFileSize | 0xB0000000) - else\n\nMemory Size-related?\nSelf-modifying Code Method-related?");
 				}
 			}
 			if ((SelfModCheck == ModCode_CheckMemoryAdvance || SelfModCheck == ModCode_CheckSetMemoryAdvance) && Block != NULL) {

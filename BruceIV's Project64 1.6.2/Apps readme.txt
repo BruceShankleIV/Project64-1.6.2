@@ -6,6 +6,8 @@ ROMhacks.
 Use HxD to hex edit ROMhack internal names or CRC's if this
 benefits the experience on the emulator (development tool).
 
+ppf-o-matic is for legacy .ppf patch format. Use for those.
+
 Convert ROMs to Big Endian .z64 format with tool64 to apply
 patches to them to play ROMhacks on the emulator.
 

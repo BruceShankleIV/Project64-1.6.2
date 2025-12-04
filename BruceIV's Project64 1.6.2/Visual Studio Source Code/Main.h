@@ -36,7 +36,7 @@ extern "C" {
 #include "Language.h"
 /********* General Defaults **********/
 #define AppName  "BruceIV's Project64 1.6.2"
-// Source Version: Beta 10.0 and Up
+// Source Version: 12
 #define IniName				"Game.ini"
 #define CheatIniName			"Cheat.ini"
 #define LangFileName			"BruceIV.txt"
@@ -49,7 +49,7 @@ extern "C" {
 #define Default_BasicMode		TRUE
 #define Default_RomsToRemember		10
 #define Default_RomsDirsToRemember	10
-#define Default_CountPerOp		2
+#define Default_CountPerOp		1 // Use 2 for better stability
 #define Default_ForceDisableTLB		FALSE
 #define Default_ForceEnableDMA		FALSE
 #define Default_ForceDisableCaching	FALSE
@@ -63,11 +63,11 @@ extern "C" {
 #define CPU_Interpreter			0
 #define CPU_Recompiler			1
 #define Default_CPU			CPU_Recompiler
-/********* Register Caching: *********/
+/********* Register Caching **********/
 #define UseCache_Default -1
 #define REG_CACHE_ON 0
 #define REG_CACHE_OFF 1
-#define Default_UseCache REG_CACHE_OFF
+#define Default_UseCache REG_CACHE_ON // Use REG_CACHE_OFF for better stability
 /******* Self modifying code *********/
 #define ModCode_Default			-1
 #define ModCode_Cache			0

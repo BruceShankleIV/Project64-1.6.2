@@ -1284,9 +1284,8 @@ BOOL GetCheatName(int CheatNo, char * CheatName, int CheatNameLen) {
 	return TRUE;
 }
 void CloseCheatWindow (void) {
+	if (hManageWindow) SendMessage(hManageWindow,UM_CLOSE_CHEATS,0,0);
 	if (CPURunning) EndEmulation();
-	if (!hManageWindow) return;
-	SendMessage(hManageWindow,UM_CLOSE_CHEATS,0,0);
 }
 BOOL LoadCheatExt(char * CheatName, char * CheatExt, int MaxCheatExtLen) {
 	char String[350], Identifier[100];

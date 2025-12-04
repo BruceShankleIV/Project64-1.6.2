@@ -1,0 +1,10 @@
+This small update:
+
+Added pdx pom for legacy .ppf patch format
+Cheat window closes in sync with the app's close
+Signal unregistered game entry (missing game name)
+Note about when an issue could be memory size-related
+Brazilian Portugese translation from TrulyNaN (not yet tested)
+Improved performance with the default counter factor and register caching settings
+Additional ROMhack support to match with changes to the ROMhacks collection repository
+README - More aknowledgement details, Credits & Special Thanks taken from the user guide

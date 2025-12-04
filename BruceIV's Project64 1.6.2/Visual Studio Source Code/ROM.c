@@ -897,8 +897,8 @@ void HandleWindowTitle (void) {
 	if (strlen(String2) == 0) strcpy(String2, "UNKNOWN DATE");
 	sprintf(Identifier, "%08X-%08X-C:%X", *(DWORD*)(&RomHeader[0x10]), *(DWORD*)(&RomHeader[0x14]), RomHeader[0x3D]);
 	_GetPrivateProfileString(Identifier, "Game Name", "", GameName, sizeof(GameName), IniFile);
-	if (strlen(RomName) == 0) strcpy(RomName, "INTERNAL NAME UNAVAILABLE");
-	if (strlen(GameName) == 0) strcpy(GameName, "UNKNOWN GAME");
+	if (strlen(RomName) == 0) strcpy(RomName,"INTERNAL NAME UNAVAILABLE");
+	if (strlen(GameName) == 0) strcpy(GameName,"UNREGISTERED GAME ENTRY");
 	sprintf(WinTitle, "PJ64BIV%s %s - %s, %s", String, String2, RomName, GameName);
 	SetWindowText(hMainWindow, WinTitle);
 }

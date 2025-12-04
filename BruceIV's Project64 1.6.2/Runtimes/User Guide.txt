@@ -327,6 +327,12 @@ Static Interpreter - Currently only needed for GameBoy transfer pak emulation. A
 
 Section#4 Running ROMhacks
 --------------------------------------------------------------------------------------------------------
+Note: If you ran into a crash while trying to play a ROMhack with an unregistered game entry, like pause
+crashed an Ocarina of Time ROMhack, or the ROMhack just will not boot at all, you need to uncheck, "Hide
+Advanced Settings", go to the ROM Settings tab, and set Counter Factor from "Default" to 2 (to fix pause
+issues/or game not booting), and if that isn't enough then also try setting Register Caching to, "OFF"!!
+Remember to apply the setting as specified by the emulator (if the game is running, you need to reset)!!
+
 A lot of ROMhacks should work meh with default settings/registries, but if you want to get the most bang
 for your buck, you need to learn how to setup ROM Settings for the ROMhack and/or modify the hack itself
 to take advantage of per-game hacks in Jabo's Direct3D8. To get per-game settings with Jabo's Direct3D8,
@@ -382,6 +388,10 @@ will be a ROM Settings tab. The tab is looking at the currently loaded Game's CR
 and showing you what emulation options are enabled for the game, what emulation options are disabled for
 the game, and what emulation options are forced ON or forced OFF due to another setting. This section of
 the guide shall give you a quick rundown on the default settings tab and all twenty of the ROM Settings!
+
+Note: You can fine-tune default settings for better compatibility by setting Register Caching OFF,
+and Counter Factor set to 2. However, Register Caching ON is usually good to get better framerate,
+and Counter Factor set to 2 can cause flickering, longer load times, and significant lag increase.
 
 
 CPU Core Style: By default, Recompiler but changeable from the advanced tab to Interpreter
