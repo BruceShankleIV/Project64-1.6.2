@@ -19,7 +19,7 @@ This way, you always have access to these resources with every copy of the emula
 
 ## Project Status
 
-I said it was pretty much done with v11, but I wanted to do a tiny bit more, now v11.1 and probably done!
+V13 in progress.
 
 ## What This Project Is About
 

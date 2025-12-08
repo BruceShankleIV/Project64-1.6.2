@@ -2541,17 +2541,12 @@ void StartRecompilerCPU (void ) {
 				TARGET_INFO * Target = (TARGET_INFO *)Block;
 				if (*(QWORD *)(N64MEM+Addr) != Target->OriginalMemory) {
 					DWORD Start = (Addr & ~0xFFF) - 0x10000, End = Start + 0x20000, count;
-					if (SelfModCheck == ModCode_CheckSetMemoryAdvance) {
-						TargetIndex = 0;
-						for (count = 0; count < (RDRAMsize >> 12); count++) memset(JumpTable + (count << 10), 0, 0x1000);
-					} else {
-						if (End < RDRAMsize) { End = RDRAMsize; }
-						for (count = (Start >> 12); count < (End >> 12); count ++ ) {
-							if (N64_Blocks.NoOfRDRAMBlocks[count] > 0) {
-								N64_Blocks.NoOfRDRAMBlocks[count] = 0;
-								memset(JumpTable + (count << 10),0,0x1000);
-								*(DelaySlotTable + count) = NULL;
-							}
+					if (End < RDRAMsize) { End = RDRAMsize; }
+					for (count = (Start >> 12); count < (End >> 12); count ++ ) {
+						if (N64_Blocks.NoOfRDRAMBlocks[count] > 0) {
+							N64_Blocks.NoOfRDRAMBlocks[count] = 0;
+							memset(JumpTable + (count << 10),0,0x1000);
+							*(DelaySlotTable + count) = NULL;
 						}
 					}
 					Block = NULL;

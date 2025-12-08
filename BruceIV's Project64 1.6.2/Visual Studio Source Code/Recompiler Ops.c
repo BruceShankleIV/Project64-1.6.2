@@ -1952,15 +1952,18 @@ void Compile_R4300i_CACHE (BLOCK_SECTION * Section) {
 	case 0:
 	case 16:
 		Pushad();
-		if (IsConst(Opcode.base)) {
-			DWORD Address = MipsRegLo(Opcode.base) + (short)Opcode.offset;
-			MoveConstToX86reg(Address, x86_ECX);
-		} else if (IsMapped(Opcode.base)) {
-			if (MipsRegLo(Opcode.base) == x86_ECX) AddConstToX86Reg(x86_ECX, (short)Opcode.offset);
-			else LeaSourceAndOffset(x86_ECX, MipsRegLo(Opcode.base), (short)Opcode.offset);
-		} else {
-			MoveVariableToX86reg(&GPR[Opcode.base].UW[0],x86_ECX);
-			AddConstToX86Reg(x86_ECX, (short)Opcode.offset);
+		if (SelfModCheck == ModCode_CheckSetMemoryAdvance) LeaSourceAndOffset(x86_ECX, MipsRegLo(Opcode.base), (short)Opcode.offset);
+		else {
+			if (IsConst(Opcode.base)) {
+				DWORD Address = MipsRegLo(Opcode.base) + (short)Opcode.offset;
+				MoveConstToX86reg(Address, x86_ECX);
+			} else if (IsMapped(Opcode.base)) {
+				if (MipsRegLo(Opcode.base) == x86_ECX) AddConstToX86Reg(x86_ECX, (short)Opcode.offset);
+				else LeaSourceAndOffset(x86_ECX, MipsRegLo(Opcode.base), (short)Opcode.offset);
+			} else {
+				MoveVariableToX86reg(&GPR[Opcode.base].UW[0], x86_ECX);
+				AddConstToX86Reg(x86_ECX, (short)Opcode.offset);
+			}
 		}
 		Call_Direct(ClearRecompilerCache);
 		Popad();
