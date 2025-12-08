@@ -1,0 +1,1 @@
+Only changes from v12 are a typo fix in one of the disclaimer messages, and fixed set memory regression. A fixed regression is enough to warrant posting an update to me.

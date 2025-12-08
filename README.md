@@ -19,7 +19,7 @@ This way, you always have access to these resources with every copy of the emula
 
 ## Project Status
 
-V13 in progress.
+V13 released, currently no more changes planned but could still be more updates later.
 
 ## What This Project Is About
 
