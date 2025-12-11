@@ -18,7 +18,9 @@ and Super Mario 64 texture packs hosted at...
 
 https://mega.nz/folder/xL5BwaaQ#2yLK6SfwElrnJQtphdqXKw
 
-should also work in the latest release of this emulator. See the start of the user guide for texture pack setup instructions. Remember that texture packs can also be used with some ROMhacks!
+should also work in the latest release of this emulator. See further for texture pack setup instructions. Remember that texture packs can also be used with some ROMhacks!
+
+WIP Zelda64 hacks wiki - https://bruceivshankle.wixsite.com/centralocarina/home
 
 
 

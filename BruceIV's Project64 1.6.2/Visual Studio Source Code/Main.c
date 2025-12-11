@@ -781,10 +781,13 @@ LRESULT CALLBACK Main_Proc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 			break;
 		case ID_SYSTEM_GENERATEBITMAP:
 			if (ClearFrame) break;
-			char Directory[255];
+			char Directory[256], statusMsg[256];
 			GetSnapShotDir(Directory);
 			CaptureScreen(Directory);
-			SendMessage(hStatusWnd, SB_SETTEXT, 0, (LPARAM)GS(SCREENSHOT_TAKEN));
+			static BOOL toggle = FALSE;
+			sprintf(statusMsg, "%s %s", GS(SCREENSHOT_TAKEN), toggle ? "<<" : ">>");
+			SendMessage(hStatusWnd, SB_SETTEXT, 0, (LPARAM)statusMsg);
+			toggle = !toggle;
 			break;
 		case ID_SYSTEM_LIMITFPS:
 			if (SyncGametoAudio) break;

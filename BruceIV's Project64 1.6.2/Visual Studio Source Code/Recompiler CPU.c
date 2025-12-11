@@ -2523,7 +2523,7 @@ void StartRecompilerCPU (void ) {
 							ExecuteInterpreterOpCode();
 						}
 						continue;
-					} else DisplayThreadExit("StartRecompilerCPU - Addr > 0x10000000 - PROGRAM_COUNTER >= 0xB0000000 && PROGRAM_COUNTER < (RomFileSize | 0xB0000000) - else");
+					} else DisplayThreadExit("StartRecompilerCPU - Addr > 0x10000000 - PROGRAM_COUNTER >= 0xB0000000 && PROGRAM_COUNTER < (RomFileSize | 0xB0000000) - else\n\nSelf-modifying Code Method-related?");
 				}
 				Block = *(JumpTable + (Addr >> 2));
 			} __except(EXCEPTION_EXECUTE_HANDLER) {
