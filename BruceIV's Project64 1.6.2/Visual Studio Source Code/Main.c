@@ -893,8 +893,6 @@ LRESULT CALLBACK Main_Proc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 					break;
 		case ID_SYSTEM_GSBUTTON:
 		ApplyGSButton();
-		char statusMsg[256];
-		static BOOL toggle = FALSE;
 		sprintf(statusMsg, "%s %s", GS(GS_PRESS), toggle ? "<<" : ">>");
 		SendMessage(hStatusWnd, SB_SETTEXT, 0, (LPARAM)statusMsg);
 		toggle = !toggle;

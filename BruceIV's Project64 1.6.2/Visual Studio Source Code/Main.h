@@ -49,7 +49,11 @@ extern "C" {
 #define Default_BasicMode		TRUE
 #define Default_RomsToRemember		10
 #define Default_RomsDirsToRemember	10
-#define Default_CountPerOp		1 // Use 2 for better stability
+#ifdef STABLE_DEFAULTS
+#define Default_CountPerOp		2
+#else
+#define Default_CountPerOp		1
+#endif
 #define Default_ForceDisableTLB		FALSE
 #define Default_ForceEnableDMA		FALSE
 #define Default_ForceDisableCaching	FALSE
@@ -67,14 +71,22 @@ extern "C" {
 #define UseCache_Default -1
 #define REG_CACHE_ON 0
 #define REG_CACHE_OFF 1
-#define Default_UseCache REG_CACHE_ON // Use REG_CACHE_OFF for better stability
+#ifdef STABLE_DEFAULTS
+#define Default_UseCache REG_CACHE_OFF
+#else
+#define Default_UseCache REG_CACHE_ON
+#endif
 /******* Self modifying code *********/
 #define ModCode_Default			-1
 #define ModCode_Cache			0
 #define ModCode_CheckSetMemoryAdvance	1
 #define ModCode_CheckMemoryAdvance	2
 #define ModCode_ProtectMemory		3
-#define Default_SelfModCheck		ModCode_CheckMemoryAdvance // Do ModCode_ProtectMemory if you don't care about severe performance drops/stuttering
+#ifdef STABLE_DEFAULTS
+#define Default_SelfModCheck		ModCode_ProtectMemory
+#else
+#define Default_SelfModCheck		ModCode_CheckMemoryAdvance
+#endif
 /********** Rom Browser **************/
 #define Default_UseRB				TRUE
 #define Default_Recursion			TRUE

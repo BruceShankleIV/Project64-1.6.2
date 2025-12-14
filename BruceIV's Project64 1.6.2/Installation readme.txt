@@ -1,8 +1,17 @@
 HOW TO INSTALL: Run Exception.bat with admin priviledge then extract the
-.exe from the Project64.zip folder (password is password). After this,
-run the Project64.exe to open the application. Disclaimer will display
-on first boot. Make sure you extract the .exe to the same directory as
-this .txt file.
+.exe from the Project64_RE or Project64_SD zip folder... IMPORTANT:
+Use RE (stands for release external) for maximum performance including
+high framerates and zero lag by default. Use SD (stands for stable defaults)
+if you want stable default settings. If you use RE and encounter issues with
+the default settings, you can manually change Self-modifying Code Method to
+Protect memory, Register Caching OFF, and Counter Factor to 2 from the
+advanced tab in the Settings window after unchecking Hide Advanced Settings,
+or you can stick with the Stable Defaults exe and don't bother taking risks.
+However, if you are moving from release external to stable defaults, be sure
+to clear your registries by using the factory reset option to apply changes.
+
+Run the Project64.exe to open the application.
+*Make sure you extract the .exe to the same directory as this .txt file.
 
 P.S. The password to the Apps is also password, in case they also get
 detected as a virus by Windows' broken scanner system.
