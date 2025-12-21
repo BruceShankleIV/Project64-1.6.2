@@ -1,5 +1,0 @@
-Screenshot toggle display (so you know if your F3 press registered or not in consecutive takes)
-Added on to an error seen with wrong self-mod
-Updated gamecontrollerdb
-Updated GLideN64
-Added link to WIP Zelda64 hacks wiki project in user guide resources
