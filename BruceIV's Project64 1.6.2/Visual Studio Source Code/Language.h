@@ -251,3 +251,4 @@ char * GS               ( int StringID );
 #define AllocateCompile_SD		215
 #define AllocateCompile_SD_MENUDES	216
 #define Allocate_SD_Info		217
+#define EXTRA_PROJECT64			218

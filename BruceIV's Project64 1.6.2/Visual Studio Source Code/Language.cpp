@@ -253,6 +253,7 @@ LANG_STR DefaultString[] = {
 	{ AllocateCompile_SD,	  "Manage SD Space"},
 	{ AllocateCompile_SD_MENUDES,"Attempts to allocate or compile 254MB of space for virtual SD card emulation"},
 	{ Allocate_SD_Info,	  "This action will attempt to Allocate 254MB of SD space on your hard drive in an SDCARD0 partition after decompiling AUTO0.\n\nYou will not be able to save to or load from your virtual SD card until you compile virtual SD card space back into AUTO0 by using this option again"},
+	{ EXTRA_PROJECT64,	  "Project64 is already running.\n\nWould you like to force-kill the current Project64 before starting another one? Force-killing prevents save data issues but this may disrupt plugin behavior"},
 };
 class CLanguage  {
 	void FindLangName  ( int Index );

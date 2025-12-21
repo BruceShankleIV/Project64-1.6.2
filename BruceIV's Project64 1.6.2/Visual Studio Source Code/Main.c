@@ -1377,19 +1377,29 @@ void ShutdownApplication ( void ) {
 	CoUninitialize();
 }
 void TerminatePreviousInstance() {
-	TCHAR exe[MAX_PATH]; GetModuleFileName(0, exe, MAX_PATH);
-	LPCTSTR name = _tcsrchr(exe, '\\'); name = name ? name + 1 : exe;
+	TCHAR exe[MAX_PATH];
+	GetModuleFileName(NULL, exe, MAX_PATH);
+	LPCTSTR name = _tcsrchr(exe, '\\');
+	name = name ? name + 1 : exe;
 	HANDLE s = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
 	if (s == INVALID_HANDLE_VALUE) return;
-	PROCESSENTRY32 e; e.dwSize = sizeof(e); DWORD pid = GetCurrentProcessId();
-	if (Process32First(s, &e)) do {
-		if (!_tcsicmp(e.szExeFile, name) && e.th32ProcessID != pid) {
-			HANDLE p = OpenProcess(PROCESS_TERMINATE, 0, e.th32ProcessID);
-			if (p) { TerminateProcess(p, 0); CloseHandle(p); }
-		}
-	} while (Process32Next(s, &e));
+	PROCESSENTRY32 e = { 0 };
+	e.dwSize = sizeof(e);
+	DWORD pid = GetCurrentProcessId();
+	if (Process32First(s, &e)) {
+		do {
+			if (!_tcsicmp(e.szExeFile, name) && e.th32ProcessID != pid) {
+				if (MessageBox(NULL, GS(EXTRA_PROJECT64), AppName, MB_YESNO | MB_ICONQUESTION | MB_SETFOREGROUND) == IDNO) {
+					CloseHandle(s);
+					return;
+				}
+				HANDLE p = OpenProcess(PROCESS_TERMINATE, FALSE, e.th32ProcessID);
+				if (p) { TerminateProcess(p, 0); CloseHandle(p); }
+				break;
+			}
+		} while (Process32Next(s, &e));
+	}
 	CloseHandle(s);
-	// AI generated code. Bug - SaveRomBrowserColoumnInfo(); does not execute in TerminateProcess(p, 0);
 }
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszArgs, int nWinMode) {
 #define WindowWidth  640

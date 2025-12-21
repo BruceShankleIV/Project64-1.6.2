@@ -1,6 +1,6 @@
 #1# "Español/Spanish"
-#2# "Glitchy x BruceIV"
-#3# "1.0"
+#2# "DeepL x Glitchy x BruceIV"
+#3# "14"
 #5# "Base de datos de Idiomas (.txt)"
 #6# "Autor"
 #8# "Fecha"
@@ -212,3 +212,6 @@ Tú serás capaz de guardar a o cargar desde tu tarjeta virtual SD de nuevo si est
 #217# "Esta acción intentará ubicar 254MB de espacio de la tarjeta SD en tu disco duro en una partición SDCARD0 después de decompilar AUTO0.
 
 Tú no serás capaz de guardar de o cargar desde tu tarjeta virtual SD hasta que compiles el espacio de la tarjeta virtual SD devuelta a AUTO0 utilizando esta opción de nuevo"
+#218# "Project64 ya se está ejecutando.
+
+¿Desea forzar el cierre del Project64 actual antes de iniciar otro? Forzar el cierre evita problemas con los datos guardados, pero puede afectar al funcionamiento de los complementos"

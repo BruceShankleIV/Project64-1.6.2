@@ -1,6 +1,6 @@
 #1# "Nederlands/Dutch"
 #2# "Lily x BruceIV"
-#3# "1.0"
+#3# "14"
 #5# "Taal Database (.txt)"
 #6# "Auteur"
 #7# "Versie"
@@ -198,3 +198,5 @@ Als deze actie succesvol is, kun je weer gegevens opslaan op en laden van je vir
 #217# "Deze actie zal proberen 254 MB SD ruimte op je harde schijf toe te wijzen in een SDCARD0 partitie na het decompileren van AUTO0.
 
 Je zult geen gegevens kunnen opslaan op of laden van je virtuele SD-kaart totdat je de virtuele SD-kaartruimte opnieuw in AUTO0 compileert door deze optie opnieuw te gebruiken"
+#218# "Project64 Is al gestart.
+Zou je de huidige Project64 geforceerd willen afsluiten voordat je een nieuwe start? Geforceerd afsluiten voorkomt problemen met opgeslagen gegevens, maar kan het gedrag van plug-ins verstoren"
