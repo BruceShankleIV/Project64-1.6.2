@@ -154,7 +154,7 @@ BYTE * CompileDelaySlot (void) {
 	BYTE * Block = RecompPos;
 	int count, x86Reg;
 	Section = &DelaySection;
-	if ((StartAddress & 0xFFC) != 0) DisplayThreadExit("CompileDelaySlot - (StartAddress & 0xFFC) != 0");
+	if ((StartAddress & 0xFFC) != 0) DisplayThreadExit("CompileDelaySlot - (StartAddress & 0xFFC) != 0"); // !!! STRANGE ERROR, HAS APPEARED MULTIPLE TIMES FOR ME, UNKNOWN WHY !!!
 	if (!r4300i_LW_VAddr(StartAddress, &Opcode.Hex)) DisplayThreadExit("CompileDelaySlot - !r4300i_LW_VAddr(StartAddress, &Opcode.Hex)");
 	TranslateVaddr(&StartAddress);
 	if (!(StartAddress < RDRAMsize || (StartAddress >= 0x04000000 && StartAddress <= 0x04000FFC) || (StartAddress >= 0x04001000 && StartAddress <= 0x04001FFC) || (StartAddress >= 0x1FC00000 && StartAddress <= 0x1FC00800))) DisplayThreadExit("CompileDelaySlot - !(StartAddress < RDRAMsize || (StartAddress >= 0x04000000 && StartAddress <= 0x04000FFC) || (StartAddress >= 0x04001000 && StartAddress <= 0x04001FFC) || (StartAddress >= 0x1FC00000 && StartAddress <= 0x1FC00800))");
