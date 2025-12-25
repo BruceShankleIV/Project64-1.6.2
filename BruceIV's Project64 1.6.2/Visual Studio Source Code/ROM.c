@@ -737,11 +737,9 @@ void OpenChosenFile(void) {
 	SetCurrentSaveState(hMainWindow, ID_CURRENTSAVE_DEFAULT);
 	SendMessage(hStatusWnd, SB_SETTEXT, 0, (LPARAM)"");
 	if (AutoFullScreen && strcmp(GfxDLL, "RiceVideo.dll") != 0) {
-		if (strcmp(GfxDLL, "Jabo_Direct3D8.dll") == 0 || strcmp(GfxDLL, "Jabo_Direct3DL.dll") == 0) {
-			timeBeginPeriod(16);
-			Sleep(1);
-			timeEndPeriod(16);
-		}
+		timeBeginPeriod(16);
+		Sleep(200);
+		timeEndPeriod(16);
 		SendMessage(hMainWindow, WM_COMMAND, ID_OPTIONS_FULLSCREEN, 0);
 	} else SendMessage(hStatusWnd, SB_SETTEXT, 0, (LPARAM)GS(MSG_EMULATION_STARTED));
 }
