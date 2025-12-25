@@ -172,7 +172,7 @@ void Compile_LW ( int Reg, DWORD Addr ) {
 	case 0x00500000:
 	case 0x00600000:
 	case 0x00700000:
-	//case 0x06000000: // N64DD IPL (J) // Non-essential code (register caching support)
+	case 0x06000000: // N64DD IPL (J)
 	case 0x10000000:
 		MoveVariableToX86reg(Addr + N64MEM,Reg);
 		break;
@@ -244,7 +244,7 @@ void Compile_LW ( int Reg, DWORD Addr ) {
 		break;
 	case 0x04600000:
 		switch (Addr) {
-		//case 0x04600004: MoveVariableToX86reg(&PI_CART_ADDR_REG,Reg); break; // Non-essential code
+		case 0x04600004: MoveVariableToX86reg(&PI_CART_ADDR_REG,Reg); break; // Non-essential code
 		case 0x04600010: MoveVariableToX86reg(&PI_STATUS_REG,Reg); break;
 		case 0x04600014: MoveVariableToX86reg(&PI_DOMAIN1_REG,Reg); break;
 		case 0x04600018: MoveVariableToX86reg(&PI_BSD_DOM1_PWD_REG,Reg); break;
@@ -344,7 +344,6 @@ void Compile_SH_Register ( int x86Reg, DWORD Addr ) {
 	}
 }
 void Compile_SW_Const ( DWORD Value, DWORD Addr ) {
-	//BYTE * Jump = NULL; // Non-essential code, can use BYTE * Jump;
 	BYTE * Jump;
 	if (!TranslateVaddr(&Addr)) return;
 	switch (Addr & 0xFFF00000) {
@@ -580,7 +579,7 @@ void Compile_SW_Const ( DWORD Value, DWORD Addr ) {
 		case 0x04600018: MoveConstToVariable((Value & 0xFF),&PI_BSD_DOM1_PWD_REG); break;
 		case 0x0460001C: MoveConstToVariable((Value & 0xFF),&PI_BSD_DOM1_PGS_REG); break;
 		case 0x04600020: MoveConstToVariable((Value & 0xFF),&PI_BSD_DOM1_RLS_REG); break;
-		//case 0x04600024: MoveConstToVariable((Value & 0xFF),&PI_DOMAIN2_REG); break; // Non-essential code
+		case 0x04600024: MoveConstToVariable((Value & 0xFF),&PI_DOMAIN2_REG); break; // Non-essential code
 		}
 		break;
 	case 0x04700000:
@@ -618,7 +617,6 @@ void Compile_SW_Const ( DWORD Value, DWORD Addr ) {
 	}
 }
 void Compile_SW_Register ( int x86Reg, DWORD Addr ) {
-	//BYTE * Jump = NULL; // Non-essential code, can use BYTE * Jump; instead
 	BYTE * Jump;
 	if (!TranslateVaddr(&Addr)) return;
 	switch (Addr & 0xFFF00000) {
@@ -667,23 +665,23 @@ void Compile_SW_Register ( int x86Reg, DWORD Addr ) {
 		}
 		break;
 	case 0x04100000:
-		/*if (Addr == 0x0410000C) { // Non-essential code
-			MoveX86regToVariable(x86Reg, &RegModValue); // Non-essential code
-			Pushad(); // Non-essential code
-			Call_Direct(ChangeDpcStatus); // Non-essential code
-			Popad(); // Non-essential code
-		} else {*/ // Non-essential code
+		if (Addr == 0x0410000C) { // Non-essential code?
+			MoveX86regToVariable(x86Reg, &RegModValue); // Non-essential code?
+			Pushad(); // Non-essential code?
+			Call_Direct(ChangeDpcStatus); // Non-essential code?
+			Popad(); // Non-essential code?
+		} else { // Non-essential code?
 			MoveX86regToVariable(x86Reg,Addr + N64MEM);
-		//} // Non-essential code
-		//break; // Non-essential code? Originally had a fallthrough to the next case here
+		} // Non-essential code?
+		break; // Non-essential code? Originally had a fallthrough to the next case here
 	case 0x04300000:
 		switch (Addr) {
 		case 0x04300000:
-			/*MoveX86regToVariable(x86Reg, &RegModValue); // Non-essential code?
+			MoveX86regToVariable(x86Reg,&RegModValue); // Non-essential code?
 			Pushad(); // Non-essential code?
 			Call_Direct(ChangeMiModeReg); // Non-essential code?
 			Popad(); // Non-essential code?
-			break;*/ // Non-essential code?
+			break; // Non-essential code?
 		case 0x0430000C:
 			MoveX86regToVariable(x86Reg,&RegModValue);
 			Pushad();
@@ -806,7 +804,7 @@ void Compile_SW_Register ( int x86Reg, DWORD Addr ) {
 			MoveX86regToVariable(x86Reg,&PI_BSD_DOM1_RLS_REG);
 			AndConstToVariable(0xFF,&PI_BSD_DOM1_RLS_REG);
 			break;
-		/*case 0x04600024: // Non-essential code
+		case 0x04600024: // Non-essential code
 			MoveX86regToVariable(x86Reg,&PI_DOMAIN2_REG); // Non-essential code
 			AndConstToVariable(0xFF,&PI_DOMAIN2_REG); // Non-essential code
 			break; // Non-essential code
@@ -821,7 +819,7 @@ void Compile_SW_Register ( int x86Reg, DWORD Addr ) {
 		case 0x04600030: // Non-essential code
 			MoveX86regToVariable(x86Reg,&PI_BSD_DOM2_RLS_REG); // Non-essential code
 			AndConstToVariable(0xFF,&PI_BSD_DOM2_RLS_REG); // Non-essential code
-			break;*/ // Non-essential code
+			break; // Non-essential code
 		}
 		break;
 	case 0x04700000:
@@ -897,7 +895,6 @@ int r4300i_CPU_MemoryFilter( DWORD dwExptCode, LPEXCEPTION_POINTERS lpEP) {
 	DWORD MemAddress = (char *)lpEP->ExceptionRecord->ExceptionInformation[1] - (char *)N64MEM;
 	EXCEPTION_RECORD exRec;
 	BYTE * ReadPos, *TypePos;
-	//void * Reg = NULL; // Non-essential code, void * Reg; can be used instead
 	void * Reg;
 	if (dwExptCode != EXCEPTION_ACCESS_VIOLATION) {
 		return EXCEPTION_CONTINUE_SEARCH;
@@ -1158,9 +1155,13 @@ int r4300i_LW_NonMemory ( DWORD PAddr, DWORD * Value ) {
 		break;
 	case 0x04000000:
 		switch (PAddr) {
+		case 0x04040000: *Value = SP_MEM_ADDR_REG; break; // Non-essential code
+		case 0x04040004: *Value = SP_DRAM_ADDR_REG; break; // Non-essential code
+		case 0x04040008: *Value = SP_RD_LEN_REG; break; // Non-essential code
 		case 0x04040010: *Value = SP_STATUS_REG; break;
 		case 0x04040014: *Value = SP_DMA_FULL_REG; break;
 		case 0x04040018: *Value = SP_DMA_BUSY_REG; break;
+		case 0x0404001C: *Value = SP_SEMAPHORE_REG; break; // Non-essential code
 		case 0x04080000: *Value = SP_PC_REG; break;
 		default:
 			* Value = 0;
@@ -1181,10 +1182,13 @@ int r4300i_LW_NonMemory ( DWORD PAddr, DWORD * Value ) {
 		break;
 	case 0x04300000:
 		switch (PAddr) {
-		case 0x04300000: * Value = MI_MODE_REG; break;
-		case 0x04300004: * Value = MI_VERSION_REG; break;
-		case 0x04300008: * Value = MI_INTR_REG; break;
-		case 0x0430000C: * Value = MI_INTR_MASK_REG; break;
+		case 0x04300000: *Value = MI_MODE_REG; break;
+		case 0x04300004: *Value = MI_VERSION_REG; break;
+		case 0x04300008: *Value = MI_INTR_REG; break;
+		case 0x04100010: *Value = DPC_CLOCK_REG; break; // Non-essential code
+		case 0x04100014: *Value = DPC_BUFBUSY_REG; break; // Non-essential code
+		case 0x04100018: *Value = DPC_PIPEBUSY_REG; break; // Non-essential code
+		case 0x0430000C: *Value = MI_INTR_MASK_REG; break;
 		default:
 			* Value = 0;
 			return FALSE;
@@ -1233,6 +1237,10 @@ int r4300i_LW_NonMemory ( DWORD PAddr, DWORD * Value ) {
 		break;
 	case 0x04600000:
 		switch (PAddr) {
+		case 0x04600000: *Value = PI_DRAM_ADDR_REG; break; // Non-essential code
+		case 0x04600004: *Value = PI_CART_ADDR_REG; break; // Non-essential code
+		case 0x04600008: *Value = PI_RD_LEN_REG; break; // Non-essential code
+		case 0x0460000C: *Value = PI_WR_LEN_REG; break; // Non-essential code
 		case 0x04600010: *Value = PI_STATUS_REG; break;
 		case 0x04600014: *Value = PI_DOMAIN1_REG; break;
 		case 0x04600018: *Value = PI_BSD_DOM1_PWD_REG; break;
@@ -1669,6 +1677,10 @@ int r4300i_SW_NonMemory ( DWORD PAddr, DWORD Value ) {
 		case 0x04600018: PI_BSD_DOM1_PWD_REG = (Value & 0xFF); break;
 		case 0x0460001C: PI_BSD_DOM1_PGS_REG = (Value & 0xFF); break;
 		case 0x04600020: PI_BSD_DOM1_RLS_REG = (Value & 0xFF); break;
+		case 0x04600024: PI_DOMAIN2_REG = (Value & 0xFF); break;
+		case 0x04600028: PI_BSD_DOM2_PWD_REG = (Value & 0xFF); break;
+		case 0x0460002C: PI_BSD_DOM2_PGS_REG = (Value & 0xFF); break;
+		case 0x04600030: PI_BSD_DOM2_RLS_REG = (Value & 0xFF); break;
 		default:
 			return FALSE;
 		}

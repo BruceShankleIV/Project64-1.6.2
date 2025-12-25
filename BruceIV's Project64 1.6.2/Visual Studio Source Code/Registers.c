@@ -68,7 +68,7 @@ void ChangeMiIntrMask (void) {
 	if ( ( RegModValue & MI_INTR_MASK_CLR_DP ) != 0 ) { MI_INTR_MASK_REG &= ~MI_INTR_MASK_DP; }
 	if ( ( RegModValue & MI_INTR_MASK_SET_DP ) != 0 ) { MI_INTR_MASK_REG |= MI_INTR_MASK_DP; }
 }
-/*void ChangeMiModeReg(void) { // Non-essential code?
+void ChangeMiModeReg(void) { // Non-essential code?
 	MI_MODE_REG &= ~0x7F; // Non-essential code?
 	MI_MODE_REG |= (RegModValue & 0x7F); // Non-essential code?
 	if ( ( RegModValue & MI_CLR_INIT ) != 0 ) { MI_MODE_REG &= ~MI_MODE_INIT; } // Non-essential code?
@@ -78,7 +78,7 @@ void ChangeMiIntrMask (void) {
 	if ( ( RegModValue & MI_CLR_DP_INTR ) != 0 ) { MI_INTR_REG &= ~MI_INTR_DP; } // Non-essential code?
 	if ( ( RegModValue & MI_CLR_RDRAM ) != 0 ) { MI_MODE_REG &= ~MI_MODE_RDRAM; } // Non-essential code?
 	if ( ( RegModValue & MI_SET_RDRAM ) != 0 ) { MI_MODE_REG |= MI_MODE_RDRAM; } // Non-essential code?
-}*/ // Non-essential code?
+} // Non-essential code?
 void ChangeSpStatus (void) {
 	if ( ( RegModValue & SP_CLR_HALT ) != 0) { SP_STATUS_REG &= ~SP_STATUS_HALT; }
 	if ( ( RegModValue & SP_SET_HALT ) != 0) { SP_STATUS_REG |= SP_STATUS_HALT;  }
@@ -119,7 +119,7 @@ void ChangeSpStatus (void) {
 	}
 	RunRsp();
 }
-/*void ChangeDpcStatus(void) { // Non-essential code?
+void ChangeDpcStatus(void) { // Non-essential code?
 	if ( ( RegModValue & DPC_CLR_XBUS_DMEM_DMA ) != 0) { DPC_STATUS_REG &= ~DPC_STATUS_XBUS_DMEM_DMA; } // Non-essential code?
 	if ( ( RegModValue & DPC_SET_XBUS_DMEM_DMA ) != 0) { DPC_STATUS_REG |= DPC_STATUS_XBUS_DMEM_DMA;  } // Non-essential code?
 	if ( ( RegModValue & DPC_CLR_FREEZE ) != 0) { DPC_STATUS_REG &= ~DPC_STATUS_FREEZE; } // Non-essential code?
@@ -136,7 +136,7 @@ void ChangeSpStatus (void) {
 			} // Non-essential code?
 		} // Non-essential code?
 	} // Non-essential code?
-}*/ // Non-essential code?
+} // Non-essential code?
 int Free8BitX86Reg (BLOCK_SECTION * Section) {
 	int x86Reg, count, MapCount[10], MapReg[10];
 	if (x86Mapped(x86_EBX) == NotMapped && !x86Protected(x86_EBX)) {return x86_EBX; }

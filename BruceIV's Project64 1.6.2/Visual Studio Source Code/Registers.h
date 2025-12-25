@@ -329,9 +329,9 @@ enum FPU_RoundingModel {
 };
 void ChangeFPURegFormat       ( BLOCK_SECTION * Section, int Reg, int OldFormat, int NewFormat, int RoundingModel );
 void ChangeMiIntrMask         ( void );
-//void ChangeMiModeReg          ( void ); // Non-essential code
+void ChangeMiModeReg          ( void ); // Non-essential code?
 void ChangeSpStatus           ( void );
-//void ChangeDpcStatus          ( void ); // Non-essential code
+void ChangeDpcStatus          ( void ); // Non-essential code?
 void InitializeR4300iRegisters ( int UsePif, int Country, int CIC_Chip );
 BOOL Is8BitReg                ( int x86Reg);
 void Load_FPR_ToTop           ( BLOCK_SECTION * Section, int Reg, int RegToLoad, int Format);

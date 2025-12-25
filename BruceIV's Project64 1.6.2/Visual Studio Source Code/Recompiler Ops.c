@@ -214,7 +214,6 @@ void Compile_R4300i_BranchLikely (BLOCK_SECTION * Section, void (*CompareFunc)(B
 	}
 }
 void BNE_Compare (BLOCK_SECTION * Section) {
-	//BYTE * Jump = NULL; // Non-essential code, can use BYTE * Jump; instead
 	BYTE * Jump;
 	if (IsKnown(Opcode.rs) && IsKnown(Opcode.rt)) {
 		if (IsConst(Opcode.rs) && IsConst(Opcode.rt)) {
@@ -404,7 +403,6 @@ void BNE_Compare (BLOCK_SECTION * Section) {
 	}
 }
 void BEQ_Compare (BLOCK_SECTION * Section) {
-	//BYTE * Jump = NULL; // Non-essential code, can use BYTE * Jump; instead
 	BYTE * Jump;
 	if (IsKnown(Opcode.rs) && IsKnown(Opcode.rt)) {
 		if (IsConst(Opcode.rs) && IsConst(Opcode.rt)) {
@@ -625,7 +623,6 @@ void BGTZ_Compare (BLOCK_SECTION * Section) {
 			Section->Jump.LinkLocation = RecompPos - 4;
 		}
 	} else {
-		//BYTE * Jump = NULL; // Non-essential code, can use BYTE * Jump; instead
 		BYTE * Jump;
 		if (IsMapped(Opcode.rs)) {
 			CompConstToX86reg(MipsRegHi(Opcode.rs),0);
@@ -712,7 +709,6 @@ void BLEZ_Compare (BLOCK_SECTION * Section) {
 				Section->Jump.LinkLocation = RecompPos - 4;
 			}
 		} else {
-			//BYTE * Jump = NULL; // Non-essential code, can use BYTE * Jump; instead
 			BYTE * Jump;
 			if (IsMapped(Opcode.rs)) {
 				CompConstToX86reg(MipsRegHi(Opcode.rs),0);
@@ -1019,7 +1015,6 @@ void Compile_R4300i_SLTIU (BLOCK_SECTION * Section) {
 		MipsRegLo(Opcode.rt) = Result;
 	} else if (IsMapped(Opcode.rs)) {
 		if (Is64Bit(Opcode.rs)) {
-			//BYTE * Jump[2] = { NULL, NULL }; // Non-essential code, can use BYTE * Jump[2]; instead
 			BYTE * Jump[2];
 			CompConstToX86reg(MipsRegHi(Opcode.rs),((short)Opcode.immediate >> 31));
 			JeLabel8(0);
@@ -1040,7 +1035,6 @@ void Compile_R4300i_SLTIU (BLOCK_SECTION * Section) {
 			MoveVariableToX86reg(&BranchCompare,MipsRegLo(Opcode.rt));
 		}
 	} else {
-		//BYTE * Jump = NULL; // Non-essential code, can use BYTE * Jump; instead
 		BYTE * Jump;
 		CompConstToVariable(((short)Opcode.immediate >> 31),&GPR[Opcode.rs].W[1]);
 		JneLabel8(0);
@@ -1067,7 +1061,6 @@ void Compile_R4300i_SLTI (BLOCK_SECTION * Section) {
 		MipsRegLo(Opcode.rt) = Result;
 	} else if (IsMapped(Opcode.rs)) {
 		if (Is64Bit(Opcode.rs)) {
-			//BYTE * Jump[2] = { NULL, NULL }; // Non-essential code, can use BYTE * Jump[2]; instead
 			BYTE * Jump[2];
 			CompConstToX86reg(MipsRegHi(Opcode.rs),((short)Opcode.immediate >> 31));
 			JeLabel8(0);
@@ -1094,7 +1087,6 @@ void Compile_R4300i_SLTI (BLOCK_SECTION * Section) {
 			}
 		}
 	} else {
-		//BYTE * Jump[2] = { NULL, NULL }; // Non-essential code, can use BYTE * Jump[2]; instead
 		BYTE * Jump[2];
 		CompConstToVariable(((short)Opcode.immediate >> 31),&GPR[Opcode.rs].W[1]);
 		JeLabel8(0);
@@ -2062,7 +2054,6 @@ void Compile_R4300i_LL (BLOCK_SECTION * Section) {
 }
 void Compile_R4300i_SC (BLOCK_SECTION * Section){
 	DWORD TempReg1, TempReg2;
-	//BYTE * Jump = NULL; // Non-essential code, can use BYTE * Jump; instead
 	BYTE * Jump;
 	CompConstToVariable(1,&LLBit);
 	JneLabel32(0);
@@ -2577,7 +2568,6 @@ void Compile_R4300i_SPECIAL_MTHI (BLOCK_SECTION * Section) {
 	}
 }
 void Compile_R4300i_SPECIAL_DSLLV (BLOCK_SECTION * Section) {
-	//BYTE * Jump[2] = { NULL, NULL }; // Non-essential code, can use BYTE * Jump[2]; instead
 	BYTE * Jump[2];
 	if (Opcode.rd == 0) return;
 	if (IsConst(Opcode.rs)) {
@@ -2603,7 +2593,6 @@ void Compile_R4300i_SPECIAL_DSLLV (BLOCK_SECTION * Section) {
 	*((BYTE *)(Jump[1]))=(BYTE)(RecompPos - Jump[1] - 1);
 }
 void Compile_R4300i_SPECIAL_DSRLV (BLOCK_SECTION * Section) {
-	//BYTE * Jump[2] = { NULL, NULL }; // Non-essential code, can use BYTE * Jump[2]; instead
 	BYTE * Jump[2];
 	if (Opcode.rd == 0) return;
 	if (IsConst(Opcode.rs)) {
@@ -2641,7 +2630,6 @@ void Compile_R4300i_SPECIAL_DSRLV (BLOCK_SECTION * Section) {
 	*((BYTE *)(Jump[1]))=(BYTE)(RecompPos - Jump[1] - 1);
 }
 void Compile_R4300i_SPECIAL_DSRAV (BLOCK_SECTION * Section) {
-	//BYTE * Jump[2] = { NULL, NULL }; // Non-essential code, can use BYTE * Jump[2]; instead
 	BYTE * Jump[2];
 	if (Opcode.rd == 0) return;
 	if (IsConst(Opcode.rs)) {
@@ -2693,7 +2681,6 @@ void Compile_R4300i_SPECIAL_MULTU (BLOCK_SECTION * Section) {
 	MoveX86regToVariable(x86_EDX,&HI.UW[1]);
 }
 void Compile_R4300i_SPECIAL_DIV (BLOCK_SECTION * Section) {
-	//BYTE * Jump[2] = { NULL, NULL }; // Non-essential code, can use BYTE * Jump[2]; instead
 	BYTE * Jump[2];
 	if (IsConst(Opcode.rt)) {
 		if (MipsRegLo(Opcode.rt) == 0) {
@@ -2743,7 +2730,6 @@ void Compile_R4300i_SPECIAL_DIV (BLOCK_SECTION * Section) {
 	}
 }
 void Compile_R4300i_SPECIAL_DIVU ( BLOCK_SECTION * Section) {
-	//BYTE * Jump[2] = { NULL, NULL }; // Non-essential code, can use BYTE * Jump[2]; instead
 	BYTE * Jump[2];
 	int x86reg;
 	if (IsConst(Opcode.rt)) {
@@ -3351,7 +3337,6 @@ void Compile_R4300i_SPECIAL_SLT (BLOCK_SECTION * Section) {
 			ProtectGPR(Section,Opcode.rt);
 			ProtectGPR(Section,Opcode.rs);
 			if (Is64Bit(Opcode.rt) || Is64Bit(Opcode.rs)) {
-				//BYTE * Jump[2] = { NULL, NULL }; // Non-essential code, can use BYTE * Jump[2]; instead
 				BYTE * Jump[2];
 				CompX86RegToX86Reg(
 					Is64Bit(Opcode.rs)?MipsRegHi(Opcode.rs):Map_TempReg(Section,x86_Any,Opcode.rs,TRUE),
@@ -3384,7 +3369,6 @@ void Compile_R4300i_SPECIAL_SLT (BLOCK_SECTION * Section) {
 			DWORD MappedReg = IsConst(Opcode.rs)?Opcode.rt:Opcode.rs;
 			ProtectGPR(Section,MappedReg);
 			if (Is64Bit(Opcode.rt) || Is64Bit(Opcode.rs)) {
-				//BYTE * Jump[2] = { NULL, NULL }; // Non-essential code, can use BYTE * Jump[2]; instead
 				BYTE * Jump[2];
 				CompConstToX86reg(
 					Is64Bit(MappedReg)?MipsRegHi(MappedReg):Map_TempReg(Section,x86_Any,MappedReg,TRUE),
@@ -3433,7 +3417,6 @@ void Compile_R4300i_SPECIAL_SLT (BLOCK_SECTION * Section) {
 	} else if (IsKnown(Opcode.rt) || IsKnown(Opcode.rs)) {
 		DWORD KnownReg = IsKnown(Opcode.rt)?Opcode.rt:Opcode.rs;
 		DWORD UnknownReg = IsKnown(Opcode.rt)?Opcode.rs:Opcode.rt;
-		//BYTE * Jump[2] = { NULL, NULL }; // Non-essential code, can use BYTE * Jump[2]; instead
 		BYTE * Jump[2];
 		if (IsConst(KnownReg)) {
 			if (Is64Bit(KnownReg)) {
@@ -3473,7 +3456,6 @@ void Compile_R4300i_SPECIAL_SLT (BLOCK_SECTION * Section) {
 		Map_GPR_32bit(Section,Opcode.rd,TRUE, -1);
 		MoveVariableToX86reg(&BranchCompare,MipsRegLo(Opcode.rd));
 	} else {
-		//BYTE * Jump[2] = { NULL, NULL }; // Non-essential code, can use BYTE * Jump[2]; instead
 		BYTE * Jump[2];
 		int x86Reg;
 		x86Reg = Map_TempReg(Section,x86_Any,Opcode.rs,TRUE);
@@ -3509,7 +3491,6 @@ void Compile_R4300i_SPECIAL_SLTU (BLOCK_SECTION * Section) {
 			ProtectGPR(Section,Opcode.rt);
 			ProtectGPR(Section,Opcode.rs);
 			if (Is64Bit(Opcode.rt) || Is64Bit(Opcode.rs)) {
-				//BYTE * Jump[2] = { NULL, NULL }; // Non-essential code, can use BYTE * Jump[2]; instead
 				BYTE * Jump[2];
 				CompX86RegToX86Reg(
 					Is64Bit(Opcode.rs)?MipsRegHi(Opcode.rs):Map_TempReg(Section,x86_Any,Opcode.rs,TRUE),
@@ -3535,7 +3516,6 @@ void Compile_R4300i_SPECIAL_SLTU (BLOCK_SECTION * Section) {
 		} else {
 			if (Is64Bit(Opcode.rt) || Is64Bit(Opcode.rs)) {
 				DWORD MappedRegHi, MappedRegLo, ConstHi, ConstLo, MappedReg, ConstReg;
-				//BYTE * Jump[2] = { NULL, NULL }; // Non-essential code, can use BYTE * Jump[2]; instead
 				BYTE * Jump[2];
 				ConstReg  = IsConst(Opcode.rt)?Opcode.rt:Opcode.rs;
 				MappedReg = IsConst(Opcode.rt)?Opcode.rs:Opcode.rt;
@@ -3585,7 +3565,6 @@ void Compile_R4300i_SPECIAL_SLTU (BLOCK_SECTION * Section) {
 	} else if (IsKnown(Opcode.rt) || IsKnown(Opcode.rs)) {
 		DWORD KnownReg = IsKnown(Opcode.rt)?Opcode.rt:Opcode.rs;
 		DWORD UnknownReg = IsKnown(Opcode.rt)?Opcode.rs:Opcode.rt;
-		//BYTE * Jump[2] = { NULL, NULL }; // Non-essential code, can use BYTE * Jump[2]; instead
 		BYTE * Jump[2];
 		if (IsConst(KnownReg)) {
 			if (Is64Bit(KnownReg)) {
@@ -3625,7 +3604,6 @@ void Compile_R4300i_SPECIAL_SLTU (BLOCK_SECTION * Section) {
 		Map_GPR_32bit(Section,Opcode.rd,TRUE, -1);
 		MoveVariableToX86reg(&BranchCompare,MipsRegLo(Opcode.rd));
 	} else {
-		//BYTE * Jump[2] = { NULL, NULL }; // Non-essential code, can use BYTE * Jump[2]; instead
 		BYTE * Jump[2];
 		int x86Reg;
 		x86Reg = Map_TempReg(Section,x86_Any,Opcode.rs,TRUE);
@@ -3940,7 +3918,6 @@ void Compile_R4300i_COP0_MF(BLOCK_SECTION * Section) {
 }
 void Compile_R4300i_COP0_MT (BLOCK_SECTION * Section) {
 	int OldStatusReg;
-	//BYTE * Jump = NULL; // Non-essential code, can use BYTE * Jump; instead
 	BYTE * Jump;
 	switch (Opcode.rd) {
 	case 0: //Index

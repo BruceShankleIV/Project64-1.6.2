@@ -1,2 +1,0 @@
-Setup game entry for Xeno Crisis
-Review non-essential code
