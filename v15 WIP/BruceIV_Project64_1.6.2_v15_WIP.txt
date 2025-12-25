@@ -8,5 +8,4 @@ More documentation for Interpreter CPU function BuildInterpreter opcodes
 Recompiler CPU functions CompileDelaySlot and GenerateX86Code could benefit from Interpeter CPU opcode documentation and avoid crashing on these opcodes, need to add them in opcode header file
 Fixed Glide64 Autofullscreen
 Register Caching for N64DD IPL
-Entry for Xeno Crisis (A PD ROM you can legally download to play if you cannot obtain a retail ROM legally)
-^ Not done yet.
+Entry for Xeno Crisis (A PD ROM you can legally download to play if you want to try out this application and cannot obtain a retail ROM legally)

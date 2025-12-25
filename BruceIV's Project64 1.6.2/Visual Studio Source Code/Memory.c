@@ -1677,10 +1677,10 @@ int r4300i_SW_NonMemory ( DWORD PAddr, DWORD Value ) {
 		case 0x04600018: PI_BSD_DOM1_PWD_REG = (Value & 0xFF); break;
 		case 0x0460001C: PI_BSD_DOM1_PGS_REG = (Value & 0xFF); break;
 		case 0x04600020: PI_BSD_DOM1_RLS_REG = (Value & 0xFF); break;
-		case 0x04600024: PI_DOMAIN2_REG = (Value & 0xFF); break;
-		case 0x04600028: PI_BSD_DOM2_PWD_REG = (Value & 0xFF); break;
-		case 0x0460002C: PI_BSD_DOM2_PGS_REG = (Value & 0xFF); break;
-		case 0x04600030: PI_BSD_DOM2_RLS_REG = (Value & 0xFF); break;
+		case 0x04600024: PI_DOMAIN2_REG = (Value & 0xFF); break; // Non-essential code
+		case 0x04600028: PI_BSD_DOM2_PWD_REG = (Value & 0xFF); break; // Non-essential code
+		case 0x0460002C: PI_BSD_DOM2_PGS_REG = (Value & 0xFF); break; // Non-essential code
+		case 0x04600030: PI_BSD_DOM2_RLS_REG = (Value & 0xFF); break; // Non-essential code
 		default:
 			return FALSE;
 		}
