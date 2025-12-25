@@ -310,13 +310,12 @@ void RomList_GetDispInfo(LPNMHDR pnmh) {
 	case RB_Crc2: sprintf(lpdi->item.pszText,"0x%08X",pRomInfo->CRC2); break;
 	case RB_CICChip:
 		if (pRomInfo->CicChip < 0) {
-			sprintf(lpdi->item.pszText, GS(UNKNOWN));
+			sprintf(lpdi->item.pszText,GS(UNKNOWN));
 		} else {
 			if (GetCicChipID(RomHeader) == 4) sprintf(lpdi->item.pszText, "CIC-NUS-XENO");
 			else if (GetCicChipID(RomHeader) == 7) sprintf(lpdi->item.pszText, "CIC-NUS-5167");
 			else if (GetCicChipID(RomHeader) == 8) sprintf(lpdi->item.pszText, "CIC-NUS-8303");
 			else if (GetCicChipID(RomHeader) == 9) sprintf(lpdi->item.pszText, "CIC-NUS-DDUS");
-			//else if (GetCicChipID(RomHeader) == 10) sprintf(&String[1], "CIC-NUS-8401"); // Would be for Aleck64?
 			else sprintf(lpdi->item.pszText, "CIC-NUS-610%d", pRomInfo->CicChip);
 		}
 		break;

@@ -16,8 +16,8 @@ typedef struct {
 } LANG_STR;
 LANG_STR DefaultString[] = {
     { LANGUAGE_AUTHOR,     "BruceIV"			  },
-    { LANGUAGE_VERSION,    "Beta 10.0 and Up"		  },
-    { LANGUAGE_DATE,       "2025 and Up"	 	  },
+    { LANGUAGE_VERSION,    "14"				  },
+    { LANGUAGE_DATE,       "Christmas 2025"	 	  },
 	{ INI_CURRENT_LANG,    "Language Database (.txt)" },
 	{ INI_AUTHOR,          "Author"                   },
 	{ INI_VERSION,         "Version"                  },
@@ -181,8 +181,8 @@ LANG_STR DefaultString[] = {
 //RDRAM Size
 	{ RDRAM_4MB,           "4 MB" },
 	{ RDRAM_8MB,           "8 MB" },
-//Self Mod Methods
-	{ ROM_SET_MEMORY_ADV_406,"SM 0x406"},
+
+	{ EXTRA_PROJECT64,	   "Project64 is already running.\n\nWould you like to force-kill the current Project64 before starting another one? Force-killing prevents save data issues but this may disrupt plugin behavior" },
 	{ SMCM_CACHE,          "Cache"},
 	{ SMCM_PROTECTED,      "Protect Memory"},
 	{ FORCE_RSP_RECOMPILER,"RSP Recompiler"},
@@ -253,7 +253,6 @@ LANG_STR DefaultString[] = {
 	{ AllocateCompile_SD,	  "Manage SD Space"},
 	{ AllocateCompile_SD_MENUDES,"Attempts to allocate or compile 254MB of space for virtual SD card emulation"},
 	{ Allocate_SD_Info,	  "This action will attempt to Allocate 254MB of SD space on your hard drive in an SDCARD0 partition after decompiling AUTO0.\n\nYou will not be able to save to or load from your virtual SD card until you compile virtual SD card space back into AUTO0 by using this option again"},
-	{ EXTRA_PROJECT64,	  "Project64 is already running.\n\nWould you like to force-kill the current Project64 before starting another one? Force-killing prevents save data issues but this may disrupt plugin behavior"},
 };
 class CLanguage  {
 	void FindLangName  ( int Index );

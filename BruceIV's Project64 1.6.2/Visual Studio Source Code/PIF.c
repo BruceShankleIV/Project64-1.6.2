@@ -41,9 +41,9 @@ int GetCicChipID (char * RomData) {
 		CRC += *(DWORD *)(RomData+count);
 	}
 	switch (CRC) {
-	case 0x000000C34B2826B8:
-	case 0x0000002F35CF0DE9:
-	case 0x000000C92ADFE50A:
+	/*case 0x000000C34B2826B8: // Non-essential code
+	case 0x0000002F35CF0DE9: // Non-essential code
+	case 0x000000C92ADFE50A:*/ // Non-essential code
 	case 0x000000D0027FDF31:
 	case 0x000000CFFB631223: return 1;
 	case 0x000000D057C85244: return 2;
@@ -55,9 +55,7 @@ int GetCicChipID (char * RomData) {
 	case 0x000000D2E53EF008: // N64DD IPL (J)
 	case 0x000000D2E53EF39F: return 8;
 	case 0x000000D2E53E5DDA: return 9;
-	//case 0x???????????????? return 10; // Would be for Aleck64?
 	}
-	//if (CRC >> 32 == 0xA7 || CRC >> 32 == 0xA8) return 10; // Would be for Aleck64?
 	return -1;
 }
 void PifRamRead (void) {

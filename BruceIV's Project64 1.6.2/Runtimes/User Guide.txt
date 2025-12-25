@@ -411,8 +411,6 @@ the expansion pak, it is better to set it to 4MB to avoid memory waste and reduc
 
 Self-modifying Code Method: By default, Check Memory but changeable from the advanced tab
 * Disabled by the Interpreter
-* Forces SM 0x406 off if not set to Check & Set Memory
-* Affected by SM 0x406 while using Check & Set Memory
 Protect Memory is reliable but slow and sometimes has severe performance issues for specific ROMs. Check
 Memory isn't as reliable but it's a lot faster, and is the original PJ64 1.6 default. Check & Set Memory
 is a specialized version of Check Memory which also does custom setting of memory due to a 1.6 core bug.
@@ -493,12 +491,6 @@ Counter Factor 1 is converted to Counter Factor 0, making it truly lagless, but 
 more you lower the counter factor, the more likely you generally are to run into a game-dependent crash!
 However, having it turned on can be necessary to emulate some games properly or to get rid of lagging or
 delay like the equipment subscreen equip delay in Ocarina of Time on HLE video if not using a Cheat0.
-
-SM 0x406: By default, off
-* Forced off by the Interpreter or Self-modifying Code Method not set to Check & Set Memory
-* Affects Check & Set Memory
-This alters the Memory Set used by the Check & Set Memory Self-modifying Code Method to 0x406 instead of
-0xB46. This should only be enabled if it is needed for Check & Set Memory to solve a Check Memory crash.
 
 Align DMA: By default, off
 *Forced on by the Interpreter
@@ -683,13 +675,12 @@ theluigidude2007 - Beta Tester.
 idc5580 - Flips Auto Patcher 2.0, allows mass patching of ROMhacks. Beta tester.
 Andzura - French translation support, D3D8 fullscreen resolution testing.
 lilycatx - Beta Tester, dutch translation support.
-nintendosatan - Beta Tester, russian translation support.
-Glitchy/glitchydorime - Beta Tester, spanish translation support, Bomberman 64 testing.
+nintendosatan - Beta Tester, russian translation support..
 idc8580 - Flips en masse patch applying (Alcaro made flips, idc made en masse patch applying).
 pomboatomico_1443 - Beta Tester.
 maddiedoesgames - Beta Tester, discovered issues with 60FPS hacks and hardware-specific plugin behavior,
 Banjo Kazooie Nostalgia ROMhack compatibility testing, Harvest Moon testing.
-Miro_Oku - Intel GPU testing.
+Miroku - Intel GPU test, CF0 and OoT v1.1/v1.2 and PAL v1.0 LOD fixes, OoT v1.2 Cheat40, 51-59 mem info.
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -746,11 +737,14 @@ Game.ini (ROM Database) - Original by Smiff, updated by Nekokabu + MASA + Jelta,
 SM64 U and OoT 1.0 U/J LOD fixes by theboy181.
 FIFA Soccer 64 audio fix by Gent.
 Mario Kart 64 (U) 60FPS Hack - theboy181
-Original Mario 64 Press L to Fly cheat - Unknown.
+Original Mario 64 Press L to Fly cheat - Unknown
+Adult Link Fist Pointer and MQ Debug LOD Fix - Phantom Natsu:
+https://www.youtube.com/watch?v=i7jjsZKoM3A
+https://www.youtube.com/watch?v=hNb3cYtNDC8
 
 Cheat.ini (Cheat Database) - Original by Gent, further modified/tweaked by Bruce IV.
 
-Spanish by Glitchydorime, Dutch by lilycatx, Russian by SatanNintendo, French by Andzura.
+Dutch by lilycatx, Russian by SatanNintendo, French by Andzura, Brazilian Portugese by TrulyNaN.
 
 gamecontrollerdb - https://github.com/mdqinc/SDL_GameControllerDB
 
@@ -786,6 +780,9 @@ Section#9 Special Thanks & Shoutouts
 --------------------------------------------------------------------------------------------------------
 These are my special thanks and shoutouts to awesome people for their work, assistance, and/or kindness:
 
+Miroku - Your RAM hacking skills have been extremely useful to this project with improved cheat support,
+	 reduced pause delay, instant load times, and zero lag thanks to your RAM hackings. Thanks Miro!
+
 z64me - For being supportive and addressing issues during the project's primitive stages when I started.
 
 aglab2 - I'm so glad that you researched and documented about the vulnerability inside of N64 emulators.
@@ -816,7 +813,7 @@ Emmanuel Sturdivant - He gave me candy he found at the bottom of a vending machi
 
 l0lgamez - You were a great tester!
 
-MTA - Thanks for checking out the project and finding a bug! :)
+MTA - Thanks for checking out the project and notably suggesting a chinese fan translation of MM to add!
 
 TheGent & Smiff - Although both of your work on the original Database support files has been obsolete by
 		  now, I can't go without saying how you put a lot of time into it which is respectable.

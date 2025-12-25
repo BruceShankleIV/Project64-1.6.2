@@ -1144,7 +1144,6 @@ LRESULT CALLBACK RomInfoProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
 			else if (GetCicChipID(RomHeader) == 7) sprintf(&String[1], "CIC-NUS-5167");
 			else if (GetCicChipID(RomHeader) == 8) sprintf(&String[1], "CIC-NUS-8303");
 			else if (GetCicChipID(RomHeader) == 9) sprintf(&String[1], "CIC-NUS-DDUS");
-			//if (GetCicChipID(RomHeader) == 10) sprintf(&String[1], "CIC-NUS-8401"); // Would be for Aleck64?
 			else sprintf(&String[1],"CIC-NUS-610%d",GetCicChipID(RomHeader));
 		}
 		SetDlgItemText(hDlg,IDC_INFO_CIC,String);

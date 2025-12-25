@@ -157,8 +157,8 @@ void BuildInterpreter (void ) {
 	R4300i_Special[ 8] = r4300i_SPECIAL_JR;
 	R4300i_Special[ 9] = r4300i_SPECIAL_JALR;
 	R4300i_Special[12] = r4300i_SPECIAL_SYSCALL;
-	R4300i_Special[13] = DUMMY; // BREAK - Ocarina of Time Spirit Temple's White Bubble enemy doesn't crash using DUMMY instead of SYSCALL
-	R4300i_Special[15] = DUMMY; // SYNC
+	R4300i_Special[13] = DUMMY; // SPECIAL_BREAK - Ocarina of Time Spirit Temple's White Bubble enemy doesn't crash using DUMMY instead of SYSCALL
+	R4300i_Special[15] = DUMMY; // SPECIAL_SYNC
 	R4300i_Special[16] = r4300i_SPECIAL_MFHI;
 	R4300i_Special[17] = r4300i_SPECIAL_MTHI;
 	R4300i_Special[18] = r4300i_SPECIAL_MFLO;
@@ -370,7 +370,7 @@ void StartInterpreterCPU (void ) {
 	}
 }
 void TestInterpreterJump (DWORD PC, DWORD TargetPC, int Reg1, int Reg2) {
-	if (PC != TargetPC || CPU_Type != CPU_Interpreter) return;
-	if (DelaySlotEffectsCompare(PC, Reg1, Reg2)) return;
-	InPermLoop();
+	if (PC != TargetPC) return;
+	if (DelaySlotEffectsCompare(PC,Reg1,Reg2)) return;
+	if (CPU_Type != CPU_Interpreter) return;
 }

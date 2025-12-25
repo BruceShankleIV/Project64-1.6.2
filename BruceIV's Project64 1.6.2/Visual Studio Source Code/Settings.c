@@ -807,7 +807,6 @@ BOOL CALLBACK RomSettingsProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 		SetFlagControl(hDlg,&RomSyncGametoAudio, IDC_SyncGametoAudio, SyncGametoAudio_LANG);
 		SetFlagControl(hDlg,&RomDelaySI, IDC_DELAY_SI, ROM_DELAY_SI);
 		SetFlagControl(hDlg,&RomRspRecompiler, IDC_RSP_RECOMPILER, FORCE_RSP_RECOMPILER);
-		SetFlagControl(hDlg,&RomSetMemory406, IDC_SETMEM406, ROM_SET_MEMORY_ADV_406);
 		SetFlagControl(hDlg,&RomDelayRDP, IDC_DELAY_RDP, ROM_DELAY_RDP);
 		SetFlagControl(hDlg,&RomDelayRSP, IDC_DELAY_RSP, ROM_DELAY_RSP);
 		SetFlagControl(hDlg,&RomAlignDMA, IDC_ALIGN_DMA, ROM_ALIGN_DMA);
@@ -838,7 +837,6 @@ BOOL CALLBACK RomSettingsProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 			EnableWindow(GetDlgItem(hDlg, IDC_REGCACHE), FALSE);
 		}
 		if (strlen(RomName) == 0 || RomCPUType == CPU_Interpreter || RomCF != -1 && RomCF != 1) EnableWindow(GetDlgItem(hDlg, IDC_CF1_CF0), FALSE);
-		if (strlen(RomName) == 0 || RomCPUType == CPU_Interpreter || RomSelfModCheck != ModCode_Default && RomSelfModCheck != ModCode_CheckSetMemoryAdvance) EnableWindow(GetDlgItem(hDlg, IDC_SETMEM406), FALSE);
 		if (strlen(RomName) == 0 || strcmp(RSPDLL, "RSP.dll") != 0 || strcmp(GfxDLL, "Icepir8sLegacyLLE.dll") != 0 || strcmp(RomName, "THE LEGEND OF ZELDA") == 0 || strcmp(RomName, "THE MASK OF MUJURA") == 0 || strcmp(RomName, "ZELDA MAJORA'S MASK") == 0) EnableWindow(GetDlgItem(hDlg, IDC_RSP_RECOMPILER), FALSE);
 		if (strlen(RomName) == 0 || !RomJAI && !RomShankleAziAI) EnableWindow(GetDlgItem(hDlg, ALTERNATE_EMUAI), FALSE);
 		if (strlen(RomName) == 0 || strcmp(AudioDLL, "Shankle_Audio.dll") != 0) EnableWindow(GetDlgItem(hDlg, SHANKLE_AZI_AI), FALSE);
@@ -864,7 +862,6 @@ BOOL CALLBACK RomSettingsProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 				RomAudioSignal = SendMessage(GetDlgItem(hDlg, IDC_AUDIO_SIGNAL), BM_GETSTATE, 0, 0) == BST_CHECKED ? TRUE : FALSE;
 				RomDelaySI = SendMessage(GetDlgItem(hDlg, IDC_DELAY_SI), BM_GETSTATE, 0, 0) == BST_CHECKED ? TRUE : FALSE;
 				RomRspRecompiler = SendMessage(GetDlgItem(hDlg, IDC_RSP_RECOMPILER), BM_GETSTATE, 0, 0) == BST_CHECKED ? TRUE : FALSE;
-				RomSetMemory406 = SendMessage(GetDlgItem(hDlg, IDC_SETMEM406), BM_GETSTATE, 0, 0) == BST_CHECKED ? TRUE : FALSE;
 				RomDelayRDP = SendMessage(GetDlgItem(hDlg, IDC_DELAY_RDP), BM_GETSTATE, 0, 0) == BST_CHECKED ? TRUE : FALSE;
 				RomDelayRSP = SendMessage(GetDlgItem(hDlg, IDC_DELAY_RSP), BM_GETSTATE, 0, 0) == BST_CHECKED ? TRUE : FALSE;
 				RomAlignDMA = SendMessage(GetDlgItem(hDlg, IDC_ALIGN_DMA), BM_GETSTATE, 0, 0) == BST_CHECKED ? TRUE : FALSE;

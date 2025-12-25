@@ -3,4 +3,3 @@ having been patched many many months ago and extra security measures
 layered on top of things to ensure improved safety. This includes...
 * hJobs
 * ASLR
-* SDL Check

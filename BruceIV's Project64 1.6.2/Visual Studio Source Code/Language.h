@@ -180,7 +180,7 @@ char * GS               ( int StringID );
 #define RDRAM_4MB			153
 #define RDRAM_8MB			154
 //Core Styles
-#define ROM_SET_MEMORY_ADV_406			155
+#define EXTRA_PROJECT64			155
 #define SMCM_CACHE			156
 #define SMCM_PROTECTED			157
 #define FORCE_RSP_RECOMPILER	158
@@ -251,4 +251,3 @@ char * GS               ( int StringID );
 #define AllocateCompile_SD		215
 #define AllocateCompile_SD_MENUDES	216
 #define Allocate_SD_Info		217
-#define EXTRA_PROJECT64			218

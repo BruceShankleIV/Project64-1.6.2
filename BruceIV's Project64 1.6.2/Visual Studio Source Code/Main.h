@@ -36,10 +36,10 @@ extern "C" {
 #include "Language.h"
 /********* General Defaults **********/
 #define AppName  "BruceIV's Project64 1.6.2"
-// Source Version: 12
+// Source Version: 14
 #define IniName				"Game.ini"
 #define CheatIniName			"Cheat.ini"
-#define LangFileName			"BruceIV.txt"
+#define LangFileName			"English.txt"
 #define Default_AutoSleep		FALSE
 #define Default_AutoHide		TRUE
 #define Default_RDRAMsize		0x800000

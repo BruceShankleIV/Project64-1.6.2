@@ -36,7 +36,7 @@
 #include "ROM Tools Common.h"
 #define MenuLocOfUsedFiles	11
 #define MenuLocOfUsedDirs	(MenuLocOfUsedFiles + 1)
-DWORD ClearFrame, RomClearFrame, RomFileSize, RomRamSize, SaveUsing, RomSaveUsing, CPUType, RomCPUType, RomSelfModCheck, UseTLB, RomUseTLB, FiftyNineHertz, RomFiftyNineHertz, RomJAI, AudioSignal, RomAudioSignal, RomCF, UseCache, RomUseCache, RomShankleAziAI, RomAltEmulateAI, SyncGametoAudio, RomSyncGametoAudio, /*FATFAT, RomFAT, FAT*/CF1CF0, RomCF1CF0, DelayRDP, RomDelayRDP, DelayRSP, RomDelayRSP, AlignDMA, RomAlignDMA, DelayRDP, RomDelayRDP, DelayRSP, RomDelayRSP, DelaySI, RomDelaySI, RomRspRecompiler, SetMemory406, RomSetMemory406, ForceAuto16kbit, ForceDisableTLB, ForceDisableCaching, ForceEnableDMA, EmulateAI;
+DWORD ClearFrame, RomClearFrame, RomFileSize, RomRamSize, SaveUsing, RomSaveUsing, CPUType, RomCPUType, RomSelfModCheck, UseTLB, RomUseTLB, FiftyNineHertz, RomFiftyNineHertz, RomJAI, AudioSignal, RomAudioSignal, RomCF, UseCache, RomUseCache, RomShankleAziAI, RomAltEmulateAI, SyncGametoAudio, RomSyncGametoAudio, /*FATFAT, RomFAT, FAT*/CF1CF0, RomCF1CF0, DelayRDP, RomDelayRDP, DelayRSP, RomDelayRSP, AlignDMA, RomAlignDMA, DelayRDP, RomDelayRDP, DelayRSP, RomDelayRSP, DelaySI, RomDelaySI, RomRspRecompiler, ForceAuto16kbit, ForceDisableTLB, ForceDisableCaching, ForceEnableDMA, EmulateAI;
 char CurrentFileName[MAX_PATH + 1] = { "" }, RomName[MAX_PATH + 1] = { "" }, RomHeader[0x1000], LastRoms[10][MAX_PATH+1], LastDirs[10][MAX_PATH+1];
 BOOL IsValidRomImage ( BYTE Test[4] );
 void AddRecentDir(HWND hWnd, char * addition) {
@@ -451,7 +451,6 @@ void ReadRomOptions(void) {
 	RomDelaySI = FALSE;
 	if (strcmp(RSPDLL, "RSP.dll") == 0 && (strcmp(GfxDLL, "Icepir8sLegacyLLE.dll") != 0 || strcmp(RomName, "THE LEGEND OF ZELDA") == 0 || strcmp(RomName, "THE MASK OF MUJURA") == 0 || strcmp(RomName, "ZELDA MAJORA'S MASK") == 0)) RomRspRecompiler = TRUE;
 	else RomRspRecompiler = FALSE;
-	RomSetMemory406 = FALSE;
 	RomCF1CF0 = TRUE;
 	RomDelayRDP = FALSE;
 	RomDelayRSP = FALSE;
@@ -507,8 +506,6 @@ void ReadRomOptions(void) {
 		if (strcmp(String, "ON") == 0) RomAlignDMA = TRUE;
 		_GetPrivateProfileString(Identifier, "59 Hz", "", String, sizeof(String), IniFileName);
 		if (strcmp(String, "ON") == 0) RomFiftyNineHertz = TRUE;
-		_GetPrivateProfileString(Identifier, "SM 0x406", "", String, sizeof(String), IniFileName);
-		if (strcmp(String, "ON") == 0) RomSetMemory406 = TRUE;
 		_GetPrivateProfileString(Identifier, "RSP Recompiler", "", String, sizeof(String), IniFileName);
 		if (strcmp(String, "ON") == 0) RomRspRecompiler = TRUE;
 		_GetPrivateProfileString(Identifier, "Jabo AI", "", String, sizeof(String), IniFileName);
@@ -533,7 +530,6 @@ void ReadRomOptions(void) {
 			}
 		}
 		if (RomCPUType == CPU_Interpreter || RomCF != -1 && RomCF != 1) RomCF1CF0 = FALSE;
-		if (RomCPUType == CPU_Interpreter || RomSelfModCheck != ModCode_Default && RomSelfModCheck != ModCode_CheckSetMemoryAdvance) RomSetMemory406 = FALSE;
 	}
 }
 void SetNewFileDirectory (void ){
@@ -971,8 +967,6 @@ void SaveRomOptions (void) {
 	_WritePrivateProfileString(Identifier, "59 Hz", RomFiftyNineHertz ? "ON" : "Default", GetIniFileName());
 	if (RomCPUType == CPU_Interpreter || RomCF != -1 && RomCF != 1) _WritePrivateProfileString(Identifier, "CF1-->0", "Default", GetIniFileName());
 	else _WritePrivateProfileString(Identifier, "CF1-->0", RomCF1CF0 ? "Default" : "OFF", GetIniFileName());
-	if (RomCPUType == CPU_Interpreter || RomSelfModCheck != ModCode_Default && RomSelfModCheck != ModCode_CheckSetMemoryAdvance) _WritePrivateProfileString(Identifier, "SM 0x406", "Default", GetIniFileName());
-	else _WritePrivateProfileString(Identifier, "SM 0x406", RomSetMemory406 ? "ON" : "Default", GetIniFileName());
 	if (RomCPUType == CPU_Interpreter) _WritePrivateProfileString(Identifier, "Align DMA", "Default", GetIniFileName());
 	else if (!ForceEnableDMA) _WritePrivateProfileString(Identifier, "Align DMA", RomAlignDMA ? "ON" : "Default", GetIniFileName());
 	_WritePrivateProfileString(Identifier, "Delay RDP", RomDelayRDP ? "ON" : "Default", GetIniFileName());

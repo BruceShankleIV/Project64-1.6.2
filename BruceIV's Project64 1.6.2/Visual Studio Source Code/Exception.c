@@ -116,8 +116,7 @@ void _fastcall DoSysCallException(BOOL DelaySlot) {
 	if (DelaySlot) {
 		CAUSE_REGISTER |= CAUSE_BD;
 		EPC_REGISTER = PROGRAM_COUNTER - 4;
-	}
-	else {
+	} else {
 		EPC_REGISTER = PROGRAM_COUNTER;
 	}
 	STATUS_REGISTER |= STATUS_EXL;

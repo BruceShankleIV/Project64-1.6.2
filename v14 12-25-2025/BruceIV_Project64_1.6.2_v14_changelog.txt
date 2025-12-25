@@ -1,15 +1,12 @@
 Screenshot toggle display (so you know if your F3 press registered or not in consecutive takes)
-Added on to an error seen with wrong self-mod
 Updated gamecontrollerdb
 Updated GLideN64
 Added link to WIP Zelda64 hacks wiki project in user guide resources
 TML Plugin Note
 TML bottle mods
 Downstream voyager back to original due to issues with sharpocarina remove debug patch
-Added missing levitate cheat
 Improved N64 Mujura no Kamen cheat support
-Stable Defaults build profile
-Fixed incorrect cheat item names
+Stable Defaults profile
 Size reduction on some MM entries
 LOD fixes for OoT 1.2, 1.1, PAL 1.0, MQ Debug
 Mute music cheat for most versions of OoT, allows listening to your prefered background music
@@ -17,8 +14,27 @@ Mute music cheat for most versions of OoT, allows listening to your prefered bac
 Fixed wrong statuses
 Removed leftover GLideN64 F11 vsync toggle binding
 Mujura no Kamen J 1.0 fist pointer for OoT Adult Link in Majora's Mask ROMhack by phantom natsu
-z64decompress and z64compress added to Apps folder
+z64decompress and xdelta added to Apps folder to support more ROMhack patches
 Small buffer to 6PM hour modifier to skip transition cutscenes
-Update lang file names to match author
 Make force-kill optional
-Remove user glitchydorime from special thanks due to backstabbing
+Removed content from ex-contributor who is back-stabbing
+Minor changes
+
+LOTS of cheat improvements, including in the Game.ini Cheat0 bug fixes as well, notably
+fixed lagging issues in Ocarina of Time and improved subscreen delay, this applies to
+several ROMhacks as well which inherit memory locations.
+
+Commented out "Non-essential code". This is code which wasn't used originally in 1.6 and
+was added at a later point but its effects are unknown, thus is removed until otherwise.
+
+Turned off SDL Check because it's increasing the size of the application.
+
+Removed the ability to Set 0x406 Memory because this was added for Ocarina of Time v1.2,
+but 1.2 needs to be using Protect Memory instead of Check & Set Memory to avoid crashes.
+
+Oh and I almost forgot...
+
+
+MERRY CHRISTMAS AND HAPPY NEW YEAR! 🎄 Consider this release my present to you. :)
+Oh and P.S. the password is "password". That's right I'm DOUBLE ENCRYPTING this
+son of a you-know-what, just for extra security against faulty scanners.

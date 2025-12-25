@@ -85,7 +85,6 @@
 #define IDC_ROMSEL_TEXT2                1112
 #define IDC_ROMSEL_TEXT3                1113
 #define IDC_ROMSEL_TEXT4                1114
-#define IDC_SETMEM406					1115
 #define IDC_RSP_RECOMPILER				1116
 #define IDC_DELETE                      1118
 #define IDC_UNMARK                      1119

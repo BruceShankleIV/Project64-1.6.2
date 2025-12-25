@@ -945,7 +945,7 @@ void TimerDone (void) {
 	case RspTimer:
 		ChangeTimer(RspTimer,0);
 		RunRsp();
-		CheckInterrupts();
+		//CheckInterrupts(); // Non-essential code
 		break;
 	case AiTimer:
 		EmuAI_SetNextTimer();

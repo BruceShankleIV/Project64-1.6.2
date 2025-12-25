@@ -291,7 +291,6 @@ void SetupPlugins (HWND hWnd) {
 		AudioSignal = RomAudioSignal;
 		UseTLB = RomUseTLB;
 		DelaySI = RomDelaySI;
-		SetMemory406 = RomSetMemory406;
 		CF1CF0 = RomCF1CF0;
 		DelayRDP = RomDelayRDP;
 		DelayRSP = RomDelayRSP;

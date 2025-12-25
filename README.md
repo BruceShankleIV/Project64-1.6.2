@@ -191,13 +191,11 @@ idc5580 - Flips Auto Patcher 2.0, allows mass patching of ROMhacks. Beta tester.
 Andzura - French translation support, D3D8 fullscreen resolution testing.
 lilycatx - Beta Tester, dutch translation support.
 nintendosatan - Beta Tester, russian translation support.
-Glitchy/glitchydorime - Beta Tester, spanish translation support, Bomberman 64 testing.
 idc8580 - Flips en masse patch applying (Alcaro made flips, idc made en masse patch applying).
 pomboatomico_1443 - Beta Tester.
 maddiedoesgames - Beta Tester, discovered issues with 60FPS hacks and hardware-specific plugin behavior,
 Banjo Kazooie Nostalgia ROMhack compatibility testing, Harvest Moon testing.
-Miro_Oku - Intel GPU testing.
-
+Miroku - Intel GPU test, CF0 and OoT v1.1/v1.2 and PAL v1.0 LOD fixes, OoT v1.2 Cheat40, 51-59 mem info.
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 PLUGIN CREDITS
@@ -253,11 +251,14 @@ Game.ini (ROM Database) - Original by Smiff, updated by Nekokabu + MASA + Jelta,
 SM64 U and OoT 1.0 U/J LOD fixes by theboy181.
 FIFA Soccer 64 audio fix by Gent.
 Mario Kart 64 (U) 60FPS Hack - theboy181
-Original Mario 64 Press L to Fly cheat - Unknown.
+Original Mario 64 Press L to Fly cheat - Unknown
+Adult Link Fist Pointer and MQ Debug LOD Fix - Phantom Natsu:
+https://www.youtube.com/watch?v=i7jjsZKoM3A
+https://www.youtube.com/watch?v=hNb3cYtNDC8
 
 Cheat.ini (Cheat Database) - Original by Gent, further modified/tweaked by Bruce IV.
 
-Spanish by Glitchydorime, Dutch by lilycatx, Russian by SatanNintendo, French by Andzura.
+Dutch by lilycatx, Russian by SatanNintendo, French by Andzura, Brazilian Portugese by TrulyNaN.
 
 gamecontrollerdb - https://github.com/mdqinc/SDL_GameControllerDB
 
@@ -293,6 +294,9 @@ Section#9 Special Thanks & Shoutouts
 --------------------------------------------------------------------------------------------------------
 These are my special thanks and shoutouts to awesome people for their work, assistance, and/or kindness:
 
+Miroku - Your RAM hacking skills have been extremely useful to this project with improved cheat support,
+	 reduced pause delay, instant load times, and zero lag thanks to your RAM hackings. Thanks Miro!
+
 z64me - For being supportive and addressing issues during the project's primitive stages when I started.
 
 aglab2 - I'm so glad that you researched and documented about the vulnerability inside of N64 emulators.
@@ -323,7 +327,7 @@ Emmanuel Sturdivant - He gave me candy he found at the bottom of a vending machi
 
 l0lgamez - You were a great tester!
 
-MTA - Thanks for checking out the project and finding a bug! :)
+MTA - Thanks for checking out the project and notably suggesting a chinese fan translation of MM to add!
 
 TheGent & Smiff - Although both of your work on the original Database support files has been obsolete by
 		  now, I can't go without saying how you put a lot of time into it which is respectable.

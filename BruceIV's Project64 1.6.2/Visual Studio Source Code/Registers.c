@@ -68,17 +68,17 @@ void ChangeMiIntrMask (void) {
 	if ( ( RegModValue & MI_INTR_MASK_CLR_DP ) != 0 ) { MI_INTR_MASK_REG &= ~MI_INTR_MASK_DP; }
 	if ( ( RegModValue & MI_INTR_MASK_SET_DP ) != 0 ) { MI_INTR_MASK_REG |= MI_INTR_MASK_DP; }
 }
-void ChangeMiModeReg (void) {
-	MI_MODE_REG &= ~0x7F;
-	MI_MODE_REG |= (RegModValue & 0x7F);
-	if ( ( RegModValue & MI_CLR_INIT ) != 0 ) { MI_MODE_REG &= ~MI_MODE_INIT; }
-	if ( ( RegModValue & MI_SET_INIT ) != 0 ) { MI_MODE_REG |= MI_MODE_INIT; }
-	if ( ( RegModValue & MI_CLR_EBUS ) != 0 ) { MI_MODE_REG &= ~MI_MODE_EBUS; }
-	if ( ( RegModValue & MI_SET_EBUS ) != 0 ) { MI_MODE_REG |= MI_MODE_EBUS; }
-	if ( ( RegModValue & MI_CLR_DP_INTR ) != 0 ) { MI_INTR_REG &= ~MI_INTR_DP; }
-	if ( ( RegModValue & MI_CLR_RDRAM ) != 0 ) { MI_MODE_REG &= ~MI_MODE_RDRAM; }
-	if ( ( RegModValue & MI_SET_RDRAM ) != 0 ) { MI_MODE_REG |= MI_MODE_RDRAM; }
-}
+/*void ChangeMiModeReg(void) { // Non-essential code?
+	MI_MODE_REG &= ~0x7F; // Non-essential code?
+	MI_MODE_REG |= (RegModValue & 0x7F); // Non-essential code?
+	if ( ( RegModValue & MI_CLR_INIT ) != 0 ) { MI_MODE_REG &= ~MI_MODE_INIT; } // Non-essential code?
+	if ( ( RegModValue & MI_SET_INIT ) != 0 ) { MI_MODE_REG |= MI_MODE_INIT; } // Non-essential code?
+	if ( ( RegModValue & MI_CLR_EBUS ) != 0 ) { MI_MODE_REG &= ~MI_MODE_EBUS; } // Non-essential code?
+	if ( ( RegModValue & MI_SET_EBUS ) != 0 ) { MI_MODE_REG |= MI_MODE_EBUS; } // Non-essential code?
+	if ( ( RegModValue & MI_CLR_DP_INTR ) != 0 ) { MI_INTR_REG &= ~MI_INTR_DP; } // Non-essential code?
+	if ( ( RegModValue & MI_CLR_RDRAM ) != 0 ) { MI_MODE_REG &= ~MI_MODE_RDRAM; } // Non-essential code?
+	if ( ( RegModValue & MI_SET_RDRAM ) != 0 ) { MI_MODE_REG |= MI_MODE_RDRAM; } // Non-essential code?
+}*/ // Non-essential code?
 void ChangeSpStatus (void) {
 	if ( ( RegModValue & SP_CLR_HALT ) != 0) { SP_STATUS_REG &= ~SP_STATUS_HALT; }
 	if ( ( RegModValue & SP_SET_HALT ) != 0) { SP_STATUS_REG |= SP_STATUS_HALT;  }
@@ -119,24 +119,24 @@ void ChangeSpStatus (void) {
 	}
 	RunRsp();
 }
-void ChangeDpcStatus (void) {
-	if ( ( RegModValue & DPC_CLR_XBUS_DMEM_DMA ) != 0) { DPC_STATUS_REG &= ~DPC_STATUS_XBUS_DMEM_DMA; }
-	if ( ( RegModValue & DPC_SET_XBUS_DMEM_DMA ) != 0) { DPC_STATUS_REG |= DPC_STATUS_XBUS_DMEM_DMA;  }
-	if ( ( RegModValue & DPC_CLR_FREEZE ) != 0) { DPC_STATUS_REG &= ~DPC_STATUS_FREEZE; }
-	if ( ( RegModValue & DPC_SET_FREEZE ) != 0) { DPC_STATUS_REG |= DPC_STATUS_FREEZE;  }
-	if ( ( RegModValue & DPC_CLR_FLUSH ) != 0) { DPC_STATUS_REG &= ~DPC_STATUS_FLUSH; }
-	if ( ( RegModValue & DPC_SET_FLUSH ) != 0) { DPC_STATUS_REG |= DPC_STATUS_FLUSH;  }
-	if ( ( RegModValue & DPC_CLR_FREEZE ) != 0)
-	{
-		if ( ( SP_STATUS_REG & SP_STATUS_HALT ) == 0)
-		{
-			if ( ( SP_STATUS_REG & SP_STATUS_BROKE ) == 0 )
-			{
-				RunRsp();
-			}
-		}
-	}
-}
+/*void ChangeDpcStatus(void) { // Non-essential code?
+	if ( ( RegModValue & DPC_CLR_XBUS_DMEM_DMA ) != 0) { DPC_STATUS_REG &= ~DPC_STATUS_XBUS_DMEM_DMA; } // Non-essential code?
+	if ( ( RegModValue & DPC_SET_XBUS_DMEM_DMA ) != 0) { DPC_STATUS_REG |= DPC_STATUS_XBUS_DMEM_DMA;  } // Non-essential code?
+	if ( ( RegModValue & DPC_CLR_FREEZE ) != 0) { DPC_STATUS_REG &= ~DPC_STATUS_FREEZE; } // Non-essential code?
+	if ( ( RegModValue & DPC_SET_FREEZE ) != 0) { DPC_STATUS_REG |= DPC_STATUS_FREEZE;  } // Non-essential code?
+	if ( ( RegModValue & DPC_CLR_FLUSH ) != 0) { DPC_STATUS_REG &= ~DPC_STATUS_FLUSH; } // Non-essential code?
+	if ( ( RegModValue & DPC_SET_FLUSH ) != 0) { DPC_STATUS_REG |= DPC_STATUS_FLUSH;  } // Non-essential code?
+	if ( ( RegModValue & DPC_CLR_FREEZE ) != 0) // Non-essential code?
+	{ // Non-essential code?
+		if ( ( SP_STATUS_REG & SP_STATUS_HALT ) == 0) // Non-essential code?
+		{ // Non-essential code?
+			if ( ( SP_STATUS_REG & SP_STATUS_BROKE ) == 0 ) // Non-essential code?
+			{ // Non-essential code?
+				RunRsp(); // Non-essential code?
+			} // Non-essential code?
+		} // Non-essential code?
+	} // Non-essential code?
+}*/ // Non-essential code?
 int Free8BitX86Reg (BLOCK_SECTION * Section) {
 	int x86Reg, count, MapCount[10], MapReg[10];
 	if (x86Mapped(x86_EBX) == NotMapped && !x86Protected(x86_EBX)) {return x86_EBX; }
@@ -415,17 +415,6 @@ void InitializeR4300iRegisters (int UsePif, int Country, int CIC_Chip) {
 		case 9:
 			GPR[22].DW = 0x00000000000000DE;
 			break;
-		/*case 10:
-			GPR[1].DW = 0x0000000000000001;
-			GPR[2].DW = 0x000000000EBDA536;
-			GPR[3].DW = 0x000000000EBDA536;
-			GPR[4].DW = 0x000000000000A536;
-			GPR[12].DW = 0xFFFFFFFFED10D0B3;
-			GPR[13].DW = 0x000000001402A4CC;
-			GPR[15].DW = 0x000000003103E121;
-			GPR[22].DW = 0x00000000000000DD;
-			GPR[25].DW = 0xFFFFFFFF9DEBB54F;
-			break; Would be for Aleck64? */
 		}
 	}
 	MemoryStack = (DWORD)(N64MEM+(GPR[29].W[0] & 0x1FFFFFFF));
