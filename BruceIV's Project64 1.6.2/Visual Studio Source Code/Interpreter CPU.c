@@ -80,8 +80,6 @@ void _fastcall DTE_DUMMY() {
 void BuildInterpreter (void ) {
 	int i;
 	for (i = 0; i < 64; i++) {
-		R4300i_Opcode[i]	= DTE_DUMMY;
-		R4300i_Special[i]	= DTE_DUMMY;
 		R4300i_Regimm[i]	= DTE_DUMMY;
 		R4300i_CoP0[i]		= DTE_DUMMY;
 		R4300i_CoP0_Function[i]	= DTE_DUMMY;
