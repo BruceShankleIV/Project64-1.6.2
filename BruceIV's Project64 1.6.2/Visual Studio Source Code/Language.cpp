@@ -16,15 +16,15 @@ typedef struct {
 } LANG_STR;
 LANG_STR DefaultString[] = {
     { LANGUAGE_AUTHOR,     "BruceIV"			  },
-    { LANGUAGE_VERSION,    "14"				  },
-    { LANGUAGE_DATE,       "Christmas 2025"	 	  },
+    { LANGUAGE_VERSION,    "16"				  },
+    { LANGUAGE_DATE,       "2025"			  },
 	{ INI_CURRENT_LANG,    "Language Database (.txt)" },
 	{ INI_AUTHOR,          "Author"                   },
 	{ INI_VERSION,         "Version"                  },
 	{ INI_DATE,            "Date"                     },
 	{ LIMITFPS_ON,	       "Limit FPS on"		  },
-	{ INI_CURRENT_GAME_INI,     "ROM Database (Game.ini)"      },
-	{ INI_CURRENT_CHEAT_INI,     "Cheat Database (Cheat.ini)"    },
+	{ INI_CURRENT_GAME_INI,     "ROM Database (Game.ini)"},
+	{ INI_CURRENT_CHEAT_INI,     "Cheat Database (Cheat.ini)"},
 	        { MENU_FILE,       "File"                    },
 		{ MENU_OPEN,       "Open ROM"                },
 		{ MENU_ROM_INFO,   "ROM Info"                },
@@ -181,8 +181,7 @@ LANG_STR DefaultString[] = {
 //RDRAM Size
 	{ RDRAM_4MB,           "4 MB" },
 	{ RDRAM_8MB,           "8 MB" },
-
-	{ EXTRA_PROJECT64,	   "Project64 is already running.\n\nWould you like to force-kill the current Project64 before starting another one? Force-killing prevents save data issues but this may disrupt plugin behavior" },
+	{ EXTRA_PROJECT64,     "Project64 is already running.\n\nWould you like to force-kill the current Project64 before starting another one? Force-killing prevents save data issues but this may disrupt plugin behavior" },
 	{ SMCM_CACHE,          "Cache"},
 	{ SMCM_PROTECTED,      "Protect Memory"},
 	{ FORCE_RSP_RECOMPILER,"RSP Recompiler"},

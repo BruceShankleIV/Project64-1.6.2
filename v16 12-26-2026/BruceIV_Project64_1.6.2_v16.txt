@@ -1,0 +1,11 @@
+System->Cheat works after ending emulation now
+Opcode documentation
+Cleaned up some code
+Added NEO NOTROPOLIS (ROMhack) game & cheat entries
+Triforce transition cheat codes
+Cendamos' Majora's Mask Debug ROM transition crash fix
+
+Minor changes not worth mentioning here. Also password locked the ZIP below
+with password as the password since it needs to be encrypted before you set
+an exception for the application with the batch file, or manually depending
+on your system.

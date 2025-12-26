@@ -191,16 +191,16 @@ void Compile_LW ( int Reg, DWORD Addr ) {
 		}
 		break;
 	case 0x04100000:
-		/*switch (Addr) { // Non-essential code
-			case 0x0410000C: MoveVariableToX86reg(&DPC_STATUS_REG,Reg); break; // Non-essential code
-			case 0x04100010: MoveVariableToX86reg(&DPC_CLOCK_REG,Reg); break; // Non-essential code
-			case 0x04100014: MoveVariableToX86reg(&DPC_BUFBUSY_REG,Reg); break; // Non-essential code
-			case 0x04100018: MoveVariableToX86reg(&DPC_PIPEBUSY_REG,Reg); break; // Non-essential code
-			case 0x0410001C: MoveVariableToX86reg(&DPC_TMEM_REG,Reg); break; // Non-essential code
-			default:*/ // Non-essential code
+		switch (Addr) {
+			case 0x0410000C: MoveVariableToX86reg(&DPC_STATUS_REG,Reg); break;
+			case 0x04100010: MoveVariableToX86reg(&DPC_CLOCK_REG,Reg); break;
+			case 0x04100014: MoveVariableToX86reg(&DPC_BUFBUSY_REG,Reg); break;
+			case 0x04100018: MoveVariableToX86reg(&DPC_PIPEBUSY_REG,Reg); break;
+			case 0x0410001C: MoveVariableToX86reg(&DPC_TMEM_REG,Reg); break;
+			default:
 				MoveVariableToX86reg(Addr + N64MEM,Reg);
-				//break; // Non-essential code
-		//} // Non-essential code
+				break;
+		}
 		break;
 	case 0x04300000:
 		switch (Addr) {
@@ -244,7 +244,7 @@ void Compile_LW ( int Reg, DWORD Addr ) {
 		break;
 	case 0x04600000:
 		switch (Addr) {
-		case 0x04600004: MoveVariableToX86reg(&PI_CART_ADDR_REG,Reg); break; // Non-essential code
+		case 0x04600004: MoveVariableToX86reg(&PI_CART_ADDR_REG,Reg); break;
 		case 0x04600010: MoveVariableToX86reg(&PI_STATUS_REG,Reg); break;
 		case 0x04600014: MoveVariableToX86reg(&PI_DOMAIN1_REG,Reg); break;
 		case 0x04600018: MoveVariableToX86reg(&PI_BSD_DOM1_PWD_REG,Reg); break;
@@ -273,9 +273,9 @@ void Compile_LW ( int Reg, DWORD Addr ) {
 			MoveConstToX86reg(0,Reg);
 		}
 		break;
-	/*case 0x05000000: // Non-essential code
-		MoveConstToX86reg(0,Reg); // Non-essential code
-		break;*/ // Non-essential code
+	case 0x05000000:
+		MoveConstToX86reg(0,Reg);
+		break;
 	case 0x1FC00000:
 		MoveVariableToX86reg(Addr + N64MEM,Reg);
 		break;
@@ -579,7 +579,7 @@ void Compile_SW_Const ( DWORD Value, DWORD Addr ) {
 		case 0x04600018: MoveConstToVariable((Value & 0xFF),&PI_BSD_DOM1_PWD_REG); break;
 		case 0x0460001C: MoveConstToVariable((Value & 0xFF),&PI_BSD_DOM1_PGS_REG); break;
 		case 0x04600020: MoveConstToVariable((Value & 0xFF),&PI_BSD_DOM1_RLS_REG); break;
-		case 0x04600024: MoveConstToVariable((Value & 0xFF),&PI_DOMAIN2_REG); break; // Non-essential code
+		case 0x04600024: MoveConstToVariable((Value & 0xFF),&PI_DOMAIN2_REG); break;
 		}
 		break;
 	case 0x04700000:
@@ -665,23 +665,23 @@ void Compile_SW_Register ( int x86Reg, DWORD Addr ) {
 		}
 		break;
 	case 0x04100000:
-		if (Addr == 0x0410000C) { // Non-essential code?
-			MoveX86regToVariable(x86Reg, &RegModValue); // Non-essential code?
-			Pushad(); // Non-essential code?
-			Call_Direct(ChangeDpcStatus); // Non-essential code?
-			Popad(); // Non-essential code?
-		} else { // Non-essential code?
+		if (Addr == 0x0410000C) {
+			MoveX86regToVariable(x86Reg, &RegModValue);
+			Pushad();
+			Call_Direct(ChangeDpcStatus);
+			Popad();
+		} else {
 			MoveX86regToVariable(x86Reg,Addr + N64MEM);
-		} // Non-essential code?
-		break; // Non-essential code? Originally had a fallthrough to the next case here
+		}
+		break;
 	case 0x04300000:
 		switch (Addr) {
 		case 0x04300000:
-			MoveX86regToVariable(x86Reg,&RegModValue); // Non-essential code?
-			Pushad(); // Non-essential code?
-			Call_Direct(ChangeMiModeReg); // Non-essential code?
-			Popad(); // Non-essential code?
-			break; // Non-essential code?
+			MoveX86regToVariable(x86Reg,&RegModValue);
+			Pushad();
+			Call_Direct(ChangeMiModeReg);
+			Popad();
+			break;
 		case 0x0430000C:
 			MoveX86regToVariable(x86Reg,&RegModValue);
 			Pushad();
@@ -804,22 +804,22 @@ void Compile_SW_Register ( int x86Reg, DWORD Addr ) {
 			MoveX86regToVariable(x86Reg,&PI_BSD_DOM1_RLS_REG);
 			AndConstToVariable(0xFF,&PI_BSD_DOM1_RLS_REG);
 			break;
-		case 0x04600024: // Non-essential code
-			MoveX86regToVariable(x86Reg,&PI_DOMAIN2_REG); // Non-essential code
-			AndConstToVariable(0xFF,&PI_DOMAIN2_REG); // Non-essential code
-			break; // Non-essential code
-		case 0x04600028: // Non-essential code
-			MoveX86regToVariable(x86Reg,&PI_BSD_DOM2_PWD_REG); // Non-essential code
-			AndConstToVariable(0xFF,&PI_BSD_DOM2_PWD_REG); // Non-essential code
-			break; // Non-essential code
-		case 0x0460002C: // Non-essential code
-			MoveX86regToVariable(x86Reg,&PI_BSD_DOM2_PGS_REG); // Non-essential code
-			AndConstToVariable(0xFF,&PI_BSD_DOM2_PGS_REG); // Non-essential code
-			break; // Non-essential code
-		case 0x04600030: // Non-essential code
-			MoveX86regToVariable(x86Reg,&PI_BSD_DOM2_RLS_REG); // Non-essential code
-			AndConstToVariable(0xFF,&PI_BSD_DOM2_RLS_REG); // Non-essential code
-			break; // Non-essential code
+		case 0x04600024:
+			MoveX86regToVariable(x86Reg,&PI_DOMAIN2_REG);
+			AndConstToVariable(0xFF,&PI_DOMAIN2_REG);
+			break;
+		case 0x04600028:
+			MoveX86regToVariable(x86Reg,&PI_BSD_DOM2_PWD_REG);
+			AndConstToVariable(0xFF,&PI_BSD_DOM2_PWD_REG);
+			break;
+		case 0x0460002C:
+			MoveX86regToVariable(x86Reg,&PI_BSD_DOM2_PGS_REG);
+			AndConstToVariable(0xFF,&PI_BSD_DOM2_PGS_REG);
+			break;
+		case 0x04600030:
+			MoveX86regToVariable(x86Reg,&PI_BSD_DOM2_RLS_REG);
+			AndConstToVariable(0xFF,&PI_BSD_DOM2_RLS_REG);
+			break;
 		}
 		break;
 	case 0x04700000:
@@ -861,10 +861,8 @@ int r4300i_Command_MemoryFilter( DWORD dwExptCode, LPEXCEPTION_POINTERS lpEP) {
 		return EXCEPTION_CONTINUE_SEARCH;
 	}
 	exRec = *lpEP->ExceptionRecord;
-	if ((int)((char *)lpEP->ExceptionRecord->ExceptionInformation[1] - N64MEM) < 0) {
-		return EXCEPTION_CONTINUE_SEARCH;
-	}
-	if ((int)((char *)lpEP->ExceptionRecord->ExceptionInformation[1] - N64MEM) > 0x1FFFFFFF) {
+	int offset = (int)((char*)lpEP->ExceptionRecord->ExceptionInformation[1] - N64MEM);
+	if (offset < 0 || offset > 0x1FFFFFFF) {
 		return EXCEPTION_CONTINUE_SEARCH;
 	}
 	switch(*(unsigned char *)lpEP->ContextRecord->Eip) {
@@ -872,22 +870,13 @@ int r4300i_Command_MemoryFilter( DWORD dwExptCode, LPEXCEPTION_POINTERS lpEP) {
 		switch(*(unsigned char *)(lpEP->ContextRecord->Eip + 1)) {
 		case 0x04:
 			lpEP->ContextRecord->Eip += 3;
-			r4300i_LW_NonMemory((char *)exRec.ExceptionInformation[1] - (char *)N64MEM,
-				&lpEP->ContextRecord->Eax);
+			r4300i_LW_NonMemory((char *)exRec.ExceptionInformation[1] - (char *)N64MEM,&lpEP->ContextRecord->Eax);
 			return EXCEPTION_CONTINUE_EXECUTION;
-			break;
 		case 0x0C:
 			lpEP->ContextRecord->Eip += 3;
-			r4300i_LW_NonMemory((char *)exRec.ExceptionInformation[1] - (char *)N64MEM,
-				&lpEP->ContextRecord->Ecx);
+			r4300i_LW_NonMemory((char *)exRec.ExceptionInformation[1] - (char *)N64MEM,&lpEP->ContextRecord->Ecx);
 			return EXCEPTION_CONTINUE_EXECUTION;
-			break;
-		default:
-			return EXCEPTION_CONTINUE_SEARCH;
 		}
-		break;
-	default:
-		return EXCEPTION_CONTINUE_SEARCH;
 	}
 	return EXCEPTION_CONTINUE_SEARCH;
 }
@@ -964,7 +953,7 @@ int r4300i_CPU_MemoryFilter( DWORD dwExptCode, LPEXCEPTION_POINTERS lpEP) {
 	case 1: ReadPos += 1; break;
 	case 2: ReadPos += 1; break;
 	case 3: ReadPos += 1; break;
-	case 4: ReadPos += 1; 
+	case 4: ReadPos += 1;
 		switch ((*ReadPos & 0xC7)) {
 		case 0: ReadPos += 1; break;
 		case 1: ReadPos += 1; break;
@@ -1070,14 +1059,11 @@ int r4300i_LB_NonMemory ( DWORD PAddr, DWORD * Value, BOOL SignExtend ) {
 		if ((PAddr & 2) == 0) { PAddr = (PAddr + 4) ^ 2; }
 		if ((PAddr - 0x10000000) < RomFileSize) {
 			if (SignExtend) {
-				(int)*Value = (char)ROM[PAddr - 0x10000000];
+				(int)* Value = (char)ROM[PAddr - 0x10000000];
 			} else {
-				*Value = ROM[PAddr - 0x10000000];
+				* Value = ROM[PAddr - 0x10000000];
 			}
 			return TRUE;
-		} else {
-			*Value = 0;
-			return FALSE;
 		}
 	}
 	* Value = 0;
@@ -1085,7 +1071,7 @@ int r4300i_LB_NonMemory ( DWORD PAddr, DWORD * Value, BOOL SignExtend ) {
 }
 BOOL r4300i_LB_VAddr ( DWORD VAddr, BYTE * Value ) {
 	if (TLB_ReadMap[VAddr >> 12] == 0) return FALSE;
-	*Value = *(BYTE *)(TLB_ReadMap[VAddr >> 12] + (VAddr ^ 3));
+	* Value = *(BYTE *)(TLB_ReadMap[VAddr >> 12] + (VAddr ^ 3));
 	return TRUE;
 }
 BOOL r4300i_LD_VAddr ( DWORD VAddr, unsigned _int64 * Value ) {
@@ -1100,38 +1086,38 @@ int r4300i_LH_NonMemory ( DWORD PAddr, DWORD * Value, int SignExtend ) {
 }
 BOOL r4300i_LH_VAddr ( DWORD VAddr, WORD * Value ) {
 	if (TLB_ReadMap[VAddr >> 12] == 0) return FALSE;
-	*Value = *(WORD *)(TLB_ReadMap[VAddr >> 12] + (VAddr ^ 2));
+	* Value = *(WORD *)(TLB_ReadMap[VAddr >> 12] + (VAddr ^ 2));
 	return TRUE;
 }
 int r4300i_LW_NonMemory ( DWORD PAddr, DWORD * Value ) {
 	// 0x06000000 0x08000000 N64DD IPL (J)
 	if (PAddr >= 0x06000000 && PAddr < 0x08000000) {
 		if (WrittenToRom) {
-			*Value = WroteToRom;
+			* Value = WroteToRom;
 			WrittenToRom = FALSE;
 			return TRUE;
 		}
 		if ((PAddr - 0x06000000) < RomFileSize) {
-			*Value = *(DWORD *)&ROM[PAddr - 0x06000000];
+			* Value = *(DWORD *)&ROM[PAddr - 0x06000000];
 			return TRUE;
 		} else {
-			*Value = PAddr & 0xFFFF;
-			*Value = (*Value << 16) | *Value;
+			* Value = PAddr & 0xFFFF;
+			* Value = (* Value << 16) | * Value;
 			return FALSE;
 		}
 	}
 	if (PAddr >= 0x10000000 && PAddr < 0x16000000) {
 		if (WrittenToRom) {
-			*Value = WroteToRom;
+			* Value = WroteToRom;
 			WrittenToRom = FALSE;
 			return TRUE;
 		}
 		if ((PAddr - 0x10000000) < RomFileSize) {
-			*Value = *(DWORD *)&ROM[PAddr - 0x10000000];
+			* Value = *(DWORD *)&ROM[PAddr - 0x10000000];
 			return TRUE;
 		} else {
-			*Value = PAddr & 0xFFFF;
-			*Value = (*Value << 16) | *Value;
+			* Value = PAddr & 0xFFFF;
+			* Value = (* Value << 16) | * Value;
 			return FALSE;
 		}
 	}
@@ -1155,14 +1141,14 @@ int r4300i_LW_NonMemory ( DWORD PAddr, DWORD * Value ) {
 		break;
 	case 0x04000000:
 		switch (PAddr) {
-		case 0x04040000: *Value = SP_MEM_ADDR_REG; break; // Non-essential code
-		case 0x04040004: *Value = SP_DRAM_ADDR_REG; break; // Non-essential code
-		case 0x04040008: *Value = SP_RD_LEN_REG; break; // Non-essential code
-		case 0x04040010: *Value = SP_STATUS_REG; break;
-		case 0x04040014: *Value = SP_DMA_FULL_REG; break;
-		case 0x04040018: *Value = SP_DMA_BUSY_REG; break;
-		case 0x0404001C: *Value = SP_SEMAPHORE_REG; break; // Non-essential code
-		case 0x04080000: *Value = SP_PC_REG; break;
+		case 0x04040000: * Value = SP_MEM_ADDR_REG; break;
+		case 0x04040004: * Value = SP_DRAM_ADDR_REG; break;
+		case 0x04040008: * Value = SP_RD_LEN_REG; break;
+		case 0x04040010: * Value = SP_STATUS_REG; break;
+		case 0x04040014: * Value = SP_DMA_FULL_REG; break;
+		case 0x04040018: * Value = SP_DMA_BUSY_REG; break;
+		case 0x0404001C: * Value = SP_SEMAPHORE_REG; break;
+		case 0x04080000: * Value = SP_PC_REG; break;
 		default:
 			* Value = 0;
 			return FALSE;
@@ -1170,11 +1156,11 @@ int r4300i_LW_NonMemory ( DWORD PAddr, DWORD * Value ) {
 		break;
 	case 0x04100000:
 		switch (PAddr) {
-		case 0x0410000C: *Value = DPC_STATUS_REG; break;
-		case 0x04100010: *Value = DPC_CLOCK_REG; break;
-		case 0x04100014: *Value = DPC_BUFBUSY_REG; break;
-		case 0x04100018: *Value = DPC_PIPEBUSY_REG; break;
-		case 0x0410001C: *Value = DPC_TMEM_REG; break;
+		case 0x0410000C: * Value = DPC_STATUS_REG; break;
+		case 0x04100010: * Value = DPC_CLOCK_REG; break;
+		case 0x04100014: * Value = DPC_BUFBUSY_REG; break;
+		case 0x04100018: * Value = DPC_PIPEBUSY_REG; break;
+		case 0x0410001C: * Value = DPC_TMEM_REG; break;
 		default:
 			* Value = 0;
 			return FALSE;
@@ -1182,13 +1168,13 @@ int r4300i_LW_NonMemory ( DWORD PAddr, DWORD * Value ) {
 		break;
 	case 0x04300000:
 		switch (PAddr) {
-		case 0x04300000: *Value = MI_MODE_REG; break;
-		case 0x04300004: *Value = MI_VERSION_REG; break;
-		case 0x04300008: *Value = MI_INTR_REG; break;
-		case 0x04100010: *Value = DPC_CLOCK_REG; break; // Non-essential code
-		case 0x04100014: *Value = DPC_BUFBUSY_REG; break; // Non-essential code
-		case 0x04100018: *Value = DPC_PIPEBUSY_REG; break; // Non-essential code
-		case 0x0430000C: *Value = MI_INTR_MASK_REG; break;
+		case 0x04300000: * Value = MI_MODE_REG; break;
+		case 0x04300004: * Value = MI_VERSION_REG; break;
+		case 0x04300008: * Value = MI_INTR_REG; break;
+		case 0x04100010: * Value = DPC_CLOCK_REG; break;
+		case 0x04100014: * Value = DPC_BUFBUSY_REG; break;
+		case 0x04100018: * Value = DPC_PIPEBUSY_REG; break;
+		case 0x0430000C: * Value = MI_INTR_MASK_REG; break;
 		default:
 			* Value = 0;
 			return FALSE;
@@ -1196,23 +1182,23 @@ int r4300i_LW_NonMemory ( DWORD PAddr, DWORD * Value ) {
 		break;
 	case 0x04400000:
 		switch (PAddr) {
-		case 0x04400000: *Value = VI_STATUS_REG; break;
-		case 0x04400004: *Value = VI_ORIGIN_REG; break;
-		case 0x04400008: *Value = VI_WIDTH_REG; break;
-		case 0x0440000C: *Value = VI_INTR_REG; break;
+		case 0x04400000: * Value = VI_STATUS_REG; break;
+		case 0x04400004: * Value = VI_ORIGIN_REG; break;
+		case 0x04400008: * Value = VI_WIDTH_REG; break;
+		case 0x0440000C: * Value = VI_INTR_REG; break;
 		case 0x04400010:
 			UpdateCurrentHalfLine();
-			*Value = HalfLine;
+			* Value = HalfLine;
 			break;
-		case 0x04400014: *Value = VI_BURST_REG; break;
-		case 0x04400018: *Value = VI_V_SYNC_REG; break;
-		case 0x0440001C: *Value = VI_H_SYNC_REG; break;
-		case 0x04400020: *Value = VI_LEAP_REG; break;
-		case 0x04400024: *Value = VI_H_START_REG; break;
-		case 0x04400028: *Value = VI_V_START_REG ; break;
-		case 0x0440002C: *Value = VI_V_BURST_REG; break;
-		case 0x04400030: *Value = VI_X_SCALE_REG; break;
-		case 0x04400034: *Value = VI_Y_SCALE_REG; break;
+		case 0x04400014: * Value = VI_BURST_REG; break;
+		case 0x04400018: * Value = VI_V_SYNC_REG; break;
+		case 0x0440001C: * Value = VI_H_SYNC_REG; break;
+		case 0x04400020: * Value = VI_LEAP_REG; break;
+		case 0x04400024: * Value = VI_H_START_REG; break;
+		case 0x04400028: * Value = VI_V_START_REG ; break;
+		case 0x0440002C: * Value = VI_V_BURST_REG; break;
+		case 0x04400030: * Value = VI_X_SCALE_REG; break;
+		case 0x04400034: * Value = VI_Y_SCALE_REG; break;
 		default:
 			* Value = 0;
 			return FALSE;
@@ -1222,13 +1208,13 @@ int r4300i_LW_NonMemory ( DWORD PAddr, DWORD * Value ) {
 		switch (PAddr) {
 		case 0x04500004:
 			if (AiReadLength != NULL) {
-				*Value = AiReadLength();
+				* Value = AiReadLength();
 			} else {
-				*Value = 0;
+				* Value = 0;
 			}
 			break;
 		case 0x0450000C:
-			*Value = AI_STATUS_REG;
+			* Value = AI_STATUS_REG;
 			break;
 		default:
 			* Value = 0;
@@ -1237,19 +1223,19 @@ int r4300i_LW_NonMemory ( DWORD PAddr, DWORD * Value ) {
 		break;
 	case 0x04600000:
 		switch (PAddr) {
-		case 0x04600000: *Value = PI_DRAM_ADDR_REG; break; // Non-essential code
-		case 0x04600004: *Value = PI_CART_ADDR_REG; break; // Non-essential code
-		case 0x04600008: *Value = PI_RD_LEN_REG; break; // Non-essential code
-		case 0x0460000C: *Value = PI_WR_LEN_REG; break; // Non-essential code
-		case 0x04600010: *Value = PI_STATUS_REG; break;
-		case 0x04600014: *Value = PI_DOMAIN1_REG; break;
-		case 0x04600018: *Value = PI_BSD_DOM1_PWD_REG; break;
-		case 0x0460001C: *Value = PI_BSD_DOM1_PGS_REG; break;
-		case 0x04600020: *Value = PI_BSD_DOM1_RLS_REG; break;
-		case 0x04600024: *Value = PI_DOMAIN2_REG; break;
-		case 0x04600028: *Value = PI_BSD_DOM2_PWD_REG; break;
-		case 0x0460002C: *Value = PI_BSD_DOM2_PGS_REG; break;
-		case 0x04600030: *Value = PI_BSD_DOM2_RLS_REG; break;
+		case 0x04600000: * Value = PI_DRAM_ADDR_REG; break;
+		case 0x04600004: * Value = PI_CART_ADDR_REG; break;
+		case 0x04600008: * Value = PI_RD_LEN_REG; break;
+		case 0x0460000C: * Value = PI_WR_LEN_REG; break;
+		case 0x04600010: * Value = PI_STATUS_REG; break;
+		case 0x04600014: * Value = PI_DOMAIN1_REG; break;
+		case 0x04600018: * Value = PI_BSD_DOM1_PWD_REG; break;
+		case 0x0460001C: * Value = PI_BSD_DOM1_PGS_REG; break;
+		case 0x04600020: * Value = PI_BSD_DOM1_RLS_REG; break;
+		case 0x04600024: * Value = PI_DOMAIN2_REG; break;
+		case 0x04600028: * Value = PI_BSD_DOM2_PWD_REG; break;
+		case 0x0460002C: * Value = PI_BSD_DOM2_PGS_REG; break;
+		case 0x04600030: * Value = PI_BSD_DOM2_RLS_REG; break;
 		default:
 			* Value = 0;
 			return FALSE;
@@ -1272,21 +1258,17 @@ int r4300i_LW_NonMemory ( DWORD PAddr, DWORD * Value ) {
 		break;
 	case 0x04800000:
 		switch (PAddr) {
-		case 0x04800018: *Value = SI_STATUS_REG; break;
+		case 0x04800018: * Value = SI_STATUS_REG; break;
 		default:
 			* Value = 0;
 			return FALSE;
 		}
 		break;
-	case 0x05000000:
-		*Value = PAddr & 0xFFFF;
-		*Value = (*Value << 16) | *Value;
-		return FALSE;
 	case 0x08000000:
 		if (SaveUsing == Auto) { SaveUsing = FlashRAM; }
 		if (SaveUsing != FlashRAM) {
 			* Value = PAddr & 0xFFFF;
-			* Value = (*Value << 16) | *Value;
+			* Value = (* Value << 16) | * Value;
 			return FALSE;
 		}
 		* Value = ReadFromFlashStatus();
@@ -1319,17 +1301,16 @@ int r4300i_LW_NonMemory ( DWORD PAddr, DWORD * Value ) {
 		read_summercart_regs(NULL, PAddr, Value);
 		break;
 	default:
-		*Value = PAddr & 0xFFFF;
-		*Value = (*Value << 16) | *Value;
+		* Value = PAddr & 0xFFFF;
+		* Value = (* Value << 16) | * Value;
 		return FALSE;
-		break;
 	}
 	return TRUE;
 }
 BOOL r4300i_LW_VAddr(DWORD VAddr, DWORD* Value) {
 	if (TLB_ReadMap[VAddr >> 12] == 0) return FALSE;
-	*Value = *(DWORD *)(TLB_ReadMap[VAddr >> 12] + VAddr);
-	if (*Value == 0x14200005 && (VAddr & 0xFF000000) == 0x80000000) {
+	* Value = *(DWORD *)(TLB_ReadMap[VAddr >> 12] + VAddr);
+	if (* Value == 0x14200005 && (VAddr & 0xFF000000) == 0x80000000) {
 		const DWORD sBusyLoopPrologue[] = { 0x3C02A440, 0xA7380000, 0x8C830000, 0x34420010, 0x3C0CA440, 0x8C680008, 0x8D090004, 0xAC69000C, 0x8C4A0000, 0x2D41000B };
 		int sCheckSize = sizeof(sBusyLoopPrologue) / sizeof(*sBusyLoopPrologue), i;
 		for (i = 0; i < sCheckSize; i++) {
@@ -1338,7 +1319,7 @@ BOOL r4300i_LW_VAddr(DWORD VAddr, DWORD* Value) {
 			val = *(DWORD *)(TLB_ReadMap[ivaddr >> 12] + ivaddr);
 			if (val != sBusyLoopPrologue[i]) break;
 		}
-		if (i == sCheckSize) *Value = 0x10000005;
+		if (i == sCheckSize) * Value = 0x10000005;
 	}
 	return TRUE;
 }
@@ -1677,10 +1658,10 @@ int r4300i_SW_NonMemory ( DWORD PAddr, DWORD Value ) {
 		case 0x04600018: PI_BSD_DOM1_PWD_REG = (Value & 0xFF); break;
 		case 0x0460001C: PI_BSD_DOM1_PGS_REG = (Value & 0xFF); break;
 		case 0x04600020: PI_BSD_DOM1_RLS_REG = (Value & 0xFF); break;
-		case 0x04600024: PI_DOMAIN2_REG = (Value & 0xFF); break; // Non-essential code
-		case 0x04600028: PI_BSD_DOM2_PWD_REG = (Value & 0xFF); break; // Non-essential code
-		case 0x0460002C: PI_BSD_DOM2_PGS_REG = (Value & 0xFF); break; // Non-essential code
-		case 0x04600030: PI_BSD_DOM2_RLS_REG = (Value & 0xFF); break; // Non-essential code
+		case 0x04600024: PI_DOMAIN2_REG = (Value & 0xFF); break;
+		case 0x04600028: PI_BSD_DOM2_PWD_REG = (Value & 0xFF); break;
+		case 0x0460002C: PI_BSD_DOM2_PGS_REG = (Value & 0xFF); break;
+		case 0x04600030: PI_BSD_DOM2_RLS_REG = (Value & 0xFF); break;
 		default:
 			return FALSE;
 		}
@@ -1741,7 +1722,6 @@ int r4300i_SW_NonMemory ( DWORD PAddr, DWORD Value ) {
 			return TRUE;
 		}
 		return FALSE;
-		break;
 	case 0x1FF00000:
 		write_summercart_regs(NULL, PAddr, Value, ~0);
 	default:

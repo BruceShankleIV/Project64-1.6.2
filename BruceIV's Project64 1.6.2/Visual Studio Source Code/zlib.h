@@ -108,7 +108,7 @@ typedef z_stream FAR *z_streamp;
 #define Z_BUF_ERROR    (-5)
 #define Z_VERSION_ERROR (-6)
 /* Return codes for the compression/decompression functions. Negative
- * values are errors, positive values are used for special but normal events.
+ * Values are errors, positive values are used for special but normal events.
  */
 #define Z_NO_COMPRESSION         0
 #define Z_BEST_SPEED             1
@@ -263,7 +263,7 @@ ZEXTERN int ZEXPORT inflate OF((z_streamp strm, int flush));
     about the flush parameter).
   Before the call of inflate(), the application should ensure that at least
   one of the actions is possible, by providing more input and/or consuming
-  more output, and updating the next_* and avail_* values accordingly.
+  more output, and updating the next_* and avail_* Values accordingly.
   The application can consume the uncompressed output when it wants, for
   example when the output buffer is full (avail_out == 0), or after each
   call of inflate(). If inflate returns Z_OK and with zero avail_out, it

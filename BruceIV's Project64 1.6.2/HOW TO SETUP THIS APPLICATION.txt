@@ -29,7 +29,7 @@ END OF HOW TO INSTALL
 The password to the Apps.zip is also password.
 
 
-Links and Contact Info For Bug Reports:
+Links:
 
 GitHub Repository:
 https://github.com/BruceShankleIV/Project64-1.6.2

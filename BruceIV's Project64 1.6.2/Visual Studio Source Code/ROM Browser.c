@@ -560,24 +560,20 @@ COLORREF GetColor(char *status, int selection) {
 	int i = ColorIndex(status);
 	switch(selection) {
 	case COLOR_SELECTED_TEXT:
-		if (i == -1)
-			return RGB(0xFF, 0xFF, 0xFF);
+		if (i == -1) return RGB(0xFF, 0xFF, 0xFF);
 		return ColorCache.List[i].SelectedText;
 	case COLOR_HIGHLIGHTED:
-		if (i == -1)
-			return RGB(0, 0, 0);
+		if (i == -1) return RGB(0, 0, 0);
 		return ColorCache.List[i].HighLight;
 	default:
-		if (i == -1)
-			return RGB(0, 0, 0);
+		if (i == -1) return RGB(0, 0, 0);
 		return ColorCache.List[i].Text;
 	}
 }
 int ColorIndex(char *status) {
 	int i;
 	for (i = 0; i < ColorCache.count; i++)
-		if (strcmp(status, ColorCache.List[i].status_name) == 0)
-			return i;
+		if (strcmp(status, ColorCache.List[i].status_name) == 0) return i;
 	return -1;
 }
 void SetColors(char *status) {

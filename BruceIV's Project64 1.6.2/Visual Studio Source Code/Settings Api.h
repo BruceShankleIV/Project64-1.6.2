@@ -46,7 +46,7 @@ unsigned int _GetPrivateProfileString2(
   const char * lpAppName,        // points to section name
   const char * lpKeyName,        // points to key name
   const char * lpDefault,        // points to default string
-  char **       lpReturnedString, // points to destination buffer
+  char		** lpReturnedString, // points to destination buffer
   const char * lpFileName        // points to initialization filename
 );
 int _WritePrivateProfileString(

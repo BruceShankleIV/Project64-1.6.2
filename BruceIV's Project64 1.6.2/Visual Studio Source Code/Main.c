@@ -425,7 +425,6 @@ LRESULT CALLBACK Main_Proc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		break;
 	case WM_NCLBUTTONDBLCLK:
 		return DefWindowProc(hWnd,uMsg,wParam,lParam);
-		break;
 	case WM_SYSCOMMAND:
 		switch (wParam) {
 		case SC_SCREENSAVE:
@@ -434,9 +433,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		case SC_MAXIMIZE:
 		default:
 			return DefWindowProc(hWnd,uMsg,wParam,lParam);
-			break;
 		}
-		break;
 	case WM_PAINT:
 		{ ValidateRect(hWnd, NULL); break; }
 		__try {
@@ -487,7 +484,6 @@ LRESULT CALLBACK Main_Proc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	case WM_NOTIFY:
 		if (wParam == IDC_ROMLIST) { RomListNotify((LPNMHDR)lParam); }
 		return DefWindowProc(hWnd,uMsg,wParam,lParam);
-		break;
 	case WM_DRAWITEM:
 		if (wParam == IDC_ROMLIST) { RomListDrawItem((LPDRAWITEMSTRUCT)lParam); }
 		break;

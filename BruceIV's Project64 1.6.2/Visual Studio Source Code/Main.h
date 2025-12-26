@@ -34,19 +34,19 @@ extern "C" {
 #include "Settings API.h"
 #include "ROM Browser.h"
 #include "Language.h"
+/********* Source Version 16 *********/
 /********* General Defaults **********/
-#define AppName  "BruceIV's Project64 1.6.2"
-// Source Version: 15.1
-#define IniName				"Game.ini"
-#define CheatIniName			"Cheat.ini"
-#define LangFileName			"English.txt"
-#define Default_AutoSleep		FALSE
-#define Default_AutoHide		TRUE
-#define Default_RDRAMsize		0x800000
-#define Default_LimitFPS		TRUE
-#define Default_SpeedCap		FALSE
-#define Default_UsuallyonTop	FALSE
-#define Default_BasicMode		TRUE
+#define AppName						"BruceIV's Project64 1.6.2"
+#define IniName						"Game.ini"
+#define CheatIniName				"Cheat.ini"
+#define LangFileName				"English.txt"
+#define Default_AutoSleep			FALSE
+#define Default_AutoHide			TRUE
+#define Default_RDRAMsize			0x800000
+#define Default_LimitFPS			TRUE
+#define Default_SpeedCap			FALSE
+#define Default_UsuallyonTop		FALSE
+#define Default_BasicMode			TRUE
 #define Default_RomsToRemember		10
 #define Default_RomsDirsToRemember	10
 #ifdef STABLE_DEFAULTS
@@ -63,29 +63,29 @@ extern "C" {
 #define ID_FILE_RECENT_DIR		1100
 #define ID_LANG_SELECT			2000
 /************ CPU Core ***************/
-#define CPU_Default			-1
+#define CPU_Default				-1
 #define CPU_Interpreter			0
 #define CPU_Recompiler			1
 #define Default_CPU			CPU_Recompiler
 /********* Register Caching **********/
-#define UseCache_Default -1
-#define REG_CACHE_ON 0
-#define REG_CACHE_OFF 1
+#define UseCache_Default	-1
+#define REG_CACHE_ON		0
+#define REG_CACHE_OFF		1
 #ifdef STABLE_DEFAULTS
 #define Default_UseCache REG_CACHE_OFF
 #else
 #define Default_UseCache REG_CACHE_ON
 #endif
 /******* Self modifying code *********/
-#define ModCode_Default			-1
-#define ModCode_Cache			0
+#define ModCode_Default					-1
+#define ModCode_Cache					0
 #define ModCode_CheckSetMemoryAdvance	1
-#define ModCode_CheckMemoryAdvance	2
-#define ModCode_ProtectMemory		3
+#define ModCode_CheckMemoryAdvance		2
+#define ModCode_ProtectMemory			3
 #ifdef STABLE_DEFAULTS
-#define Default_SelfModCheck		ModCode_ProtectMemory
+#define Default_SelfModCheck			ModCode_ProtectMemory
 #else
-#define Default_SelfModCheck		ModCode_CheckMemoryAdvance
+#define Default_SelfModCheck			ModCode_CheckMemoryAdvance
 #endif
 /********** Rom Browser **************/
 #define Default_UseRB				TRUE

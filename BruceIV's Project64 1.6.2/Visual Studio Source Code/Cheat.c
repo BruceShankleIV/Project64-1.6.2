@@ -331,7 +331,7 @@ int ApplyCheatEntry (GAMESHARK_CODE * Code, BOOL Execute ) {
 		r4300i_LH_VAddr(Address, (WORD*)&Memory);
 		if (Memory == ConvertXP64Value(Code->Value)) { Execute = FALSE; }
 		return ApplyCheatEntry(&Code[1], Execute) + 1;
-	case 0: return MaxGSEntries; break;
+	case 0: return MaxGSEntries;
 	}
 	return 1;
 }
@@ -460,8 +460,7 @@ BOOL CheatUsesCodeExtensions (char * CheatString) {
 	BOOL CodeExtension;
 	DWORD count, len;
 	char * ReadPos;
-	if (strlen(CheatString) == 0)return FALSE;
-	if (strchr(CheatString,'"') == NULL) return FALSE;
+	if (strlen(CheatString) == 0 || strchr(CheatString, '"') == NULL) return FALSE;
 	len = strrchr(CheatString,'"') - strchr(CheatString,'"') - 1;
 	ReadPos = strrchr(CheatString,'"') + 2;
 	CodeExtension = FALSE;
@@ -493,7 +492,6 @@ int ReadCodeString (HWND hDlg) {
 	for (linecount=0; linecount<numlines; linecount++) //read line after line (bypassing limitation GetDlgItemText)
 	{
 		memset(tempformat, 0, sizeof(tempformat));
-		//str[0] = sizeof(str) > 255?255:sizeof(str);
 		*(LPWORD)str = sizeof(str);
 		len = SendDlgItemMessage(hDlg, IDC_CHEAT_CODES, EM_GETLINE, (WPARAM)linecount, (LPARAM)(LPCSTR)str);
 		str[len] = 0;

@@ -109,8 +109,7 @@ void AnalyzeBlock (void) {
 	InitializeSection (Section, NULL, BlockInfo.StartVAddr, BlockInfo.NoOfSections);
 }
 int ConstantsType (__int64 Value) {
-	if (((Value >> 32) == -1) && ((Value & 0x80000000) != 0)) { return STATE_CONST_32; }
-	if (((Value >> 32) == 0) && ((Value & 0x80000000) == 0)) { return STATE_CONST_32; }
+	if (((Value >> 32) == -1) && ((Value & 0x80000000) != 0) || ((Value >> 32) == 0) && ((Value & 0x80000000) == 0)) { return STATE_CONST_32; }
 	return STATE_CONST_64;
 }
 BYTE * Compiler4300iBlock(void) {
@@ -165,37 +164,37 @@ BYTE * CompileDelaySlot (void) {
 	switch (Opcode.op) {
 	case R4300i_SPECIAL:
 		switch (Opcode.funct) {
-		case R4300i_SPECIAL_SYSCALL: Compile_R4300i_SPECIAL_SYSCALL(Section); // Non-essential code
-		case R4300i_SPECIAL_BREAK: // Non-essential code
-		case R4300i_SPECIAL_SYNC: // Non-essential code?
-		case R4300i_SPECIAL_TGE: // Non-essential code
-		case R4300i_SPECIAL_TGEU: // Non-essential code
-		case R4300i_SPECIAL_TLT: // Non-essential code
-		case R4300i_SPECIAL_TLTU: // Non-essential code
-		case R4300i_SPECIAL_TEQ: // Non-essential code
-		case R4300i_SPECIAL_TNE: // Non-essential code
-		break; // Non-essential code?
+		case R4300i_SPECIAL_SYSCALL: Compile_R4300i_SPECIAL_SYSCALL(Section);
+		case R4300i_SPECIAL_BREAK:
+		case R4300i_SPECIAL_SYNC:
+		case R4300i_SPECIAL_TGE:
+		case R4300i_SPECIAL_TGEU:
+		case R4300i_SPECIAL_TLT:
+		case R4300i_SPECIAL_TLTU:
+		case R4300i_SPECIAL_TEQ:
+		case R4300i_SPECIAL_TNE:
+		break;
 		case R4300i_SPECIAL_SLL: Compile_R4300i_SPECIAL_SLL(Section); break;
 		case R4300i_SPECIAL_SRL: Compile_R4300i_SPECIAL_SRL(Section); break;
 		case R4300i_SPECIAL_SRA: Compile_R4300i_SPECIAL_SRA(Section); break;
 		case R4300i_SPECIAL_SLLV: Compile_R4300i_SPECIAL_SLLV(Section); break;
 		case R4300i_SPECIAL_SRLV: Compile_R4300i_SPECIAL_SRLV(Section); break;
 		case R4300i_SPECIAL_SRAV: Compile_R4300i_SPECIAL_SRAV(Section); break;
-		case R4300i_SPECIAL_JR: Compile_R4300i_SPECIAL_JR(Section); break; // Non-essential code
-		case R4300i_SPECIAL_JALR: Compile_R4300i_SPECIAL_JALR(Section); break; // Non-essential code
+		case R4300i_SPECIAL_JR: Compile_R4300i_SPECIAL_JR(Section); break;
+		case R4300i_SPECIAL_JALR: Compile_R4300i_SPECIAL_JALR(Section); break;
 		case R4300i_SPECIAL_MFHI: Compile_R4300i_SPECIAL_MFHI(Section); break;
 		case R4300i_SPECIAL_MTHI: Compile_R4300i_SPECIAL_MTHI(Section); break;
 		case R4300i_SPECIAL_MFLO: Compile_R4300i_SPECIAL_MFLO(Section); break;
 		case R4300i_SPECIAL_MTLO: Compile_R4300i_SPECIAL_MTLO(Section); break;
-		case R4300i_SPECIAL_DSLLV: Compile_R4300i_SPECIAL_DSLLV(Section); break; // Non-essential code
-		case R4300i_SPECIAL_DSRLV: Compile_R4300i_SPECIAL_DSRLV(Section); break; // Non-essential code
-		case R4300i_SPECIAL_DSRAV: Compile_R4300i_SPECIAL_DSRAV(Section); break; // Non-essential code
+		case R4300i_SPECIAL_DSLLV: Compile_R4300i_SPECIAL_DSLLV(Section); break;
+		case R4300i_SPECIAL_DSRLV: Compile_R4300i_SPECIAL_DSRLV(Section); break;
+		case R4300i_SPECIAL_DSRAV: Compile_R4300i_SPECIAL_DSRAV(Section); break;
 		case R4300i_SPECIAL_MULT: Compile_R4300i_SPECIAL_MULT(Section); break;
 		case R4300i_SPECIAL_MULTU: Compile_R4300i_SPECIAL_MULTU(Section); break;
 		case R4300i_SPECIAL_DIV: Compile_R4300i_SPECIAL_DIV(Section); break;
 		case R4300i_SPECIAL_DIVU: Compile_R4300i_SPECIAL_DIVU(Section); break;
 		case R4300i_SPECIAL_DMULTU: Compile_R4300i_SPECIAL_DMULTU(Section); break;
-		case R4300i_SPECIAL_DDIV: Compile_R4300i_SPECIAL_DDIV(Section); break; // Non-essential code
+		case R4300i_SPECIAL_DDIV: Compile_R4300i_SPECIAL_DDIV(Section); break;
 		case R4300i_SPECIAL_DDIVU: Compile_R4300i_SPECIAL_DDIVU(Section); break;
 		case R4300i_SPECIAL_ADD: Compile_R4300i_SPECIAL_ADD(Section); break;
 		case R4300i_SPECIAL_ADDU: Compile_R4300i_SPECIAL_ADDU(Section); break;
@@ -204,51 +203,51 @@ BYTE * CompileDelaySlot (void) {
 		case R4300i_SPECIAL_AND: Compile_R4300i_SPECIAL_AND(Section); break;
 		case R4300i_SPECIAL_OR: Compile_R4300i_SPECIAL_OR(Section); break;
 		case R4300i_SPECIAL_XOR: Compile_R4300i_SPECIAL_XOR(Section); break;
-		case R4300i_SPECIAL_NOR: Compile_R4300i_SPECIAL_NOR(Section); break; // Non-essential code
+		case R4300i_SPECIAL_NOR: Compile_R4300i_SPECIAL_NOR(Section); break;
 		case R4300i_SPECIAL_SLT: Compile_R4300i_SPECIAL_SLT(Section); break;
 		case R4300i_SPECIAL_SLTU: Compile_R4300i_SPECIAL_SLTU(Section); break;
 		case R4300i_SPECIAL_DADD: Compile_R4300i_SPECIAL_DADD(Section); break;
 		case R4300i_SPECIAL_DADDU: Compile_R4300i_SPECIAL_DADDU(Section); break;
-		case R4300i_SPECIAL_DSUB: Compile_R4300i_SPECIAL_DSUB(Section); break; // Non-essential code
-		case R4300i_SPECIAL_DSUBU: Compile_R4300i_SPECIAL_DSUBU(Section); break; // Non-essential code
-		case R4300i_SPECIAL_DSLL: Compile_R4300i_SPECIAL_DSLL(Section); break; // Non-essential code
-		case R4300i_SPECIAL_DSRL: Compile_R4300i_SPECIAL_DSRL(Section); break; // Non-essential code
-		case R4300i_SPECIAL_DSRA: Compile_R4300i_SPECIAL_DSRA(Section); break; // Non-essential code
+		case R4300i_SPECIAL_DSUB: Compile_R4300i_SPECIAL_DSUB(Section); break;
+		case R4300i_SPECIAL_DSUBU: Compile_R4300i_SPECIAL_DSUBU(Section); break;
+		case R4300i_SPECIAL_DSLL: Compile_R4300i_SPECIAL_DSLL(Section); break;
+		case R4300i_SPECIAL_DSRL: Compile_R4300i_SPECIAL_DSRL(Section); break;
+		case R4300i_SPECIAL_DSRA: Compile_R4300i_SPECIAL_DSRA(Section); break;
 		case R4300i_SPECIAL_DSLL32: Compile_R4300i_SPECIAL_DSLL32(Section); break;
-		case R4300i_SPECIAL_DSRL32: Compile_R4300i_SPECIAL_DSRL32(Section); break; // Non-essential code
+		case R4300i_SPECIAL_DSRL32: Compile_R4300i_SPECIAL_DSRL32(Section); break;
 		case R4300i_SPECIAL_DSRA32: Compile_R4300i_SPECIAL_DSRA32(Section); break;
 		default:
 			DisplayThreadExit("CompileDelaySlot - switch (Opcode.op) - case R4300i_SPECIAL: - switch (Opcode.funct) - default:");
 			break;
 		}
 	break;
-	case R4300i_REGIMM: // Non-essential code
-		switch (Opcode.rt) { // Non-essential code
-		case R4300i_REGIMM_BLTZ: Compile_R4300i_Branch(Section, BLTZ_Compare, BranchTypeRs, FALSE); break; // Non-essential code
-		case R4300i_REGIMM_BGEZ: Compile_R4300i_Branch(Section, BGEZ_Compare, BranchTypeRs, FALSE); break; // Non-essential code
-		case R4300i_REGIMM_BLTZL: Compile_R4300i_BranchLikely(Section, BLTZ_Compare, FALSE); break; // Non-essential code
-		case R4300i_REGIMM_BGEZL: Compile_R4300i_BranchLikely(Section, BGEZ_Compare, FALSE); break; // Non-essential code
-		case R4300i_REGIMM_TGEI: // Non-essential code
-		case R4300i_REGIMM_TGEIU: // Non-essential code
-		case R4300i_REGIMM_TLTI: // Non-essential code
-		case R4300i_REGIMM_TLTIU: // Non-essential code
-		case R4300i_REGIMM_TEQI: // Non-essential code
-		case R4300i_REGIMM_TNEI: // Non-essential code
-		case R4300i_REGIMM_BLTZALL: // Non-essential code
-		case R4300i_REGIMM_BGEZALL: break; // Non-essential code
-		case R4300i_REGIMM_BLTZAL: Compile_R4300i_Branch(Section, BLTZ_Compare, BranchTypeRs, TRUE); break; // Non-essential code
-		case R4300i_REGIMM_BGEZAL: Compile_R4300i_Branch(Section, BGEZ_Compare, BranchTypeRs, TRUE); break; // Non-essential code
-		default: // Non-essential code
-			DisplayThreadExit("CompileDelaySlot - switch (Opcode.op) - case R4300i_REGIMM: - switch (Opcode.rt) - default:"); // Non-essential code
-			break; // Non-essential code
-		} // Non-essential code
-	break; // Non-essential code
-	case R4300i_J: Compile_R4300i_J(Section); break; // Non-essential code
-	case R4300i_JAL: Compile_R4300i_JAL(Section); break; // Non-essential code
-	case R4300i_BEQ: Compile_R4300i_Branch(Section, BEQ_Compare, BranchTypeRsRt, FALSE); break; // Non-essential code
-	case R4300i_BNE: Compile_R4300i_Branch(Section, BNE_Compare, BranchTypeRsRt, FALSE); break; // Non-essential code
-	case R4300i_BLEZ: Compile_R4300i_Branch(Section, BLEZ_Compare, BranchTypeRs, FALSE); break; // Non-essential code
-	case R4300i_BGTZ: Compile_R4300i_Branch(Section, BGTZ_Compare, BranchTypeRs, FALSE); break; // Non-essential code
+	case R4300i_REGIMM:
+		switch (Opcode.rt) {
+		case R4300i_REGIMM_BLTZ: Compile_R4300i_Branch(Section, BLTZ_Compare, BranchTypeRs, FALSE); break;
+		case R4300i_REGIMM_BGEZ: Compile_R4300i_Branch(Section, BGEZ_Compare, BranchTypeRs, FALSE); break;
+		case R4300i_REGIMM_BLTZL: Compile_R4300i_BranchLikely(Section, BLTZ_Compare, FALSE); break;
+		case R4300i_REGIMM_BGEZL: Compile_R4300i_BranchLikely(Section, BGEZ_Compare, FALSE); break;
+		case R4300i_REGIMM_TGEI:
+		case R4300i_REGIMM_TGEIU:
+		case R4300i_REGIMM_TLTI:
+		case R4300i_REGIMM_TLTIU:
+		case R4300i_REGIMM_TEQI:
+		case R4300i_REGIMM_TNEI:
+		case R4300i_REGIMM_BLTZALL:
+		case R4300i_REGIMM_BGEZALL: break;
+		case R4300i_REGIMM_BLTZAL: Compile_R4300i_Branch(Section, BLTZ_Compare, BranchTypeRs, TRUE); break;
+		case R4300i_REGIMM_BGEZAL: Compile_R4300i_Branch(Section, BGEZ_Compare, BranchTypeRs, TRUE); break;
+		default:
+			DisplayThreadExit("CompileDelaySlot - switch (Opcode.op) - case R4300i_REGIMM: - switch (Opcode.rt) - default:");
+			break;
+		}
+	break;
+	case R4300i_J: Compile_R4300i_J(Section); break;
+	case R4300i_JAL: Compile_R4300i_JAL(Section); break;
+	case R4300i_BEQ: Compile_R4300i_Branch(Section, BEQ_Compare, BranchTypeRsRt, FALSE); break;
+	case R4300i_BNE: Compile_R4300i_Branch(Section, BNE_Compare, BranchTypeRsRt, FALSE); break;
+	case R4300i_BLEZ: Compile_R4300i_Branch(Section, BLEZ_Compare, BranchTypeRs, FALSE); break;
+	case R4300i_BGTZ: Compile_R4300i_Branch(Section, BGTZ_Compare, BranchTypeRs, FALSE); break;
 	case R4300i_ADDI: Compile_R4300i_ADDI(Section); break;
 	case R4300i_ADDIU: Compile_R4300i_ADDIU(Section); break;
 	case R4300i_SLTI: Compile_R4300i_SLTI(Section); break;
@@ -257,50 +256,50 @@ BYTE * CompileDelaySlot (void) {
 	case R4300i_ORI: Compile_R4300i_ORI(Section); break;
 	case R4300i_XORI: Compile_R4300i_XORI(Section); break;
 	case R4300i_LUI: Compile_R4300i_LUI(Section); break;
-	case R4300i_CP0: // Non-essential code
-		switch (Opcode.rs) { // Non-essential code
-		case R4300i_COP0_MF: Compile_R4300i_COP0_MF(Section); break; // Non-essential code
-		case R4300i_COP0_MT: Compile_R4300i_COP0_MT(Section); // Non-essential code
-		case R4300i_COP0_DMF: // Non-essential code
-		case R4300i_COP0_DMT: // Non-essential code
+	case R4300i_CP0:
+		switch (Opcode.rs) {
+		case R4300i_COP0_MF: Compile_R4300i_COP0_MF(Section); break;
+		case R4300i_COP0_MT: Compile_R4300i_COP0_MT(Section);
+		case R4300i_COP0_DMF:
+		case R4300i_COP0_DMT:
 		break;
-		default: // Non-essential code
-			if ((Opcode.rs & 0x10) != 0) { // Non-essential code
-				switch (Opcode.funct) { // Non-essential code
-				case R4300i_COP0_CO_TLBR: Compile_R4300i_COP0_CO_TLBR(Section); break; // Non-essential code
-				case R4300i_COP0_CO_TLBWI: Compile_R4300i_COP0_CO_TLBWI(Section); break; // Non-essential code
-				case R4300i_COP0_CO_TLBWR: Compile_R4300i_COP0_CO_TLBWR(Section); break; // Non-essential code
-				case R4300i_COP0_CO_TLBP: Compile_R4300i_COP0_CO_TLBP(Section); break; // Non-essential code
-				case R4300i_COP0_CO_ERET: Compile_R4300i_COP0_CO_ERET(Section); break; // Non-essential code
-				default: // Non-essential code
-					DisplayThreadExit("CompileDelaySlot - switch (Opcode.op) - case R4300i_CP0: - switch (Opcode.rs) - default: - (Opcode.rs & 0x10 ) != 0 ) - switch (Opcode.funct) - default:"); // Non-essential code
-					break; // Non-essential code
-				} // Non-essential code
-			} else DisplayThreadExit("CompileDelaySlot - switch (Opcode.op) - case R4300i_CP0: - switch (Opcode.rs) - default: - (Opcode.rs & 0x10 ) != 0 ) - else"); // Non-essential code
-		} // Non-essential code
-	break; // Non-essential code
+		default:
+			if ((Opcode.rs & 0x10) != 0) {
+				switch (Opcode.funct) {
+				case R4300i_COP0_CO_TLBR: Compile_R4300i_COP0_CO_TLBR(Section); break;
+				case R4300i_COP0_CO_TLBWI: Compile_R4300i_COP0_CO_TLBWI(Section); break;
+				case R4300i_COP0_CO_TLBWR: Compile_R4300i_COP0_CO_TLBWR(Section); break;
+				case R4300i_COP0_CO_TLBP: Compile_R4300i_COP0_CO_TLBP(Section); break;
+				case R4300i_COP0_CO_ERET: Compile_R4300i_COP0_CO_ERET(Section); break;
+				default:
+					DisplayThreadExit("CompileDelaySlot - switch (Opcode.op) - case R4300i_CP0: - switch (Opcode.rs) - default: - (Opcode.rs & 0x10 ) != 0 ) - switch (Opcode.funct) - default:");
+					break;
+				}
+			} else DisplayThreadExit("CompileDelaySlot - switch (Opcode.op) - case R4300i_CP0: - switch (Opcode.rs) - default: - (Opcode.rs & 0x10 ) != 0 ) - else");
+		}
+	break;
 	case R4300i_CP1:
 		switch (Opcode.rs) {
 		case R4300i_COP1_MF: Compile_R4300i_COP1_MF(Section); break;
-		case R4300i_COP1_DMF: Compile_R4300i_COP1_DMF(Section); break; // Non-essential code
+		case R4300i_COP1_DMF: Compile_R4300i_COP1_DMF(Section); break;
 		case R4300i_COP1_CF: Compile_R4300i_COP1_CF(Section); break;
 		case R4300i_COP1_MT: Compile_R4300i_COP1_MT(Section); break;
-		case R4300i_COP1_DMT: Compile_R4300i_COP1_DMT(Section); break; // Non-essential code
+		case R4300i_COP1_DMT: Compile_R4300i_COP1_DMT(Section); break;
 		case R4300i_COP1_CT: Compile_R4300i_COP1_CT(Section);
-		case R4300i_COP1_DCF: // Non-essential code
-		case R4300i_COP1_DCT: // Non-essential code
+		case R4300i_COP1_DCF:
+		case R4300i_COP1_DCT:
 		break;
-		case R4300i_COP1_BC: // Non-essential code
-			switch (Opcode.ft) { // Non-essential code
-			case R4300i_COP1_BC_BCF: Compile_R4300i_Branch(Section, COP1_BCF_Compare, BranchTypeCop1, FALSE); break; // Non-essential code
-			case R4300i_COP1_BC_BCT: Compile_R4300i_Branch(Section, COP1_BCT_Compare, BranchTypeCop1, FALSE); break; // Non-essential code
-			case R4300i_COP1_BC_BCFL: Compile_R4300i_BranchLikely(Section, COP1_BCF_Compare, FALSE); break; // Non-essential code
-			case R4300i_COP1_BC_BCTL: Compile_R4300i_BranchLikely(Section, COP1_BCT_Compare, FALSE); break; // Non-essential code
-			default: // Non-essential code
-				DisplayThreadExit("CompileDelaySlot - switch (Opcode.op) - case R4300i_CP1: - switch (Opcode.rs) - case R4300i_COP1_BC: - switch (Opcode.ft) - default:"); // Non-essential code
-				break; // Non-essential code
-			} // Non-essential code
-		break; // Non-essential code
+		case R4300i_COP1_BC:
+			switch (Opcode.ft) {
+			case R4300i_COP1_BC_BCF: Compile_R4300i_Branch(Section, COP1_BCF_Compare, BranchTypeCop1, FALSE); break;
+			case R4300i_COP1_BC_BCT: Compile_R4300i_Branch(Section, COP1_BCT_Compare, BranchTypeCop1, FALSE); break;
+			case R4300i_COP1_BC_BCFL: Compile_R4300i_BranchLikely(Section, COP1_BCF_Compare, FALSE); break;
+			case R4300i_COP1_BC_BCTL: Compile_R4300i_BranchLikely(Section, COP1_BCT_Compare, FALSE); break;
+			default:
+				DisplayThreadExit("CompileDelaySlot - switch (Opcode.op) - case R4300i_CP1: - switch (Opcode.rs) - case R4300i_COP1_BC: - switch (Opcode.ft) - default:");
+				break;
+			}
+		break;
 		case R4300i_COP1_S:
 			switch (Opcode.funct) {
 			case R4300i_COP1_FUNCT_ADD: Compile_R4300i_COP1_S_ADD(Section); break;
@@ -311,16 +310,16 @@ BYTE * CompileDelaySlot (void) {
 			case R4300i_COP1_FUNCT_ABS: Compile_R4300i_COP1_S_ABS(Section); break;
 			case R4300i_COP1_FUNCT_MOV: Compile_R4300i_COP1_S_MOV(Section); break;
 			case R4300i_COP1_FUNCT_NEG: Compile_R4300i_COP1_S_NEG(Section); break;
-			case R4300i_COP1_FUNCT_TRUNC_L: Compile_R4300i_COP1_S_TRUNC_L(Section); break; // Non-essential code
-			case R4300i_COP1_FUNCT_CEIL_L: Compile_R4300i_COP1_S_CEIL_L(Section); break;	// Non-essential code
-			case R4300i_COP1_FUNCT_FLOOR_L: Compile_R4300i_COP1_S_FLOOR_L(Section); break;	// Non-essential code
+			case R4300i_COP1_FUNCT_TRUNC_L: Compile_R4300i_COP1_S_TRUNC_L(Section); break;
+			case R4300i_COP1_FUNCT_CEIL_L: Compile_R4300i_COP1_S_CEIL_L(Section); break;
+			case R4300i_COP1_FUNCT_FLOOR_L: Compile_R4300i_COP1_S_FLOOR_L(Section); break;
 			case R4300i_COP1_FUNCT_ROUND_W: Compile_R4300i_COP1_S_ROUND_W(Section); break;
 			case R4300i_COP1_FUNCT_TRUNC_W: Compile_R4300i_COP1_S_TRUNC_W(Section); break;
-			case R4300i_COP1_FUNCT_CEIL_W: Compile_R4300i_COP1_S_CEIL_W(Section); break;	// Non-essential code
+			case R4300i_COP1_FUNCT_CEIL_W: Compile_R4300i_COP1_S_CEIL_W(Section); break;
 			case R4300i_COP1_FUNCT_FLOOR_W: Compile_R4300i_COP1_S_FLOOR_W(Section); break;
 			case R4300i_COP1_FUNCT_CVT_D: Compile_R4300i_COP1_S_CVT_D(Section); break;
-			case R4300i_COP1_FUNCT_CVT_W: Compile_R4300i_COP1_S_CVT_W(Section); break; // Non-essential code
-			case R4300i_COP1_FUNCT_CVT_L: Compile_R4300i_COP1_S_CVT_L(Section); break; // Non-essential code
+			case R4300i_COP1_FUNCT_CVT_W: Compile_R4300i_COP1_S_CVT_W(Section); break;
+			case R4300i_COP1_FUNCT_CVT_L: Compile_R4300i_COP1_S_CVT_L(Section); break;
 			case R4300i_COP1_FUNCT_C_F:   case R4300i_COP1_FUNCT_C_UN:
 			case R4300i_COP1_FUNCT_C_EQ:  case R4300i_COP1_FUNCT_C_UEQ:
 			case R4300i_COP1_FUNCT_C_OLT: case R4300i_COP1_FUNCT_C_ULT:
@@ -330,8 +329,8 @@ BYTE * CompileDelaySlot (void) {
 			case R4300i_COP1_FUNCT_C_LT:  case R4300i_COP1_FUNCT_C_NGE:
 			case R4300i_COP1_FUNCT_C_LE:  case R4300i_COP1_FUNCT_C_NGT:
 				Compile_R4300i_COP1_S_CMP(Section);
-			case R4300i_COP1_FUNCT_ROUND_L: // Non-essential code
-			case R4300i_COP1_FUNCT_CVT_S: // Non-essential code
+			case R4300i_COP1_FUNCT_ROUND_L:
+			case R4300i_COP1_FUNCT_CVT_S:
 			break;
 			default:
 				DisplayThreadExit("CompileDelaySlot - switch (Opcode.op) - case R4300i_CP1: - switch (Opcode.rs) - case R4300i_COP1_S: - switch (Opcode.funct) - default:");
@@ -348,16 +347,16 @@ BYTE * CompileDelaySlot (void) {
 			case R4300i_COP1_FUNCT_ABS: Compile_R4300i_COP1_D_ABS(Section); break;
 			case R4300i_COP1_FUNCT_MOV: Compile_R4300i_COP1_D_MOV(Section); break;
 			case R4300i_COP1_FUNCT_NEG: Compile_R4300i_COP1_D_NEG(Section); break;
-			case R4300i_COP1_FUNCT_TRUNC_L: Compile_R4300i_COP1_D_TRUNC_L(Section); break;	// Non-essential code
-			case R4300i_COP1_FUNCT_CEIL_L: Compile_R4300i_COP1_D_CEIL_L(Section); break;	// Non-essential code
-			case R4300i_COP1_FUNCT_FLOOR_L: Compile_R4300i_COP1_D_FLOOR_L(Section); break;	// Non-essential code
-			case R4300i_COP1_FUNCT_ROUND_W: Compile_R4300i_COP1_D_ROUND_W(Section); break; // Non-essential code
+			case R4300i_COP1_FUNCT_TRUNC_L: Compile_R4300i_COP1_D_TRUNC_L(Section); break;
+			case R4300i_COP1_FUNCT_CEIL_L: Compile_R4300i_COP1_D_CEIL_L(Section); break;
+			case R4300i_COP1_FUNCT_FLOOR_L: Compile_R4300i_COP1_D_FLOOR_L(Section); break;
+			case R4300i_COP1_FUNCT_ROUND_W: Compile_R4300i_COP1_D_ROUND_W(Section); break;
 			case R4300i_COP1_FUNCT_TRUNC_W: Compile_R4300i_COP1_D_TRUNC_W(Section); break;
-			case R4300i_COP1_FUNCT_CEIL_W: Compile_R4300i_COP1_D_CEIL_W(Section); break;	// Non-essential code
-			case R4300i_COP1_FUNCT_FLOOR_W: Compile_R4300i_COP1_D_FLOOR_W(Section); break;	// Non-essential code
+			case R4300i_COP1_FUNCT_CEIL_W: Compile_R4300i_COP1_D_CEIL_W(Section); break;
+			case R4300i_COP1_FUNCT_FLOOR_W: Compile_R4300i_COP1_D_FLOOR_W(Section); break;
 			case R4300i_COP1_FUNCT_CVT_S: Compile_R4300i_COP1_D_CVT_S(Section); break;
 			case R4300i_COP1_FUNCT_CVT_W: Compile_R4300i_COP1_D_CVT_W(Section); break;
-			case R4300i_COP1_FUNCT_CVT_L: Compile_R4300i_COP1_D_CVT_L(Section); break; // Non-essential code
+			case R4300i_COP1_FUNCT_CVT_L: Compile_R4300i_COP1_D_CVT_L(Section); break;
 			case R4300i_COP1_FUNCT_C_F:   case R4300i_COP1_FUNCT_C_UN:
 			case R4300i_COP1_FUNCT_C_EQ:  case R4300i_COP1_FUNCT_C_UEQ:
 			case R4300i_COP1_FUNCT_C_OLT: case R4300i_COP1_FUNCT_C_ULT:
@@ -367,8 +366,8 @@ BYTE * CompileDelaySlot (void) {
 			case R4300i_COP1_FUNCT_C_LT:  case R4300i_COP1_FUNCT_C_NGE:
 			case R4300i_COP1_FUNCT_C_LE:  case R4300i_COP1_FUNCT_C_NGT:
 				Compile_R4300i_COP1_D_CMP(Section);
-			case R4300i_COP1_FUNCT_ROUND_L: // Non-essential code
-			case R4300i_COP1_FUNCT_CVT_D: // Non-essential code
+			case R4300i_COP1_FUNCT_ROUND_L:
+			case R4300i_COP1_FUNCT_CVT_D:
 			break;
 			default:
 				DisplayThreadExit("CompileDelaySlot - switch (Opcode.op) - case R4300i_CP1: - switch (Opcode.rs) - case R4300i_COP1_D: - switch (Opcode.funct) - default:");
@@ -384,15 +383,15 @@ BYTE * CompileDelaySlot (void) {
 				break;
 			}
 		break;
-		case R4300i_COP1_L: // Non-essential code
-			switch (Opcode.funct) { // Non-essential code
-			case R4300i_COP1_FUNCT_CVT_S: Compile_R4300i_COP1_L_CVT_S(Section); break; // Non-essential code
-			case R4300i_COP1_FUNCT_CVT_D: Compile_R4300i_COP1_L_CVT_D(Section); break; // Non-essential code
-			default: // Non-essential code
-				DisplayThreadExit("CompileDelaySlot - switch (Opcode.op) - case R4300i_CP1: - switch (Opcode.rs) - case R4300i_COP1_L: - switch (Opcode.funct) - default:"); // Non-essential code
-				break; // Non-essential code
-			} // Non-essential code
-		break; // Non-essential code
+		case R4300i_COP1_L:
+			switch (Opcode.funct) {
+			case R4300i_COP1_FUNCT_CVT_S: Compile_R4300i_COP1_L_CVT_S(Section); break;
+			case R4300i_COP1_FUNCT_CVT_D: Compile_R4300i_COP1_L_CVT_D(Section); break;
+			default:
+				DisplayThreadExit("CompileDelaySlot - switch (Opcode.op) - case R4300i_CP1: - switch (Opcode.rs) - case R4300i_COP1_L: - switch (Opcode.funct) - default:");
+				break;
+			}
+		break;
 		default:
 			DisplayThreadExit("CompileDelaySlot - switch (Opcode.op) - case R4300i_CP1: - default:");
 			break;
@@ -400,57 +399,57 @@ BYTE * CompileDelaySlot (void) {
 	break;
 	case R4300i_CP2:
 		switch (Opcode.rs) {
-		case R4300i_COP2_MF: // Non-essential code
-		case R4300i_COP2_DMF: // Non-essential code
-		case R4300i_COP2_CF: // Non-essential code
-		case R4300i_COP2_MT: // Non-essential code
-		case R4300i_COP2_DMT: // Non-essential code
-		case R4300i_COP2_CT: // Non-essential code
-		case R4300i_COP2_DCF: // Non-essential code
-		case R4300i_COP2_DCT: // Non-essential code
+		case R4300i_COP2_MF:
+		case R4300i_COP2_DMF:
+		case R4300i_COP2_CF:
+		case R4300i_COP2_MT:
+		case R4300i_COP2_DMT:
+		case R4300i_COP2_CT:
+		case R4300i_COP2_DCF:
+		case R4300i_COP2_DCT:
 		break;
 		default:
 			DisplayThreadExit("GenerateX86Code - switch (Opcode.op) - case R4300i_CP2: - default:");
 			break;
 		}
 	break;
-	case R4300i_BEQL: Compile_R4300i_BranchLikely(Section, BEQ_Compare, FALSE); break; // Non-essential code
-	case R4300i_BNEL: Compile_R4300i_BranchLikely(Section, BNE_Compare, FALSE); break; // Non-essential code
-	case R4300i_BLEZL: Compile_R4300i_BranchLikely(Section, BLEZ_Compare, FALSE); break; // Non-essential code
-	case R4300i_BGTZL: Compile_R4300i_BranchLikely(Section, BGTZ_Compare, FALSE); break; // Non-essential code
-	case R4300i_DADDI: // Non-essential code
-	case R4300i_DADDIU: Compile_R4300i_DADDIU(Section); break; // Non-essential code
-	case R4300i_LDL: Compile_R4300i_LDL(Section); break; // Non-essential code
-	case R4300i_LDR: Compile_R4300i_LDR(Section); break; // Non-essential code
+	case R4300i_BEQL: Compile_R4300i_BranchLikely(Section, BEQ_Compare, FALSE); break;
+	case R4300i_BNEL: Compile_R4300i_BranchLikely(Section, BNE_Compare, FALSE); break;
+	case R4300i_BLEZL: Compile_R4300i_BranchLikely(Section, BLEZ_Compare, FALSE); break;
+	case R4300i_BGTZL: Compile_R4300i_BranchLikely(Section, BGTZ_Compare, FALSE); break;
+	case R4300i_DADDI:
+	case R4300i_DADDIU: Compile_R4300i_DADDIU(Section); break;
+	case R4300i_LDL: Compile_R4300i_LDL(Section); break;
+	case R4300i_LDR: Compile_R4300i_LDR(Section); break;
 	case R4300i_LB: Compile_R4300i_LB(Section); break;
 	case R4300i_LH: Compile_R4300i_LH(Section); break;
-	case R4300i_LWL: Compile_R4300i_LWL(Section); break; // Non-essential code
+	case R4300i_LWL: Compile_R4300i_LWL(Section); break;
 	case R4300i_LW: Compile_R4300i_LW(Section); break;
 	case R4300i_LBU: Compile_R4300i_LBU(Section); break;
 	case R4300i_LHU: Compile_R4300i_LHU(Section); break;
-	case R4300i_LWR: Compile_R4300i_LWR(Section); break; // Non-essential code
-	case R4300i_LWU: Compile_R4300i_LWU(Section); break; // Non-essential code
+	case R4300i_LWR: Compile_R4300i_LWR(Section); break;
+	case R4300i_LWU: Compile_R4300i_LWU(Section); break;
 	case R4300i_SB: Compile_R4300i_SB(Section); break;
 	case R4300i_SH: Compile_R4300i_SH(Section); break;
-	case R4300i_SWL: Compile_R4300i_SWL(Section); break; // Non-essential code
+	case R4300i_SWL: Compile_R4300i_SWL(Section); break;
 	case R4300i_SW: Compile_R4300i_SW(Section); break;
-	case R4300i_SDL: Compile_R4300i_SDL(Section); break; // Non-essential code
-	case R4300i_SDR: Compile_R4300i_SDR(Section); break; // Non-essential code
+	case R4300i_SDL: Compile_R4300i_SDL(Section); break;
+	case R4300i_SDR: Compile_R4300i_SDR(Section); break;
 	case R4300i_SWR: Compile_R4300i_SWR(Section); break;
 	case R4300i_CACHE: Compile_R4300i_CACHE(Section); break;
-	case R4300i_LL: Compile_R4300i_LL(Section); break; // Non-essential code
+	case R4300i_LL: Compile_R4300i_LL(Section); break;
 	case R4300i_LWC1: Compile_R4300i_LWC1(Section); break;
-	case R4300i_CP3: // Non-essential code
-	case R4300i_LWC2: // Non-essential code
-	case R4300i_LLD: // Non-essential code
-	case R4300i_LDC2: // Non-essential code
-	case R4300i_SWC2: // Non-essential code
-	case R4300i_SCD: // Non-essential code
-	case R4300i_SDC2: // Non-essential code
-	break; // Non-essential code
+	case R4300i_CP3:
+	case R4300i_LWC2:
+	case R4300i_LLD:
+	case R4300i_LDC2:
+	case R4300i_SWC2:
+	case R4300i_SCD:
+	case R4300i_SDC2:
+	break;
 	case R4300i_LDC1: Compile_R4300i_LDC1(Section); break;
 	case R4300i_LD: Compile_R4300i_LD(Section); break;
-	case R4300i_SC: Compile_R4300i_SC(Section); break; // Non-essential code
+	case R4300i_SC: Compile_R4300i_SC(Section); break;
 	case R4300i_SWC1: Compile_R4300i_SWC1(Section); break;
 	case R4300i_SDC1: Compile_R4300i_SDC1(Section); break;
 	case R4300i_SD: Compile_R4300i_SD(Section); break;
@@ -602,7 +601,6 @@ void CompileSystemCheck (DWORD TimerModifier, DWORD TargetPC, REG_INFO RegSet) {
 	WriteBackRegisters(&Section);
 	CompileExit(-1,Section.RegWorking,DoCPU_Action,TRUE,NULL);
 	SetJump32(Jump,RecompPos);
-	return;
 }
 void _fastcall CreateSectionLinkage (BLOCK_SECTION * Section) {
 	BLOCK_SECTION ** TargetSection[2];
@@ -667,8 +665,7 @@ void _fastcall DetermineLoop(BLOCK_SECTION * Section, DWORD Test, DWORD Test2, D
 	}
 }
 BOOL DisplaySectionInformation (BLOCK_SECTION * Section, DWORD ID, DWORD Test) {
-	if (Section == NULL) return FALSE;
-	if (Section->Test == Test) return FALSE;
+	if (Section == NULL || Section->Test == Test) return FALSE;
 	Section->Test = Test;
 	if (Section->SectionID != ID) {
 		if (DisplaySectionInformation(Section->ContinueSection,ID,Test)) return TRUE;
@@ -700,7 +697,7 @@ void _fastcall FillSectionInfo(BLOCK_SECTION * Section) {
 		switch (Command.op) {
 		case R4300i_SPECIAL:
 			switch (Command.funct) {
-			case R4300i_SPECIAL_SYNC: // Non-essential code?
+			case R4300i_SPECIAL_SYNC:
 			case R4300i_SPECIAL_MTHI:
 			case R4300i_SPECIAL_MTLO:
 			case R4300i_SPECIAL_MULT:
@@ -1447,8 +1444,7 @@ void _fastcall FixConstants (BLOCK_SECTION * Section, DWORD Test, int * Changed)
 	BLOCK_SECTION * Parent;
 	int count, NoOfParents;
 	REG_INFO Original[2];
-	if (Section == NULL) return;
-	if (Section->Test == Test) return;
+	if (Section == NULL || Section->Test == Test) return;
 	Section->Test = Test;
 	InheritConstants(Section);
 	memcpy(&Original[0],&Section->Cont.RegSet,sizeof(REG_INFO));
@@ -1770,8 +1766,7 @@ BOOL GenerateX86Code (BLOCK_SECTION * Section, DWORD Test) {
 	if (Section->CompiledLocation != NULL) {
 		if (Section->Test == Test) return FALSE;
 		Section->Test = Test;
-		if (GenerateX86Code(Section->ContinueSection,Test)) return TRUE;
-		if (GenerateX86Code(Section->JumpSection,Test)) return TRUE;
+		if (GenerateX86Code(Section->ContinueSection,Test) || GenerateX86Code(Section->JumpSection, Test)) return TRUE;
 		return FALSE;
 	}
 	if (Section->ParentSection) {
@@ -1801,14 +1796,14 @@ BOOL GenerateX86Code (BLOCK_SECTION * Section, DWORD Test) {
 		case R4300i_SPECIAL:
 			switch (Opcode.funct) {
 			case R4300i_SPECIAL_SYSCALL: Compile_R4300i_SPECIAL_SYSCALL(Section);
-			case R4300i_SPECIAL_BREAK: // Non-essential code
+			case R4300i_SPECIAL_BREAK:
 			case R4300i_SPECIAL_SYNC: // Used by older versions of OoT GZ (ROMhack)
-			case R4300i_SPECIAL_TGE: // Non-essential code
-			case R4300i_SPECIAL_TGEU: // Non-essential code
-			case R4300i_SPECIAL_TLT: // Non-essential code
-			case R4300i_SPECIAL_TLTU: // Non-essential code
+			case R4300i_SPECIAL_TGE:
+			case R4300i_SPECIAL_TGEU:
+			case R4300i_SPECIAL_TLT:
+			case R4300i_SPECIAL_TLTU:
 			case R4300i_SPECIAL_TEQ: // Used by Xeno Crisis (PD) and potentially some ROMhacks
-			case R4300i_SPECIAL_TNE: // Non-essential code
+			case R4300i_SPECIAL_TNE:
 			break;
 			case R4300i_SPECIAL_SLL: Compile_R4300i_SPECIAL_SLL(Section); break;
 			case R4300i_SPECIAL_SRL: Compile_R4300i_SPECIAL_SRL(Section); break;
@@ -1864,15 +1859,15 @@ BOOL GenerateX86Code (BLOCK_SECTION * Section, DWORD Test) {
 			case R4300i_REGIMM_BGEZ: Compile_R4300i_Branch(Section,BGEZ_Compare,BranchTypeRs, FALSE); break;
 			case R4300i_REGIMM_BLTZL: Compile_R4300i_BranchLikely(Section,BLTZ_Compare, FALSE); break;
 			case R4300i_REGIMM_BGEZL: Compile_R4300i_BranchLikely(Section,BGEZ_Compare, FALSE); break;
-			case R4300i_REGIMM_TGEI: // Non-essential code
-			case R4300i_REGIMM_TGEIU: // Non-essential code
-			case R4300i_REGIMM_TLTI: // Non-essential code
-			case R4300i_REGIMM_TLTIU: // Non-essential code
-			case R4300i_REGIMM_TEQI: // Non-essential code
-			case R4300i_REGIMM_TNEI: // Non-essential code
-			case R4300i_REGIMM_BLTZALL: // Non-essential code
-			case R4300i_REGIMM_BGEZALL: // Non-essential code
-			break; // Non-essential code
+			case R4300i_REGIMM_TGEI:
+			case R4300i_REGIMM_TGEIU:
+			case R4300i_REGIMM_TLTI:
+			case R4300i_REGIMM_TLTIU:
+			case R4300i_REGIMM_TEQI:
+			case R4300i_REGIMM_TNEI:
+			case R4300i_REGIMM_BLTZALL:
+			case R4300i_REGIMM_BGEZALL:
+			break;
 			case R4300i_REGIMM_BLTZAL: Compile_R4300i_Branch(Section,BLTZ_Compare,BranchTypeRs, TRUE); break;
 			case R4300i_REGIMM_BGEZAL: Compile_R4300i_Branch(Section,BGEZ_Compare,BranchTypeRs, TRUE); break;
 			default:
@@ -1898,8 +1893,8 @@ BOOL GenerateX86Code (BLOCK_SECTION * Section, DWORD Test) {
 			switch (Opcode.rs) {
 			case R4300i_COP0_MF: Compile_R4300i_COP0_MF(Section); break;
 			case R4300i_COP0_MT: Compile_R4300i_COP0_MT(Section);
-			case R4300i_COP0_DMF: // Non-essential code
-			case R4300i_COP0_DMT: // Non-essential code
+			case R4300i_COP0_DMF:
+			case R4300i_COP0_DMT:
 			break;
 			default:
 				if ( (Opcode.rs & 0x10 ) != 0 ) {
@@ -1924,8 +1919,8 @@ BOOL GenerateX86Code (BLOCK_SECTION * Section, DWORD Test) {
 			case R4300i_COP1_MT: Compile_R4300i_COP1_MT(Section); break;
 			case R4300i_COP1_DMT: Compile_R4300i_COP1_DMT(Section); break;
 			case R4300i_COP1_CT: Compile_R4300i_COP1_CT(Section);
-			case R4300i_COP1_DCF: // Non-essential code
-			case R4300i_COP1_DCT: // Non-essential code
+			case R4300i_COP1_DCF:
+			case R4300i_COP1_DCT:
 			break;
 			case R4300i_COP1_BC:
 				switch (Opcode.ft) {
@@ -1967,8 +1962,8 @@ BOOL GenerateX86Code (BLOCK_SECTION * Section, DWORD Test) {
 				case R4300i_COP1_FUNCT_C_LT:  case R4300i_COP1_FUNCT_C_NGE:
 				case R4300i_COP1_FUNCT_C_LE:  case R4300i_COP1_FUNCT_C_NGT:
 					Compile_R4300i_COP1_S_CMP(Section);
-				case R4300i_COP1_FUNCT_ROUND_L: // Non-essential code
-				case R4300i_COP1_FUNCT_CVT_S: // Non-essential code
+				case R4300i_COP1_FUNCT_ROUND_L:
+				case R4300i_COP1_FUNCT_CVT_S:
 					break;
 				default:
 					DisplayThreadExit("GenerateX86Code - switch (Opcode.op) - case R4300i_CP1: - switch (Opcode.rs) - case R4300i_COP1_S: - switch (Opcode.funct) - default:");
@@ -2004,8 +1999,8 @@ BOOL GenerateX86Code (BLOCK_SECTION * Section, DWORD Test) {
 				case R4300i_COP1_FUNCT_C_LT:  case R4300i_COP1_FUNCT_C_NGE:
 				case R4300i_COP1_FUNCT_C_LE:  case R4300i_COP1_FUNCT_C_NGT:
 					Compile_R4300i_COP1_D_CMP(Section);
-				case R4300i_COP1_FUNCT_ROUND_L: // Non-essential code
-				case R4300i_COP1_FUNCT_CVT_D: // Non-essential code
+				case R4300i_COP1_FUNCT_ROUND_L:
+				case R4300i_COP1_FUNCT_CVT_D:
 					break;
 				default:
 					DisplayThreadExit("GenerateX86Code - switch (Opcode.op) - case R4300i_CP1: - switch (Opcode.rs) - case R4300i_COP1_D: - switch (Opcode.funct) - default:");
@@ -2037,14 +2032,14 @@ BOOL GenerateX86Code (BLOCK_SECTION * Section, DWORD Test) {
 		break;
 		case R4300i_CP2:
 			switch (Opcode.rs) {
-			case R4300i_COP2_MF: // Non-essential code
-			case R4300i_COP2_DMF: // Non-essential code
-			case R4300i_COP2_CF: // Non-essential code
-			case R4300i_COP2_MT: // Non-essential code
-			case R4300i_COP2_DMT: // Non-essential code
-			case R4300i_COP2_CT: // Non-essential code
-			case R4300i_COP2_DCF: // Non-essential code
-			case R4300i_COP2_DCT: // Non-essential code
+			case R4300i_COP2_MF:
+			case R4300i_COP2_DMF:
+			case R4300i_COP2_CF:
+			case R4300i_COP2_MT:
+			case R4300i_COP2_DMT:
+			case R4300i_COP2_CT:
+			case R4300i_COP2_DCF:
+			case R4300i_COP2_DCT:
 			break;
 			default:
 				DisplayThreadExit("GenerateX86Code - switch (Opcode.op) - case R4300i_CP2: - default:");
@@ -2055,7 +2050,7 @@ BOOL GenerateX86Code (BLOCK_SECTION * Section, DWORD Test) {
 		case R4300i_BNEL: Compile_R4300i_BranchLikely(Section,BNE_Compare,FALSE); break;
 		case R4300i_BLEZL: Compile_R4300i_BranchLikely(Section, BLEZ_Compare, FALSE); break;
 		case R4300i_BGTZL: Compile_R4300i_BranchLikely(Section,BGTZ_Compare,FALSE); break;
-		case R4300i_DADDI: // Non-essential code
+		case R4300i_DADDI:
 		case R4300i_DADDIU: Compile_R4300i_DADDIU(Section); break;
 		case R4300i_LDL: Compile_R4300i_LDL(Section); break;
 		case R4300i_LDR: Compile_R4300i_LDR(Section); break;
@@ -2077,14 +2072,14 @@ BOOL GenerateX86Code (BLOCK_SECTION * Section, DWORD Test) {
 		case R4300i_CACHE: Compile_R4300i_CACHE(Section); break;
 		case R4300i_LL: Compile_R4300i_LL(Section); break;
 		case R4300i_LWC1: Compile_R4300i_LWC1(Section); break;
-		case R4300i_CP3: // Non-essential code
-		case R4300i_LWC2: // Non-essential code
-		case R4300i_LLD: // Non-essential code
-		case R4300i_LDC2: // Non-essential code
-		case R4300i_SWC2: // Non-essential code
-		case R4300i_SCD: // Non-essential code
-		case R4300i_SDC2: // Non-essential code
-		break; // Non-essential code
+		case R4300i_CP3:
+		case R4300i_LWC2:
+		case R4300i_LLD:
+		case R4300i_LDC2:
+		case R4300i_SWC2:
+		case R4300i_SCD:
+		case R4300i_SDC2:
+		break;
 		case R4300i_LDC1: Compile_R4300i_LDC1(Section); break;
 		case R4300i_SC: Compile_R4300i_SC(Section); break;
 		case R4300i_LD: Compile_R4300i_LD(Section); break;
@@ -2446,11 +2441,8 @@ BOOL InheritParentInfo (BLOCK_SECTION * Section) {
 BOOL IsAllParentLoops(BLOCK_SECTION * Section, BLOCK_SECTION * Parent, BOOL IgnoreIfCompiled, DWORD Test) {
 	int count;
 	if (IgnoreIfCompiled && Parent->CompiledLocation != NULL) return TRUE;
-	if (!Section->InLoop) return FALSE;
-	if (!Parent->InLoop) return FALSE;
-	if (Parent->ParentSection == NULL) return FALSE;
-	if (Section == Parent) return TRUE;
-	if (Parent->Test == Test) return TRUE;
+	if (!Section->InLoop || !Parent->InLoop || Parent->ParentSection == NULL) return FALSE;
+	if (Section == Parent || Parent->Test == Test) return TRUE;
 	Parent->Test = Test;
 	for (count = 0;Parent->ParentSection[count] != NULL;count++) {
 		if (!IsAllParentLoops(Section,Parent->ParentSection[count],IgnoreIfCompiled,Test)) return FALSE;

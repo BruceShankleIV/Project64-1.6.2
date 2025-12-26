@@ -2360,10 +2360,10 @@ void Compile_R4300i_SPECIAL_SRLV (BLOCK_SECTION * Section) {
 			if (IsMapped(Opcode.rd)) { UnMap_GPR(Section,Opcode.rd, FALSE); }
 			MipsRegLo(Opcode.rd) = MipsRegLo(Opcode.rt) >> Shift;
 			MipsRegState(Opcode.rd) = STATE_CONST_32;
-			return;
+		} else {
+			Map_GPR_32bit(Section, Opcode.rd, TRUE, Opcode.rt);
+			ShiftRightUnsignImmed(MipsRegLo(Opcode.rd), (BYTE)Shift);
 		}
-		Map_GPR_32bit(Section,Opcode.rd,TRUE,Opcode.rt);
-		ShiftRightUnsignImmed(MipsRegLo(Opcode.rd),(BYTE)Shift);
 		return;
 	}
 	Map_TempReg(Section,x86_ECX,Opcode.rs,FALSE);
@@ -2379,10 +2379,10 @@ void Compile_R4300i_SPECIAL_SRAV (BLOCK_SECTION * Section) {
 			if (IsMapped(Opcode.rd)) { UnMap_GPR(Section,Opcode.rd, FALSE); }
 			MipsRegLo(Opcode.rd) = MipsRegLo_S(Opcode.rt) >> Shift;
 			MipsRegState(Opcode.rd) = STATE_CONST_32;
-			return;
+		} else {
+			Map_GPR_32bit(Section, Opcode.rd, TRUE, Opcode.rt);
+			ShiftRightSignImmed(MipsRegLo(Opcode.rd), (BYTE)Shift);
 		}
-		Map_GPR_32bit(Section,Opcode.rd,TRUE,Opcode.rt);
-		ShiftRightSignImmed(MipsRegLo(Opcode.rd),(BYTE)Shift);
 		return;
 	}
 	Map_TempReg(Section,x86_ECX,Opcode.rs,FALSE);

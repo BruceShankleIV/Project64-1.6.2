@@ -107,7 +107,7 @@ BOOL LoadAudioDll(char * AudioDll) {
 	GetPluginDir(DllName);
 	strcat(DllName,AudioDll);
 	hAudioDll = LoadLibrary(DllName);
-	if (hAudioDll == NULL) { return FALSE; }
+	if (hAudioDll == NULL) return FALSE;
 	GetDllInfo = (void (__cdecl *)(PLUGIN_INFO *))GetProcAddress( hAudioDll, "GetDllInfo" );
 	if (GetDllInfo == NULL) return FALSE;
 	GetDllInfo(&PluginInfo);
@@ -136,7 +136,7 @@ BOOL LoadControllerDll(char * ControllerDll) {
 	GetPluginDir(DllName);
 	strcat(DllName,ControllerDll);
 	hControllerDll = LoadLibrary(DllName);
-	if (hControllerDll == NULL) { return FALSE; }
+	if (hControllerDll == NULL) return FALSE;
 	GetDllInfo = (void (__cdecl *)(PLUGIN_INFO *))GetProcAddress( hControllerDll, "GetDllInfo" );
 	if (GetDllInfo == NULL) return FALSE;
 	PluginInfo.MemoryBswaped = TRUE;
@@ -171,7 +171,7 @@ BOOL LoadGFXDll(char * RSPDLL) {
 	GetPluginDir(DllName);
 	strcat(DllName,GfxDLL);
 	hGfxDll = LoadLibrary(DllName);
-	if (hGfxDll == NULL) {return FALSE;}
+	if (hGfxDll == NULL) return FALSE;
 	GetDllInfo = (void (__cdecl *)(PLUGIN_INFO *))GetProcAddress( hGfxDll, "GetDllInfo" );
 	if (GetDllInfo == NULL) return FALSE;
 	GetDllInfo(&PluginInfo);
@@ -219,7 +219,7 @@ BOOL LoadRSPDLL(char * RSPDLL) {
 	GetPluginDir(DllName);
 	strcat(DllName,RSPDLL);
 	hRSPDLL = LoadLibrary(DllName);
-	if (hRSPDLL == NULL) { return FALSE; }
+	if (hRSPDLL == NULL) return FALSE;
 	GetDllInfo = (void (__cdecl *)(PLUGIN_INFO *))GetProcAddress( hRSPDLL, "GetDllInfo" );
 	if (GetDllInfo == NULL) return FALSE;
 	GetDllInfo(&PluginInfo);

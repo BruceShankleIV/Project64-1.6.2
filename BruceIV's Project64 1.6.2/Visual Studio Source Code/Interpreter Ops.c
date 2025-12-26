@@ -721,7 +721,6 @@ void _fastcall r4300i_COP1_CT (void) {
 		case 2: RoundingModel = _RC_UP; break;
 		case 3: RoundingModel = _RC_DOWN; break;
 		}
-		return;
 	}
 }
 /************************* COP1: BC1 functions ***********************/

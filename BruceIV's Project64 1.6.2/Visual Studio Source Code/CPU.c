@@ -88,13 +88,6 @@ void __cdecl EmuAI_AiDacrateChanged (int SystemType) {
 		EmuAI_Frequency = 49656530 / (AI_DACRATE_REG + 1);
 		if (AiDacrateChangedPlugin != NULL) AiDacrateChangedPlugin(SYSTEM_PAL);
 	}
-	/*if ((EmuAI_Frequency > 7000) && (EmuAI_Frequency < 9000)) EmuAI_Frequency = 8000;
-	else if ((EmuAI_Frequency > 10000) && (EmuAI_Frequency < 12000)) EmuAI_Frequency = 11025;
-	else if ((EmuAI_Frequency > 21000) && (EmuAI_Frequency < 23000)) EmuAI_Frequency = 22050;
-	else if ((EmuAI_Frequency > 31000) && (EmuAI_Frequency < 33000)) EmuAI_Frequency = 32000;
-	else if ((EmuAI_Frequency > 43000) && (EmuAI_Frequency < 45000)) EmuAI_Frequency = 44100;
-	else if ((EmuAI_Frequency > 47000) && (EmuAI_Frequency < 49000)) EmuAI_Frequency = 48000;
-	What the heck is this code actually used for in Legacy?*/
 }
 void EmuAI_ClearAudio () {
 	LastVICntFrame = 0;
@@ -393,7 +386,7 @@ int DelaySlotEffectsJump (DWORD JumpPC) {
 		}
 		break;
 	case R4300i_JAL:
-	case R4300i_SPECIAL_JALR: return DelaySlotEffectsCompare(JumpPC,31,0); break;
+	case R4300i_SPECIAL_JALR: return DelaySlotEffectsCompare(JumpPC,31,0);
 	case R4300i_J: return FALSE;
 	case R4300i_BEQ:
 	case R4300i_BNE:
@@ -423,11 +416,10 @@ int DelaySlotEffectsJump (DWORD JumpPC) {
 					}
 					return EffectDelaySlot;
 				}
-				break;
 			}
-			break;
-		}
 		break;
+		}
+	break;
 	case R4300i_BEQL:
 	case R4300i_BNEL:
 	case R4300i_BLEZL:
@@ -551,7 +543,12 @@ void InPermLoop (void) {
 	// *** Changed ***/
 	if (CPU_Action.DoInterrupt) return;
 	/* Interrupts enabled */
-	if ((STATUS_REGISTER & STATUS_IE) == 0 || (STATUS_REGISTER & STATUS_EXL) != 0 || (STATUS_REGISTER & STATUS_ERL) != 0 || (STATUS_REGISTER & 0xFF00) == 0) { goto InterruptsDisabled; }
+	if ((STATUS_REGISTER & STATUS_IE) == 0 || (STATUS_REGISTER & STATUS_EXL) != 0 || (STATUS_REGISTER & STATUS_ERL) != 0 || (STATUS_REGISTER & 0xFF00) == 0) {
+		if (UpdateScreen != NULL) { UpdateScreen(); }
+		CurrentFrame = 0;
+		DisplayFPS();
+		DisplayThreadExit("InPermLoop - ( STATUS_REGISTER & STATUS_IE  ) == 0 || ( STATUS_REGISTER & STATUS_EXL ) != 0 || ( STATUS_REGISTER & STATUS_ERL ) != 0 || ( STATUS_REGISTER & 0xFF00) == 0");
+	}
 	/* check sound playing */
 	/* check RSP running */
 	/* check RDP running */
@@ -559,12 +556,6 @@ void InPermLoop (void) {
 		COUNT_REGISTER += Timers.Timer + 1;
 		Timers.Timer = -1;
 	}
-	return;
-	InterruptsDisabled:
-	if (UpdateScreen != NULL) { UpdateScreen(); }
-	CurrentFrame = 0;
-	DisplayFPS();
-	DisplayThreadExit("InPermLoop - ( STATUS_REGISTER & STATUS_IE  ) == 0 || ( STATUS_REGISTER & STATUS_EXL ) != 0 || ( STATUS_REGISTER & STATUS_ERL ) != 0 || ( STATUS_REGISTER & 0xFF00) == 0");
 }
 BOOL Machine_LoadState(void) {
 	char Directory[255], FileName[255], ZipFile[255], LoadHeader[64], String[100];
@@ -766,27 +757,25 @@ BOOL Machine_SaveState(void) {
 		sprintf(FileName,"%s%s",Directory,CurrentSave);
 	} else sprintf(FileName,"%s",SaveAsFileName);
 	{
-		hSaveFile = CreateFile(FileName,GENERIC_WRITE | GENERIC_READ, FILE_SHARE_READ,NULL,OPEN_ALWAYS,
-			FILE_ATTRIBUTE_NORMAL | FILE_FLAG_RANDOM_ACCESS, NULL);
+		hSaveFile = CreateFile(FileName,GENERIC_WRITE | GENERIC_READ, FILE_SHARE_READ,NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL | FILE_FLAG_RANDOM_ACCESS, NULL);
 		if (hSaveFile == INVALID_HANDLE_VALUE) {
 			switch (GetLastError()) {
 			case ERROR_PATH_NOT_FOUND:
-				CreateDirectory(Directory,NULL);
-				hSaveFile = CreateFile(FileName,GENERIC_WRITE | GENERIC_READ, FILE_SHARE_READ,
-					NULL,OPEN_ALWAYS,FILE_ATTRIBUTE_NORMAL | FILE_FLAG_RANDOM_ACCESS, NULL);
+				CreateDirectory(Directory, NULL);
+				hSaveFile = CreateFile(FileName, GENERIC_WRITE | GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL | FILE_FLAG_RANDOM_ACCESS, NULL);
 				if (hSaveFile == INVALID_HANDLE_VALUE) {
 					DisplayError(GS(MSG_UNABLE_SAVE_STATE));
-					_splitpath( FileName, drive, dir, ZipFile, ext );
-					sprintf(String,"%s %s%s",GS(MSG_UNABLE_SAVE_STATE),ZipFile,ext);
-					SendMessage( hStatusWnd, SB_SETTEXT, 0, (LPARAM)String );
+					_splitpath(FileName, drive, dir, ZipFile, ext);
+					sprintf(String, "%s %s%s", GS(MSG_UNABLE_SAVE_STATE), ZipFile, ext);
+					SendMessage(hStatusWnd, SB_SETTEXT, 0, (LPARAM)String);
 					return TRUE;
 				}
 				break;
 			default:
 				DisplayError(GS(MSG_UNABLE_SAVE_STATE));
-				_splitpath( FileName, drive, dir, ZipFile, ext );
-				sprintf(String,"%s %s%s",GS(MSG_UNABLE_SAVE_STATE),ZipFile,ext);
-				SendMessage( hStatusWnd, SB_SETTEXT, 0, (LPARAM)String );
+				_splitpath(FileName, drive, dir, ZipFile, ext);
+				sprintf(String, "%s %s%s", GS(MSG_UNABLE_SAVE_STATE), ZipFile, ext);
+				SendMessage(hStatusWnd, SB_SETTEXT, 0, (LPARAM)String);
 				return TRUE;
 			}
 		}
@@ -945,7 +934,7 @@ void TimerDone (void) {
 	case RspTimer:
 		ChangeTimer(RspTimer,0);
 		RunRsp();
-		//CheckInterrupts(); // Non-essential code
+		CheckInterrupts();
 		break;
 	case AiTimer:
 		EmuAI_SetNextTimer();

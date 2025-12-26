@@ -25,8 +25,7 @@ static uint8_t* summercart_sd_addr(size_t size) {
 static uint32_t summercart_sd_init()
 {
     FILE* fp;
-    if (!SummerCart.sd_path) return 0x40000000;
-    if (!(fp = fopen(SummerCart.sd_path, "rb"))) return 0x40000000;
+    if (!SummerCart.sd_path || !(fp = fopen(SummerCart.sd_path, "rb"))) return 0x40000000;
     fseek(fp, 0, SEEK_END);
     SummerCart.sd_size = ftell(fp);
     fclose(fp);
@@ -39,9 +38,7 @@ static uint32_t summercart_sd_read()
     uint8_t* ptr;
     long offset = 512 * SummerCart.sd_sector;
     size_t size = 512 * SummerCart.data1;
-    if ((unsigned long)(offset + size) > (unsigned long)SummerCart.sd_size) return 0x40000000;
-    if (!(ptr = summercart_sd_addr(size))) return 0x40000000;
-    if (!(fp = fopen(SummerCart.sd_path, "rb"))) return 0x40000000;
+    if ((unsigned long)(offset + size) > (unsigned long)SummerCart.sd_size || !(ptr = summercart_sd_addr(size)) || !(fp = fopen(SummerCart.sd_path, "rb"))) return 0x40000000;
     fseek(fp, offset, SEEK_SET);
     for (i = 0; i < size; ++i)
     {
@@ -63,9 +60,7 @@ static uint32_t summercart_sd_write()
     uint8_t* ptr;
     long offset = 512 * SummerCart.sd_sector;
     size_t size = 512 * SummerCart.data1;
-    if ((unsigned long)(offset + size) > (unsigned long)SummerCart.sd_size) return 0x40000000;
-    if (!(ptr = summercart_sd_addr(size))) return 0x40000000;
-    if (!(fp = fopen(SummerCart.sd_path, "r+b"))) return 0x40000000;
+    if ((unsigned long)(offset + size) > (unsigned long)SummerCart.sd_size || !(ptr = summercart_sd_addr(size)) || !(fp = fopen(SummerCart.sd_path, "r+b"))) return 0x40000000;
     fseek(fp, offset, SEEK_SET);
     for (i = 0; i < size; ++i)
     {
@@ -153,18 +148,19 @@ void poweron_summercart(struct summercart* summercart)
     summercart->unlock = 0;
     summercart->lock_seq = 0;
 }
-int read_summercart_regs(void* opaque, uint32_t address, uint32_t* value)
+int read_summercart_regs(void* opaque, uint32_t address, uint32_t* Value)
 {
     struct pi_controller* pi = (struct pi_controller*)opaque;
     uint32_t addr = address & 0xFFFF;
-    *value = 0;
-    if (!SummerCart.unlock) return 0;
-    switch (address & 0xFFFF)
-    {
-    case 0x00:  *value = SummerCart.status; break;
-    case 0x04:  *value = SummerCart.data0;  break;
-    case 0x08:  *value = SummerCart.data1;  break;
-    case 0x0C:  *value = 0x53437632;            break;
+    * Value = 0;
+    if (SummerCart.unlock) {
+        switch (address & 0xFFFF)
+        {
+        case 0x00:  * Value = SummerCart.status; break;
+        case 0x04:  * Value = SummerCart.data0;  break;
+        case 0x08:  * Value = SummerCart.data1;  break;
+        case 0x0C:  * Value = 0x53437632;        break;
+        }
     }
     return 0;
 }
@@ -197,89 +193,90 @@ int write_summercart_regs(void* opaque, uint32_t address, uint32_t value, uint32
         }
         return 0;
     }
-    if (!SummerCart.unlock) return 0;
-    switch (addr)
-    {
-    case 0x00:
-        SummerCart.status = 0;
-        switch (value & mask)
+    if (SummerCart.unlock) {
+        switch (addr)
         {
-        case 'c':
-            switch (SummerCart.data0)
+        case 0x00:
+            SummerCart.status = 0;
+            switch (value & mask)
             {
-            case 1:
-                SummerCart.data1 = SummerCart.cfg_rom_write;
-                break;
-            case 3:
-                SummerCart.data1 = 0;
-                break;
-            case 6:
-                SummerCart.data1 = 0;
-                break;
-            default:
-                SummerCart.status = 0x40000000;
-                break;
-            }
-            break;
-        case 'C':
-            switch (SummerCart.data0)
-            {
-            case 1:
-                if (SummerCart.data1)
+            case 'c':
+                switch (SummerCart.data0)
                 {
+                case 1:
                     SummerCart.data1 = SummerCart.cfg_rom_write;
-                    SummerCart.cfg_rom_write = 1;
-                }
-                else
-                {
-                    SummerCart.data1 = SummerCart.cfg_rom_write;
-                    SummerCart.cfg_rom_write = 0;
+                    break;
+                case 3:
+                    SummerCart.data1 = 0;
+                    break;
+                case 6:
+                    SummerCart.data1 = 0;
+                    break;
+                default:
+                    SummerCart.status = 0x40000000;
+                    break;
                 }
                 break;
+            case 'C':
+                switch (SummerCart.data0)
+                {
+                case 1:
+                    if (SummerCart.data1)
+                    {
+                        SummerCart.data1 = SummerCart.cfg_rom_write;
+                        SummerCart.cfg_rom_write = 1;
+                    }
+                    else
+                    {
+                        SummerCart.data1 = SummerCart.cfg_rom_write;
+                        SummerCart.cfg_rom_write = 0;
+                    }
+                    break;
+                default:
+                    SummerCart.status = 0x40000000;
+                    break;
+                }
+                break;
+            case 'i':
+                switch (SummerCart.data1)
+                {
+                case 0:
+                    break;
+                case 1:
+                    SummerCart.status = summercart_sd_init();
+                    break;
+                case 4:
+                    SummerCart.sd_byteswap = 1;
+                    break;
+                case 5:
+                    SummerCart.sd_byteswap = 0;
+                    break;
+                default:
+                    SummerCart.status = 0x40000000;
+                    break;
+                }
+                break;
+            case 'I':
+                SummerCart.sd_sector = SummerCart.data0;
+                break;
+            case 's':
+                SummerCart.status = summercart_sd_read();
+                break;
+            case 'S':
+                SummerCart.status = summercart_sd_write();
+                break;
             default:
                 SummerCart.status = 0x40000000;
                 break;
             }
             break;
-        case 'i':
-            switch (SummerCart.data1)
-            {
-            case 0:
-                break;
-            case 1:
-                SummerCart.status = summercart_sd_init();
-                break;
-            case 4:
-                SummerCart.sd_byteswap = 1;
-                break;
-            case 5:
-                SummerCart.sd_byteswap = 0;
-                break;
-            default:
-                SummerCart.status = 0x40000000;
-                break;
-            }
+        case 0x04:
+            SummerCart.data0 = value & mask;
             break;
-        case 'I':
-            SummerCart.sd_sector = SummerCart.data0;
-            break;
-        case 's':
-            SummerCart.status = summercart_sd_read();
-            break;
-        case 'S':
-            SummerCart.status = summercart_sd_write();
-            break;
-        default:
-            SummerCart.status = 0x40000000;
+        case 0x08:
+            SummerCart.data1 = value & mask;
             break;
         }
-        break;
-    case 0x04:
-        SummerCart.data0 = value & mask;
-        break;
-    case 0x08:
-        SummerCart.data1 = value & mask;
-        break;
     }
     return 0;
 }

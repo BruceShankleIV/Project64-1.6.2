@@ -46,10 +46,10 @@ void ChangeFPURegFormat (BLOCK_SECTION * Section, int Reg, int OldFormat, int Ne
 				UnMap_FPR(Section,Reg,TRUE);
 				Load_FPR_ToTop(Section,Reg,Reg,OldFormat);
 				ChangeFPURegFormat(Section,Reg,OldFormat,NewFormat,RoundingModel);
-				return;
+			} else {
+				FpuRoundingModel(i) = RoundingModel;
+				FpuState(i) = NewFormat;
 			}
-			FpuRoundingModel(i) = RoundingModel;
-			FpuState(i)         = NewFormat;
 			return;
 		}
 	}
@@ -68,17 +68,17 @@ void ChangeMiIntrMask (void) {
 	if ( ( RegModValue & MI_INTR_MASK_CLR_DP ) != 0 ) { MI_INTR_MASK_REG &= ~MI_INTR_MASK_DP; }
 	if ( ( RegModValue & MI_INTR_MASK_SET_DP ) != 0 ) { MI_INTR_MASK_REG |= MI_INTR_MASK_DP; }
 }
-void ChangeMiModeReg(void) { // Non-essential code?
-	MI_MODE_REG &= ~0x7F; // Non-essential code?
-	MI_MODE_REG |= (RegModValue & 0x7F); // Non-essential code?
-	if ( ( RegModValue & MI_CLR_INIT ) != 0 ) { MI_MODE_REG &= ~MI_MODE_INIT; } // Non-essential code?
-	if ( ( RegModValue & MI_SET_INIT ) != 0 ) { MI_MODE_REG |= MI_MODE_INIT; } // Non-essential code?
-	if ( ( RegModValue & MI_CLR_EBUS ) != 0 ) { MI_MODE_REG &= ~MI_MODE_EBUS; } // Non-essential code?
-	if ( ( RegModValue & MI_SET_EBUS ) != 0 ) { MI_MODE_REG |= MI_MODE_EBUS; } // Non-essential code?
-	if ( ( RegModValue & MI_CLR_DP_INTR ) != 0 ) { MI_INTR_REG &= ~MI_INTR_DP; } // Non-essential code?
-	if ( ( RegModValue & MI_CLR_RDRAM ) != 0 ) { MI_MODE_REG &= ~MI_MODE_RDRAM; } // Non-essential code?
-	if ( ( RegModValue & MI_SET_RDRAM ) != 0 ) { MI_MODE_REG |= MI_MODE_RDRAM; } // Non-essential code?
-} // Non-essential code?
+void ChangeMiModeReg(void) {
+	MI_MODE_REG &= ~0x7F;
+	MI_MODE_REG |= (RegModValue & 0x7F);
+	if ( ( RegModValue & MI_CLR_INIT ) != 0 ) { MI_MODE_REG &= ~MI_MODE_INIT; }
+	if ( ( RegModValue & MI_SET_INIT ) != 0 ) { MI_MODE_REG |= MI_MODE_INIT; }
+	if ( ( RegModValue & MI_CLR_EBUS ) != 0 ) { MI_MODE_REG &= ~MI_MODE_EBUS; }
+	if ( ( RegModValue & MI_SET_EBUS ) != 0 ) { MI_MODE_REG |= MI_MODE_EBUS; }
+	if ( ( RegModValue & MI_CLR_DP_INTR ) != 0 ) { MI_INTR_REG &= ~MI_INTR_DP; }
+	if ( ( RegModValue & MI_CLR_RDRAM ) != 0 ) { MI_MODE_REG &= ~MI_MODE_RDRAM; }
+	if ( ( RegModValue & MI_SET_RDRAM ) != 0 ) { MI_MODE_REG |= MI_MODE_RDRAM; }
+}
 void ChangeSpStatus (void) {
 	if ( ( RegModValue & SP_CLR_HALT ) != 0) { SP_STATUS_REG &= ~SP_STATUS_HALT; }
 	if ( ( RegModValue & SP_SET_HALT ) != 0) { SP_STATUS_REG |= SP_STATUS_HALT;  }
@@ -119,24 +119,24 @@ void ChangeSpStatus (void) {
 	}
 	RunRsp();
 }
-void ChangeDpcStatus(void) { // Non-essential code?
-	if ( ( RegModValue & DPC_CLR_XBUS_DMEM_DMA ) != 0) { DPC_STATUS_REG &= ~DPC_STATUS_XBUS_DMEM_DMA; } // Non-essential code?
-	if ( ( RegModValue & DPC_SET_XBUS_DMEM_DMA ) != 0) { DPC_STATUS_REG |= DPC_STATUS_XBUS_DMEM_DMA;  } // Non-essential code?
-	if ( ( RegModValue & DPC_CLR_FREEZE ) != 0) { DPC_STATUS_REG &= ~DPC_STATUS_FREEZE; } // Non-essential code?
-	if ( ( RegModValue & DPC_SET_FREEZE ) != 0) { DPC_STATUS_REG |= DPC_STATUS_FREEZE;  } // Non-essential code?
-	if ( ( RegModValue & DPC_CLR_FLUSH ) != 0) { DPC_STATUS_REG &= ~DPC_STATUS_FLUSH; } // Non-essential code?
-	if ( ( RegModValue & DPC_SET_FLUSH ) != 0) { DPC_STATUS_REG |= DPC_STATUS_FLUSH;  } // Non-essential code?
-	if ( ( RegModValue & DPC_CLR_FREEZE ) != 0) // Non-essential code?
-	{ // Non-essential code?
-		if ( ( SP_STATUS_REG & SP_STATUS_HALT ) == 0) // Non-essential code?
-		{ // Non-essential code?
-			if ( ( SP_STATUS_REG & SP_STATUS_BROKE ) == 0 ) // Non-essential code?
-			{ // Non-essential code?
-				RunRsp(); // Non-essential code?
-			} // Non-essential code?
-		} // Non-essential code?
-	} // Non-essential code?
-} // Non-essential code?
+void ChangeDpcStatus(void) {
+	if ( ( RegModValue & DPC_CLR_XBUS_DMEM_DMA ) != 0) { DPC_STATUS_REG &= ~DPC_STATUS_XBUS_DMEM_DMA; }
+	if ( ( RegModValue & DPC_SET_XBUS_DMEM_DMA ) != 0) { DPC_STATUS_REG |= DPC_STATUS_XBUS_DMEM_DMA;  }
+	if ( ( RegModValue & DPC_CLR_FREEZE ) != 0) { DPC_STATUS_REG &= ~DPC_STATUS_FREEZE; }
+	if ( ( RegModValue & DPC_SET_FREEZE ) != 0) { DPC_STATUS_REG |= DPC_STATUS_FREEZE;  }
+	if ( ( RegModValue & DPC_CLR_FLUSH ) != 0) { DPC_STATUS_REG &= ~DPC_STATUS_FLUSH; }
+	if ( ( RegModValue & DPC_SET_FLUSH ) != 0) { DPC_STATUS_REG |= DPC_STATUS_FLUSH;  }
+	if ( ( RegModValue & DPC_CLR_FREEZE ) != 0)
+	{
+		if ( ( SP_STATUS_REG & SP_STATUS_HALT ) == 0)
+		{
+			if ( ( SP_STATUS_REG & SP_STATUS_BROKE ) == 0 )
+			{
+				RunRsp();
+			}
+		}
+	}
+}
 int Free8BitX86Reg (BLOCK_SECTION * Section) {
 	int x86Reg, count, MapCount[10], MapReg[10];
 	if (x86Mapped(x86_EBX) == NotMapped && !x86Protected(x86_EBX)) {return x86_EBX; }
@@ -428,8 +428,7 @@ BOOL Is8BitReg (int x86Reg) {
 }
 void Load_FPR_ToTop (BLOCK_SECTION * Section, int Reg, int RegToLoad, int Format) {
 	int i;
-	if (RegToLoad < 0) return;
-	if (Reg < 0) return;
+	if (RegToLoad < 0 || Reg < 0) return;
 	if (Format == FPU_Double || Format == FPU_Qword) {
 		UnMap_FPR(Section,Reg + 1,TRUE);
 		UnMap_FPR(Section,RegToLoad + 1,TRUE);
@@ -792,8 +791,7 @@ int Map_TempReg (BLOCK_SECTION * Section, int x86Reg, int MipsReg, BOOL LoadHiWo
 	return x86Reg;
 }
 void ProtectGPR(BLOCK_SECTION * Section, DWORD Reg) {
-	if (IsUnknown(Reg)) return;
-	if (IsConst(Reg)) return;
+	if (IsUnknown(Reg) || IsConst(Reg)) return;
 	if (Is64Bit(Reg)) {
 		x86Protected(MipsRegHi(Reg)) = TRUE;
 	}
@@ -956,8 +954,7 @@ void UnMap_FPR (BLOCK_SECTION * Section, int Reg, int WriteBackValue ) {
 	}
 }
 void UnMap_GPR (BLOCK_SECTION * Section, DWORD Reg, int WriteBackValue) {
-	if (Reg == 0) return;
-	if (IsUnknown(Reg)) return;
+	if (Reg == 0 || IsUnknown(Reg)) return;
 	if (IsConst(Reg)) {
 		if (!WriteBackValue) {
 			MipsRegState(Reg) = STATE_UNKNOWN;
@@ -1051,8 +1048,7 @@ BOOL UnMap_X86reg (BLOCK_SECTION * Section, DWORD x86Reg) {
 	return FALSE;
 }
 void UnProtectGPR(BLOCK_SECTION * Section, DWORD Reg) {
-	if (IsUnknown(Reg)) return;
-	if (IsConst(Reg)) return;
+	if (IsUnknown(Reg) || IsConst(Reg)) return;
 	if (Is64Bit(Reg)) {
 		x86Protected(MipsRegHi(Reg)) = FALSE;
 	}

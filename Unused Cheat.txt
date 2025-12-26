@@ -1,3 +1,0 @@
-Unused cheat for Ocarina of Time v1.2 due to redundancy (skip cutscene cheat already skips the intro):
-"Skip Starting in Link's House",D111AC82 00BB,8011AC8B 0000,D111AC82 00BB,8111AC82 0211
-Cheat by Miroku

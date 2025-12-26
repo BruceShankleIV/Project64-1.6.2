@@ -41,9 +41,6 @@ int GetCicChipID (char * RomData) {
 		CRC += *(DWORD *)(RomData+count);
 	}
 	switch (CRC) {
-	/*case 0x000000C34B2826B8: // Non-essential code
-	case 0x0000002F35CF0DE9: // Non-essential code
-	case 0x000000C92ADFE50A:*/ // Non-essential code
 	case 0x000000D0027FDF31:
 	case 0x000000CFFB631223: return 1;
 	case 0x000000D057C85244: return 2;
@@ -65,14 +62,13 @@ void PifRamRead (void) {
 	if (PIF_Ram[0x3F] == 0x2) {
 		char hold[32], resp[32] = {0};
 		int i, j;
-		for(i = 0, j = 48; i < 32; i += 2, j++)
+		for (i = 0, j = 48; i < 32; i += 2, j++)
 		{
 			hold[i + 1] = PIF_Ram[j] % 16;
 			hold[i] = PIF_Ram[j] / 16;
 		}
 		N64_CIC_NUS_6105(hold, resp, 32 - 2);
-		for(i = 48, j = 0; i <= 63; i++, j += 2)
-			PIF_Ram[i] = resp[j] * 16 + resp[j + 1];
+		for (i = 48, j = 0; i <= 63; i++, j += 2) PIF_Ram[i] = resp[j] * 16 + resp[j + 1];
 		return;
 	}
 	do {
@@ -108,7 +104,7 @@ void PifRamRead (void) {
 void PifRamWrite (void) {
 	int Channel, CurPos;
 	Channel = 0;
-	if( PIF_Ram[0x3F] > 0x1) {
+	if ( PIF_Ram[0x3F] > 0x1) {
 		switch (PIF_Ram[0x3F]) {
 		case 0x08:
 			PIF_Ram[0x3F] = 0;
@@ -122,7 +118,6 @@ void PifRamWrite (void) {
 			PIF_Ram[0x3F] = 0x80; break;
 		case 0xC0:
 			memset(PIF_Ram,0,0x40); break;
-		case 0x02: break; // CIC-NUS-6105 Encryption related, already handled in PifRamRead
 		}
 		return;
 	}

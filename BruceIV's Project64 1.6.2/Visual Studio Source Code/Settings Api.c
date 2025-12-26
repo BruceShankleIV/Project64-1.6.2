@@ -47,8 +47,7 @@ int AsciiToInt( char * String, int Maxlen) {
 }
 int fGetString(FILE * File,char * String, int MaxLen) {
 	int count;
-	if (String == NULL) { return -1; }
-	if (MaxLen < 1) { return -1; }
+	if (String == NULL || MaxLen < 1) return -1;
 	for (count = 0; count < (MaxLen - 1); count ++ ) {
 		int result;
 		result = fgetc(File);
@@ -219,7 +218,6 @@ unsigned int _GetPrivateProfileInt(
 		Pos = strchr(Input,'=');
 		Pos[0] = 0;
 		if (strcmp(Input,lpKeyName) != 0) continue;
-		//strncpy(lpReturnedString,&Pos[1],nSize - 1);
 		result = atoi(&Pos[1]);
 		fclose(fInput);
 		if (Input) { free(Input);  Input = NULL; }
@@ -229,14 +227,14 @@ unsigned int _GetPrivateProfileInt(
 	fclose(fInput);
 	if (Input) { free(Input);  Input = NULL; }
 	if (Data) { free(Data);  Data = NULL; }
-GetPrivateProfileString_ReturnDefault:
+	GetPrivateProfileString_ReturnDefault:
 	return nDefault;
 }
 unsigned int _GetPrivateProfileString(
   const char * lpAppName,        // points to section name
   const char * lpKeyName,        // points to key name
   const char * lpDefault,        // points to default string
-  char *       lpReturnedString, // points to destination buffer
+  char		 * lpReturnedString, // points to destination buffer
   unsigned int nSize,            // size of destination buffer
   const char * lpFileName        // points to initialization filename
 )
@@ -321,17 +319,16 @@ unsigned int _GetPrivateProfileString(
 	fclose(fInput);
 	if (Input) { free(Input);  Input = NULL; }
 	if (Data) { free(Data);  Data = NULL; }
-GetPrivateProfileString_ReturnDefault:
+	GetPrivateProfileString_ReturnDefault:
 	strncpy(lpReturnedString,lpDefault,nSize - 1);
 	lpReturnedString[nSize - 1] = 0;
 	return strlen(lpReturnedString);
-	//return 0;
 }
 unsigned int _GetPrivateProfileString2(
   const char * lpAppName,        // points to section name
   const char * lpKeyName,        // points to key name
   const char * lpDefault,        // points to default string
-  char **       lpReturnedString, // points to destination buffer
+  char		** lpReturnedString, // points to destination buffer
   const char * lpFileName        // points to initialization filename
   )
 {
@@ -416,7 +413,7 @@ unsigned int _GetPrivateProfileString2(
 	fclose(fInput);
 	if (Input) { free(Input);  Input = NULL; }
 	if (Data) { free(Data);  Data = NULL; }
-GetPrivateProfileString_ReturnDefault2:
+	GetPrivateProfileString_ReturnDefault2:
 	len = strlen(lpDefault);
 	if (*lpReturnedString) { free(*lpReturnedString); }
 	*lpReturnedString = malloc(len + 1);
@@ -624,6 +621,6 @@ unsigned int _GetPrivateProfileSectionNames(									//added by Witten
 		seekpos = strrchr(buf, '\n');
 		strncpy(seekpos,"\0",1);
 	}
-GetPrivateProfileSectionNames_ReturnDefault:
+	GetPrivateProfileSectionNames_ReturnDefault:
 	return 0;
 }
