@@ -41,6 +41,7 @@ void * R4300i_CoP1_S[64];
 void * R4300i_CoP1_D[64];
 void * R4300i_CoP1_W[64];
 void * R4300i_CoP1_L[64];
+void * R4300i_CoP2[32];
 void _fastcall r4300i_SPECIAL (void) {
 	((void (_fastcall *)()) R4300i_Special[ Opcode.funct ])();
 }
@@ -73,6 +74,9 @@ void _fastcall r4300i_COP1_W (void) {
 void _fastcall r4300i_COP1_L (void) {
 	((void (_fastcall *)()) R4300i_CoP1_L[ Opcode.funct ])();
 }
+void _fastcall r4300i_COP2 (void) {
+	((void (_fastcall *)()) R4300i_CoP2[ Opcode.rs ])();
+}
 void _fastcall DUMMY () {}
 void _fastcall DTE_DUMMY() {
 	DisplayThreadExit("BuildInterpreter - i = 0; i < 64; i++");
@@ -80,7 +84,9 @@ void _fastcall DTE_DUMMY() {
 void BuildInterpreter (void ) {
 	int i;
 	for (i = 0; i < 64; i++) {
-		R4300i_Regimm[i]	= DTE_DUMMY;
+		R4300i_Opcode[i]	= DTE_DUMMY; // RESERVED: 28-31, 51, 59
+		R4300i_Special[i]	= DTE_DUMMY; // RESERVED: 1, 5, 10-11, 14, 21, 40-41, 53, 55, 57, 61
+		R4300i_Regimm[i]	= DTE_DUMMY; // RESERVED: 4-7, 13, 15, 20-31
 		R4300i_CoP0[i]		= DTE_DUMMY;
 		R4300i_CoP0_Function[i]	= DTE_DUMMY;
 		R4300i_CoP1[i]		= DTE_DUMMY;
@@ -89,6 +95,7 @@ void BuildInterpreter (void ) {
 		R4300i_CoP1_D[i]	= DTE_DUMMY;
 		R4300i_CoP1_W[i]	= DTE_DUMMY;
 		R4300i_CoP1_L[i]	= DTE_DUMMY;
+		R4300i_CoP2[i]		= DTE_DUMMY; // Non-essential code
 	}
 	R4300i_Opcode[ 0] = r4300i_SPECIAL;
 	R4300i_Opcode[ 1] = r4300i_REGIMM;
@@ -118,10 +125,6 @@ void BuildInterpreter (void ) {
 	R4300i_Opcode[25] = r4300i_DADDIU;
 	R4300i_Opcode[26] = r4300i_LDL;
 	R4300i_Opcode[27] = r4300i_LDR;
-	R4300i_Opcode[28] = DUMMY; // RESERVED
-	R4300i_Opcode[29] = DUMMY; // RESERVED
-	R4300i_Opcode[30] = DUMMY; // RESERVED
-	R4300i_Opcode[31] = DUMMY; // RESERVED
 	R4300i_Opcode[32] = r4300i_LB;
 	R4300i_Opcode[33] = r4300i_LH;
 	R4300i_Opcode[34] = r4300i_LWL;
@@ -141,7 +144,6 @@ void BuildInterpreter (void ) {
 	R4300i_Opcode[48] = r4300i_LL;
 	R4300i_Opcode[49] = r4300i_LWC1;
 	R4300i_Opcode[50] = DUMMY; // LWC2
-	R4300i_Opcode[51] = DUMMY; // RESERVED
 	R4300i_Opcode[52] = DUMMY; // LLD
 	R4300i_Opcode[53] = r4300i_LDC1;
 	R4300i_Opcode[54] = DUMMY; // LDC2
@@ -149,33 +151,26 @@ void BuildInterpreter (void ) {
 	R4300i_Opcode[56] = r4300i_SC;
 	R4300i_Opcode[57] = r4300i_SWC1;
 	R4300i_Opcode[58] = DUMMY; // SWC2
-	R4300i_Opcode[59] = DUMMY; // RESERVED
 	R4300i_Opcode[60] = DUMMY; // SCD
 	R4300i_Opcode[61] = r4300i_SDC1;
 	R4300i_Opcode[62] = DUMMY; // SDC2
 	R4300i_Opcode[63] = r4300i_SD;
 	R4300i_Special[ 0] = r4300i_SPECIAL_SLL;
-	R4300i_Special[ 1] = DUMMY; // RESERVED
 	R4300i_Special[ 2] = r4300i_SPECIAL_SRL;
 	R4300i_Special[ 3] = r4300i_SPECIAL_SRA;
 	R4300i_Special[ 4] = r4300i_SPECIAL_SLLV;
-	R4300i_Special[ 5] = DUMMY; // RESERVED
 	R4300i_Special[ 6] = r4300i_SPECIAL_SRLV;
 	R4300i_Special[ 7] = r4300i_SPECIAL_SRAV;
 	R4300i_Special[ 8] = r4300i_SPECIAL_JR;
 	R4300i_Special[ 9] = r4300i_SPECIAL_JALR;
-	R4300i_Special[10] = DUMMY; // RESERVED
-	R4300i_Special[11] = DUMMY; // RESERVED
 	R4300i_Special[12] = r4300i_SPECIAL_SYSCALL;
 	R4300i_Special[13] = DUMMY; // SPECIAL_BREAK - Ocarina of Time Spirit Temple's White Bubble enemy doesn't crash using DUMMY instead of SYSCALL
-	R4300i_Special[14] = DUMMY; // RESERVED
 	R4300i_Special[15] = DUMMY; // SPECIAL_SYNC
 	R4300i_Special[16] = r4300i_SPECIAL_MFHI;
 	R4300i_Special[17] = r4300i_SPECIAL_MTHI;
 	R4300i_Special[18] = r4300i_SPECIAL_MFLO;
 	R4300i_Special[19] = r4300i_SPECIAL_MTLO;
 	R4300i_Special[20] = r4300i_SPECIAL_DSLLV;
-	R4300i_Special[21] = DUMMY; // RESERVED
 	R4300i_Special[22] = r4300i_SPECIAL_DSRLV;
 	R4300i_Special[23] = r4300i_SPECIAL_DSRAV;
 	R4300i_Special[24] = r4300i_SPECIAL_MULT;
@@ -194,8 +189,6 @@ void BuildInterpreter (void ) {
 	R4300i_Special[37] = r4300i_SPECIAL_OR;
 	R4300i_Special[38] = r4300i_SPECIAL_XOR;
 	R4300i_Special[39] = r4300i_SPECIAL_NOR;
-	R4300i_Special[40] = DUMMY; // RESERVED
-	R4300i_Special[41] =  DUMMY; // RESERVED
 	R4300i_Special[42] = r4300i_SPECIAL_SLT;
 	R4300i_Special[43] = r4300i_SPECIAL_SLTU;
 	R4300i_Special[44] = r4300i_SPECIAL_DADD;
@@ -207,49 +200,27 @@ void BuildInterpreter (void ) {
 	R4300i_Special[50] = DUMMY; // SPECIAL_TLT
 	R4300i_Special[51] = DUMMY; // SPECIAL_TLTU
 	R4300i_Special[52] = DUMMY; // SPECIAL_TEQ
-	R4300i_Special[53] = DUMMY; // RESERVED
 	R4300i_Special[54] = DUMMY; // SPECIAL_TNE
-	R4300i_Special[55] = DUMMY; // RESERVED
 	R4300i_Special[56] = r4300i_SPECIAL_DSLL;
-	R4300i_Special[57] = DUMMY; // RESERVED
 	R4300i_Special[58] = r4300i_SPECIAL_DSRL;
 	R4300i_Special[59] = r4300i_SPECIAL_DSRA;
 	R4300i_Special[60] = r4300i_SPECIAL_DSLL32;
-	R4300i_Special[61] = DUMMY; // RESERVED
 	R4300i_Special[62] = r4300i_SPECIAL_DSRL32;
 	R4300i_Special[63] = r4300i_SPECIAL_DSRA32;
 	R4300i_Regimm[ 0] = r4300i_REGIMM_BLTZ;
 	R4300i_Regimm[ 1] = r4300i_REGIMM_BGEZ;
 	R4300i_Regimm[ 2] = r4300i_REGIMM_BLTZL;
 	R4300i_Regimm[ 3] = r4300i_REGIMM_BGEZL;
-	R4300i_Regimm[ 4] = DUMMY; // RESERVED
-	R4300i_Regimm[ 5] = DUMMY; // RESERVED
-	R4300i_Regimm[ 6] = DUMMY; // RESERVED
-	R4300i_Regimm[ 7] = DUMMY; // RESERVED
 	R4300i_Regimm[ 8] = DUMMY; // REGIMM_TGEI
 	R4300i_Regimm[ 9] = DUMMY; // REGIMM_TGEIU
 	R4300i_Regimm[10] = DUMMY; // REGIMM_TLTI
 	R4300i_Regimm[11] = DUMMY; // REGIMM_TLTIU
 	R4300i_Regimm[12] = DUMMY; // REGIMM_TEQI
-	R4300i_Regimm[13] = DUMMY; // RESERVED
 	R4300i_Regimm[14] = DUMMY; // REGIMM_TNEI
-	R4300i_Regimm[15] = DUMMY; // RESERVED
 	R4300i_Regimm[16] = r4300i_REGIMM_BLTZAL;
 	R4300i_Regimm[17] = r4300i_REGIMM_BGEZAL;
 	R4300i_Regimm[18] = DUMMY; // REGIMM_BLTZALL
 	R4300i_Regimm[19] = DUMMY; // REGIMM_BGEZALL
-	R4300i_Regimm[20] = DUMMY; // RESERVED
-	R4300i_Regimm[21] = DUMMY; // RESERVED
-	R4300i_Regimm[22] = DUMMY; // RESERVED
-	R4300i_Regimm[23] = DUMMY; // RESERVED
-	R4300i_Regimm[24] = DUMMY; // RESERVED
-	R4300i_Regimm[25] = DUMMY; // RESERVED
-	R4300i_Regimm[26] = DUMMY; // RESERVED
-	R4300i_Regimm[27] = DUMMY; // RESERVED
-	R4300i_Regimm[28] = DUMMY; // RESERVED
-	R4300i_Regimm[29] = DUMMY; // RESERVED
-	R4300i_Regimm[30] = DUMMY; // RESERVED
-	R4300i_Regimm[31] = DUMMY; // RESERVED
 	R4300i_CoP0[ 0] = r4300i_COP0_MF;
 	R4300i_CoP0[ 1] = DUMMY; // COP0_DMF
 	R4300i_CoP0[ 4] = r4300i_COP0_MT;
@@ -387,6 +358,14 @@ void BuildInterpreter (void ) {
 	R4300i_CoP1_L[33] = r4300i_COP1_L_CVT_D;
 	R4300i_CoP1_L[36] = DUMMY; // COP1_L_CVT_W
 	R4300i_CoP1_L[37] = DUMMY; // COP1_L_CVT_L
+	R4300i_CoP2[ 0] = DUMMY; // COP2_MF;
+	R4300i_CoP2[ 1] = DUMMY; // COP2_DMF;
+	R4300i_CoP2[ 2] = DUMMY; // COP2_CF;
+	R4300i_CoP2[ 3] = DUMMY; // COP2_DCF;
+	R4300i_CoP2[ 4] = DUMMY; // COP2_MT;
+	R4300i_CoP2[ 5] = DUMMY; // COP2_DMT;
+	R4300i_CoP2[ 6] = DUMMY; // COP2_CT;
+	R4300i_CoP2[ 7] = DUMMY; // COP2_DCT;
 }
 void ExecuteInterpreterOpCode (void) {
 	if (!r4300i_LW_VAddr(PROGRAM_COUNTER, &Opcode.Hex)) {

@@ -36,7 +36,7 @@ extern "C" {
 #include "Language.h"
 /********* General Defaults **********/
 #define AppName  "BruceIV's Project64 1.6.2"
-// Source Version: 14
+// Source Version: 15.1
 #define IniName				"Game.ini"
 #define CheatIniName			"Cheat.ini"
 #define LangFileName			"English.txt"

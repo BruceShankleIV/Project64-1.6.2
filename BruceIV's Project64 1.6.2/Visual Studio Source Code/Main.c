@@ -977,7 +977,8 @@ LRESULT CALLBACK Main_Proc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		if (CPURunning && strcmp(GfxDLL, "Icepir8sLegacyLLE.dll") == 0) SetWindowLong(hWnd, GWL_EXSTYLE, GetWindowLong(hWnd, GWL_EXSTYLE) | WS_EX_COMPOSITED);
 		break;
 		case ID_OPTIONS_CHEATS:
-			ManageCheats(NULL);
+			if (CPURunning) ManageCheats(NULL);
+			else if (strlen(RomName) != 0) ChangeRomCheats(hWnd);
 			break;
 		case ID_HELP_GUIDE:
 			{
@@ -1218,6 +1219,7 @@ void SetupMenu ( HWND hWnd ) {
 	hMainMenu = hMenu;
 	if (strlen(LastRoms[0]) == 0) EnableMenuItem(hMenu, ID_FILE_STARTEMULATION, MFS_DISABLED | MF_BYCOMMAND);
 	if (CPURunning && strcmp(GfxDLL, "Icepir8sLegacyLLE.dll") == 0) SetWindowLong(hMainWindow, GWL_EXSTYLE, GetWindowLong(hMainWindow, GWL_EXSTYLE) | WS_EX_COMPOSITED);
+	if (strlen(RomName) != 0) EnableMenuItem(hMenu, ID_OPTIONS_CHEATS, MFS_ENABLED | MF_BYCOMMAND);
 }
 void SetCurrentSaveState (HWND hWnd, int State) {
 	char String[256];
