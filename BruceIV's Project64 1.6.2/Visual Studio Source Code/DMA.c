@@ -82,8 +82,8 @@ void PI_DMA_READ (void) {
 		}
 		DWORD dram_address = PI_DRAM_ADDR_REG;
 		DWORD rom_address = (PI_CART_ADDR_REG - 0x10000000);
-		BYTE* dram = RDRAM;
-		BYTE* rom = ROM;
+		BYTE * dram = RDRAM;
+		BYTE * rom = ROM;
 		for (i = 0; i < length; ++i)
 			rom[(rom_address + i) ^ 3] = dram[(dram_address + i) ^ 3];
 		PI_STATUS_REG &= ~PI_STATUS_DMA_BUSY;
@@ -108,8 +108,8 @@ void PI_DMA_READ (void) {
 		}
 		DWORD dram_address = PI_DRAM_ADDR_REG;
 		DWORD rom_address = (PI_CART_ADDR_REG - 0x1ffe0000);
-		BYTE* dram = RDRAM;
-		BYTE* rom = SummerCart.buffer;
+		BYTE * dram = RDRAM;
+		BYTE * rom = SummerCart.buffer;
 		for (i = 0; i < length; ++i)
 			rom[(rom_address + i) ^ 3] = dram[(dram_address + i) ^ 3];
 		PI_STATUS_REG &= ~PI_STATUS_DMA_BUSY;
@@ -216,8 +216,8 @@ void PI_DMA_WRITE (void) {
 		}
 		DWORD dram_address = PI_DRAM_ADDR_REG;
 		DWORD rom_address = (PI_CART_ADDR_REG - 0x1ffe0000);
-		BYTE* dram = RDRAM;
-		BYTE* rom = SummerCart.buffer;
+		BYTE * dram = RDRAM;
+		BYTE * rom = SummerCart.buffer;
 		for (i = 0; i < length; ++i)
 			dram[(dram_address + i) ^ 3] = rom[(rom_address + i) ^ 3];
 		PI_STATUS_REG &= ~PI_STATUS_DMA_BUSY;

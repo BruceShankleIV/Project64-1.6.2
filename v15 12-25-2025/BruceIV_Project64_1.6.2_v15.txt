@@ -1,0 +1,14 @@
+Removed some non-essential code from the comments
+Added non-essential code
+Uncommented non-essential code in hopes that this will prevent issues in the future without causing any new one's
+^ This especially applies at GenerateX86Code - switch (Opcode.op) - case R4300i_SPECIAL: - switch (Opcode.funct)
+^ When an opcode is missing from this location, the app will incorrectly shutdown as if something is wrong when nothing is
+^ The same may apply for Recompiler CPU function CompileDelaySlot
+More documentation for Interpreter CPU function BuildInterpreter opcodes
+Recompiler CPU functions CompileDelaySlot and GenerateX86Code could benefit from Interpeter CPU opcode documentation and avoid crashing on these opcodes, need to add them in opcode header file
+^ Not done yet
+Fixed Glide64 Autofullscreen
+Register Caching for N64DD IPL
+^ Not tested yet
+Entry for Xeno Crisis (A PD ROM you can legally download to play if you want to try out this application and cannot obtain a retail ROM legally)
+Pray to god that the (StartAddress & 0xFFC) != 0 error doesn't happen now. If it does, try to find a way to reproduce it so it can be debugged because I think it's a regression, likely from reckless NULL'ing

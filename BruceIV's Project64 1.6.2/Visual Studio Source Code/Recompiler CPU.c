@@ -135,8 +135,7 @@ BYTE * Compiler4300iBlock(void) {
 	for (count = 0; count < BlockInfo.ExitCount; count ++) {
 		SetJump32(BlockInfo.ExitInfo[count]->JumpLoc,RecompPos);
 		NextInstruction = BlockInfo.ExitInfo[count]->NextInstruction;
-		CompileExit(BlockInfo.ExitInfo[count]->TargetPC,BlockInfo.ExitInfo[count]->ExitRegSet,
-			BlockInfo.ExitInfo[count]->reason,TRUE,NULL);
+		CompileExit(BlockInfo.ExitInfo[count]->TargetPC,BlockInfo.ExitInfo[count]->ExitRegSet,BlockInfo.ExitInfo[count]->reason,TRUE,NULL);
 	}
 	FreeSection (BlockInfo.BlockInfo.ContinueSection,&BlockInfo.BlockInfo);
 	FreeSection (BlockInfo.BlockInfo.JumpSection,&BlockInfo.BlockInfo);
@@ -154,7 +153,7 @@ BYTE * CompileDelaySlot (void) {
 	BYTE * Block = RecompPos;
 	int count, x86Reg;
 	Section = &DelaySection;
-	if ((StartAddress & 0xFFC) != 0) DisplayThreadExit("CompileDelaySlot - (StartAddress & 0xFFC) != 0"); // This error is recurring. We need to find out what is triggering this.
+	if ((StartAddress & 0xFFC) != 0) DisplayThreadExit("CompileDelaySlot - (StartAddress & 0xFFC) != 0");
 	if (!r4300i_LW_VAddr(StartAddress, &Opcode.Hex)) DisplayThreadExit("CompileDelaySlot - !r4300i_LW_VAddr(StartAddress, &Opcode.Hex)");
 	TranslateVaddr(&StartAddress);
 	MarkCodeBlock(StartAddress);
@@ -307,7 +306,8 @@ BYTE * CompileDelaySlot (void) {
 			case R4300i_COP1_FUNCT_MOV: Compile_R4300i_COP1_S_MOV(Section); break;
 			case R4300i_COP1_FUNCT_NEG: Compile_R4300i_COP1_S_NEG(Section); break;
 			case R4300i_COP1_FUNCT_ROUND_L: // Non-essential code
-			case R4300i_COP1_FUNCT_CVT_S: break; // Non-essential code
+			case R4300i_COP1_FUNCT_CVT_S: // Non-essential code
+			break; // Non-essential code
 			case R4300i_COP1_FUNCT_TRUNC_L: Compile_R4300i_COP1_S_TRUNC_L(Section); break; // Non-essential code
 			case R4300i_COP1_FUNCT_CEIL_L: Compile_R4300i_COP1_S_CEIL_L(Section); break;	//added by Witten // Non-essential code
 			case R4300i_COP1_FUNCT_FLOOR_L: Compile_R4300i_COP1_S_FLOOR_L(Section); break;	//added by Witten // Non-essential code
@@ -315,7 +315,7 @@ BYTE * CompileDelaySlot (void) {
 			case R4300i_COP1_FUNCT_TRUNC_W: Compile_R4300i_COP1_S_TRUNC_W(Section); break;
 			case R4300i_COP1_FUNCT_CEIL_W: Compile_R4300i_COP1_S_CEIL_W(Section); break;	//added by Witten // Non-essential code
 			case R4300i_COP1_FUNCT_FLOOR_W: Compile_R4300i_COP1_S_FLOOR_W(Section); break;
-			case R4300i_COP1_FUNCT_CVT_D: Compile_R4300i_COP1_S_CVT_D(Section); break; // Non-essential code
+			case R4300i_COP1_FUNCT_CVT_D: Compile_R4300i_COP1_S_CVT_D(Section); break;
 			case R4300i_COP1_FUNCT_CVT_W: Compile_R4300i_COP1_S_CVT_W(Section); break; // Non-essential code
 			case R4300i_COP1_FUNCT_CVT_L: Compile_R4300i_COP1_S_CVT_L(Section); break; // Non-essential code
 			case R4300i_COP1_FUNCT_C_F:   case R4300i_COP1_FUNCT_C_UN:
@@ -2446,7 +2446,7 @@ void MarkCodeBlock (DWORD PAddr) {
 }
 void StartRecompilerCPU (void ) {
 	DWORD Addr;
-	BYTE* Block = NULL;
+	BYTE * Block;
 	CoInitialize(NULL);
 	if (SelfModCheck == ModCode_CheckMemoryAdvance || SelfModCheck == ModCode_CheckSetMemoryAdvance) {
 		if (TargetInfo == NULL) {

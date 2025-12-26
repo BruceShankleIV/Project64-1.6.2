@@ -2427,7 +2427,7 @@ void Compile_R4300i_SPECIAL_JR (BLOCK_SECTION * Section) {
 		if (DelaySlotEffectsCompare(Section->CompilePC,Opcode.rs,0)) {
 			if (IsConst(Opcode.rs)) {
 				MoveConstToVariable(MipsRegLo(Opcode.rs),&PROGRAM_COUNTER);
-			} else 	if (IsMapped(Opcode.rs)) {
+			} else	if (IsMapped(Opcode.rs)) {
 				MoveX86regToVariable(MipsRegLo(Opcode.rs),&PROGRAM_COUNTER);
 			} else {
 				MoveX86regToVariable(Map_TempReg(Section,x86_Any,Opcode.rs,FALSE),&PROGRAM_COUNTER);
