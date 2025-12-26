@@ -95,7 +95,7 @@ void BuildInterpreter (void ) {
 		R4300i_CoP1_D[i]	= DTE_DUMMY;
 		R4300i_CoP1_W[i]	= DTE_DUMMY;
 		R4300i_CoP1_L[i]	= DTE_DUMMY;
-		R4300i_CoP2[i]		= DTE_DUMMY; // Non-essential code
+		R4300i_CoP2[i]		= DTE_DUMMY;
 	}
 	R4300i_Opcode[ 0] = r4300i_SPECIAL;
 	R4300i_Opcode[ 1] = r4300i_REGIMM;
@@ -358,14 +358,14 @@ void BuildInterpreter (void ) {
 	R4300i_CoP1_L[33] = r4300i_COP1_L_CVT_D;
 	R4300i_CoP1_L[36] = DUMMY; // COP1_L_CVT_W
 	R4300i_CoP1_L[37] = DUMMY; // COP1_L_CVT_L
-	R4300i_CoP2[ 0] = DUMMY; // COP2_MF;
-	R4300i_CoP2[ 1] = DUMMY; // COP2_DMF;
-	R4300i_CoP2[ 2] = DUMMY; // COP2_CF;
-	R4300i_CoP2[ 3] = DUMMY; // COP2_DCF;
-	R4300i_CoP2[ 4] = DUMMY; // COP2_MT;
-	R4300i_CoP2[ 5] = DUMMY; // COP2_DMT;
-	R4300i_CoP2[ 6] = DUMMY; // COP2_CT;
-	R4300i_CoP2[ 7] = DUMMY; // COP2_DCT;
+	R4300i_CoP2[ 0] = DUMMY; // COP2_MF
+	R4300i_CoP2[ 1] = DUMMY; // COP2_DMF
+	R4300i_CoP2[ 2] = DUMMY; // COP2_CF
+	R4300i_CoP2[ 3] = DUMMY; // COP2_DCF
+	R4300i_CoP2[ 4] = DUMMY; // COP2_MT
+	R4300i_CoP2[ 5] = DUMMY; // COP2_DMT
+	R4300i_CoP2[ 6] = DUMMY; // COP2_CT
+	R4300i_CoP2[ 7] = DUMMY; // COP2_DCT
 }
 void ExecuteInterpreterOpCode (void) {
 	if (!r4300i_LW_VAddr(PROGRAM_COUNTER, &Opcode.Hex)) {
