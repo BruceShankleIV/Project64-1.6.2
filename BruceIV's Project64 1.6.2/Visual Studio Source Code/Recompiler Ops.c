@@ -1947,33 +1947,26 @@ void _fastcall ClearRecompilerCache (DWORD Address) {
 	}
 }
 void Compile_R4300i_CACHE (BLOCK_SECTION * Section) {
+	#define Lea LeaSourceAndOffset(x86_ECX,MipsRegLo(Opcode.base),(short)Opcode.offset);
 	if (SelfModCheck == ModCode_ProtectMemory) return;
-	switch(Opcode.rt) {
+	switch (Opcode.rt) {
 	case 0:
 	case 16:
 		Pushad();
-		if (IsConst(Opcode.base)) {
-			DWORD Address = MipsRegLo(Opcode.base) + (short)Opcode.offset;
-			MoveConstToX86reg(Address, x86_ECX);
-		} else if (IsMapped(Opcode.base) || SelfModCheck == ModCode_CheckSetMemoryAdvance) {
-			if (MipsRegLo(Opcode.base) == x86_ECX) AddConstToX86Reg(x86_ECX, (short)Opcode.offset);
-			else LeaSourceAndOffset(x86_ECX, MipsRegLo(Opcode.base), (short)Opcode.offset);
-		} else {
-			MoveVariableToX86reg(&GPR[Opcode.base].UW[0], x86_ECX);
-			AddConstToX86Reg(x86_ECX, (short)Opcode.offset);
-		}
+		if (SelfModCheck != ModCode_CheckSetMemoryAdvance) {
+			if (IsConst(Opcode.base)) {
+				DWORD Address = MipsRegLo(Opcode.base) + (short)Opcode.offset;
+				MoveConstToX86reg(Address,x86_ECX);
+			} else if (IsMapped(Opcode.base)) {
+				if (MipsRegLo(Opcode.base) == x86_ECX) AddConstToX86Reg(x86_ECX,(short)Opcode.offset);
+				else Lea
+			} else {
+				MoveVariableToX86reg(&GPR[Opcode.base].UW[0],x86_ECX);
+				AddConstToX86Reg(x86_ECX,(short)Opcode.offset);
+			}
+		} else Lea
 		Call_Direct(ClearRecompilerCache);
 		Popad();
-		break;
-	case 1:
-	case 3:
-	case 13:
-	case 5:
-	case 8:
-	case 9:
-	case 17:
-	case 21:
-	case 25:
 		break;
 	}
 }

@@ -152,7 +152,7 @@ BYTE * CompileDelaySlot (void) {
 	BYTE * Block = RecompPos;
 	int count, x86Reg;
 	Section = &DelaySection;
-	if ((StartAddress & 0xFFC) != 0) DisplayThreadExit("CompileDelaySlot - (StartAddress & 0xFFC) != 0");
+	if ((StartAddress & 0xFFC) != 0) DisplayThreadExit("CompileDelaySlot - (StartAddress & 0xFFC) != 0"); // This error is happening
 	if (!r4300i_LW_VAddr(StartAddress, &Opcode.Hex)) DisplayThreadExit("CompileDelaySlot - !r4300i_LW_VAddr(StartAddress, &Opcode.Hex)");
 	TranslateVaddr(&StartAddress);
 	MarkCodeBlock(StartAddress);
@@ -2580,12 +2580,11 @@ void StartRecompilerCPU (void ) {
 				__try {
 					Block = Compiler4300iBlock();
 				} __except(EXCEPTION_EXECUTE_HANDLER) {
-					//DisplayError("Reset Recompiler Code %X",RecompPos - RecompCode);
 					ResetRecompCode();
 					Block = Compiler4300iBlock();
 				}
 				if (SelfModCheck == ModCode_CheckMemoryAdvance || SelfModCheck == ModCode_CheckSetMemoryAdvance) {
-					TargetInfo[TargetIndex].CodeBlock  = Block;
+					TargetInfo[TargetIndex].CodeBlock = Block;
 					TargetInfo[TargetIndex].OriginalMemory = *(QWORD *)(N64MEM+Addr);
 					*(JumpTable + (Addr >> 2)) = &TargetInfo[TargetIndex];
 					TargetIndex += 1;
