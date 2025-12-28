@@ -688,7 +688,7 @@ LRESULT CALLBACK CheatAddProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 						break;
 					}
 					if (strcmp(CheatName,NewCheatName) == 0) {
-						DisplayError,"Cheat name is currently in use";
+						DisplayError("Cheat name is currently in use");
 						SetFocus(GetDlgItem(hDlg,IDC_CODE_NAME));
 						return TRUE;
 					}
