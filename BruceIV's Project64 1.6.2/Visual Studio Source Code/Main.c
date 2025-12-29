@@ -974,7 +974,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 		break;
 		case ID_OPTIONS_CHEATS:
 			if (CPURunning) ManageCheats(NULL);
-			else if (strlen(RomName) != 0) ChangeRomCheats(hWnd);
+			else ChangeRomCheats(hWnd);
 			break;
 		case ID_HELP_GUIDE:
 			{
