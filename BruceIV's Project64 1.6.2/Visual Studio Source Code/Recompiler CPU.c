@@ -1779,7 +1779,7 @@ BOOL GenerateX86Code (BLOCK_SECTION * Section, DWORD Test) {
 	NextInstruction = NORMAL;
 	do {
 		__try {
-			if (BlockCycleCount > 1 && CountPerOp == 1 && CF1CF0) BlockCycleCount = 1;
+			if (BlockCycleCount > 1 && CF1CF0) BlockCycleCount = 1;
 			if (!r4300i_LW_VAddr(Section->CompilePC, &Opcode.Hex)) DisplayThreadExit("GenerateX86Code - !r4300i_LW_VAddr(Section->CompilePC, &Opcode.Hex)");
 		} __except( r4300i_CPU_MemoryFilter( GetExceptionCode(), GetExceptionInformation()) ) {
 			DisplayThreadExit("GenerateX86Code - r4300i_CPU_MemoryFilter( GetExceptionCode(), GetExceptionInformation()");
