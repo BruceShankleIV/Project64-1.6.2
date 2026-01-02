@@ -11,7 +11,7 @@
  * providing that this license information and copyright notice appear with
  * all copies and any derived work.
  *
- * This software is provided 'as-is', without any express or implied
+ * This software is provided 'as-is',without any express or implied
  * warranty. In no event shall the authors be held liable for any damages
  * arising from the use of this software.
  *
@@ -29,7 +29,7 @@
 void SetupTLB_Entry (int Entry);
 FASTTLB FastTlb[64];
 TLB tlb[32];
-BOOL AddressDefined ( DWORD VAddr) {
+BOOL AddressDefined (DWORD VAddr) {
 	DWORD i;
 	if (VAddr >= 0x80000000 && VAddr <= 0xBFFFFFFF) return TRUE;
 	for (i = 0; i < 64; i++) {
@@ -73,7 +73,7 @@ void SetupTLB_Entry (int Entry) {
 	FastTlb[FastIndx].DIRTY = tlb[Entry].EntryLo1.D;
 	FastTlb[FastIndx].GLOBAL = tlb[Entry].EntryLo0.GLOBAL & tlb[Entry].EntryLo1.GLOBAL;
 	FastTlb[FastIndx].ValidEntry = FALSE;
-	for ( FastIndx = Entry << 1; FastIndx <= (Entry << 1) + 1; FastIndx++) {
+	for (FastIndx = Entry << 1; FastIndx <= (Entry << 1) + 1; FastIndx++) {
 		DWORD count;
 		DWORD physend = FastTlb[FastIndx].PHYSSTART + (tlb[Entry].PageMask.Mask << 12) + 0xFFF;
 		if (!FastTlb[FastIndx].VALID) {
@@ -121,7 +121,7 @@ void TLB_Read (void) {
 	ENTRYLO0_REGISTER = tlb[index].EntryLo0.Value;
 	ENTRYLO1_REGISTER = tlb[index].EntryLo1.Value;
 }
-BOOL TranslateVaddr ( DWORD * Addr) {
+BOOL TranslateVaddr (DWORD * Addr) {
 	if (TLB_ReadMap[*Addr >> 12] == 0) return FALSE;
 	*Addr = (DWORD)((BYTE *)(TLB_ReadMap[*Addr >> 12] + *Addr) - N64MEM);
 	return TRUE;
@@ -132,7 +132,7 @@ void _fastcall WriteTLBEntry (int index) {
 	if ((PROGRAM_COUNTER >= FastTlb[FastIndx].VSTART && PROGRAM_COUNTER < FastTlb[FastIndx].VEND && FastTlb[FastIndx].ValidEntry && FastTlb[FastIndx].VALID) || (PROGRAM_COUNTER >= FastTlb[FastIndx + 1].VSTART && PROGRAM_COUNTER < FastTlb[FastIndx + 1].VEND && FastTlb[FastIndx + 1].ValidEntry && FastTlb[FastIndx + 1].VALID)) return;
 	if (tlb[index].EntryDefined) {
 		DWORD count;
-		for ( FastIndx = index << 1; FastIndx <= (index << 1) + 1; FastIndx++) {
+		for (FastIndx = index << 1; FastIndx <= (index << 1) + 1; FastIndx++) {
 			if (!FastTlb[FastIndx].ValidEntry) continue;
 			if (!FastTlb[FastIndx].VALID) continue;
 			for (count = FastTlb[FastIndx].VSTART; count < FastTlb[FastIndx].VEND; count += 0x1000) {

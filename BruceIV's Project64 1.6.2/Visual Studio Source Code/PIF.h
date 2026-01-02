@@ -11,7 +11,7 @@
  * providing that this license information and copyright notice appear with
  * all copies and any derived work.
  *
- * This software is provided 'as-is', without any express or implied
+ * This software is provided 'as-is',without any express or implied
  * warranty. In no event shall the authors be held liable for any damages
  * arising from the use of this software.
  *
@@ -23,8 +23,8 @@
  * should be forwarded to them so if they want them.
  *
  */
-extern BYTE PifRom[0x7C0], *PIF_Ram;
-int  GetCicChipID ( char * RomData );
-int  LoadPifRom   ( int country );
-void PifRamWrite  ( void );
-void PifRamRead   ( void );
+extern BYTE PifRom[0x7C0],*PIF_Ram;
+int  GetCicChipID (char * RomData);
+int  LoadPifRom   (int country);
+void PifRamWrite  (void);
+void PifRamRead   (void);

@@ -11,7 +11,7 @@
  * providing that this license information and copyright notice appear with
  * all copies and any derived work.
  *
- * This software is provided 'as-is', without any express or implied
+ * This software is provided 'as-is',without any express or implied
  * warranty. In no event shall the authors be held liable for any damages
  * arising from the use of this software.
  *
@@ -80,10 +80,10 @@ typedef struct {
 } FASTTLB;
 extern FASTTLB FastTlb[64];
 extern TLB tlb[32];
-BOOL AddressDefined ( DWORD VAddr);
-void InitializeTLB   ( void );
-void SetupTLB       ( void );
-void TLB_Probe      ( void );
-void TLB_Read       ( void );
-BOOL TranslateVaddr ( DWORD * Addr);
-void _fastcall WriteTLBEntry  ( int index );
+BOOL AddressDefined (DWORD VAddr);
+void InitializeTLB   (void);
+void SetupTLB       (void);
+void TLB_Probe      (void);
+void TLB_Read       (void);
+BOOL TranslateVaddr (DWORD * Addr);
+void _fastcall WriteTLBEntry  (int index);

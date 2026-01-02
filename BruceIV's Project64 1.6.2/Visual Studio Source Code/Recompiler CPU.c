@@ -11,7 +11,7 @@
  * providing that this license information and copyright notice appear with
  * all copies and any derived work.
  *
- * This software is provided 'as-is', without any express or implied
+ * This software is provided 'as-is',without any express or implied
  * warranty. In no event shall the authors be held liable for any damages
  * arising from the use of this software.
  *
@@ -30,31 +30,32 @@
 #include "CPU.h"
 #include "x86.h"
 #include "Plugin.h"
+#define SectionCPC4 Section->CompilePC -= 4;
 void _fastcall CreateSectionLinkage (BLOCK_SECTION * Section);
-void _fastcall DetermineLoop(BLOCK_SECTION * Section, DWORD Test, DWORD Test2, DWORD TestID);
-BOOL DisplaySectionInformation (BLOCK_SECTION * Section, DWORD ID, DWORD Test);
-BLOCK_SECTION * ExistingSection(BLOCK_SECTION * StartSection, DWORD Addr, DWORD Test);
+void _fastcall DetermineLoop(BLOCK_SECTION * Section,DWORD Test,DWORD Test2,DWORD TestID);
+BOOL DisplaySectionInformation (BLOCK_SECTION * Section,DWORD ID,DWORD Test);
+BLOCK_SECTION * ExistingSection(BLOCK_SECTION * StartSection,DWORD Addr,DWORD Test);
 void _fastcall FillSectionInfo(BLOCK_SECTION * Section);
-void _fastcall FixConstants ( BLOCK_SECTION * Section, DWORD Test,int * Changed );
-BOOL GenerateX86Code (BLOCK_SECTION * Section, DWORD Test );
-DWORD GetNewTestValue( void );
+void _fastcall FixConstants (BLOCK_SECTION * Section,DWORD Test,int * Changed);
+BOOL GenerateX86Code (BLOCK_SECTION * Section,DWORD Test);
+DWORD GetNewTestValue(void);
 void _fastcall InheritConstants(BLOCK_SECTION * Section);
 BOOL InheritParentInfo (BLOCK_SECTION * Section);
-void _fastcall InitializeSection(BLOCK_SECTION * Section, BLOCK_SECTION * Parent, DWORD StartAddr, DWORD ID);
+void _fastcall InitializeSection(BLOCK_SECTION * Section,BLOCK_SECTION * Parent,DWORD StartAddr,DWORD ID);
 void InitializeRegSet(REG_INFO * RegSet);
-BOOL IsAllParentLoops(BLOCK_SECTION * Section, BLOCK_SECTION * Parent, BOOL IgnoreIfCompiled, DWORD Test);
+BOOL IsAllParentLoops(BLOCK_SECTION * Section,BLOCK_SECTION * Parent,BOOL IgnoreIfCompiled,DWORD Test);
 void MarkCodeBlock (DWORD PAddr);
-void SyncRegState (BLOCK_SECTION * Section, REG_INFO * SyncTo);
-DWORD TLBLoadAddress, TargetIndex;
+void SyncRegState (BLOCK_SECTION * Section,REG_INFO * SyncTo);
+DWORD TLBLoadAddress,TargetIndex;
 TARGET_INFO * TargetInfo = NULL;
 BLOCK_INFO BlockInfo;
 ORIGINAL_MEMMARKER * OrigMem = NULL;
-void InitializeInitialCompilerVariable ( void)
+void InitializeInitialCompilerVariable (void)
 {
 	memset(&BlockInfo,0,sizeof(BlockInfo));
 }
-void _fastcall AddParent(BLOCK_SECTION * Section, BLOCK_SECTION * Parent) {
-	int NoOfParents, count;
+void _fastcall AddParent(BLOCK_SECTION * Section,BLOCK_SECTION * Parent) {
+	int NoOfParents,count;
 	if (Section == NULL) return;
 	if (Parent == NULL) {
 		InitializeRegSet(&Section->RegStart);
@@ -106,7 +107,7 @@ void _fastcall AddParent(BLOCK_SECTION * Section, BLOCK_SECTION * Parent) {
 void AnalyzeBlock (void) {
 	BLOCK_SECTION * Section = &BlockInfo.BlockInfo;
 	BlockInfo.NoOfSections = 1;
-	InitializeSection (Section, NULL, BlockInfo.StartVAddr, BlockInfo.NoOfSections);
+	InitializeSection (Section,NULL,BlockInfo.StartVAddr,BlockInfo.NoOfSections);
 }
 int ConstantsType (__int64 Value) {
 	if (((Value >> 32) == -1) && ((Value & 0x80000000) != 0) || ((Value >> 32) == 0) && ((Value & 0x80000000) == 0)) { return STATE_CONST_32; }
@@ -130,7 +131,7 @@ BYTE * Compiler4300iBlock(void) {
 	StartAddress = BlockInfo.StartVAddr;
 	TranslateVaddr(&StartAddress);
 	MarkCodeBlock(StartAddress);
-	GenerateX86Code(&BlockInfo.BlockInfo, GetNewTestValue());
+	GenerateX86Code(&BlockInfo.BlockInfo,GetNewTestValue());
 	for (count = 0; count < BlockInfo.ExitCount; count ++) {
 		SetJump32(BlockInfo.ExitInfo[count]->JumpLoc,RecompPos);
 		NextInstruction = BlockInfo.ExitInfo[count]->NextInstruction;
@@ -148,14 +149,14 @@ BYTE * Compiler4300iBlock(void) {
 }
 BYTE * CompileDelaySlot (void) {
 	DWORD StartAddress = PROGRAM_COUNTER;
-	BLOCK_SECTION *Section, DelaySection;
+	BLOCK_SECTION * Section,DelaySection;
 	BYTE * Block = RecompPos;
-	int count, x86Reg;
+	int count,x86Reg;
 	Section = &DelaySection;
-	if (!r4300i_LW_VAddr(StartAddress, &Opcode.Hex)) DisplayThreadExit("CompileDelaySlot - !r4300i_LW_VAddr(StartAddress, &Opcode.Hex)");
+	if (!r4300i_LW_VAddr(StartAddress,&Opcode.Hex)) DisplayThreadExit("CompileDelaySlot - !r4300i_LW_VAddr(StartAddress,&Opcode.Hex)");
 	TranslateVaddr(&StartAddress);
 	MarkCodeBlock(StartAddress);
-	InitializeSection (Section, NULL, PROGRAM_COUNTER, 0);
+	InitializeSection (Section,NULL,PROGRAM_COUNTER,0);
 	InitializeRegSet(&Section->RegStart);
 	memcpy(&Section->RegWorking,&Section->RegStart,sizeof(REG_INFO));
 	BlockCycleCount += CountPerOp;
@@ -163,8 +164,16 @@ BYTE * CompileDelaySlot (void) {
 	switch (Opcode.op) {
 	case R4300i_SPECIAL:
 		switch (Opcode.funct) {
-		case R4300i_SPECIAL_SYSCALL: Compile_R4300i_SPECIAL_SYSCALL(Section);
+		case R4300i_SPECIAL_SYSCALL: Compile_R4300i_SPECIAL_SYSCALL(Section); break;
 		case R4300i_SPECIAL_BREAK:
+		{
+			static BOOL Shown = FALSE;
+			if (Shown) break;
+			HandleModal1(hMainWindow);
+			if (MessageBox(NULL,GS(SPECIAL_BREAK),GS(MSG_ERROR_TITLE),MB_YESNO | MB_ICONERROR | MB_SETFOREGROUND) == IDNO) Shown = TRUE;
+			HandleModal2(hMainWindow);
+			if (Shown) break;
+		}
 		case R4300i_SPECIAL_SYNC:
 		case R4300i_SPECIAL_TGE:
 		case R4300i_SPECIAL_TGEU:
@@ -216,16 +225,15 @@ BYTE * CompileDelaySlot (void) {
 		case R4300i_SPECIAL_DSRL32: Compile_R4300i_SPECIAL_DSRL32(Section); break;
 		case R4300i_SPECIAL_DSRA32: Compile_R4300i_SPECIAL_DSRA32(Section); break;
 		default:
-			DisplayThreadExit("CompileDelaySlot - switch (Opcode.op) - case R4300i_SPECIAL: - switch (Opcode.funct) - default:");
-			break;
+			DisplayThreadExit("CompileDelaySlot - switch (Opcode.op) - case R4300i_SPECIAL: - switch (Opcode.funct) - default:\n\nThe emulator has crashed on a reserved Opcode at this location");
 		}
 	break;
 	case R4300i_REGIMM:
 		switch (Opcode.rt) {
-		case R4300i_REGIMM_BLTZ: Compile_R4300i_Branch(Section, BLTZ_Compare, BranchTypeRs, FALSE); break;
-		case R4300i_REGIMM_BGEZ: Compile_R4300i_Branch(Section, BGEZ_Compare, BranchTypeRs, FALSE); break;
-		case R4300i_REGIMM_BLTZL: Compile_R4300i_BranchLikely(Section, BLTZ_Compare, FALSE); break;
-		case R4300i_REGIMM_BGEZL: Compile_R4300i_BranchLikely(Section, BGEZ_Compare, FALSE);
+		case R4300i_REGIMM_BLTZ: Compile_R4300i_Branch(Section,BLTZ_Compare,BranchTypeRs,FALSE); break;
+		case R4300i_REGIMM_BGEZ: Compile_R4300i_Branch(Section,BGEZ_Compare,BranchTypeRs,FALSE); break;
+		case R4300i_REGIMM_BLTZL: Compile_R4300i_BranchLikely(Section,BLTZ_Compare,FALSE); break;
+		case R4300i_REGIMM_BGEZL: Compile_R4300i_BranchLikely(Section,BGEZ_Compare,FALSE);
 		case R4300i_REGIMM_TGEI:
 		case R4300i_REGIMM_TGEIU:
 		case R4300i_REGIMM_TLTI:
@@ -234,19 +242,18 @@ BYTE * CompileDelaySlot (void) {
 		case R4300i_REGIMM_TNEI:
 		case R4300i_REGIMM_BLTZALL:
 		case R4300i_REGIMM_BGEZALL: break;
-		case R4300i_REGIMM_BLTZAL: Compile_R4300i_Branch(Section, BLTZ_Compare, BranchTypeRs, TRUE); break;
-		case R4300i_REGIMM_BGEZAL: Compile_R4300i_Branch(Section, BGEZ_Compare, BranchTypeRs, TRUE); break;
+		case R4300i_REGIMM_BLTZAL: Compile_R4300i_Branch(Section,BLTZ_Compare,BranchTypeRs,TRUE); break;
+		case R4300i_REGIMM_BGEZAL: Compile_R4300i_Branch(Section,BGEZ_Compare,BranchTypeRs,TRUE); break;
 		default:
-			DisplayThreadExit("CompileDelaySlot - switch (Opcode.op) - case R4300i_REGIMM: - switch (Opcode.rt) - default:");
-			break;
+			DisplayThreadExit("CompileDelaySlot - switch (Opcode.op) - case R4300i_REGIMM: - switch (Opcode.rt) - default:\n\nThe emulator has crashed on a reserved Opcode at this location");
 		}
 	break;
 	case R4300i_J: Compile_R4300i_J(Section); break;
 	case R4300i_JAL: Compile_R4300i_JAL(Section); break;
-	case R4300i_BEQ: Compile_R4300i_Branch(Section, BEQ_Compare, BranchTypeRsRt, FALSE); break;
-	case R4300i_BNE: Compile_R4300i_Branch(Section, BNE_Compare, BranchTypeRsRt, FALSE); break;
-	case R4300i_BLEZ: Compile_R4300i_Branch(Section, BLEZ_Compare, BranchTypeRs, FALSE); break;
-	case R4300i_BGTZ: Compile_R4300i_Branch(Section, BGTZ_Compare, BranchTypeRs, FALSE); break;
+	case R4300i_BEQ: Compile_R4300i_Branch(Section,BEQ_Compare,BranchTypeRsRt,FALSE); break;
+	case R4300i_BNE: Compile_R4300i_Branch(Section,BNE_Compare,BranchTypeRsRt,FALSE); break;
+	case R4300i_BLEZ: Compile_R4300i_Branch(Section,BLEZ_Compare,BranchTypeRs,FALSE); break;
+	case R4300i_BGTZ: Compile_R4300i_Branch(Section,BGTZ_Compare,BranchTypeRs,FALSE); break;
 	case R4300i_ADDI: Compile_R4300i_ADDI(Section); break;
 	case R4300i_ADDIU: Compile_R4300i_ADDIU(Section); break;
 	case R4300i_SLTI: Compile_R4300i_SLTI(Section); break;
@@ -271,10 +278,9 @@ BYTE * CompileDelaySlot (void) {
 				case R4300i_COP0_CO_TLBP: Compile_R4300i_COP0_CO_TLBP(Section); break;
 				case R4300i_COP0_CO_ERET: Compile_R4300i_COP0_CO_ERET(Section); break;
 				default:
-					DisplayThreadExit("CompileDelaySlot - switch (Opcode.op) - case R4300i_CP0: - switch (Opcode.rs) - default: - (Opcode.rs & 0x10 ) != 0 ) - switch (Opcode.funct) - default:");
-					break;
+					DisplayThreadExit("CompileDelaySlot - switch (Opcode.op) - case R4300i_CP0: - switch (Opcode.rs) - default: - (Opcode.rs & 0x10) != 0) - switch (Opcode.funct) - default:\n\nThe emulator has crashed on an unknown Opcode at this location");
 				}
-			} else DisplayThreadExit("CompileDelaySlot - switch (Opcode.op) - case R4300i_CP0: - switch (Opcode.rs) - default: - (Opcode.rs & 0x10 ) != 0 ) - else");
+			} else DisplayThreadExit("CompileDelaySlot - switch (Opcode.op) - case R4300i_CP0: - switch (Opcode.rs) - default: - (Opcode.rs & 0x10) != 0) - else\n\nThe emulator has crashed on an unknown Opcode at this location");
 		}
 	break;
 	case R4300i_CP1:
@@ -290,13 +296,12 @@ BYTE * CompileDelaySlot (void) {
 		break;
 		case R4300i_COP1_BC:
 			switch (Opcode.ft) {
-			case R4300i_COP1_BC_BCF: Compile_R4300i_Branch(Section, COP1_BCF_Compare, BranchTypeCop1, FALSE); break;
-			case R4300i_COP1_BC_BCT: Compile_R4300i_Branch(Section, COP1_BCT_Compare, BranchTypeCop1, FALSE); break;
-			case R4300i_COP1_BC_BCFL: Compile_R4300i_BranchLikely(Section, COP1_BCF_Compare, FALSE); break;
-			case R4300i_COP1_BC_BCTL: Compile_R4300i_BranchLikely(Section, COP1_BCT_Compare, FALSE); break;
+			case R4300i_COP1_BC_BCF: Compile_R4300i_Branch(Section,COP1_BCF_Compare,BranchTypeCop1,FALSE); break;
+			case R4300i_COP1_BC_BCT: Compile_R4300i_Branch(Section,COP1_BCT_Compare,BranchTypeCop1,FALSE); break;
+			case R4300i_COP1_BC_BCFL: Compile_R4300i_BranchLikely(Section,COP1_BCF_Compare,FALSE); break;
+			case R4300i_COP1_BC_BCTL: Compile_R4300i_BranchLikely(Section,COP1_BCT_Compare,FALSE); break;
 			default:
-				DisplayThreadExit("CompileDelaySlot - switch (Opcode.op) - case R4300i_CP1: - switch (Opcode.rs) - case R4300i_COP1_BC: - switch (Opcode.ft) - default:");
-				break;
+				DisplayThreadExit("CompileDelaySlot - switch (Opcode.op) - case R4300i_CP1: - switch (Opcode.rs) - case R4300i_COP1_BC: - switch (Opcode.ft) - default:\n\nThe emulator has crashed on an unknown Opcode at this location");
 			}
 		break;
 		case R4300i_COP1_S:
@@ -332,8 +337,7 @@ BYTE * CompileDelaySlot (void) {
 			case R4300i_COP1_FUNCT_CVT_S:
 			break;
 			default:
-				DisplayThreadExit("CompileDelaySlot - switch (Opcode.op) - case R4300i_CP1: - switch (Opcode.rs) - case R4300i_COP1_S: - switch (Opcode.funct) - default:");
-				break;
+				DisplayThreadExit("CompileDelaySlot - switch (Opcode.op) - case R4300i_CP1: - switch (Opcode.rs) - case R4300i_COP1_S: - switch (Opcode.funct) - default:\n\nThe emulator has crashed on an unknown Opcode at this location");
 			}
 		break;
 		case R4300i_COP1_D:
@@ -369,8 +373,7 @@ BYTE * CompileDelaySlot (void) {
 			case R4300i_COP1_FUNCT_CVT_D:
 			break;
 			default:
-				DisplayThreadExit("CompileDelaySlot - switch (Opcode.op) - case R4300i_CP1: - switch (Opcode.rs) - case R4300i_COP1_D: - switch (Opcode.funct) - default:");
-				break;
+				DisplayThreadExit("CompileDelaySlot - switch (Opcode.op) - case R4300i_CP1: - switch (Opcode.rs) - case R4300i_COP1_D: - switch (Opcode.funct) - default:\n\nThe emulator has crashed on an unknown Opcode at this location");
 			}
 		break;
 		case R4300i_COP1_W:
@@ -378,8 +381,7 @@ BYTE * CompileDelaySlot (void) {
 			case R4300i_COP1_FUNCT_CVT_S: Compile_R4300i_COP1_W_CVT_S(Section); break;
 			case R4300i_COP1_FUNCT_CVT_D: Compile_R4300i_COP1_W_CVT_D(Section); break;
 			default:
-				DisplayThreadExit("CompileDelaySlot - switch (Opcode.op) - case R4300i_CP1: - switch (Opcode.rs) - case R4300i_COP1_W: - switch (Opcode.funct) - default:");
-				break;
+				DisplayThreadExit("CompileDelaySlot - switch (Opcode.op) - case R4300i_CP1: - switch (Opcode.rs) - case R4300i_COP1_W: - switch (Opcode.funct) - default:\n\nThe emulator has crashed on an unknown Opcode at this location");
 			}
 		break;
 		case R4300i_COP1_L:
@@ -387,13 +389,11 @@ BYTE * CompileDelaySlot (void) {
 			case R4300i_COP1_FUNCT_CVT_S: Compile_R4300i_COP1_L_CVT_S(Section); break;
 			case R4300i_COP1_FUNCT_CVT_D: Compile_R4300i_COP1_L_CVT_D(Section); break;
 			default:
-				DisplayThreadExit("CompileDelaySlot - switch (Opcode.op) - case R4300i_CP1: - switch (Opcode.rs) - case R4300i_COP1_L: - switch (Opcode.funct) - default:");
-				break;
+				DisplayThreadExit("CompileDelaySlot - switch (Opcode.op) - case R4300i_CP1: - switch (Opcode.rs) - case R4300i_COP1_L: - switch (Opcode.funct) - default:\n\nThe emulator has crashed on an unknown Opcode at this location");
 			}
 		break;
 		default:
-			DisplayThreadExit("CompileDelaySlot - switch (Opcode.op) - case R4300i_CP1: - default:");
-			break;
+			DisplayThreadExit("CompileDelaySlot - switch (Opcode.op) - case R4300i_CP1: - default:\n\nThe emulator has crashed on an unknown Opcode at this location");
 		}
 	break;
 	case R4300i_CP2:
@@ -408,14 +408,13 @@ BYTE * CompileDelaySlot (void) {
 		case R4300i_COP2_DCT:
 		break;
 		default:
-			DisplayThreadExit("CompileDelaySlot - switch (Opcode.op) - case R4300i_CP2: - default:");
-			break;
+			DisplayThreadExit("CompileDelaySlot - switch (Opcode.op) - case R4300i_CP2: - default:\n\nThe emulator has crashed on an unknown Opcode at this location");
 		}
 	break;
-	case R4300i_BEQL: Compile_R4300i_BranchLikely(Section, BEQ_Compare, FALSE); break;
-	case R4300i_BNEL: Compile_R4300i_BranchLikely(Section, BNE_Compare, FALSE); break;
-	case R4300i_BLEZL: Compile_R4300i_BranchLikely(Section, BLEZ_Compare, FALSE); break;
-	case R4300i_BGTZL: Compile_R4300i_BranchLikely(Section, BGTZ_Compare, FALSE); break;
+	case R4300i_BEQL: Compile_R4300i_BranchLikely(Section,BEQ_Compare,FALSE); break;
+	case R4300i_BNEL: Compile_R4300i_BranchLikely(Section,BNE_Compare,FALSE); break;
+	case R4300i_BLEZL: Compile_R4300i_BranchLikely(Section,BLEZ_Compare,FALSE); break;
+	case R4300i_BGTZL: Compile_R4300i_BranchLikely(Section,BGTZ_Compare,FALSE); break;
 	case R4300i_DADDI:
 	case R4300i_DADDIU: Compile_R4300i_DADDIU(Section); break;
 	case R4300i_LDL: Compile_R4300i_LDL(Section); break;
@@ -453,7 +452,7 @@ BYTE * CompileDelaySlot (void) {
 	case R4300i_SDC1: Compile_R4300i_SDC1(Section); break;
 	case R4300i_SD: Compile_R4300i_SD(Section); break;
 	default:
-		DisplayThreadExit("CompileDelaySlot - switch (Opcode.op) - default:");
+		DisplayThreadExit("CompileDelaySlot - switch (Opcode.op) - default:\n\nThe emulator has crashed on a reserved Opcode at this location");
 		break;
 	}
 	for (count = 1; count < 10; count ++) { x86Protected(count) = FALSE; }
@@ -470,7 +469,7 @@ BYTE * CompileDelaySlot (void) {
 	Ret();
 	return Block;
 }
-void CompileExit (DWORD TargetPC, REG_INFO ExitRegSet, int reason, int CompileNow, void (*x86Jmp)(DWORD Value)) {
+void CompileExit (DWORD TargetPC,REG_INFO ExitRegSet,int reason,int CompileNow,void (*x86Jmp)(DWORD Value)) {
 	BLOCK_SECTION Section;
 	if (!CompileNow) {
 		if (BlockInfo.ExitCount == 0) {
@@ -489,8 +488,8 @@ void CompileExit (DWORD TargetPC, REG_INFO ExitRegSet, int reason, int CompileNo
 		BlockInfo.ExitCount += 1;
 		return;
 	}
-	InitializeSection (&Section, NULL, (DWORD)-1, 0);
-	memcpy(&Section.RegWorking, &ExitRegSet, sizeof(REG_INFO));
+	InitializeSection (&Section,NULL,(DWORD)-1,0);
+	memcpy(&Section.RegWorking,&ExitRegSet,sizeof(REG_INFO));
 	if (TargetPC != (DWORD)-1) { MoveConstToVariable(TargetPC,&PROGRAM_COUNTER); }
 	if (ExitRegSet.CycleCount != 0) {
 		AddConstToVariable(ExitRegSet.CycleCount,&CP0[9]);
@@ -503,8 +502,8 @@ void CompileExit (DWORD TargetPC, REG_INFO ExitRegSet, int reason, int CompileNo
 		Section.RegWorking.RandomModifier = 0;
 		Section.RegWorking.CycleCount = 0;
 		if (reason == Normal) { CompileSystemCheck(0,(DWORD)-1,Section.RegWorking);	}
-		if (SelfModCheck != ModCode_CheckSetMemoryAdvance && SelfModCheck != ModCode_CheckMemoryAdvance) {
-			BYTE * Jump, * Jump2;
+		if (SelfModCheck != ModCode_CheckSetMemory && SelfModCheck != ModCode_CheckMemory) {
+			BYTE * Jump,* Jump2;
 			if (TargetPC >= 0x80000000 && TargetPC < 0x90000000) {
 				DWORD pAddr = TargetPC & 0x1FFFFFFF;
 				MoveVariableToX86reg((BYTE *)JumpTable + pAddr,x86_ECX);
@@ -518,7 +517,7 @@ void CompileExit (DWORD TargetPC, REG_INFO ExitRegSet, int reason, int CompileNo
 				JeLabel8(0);
 				Jump2 = RecompPos - 1;
 				AddConstToX86Reg(x86_ECX,(DWORD)JumpTable - (DWORD)N64MEM);
-				MoveX86regPointerToX86reg(x86_ECX, x86_EBX,x86_ECX);
+				MoveX86regPointerToX86reg(x86_ECX,x86_EBX,x86_ECX);
 			}
 			if (TargetPC < 0x90000000 || TargetPC >= 0xC0000000)
 			{
@@ -536,7 +535,7 @@ void CompileExit (DWORD TargetPC, REG_INFO ExitRegSet, int reason, int CompileNo
 		Ret();
 		break;
 	case DoSysCall:
-		MoveConstToX86reg(NextInstruction == JUMP || NextInstruction == DELAY_SLOT, x86_ECX);
+		MoveConstToX86reg(NextInstruction == JUMP || NextInstruction == DELAY_SLOT,x86_ECX);
 		Call_Direct(DoSysCallException);
 		Ret();
 		break;
@@ -557,16 +556,15 @@ void CompileExit (DWORD TargetPC, REG_INFO ExitRegSet, int reason, int CompileNo
 		Ret();
 		break;
 	case TLBWriteMiss:
-		MoveConstToX86reg(NextInstruction == JUMP || NextInstruction == DELAY_SLOT, x86_ECX);
+		MoveConstToX86reg(NextInstruction == JUMP || NextInstruction == DELAY_SLOT,x86_ECX);
 		MoveVariableToX86reg(&TLBLoadAddress,x86_EDX);
 		Call_Direct(DoTLBMiss);
 		Ret();
-		break;
 	}
 }
-void CompileSystemCheck (DWORD TimerModifier, DWORD TargetPC, REG_INFO RegSet) {
+void CompileSystemCheck (DWORD TimerModifier,DWORD TargetPC,REG_INFO RegSet) {
 	BLOCK_SECTION Section;
-	BYTE * Jump, * Jump2;
+	BYTE * Jump,* Jump2;
 	// Timer
 	if (TimerModifier != 0) {
 		SubConstFromVariable(TimerModifier,&Timers.Timer);
@@ -577,8 +575,8 @@ void CompileSystemCheck (DWORD TimerModifier, DWORD TargetPC, REG_INFO RegSet) {
 	Jump = RecompPos - 4;
 	Pushad();
 	if (TargetPC != (DWORD)-1) { MoveConstToVariable(TargetPC,&PROGRAM_COUNTER); }
-	InitializeSection (&Section, NULL, (DWORD)-1, 0);
-	memcpy(&Section.RegWorking, &RegSet, sizeof(REG_INFO));
+	InitializeSection (&Section,NULL,(DWORD)-1,0);
+	memcpy(&Section.RegWorking,&RegSet,sizeof(REG_INFO));
 	WriteBackRegisters(&Section);
 	Call_Direct(TimerDone);
 	Popad();
@@ -595,20 +593,20 @@ void CompileSystemCheck (DWORD TimerModifier, DWORD TargetPC, REG_INFO RegSet) {
 	JeLabel32(0);
 	Jump = RecompPos - 4;
 	if (TargetPC != (DWORD)-1) { MoveConstToVariable(TargetPC,&PROGRAM_COUNTER); }
-	InitializeSection (&Section, NULL, (DWORD)-1, 0);
-	memcpy(&Section.RegWorking, &RegSet, sizeof(REG_INFO));
+	InitializeSection (&Section,NULL,(DWORD)-1,0);
+	memcpy(&Section.RegWorking,&RegSet,sizeof(REG_INFO));
 	WriteBackRegisters(&Section);
 	CompileExit(-1,Section.RegWorking,DoCPU_Action,TRUE,NULL);
 	SetJump32(Jump,RecompPos);
 }
 void _fastcall CreateSectionLinkage (BLOCK_SECTION * Section) {
 	BLOCK_SECTION ** TargetSection[2];
-	DWORD * TargetPC[2], count;
+	DWORD * TargetPC[2],count;
 	InheritConstants(Section);
 	__try {
 		FillSectionInfo(Section);
-	} __except( r4300i_CPU_MemoryFilter( GetExceptionCode(), GetExceptionInformation()) ) {
-		DisplayThreadExit("CreateSectionLinkage - r4300i_CPU_MemoryFilter( GetExceptionCode(), GetExceptionInformation()");
+	} __except(r4300i_CPU_MemoryFilter(GetExceptionCode(),GetExceptionInformation())) {
+		DisplayThreadExit("CreateSectionLinkage - r4300i_CPU_MemoryFilter(GetExceptionCode(),GetExceptionInformation()");
 	}
 	if (Section->Jump.TargetPC < Section->Cont.TargetPC) {
 		TargetSection[0] = (BLOCK_SECTION **)&Section->JumpSection;
@@ -630,7 +628,7 @@ void _fastcall CreateSectionLinkage (BLOCK_SECTION * Section) {
 			if (*TargetSection[count] == NULL) {
 				BlockInfo.NoOfSections += 1;
 				*TargetSection[count] = malloc(sizeof(BLOCK_SECTION));
-				InitializeSection (*TargetSection[count], Section, *TargetPC[count], BlockInfo.NoOfSections);
+				InitializeSection (*TargetSection[count],Section,*TargetPC[count],BlockInfo.NoOfSections);
 				CreateSectionLinkage(*TargetSection[count]);
 			} else {
 				AddParent(*TargetSection[count],Section);
@@ -638,7 +636,7 @@ void _fastcall CreateSectionLinkage (BLOCK_SECTION * Section) {
 		}
 	}
 }
-void _fastcall DetermineLoop(BLOCK_SECTION * Section, DWORD Test, DWORD Test2, DWORD TestID) {
+void _fastcall DetermineLoop(BLOCK_SECTION * Section,DWORD Test,DWORD Test2,DWORD TestID) {
 	if (Section == NULL) return;
 	if (Section->SectionID != TestID) {
 		if (Section->Test2 == Test2) return;
@@ -663,7 +661,7 @@ void _fastcall DetermineLoop(BLOCK_SECTION * Section, DWORD Test, DWORD Test2, D
 		DetermineLoop(Section->JumpSection,Test,GetNewTestValue(),((BLOCK_SECTION *)Section->JumpSection)->SectionID);
 	}
 }
-BOOL DisplaySectionInformation (BLOCK_SECTION * Section, DWORD ID, DWORD Test) {
+BOOL DisplaySectionInformation (BLOCK_SECTION * Section,DWORD ID,DWORD Test) {
 	if (Section == NULL || Section->Test == Test) return FALSE;
 	Section->Test = Test;
 	if (Section->SectionID != ID) {
@@ -673,7 +671,7 @@ BOOL DisplaySectionInformation (BLOCK_SECTION * Section, DWORD ID, DWORD Test) {
 	}
 	return TRUE;
 }
-BLOCK_SECTION * ExistingSection(BLOCK_SECTION * StartSection, DWORD Addr, DWORD Test) {
+BLOCK_SECTION * ExistingSection(BLOCK_SECTION * StartSection,DWORD Addr,DWORD Test) {
 	BLOCK_SECTION * Section;
 	if (StartSection == NULL) { return NULL; }
 	if (StartSection->StartPC == Addr) { return StartSection; }
@@ -690,23 +688,12 @@ void _fastcall FillSectionInfo(BLOCK_SECTION * Section) {
 	if (Section->CompiledLocation != NULL) return;
 	Section->CompilePC      = Section->StartPC;
 	memcpy(&Section->RegWorking,&Section->RegStart,sizeof(REG_INFO));
-	NextInstruction = NORMAL;
+	SetNormal
 	do {
-		if (!r4300i_LW_VAddr(Section->CompilePC, &Command.Hex)) DisplayThreadExit("FillSectionInfo - !r4300i_LW_VAddr(Section->CompilePC, &Command.Hex)");
+		if (!r4300i_LW_VAddr(Section->CompilePC,&Command.Hex)) DisplayThreadExit("FillSectionInfo - !r4300i_LW_VAddr(Section->CompilePC,&Command.Hex)");
 		switch (Command.op) {
 		case R4300i_SPECIAL:
 			switch (Command.funct) {
-			case R4300i_SPECIAL_SYNC:
-			case R4300i_SPECIAL_MTHI:
-			case R4300i_SPECIAL_MTLO:
-			case R4300i_SPECIAL_MULT:
-			case R4300i_SPECIAL_MULTU:
-			case R4300i_SPECIAL_DIV:
-			case R4300i_SPECIAL_DIVU:
-			case R4300i_SPECIAL_DMULT:
-			case R4300i_SPECIAL_DMULTU:
-			case R4300i_SPECIAL_DDIV:
-			case R4300i_SPECIAL_DDIVU: break;
 			case R4300i_SPECIAL_SLL:
 				if (Command.rd == 0) { break; }
 				if (Section->InLoop && Command.rt == Command.rd) {
@@ -718,7 +705,17 @@ void _fastcall FillSectionInfo(BLOCK_SECTION * Section) {
 				} else {
 					MipsRegState(Command.rd) = STATE_UNKNOWN;
 				}
-				break;
+			case R4300i_SPECIAL_SYNC:
+			case R4300i_SPECIAL_MTHI:
+			case R4300i_SPECIAL_MTLO:
+			case R4300i_SPECIAL_MULT:
+			case R4300i_SPECIAL_MULTU:
+			case R4300i_SPECIAL_DIV:
+			case R4300i_SPECIAL_DIVU:
+			case R4300i_SPECIAL_DMULT:
+			case R4300i_SPECIAL_DMULTU:
+			case R4300i_SPECIAL_DDIV:
+			case R4300i_SPECIAL_DDIVU: break;
 			case R4300i_SPECIAL_SRL:
 				if (Command.rd == 0) { break; }
 				if (Section->InLoop && Command.rt == Command.rd) {
@@ -785,7 +782,7 @@ void _fastcall FillSectionInfo(BLOCK_SECTION * Section) {
 				} else {
 					Section->Jump.TargetPC = (DWORD)-1;
 				}
-				NextInstruction = DELAY_SLOT;
+				SetDelay
 				break;
 			case R4300i_SPECIAL_JALR:
 				MipsRegLo(Opcode.rd) = Section->CompilePC + 8;
@@ -795,7 +792,7 @@ void _fastcall FillSectionInfo(BLOCK_SECTION * Section) {
 				} else {
 					Section->Jump.TargetPC = (DWORD)-1;
 				}
-				NextInstruction = DELAY_SLOT;
+				SetDelay
 				break;
 			case R4300i_SPECIAL_MFHI:
 			case R4300i_SPECIAL_MFLO: MipsRegState(Command.rd) = STATE_UNKNOWN; break;
@@ -1094,15 +1091,15 @@ void _fastcall FillSectionInfo(BLOCK_SECTION * Section) {
 				}
 				break;
 			default:
-				NextInstruction = END_BLOCK;
-				Section->CompilePC -= 4;
+				SetEnd
+				SectionCPC4
 			}
 			break;
 		case R4300i_REGIMM:
 			switch (Command.rt) {
 			case R4300i_REGIMM_BLTZ:
 			case R4300i_REGIMM_BGEZ:
-				NextInstruction = DELAY_SLOT;
+				SetDelay
 				Section->Cont.TargetPC = Section->CompilePC + 8;
 				Section->Jump.TargetPC = Section->CompilePC + ((short)Command.offset << 2) + 4;
 				if (Section->CompilePC == Section->Jump.TargetPC) {
@@ -1124,7 +1121,7 @@ void _fastcall FillSectionInfo(BLOCK_SECTION * Section) {
 				break;
 			case R4300i_REGIMM_BLTZAL:
 			case R4300i_REGIMM_BGEZAL:
-				NextInstruction = DELAY_SLOT;
+				SetDelay
 				MipsRegLo(31) = Section->CompilePC + 8;
 				MipsRegState(31) = STATE_CONST_32;
 				Section->Cont.TargetPC = Section->CompilePC + 8;
@@ -1136,12 +1133,12 @@ void _fastcall FillSectionInfo(BLOCK_SECTION * Section) {
 				}
 				break;
 			default:
-				NextInstruction = END_BLOCK;
-				Section->CompilePC -= 4;
+				SetEnd
+				SectionCPC4
 			}
 			break;
 		case R4300i_JAL:
-			NextInstruction = DELAY_SLOT;
+			SetDelay
 			MipsRegLo(31) = Section->CompilePC + 8;
 			MipsRegState(31) = STATE_CONST_32;
 			Section->Jump.TargetPC = (Section->CompilePC & 0xF0000000) + (Command.target << 2);
@@ -1152,7 +1149,7 @@ void _fastcall FillSectionInfo(BLOCK_SECTION * Section) {
 			}
 			break;
 		case R4300i_J:
-			NextInstruction = DELAY_SLOT;
+			SetDelay
 			Section->Jump.TargetPC = (Section->CompilePC & 0xF0000000) + (Command.target << 2);
 			if (Section->CompilePC == Section->Jump.TargetPC) { Section->Jump.PermLoop = TRUE; }
 			break;
@@ -1160,7 +1157,7 @@ void _fastcall FillSectionInfo(BLOCK_SECTION * Section) {
 		case R4300i_BNE:
 		case R4300i_BLEZ:
 		case R4300i_BGTZ:
-			NextInstruction = DELAY_SLOT;
+			SetDelay
 			Section->Cont.TargetPC = Section->CompilePC + 8;
 			Section->Jump.TargetPC = Section->CompilePC + ((short)Command.offset << 2) + 4;
 			if (Section->CompilePC == Section->Jump.TargetPC) {
@@ -1254,24 +1251,17 @@ void _fastcall FillSectionInfo(BLOCK_SECTION * Section) {
 			case R4300i_COP0_MF:
 				if (Command.rt == 0) { break; }
 				MipsRegState(Command.rt) = STATE_UNKNOWN;
-				break;
 			case R4300i_COP0_MT: break;
 			default:
-				if ( (Command.rs & 0x10 ) != 0 ) {
-					switch( Command.funct ) {
-					case R4300i_COP0_CO_ERET: NextInstruction = END_BLOCK;
-					case R4300i_COP0_CO_TLBR:
-					case R4300i_COP0_CO_TLBWI:
-					case R4300i_COP0_CO_TLBWR:
-					case R4300i_COP0_CO_TLBP: break;
-					default:
-						NextInstruction = END_BLOCK;
-						Section->CompilePC -= 4;
+				if ((Command.rs & 0x10) != 0) {
+					if (Command.funct == R4300i_COP0_CO_ERET) {
+						SetEnd
+						break;
 					}
-				} else {
-					NextInstruction = END_BLOCK;
-					Section->CompilePC -= 4;
+					if (Command.funct == R4300i_COP0_CO_TLBR || Command.funct == R4300i_COP0_CO_TLBWI || Command.funct == R4300i_COP0_CO_TLBWR || Command.funct == R4300i_COP0_CO_TLBP) break;
 				}
+				SetEnd
+				SectionCPC4
 			}
 			break;
 		case R4300i_CP1:
@@ -1288,19 +1278,19 @@ void _fastcall FillSectionInfo(BLOCK_SECTION * Section) {
 				case R4300i_COP1_BC_BCT:
 				case R4300i_COP1_BC_BCFL:
 				case R4300i_COP1_BC_BCTL:
-					NextInstruction = DELAY_SLOT;
+					SetDelay
 					Section->Cont.TargetPC = Section->CompilePC + 8;
 					Section->Jump.TargetPC = Section->CompilePC + ((short)Command.offset << 2) + 4;
 					if (Section->CompilePC == Section->Jump.TargetPC) {
 						int EffectDelaySlot;
 						OPCODE NewCommand;
-						if (!r4300i_LW_VAddr(Section->CompilePC + 4, &NewCommand.Hex)) DisplayThreadExit("FillSectionInfo - !r4300i_LW_VAddr(Section->CompilePC + 4, &NewCommand.Hex)");
+						if (!r4300i_LW_VAddr(Section->CompilePC + 4,&NewCommand.Hex)) DisplayThreadExit("FillSectionInfo - !r4300i_LW_VAddr(Section->CompilePC + 4,&NewCommand.Hex)");
 						EffectDelaySlot = FALSE;
 						if (NewCommand.op == R4300i_CP1) {
-							if (NewCommand.fmt == R4300i_COP1_S && (NewCommand.funct & 0x30) == 0x30 ) {
+							if (NewCommand.fmt == R4300i_COP1_S && (NewCommand.funct & 0x30) == 0x30) {
 								EffectDelaySlot = TRUE;
 							}
-							if (NewCommand.fmt == R4300i_COP1_D && (NewCommand.funct & 0x30) == 0x30 ) {
+							if (NewCommand.fmt == R4300i_COP1_D && (NewCommand.funct & 0x30) == 0x30) {
 								EffectDelaySlot = TRUE;
 							}
 						}
@@ -1308,9 +1298,7 @@ void _fastcall FillSectionInfo(BLOCK_SECTION * Section) {
 							Section->Jump.PermLoop = TRUE;
 						}
 					}
-					break;
 				}
-				break;
 			case R4300i_COP1_MT:
 			case R4300i_COP1_DMT:
 			case R4300i_COP1_CT:
@@ -1319,8 +1307,8 @@ void _fastcall FillSectionInfo(BLOCK_SECTION * Section) {
 			case R4300i_COP1_W:
 			case R4300i_COP1_L: break;
 			default:
-				NextInstruction = END_BLOCK;
-				Section->CompilePC -= 4;
+				SetEnd
+				SectionCPC4
 			}
 			break;
 		case R4300i_BEQL:
@@ -1367,9 +1355,9 @@ void _fastcall FillSectionInfo(BLOCK_SECTION * Section) {
 		case R4300i_LHU:
 		case R4300i_LWR:
 		case R4300i_SC:
+		case R4300i_LD:
 			if (Command.rt == 0) { break; }
 			MipsRegState(Command.rt) = STATE_UNKNOWN;
-			break;
 		case R4300i_SB:
 		case R4300i_SH:
 		case R4300i_SWL:
@@ -1383,13 +1371,9 @@ void _fastcall FillSectionInfo(BLOCK_SECTION * Section) {
 		case R4300i_SWC1:
 		case R4300i_SDC1:
 		case R4300i_SD: break;
-		case R4300i_LD:
-			if (Command.rt == 0) { break; }
-			MipsRegState(Command.rt) = STATE_UNKNOWN;
-			break;
 		default:
-			NextInstruction = END_BLOCK;
-			Section->CompilePC -= 4;
+			SetEnd
+			SectionCPC4
 			if (Command.Hex == 0x7C1C97C0 || Command.Hex == 0x7FFFFFFF || Command.Hex == 0xF1F3F5F7 || Command.Hex == 0xC1200000 || Command.Hex == 0x4C5A5353) { break; }
 		}
 		switch (NextInstruction) {
@@ -1408,11 +1392,11 @@ void _fastcall FillSectionInfo(BLOCK_SECTION * Section) {
 		case DELAY_SLOT_DONE:
 			memcpy(&Section->Cont.RegSet,&Section->RegWorking,sizeof(REG_INFO));
 			memcpy(&Section->Jump.RegSet,&Section->RegWorking,sizeof(REG_INFO));
-			NextInstruction = END_BLOCK;
+			SetEnd
 			break;
 		case LIKELY_DELAY_SLOT_DONE:
 			memcpy(&Section->Jump.RegSet,&Section->RegWorking,sizeof(REG_INFO));
-			NextInstruction = END_BLOCK;
+			SetEnd
 			break;
 		}
 		if ((Section->CompilePC & 0xFFFFF000) != (Section->StartPC & 0xFFFFF000)) {
@@ -1420,8 +1404,8 @@ void _fastcall FillSectionInfo(BLOCK_SECTION * Section) {
 				Section->Cont.TargetPC = (DWORD)-1;
 				Section->Jump.TargetPC = (DWORD)-1;
 			}
-			NextInstruction = END_BLOCK;
-			Section->CompilePC -= 4;
+			SetEnd
+			SectionCPC4
 		}
 	} while (NextInstruction != END_BLOCK);
 	if (Section->Cont.TargetPC != (DWORD)-1) {
@@ -1435,9 +1419,9 @@ void _fastcall FillSectionInfo(BLOCK_SECTION * Section) {
 		}
 	}
 }
-void _fastcall FixConstants (BLOCK_SECTION * Section, DWORD Test, int * Changed) {
+void _fastcall FixConstants (BLOCK_SECTION * Section,DWORD Test,int * Changed) {
 	BLOCK_SECTION * Parent;
-	int count, NoOfParents;
+	int count,NoOfParents;
 	REG_INFO Original[2];
 	if (Section == NULL || Section->Test == Test) return;
 	Section->Test = Test;
@@ -1476,10 +1460,10 @@ void FixRandomReg (void) {
 		Registers.CP0[1] += 32 - Registers.CP0[6];
 	}
 }
-void FreeSection (BLOCK_SECTION * Section, BLOCK_SECTION * Parent) {
+void FreeSection (BLOCK_SECTION * Section,BLOCK_SECTION * Parent) {
 	if (Section == NULL) return;
 	if (Section->ParentSection) {
-		int NoOfParents, count;
+		int NoOfParents,count;
 		for (NoOfParents = 0;Section->ParentSection[NoOfParents] != NULL;NoOfParents++);
 		for (count = 0; count < NoOfParents; count++) {
 			if (Section->ParentSection[count] == Parent) {
@@ -1516,7 +1500,7 @@ void FreeSection (BLOCK_SECTION * Section, BLOCK_SECTION * Parent) {
 	}
 }
 void GenerateSectionLinkage (BLOCK_SECTION * Section) {
-	BLOCK_SECTION * TargetSection[2], *Parent;
+	BLOCK_SECTION * TargetSection[2],*Parent;
 	JUMP_INFO * JumpInfo[2];
 	BYTE * Jump;
 	int count;
@@ -1579,7 +1563,7 @@ void GenerateSectionLinkage (BLOCK_SECTION * Section) {
 	if (Section->CompilePC == Section->Jump.TargetPC && (Section->Cont.TargetPC == -1)) {
 		if (!DelaySlotEffectsJump(Section->CompilePC)) {
 			WriteBackRegisters(Section);
-			memcpy(&Section->Jump.RegSet, &Section->RegWorking, sizeof(REG_INFO));
+			memcpy(&Section->Jump.RegSet,&Section->RegWorking,sizeof(REG_INFO));
 			Call_Direct(InPermLoop);
 		}
 	}
@@ -1662,7 +1646,7 @@ void GenerateSectionLinkage (BLOCK_SECTION * Section) {
 					JumpInfo[count]->RegSet.CycleCount = 0;
 				}
 			}
-			memcpy(&Section->RegWorking, &JumpInfo[count]->RegSet,sizeof(REG_INFO));
+			memcpy(&Section->RegWorking,&JumpInfo[count]->RegSet,sizeof(REG_INFO));
 			SyncRegState(Section,&TargetSection[count]->RegStart);
 			JmpLabel32(0);
 			SetJump32((DWORD *)RecompPos - 1,TargetSection[count]->CompiledLocation);
@@ -1748,20 +1732,20 @@ void GenerateSectionLinkage (BLOCK_SECTION * Section) {
 					JumpInfo[count]->RegSet.CycleCount = 0;
 				}
 			}
-			memcpy(&Section->RegWorking, &JumpInfo[count]->RegSet,sizeof(REG_INFO));
+			memcpy(&Section->RegWorking,&JumpInfo[count]->RegSet,sizeof(REG_INFO));
 			SyncRegState(Section,&TargetSection[count]->RegStart);
 			JmpLabel32(0);
 			SetJump32((DWORD *)RecompPos - 1,TargetSection[count]->CompiledLocation);
 		}
 	}
 }
-BOOL GenerateX86Code (BLOCK_SECTION * Section, DWORD Test) {
+BOOL GenerateX86Code (BLOCK_SECTION * Section,DWORD Test) {
 	int count;
 	if (Section == NULL) return FALSE;
 	if (Section->CompiledLocation != NULL) {
 		if (Section->Test == Test) return FALSE;
 		Section->Test = Test;
-		if (GenerateX86Code(Section->ContinueSection,Test) || GenerateX86Code(Section->JumpSection, Test)) return TRUE;
+		if (GenerateX86Code(Section->ContinueSection,Test) || GenerateX86Code(Section->JumpSection,Test)) return TRUE;
 		return FALSE;
 	}
 	if (Section->ParentSection) {
@@ -1776,13 +1760,13 @@ BOOL GenerateX86Code (BLOCK_SECTION * Section, DWORD Test) {
 	if (!InheritParentInfo(Section)) return FALSE;
 	Section->CompiledLocation = RecompPos;
 	Section->CompilePC = Section->StartPC;
-	NextInstruction = NORMAL;
+	SetNormal
 	do {
 		__try {
 			if (BlockCycleCount > 1 && CF1CF0) BlockCycleCount = 1;
-			if (!r4300i_LW_VAddr(Section->CompilePC, &Opcode.Hex)) DisplayThreadExit("GenerateX86Code - !r4300i_LW_VAddr(Section->CompilePC, &Opcode.Hex)");
-		} __except( r4300i_CPU_MemoryFilter( GetExceptionCode(), GetExceptionInformation()) ) {
-			DisplayThreadExit("GenerateX86Code - r4300i_CPU_MemoryFilter( GetExceptionCode(), GetExceptionInformation()");
+			if (!r4300i_LW_VAddr(Section->CompilePC,&Opcode.Hex)) DisplayThreadExit("GenerateX86Code - !r4300i_LW_VAddr(Section->CompilePC,&Opcode.Hex)\n\nSelf-modifying Code Method-related?");
+		} __except(r4300i_CPU_MemoryFilter(GetExceptionCode(),GetExceptionInformation())) {
+			DisplayThreadExit("GenerateX86Code - r4300i_CPU_MemoryFilter(GetExceptionCode(),GetExceptionInformation()");
 		}
 		BlockCycleCount += CountPerOp;
 		BlockRandomModifier += 1;
@@ -1790,8 +1774,16 @@ BOOL GenerateX86Code (BLOCK_SECTION * Section, DWORD Test) {
 		switch (Opcode.op) {
 		case R4300i_SPECIAL:
 			switch (Opcode.funct) {
-			case R4300i_SPECIAL_SYSCALL: Compile_R4300i_SPECIAL_SYSCALL(Section);
 			case R4300i_SPECIAL_BREAK:
+			{
+				static BOOL Shown = FALSE;
+				if (Shown) break;
+				HandleModal1(hMainWindow);
+				if (MessageBox(NULL,GS(SPECIAL_BREAK),GS(MSG_ERROR_TITLE),MB_YESNO | MB_ICONERROR | MB_SETFOREGROUND) == IDNO) Shown = TRUE;
+				HandleModal2(hMainWindow);
+				if (Shown) break;
+			}
+			case R4300i_SPECIAL_SYSCALL: Compile_R4300i_SPECIAL_SYSCALL(Section);
 			case R4300i_SPECIAL_SYNC: // Used by older versions of OoT GZ (ROMhack)
 			case R4300i_SPECIAL_TGE:
 			case R4300i_SPECIAL_TGEU:
@@ -1844,16 +1836,15 @@ BOOL GenerateX86Code (BLOCK_SECTION * Section, DWORD Test) {
 			case R4300i_SPECIAL_DSRL32: Compile_R4300i_SPECIAL_DSRL32(Section); break;
 			case R4300i_SPECIAL_DSRA32: Compile_R4300i_SPECIAL_DSRA32(Section); break;
 			default:
-				DisplayThreadExit("GenerateX86Code - switch (Opcode.op) - case R4300i_SPECIAL: - switch (Opcode.funct) - default:");
-				break;
+				DisplayThreadExit("GenerateX86Code - switch (Opcode.op) - case R4300i_SPECIAL: - switch (Opcode.funct) - default:\n\nThe emulator has crashed on a reserved Opcode at this location");
 			}
 		break;
 		case R4300i_REGIMM:
 			switch (Opcode.rt) {
-			case R4300i_REGIMM_BLTZ: Compile_R4300i_Branch(Section,BLTZ_Compare,BranchTypeRs, FALSE); break;
-			case R4300i_REGIMM_BGEZ: Compile_R4300i_Branch(Section,BGEZ_Compare,BranchTypeRs, FALSE); break;
-			case R4300i_REGIMM_BLTZL: Compile_R4300i_BranchLikely(Section,BLTZ_Compare, FALSE); break;
-			case R4300i_REGIMM_BGEZL: Compile_R4300i_BranchLikely(Section,BGEZ_Compare, FALSE);
+			case R4300i_REGIMM_BLTZ: Compile_R4300i_Branch(Section,BLTZ_Compare,BranchTypeRs,FALSE); break;
+			case R4300i_REGIMM_BGEZ: Compile_R4300i_Branch(Section,BGEZ_Compare,BranchTypeRs,FALSE); break;
+			case R4300i_REGIMM_BLTZL: Compile_R4300i_BranchLikely(Section,BLTZ_Compare,FALSE); break;
+			case R4300i_REGIMM_BGEZL: Compile_R4300i_BranchLikely(Section,BGEZ_Compare,FALSE);
 			case R4300i_REGIMM_TGEI:
 			case R4300i_REGIMM_TGEIU:
 			case R4300i_REGIMM_TLTI:
@@ -1863,11 +1854,10 @@ BOOL GenerateX86Code (BLOCK_SECTION * Section, DWORD Test) {
 			case R4300i_REGIMM_BLTZALL:
 			case R4300i_REGIMM_BGEZALL:
 			break;
-			case R4300i_REGIMM_BLTZAL: Compile_R4300i_Branch(Section,BLTZ_Compare,BranchTypeRs, TRUE); break;
-			case R4300i_REGIMM_BGEZAL: Compile_R4300i_Branch(Section,BGEZ_Compare,BranchTypeRs, TRUE); break;
+			case R4300i_REGIMM_BLTZAL: Compile_R4300i_Branch(Section,BLTZ_Compare,BranchTypeRs,TRUE); break;
+			case R4300i_REGIMM_BGEZAL: Compile_R4300i_Branch(Section,BGEZ_Compare,BranchTypeRs,TRUE); break;
 			default:
-				DisplayThreadExit("GenerateX86Code - switch (Opcode.op) - case R4300i_REGIMM: - switch (Opcode.rt) - default:");
-				break;
+				DisplayThreadExit("GenerateX86Code - switch (Opcode.op) - case R4300i_REGIMM: - switch (Opcode.rt) - default:\n\nThe emulator has crashed on a reserved Opcode at this location");
 			}
 		break;
 		case R4300i_J: Compile_R4300i_J(Section); break;
@@ -1892,7 +1882,7 @@ BOOL GenerateX86Code (BLOCK_SECTION * Section, DWORD Test) {
 			case R4300i_COP0_DMT:
 			break;
 			default:
-				if ( (Opcode.rs & 0x10 ) != 0 ) {
+				if ((Opcode.rs & 0x10) != 0) {
 					switch (Opcode.funct) {
 					case R4300i_COP0_CO_TLBR: Compile_R4300i_COP0_CO_TLBR(Section); break;
 					case R4300i_COP0_CO_TLBWI: Compile_R4300i_COP0_CO_TLBWI(Section); break;
@@ -1900,10 +1890,9 @@ BOOL GenerateX86Code (BLOCK_SECTION * Section, DWORD Test) {
 					case R4300i_COP0_CO_TLBP: Compile_R4300i_COP0_CO_TLBP(Section); break;
 					case R4300i_COP0_CO_ERET: Compile_R4300i_COP0_CO_ERET(Section); break;
 					default:
-						DisplayThreadExit("GenerateX86Code - switch (Opcode.op) - case R4300i_CP0: - switch (Opcode.rs) - default: - (Opcode.rs & 0x10 ) != 0 ) - switch (Opcode.funct) - default:");
-						break;
+						DisplayThreadExit("GenerateX86Code - switch (Opcode.op) - case R4300i_CP0: - switch (Opcode.rs) - default: - (Opcode.rs & 0x10) != 0) - switch (Opcode.funct) - default:\n\nThe emulator has crashed on an unknown Opcode at this location");
 					}
-				} else DisplayThreadExit("GenerateX86Code - switch (Opcode.op) - case R4300i_CP0: - switch (Opcode.rs) - default: - (Opcode.rs & 0x10 ) != 0 ) - else");
+				} else DisplayThreadExit("GenerateX86Code - switch (Opcode.op) - case R4300i_CP0: - switch (Opcode.rs) - default: - (Opcode.rs & 0x10) != 0) - else\n\nThe emulator has crashed on an unknown Opcode at this location");
 			}
 		break;
 		case R4300i_CP1:
@@ -1924,8 +1913,7 @@ BOOL GenerateX86Code (BLOCK_SECTION * Section, DWORD Test) {
 				case R4300i_COP1_BC_BCFL: Compile_R4300i_BranchLikely(Section,COP1_BCF_Compare,FALSE); break;
 				case R4300i_COP1_BC_BCTL: Compile_R4300i_BranchLikely(Section,COP1_BCT_Compare,FALSE); break;
 				default:
-					DisplayThreadExit("GenerateX86Code - switch (Opcode.op) - case R4300i_CP1: - switch (Opcode.rs) - case R4300i_COP1_BC: - switch (Opcode.ft) - default:");
-					break;
+					DisplayThreadExit("GenerateX86Code - switch (Opcode.op) - case R4300i_CP1: - switch (Opcode.rs) - case R4300i_COP1_BC: - switch (Opcode.ft) - default:\n\nThe emulator has crashed on an unknown Opcode at this location");
 				}
 			break;
 			case R4300i_COP1_S:
@@ -1961,8 +1949,7 @@ BOOL GenerateX86Code (BLOCK_SECTION * Section, DWORD Test) {
 				case R4300i_COP1_FUNCT_CVT_S:
 					break;
 				default:
-					DisplayThreadExit("GenerateX86Code - switch (Opcode.op) - case R4300i_CP1: - switch (Opcode.rs) - case R4300i_COP1_S: - switch (Opcode.funct) - default:");
-					break;
+					DisplayThreadExit("GenerateX86Code - switch (Opcode.op) - case R4300i_CP1: - switch (Opcode.rs) - case R4300i_COP1_S: - switch (Opcode.funct) - default:\n\nThe emulator has crashed on an unknown Opcode at this location");
 				}
 			break;
 			case R4300i_COP1_D:
@@ -1998,8 +1985,7 @@ BOOL GenerateX86Code (BLOCK_SECTION * Section, DWORD Test) {
 				case R4300i_COP1_FUNCT_CVT_D:
 					break;
 				default:
-					DisplayThreadExit("GenerateX86Code - switch (Opcode.op) - case R4300i_CP1: - switch (Opcode.rs) - case R4300i_COP1_D: - switch (Opcode.funct) - default:");
-					break;
+					DisplayThreadExit("GenerateX86Code - switch (Opcode.op) - case R4300i_CP1: - switch (Opcode.rs) - case R4300i_COP1_D: - switch (Opcode.funct) - default:\n\nThe emulator has crashed on an unknown Opcode at this location");
 				}
 			break;
 			case R4300i_COP1_W:
@@ -2007,8 +1993,7 @@ BOOL GenerateX86Code (BLOCK_SECTION * Section, DWORD Test) {
 				case R4300i_COP1_FUNCT_CVT_S: Compile_R4300i_COP1_W_CVT_S(Section); break;
 				case R4300i_COP1_FUNCT_CVT_D: Compile_R4300i_COP1_W_CVT_D(Section); break;
 				default:
-					DisplayThreadExit("GenerateX86Code - switch (Opcode.op) - case R4300i_CP1: - switch (Opcode.rs) - case R4300i_COP1_W: - switch (Opcode.funct) - default:");
-					break;
+					DisplayThreadExit("GenerateX86Code - switch (Opcode.op) - case R4300i_CP1: - switch (Opcode.rs) - case R4300i_COP1_W: - switch (Opcode.funct) - default:\n\nThe emulator has crashed on an unknown Opcode at this location");
 				}
 				break;
 			case R4300i_COP1_L:
@@ -2016,12 +2001,11 @@ BOOL GenerateX86Code (BLOCK_SECTION * Section, DWORD Test) {
 				case R4300i_COP1_FUNCT_CVT_S: Compile_R4300i_COP1_L_CVT_S(Section); break;
 				case R4300i_COP1_FUNCT_CVT_D: Compile_R4300i_COP1_L_CVT_D(Section); break;
 				default:
-					DisplayThreadExit("GenerateX86Code - switch (Opcode.op) - case R4300i_CP1: - switch (Opcode.rs) - case R4300i_COP1_L: - switch (Opcode.funct) - default:");
-					break;
+					DisplayThreadExit("GenerateX86Code - switch (Opcode.op) - case R4300i_CP1: - switch (Opcode.rs) - case R4300i_COP1_L: - switch (Opcode.funct) - default:\n\nThe emulator has crashed on an unknown Opcode at this location");
 				}
 				break;
 			default:
-				DisplayThreadExit("GenerateX86Code - switch (Opcode.op) - case R4300i_CP1: - default:");
+				DisplayThreadExit("GenerateX86Code - switch (Opcode.op) - case R4300i_CP1: - default:\n\nThe emulator has crashed on an unknown Opcode at this location");
 				break;
 			}
 		break;
@@ -2037,13 +2021,12 @@ BOOL GenerateX86Code (BLOCK_SECTION * Section, DWORD Test) {
 			case R4300i_COP2_DCT:
 			break;
 			default:
-				DisplayThreadExit("GenerateX86Code - switch (Opcode.op) - case R4300i_CP2: - default:");
-				break;
+				DisplayThreadExit("GenerateX86Code - switch (Opcode.op) - case R4300i_CP2: - default:\n\nThe emulator has crashed on an unknown Opcode at this location");
 			}
 		break;
 		case R4300i_BEQL: Compile_R4300i_BranchLikely(Section,BEQ_Compare,FALSE); break;
 		case R4300i_BNEL: Compile_R4300i_BranchLikely(Section,BNE_Compare,FALSE); break;
-		case R4300i_BLEZL: Compile_R4300i_BranchLikely(Section, BLEZ_Compare, FALSE); break;
+		case R4300i_BLEZL: Compile_R4300i_BranchLikely(Section,BLEZ_Compare,FALSE); break;
 		case R4300i_BGTZL: Compile_R4300i_BranchLikely(Section,BGTZ_Compare,FALSE); break;
 		case R4300i_DADDI:
 		case R4300i_DADDIU: Compile_R4300i_DADDIU(Section); break;
@@ -2082,11 +2065,11 @@ BOOL GenerateX86Code (BLOCK_SECTION * Section, DWORD Test) {
 		case R4300i_SDC1: Compile_R4300i_SDC1(Section); break;
 		case R4300i_SD: Compile_R4300i_SD(Section); break;
 		default:
-			if (SelfModCheck == ModCode_ProtectMemory) DisplayThreadExit("GenerateX86Code - switch (Opcode.op) - default:");
+			if (SelfModCheck == ModCode_ProtectMemory) DisplayThreadExit("GenerateX86Code - switch (Opcode.op) - default:\n\nThe emulator has crashed on a reserved Opcode at this location");
 			else {
-				if (SelfModCheck == ModCode_CheckSetMemoryAdvance) {
-					DisplayThreadExit("GenerateX86Code - switch (Opcode.op) - default:\n\nNeeds 'Self-modifying Code Method=Protect Memory'?");
-				} else DisplayThreadExit("GenerateX86Code - switch (Opcode.op) - default:\n\nNeeds 'Self-modifying Code Method=Check & Set Memory'?");
+				if (SelfModCheck == ModCode_CheckSetMemory) {
+					DisplayThreadExit("GenerateX86Code - switch (Opcode.op) - default:\n\nThe emulator has crashed on a reserved Opcode at this location\n\nNeeds 'Self-modifying Code Method=Protect Memory'?");
+				} else DisplayThreadExit("GenerateX86Code - switch (Opcode.op) - default:\n\nThe emulator has crashed on a reserved Opcode at this location\n\nNeeds 'Self-modifying Code Method=Check & Set Memory'?");
 			}
 			break;
 		}
@@ -2096,7 +2079,7 @@ BOOL GenerateX86Code (BLOCK_SECTION * Section, DWORD Test) {
 		if ((Section->CompilePC &0xFFC) == 0xFFC) {
 			if (NextInstruction == NORMAL) {
 				CompileExit (Section->CompilePC + 4,Section->RegWorking,Normal,TRUE,NULL);
-				NextInstruction = END_BLOCK;
+				SetEnd
 			}
 		}
 		switch (NextInstruction) {
@@ -2104,14 +2087,14 @@ BOOL GenerateX86Code (BLOCK_SECTION * Section, DWORD Test) {
 			Section->CompilePC += 4;
 			break;
 		case DO_DELAY_SLOT:
-			NextInstruction = DELAY_SLOT;
+			SetDelay
 			Section->CompilePC += 4;
 			break;
 		case DELAY_SLOT:
 			NextInstruction = DELAY_SLOT_DONE;
 			BlockCycleCount -= CountPerOp;
 			BlockRandomModifier -= 1;
-			Section->CompilePC -= 4;
+			SectionCPC4
 			break;
 		}
 	} while (NextInstruction != END_BLOCK);
@@ -2127,11 +2110,11 @@ void InitializeRegSet(REG_INFO * RegSet) {
 	int count;
 	RegSet->MIPS_RegState[0]  = STATE_CONST_32;
 	RegSet->MIPS_RegVal[0].DW = 0;
-	for (count = 1; count < 32; count ++ ) {
+	for (count = 1; count < 32; count ++) {
 		RegSet->MIPS_RegState[count]   = STATE_UNKNOWN;
 		RegSet->MIPS_RegVal[count].DW = 0;
 	}
-	for (count = 0; count < 10; count ++ ) {
+	for (count = 0; count < 10; count ++) {
 		RegSet->x86reg_MappedTo[count]  = NotMapped;
 		RegSet->x86reg_Protected[count] = FALSE;
 		RegSet->x86reg_MapOrder[count]  = 0;
@@ -2139,7 +2122,7 @@ void InitializeRegSet(REG_INFO * RegSet) {
 	RegSet->CycleCount = 0;
 	RegSet->RandomModifier = 0;
 	RegSet->Stack_TopPos = 0;
-	for (count = 0; count < 8; count ++ ) {
+	for (count = 0; count < 8; count ++) {
 		RegSet->x86fpu_MappedTo[count] = -1;
 		RegSet->x86fpu_State[count] = FPU_Unkown;
 		RegSet->x86fpu_RoundingModel[count] = RoundDefault;
@@ -2148,7 +2131,7 @@ void InitializeRegSet(REG_INFO * RegSet) {
 	RegSet->RoundingModel = RoundUnknown;
 }
 void _fastcall InheritConstants(BLOCK_SECTION * Section) {
-	int NoOfParents, count;
+	int NoOfParents,count;
 	BLOCK_SECTION * Parent;
 	REG_INFO * RegSet;
 	if (Section->ParentSection == NULL) {
@@ -2178,7 +2161,7 @@ void _fastcall InheritConstants(BLOCK_SECTION * Section) {
 	memcpy(&Section->RegStart,&Section->RegWorking,sizeof(REG_INFO));
 }
 BOOL InheritParentInfo (BLOCK_SECTION * Section) {
-	int count, start, NoOfParents, NoOfCompiledParents, FirstParent,CurrentParent;
+	int count,start,NoOfParents,NoOfCompiledParents,FirstParent,CurrentParent;
 	BLOCK_PARENT * SectionParents;
 	BLOCK_SECTION * Parent;
 	JUMP_INFO * JumpInfo;
@@ -2211,7 +2194,7 @@ BOOL InheritParentInfo (BLOCK_SECTION * Section) {
 		return TRUE;
 	}
 	//Multiple Parents
-	for (count = 0, NoOfCompiledParents = 0;Section->ParentSection[count] != NULL;count++) {
+	for (count = 0,NoOfCompiledParents = 0;Section->ParentSection[count] != NULL;count++) {
 		Parent = Section->ParentSection[count];
 		if (Parent->CompiledLocation != NULL) {
 			NoOfCompiledParents += Parent->JumpSection != Parent->ContinueSection?1:2;
@@ -2219,7 +2202,7 @@ BOOL InheritParentInfo (BLOCK_SECTION * Section) {
 	}
 	if (NoOfCompiledParents == 0) return FALSE;
 	SectionParents = (BLOCK_PARENT *)malloc(NoOfParents * sizeof(BLOCK_PARENT));
-	for (count = 0, NoOfCompiledParents = 0;Section->ParentSection[count] != NULL;count++) {
+	for (count = 0,NoOfCompiledParents = 0;Section->ParentSection[count] != NULL;count++) {
 		Parent = Section->ParentSection[count];
 		if (Parent->CompiledLocation == NULL) continue;
 		if (Parent->JumpSection != Parent->ContinueSection) {
@@ -2281,7 +2264,7 @@ BOOL InheritParentInfo (BLOCK_SECTION * Section) {
 	//Fix up initial state
 	UnMap_AllFPRs(Section);
 	for (count = 0;count < NoOfParents;count++) {
-		int count2, count3, MemoryStackPos;
+		int count2,count3,MemoryStackPos;
 		REG_INFO * RegSet;
 		if (count == FirstParent) continue;
 		Parent = SectionParents[count].Parent;
@@ -2304,21 +2287,19 @@ BOOL InheritParentInfo (BLOCK_SECTION * Section) {
 		for (count2 = 1; count2 < 32; count2++) {
 			if (Is32BitMapped(count2)) {
 				switch (RegSet->MIPS_RegState[count2]) {
-				case STATE_MAPPED_64: Map_GPR_64bit(Section,count2,count2); break;
+				case STATE_MAPPED_64: Map_GPR_64bit(Section,count2,count2);
 				case STATE_MAPPED_32_ZERO: break;
 				case STATE_MAPPED_32_SIGN:
 					if (IsUnsigned(count2)) {
 						MipsRegState(count2) = STATE_MAPPED_32_SIGN;
 					}
 					break;
+				case STATE_UNKNOWN:
 				case STATE_CONST_64: Map_GPR_64bit(Section,count2,count2); break;
 				case STATE_CONST_32:
 					if ((RegSet->MIPS_RegVal[count2].W[0] < 0) && IsUnsigned(count2)) {
 						MipsRegState(count2) = STATE_MAPPED_32_SIGN;
 					}
-					break;
-				case STATE_UNKNOWN:
-					Map_GPR_64bit(Section,count2,count2);
 					break;
 				}
 			}
@@ -2379,10 +2360,6 @@ BOOL InheritParentInfo (BLOCK_SECTION * Section) {
 				break;
 			case STATE_MAPPED_32_ZERO:
 			case STATE_MAPPED_32_SIGN:
-				if (MipsRegLo(count2) != RegSet->MIPS_RegVal[count2].UW[0]) {
-					NeedSync = TRUE;
-				}
-				break;
 			case STATE_CONST_32:
 				if (MipsRegLo(count2) != RegSet->MIPS_RegVal[count2].UW[0]) {
 					NeedSync = TRUE;
@@ -2433,7 +2410,7 @@ BOOL InheritParentInfo (BLOCK_SECTION * Section) {
 	free(SectionParents);
 	return TRUE;
 }
-BOOL IsAllParentLoops(BLOCK_SECTION * Section, BLOCK_SECTION * Parent, BOOL IgnoreIfCompiled, DWORD Test) {
+BOOL IsAllParentLoops(BLOCK_SECTION * Section,BLOCK_SECTION * Parent,BOOL IgnoreIfCompiled,DWORD Test) {
 	int count;
 	if (IgnoreIfCompiled && Parent->CompiledLocation != NULL) return TRUE;
 	if (!Section->InLoop || !Parent->InLoop || Parent->ParentSection == NULL) return FALSE;
@@ -2444,7 +2421,7 @@ BOOL IsAllParentLoops(BLOCK_SECTION * Section, BLOCK_SECTION * Parent, BOOL Igno
 	}
 	return TRUE;
 }
-void _fastcall InitializeSection (BLOCK_SECTION * Section, BLOCK_SECTION * Parent, DWORD StartAddr, DWORD ID) {
+void _fastcall InitializeSection (BLOCK_SECTION * Section,BLOCK_SECTION * Parent,DWORD StartAddr,DWORD ID) {
 	Section->ParentSection      = NULL;
 	Section->JumpSection        = NULL;
 	Section->ContinueSection    = NULL;
@@ -2478,11 +2455,11 @@ void MarkCodeBlock (DWORD PAddr) {
 		N64_Blocks.NoOfPifRomBlocks += 1;
 	}
 }
-void StartRecompilerCPU (void ) {
+void StartRecompilerCPU (void) {
 	DWORD Addr;
 	BYTE * Block;
 	CoInitialize(NULL);
-	if (SelfModCheck == ModCode_CheckMemoryAdvance || SelfModCheck == ModCode_CheckSetMemoryAdvance) {
+	if (SelfModCheck == ModCode_CheckMemory || SelfModCheck == ModCode_CheckSetMemory) {
 		if (TargetInfo == NULL) {
 			TargetInfo = VirtualAlloc(NULL,MaxCodeBlocks * sizeof(TARGET_INFO),MEM_COMMIT|MEM_RESERVE,PAGE_READWRITE);
 			if (TargetInfo == NULL) {
@@ -2496,18 +2473,18 @@ void StartRecompilerCPU (void ) {
 		VirtualFree(OrigMem,0,MEM_RELEASE);
 		OrigMem = NULL;
 	}
-	if (GfxRomOpen != NULL && (!inFullScreen || strcmp(GfxDLL, "Icepir8sLegacyLLE.dll") == 0)) { GfxRomOpen(); }
+	if (GfxRomOpen != NULL && (!inFullScreen || strcmp(GfxDLL,"Icepir8sLegacyLLE.dll") == 0)) { GfxRomOpen(); }
 	if (ContRomOpen != NULL && !GLideN64NeedsToBeSetupFirst) { ContRomOpen(); }
 	ResetRecompCode();
 	memset(&N64_Blocks,0,sizeof(N64_Blocks));
-	NextInstruction = NORMAL;
+	SetNormal
 	__try {
 		for (;;) {
 			Addr = PROGRAM_COUNTER;
 			if (UseTLB) {
 				if (!TranslateVaddr(&Addr)) {
 					DoTLBMiss(NextInstruction == DELAY_SLOT,PROGRAM_COUNTER);
-					NextInstruction = NORMAL;
+					SetNormal
 					Addr = PROGRAM_COUNTER;
 					if (!TranslateVaddr(&Addr)) DisplayThreadExit("StartRecompilerCPU - !TranslateVaddr(&Addr) x2");
 				}
@@ -2523,9 +2500,9 @@ void StartRecompilerCPU (void ) {
 					Block = CompileDelaySlot();
 					*(DelaySlotTable + (Addr >> 12)) = Block;
 					if (SelfModCheck == ModCode_ProtectMemory) {
-						VirtualProtect(N64MEM + Addr, 4, PAGE_READONLY, &OldProtect);
+						VirtualProtect(N64MEM + Addr,4,PAGE_READONLY,&OldProtect);
 					}
-					NextInstruction = NORMAL;
+					SetNormal
 				}
 				_asm {
 					pushad
@@ -2551,14 +2528,19 @@ void StartRecompilerCPU (void ) {
 						ExecuteInterpreterOpCode();
 					}
 					continue;
-				} else DisplayThreadExit("StartRecompilerCPU - EXCEPTION_EXECUTE_HANDLER - PROGRAM_COUNTER >= 0xB0000000 && PROGRAM_COUNTER < (RomFileSize | 0xB0000000) - else\n\nMemory Size-related?\nSelf-modifying Code Method-related?");
+				}
+				else {
+					if (SelfModCheck == ModCode_CheckSetMemory) DisplayThreadExit("StartRecompilerCPU - EXCEPTION_EXECUTE_HANDLER - PROGRAM_COUNTER >= 0xB0000000 && PROGRAM_COUNTER < (RomFileSize | 0xB0000000) - else\n\nNeeds 'Self-modifying Code Method=Protect Memory'?");
+					else if (RDRAMsize == 0x400000) DisplayThreadExit("StartRecompilerCPU - EXCEPTION_EXECUTE_HANDLER - PROGRAM_COUNTER >= 0xB0000000 && PROGRAM_COUNTER < (RomFileSize | 0xB0000000) - else\n\nNeeds 'Memory Size=8MB'?");
+					else DisplayThreadExit("StartRecompilerCPU - EXCEPTION_EXECUTE_HANDLER - PROGRAM_COUNTER >= 0xB0000000 && PROGRAM_COUNTER < (RomFileSize | 0xB0000000) - else");
+				}
 			}
-			if ((SelfModCheck == ModCode_CheckMemoryAdvance || SelfModCheck == ModCode_CheckSetMemoryAdvance) && Block != NULL) {
+			if ((SelfModCheck == ModCode_CheckMemory || SelfModCheck == ModCode_CheckSetMemory) && Block != NULL) {
 				TARGET_INFO * Target = (TARGET_INFO *)Block;
 				if (*(QWORD *)(N64MEM+Addr) != Target->OriginalMemory) {
-					DWORD Start = (Addr & ~0xFFF) - 0x10000, End = Start + 0x20000, count;
+					DWORD Start = (Addr & ~0xFFF) - 0x10000,End = Start + 0x20000,count;
 					if (End < RDRAMsize) { End = RDRAMsize; }
-					for (count = (Start >> 12); count < (End >> 12); count ++ ) {
+					for (count = (Start >> 12); count < (End >> 12); count ++) {
 						if (N64_Blocks.NoOfRDRAMBlocks[count] > 0) {
 							N64_Blocks.NoOfRDRAMBlocks[count] = 0;
 							memset(JumpTable + (count << 10),0,0x1000);
@@ -2578,7 +2560,7 @@ void StartRecompilerCPU (void ) {
 					ResetRecompCode();
 					Block = Compiler4300iBlock();
 				}
-				if (SelfModCheck == ModCode_CheckMemoryAdvance || SelfModCheck == ModCode_CheckSetMemoryAdvance) {
+				if (SelfModCheck == ModCode_CheckMemory || SelfModCheck == ModCode_CheckSetMemory) {
 					TargetInfo[TargetIndex].CodeBlock = Block;
 					TargetInfo[TargetIndex].OriginalMemory = *(QWORD *)(N64MEM+Addr);
 					*(JumpTable + (Addr >> 2)) = &TargetInfo[TargetIndex];
@@ -2591,9 +2573,9 @@ void StartRecompilerCPU (void ) {
 					*(JumpTable + (Addr >> 2)) = Block;
 				}
 				if (SelfModCheck == ModCode_ProtectMemory) {
-					VirtualProtect(N64MEM + Addr, 4, PAGE_READONLY, &OldProtect);
+					VirtualProtect(N64MEM + Addr,4,PAGE_READONLY,&OldProtect);
 				}
-				NextInstruction = NORMAL;
+				SetNormal
 			}
 			_asm {
 				pushad
@@ -2601,14 +2583,14 @@ void StartRecompilerCPU (void ) {
 				popad
 			}
 		}
-	} __except( r4300i_CPU_MemoryFilter( GetExceptionCode(), GetExceptionInformation()) ) { DisplayThreadExit("StartRecompilerCPU - r4300i_CPU_MemoryFilter( GetExceptionCode(), GetExceptionInformation())"); }
+	} __except(r4300i_CPU_MemoryFilter(GetExceptionCode(),GetExceptionInformation())) { DisplayThreadExit("StartRecompilerCPU - r4300i_CPU_MemoryFilter(GetExceptionCode(),GetExceptionInformation())"); }
 }
-void SyncRegState (BLOCK_SECTION * Section, REG_INFO * SyncTo) {
-	int count, x86Reg,x86RegHi, changed;
+void SyncRegState (BLOCK_SECTION * Section,REG_INFO * SyncTo) {
+	int count,x86Reg,x86RegHi,changed;
 	changed = FALSE;
 	UnMap_AllFPRs(Section);
 	if (CurrentRoundingModel != SyncTo->RoundingModel) { CurrentRoundingModel = RoundUnknown; }
-	x86Reg = Map_MemoryStack(Section, FALSE);
+	x86Reg = Map_MemoryStack(Section,FALSE);
 	for (x86Reg = 1; x86Reg < 10; x86Reg ++) {
 		if (x86Mapped(x86Reg) != Stack_Mapped) continue;
 		if (SyncTo->x86reg_MappedTo[x86Reg] != Stack_Mapped) {
@@ -2653,7 +2635,7 @@ void SyncRegState (BLOCK_SECTION * Section, REG_INFO * SyncTo) {
 		}
 		changed = TRUE;
 		switch (SyncTo->MIPS_RegState[count]) {
-		case STATE_UNKNOWN: UnMap_GPR(Section,count,TRUE);  break;
+		case STATE_UNKNOWN: UnMap_GPR(Section,count,TRUE); break;
 		case STATE_MAPPED_64:
 			x86Reg = SyncTo->MIPS_RegVal[count].UW[0];
 			x86RegHi = SyncTo->MIPS_RegVal[count].UW[1];

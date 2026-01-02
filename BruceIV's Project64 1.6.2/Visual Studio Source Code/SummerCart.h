@@ -17,5 +17,5 @@ struct summercart
 extern struct summercart SummerCart;
 void init_summercart(struct summercart* summercart);
 void poweron_summercart(struct summercart* summercart);
-int read_summercart_regs(void* opaque, uint32_t address, uint32_t* Value);
-int write_summercart_regs(void* opaque, uint32_t address, uint32_t value, uint32_t mask);
+int read_summercart_regs(void* opaque,uint32_t address,uint32_t* Value);
+int write_summercart_regs(void* opaque,uint32_t address,uint32_t value,uint32_t mask);

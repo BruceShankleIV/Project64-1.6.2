@@ -11,7 +11,7 @@
  * providing that this license information and copyright notice appear with
  * all copies and any derived work.
  *
- * This software is provided 'as-is', without any express or implied
+ * This software is provided 'as-is',without any express or implied
  * warranty. In no event shall the authors be held liable for any damages
  * arising from the use of this software.
  *
@@ -23,8 +23,8 @@
  * should be forwarded to them so if they want them.
  *
  */
-void BuildInterpreter         ( void );
-void ExecuteInterpreterOpCode ( void );
-void StartInterpreterCPU      ( void );
-void TestInterpreterJump      ( DWORD PC, DWORD TargetPC, int Reg1, int Reg2 );
+void BuildInterpreter         (void);
+void ExecuteInterpreterOpCode (void);
+void StartInterpreterCPU      (void);
+void TestInterpreterJump      (DWORD PC,DWORD TargetPC,int Reg1,int Reg2);
 extern void * R4300i_Opcode[64];

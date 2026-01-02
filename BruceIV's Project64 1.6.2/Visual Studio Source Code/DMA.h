@@ -11,7 +11,7 @@
  * providing that this license information and copyright notice appear with
  * all copies and any derived work.
  *
- * This software is provided 'as-is', without any express or implied
+ * This software is provided 'as-is',without any express or implied
  * warranty. In no event shall the authors be held liable for any damages
  * arising from the use of this software.
  *
@@ -23,10 +23,10 @@
  * should be forwarded to them so if they want them.
  *
  */
-void PI_DMA_READ  ( void );
-void PI_DMA_WRITE ( void );
-void SI_DMA_READ  ( void );
-void SI_DMA_WRITE ( void );
-void SP_DMA_READ  ( void );
-void SP_DMA_WRITE ( void );
+void PI_DMA_READ  (void);
+void PI_DMA_WRITE (void);
+void SI_DMA_READ  (void);
+void SI_DMA_WRITE (void);
+void SP_DMA_READ  (void);
+void SP_DMA_WRITE (void);
 extern int DMAUsed;

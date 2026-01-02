@@ -11,7 +11,7 @@
  * providing that this license information and copyright notice appear with
  * all copies and any derived work.
  *
- * This software is provided 'as-is', without any express or implied
+ * This software is provided 'as-is',without any express or implied
  * warranty. In no event shall the authors be held liable for any damages
  * arising from the use of this software.
  *
@@ -35,7 +35,7 @@ void CloseEEPROM (void) {
 		hEEPROMFile = NULL;
 	}
 }
-void EEPROMCommand ( BYTE * Command) {
+void EEPROMCommand (BYTE * Command) {
 	if (SaveUsing == Auto) {
 		if (ForceAuto16kbit) SaveUsing = EEPROM_16K;
 		else SaveUsing = EEPROM_4K;
@@ -70,17 +70,16 @@ void EEPROMCommand ( BYTE * Command) {
 	}
 }
 void LoadEEPROM (void) {
-	char File[255], Directory[255];
+	char File[255],Directory[255];
 	DWORD dwRead;
 	GetAutoSaveDir(Directory);
 	sprintf(File,"%s%s.eep",Directory,RomName);
-	hEEPROMFile = CreateFile(File,GENERIC_WRITE | GENERIC_READ, FILE_SHARE_READ,NULL,OPEN_ALWAYS,FILE_ATTRIBUTE_NORMAL | FILE_FLAG_RANDOM_ACCESS, NULL);
+	hEEPROMFile = CreateFile(File,GENERIC_WRITE | GENERIC_READ,FILE_SHARE_READ,NULL,OPEN_ALWAYS,FILE_ATTRIBUTE_NORMAL | FILE_FLAG_RANDOM_ACCESS,NULL);
 	if (hEEPROMFile == INVALID_HANDLE_VALUE) {
 		switch (GetLastError()) {
 		case ERROR_PATH_NOT_FOUND:
 			CreateDirectory(Directory,NULL);
-			hEEPROMFile = CreateFile(File,GENERIC_WRITE | GENERIC_READ, FILE_SHARE_READ,
-				NULL,OPEN_ALWAYS,FILE_ATTRIBUTE_NORMAL | FILE_FLAG_RANDOM_ACCESS, NULL);
+			hEEPROMFile = CreateFile(File,GENERIC_WRITE | GENERIC_READ,FILE_SHARE_READ,NULL,OPEN_ALWAYS,FILE_ATTRIBUTE_NORMAL | FILE_FLAG_RANDOM_ACCESS,NULL);
 			if (hEEPROMFile == INVALID_HANDLE_VALUE) {
 				DisplayError(GS(MSG_FAIL_OPEN_SAVE));
 			}
@@ -94,16 +93,16 @@ void LoadEEPROM (void) {
 	SetFilePointer(hEEPROMFile,0,NULL,FILE_BEGIN);
 	ReadFile(hEEPROMFile,EEPROM,sizeof(EEPROM),&dwRead,NULL);
 }
-void ReadFromEEPROM(BYTE * Buffer, int line) {
+void ReadFromEEPROM(BYTE * Buffer,int line) {
 	int i;
 	if (hEEPROMFile == NULL) LoadEEPROM();
 	for(i=0;i<8;i++) { Buffer[i]=EEPROM[line*8+i]; }
 }
-void WriteToEEPROM(BYTE * Buffer, int line) {
+void WriteToEEPROM(BYTE * Buffer,int line) {
 	DWORD dwWritten;
 	int i;
 	if (hEEPROMFile == NULL) LoadEEPROM();
 	for(i=0;i<8;i++) { EEPROM[line*8+i]=Buffer[i]; }
 	SetFilePointer(hEEPROMFile,line*8,NULL,FILE_BEGIN);
-	WriteFile( hEEPROMFile,Buffer,8,&dwWritten,NULL );
+	WriteFile(hEEPROMFile,Buffer,8,&dwWritten,NULL);
 }

@@ -11,7 +11,7 @@
  * providing that this license information and copyright notice appear with
  * all copies and any derived work.
  *
- * This software is provided 'as-is', without any express or implied
+ * This software is provided 'as-is',without any express or implied
  * warranty. In no event shall the authors be held liable for any damages
  * arising from the use of this software.
  *
@@ -30,10 +30,10 @@
 #define	EXC_WADE				EXC_CODE(5)	/* Write Address Error */
 #define	EXC_SYSCALL				EXC_CODE(8)	/* SYSCALL */
 #define	EXC_CPU					EXC_CODE(11)/* CoProcessor Unusable */
-void __cdecl AiCheckInterrupts      ( void );
-void __cdecl CheckInterrupts        ( void );
-void DoAddressError         ( BOOL DelaySlot, DWORD BadVaddr, BOOL FromRead );
-void _fastcall DoCopUnusableException ( BOOL DelaySlot, int Coprocessor );
-void DoIntrException        ( BOOL DelaySlot );
-void _fastcall DoTLBMiss              ( BOOL DelaySlot, DWORD BadVaddr );
-void _fastcall DoSysCallException ( BOOL DelaySlot );
+void __cdecl AiCheckInterrupts      (void);
+void __cdecl CheckInterrupts        (void);
+void DoAddressError         (BOOL DelaySlot,DWORD BadVaddr,BOOL FromRead);
+void _fastcall DoCopUnusableException (BOOL DelaySlot,int Coprocessor);
+void DoIntrException        (BOOL DelaySlot);
+void _fastcall DoTLBMiss              (BOOL DelaySlot,DWORD BadVaddr);
+void _fastcall DoSysCallException (BOOL DelaySlot);

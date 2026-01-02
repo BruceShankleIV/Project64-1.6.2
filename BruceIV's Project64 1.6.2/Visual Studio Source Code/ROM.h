@@ -11,7 +11,7 @@
  * providing that this license information and copyright notice appear with
  * all copies and any derived work.
  *
- * This software is provided 'as-is', without any express or implied
+ * This software is provided 'as-is',without any express or implied
  * warranty. In no event shall the authors be held liable for any damages
  * arising from the use of this software.
  *
@@ -23,24 +23,24 @@
  * should be forwarded to them so if they want them.
  *
  */
-extern DWORD ClearFrame, RomClearFrame, RomFileSize, RomRamSize, SaveUsing, RomSaveUsing, CPUType, RomCPUType, RomSelfModCheck, UseTLB, RomUseTLB, FiftyNineHertz, RomFiftyNineHertz, RomJAI, AudioSignal, RomAudioSignal, RomCF, UseCache, RomUseCache, RomShankleAziAI, RomAltEmulateAI, SyncGametoAudio, RomSyncGametoAudio, /*FATFAT, RomFAT, FAT*/CF1CF0, RomCF1CF0, DelayRDP, RomDelayRDP, DelayRSP, RomDelayRSP, AlignDMA, RomAlignDMA, DelayRDP, RomDelayRDP, DelayRSP, RomDelayRSP, DelaySI, RomRspRecompiler, RomDelaySI, ForceAuto16kbit, ForceDisableTLB, ForceDisableCaching, ForceEnableDMA, EmulateAI;
-extern char CurrentFileName[MAX_PATH+1], RomName[MAX_PATH+1], RomHeader[0x1000], LastRoms[10][MAX_PATH+1], LastDirs[10][MAX_PATH+1];
-void AddRecentFile           ( HWND hWnd, char * addition );
-void ChangeRomOptionMemSize  ( DWORD NewSize );
-void ChangeRomOptionSaveType ( enum SaveType type );
-void GetRomDirectory         ( char * Directory );
-BOOL LoadDataFromRomFile     ( char * FileName,BYTE * Data,int DataLen, int * RomSize );
-BOOL LoadRomHeader           ( void );
-void CreateRecentFileList    ( HMENU hMenu );
-void CreateRecentDirList     ( HMENU hMenu );
-void LoadRecentRom           ( DWORD Index );
-void HandleTimers	     ( void );
-void OpenChosenFile	     ( void );
-void RecalculateCRC	     ( void );
-void ReadRomOptions          ( void );
-void SaveRecentDirs          ( void );
-void SaveRecentFiles         ( void );
-void HandleWindowTitle	     ( void );
-void SaveRomOptions          ( void );
-void SetRecentRomDir         ( DWORD Index );
-void SetRomDirectory         ( char * Directory );
+extern DWORD ClearFrame,RomClearFrame,RomFileSize,RomRamSize,SaveUsing,RomSaveUsing,CPUType,RomCPUType,RomSelfModCheck,UseTLB,RomUseTLB,FiftyNineHertz,RomFiftyNineHertz,RomJAI,AudioSignal,RomAudioSignal,RomCF,UseCache,RomUseCache,RomShankleAziAI,RomAltEmulateAI,SyncGametoAudio,RomSyncGametoAudio,/*FATFAT,RomFAT,FAT*/CF1CF0,RomCF1CF0,DelayRDP,RomDelayRDP,DelayRSP,RomDelayRSP,AlignDMA,RomAlignDMA,DelayRDP,RomDelayRDP,DelayRSP,RomDelayRSP,DelaySI,RomRspRecompiler,RomDelaySI,ForceAuto16kbit,ForceDisableTLB,ForceDisableCaching,ForceEnableDMA,EmulateAI;
+extern char CurrentFileName[MAX_PATH+1],RomName[MAX_PATH+1],RomHeader[0x1000],LastRoms[10][MAX_PATH+1],LastDirs[10][MAX_PATH+1];
+void AddRecentFile           (HWND hWnd,char * addition);
+void ChangeRomOptionMemSize  (DWORD NewSize);
+void ChangeRomOptionSaveType (enum SaveType type);
+void GetRomDirectory         (char * Directory);
+BOOL LoadDataFromRomFile     (char * FileName,BYTE * Data,int DataLen,int * RomSize);
+BOOL LoadRomHeader           (void);
+void CreateRecentFileList    (HMENU hMenu);
+void CreateRecentDirList     (HMENU hMenu);
+void LoadRecentRom           (DWORD Index);
+void HandleTimers	     (void);
+void OpenChosenFile	     (void);
+void RecalculateCRC	     (void);
+void ReadRomOptions          (void);
+void SaveRecentDirs          (void);
+void SaveRecentFiles         (void);
+void HandleWindowTitle	     (void);
+void SaveRomOptions          (void);
+void SetRecentRomDir         (DWORD Index);
+void SetRomDirectory         (char * Directory);

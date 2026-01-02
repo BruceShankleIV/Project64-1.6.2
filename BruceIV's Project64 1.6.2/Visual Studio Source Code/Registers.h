@@ -11,7 +11,7 @@
  * providing that this license information and copyright notice appear with
  * all copies and any derived work.
  *
- * This software is provided 'as-is', without any express or implied
+ * This software is provided 'as-is',without any express or implied
  * warranty. In no event shall the authors be held liable for any damages
  * arising from the use of this software.
  *
@@ -316,39 +316,41 @@ typedef struct {
 	BYTE       PIF_Ram[0x40];
 	int        DMAUsed;
 } N64_REGISTERS;
-extern DWORD PROGRAM_COUNTER, * CP0,*FPCR,*RegRDRAM,*RegSP,*RegDPC,*RegMI,*RegVI,*RegAI,*RegPI,
-	*RegRI,*RegSI, HalfLine, RegModValue, ViFieldSerration, LLBit, LLAddr;
-void * FPRDoubleLocation[32], * FPRFloatLocation[32];
-extern MIPS_DWORD *GPR, *FPR, HI, LO;
+extern DWORD PROGRAM_COUNTER,* CP0,*FPCR,*RegRDRAM,*RegSP,*RegDPC,*RegMI,*RegVI,*RegAI,*RegPI,
+	*RegRI,*RegSI,HalfLine,RegModValue,ViFieldSerration,LLBit,LLAddr;
+void * FPRDoubleLocation[32],* FPRFloatLocation[32];
+extern MIPS_DWORD *GPR,*FPR,HI,LO;
 extern N64_REGISTERS Registers;
 enum FPU_Format {
-	FPU_Unkown,FPU_Dword, FPU_Qword, FPU_Float, FPU_Double
+	FPU_Unkown,FPU_Dword,FPU_Qword,FPU_Float,FPU_Double
 };
 enum FPU_RoundingModel {
-	RoundUnknown, RoundDefault, RoundTruncate, RoundNearest, RoundDown, RoundUp
+	RoundUnknown,RoundDefault,RoundTruncate,RoundNearest,RoundDown,RoundUp
 };
-void ChangeFPURegFormat       ( BLOCK_SECTION * Section, int Reg, int OldFormat, int NewFormat, int RoundingModel );
-void ChangeMiIntrMask         ( void );
-void ChangeMiModeReg          ( void );
-void ChangeSpStatus           ( void );
-void ChangeDpcStatus          ( void );
-void InitializeR4300iRegisters ( int UsePif, int Country, int CIC_Chip );
-BOOL Is8BitReg                ( int x86Reg);
-void Load_FPR_ToTop           ( BLOCK_SECTION * Section, int Reg, int RegToLoad, int Format);
-void Map_GPR_32bit            ( BLOCK_SECTION * Section, int Reg, BOOL SignValue, int MipsRegToLoad );
-void Map_GPR_64bit            ( BLOCK_SECTION * Section, int Reg, int MipsRegToLoad );
-int  Map_MemoryStack          ( BLOCK_SECTION * Section, BOOL AutoMap );
-int  Map_TempReg              ( BLOCK_SECTION * Section, int x86Reg, int MipsReg, BOOL LoadHiWord );
-BOOL RegInStack               ( BLOCK_SECTION * Section, int Reg, int Format );
-void ProtectGPR               ( BLOCK_SECTION * Section, DWORD Reg );
-void SetFpuLocations          ( void );
-void SetupRegisters           ( N64_REGISTERS * n64_Registers );
-int  StackPosition            ( BLOCK_SECTION * Section, int Reg );
-void UnMap_AllFPRs            ( BLOCK_SECTION * Section );
-void UnMap_FPR                ( BLOCK_SECTION * Section, int Reg, int WriteBackValue );
-void UnMap_GPR                ( BLOCK_SECTION * Section, DWORD Reg, int WriteBackValue );
-BOOL UnMap_X86reg             ( BLOCK_SECTION * Section, DWORD x86Reg );
-void UnProtectGPR             ( BLOCK_SECTION * Section, DWORD Reg );
-void UpdateCurrentHalfLine    ( void );
-void UpdateFieldSerration     ( int interlaced );
-void WriteBackRegisters       ( BLOCK_SECTION * Section );
+void ChangeFPURegFormat       (BLOCK_SECTION * Section,int Reg,int OldFormat,int NewFormat,int RoundingModel);
+void ChangeMiIntrMask         (void);
+#ifndef MIN_SIZE
+void ChangeMiModeReg          (void);
+void ChangeDpcStatus          (void);
+#endif
+void ChangeSpStatus           (void);
+void InitializeR4300iRegisters (int UsePif,int Country,int CIC_Chip);
+BOOL Is8BitReg                (int x86Reg);
+void Load_FPR_ToTop           (BLOCK_SECTION * Section,int Reg,int RegToLoad,int Format);
+void Map_GPR_32bit            (BLOCK_SECTION * Section,int Reg,BOOL SignValue,int MipsRegToLoad);
+void Map_GPR_64bit            (BLOCK_SECTION * Section,int Reg,int MipsRegToLoad);
+int  Map_MemoryStack          (BLOCK_SECTION * Section,BOOL AutoMap);
+int  Map_TempReg              (BLOCK_SECTION * Section,int x86Reg,int MipsReg,BOOL LoadHiWord);
+BOOL RegInStack               (BLOCK_SECTION * Section,int Reg,int Format);
+void ProtectGPR               (BLOCK_SECTION * Section,DWORD Reg);
+void SetFpuLocations          (void);
+void SetupRegisters           (N64_REGISTERS * n64_Registers);
+int  StackPosition            (BLOCK_SECTION * Section,int Reg);
+void UnMap_AllFPRs            (BLOCK_SECTION * Section);
+void UnMap_FPR                (BLOCK_SECTION * Section,int Reg,int WriteBackValue);
+void UnMap_GPR                (BLOCK_SECTION * Section,DWORD Reg,int WriteBackValue);
+BOOL UnMap_X86reg             (BLOCK_SECTION * Section,DWORD x86Reg);
+void UnProtectGPR             (BLOCK_SECTION * Section,DWORD Reg);
+void UpdateCurrentHalfLine    (void);
+void UpdateFieldSerration     (int interlaced);
+void WriteBackRegisters       (BLOCK_SECTION * Section);

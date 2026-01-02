@@ -11,7 +11,7 @@
  * providing that this license information and copyright notice appear with
  * all copies and any derived work.
  *
- * This software is provided 'as-is', without any express or implied
+ * This software is provided 'as-is',without any express or implied
  * warranty. In no event shall the authors be held liable for any damages
  * arising from the use of this software.
  *
@@ -23,7 +23,7 @@
  * should be forwarded to them so if they want them.
  *
  */
-void CloseEEPROM    ( void );
-void EEPROMCommand  ( BYTE * Command );
-void ReadFromEEPROM ( BYTE * Buffer, int line);
-void WriteToEEPROM  ( BYTE * Buffer, int line);
+void CloseEEPROM    (void);
+void EEPROMCommand  (BYTE * Command);
+void ReadFromEEPROM (BYTE * Buffer,int line);
+void WriteToEEPROM  (BYTE * Buffer,int line);

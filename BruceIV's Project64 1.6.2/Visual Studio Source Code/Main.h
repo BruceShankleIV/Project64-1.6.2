@@ -11,7 +11,7 @@
  * providing that this license information and copyright notice appear with
  * all copies and any derived work.
  *
- * This software is provided 'as-is', without any express or implied
+ * This software is provided 'as-is',without any express or implied
  * warranty. In no event shall the authors be held liable for any damages
  * arising from the use of this software.
  *
@@ -34,7 +34,7 @@ extern "C" {
 #include "Settings API.h"
 #include "ROM Browser.h"
 #include "Language.h"
-/********* Source Version 17 *********/
+/********* Source Version 18 *********/
 /********* General Defaults **********/
 #define AppName						"BruceIV's Project64 1.6.2"
 #define IniName						"Game.ini"
@@ -49,11 +49,7 @@ extern "C" {
 #define Default_BasicMode			TRUE
 #define Default_RomsToRemember		10
 #define Default_RomsDirsToRemember	10
-#ifdef STABLE_DEFAULTS
 #define Default_CountPerOp		2
-#else
-#define Default_CountPerOp		1
-#endif
 #define Default_ForceDisableTLB		FALSE
 #define Default_ForceEnableDMA		FALSE
 #define Default_ForceDisableCaching	FALSE
@@ -71,49 +67,42 @@ extern "C" {
 #define UseCache_Default	-1
 #define REG_CACHE_ON		0
 #define REG_CACHE_OFF		1
-#ifdef STABLE_DEFAULTS
-#define Default_UseCache REG_CACHE_OFF
-#else
-#define Default_UseCache REG_CACHE_ON
-#endif
+#define Default_UseCache REG_CACHE_ON // Use OFF if low-end devices aren't significantly affected
 /******* Self modifying code *********/
 #define ModCode_Default					-1
 #define ModCode_Cache					0
-#define ModCode_CheckSetMemoryAdvance	1
-#define ModCode_CheckMemoryAdvance		2
+#define ModCode_CheckSetMemory	1
+#define ModCode_CheckMemory		2
 #define ModCode_ProtectMemory			3
-#ifdef STABLE_DEFAULTS
-#define Default_SelfModCheck			ModCode_ProtectMemory
-#else
-#define Default_SelfModCheck			ModCode_CheckMemoryAdvance
-#endif
+#define Default_SelfModCheck			ModCode_CheckMemory // ProtectMemory would be ideal but low-end devices suffer significantly with it
 /********** Rom Browser **************/
 #define Default_UseRB				TRUE
 #define Default_Recursion			TRUE
 /********* Global Variables **********/
-extern LARGE_INTEGER Frequency, Frames[9], LastFrame;
-extern BOOL AutoSleep, AutoHide, Recursion, LimitFPS, SpeedCap, AutoFullScreen, SystemCF, UsuallyonTop, BasicMode, BootupSettings, SetupPluginsAfterSaveRomOpt;
-extern DWORD CurrentFrame, CPU_Type, SystemCPU_Type, SelfModCheck, SystemSelfModCheck, SystemUseCache, RomsToRemember, RomDirsToRemember;
-extern HWND hMainWindow, hHiddenWin, hStatusWnd;
+extern LARGE_INTEGER Frequency,Frames[9],LastFrame;
+extern BOOL AutoSleep,AutoHide,Recursion,LimitFPS,SpeedCap,AutoFullScreen,SystemCF,UsuallyonTop,BasicMode,BootupSettings,SetupPluginsAfterSaveRomOpt;
+extern DWORD CurrentFrame,CPU_Type,SystemCPU_Type,SelfModCheck,SystemSelfModCheck,SystemUseCache,RomsToRemember,RomDirsToRemember;
+extern HWND hMainWindow,hHiddenWin,hStatusWnd;
 extern char CurrentSave[256];
 extern HMENU hMainMenu;
 extern HINSTANCE hInst;
 /******** Function Prototype *********/
-DWORD AsciiToHex          ( char * HexValue );
-void UsuallyonTopWindow    ( HWND hWnd );
+DWORD AsciiToHex          (char * HexValue);
+int CALLBACK SelectRomDirCallBack (HWND hwnd,DWORD uMsg,DWORD lp,DWORD lpData);
+void UsuallyonTopWindow    (HWND hWnd);
 void HandleModal1 (HWND hWnd);
 void HandleModal2(HWND hWnd);
-void  __cdecl DisplayError       ( char * Message, ... );
-void  ChangeWinSize        ( HWND hWnd, long width, long height, HWND hStatusBar );
-void  DisplayFPS          ( void );
-char* GetIniFileName      ( void );
-char* GetLangFileName     ( void );
-void  LoadSettings        ( void );
-void  MenuSetText         ( HMENU hMenu, int MenuPos, char * Title, char * Shortcut );
-void  SetCurrentSaveState ( HWND hWnd, int State);
-void  FixupMenubar		  ( HWND hWnd );
-void  SetupMenu           ( HWND hWnd );
-void  CreateRomListControl ( HWND hWnd );
+void  __cdecl DisplayError       (char * Message,...);
+void  ChangeWinSize        (HWND hWnd,long width,long height,HWND hStatusBar);
+void  DisplayFPS          (void);
+char* GetIniFileName      (void);
+char* GetLangFileName     (void);
+void  LoadSettings        (void);
+void  MenuSetText         (HMENU hMenu,int MenuPos,char * Title,char * Shortcut);
+void  SetCurrentSaveState (HWND hWnd,int State);
+void  FixupMenubar		  (HWND hWnd);
+void  SetupMenu           (HWND hWnd);
+void  CreateRomListControl (HWND hWnd);
 #ifdef __cplusplus
 }
 #endif

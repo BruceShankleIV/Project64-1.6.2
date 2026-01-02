@@ -11,7 +11,7 @@
  * providing that this license information and copyright notice appear with
  * all copies and any derived work.
  *
- * This software is provided 'as-is', without any express or implied
+ * This software is provided 'as-is',without any express or implied
  * warranty. In no event shall the authors be held liable for any damages
  * arising from the use of this software.
  *
@@ -24,41 +24,41 @@
  *
  */
 #define LargeCompileBufferSize	0x03200000
-extern DWORD *TLB_ReadMap, *TLB_WriteMap, RDRAMsize, SystemRDRAMsize;
-extern BYTE *N64MEM, *RDRAM, *DMEM, *IMEM, *ROM;
-extern void ** JumpTable, ** DelaySlotTable;
-extern BYTE *RecompCode, *RecompPos;
+extern DWORD *TLB_ReadMap,*TLB_WriteMap,RDRAMsize,SystemRDRAMsize;
+extern BYTE *N64MEM,*RDRAM,*DMEM,*IMEM,*ROM;
+extern void ** JumpTable,** DelaySlotTable;
+extern BYTE *RecompCode,*RecompPos;
 extern BOOL WrittenToRom;
 /* Memory Control */
-int  Allocate_ROM                ( void );
-int  Allocate_Memory             ( void );
-void Release_Memory              ( void );
+int  Allocate_ROM                (void);
+int  Allocate_Memory             (void);
+void Release_Memory              (void);
 /* CPU memory functions */
-int  r4300i_Command_MemoryFilter ( DWORD dwExptCode, LPEXCEPTION_POINTERS lpEP );
-int  r4300i_CPU_MemoryFilter     ( DWORD dwExptCode, LPEXCEPTION_POINTERS lpEP );
-int  r4300i_LB_NonMemory         ( DWORD PAddr, DWORD * Value, BOOL SignExtend );
-BOOL r4300i_LB_VAddr             ( DWORD VAddr, BYTE * Value );
-BOOL r4300i_LD_VAddr             ( DWORD VAddr, unsigned _int64 * Value );
-int  r4300i_LH_NonMemory         ( DWORD PAddr, DWORD * Value, int SignExtend );
-BOOL r4300i_LH_VAddr             ( DWORD VAddr, WORD * Value );
-int  r4300i_LW_NonMemory         ( DWORD PAddr, DWORD * Value );
-BOOL r4300i_LW_VAddr             ( DWORD VAddr, DWORD * Value );
-int  r4300i_SB_NonMemory         ( DWORD PAddr, BYTE Value );
-BOOL r4300i_SB_VAddr             ( DWORD VAddr, BYTE Value );
-BOOL r4300i_SD_VAddr             ( DWORD VAddr, unsigned _int64 Value );
-int  r4300i_SH_NonMemory         ( DWORD PAddr, WORD Value );
-BOOL r4300i_SH_VAddr             ( DWORD VAddr, WORD Value );
-int  r4300i_SW_NonMemory         ( DWORD PAddr, DWORD Value );
-BOOL r4300i_SW_VAddr             ( DWORD VAddr, DWORD Value );
+int  r4300i_Command_MemoryFilter (DWORD dwExptCode,LPEXCEPTION_POINTERS lpEP);
+int  r4300i_CPU_MemoryFilter     (DWORD dwExptCode,LPEXCEPTION_POINTERS lpEP);
+int  r4300i_LB_NonMemory         (DWORD PAddr,DWORD * Value,BOOL SignExtend);
+BOOL r4300i_LB_VAddr             (DWORD VAddr,BYTE * Value);
+BOOL r4300i_LD_VAddr             (DWORD VAddr,unsigned _int64 * Value);
+int  r4300i_LH_NonMemory         (DWORD PAddr,DWORD * Value,int SignExtend);
+BOOL r4300i_LH_VAddr             (DWORD VAddr,WORD * Value);
+int  r4300i_LW_NonMemory         (DWORD PAddr,DWORD * Value);
+BOOL r4300i_LW_VAddr             (DWORD VAddr,DWORD * Value);
+int  r4300i_SB_NonMemory         (DWORD PAddr,BYTE Value);
+BOOL r4300i_SB_VAddr             (DWORD VAddr,BYTE Value);
+BOOL r4300i_SD_VAddr             (DWORD VAddr,unsigned _int64 Value);
+int  r4300i_SH_NonMemory         (DWORD PAddr,WORD Value);
+BOOL r4300i_SH_VAddr             (DWORD VAddr,WORD Value);
+int  r4300i_SW_NonMemory         (DWORD PAddr,DWORD Value);
+BOOL r4300i_SW_VAddr             (DWORD VAddr,DWORD Value);
 /* Recompiler Memory Functions */
-void Compile_LB                  ( int Reg, DWORD Addr, BOOL SignExtend );
-void Compile_LH                  ( int Reg, DWORD Addr, BOOL SignExtend );
-void Compile_LW                  ( int Reg, DWORD Addr );
-void Compile_SB_Const            ( BYTE Value, DWORD Addr );
-void Compile_SB_Register         ( int x86Reg, DWORD Addr );
-void Compile_SH_Const            ( WORD Value, DWORD Addr );
-void Compile_SH_Register         ( int x86Reg, DWORD Addr );
-void Compile_SW_Const            ( DWORD Value, DWORD Addr );
-void Compile_SW_Register         ( int x86Reg, DWORD Addr );
-void ResetMemoryStack            ( BLOCK_SECTION * Section );
-void ResetRecompCode             ( void );
+void Compile_LB                  (int Reg,DWORD Addr,BOOL SignExtend);
+void Compile_LH                  (int Reg,DWORD Addr,BOOL SignExtend);
+void Compile_LW                  (int Reg,DWORD Addr);
+void Compile_SB_Const            (BYTE Value,DWORD Addr);
+void Compile_SB_Register         (int x86Reg,DWORD Addr);
+void Compile_SH_Const            (WORD Value,DWORD Addr);
+void Compile_SH_Register         (int x86Reg,DWORD Addr);
+void Compile_SW_Const            (DWORD Value,DWORD Addr);
+void Compile_SW_Register         (int x86Reg,DWORD Addr);
+void ResetMemoryStack            (BLOCK_SECTION * Section);
+void ResetRecompCode             (void);

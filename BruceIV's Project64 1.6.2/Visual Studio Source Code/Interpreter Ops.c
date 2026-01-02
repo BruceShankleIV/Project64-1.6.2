@@ -11,7 +11,7 @@
  * providing that this license information and copyright notice appear with
  * all copies and any derived work.
  *
- * This software is provided 'as-is', without any express or implied
+ * This software is provided 'as-is',without any express or implied
  * warranty. In no event shall the authors be held liable for any damages
  * arising from the use of this software.
  *
@@ -32,35 +32,35 @@
 int RoundingModel = _RC_NEAR;
 #define ADDRESS_ERROR_EXCEPTION(Address,FromRead)\
 	DoAddressError(NextInstruction == JUMP,Address,FromRead);\
-	NextInstruction = JUMP;\
+	SetJump\
 	JumpToLocation = PROGRAM_COUNTER;\
 	return;
 #define TEST_COP1_USABLE_EXCEPTION\
 	if ((STATUS_REGISTER & STATUS_CU1) == 0) {\
 		DoCopUnusableException(NextInstruction == JUMP,1);\
-		NextInstruction = JUMP;\
+		SetJump\
 		JumpToLocation = PROGRAM_COUNTER;\
 		return;\
 	}
 #define TLB_READ_EXCEPTION(Address)\
 	DoTLBMiss(NextInstruction == JUMP,Address);\
-	NextInstruction = JUMP;\
+	SetJump\
 	JumpToLocation = PROGRAM_COUNTER;\
 	return;
 /************************* OpCode functions *************************/
 void _fastcall r4300i_J (void) {
-	NextInstruction = DELAY_SLOT;
+	SetDelay
 	JumpToLocation = (PROGRAM_COUNTER & 0xF0000000) + (Opcode.target << 2);
 	TestInterpreterJump(PROGRAM_COUNTER,JumpToLocation,0,0);
 }
 void _fastcall r4300i_JAL (void) {
-	NextInstruction = DELAY_SLOT;
+	SetDelay
 	JumpToLocation = (PROGRAM_COUNTER & 0xF0000000) + (Opcode.target << 2);
 	TestInterpreterJump(PROGRAM_COUNTER,JumpToLocation,0,0);
 	GPR[31].DW= (long)(PROGRAM_COUNTER + 8);
 }
 void _fastcall r4300i_BEQ (void) {
-	NextInstruction = DELAY_SLOT;
+	SetDelay
 	if (GPR[Opcode.rs].DW == GPR[Opcode.rt].DW) {
 		JumpToLocation = PROGRAM_COUNTER + ((short)Opcode.offset << 2) + 4;
 		TestInterpreterJump(PROGRAM_COUNTER,JumpToLocation,Opcode.rs,Opcode.rt);
@@ -69,7 +69,7 @@ void _fastcall r4300i_BEQ (void) {
 	}
 }
 void _fastcall r4300i_BNE (void) {
-	NextInstruction = DELAY_SLOT;
+	SetDelay
 	if (GPR[Opcode.rs].DW != GPR[Opcode.rt].DW) {
 		JumpToLocation = PROGRAM_COUNTER + ((short)Opcode.offset << 2) + 4;
 		TestInterpreterJump(PROGRAM_COUNTER,JumpToLocation,Opcode.rs,Opcode.rt);
@@ -78,7 +78,7 @@ void _fastcall r4300i_BNE (void) {
 	}
 }
 void _fastcall r4300i_BLEZ (void) {
-	NextInstruction = DELAY_SLOT;
+	SetDelay
 	if (GPR[Opcode.rs].DW <= 0) {
 		JumpToLocation = PROGRAM_COUNTER + ((short)Opcode.offset << 2) + 4;
 		TestInterpreterJump(PROGRAM_COUNTER,JumpToLocation,Opcode.rs,0);
@@ -87,7 +87,7 @@ void _fastcall r4300i_BLEZ (void) {
 	}
 }
 void _fastcall r4300i_BGTZ (void) {
-	NextInstruction = DELAY_SLOT;
+	SetDelay
 	if (GPR[Opcode.rs].DW > 0) {
 		JumpToLocation = PROGRAM_COUNTER + ((short)Opcode.offset << 2) + 4;
 		TestInterpreterJump(PROGRAM_COUNTER,JumpToLocation,Opcode.rs,0);
@@ -123,51 +123,51 @@ void _fastcall r4300i_LUI (void) {
 }
 void _fastcall r4300i_BEQL (void) {
 	if (GPR[Opcode.rs].DW == GPR[Opcode.rt].DW) {
-		NextInstruction = DELAY_SLOT;
+		SetDelay
 		JumpToLocation = PROGRAM_COUNTER + ((short)Opcode.offset << 2) + 4;
 		TestInterpreterJump(PROGRAM_COUNTER,JumpToLocation,Opcode.rs,Opcode.rt);
 	} else {
-		NextInstruction = JUMP;
+		SetJump
 		JumpToLocation = PROGRAM_COUNTER + 8;
 	}
 }
 void _fastcall r4300i_BNEL (void) {
 	if (GPR[Opcode.rs].DW != GPR[Opcode.rt].DW) {
-		NextInstruction = DELAY_SLOT;
+		SetDelay
 		JumpToLocation = PROGRAM_COUNTER + ((short)Opcode.offset << 2) + 4;
 		TestInterpreterJump(PROGRAM_COUNTER,JumpToLocation,Opcode.rs,Opcode.rt);
 	} else {
-		NextInstruction = JUMP;
+		SetJump
 		JumpToLocation = PROGRAM_COUNTER + 8;
 	}
 }
 void _fastcall r4300i_BLEZL (void) {
 	if (GPR[Opcode.rs].DW <= 0) {
-		NextInstruction = DELAY_SLOT;
+		SetDelay
 		JumpToLocation = PROGRAM_COUNTER + ((short)Opcode.offset << 2) + 4;
 		TestInterpreterJump(PROGRAM_COUNTER,JumpToLocation,Opcode.rs,0);
 	} else {
-		NextInstruction = JUMP;
+		SetJump
 		JumpToLocation = PROGRAM_COUNTER + 8;
 	}
 }
 void _fastcall r4300i_BGTZL (void) {
 	if (GPR[Opcode.rs].DW > 0) {
-		NextInstruction = DELAY_SLOT;
+		SetDelay
 		JumpToLocation = PROGRAM_COUNTER + ((short)Opcode.offset << 2) + 4;
 		TestInterpreterJump(PROGRAM_COUNTER,JumpToLocation,Opcode.rs,0);
 	} else {
-		NextInstruction = JUMP;
+		SetJump
 		JumpToLocation = PROGRAM_COUNTER + 8;
 	}
 }
 void _fastcall r4300i_DADDIU (void) {
 	GPR[Opcode.rt].DW = GPR[Opcode.rs].DW + (_int64)((short)Opcode.immediate);
 }
-QWORD LDL_MASK[8] = { 0,0xFF,0xFFFF,0xFFFFFF,0xFFFFFFFF,0xFFFFFFFFFF,0xFFFFFFFFFFFF, 0xFFFFFFFFFFFFFF };
-int LDL_SHIFT[8] = { 0, 8, 16, 24, 32, 40, 48, 56 };
+QWORD LDL_MASK[8] = { 0,0xFF,0xFFFF,0xFFFFFF,0xFFFFFFFF,0xFFFFFFFFFF,0xFFFFFFFFFFFF,0xFFFFFFFFFFFFFF };
+int LDL_SHIFT[8] = { 0,8,16,24,32,40,48,56 };
 void _fastcall r4300i_LDL (void) {
-	DWORD Offset, Address;
+	DWORD Offset,Address;
 	QWORD Value;
 	Address = GPR[Opcode.base].UW[0] + (short)Opcode.offset;
 	Offset  = Address & 7;
@@ -175,10 +175,10 @@ void _fastcall r4300i_LDL (void) {
 	GPR[Opcode.rt].DW = GPR[Opcode.rt].DW & LDL_MASK[Offset];
 	GPR[Opcode.rt].DW += Value << LDL_SHIFT[Offset];
 }
-QWORD LDR_MASK[8] = { 0xFFFFFFFFFFFFFF00, 0xFFFFFFFFFFFF0000, 0xFFFFFFFFFF000000, 0xFFFFFFFF00000000, 0xFFFFFF0000000000, 0xFFFF000000000000, 0xFF00000000000000, 0 };
-int LDR_SHIFT[8] = { 56, 48, 40, 32, 24, 16, 8, 0 };
+QWORD LDR_MASK[8] = { 0xFFFFFFFFFFFFFF00,0xFFFFFFFFFFFF0000,0xFFFFFFFFFF000000,0xFFFFFFFF00000000,0xFFFFFF0000000000,0xFFFF000000000000,0xFF00000000000000,0 };
+int LDR_SHIFT[8] = { 56,48,40,32,24,16,8,0 };
 void _fastcall r4300i_LDR (void) {
-	DWORD Offset, Address;
+	DWORD Offset,Address;
 	QWORD Value;
 	Address = GPR[Opcode.base].UW[0] + (short)Opcode.offset;
 	Offset  = Address & 7;
@@ -205,9 +205,9 @@ void _fastcall r4300i_LH (void) {
 	}
 }
 DWORD LWL_MASK[4] = { 0,0xFF,0xFFFF,0xFFFFFF };
-int LWL_SHIFT[4] = { 0, 8, 16, 24};
+int LWL_SHIFT[4] = { 0,8,16,24};
 void _fastcall r4300i_LWL (void) {
-	DWORD Offset, Address, Value;
+	DWORD Offset,Address,Value;
 	Address = GPR[Opcode.base].UW[0] + (short)Opcode.offset;
 	Offset  = Address & 3;
 	if (!r4300i_LW_VAddr((Address & ~3),&Value)) return;
@@ -237,10 +237,10 @@ void _fastcall r4300i_LHU (void) {
 		TLB_READ_EXCEPTION(Address);
 	} else GPR[Opcode.rt].UDW = GPR[Opcode.rt].UHW[0];
 }
-DWORD LWR_MASK[4] = { 0xFFFFFF00, 0xFFFF0000, 0xFF000000, 0 };
-int LWR_SHIFT[4] = { 24, 16 ,8, 0 };
+DWORD LWR_MASK[4] = { 0xFFFFFF00,0xFFFF0000,0xFF000000,0 };
+int LWR_SHIFT[4] = { 24,16 ,8,0 };
 void _fastcall r4300i_LWR (void) {
-	DWORD Offset, Address, Value;
+	DWORD Offset,Address,Value;
 	Address = GPR[Opcode.base].UW[0] + (short)Opcode.offset;
 	Offset  = Address & 3;
 	if (!r4300i_LW_VAddr((Address & ~3),&Value)) return;
@@ -267,9 +267,9 @@ void _fastcall r4300i_SH (void) {
 	r4300i_SH_VAddr(Address,GPR[Opcode.rt].UHW[0]);
 }
 DWORD SWL_MASK[4] = { 0,0xFF000000,0xFFFF0000,0xFFFFFF00 };
-int SWL_SHIFT[4] = { 0, 8, 16, 24 };
+int SWL_SHIFT[4] = { 0,8,16,24 };
 void _fastcall r4300i_SWL (void) {
-	DWORD Offset, Address, Value;
+	DWORD Offset,Address,Value;
 	Address = GPR[Opcode.base].UW[0] + (short)Opcode.offset;
 	Offset  = Address & 3;
 	if (!r4300i_LW_VAddr((Address & ~3),&Value)) return;
@@ -280,12 +280,12 @@ void _fastcall r4300i_SWL (void) {
 void _fastcall r4300i_SW (void) {
 	DWORD Address =  GPR[Opcode.base].UW[0] + (short)Opcode.offset;
 	if ((Address & 3) != 0) { ADDRESS_ERROR_EXCEPTION(Address,FALSE); }
-	r4300i_SW_VAddr(Address, GPR[Opcode.rt].UW[0]);
+	r4300i_SW_VAddr(Address,GPR[Opcode.rt].UW[0]);
 }
-QWORD SDL_MASK[8] = { 0, 0xFF00000000000000, 0xFFFF000000000000, 0xFFFFFF0000000000, 0xFFFFFFFF00000000, 0xFFFFFFFFFF000000, 0xFFFFFFFFFFFF0000, 0xFFFFFFFFFFFFFF00 };
-int SDL_SHIFT[8] = { 0, 8, 16, 24, 32, 40, 48, 56 };
+QWORD SDL_MASK[8] = { 0,0xFF00000000000000,0xFFFF000000000000,0xFFFFFF0000000000,0xFFFFFFFF00000000,0xFFFFFFFFFF000000,0xFFFFFFFFFFFF0000,0xFFFFFFFFFFFFFF00 };
+int SDL_SHIFT[8] = { 0,8,16,24,32,40,48,56 };
 void _fastcall r4300i_SDL (void) {
-	DWORD Offset, Address;
+	DWORD Offset,Address;
 	QWORD Value;
 	Address = GPR[Opcode.base].UW[0] + (short)Opcode.offset;
 	Offset  = Address & 7;
@@ -305,7 +305,7 @@ QWORD SDR_MASK[8] = { 0x00FFFFFFFFFFFFFF,
 					};
 int SDR_SHIFT[8] = { 56,48,40,32,24,16,8,0 };
 void _fastcall r4300i_SDR (void) {
-	DWORD Offset, Address;
+	DWORD Offset,Address;
 	QWORD Value;
 	Address = GPR[Opcode.base].UW[0] + (short)Opcode.offset;
 	Offset  = Address & 7;
@@ -315,9 +315,9 @@ void _fastcall r4300i_SDR (void) {
 	r4300i_SD_VAddr((Address & ~7),Value);
 }
 DWORD SWR_MASK[4] = { 0x00FFFFFF,0x0000FFFF,0x000000FF,0x00000000 };
-int SWR_SHIFT[4] = { 24, 16 , 8, 0  };
+int SWR_SHIFT[4] = { 24,16 ,8,0  };
 void _fastcall r4300i_SWR (void) {
-	DWORD Offset, Address, Value;
+	DWORD Offset,Address,Value;
 	Address = GPR[Opcode.base].UW[0] + (short)Opcode.offset;
 	Offset  = Address & 3;
 	if (!r4300i_LW_VAddr((Address & ~3),&Value)) return;
@@ -347,7 +347,7 @@ void _fastcall r4300i_LWC1 (void) {
 void _fastcall r4300i_SC (void) {
 	DWORD Address =  GPR[Opcode.base].UW[0] + (short)Opcode.offset;
 	if ((Address & 3) != 0) { ADDRESS_ERROR_EXCEPTION(Address,FALSE); }
-	if (LLBit == 1) r4300i_SW_VAddr(Address, GPR[Opcode.rt].UW[0]);
+	if (LLBit == 1) r4300i_SW_VAddr(Address,GPR[Opcode.rt].UW[0]);
 	GPR[Opcode.rt].UW[0] = LLBit;
 }
 void _fastcall r4300i_LD (void) {
@@ -399,18 +399,26 @@ void _fastcall r4300i_SPECIAL_SRAV (void) {
 	GPR[Opcode.rd].DW = (GPR[Opcode.rt].W[0] >> (GPR[Opcode.rs].UW[0] & 0x1F));
 }
 void _fastcall r4300i_SPECIAL_JR (void) {
-	NextInstruction = DELAY_SLOT;
+	SetDelay
 	JumpToLocation = GPR[Opcode.rs].UW[0];
 }
 void _fastcall r4300i_SPECIAL_JALR (void) {
-	NextInstruction = DELAY_SLOT;
+	SetDelay
 	JumpToLocation = GPR[Opcode.rs].UW[0];
 	GPR[Opcode.rd].DW = (long)(PROGRAM_COUNTER + 8);
 }
 void _fastcall r4300i_SPECIAL_SYSCALL(void) {
 	DoSysCallException(NextInstruction == JUMP);
-	NextInstruction = JUMP;
+	SetJump
 	JumpToLocation = PROGRAM_COUNTER;
+}
+void _fastcall r4300i_SPECIAL_BREAK(void) {
+	static BOOL Shown = FALSE;
+	if (Shown) return;
+	HandleModal1(hMainWindow);
+	if (MessageBox(NULL,GS(SPECIAL_BREAK),GS(MSG_ERROR_TITLE),MB_YESNO | MB_ICONERROR | MB_SETFOREGROUND) == IDYES) r4300i_SPECIAL_SYSCALL();
+	else Shown = TRUE;
+	HandleModal2(hMainWindow);
 }
 void _fastcall r4300i_SPECIAL_MFHI (void) {
 	GPR[Opcode.rd].DW = HI.DW;
@@ -444,13 +452,13 @@ void _fastcall r4300i_SPECIAL_MULTU (void) {
 	HI.DW = HI.W[1];
 }
 void _fastcall r4300i_SPECIAL_DIV (void) {
-	if ( GPR[Opcode.rt].UDW != 0 ) {
+	if (GPR[Opcode.rt].UDW != 0) {
 		LO.DW = GPR[Opcode.rs].W[0] / GPR[Opcode.rt].W[0];
 		HI.DW = GPR[Opcode.rs].W[0] % GPR[Opcode.rt].W[0];
 	}
 }
 void _fastcall r4300i_SPECIAL_DIVU (void) {
-	if ( GPR[Opcode.rt].UDW != 0 ) {
+	if (GPR[Opcode.rt].UDW != 0) {
 		LO.DW = (int)(GPR[Opcode.rs].UW[0] / GPR[Opcode.rt].UW[0]);
 		HI.DW = (int)(GPR[Opcode.rs].UW[0] % GPR[Opcode.rt].UW[0]);
 	}
@@ -476,13 +484,13 @@ void _fastcall r4300i_SPECIAL_DMULTU (void) {
 	HI.UDW += (QWORD)Tmp[0].UW[1] + (QWORD)Tmp[1].UW[1] + Tmp[2].UW[1];
 }
 void _fastcall r4300i_SPECIAL_DDIV (void) {
-	if ( GPR[Opcode.rt].UDW != 0 ) {
+	if (GPR[Opcode.rt].UDW != 0) {
 		LO.DW = GPR[Opcode.rs].DW / GPR[Opcode.rt].DW;
 		HI.DW = GPR[Opcode.rs].DW % GPR[Opcode.rt].DW;
 	}
 }
 void _fastcall r4300i_SPECIAL_DDIVU (void) {
-	if ( GPR[Opcode.rt].UDW != 0 ) {
+	if (GPR[Opcode.rt].UDW != 0) {
 		LO.UDW = GPR[Opcode.rs].UDW / GPR[Opcode.rt].UDW;
 		HI.UDW = GPR[Opcode.rs].UDW % GPR[Opcode.rt].UDW;
 	}
@@ -557,7 +565,7 @@ void _fastcall r4300i_SPECIAL_DSRA32 (void) {
 }
 /********************** R4300i OpCodes: RegImm **********************/
 void _fastcall r4300i_REGIMM_BLTZ (void) {
-	NextInstruction = DELAY_SLOT;
+	SetDelay
 	if (GPR[Opcode.rs].DW < 0) {
 		JumpToLocation = PROGRAM_COUNTER + ((short)Opcode.offset << 2) + 4;
 		TestInterpreterJump(PROGRAM_COUNTER,JumpToLocation,Opcode.rs,0);
@@ -566,7 +574,7 @@ void _fastcall r4300i_REGIMM_BLTZ (void) {
 	}
 }
 void _fastcall r4300i_REGIMM_BGEZ (void) {
-	NextInstruction = DELAY_SLOT;
+	SetDelay
 	if (GPR[Opcode.rs].DW >= 0) {
 		JumpToLocation = PROGRAM_COUNTER + ((short)Opcode.offset << 2) + 4;
 		TestInterpreterJump(PROGRAM_COUNTER,JumpToLocation,Opcode.rs,0);
@@ -576,26 +584,26 @@ void _fastcall r4300i_REGIMM_BGEZ (void) {
 }
 void _fastcall r4300i_REGIMM_BLTZL (void) {
 	if (GPR[Opcode.rs].DW < 0) {
-		NextInstruction = DELAY_SLOT;
+		SetDelay
 		JumpToLocation = PROGRAM_COUNTER + ((short)Opcode.offset << 2) + 4;
 		TestInterpreterJump(PROGRAM_COUNTER,JumpToLocation,Opcode.rs,0);
 	} else {
-		NextInstruction = JUMP;
+		SetJump
 		JumpToLocation = PROGRAM_COUNTER + 8;
 	}
 }
 void _fastcall r4300i_REGIMM_BGEZL (void) {
 	if (GPR[Opcode.rs].DW >= 0) {
-		NextInstruction = DELAY_SLOT;
+		SetDelay
 		JumpToLocation = PROGRAM_COUNTER + ((short)Opcode.offset << 2) + 4;
 		TestInterpreterJump(PROGRAM_COUNTER,JumpToLocation,Opcode.rs,0);
 	} else {
-		NextInstruction = JUMP;
+		SetJump
 		JumpToLocation = PROGRAM_COUNTER + 8;
 	}
 }
 void _fastcall r4300i_REGIMM_BLTZAL (void) {
-	NextInstruction = DELAY_SLOT;
+	SetDelay
 	if (GPR[Opcode.rs].DW < 0) {
 		JumpToLocation = PROGRAM_COUNTER + ((short)Opcode.offset << 2) + 4;
 		TestInterpreterJump(PROGRAM_COUNTER,JumpToLocation,Opcode.rs,0);
@@ -605,7 +613,7 @@ void _fastcall r4300i_REGIMM_BLTZAL (void) {
 	GPR[31].DW= (long)(PROGRAM_COUNTER + 8);
 }
 void _fastcall r4300i_REGIMM_BGEZAL (void) {
-	NextInstruction = DELAY_SLOT;
+	SetDelay
 	if (GPR[Opcode.rs].DW >= 0) {
 		JumpToLocation = PROGRAM_COUNTER + ((short)Opcode.offset << 2) + 4;
 		TestInterpreterJump(PROGRAM_COUNTER,JumpToLocation,Opcode.rs,0);
@@ -661,7 +669,6 @@ void _fastcall r4300i_COP0_MT (void) {
 		break;
 	default:
 		DisplayThreadExit("Interpreter Ops.c - r4300i_COP0_MT - switch (Opcode.rd) - default:");
-		break;
 	}
 }
 /************************** COP0 CO functions ***********************/
@@ -678,7 +685,7 @@ void _fastcall r4300i_COP0_CO_TLBP (void) {
 	TLB_Probe();
 }
 void _fastcall r4300i_COP0_CO_ERET (void) {
-	NextInstruction = JUMP;
+	SetJump
 	if ((STATUS_REGISTER & STATUS_ERL) != 0) {
 		JumpToLocation = ERROREPC_REGISTER;
 		STATUS_REGISTER &= ~STATUS_ERL;
@@ -719,14 +726,14 @@ void _fastcall r4300i_COP1_CT (void) {
 		case 0: RoundingModel = _RC_NEAR; break;
 		case 1: RoundingModel = _RC_CHOP; break;
 		case 2: RoundingModel = _RC_UP; break;
-		case 3: RoundingModel = _RC_DOWN; break;
+		case 3: RoundingModel = _RC_DOWN;
 		}
 	}
 }
 /************************* COP1: BC1 functions ***********************/
 void _fastcall r4300i_COP1_BC_BCF (void) {
 	TEST_COP1_USABLE_EXCEPTION
-	NextInstruction = DELAY_SLOT;
+	SetDelay
 	if ((FPCR[31] & FPCSR_C) == 0) {
 		JumpToLocation = PROGRAM_COUNTER + ((short)Opcode.offset << 2) + 4;
 	} else {
@@ -735,7 +742,7 @@ void _fastcall r4300i_COP1_BC_BCF (void) {
 }
 void _fastcall r4300i_COP1_BC_BCT (void) {
 	TEST_COP1_USABLE_EXCEPTION
-	NextInstruction = DELAY_SLOT;
+	SetDelay
 	if ((FPCR[31] & FPCSR_C) != 0) {
 		JumpToLocation = PROGRAM_COUNTER + ((short)Opcode.offset << 2) + 4;
 	} else {
@@ -745,36 +752,36 @@ void _fastcall r4300i_COP1_BC_BCT (void) {
 void _fastcall r4300i_COP1_BC_BCFL (void) {
 	TEST_COP1_USABLE_EXCEPTION
 	if ((FPCR[31] & FPCSR_C) == 0) {
-		NextInstruction = DELAY_SLOT;
+		SetDelay
 		JumpToLocation = PROGRAM_COUNTER + ((short)Opcode.offset << 2) + 4;
 	} else {
-		NextInstruction = JUMP;
+		SetJump
 		JumpToLocation = PROGRAM_COUNTER + 8;
 	}
 }
 void _fastcall r4300i_COP1_BC_BCTL (void) {
 	TEST_COP1_USABLE_EXCEPTION
 	if ((FPCR[31] & FPCSR_C) != 0) {
-		NextInstruction = DELAY_SLOT;
+		SetDelay
 		JumpToLocation = PROGRAM_COUNTER + ((short)Opcode.offset << 2) + 4;
 	} else {
-		NextInstruction = JUMP;
+		SetJump
 		JumpToLocation = PROGRAM_COUNTER + 8;
 	}
 }
 /************************** COP1: S functions ************************/
-__inline void Float_RoundToInteger32( int * Dest, float * Source ) {
+__inline void Float_RoundToInteger32(int * Dest,float * Source) {
 	_asm {
-		mov esi, [Source]
-		mov edi, [Dest]
+		mov esi,[Source]
+		mov edi,[Dest]
 		fld dword ptr [esi]
 		fistp dword ptr [edi]
 	}
 }
-__inline void Float_RoundToInteger64( __int64 * Dest, float * Source ) {
+__inline void Float_RoundToInteger64(__int64 * Dest,float * Source) {
 	_asm {
-		mov esi, [Source]
-		mov edi, [Dest]
+		mov esi,[Source]
+		mov edi,[Dest]
 		fld dword ptr [esi]
 		fistp qword ptr [edi]
 	}
@@ -870,8 +877,8 @@ void _fastcall r4300i_COP1_S_CVT_L (void) {
 	Float_RoundToInteger64(&*(__int64 *)FPRDoubleLocation[Opcode.fd],&*(float *)FPRFloatLocation[Opcode.fs]);
 }
 void _fastcall r4300i_COP1_S_CMP (void) {
-	int less, equal, unorded, condition;
-	float Temp0, Temp1;
+	int less,equal,unorded,condition;
+	float Temp0,Temp1;
 	TEST_COP1_USABLE_EXCEPTION
 	Temp0 = *(float *)FPRFloatLocation[Opcode.fs];
 	Temp1 = *(float *)FPRFloatLocation[Opcode.ft];
@@ -895,18 +902,18 @@ void _fastcall r4300i_COP1_S_CMP (void) {
 	}
 }
 /************************** COP1: D functions ************************/
-__inline void Double_RoundToInteger32( int * Dest, double * Source ) {
+__inline void Double_RoundToInteger32(int * Dest,double * Source) {
 	_asm {
-		mov esi, [Source]
-		mov edi, [Dest]
+		mov esi,[Source]
+		mov edi,[Dest]
 		fld qword ptr [esi]
 		fistp dword ptr [edi]
 	}
 }
-__inline void Double_RoundToInteger64( __int64 * Dest, double * Source ) {
+__inline void Double_RoundToInteger64(__int64 * Dest,double * Source) {
 	_asm {
-		mov esi, [Source]
-		mov edi, [Dest]
+		mov esi,[Source]
+		mov edi,[Dest]
 		fld qword ptr [esi]
 		fistp qword ptr [edi]
 	}
@@ -946,12 +953,12 @@ void _fastcall r4300i_COP1_D_NEG (void) {
 void _fastcall r4300i_COP1_D_TRUNC_L (void) {	//added by Witten
 	TEST_COP1_USABLE_EXCEPTION
 	_controlfp(RC_CHOP,_MCW_RC);
-	Double_RoundToInteger64(&*(__int64 *)FPRFloatLocation[Opcode.fd],&*(double *)FPRDoubleLocation[Opcode.fs] );
+	Double_RoundToInteger64(&*(__int64 *)FPRFloatLocation[Opcode.fd],&*(double *)FPRDoubleLocation[Opcode.fs]);
 }
 void _fastcall r4300i_COP1_D_CEIL_L (void) {	//added by Witten
 	TEST_COP1_USABLE_EXCEPTION
 	_controlfp(RC_UP,_MCW_RC);
-	Double_RoundToInteger64(&*(__int64 *)FPRFloatLocation[Opcode.fd],&*(double *)FPRDoubleLocation[Opcode.fs] );
+	Double_RoundToInteger64(&*(__int64 *)FPRFloatLocation[Opcode.fd],&*(double *)FPRDoubleLocation[Opcode.fs]);
 }
 void _fastcall r4300i_COP1_D_FLOOR_L (void) {	//added by Witten
 	TEST_COP1_USABLE_EXCEPTION
@@ -961,17 +968,17 @@ void _fastcall r4300i_COP1_D_FLOOR_L (void) {	//added by Witten
 void _fastcall r4300i_COP1_D_ROUND_W (void) {
 	TEST_COP1_USABLE_EXCEPTION
 	_controlfp(_RC_NEAR,_MCW_RC);
-	Double_RoundToInteger32(&*(DWORD *)FPRFloatLocation[Opcode.fd],&*(double *)FPRDoubleLocation[Opcode.fs] );
+	Double_RoundToInteger32(&*(DWORD *)FPRFloatLocation[Opcode.fd],&*(double *)FPRDoubleLocation[Opcode.fs]);
 }
 void _fastcall r4300i_COP1_D_TRUNC_W (void) {
 	TEST_COP1_USABLE_EXCEPTION
 	_controlfp(RC_CHOP,_MCW_RC);
-	Double_RoundToInteger32(&*(DWORD *)FPRFloatLocation[Opcode.fd],&*(double *)FPRDoubleLocation[Opcode.fs] );
+	Double_RoundToInteger32(&*(DWORD *)FPRFloatLocation[Opcode.fd],&*(double *)FPRDoubleLocation[Opcode.fs]);
 }
 void _fastcall r4300i_COP1_D_CEIL_W (void) {	//added by Witten
 	TEST_COP1_USABLE_EXCEPTION
 	_controlfp(RC_UP,_MCW_RC);
-	Double_RoundToInteger32(&*(DWORD *)FPRFloatLocation[Opcode.fd],&*(double *)FPRDoubleLocation[Opcode.fs] );
+	Double_RoundToInteger32(&*(DWORD *)FPRFloatLocation[Opcode.fd],&*(double *)FPRDoubleLocation[Opcode.fs]);
 }
 void _fastcall r4300i_COP1_D_FLOOR_W (void) {	//added by Witten
 	TEST_COP1_USABLE_EXCEPTION
@@ -986,7 +993,7 @@ void _fastcall r4300i_COP1_D_CVT_S (void) {
 void _fastcall r4300i_COP1_D_CVT_W (void) {
 	TEST_COP1_USABLE_EXCEPTION
 	_controlfp(RoundingModel,_MCW_RC);
-	Double_RoundToInteger32(&*(DWORD *)FPRFloatLocation[Opcode.fd],&*(double *)FPRDoubleLocation[Opcode.fs] );
+	Double_RoundToInteger32(&*(DWORD *)FPRFloatLocation[Opcode.fd],&*(double *)FPRDoubleLocation[Opcode.fs]);
 }
 void _fastcall r4300i_COP1_D_CVT_L (void) {
 	TEST_COP1_USABLE_EXCEPTION
@@ -994,8 +1001,8 @@ void _fastcall r4300i_COP1_D_CVT_L (void) {
 	Double_RoundToInteger64(&*(unsigned __int64 *)FPRDoubleLocation[Opcode.fd],&*(double *)FPRDoubleLocation[Opcode.fs]);
 }
 void _fastcall r4300i_COP1_D_CMP (void) {
-	int less, equal, unorded, condition;
-	MIPS_DWORD Temp0, Temp1;
+	int less,equal,unorded,condition;
+	MIPS_DWORD Temp0,Temp1;
 	TEST_COP1_USABLE_EXCEPTION
 	Temp0.DW = *(__int64 *)FPRDoubleLocation[Opcode.fs];
 	Temp1.DW = *(__int64 *)FPRDoubleLocation[Opcode.ft];

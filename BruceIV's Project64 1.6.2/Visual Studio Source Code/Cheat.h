@@ -11,7 +11,7 @@
  * providing that this license information and copyright notice appear with
  * all copies and any derived work.
  *
- * This software is provided 'as-is', without any express or implied
+ * This software is provided 'as-is',without any express or implied
  * warranty. In no event shall the authors be held liable for any damages
  * arising from the use of this software.
  *
@@ -31,12 +31,12 @@ typedef struct {
 typedef struct {
 	GAMESHARK_CODE Code[MaxGSEntries];
 } CHEAT_CODES;
-char * GetCheatIniFileName ( void );
-void ChangeRomCheats	( HWND hParent );
-void CloseCheatWindow	( void );
-void ApplyCheats		( void );
-void LoadCheats			( void );
-void ManageCheats		( HWND hParent );
+char * GetCheatIniFileName (void);
+void ChangeRomCheats	(HWND hParent);
+void CloseCheatWindow	(void);
+void ApplyCheats		(void);
+void LoadCheats			(void);
+void ManageCheats		(HWND hParent);
 void ApplyGSButton		(void);
-LRESULT CALLBACK Cheat_Proc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+LRESULT CALLBACK Cheat_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam);
 extern HWND hManageWindow;

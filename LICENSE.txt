@@ -19,4 +19,4 @@ The copyright holders request that bug fixes and improvements to the code
 should be forwarded to them so if they want them.
 
 
-[License Grant to Other Users](https://docs.github.com/en/site-policy/github-terms/github-terms-of-service#5-license-grant-to-other-users)
+https://docs.github.com/en/site-policy/github-terms/github-terms-of-service#5-license-grant-to-other-users

@@ -11,7 +11,7 @@
  * providing that this license information and copyright notice appear with
  * all copies and any derived work.
  *
- * This software is provided 'as-is', without any express or implied
+ * This software is provided 'as-is',without any express or implied
  * warranty. In no event shall the authors be held liable for any damages
  * arising from the use of this software.
  *
@@ -30,19 +30,19 @@ typedef struct {
 	int  ColWidth;
 	int  LangID;
 } ROMBROWSER_FIELDS;
-void FillRomList               ( char * Directory );
-void HideRomBrowser            ( void );
-void RefreshRomBrowser         ( void );
-void ResetRomBrowserColomuns   ( void );
-void ResizeRomListControl      ( WORD nWidth, WORD nHeight );
-void RomListDrawItem           ( LPDRAWITEMSTRUCT ditem );
-void RomListNotify             ( LPNMHDR pnmh );
-void SelectRomDir              ( void );
-void HandleShutdown   ( HWND hParent );
-void FreeRomBrowser            ( void );
-void LoadRomBrowserColoumnInfo ( void );
-void SaveRomBrowserColoumnPosition ( int index, int Position );
-void SaveRomBrowserColoumnInfo ( void );
+void FillRomList               (char * Directory);
+void HideRomBrowser            (void);
+void RefreshRomBrowser         (void);
+void ResetRomBrowserColomuns   (void);
+void ResizeRomListControl      (WORD nWidth,WORD nHeight);
+void RomListDrawItem           (LPDRAWITEMSTRUCT ditem);
+void RomListNotify             (LPNMHDR pnmh);
+void SelectRomDir              (void);
+void HandleShutdown   (HWND hParent);
+void FreeRomBrowser            (void);
+void LoadRomBrowserColoumnInfo (void);
+void SaveRomBrowserColoumnPosition (int index,int Position);
+void SaveRomBrowserColoumnInfo (void);
 #define IDC_ROMLIST		                 223
 extern char CurrentRBFileName[MAX_PATH+1];
 extern ROMBROWSER_FIELDS RomBrowserFields[];

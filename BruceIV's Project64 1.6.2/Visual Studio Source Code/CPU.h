@@ -11,7 +11,7 @@
  * providing that this license information and copyright notice appear with
  * all copies and any derived work.
  *
- * This software is provided 'as-is', without any express or implied
+ * This software is provided 'as-is',without any express or implied
  * warranty. In no event shall the authors be held liable for any damages
  * arising from the use of this software.
  *
@@ -51,6 +51,10 @@ typedef struct {
 	BOOL DoInterrupt;
 	BOOL Stepping;
 } CPU_ACTION;
+#define SetEnd NextInstruction = END_BLOCK;
+#define SetNormal NextInstruction = NORMAL;
+#define SetJump NextInstruction = JUMP;
+#define SetDelay NextInstruction = DELAY_SLOT;
 #define MaxTimers	6
 #define CompareTimer			0
 #define SiTimer					1
@@ -66,28 +70,28 @@ typedef struct {
 } SYSTEM_TIMERS;
 void EmuAI_InitializePluginHook();
 void EmuAI_SetFrameRate(int frameRate);
-void ChangeCompareTimer ( void );
-void ChangeTimer        ( int Type, int Value );
-void CheckTimer         ( void );
-void EndEmulation       ( void );
-int  DelaySlotEffectsCompare ( DWORD PC, DWORD Reg1, DWORD Reg2 );
+void ChangeCompareTimer (void);
+void ChangeTimer        (int Type,int Value);
+void CheckTimer         (void);
+void EndEmulation       (void);
+int  DelaySlotEffectsCompare (DWORD PC,DWORD Reg1,DWORD Reg2);
 int  DelaySlotEffectsJump (DWORD JumpPC);
-void DoSomething        ( void );
-void GetAutoSaveDir     ( char * Directory );
-void GetInstantSaveDir  ( char * Directory );
-void InPermLoop         ( void );
-void ResetFunction	( void );
-void DisplayThreadExit	( char * ExitPoint );
-void INITIALIZECPUFlags ( void );
-BOOL Machine_LoadState  ( void );
-BOOL Machine_SaveState  ( void );
-void PauseCPU           ( void );
-void RefreshScreen      ( void );
-void RunRsp             ( void );
-void SetCoreToRunning   ( void );
-void SetCoreToStepping  ( void );
-void StepOpcode         ( void );
-void TimerDone          ( void );
+void DoSomething        (void);
+void GetAutoSaveDir     (char * Directory);
+void GetInstantSaveDir  (char * Directory);
+void InPermLoop         (void);
+void ResetFunction	(void);
+void DisplayThreadExit	(char * ExitPoint);
+void INITIALIZECPUFlags (void);
+BOOL Machine_LoadState  (void);
+BOOL Machine_SaveState  (void);
+void PauseCPU           (void);
+void RefreshScreen      (void);
+void RunRsp             (void);
+void SetCoreToRunning   (void);
+void SetCoreToStepping  (void);
+void StepOpcode         (void);
+void TimerDone          (void);
 #define NORMAL					0
 #define DO_DELAY_SLOT			1
 #define DO_END_DELAY_SLOT		2
@@ -105,14 +109,14 @@ enum SaveType {
 	SRAM,
 	FlashRAM
 };
-extern int NextInstruction, JumpToLocation, ManualPaused, CPU_Paused, CountPerOp;
-extern char SaveAsFileName[255], LoadFileName[255];
-extern int DlistCount, AlistCount, CurrentSaveSlot;
+extern int NextInstruction,JumpToLocation,ManualPaused,CPU_Paused,CountPerOp;
+extern char SaveAsFileName[255],LoadFileName[255];
+extern int DlistCount,AlistCount,CurrentSaveSlot;
 extern enum SaveType SaveUsing;
 extern CPU_ACTION CPU_Action;
 extern SYSTEM_TIMERS Timers;
 extern HANDLE hPauseMutex;
 extern OPCODE Opcode;
 extern HANDLE hCPU;
-extern BOOL inFullScreen, CPURunning;
+extern BOOL inFullScreen,CPURunning;
 extern DWORD MemoryStack;

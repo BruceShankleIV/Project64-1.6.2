@@ -11,7 +11,7 @@
  * providing that this license information and copyright notice appear with
  * all copies and any derived work.
  *
- * This software is provided 'as-is', without any express or implied
+ * This software is provided 'as-is',without any express or implied
  * warranty. In no event shall the authors be held liable for any damages
  * arising from the use of this software.
  *
@@ -77,7 +77,7 @@ typedef struct {
 	DWORD * VI__V_BURST_REG;
 	DWORD * VI__X_SCALE_REG;
 	DWORD * VI__Y_SCALE_REG;
-	void (__cdecl *CheckInterrupts)( void );
+	void (__cdecl *CheckInterrupts)(void);
 } GFX_INFO;
 typedef struct {
 	HINSTANCE hInst;
@@ -103,10 +103,10 @@ typedef struct {
 	DWORD * DPC__BUFBUSY_REG;
 	DWORD * DPC__PIPEBUSY_REG;
 	DWORD * DPC__TMEM_REG;
-	void ( __cdecl *CheckInterrupts)( void );
-	void (__cdecl *ProcessDlist)( void );
-	void (__cdecl *ProcessAlist)( void );
-	void (__cdecl *ProcessRdpList)( void );
+	void (__cdecl *CheckInterrupts)(void);
+	void (__cdecl *ProcessDlist)(void);
+	void (__cdecl *ProcessAlist)(void);
+	void (__cdecl *ProcessRdpList)(void);
 } RSP_INFO_1_0;
 typedef struct {
 	BOOL Present;
@@ -123,7 +123,7 @@ typedef struct {
 } CONTROL_INFO;
 typedef struct {
 	HINSTANCE hInst;
-	BOOL MemoryBswaped;		/* If this is set to TRUE, then the memory has been pre
+	BOOL MemoryBswaped;		/* If this is set to TRUE,then the memory has been pre
 							bswap on a dword (32 bits) boundry */
 	BYTE * RDRAM;
 	BYTE * DMEM;
@@ -146,11 +146,11 @@ typedef struct {
 	DWORD * DPC__BUFBUSY_REG;
 	DWORD * DPC__PIPEBUSY_REG;
 	DWORD * DPC__TMEM_REG;
-	void ( __cdecl *CheckInterrupts)( void );
-	void (__cdecl *ProcessDlist)( void );
-	void (__cdecl *ProcessAlist)( void );
-	void (__cdecl *ProcessRdpList)( void );
-	void (__cdecl *ShowCFB)( void );
+	void (__cdecl *CheckInterrupts)(void);
+	void (__cdecl *ProcessDlist)(void);
+	void (__cdecl *ProcessAlist)(void);
+	void (__cdecl *ProcessRdpList)(void);
+	void (__cdecl *ShowCFB)(void);
 } RSP_INFO_1_1;
 typedef struct {
 	HWND hwnd;
@@ -168,7 +168,7 @@ typedef struct {
 	DWORD * AI__STATUS_REG;
 	DWORD * AI__DACRATE_REG;
 	DWORD * AI__BITRATE_REG;
-	void (__cdecl *CheckInterrupts)( void );
+	void (__cdecl *CheckInterrupts)(void);
 } AUDIO_INFO;
 typedef union {
 	DWORD Value;
@@ -200,72 +200,72 @@ typedef union {
 #define PLUGIN_TANSFER_PAK			4 // not implemeted for non raw data
 #define PLUGIN_RAW					5 // the controller plugin is passed in raw data
 /******** Global DLL Function **************/
-void (__cdecl *GetDllInfo)             ( PLUGIN_INFO * PluginInfo );
-void GetCurrentDlls		   ( void );
+void (__cdecl *GetDllInfo)             (PLUGIN_INFO * PluginInfo);
+void GetCurrentDlls		   (void);
 /********** RSP DLL Functions *********************/
-void (__cdecl *RSPCloseDLL)        ( void );
-void (__cdecl *RSPDLLAbout)        ( HWND hWnd );
-void (__cdecl *RSPRomClosed)       ( void );
-DWORD (__cdecl *DoRspCycles)       ( DWORD );
-void (__cdecl *InitiateRSP_1_0)    ( RSP_INFO_1_0 Rsp_Info, DWORD * Cycles);
-void (__cdecl *InitiateRSP_1_1)    ( RSP_INFO_1_1 Rsp_Info, DWORD * Cycles);
+void (__cdecl *RSPCloseDLL)        (void);
+void (__cdecl *RSPDLLAbout)        (HWND hWnd);
+void (__cdecl *RSPRomClosed)       (void);
+DWORD (__cdecl *DoRspCycles)       (DWORD);
+void (__cdecl *InitiateRSP_1_0)    (RSP_INFO_1_0 Rsp_Info,DWORD * Cycles);
+void (__cdecl *InitiateRSP_1_1)    (RSP_INFO_1_1 Rsp_Info,DWORD * Cycles);
 /********** GFX DLL Functions *********************/
-void (__cdecl *CaptureScreen)      ( char * );
-void (__cdecl *ChangeWindow)       ( void );
-void (__cdecl *GFXCloseDLL)        ( void );
-void (__cdecl *GFXDllAbout)        ( HWND hParent );
-void (__cdecl *GFXDllConfig)       ( HWND hParent );
-void (__cdecl *GfxRomClosed)       ( void );
-void (__cdecl *GfxRomOpen)         ( void );
-void (__cdecl *DrawScreen)         ( void );
-void (__cdecl *FrameBufferRead)    ( DWORD addr );
-void (__cdecl *FrameBufferWrite)   ( DWORD addr, DWORD Bytes );
-BOOL (__cdecl *InitiateGFX)        ( GFX_INFO Gfx_Info );
-void (__cdecl *MoveScreen)         ( int xpos, int ypos );
-void (__cdecl *ProcessDList)       ( void );
-void (__cdecl *ProcessRDPList)     ( void );
-void (__cdecl *ShowCFB)			   ( void );
-void (__cdecl *UpdateScreen)       ( void );
-void (__cdecl *ViStatusChanged)    ( void );
-void (__cdecl *ViWidthChanged)     ( void );
+void (__cdecl *CaptureScreen)      (char *);
+void (__cdecl *ChangeWindow)       (void);
+void (__cdecl *GFXCloseDLL)        (void);
+void (__cdecl *GFXDllAbout)        (HWND hParent);
+void (__cdecl *GFXDllConfig)       (HWND hParent);
+void (__cdecl *GfxRomClosed)       (void);
+void (__cdecl *GfxRomOpen)         (void);
+void (__cdecl *DrawScreen)         (void);
+void (__cdecl *FrameBufferRead)    (DWORD addr);
+void (__cdecl *FrameBufferWrite)   (DWORD addr,DWORD Bytes);
+BOOL (__cdecl *InitiateGFX)        (GFX_INFO Gfx_Info);
+void (__cdecl *MoveScreen)         (int xpos,int ypos);
+void (__cdecl *ProcessDList)       (void);
+void (__cdecl *ProcessRDPList)     (void);
+void (__cdecl *ShowCFB)			   (void);
+void (__cdecl *UpdateScreen)       (void);
+void (__cdecl *ViStatusChanged)    (void);
+void (__cdecl *ViWidthChanged)     (void);
 /************ Audio DLL Functions *****************/
-void (__cdecl *AiCloseDLL)       ( void );
-void (__cdecl *AiDacrateChanged) ( int SystemType );
-void (__cdecl *AiLenChanged)     ( void );
-void (__cdecl *AiDllAbout)       ( HWND hParent );
-void (__cdecl *AiDllConfig)      ( HWND hParent );
-void (__cdecl *AiDllTest)        ( HWND hParent );
-DWORD (__cdecl *AiReadLength)    ( void );
-void (__cdecl *AiRomClosed)      ( void );
-void (__cdecl *AiUpdate)         ( BOOL Wait );
-BOOL (__cdecl *InitiateAudio)    ( AUDIO_INFO Audio_Info );
-void (__cdecl *ProcessAList)     ( void );
+void (__cdecl *AiCloseDLL)       (void);
+void (__cdecl *AiDacrateChanged) (int SystemType);
+void (__cdecl *AiLenChanged)     (void);
+void (__cdecl *AiDllAbout)       (HWND hParent);
+void (__cdecl *AiDllConfig)      (HWND hParent);
+void (__cdecl *AiDllTest)        (HWND hParent);
+DWORD (__cdecl *AiReadLength)    (void);
+void (__cdecl *AiRomClosed)      (void);
+void (__cdecl *AiUpdate)         (BOOL Wait);
+BOOL (__cdecl *InitiateAudio)    (AUDIO_INFO Audio_Info);
+void (__cdecl *ProcessAList)     (void);
 /********** Controller DLL Functions **************/
-void (__cdecl *ContCloseDLL)     ( void );
-void (__cdecl *ControllerCommand)( int Control, BYTE * Command );
-void (__cdecl *ContDllAbout)     ( HWND hParent );
-void (__cdecl *ContConfig)       ( HWND hParent );
-void (__cdecl *InitiateControllers_1_0)( HWND hMainWindow, CONTROL Controls[4] );
-void (__cdecl *InitiateControllers_1_1)( CONTROL_INFO ControlInfo );
-void (__cdecl *GetKeys)          ( int Control, BUTTONS * Keys );
-void (__cdecl *ReadController)   ( int Control, BYTE * Command );
-void (__cdecl *ContRomOpen)      ( void );
-void (__cdecl *ContRomClosed)    ( void );
-void (__cdecl *WM_KeyDown)       ( WPARAM wParam, LPARAM lParam );
-void (__cdecl *WM_KeyUp)         ( WPARAM wParam, LPARAM lParam );
-void (__cdecl *RumbleCommand)	 ( int Control, BOOL bRumble );
+void (__cdecl *ContCloseDLL)     (void);
+void (__cdecl *ControllerCommand)(int Control,BYTE * Command);
+void (__cdecl *ContDllAbout)     (HWND hParent);
+void (__cdecl *ContConfig)       (HWND hParent);
+void (__cdecl *InitiateControllers_1_0)(HWND hMainWindow,CONTROL Controls[4]);
+void (__cdecl *InitiateControllers_1_1)(CONTROL_INFO ControlInfo);
+void (__cdecl *GetKeys)          (int Control,BUTTONS * Keys);
+void (__cdecl *ReadController)   (int Control,BYTE * Command);
+void (__cdecl *ContRomOpen)      (void);
+void (__cdecl *ContRomClosed)    (void);
+void (__cdecl *WM_KeyDown)       (WPARAM wParam,LPARAM lParam);
+void (__cdecl *WM_KeyUp)         (WPARAM wParam,LPARAM lParam);
+void (__cdecl *RumbleCommand)	 (int Control,BOOL bRumble);
 /********** Plugin Functions *********************/
-void GetPluginDir        ( char * Directory );
-void GetSnapShotDir      ( char * Directory );
-void PluginConfiguration ( HWND hWnd );
-void SetupPlugins        ( HWND hWnd );
-void SetupPluginScreen   ( HWND hDlg );
-void ShutdownPlugins     ( void );
+void GetPluginDir        (char * Directory);
+void GetSnapShotDir      (char * Directory);
+void PluginConfiguration (HWND hWnd);
+void SetupPlugins        (HWND hWnd);
+void SetupPluginScreen   (HWND hDlg);
+void ShutdownPlugins     (void);
 /********** External Global Variables ***************/
 #define MaxDlls	100
-extern char RSPDLL[100], GfxDLL[100], AudioDLL[100],ControllerDLL[100], * PluginNames[MaxDlls];
-extern DWORD PluginCount, RspTaskValue, AudioIntrReg;
+extern char RSPDLL[100],GfxDLL[100],AudioDLL[100],ControllerDLL[100],* PluginNames[MaxDlls];
+extern DWORD PluginCount,RspTaskValue,AudioIntrReg;
 extern CONTROL Controllers[4];
 extern WORD RSPVersion;
-extern BOOL PluginsInitialized, GLideN64NeedsToBeSetupFirst, GLideN64HasBeenSetupFirst;
+extern BOOL PluginsInitialized,GLideN64NeedsToBeSetupFirst,GLideN64HasBeenSetupFirst;
 #endif

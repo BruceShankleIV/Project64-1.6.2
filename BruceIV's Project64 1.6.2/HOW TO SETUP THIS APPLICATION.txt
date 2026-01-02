@@ -10,10 +10,7 @@ here, it means you have an exception set and Windows Defender will avoid
 scanning it so it can function properly. If you have any other apps which
 malfunction from the defender, set exceptions for those.
 
-Once an exception is set, you can extract Project64.exe from either of the
-Project64 Zip files. Use the standard Project64.zip unless you are running
-into crashes/issues with an unregistered game. In which case, do a factory
-reset and then extract from Project64_SD.zip instead (SD Stable Defaults).
+You can extract Project64.exe from Project64.zip once an exception is set.
 Then launch the Project64.exe and finish your setup by loading a game, and
 selecting plugins based on provided Plugin Notes and reviewing how plugins
 work with your hardware. Jabo's Direct3D8 works best for my PC for Ocarina

@@ -11,7 +11,7 @@
  * providing that this license information and copyright notice appear with
  * all copies and any derived work.
  *
- * This software is provided 'as-is', without any express or implied
+ * This software is provided 'as-is',without any express or implied
  * warranty. In no event shall the authors be held liable for any damages
  * arising from the use of this software.
  *
@@ -159,18 +159,18 @@ struct {
 	DWORD NoOfIMEMBlocks;
 	DWORD NoOfPifRomBlocks;
 } N64_Blocks;
-BYTE *Compiler4300iBlock    ( void );
-BYTE *CompileDelaySlot      ( void );
-void CompileExit            ( DWORD TargetPC, REG_INFO ExitRegSet, int reason, int CompileNow, void (*x86Jmp)(DWORD Value));
-void CompileSystemCheck     ( DWORD TimerModifier, DWORD TargetPC, REG_INFO RegSet );
-void FixRandomReg           ( void );
-void FreeSection            ( BLOCK_SECTION * Section, BLOCK_SECTION * Parent);
-void StartRecompilerCPU     ( void );
-void GenerateSectionLinkage ( BLOCK_SECTION * Section );
-void InitializeInitialCompilerVariable ( void);
-extern DWORD TLBLoadAddress, TargetIndex;
+BYTE *Compiler4300iBlock    (void);
+BYTE *CompileDelaySlot      (void);
+void CompileExit            (DWORD TargetPC,REG_INFO ExitRegSet,int reason,int CompileNow,void (*x86Jmp)(DWORD Value));
+void CompileSystemCheck     (DWORD TimerModifier,DWORD TargetPC,REG_INFO RegSet);
+void FixRandomReg           (void);
+void FreeSection            (BLOCK_SECTION * Section,BLOCK_SECTION * Parent);
+void StartRecompilerCPU     (void);
+void GenerateSectionLinkage (BLOCK_SECTION * Section);
+void InitializeInitialCompilerVariable (void);
+extern DWORD TLBLoadAddress,TargetIndex;
 extern ORIGINAL_MEMMARKER * OrigMem;
 extern TARGET_INFO * TargetInfo;
 extern WORD FPU_RoundingMode;
 #define SetJump32(Loc,JumpLoc) *(DWORD *)(Loc)= (DWORD)(((DWORD)(JumpLoc)) - (((DWORD)(Loc)) + 4));
-#define SetJump8(Loc,JumpLoc)  *(BYTE  *)(Loc)= (BYTE )(((BYTE )(JumpLoc)) - (((BYTE )(Loc)) + 1));
+#define SetJump8(Loc,JumpLoc)  *(BYTE  *)(Loc)= (BYTE)(((BYTE)(JumpLoc)) - (((BYTE)(Loc)) + 1));

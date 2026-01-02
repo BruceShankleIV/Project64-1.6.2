@@ -188,7 +188,7 @@ z64me
 woot - Beta Tester.
 l0lgamez - Beta Tester.
 NekoNeko - Beta Tester.
-TrulyNaN - Beta Tester, found GPU specific issues, Brazilian Portuguese translation.
+TrulyNaN - Beta Tester, found GPU specific issues, Brazilian Portuguese AND Spanish translations.
 caseytopaz - Beta Tester.
 grimmer420 - Beta Tester.
 theluigidude2007 - Beta Tester.

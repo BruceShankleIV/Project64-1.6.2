@@ -1,0 +1,13 @@
+in deathdroid build star road crashes at the swamp pipe, this is accurate to hardware,
+find what causes that and see if we can make it optionable like done for SPECIAL_BREAK
+
+217 translation for russian/spanish/brazilian portugese/french
+
+more hack support
+
+map more missing memory registers in r4300i_SW_NonMemory for ifndef MIN_SIZE
+
+fix comment spacing in library licenses (accidental from a replace all)
+
+define common lines like MoveConstToX86reg(0,Reg); or MoveX86regToVariable(x86Reg,Addr + N64MEM);
+and then call them from a short define to slightly reduce total code size

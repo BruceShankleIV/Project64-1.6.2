@@ -11,7 +11,7 @@
  * providing that this license information and copyright notice appear with
  * all copies and any derived work.
  *
- * This software is provided 'as-is', without any express or implied
+ * This software is provided 'as-is',without any express or implied
  * warranty. In no event shall the authors be held liable for any damages
  * arising from the use of this software.
  *
@@ -35,13 +35,13 @@ enum TFlashRAM_Modes {
 	FlashRAM_MODE_STATUS,
 };
 BOOL LoadFlashRAM (void);
-DWORD FlashRAM_Offset, FlashFlag = FlashRAM_MODE_NOPES;
+DWORD FlashRAM_Offset,FlashFlag = FlashRAM_MODE_NOPES;
 static HANDLE hFlashRAMFile = NULL;
 BYTE * FlashRAMPointer;
 QWORD FlashStatus = 0;
-void DMAfromFlashRAM(BYTE * dest, int StartOffset, int len) {
+void DMAfromFlashRAM(BYTE * dest,int StartOffset,int len) {
 	BYTE FlipBuffer[0x10000];
-	DWORD dwRead, count;
+	DWORD dwRead,count;
 	switch (FlashFlag) {
 	case FlashRAM_MODE_READ:
 		if (hFlashRAMFile == NULL) {
@@ -61,16 +61,16 @@ void DMAfromFlashRAM(BYTE * dest, int StartOffset, int len) {
 			FlipBuffer[count] = 0xFF;
 		}
 		_asm {
-			mov edi, dest
-			lea ecx, [FlipBuffer]
-			mov edx, 0
-			mov ebx, len
+			mov edi,dest
+			lea ecx,[FlipBuffer]
+			mov edx,0
+			mov ebx,len
 		memcpyloop:
-			mov eax, dword ptr [ecx + edx]
+			mov eax,dword ptr [ecx + edx]
 			;bswap eax
 			mov  dword ptr [edi + edx],eax
-			add edx, 4
-			cmp edx, ebx
+			add edx,4
+			cmp edx,ebx
 			jb memcpyloop
 		}
 		break;
@@ -82,28 +82,26 @@ void DMAfromFlashRAM(BYTE * dest, int StartOffset, int len) {
 		break;
 	}
 }
-void DMAtoFlashRAM(BYTE * Source, int StartOffset, int len) {
+void DMAtoFlashRAM(BYTE * Source,int StartOffset,int len) {
 	switch (FlashFlag) {
 	case FlashRAM_MODE_WRITE:
 		FlashRAMPointer = Source;
 		break;
 	}
 }
-DWORD ReadFromFlashStatus ( ) {
+DWORD ReadFromFlashStatus () {
 	return (DWORD)(FlashStatus >> 32);
 }
 BOOL LoadFlashRAM (void) {
-	char File[255], Directory[255];
+	char File[255],Directory[255];
 	GetAutoSaveDir(Directory);
 	sprintf(File,"%s%s.fla",Directory,RomName);
-	hFlashRAMFile = CreateFile(File,GENERIC_WRITE | GENERIC_READ, FILE_SHARE_READ,NULL,OPEN_ALWAYS,
-		FILE_ATTRIBUTE_NORMAL | FILE_FLAG_RANDOM_ACCESS, NULL);
+	hFlashRAMFile = CreateFile(File,GENERIC_WRITE | GENERIC_READ,FILE_SHARE_READ,NULL,OPEN_ALWAYS,FILE_ATTRIBUTE_NORMAL | FILE_FLAG_RANDOM_ACCESS,NULL);
 	if (hFlashRAMFile == INVALID_HANDLE_VALUE) {
 		switch (GetLastError()) {
 		case ERROR_PATH_NOT_FOUND:
 			CreateDirectory(Directory,NULL);
-			hFlashRAMFile = CreateFile(File,GENERIC_WRITE | GENERIC_READ, FILE_SHARE_READ,
-				NULL,OPEN_ALWAYS,FILE_ATTRIBUTE_NORMAL | FILE_FLAG_RANDOM_ACCESS, NULL);
+			hFlashRAMFile = CreateFile(File,GENERIC_WRITE | GENERIC_READ,FILE_SHARE_READ,NULL,OPEN_ALWAYS,FILE_ATTRIBUTE_NORMAL | FILE_FLAG_RANDOM_ACCESS,NULL);
 			if (hFlashRAMFile == INVALID_HANDLE_VALUE) {
 				DisplayError(GS(MSG_FAIL_OPEN_SAVE));
 				return FALSE;
@@ -117,7 +115,7 @@ BOOL LoadFlashRAM (void) {
 	return TRUE;
 }
 void WriteToFlashCommand(DWORD FlashRAM_Command) {
-	BYTE EmptyBlock[128], FlipBuffer[128];
+	BYTE EmptyBlock[128],FlipBuffer[128];
 	DWORD dwWritten;
 	switch (FlashRAM_Command & 0xFF000000) {
 	case 0xD2000000:
@@ -138,15 +136,15 @@ void WriteToFlashCommand(DWORD FlashRAM_Command) {
 			}
 			memset(FlipBuffer,0,sizeof(FlipBuffer));
 			_asm {
-				lea edi, [FlipBuffer]
-				mov ecx, FlashRAMPointer
-				mov edx, 0
+				lea edi,[FlipBuffer]
+				mov ecx,FlashRAMPointer
+				mov edx,0
 			memcpyloop:
-				mov eax, dword ptr [ecx + edx]
+				mov eax,dword ptr [ecx + edx]
 				;bswap eax
 				mov  dword ptr [edi + edx],eax
-				add edx, 4
-				cmp edx, 128
+				add edx,4
+				cmp edx,128
 				jb memcpyloop
 			}
 			SetFilePointer(hFlashRAMFile,FlashRAM_Offset,NULL,FILE_BEGIN);

@@ -11,7 +11,7 @@
  * providing that this license information and copyright notice appear with
  * all copies and any derived work.
  *
- * This software is provided 'as-is', without any express or implied
+ * This software is provided 'as-is',without any express or implied
  * warranty. In no event shall the authors be held liable for any damages
  * arising from the use of this software.
  *
@@ -29,16 +29,16 @@
 #include "CPU.h"
 #include "x86.h"
 #include "ROM Tools Common.h"
-DWORD PROGRAM_COUNTER, * CP0,*FPCR,*RegRDRAM,*RegSP,*RegDPC,*RegMI,*RegVI,*RegAI,*RegPI,
-	*RegRI,*RegSI, HalfLine, RegModValue, ViFieldSerration, LLBit, LLAddr;
-void * FPRDoubleLocation[32], * FPRFloatLocation[32];
-MIPS_DWORD *GPR, *FPR, HI, LO;
+DWORD PROGRAM_COUNTER,* CP0,*FPCR,*RegRDRAM,*RegSP,*RegDPC,*RegMI,*RegVI,*RegAI,*RegPI,
+	*RegRI,*RegSI,HalfLine,RegModValue,ViFieldSerration,LLBit,LLAddr;
+void * FPRDoubleLocation[32],* FPRFloatLocation[32];
+MIPS_DWORD *GPR,*FPR,HI,LO;
 N64_REGISTERS Registers;
 int fpuControl;
 int  UnMap_8BitTempReg (BLOCK_SECTION * Section);
 int  UnMap_TempReg     (BLOCK_SECTION * Section);
-BOOL UnMap_X86reg      (BLOCK_SECTION * Section, DWORD x86Reg);
-void ChangeFPURegFormat (BLOCK_SECTION * Section, int Reg, int OldFormat, int NewFormat, int RoundingModel) {
+BOOL UnMap_X86reg      (BLOCK_SECTION * Section,DWORD x86Reg);
+void ChangeFPURegFormat (BLOCK_SECTION * Section,int Reg,int OldFormat,int NewFormat,int RoundingModel) {
 	DWORD i;
 	for (i = 0; i < 8; i++) {
 		if (FpuMappedTo(i) == (DWORD)Reg) {
@@ -55,90 +55,92 @@ void ChangeFPURegFormat (BLOCK_SECTION * Section, int Reg, int OldFormat, int Ne
 	}
 }
 void ChangeMiIntrMask (void) {
-	if ( ( RegModValue & MI_INTR_MASK_CLR_SP ) != 0 ) { MI_INTR_MASK_REG &= ~MI_INTR_MASK_SP; }
-	if ( ( RegModValue & MI_INTR_MASK_SET_SP ) != 0 ) { MI_INTR_MASK_REG |= MI_INTR_MASK_SP; }
-	if ( ( RegModValue & MI_INTR_MASK_CLR_SI ) != 0 ) { MI_INTR_MASK_REG &= ~MI_INTR_MASK_SI; }
-	if ( ( RegModValue & MI_INTR_MASK_SET_SI ) != 0 ) { MI_INTR_MASK_REG |= MI_INTR_MASK_SI; }
-	if ( ( RegModValue & MI_INTR_MASK_CLR_AI ) != 0 ) { MI_INTR_MASK_REG &= ~MI_INTR_MASK_AI; }
-	if ( ( RegModValue & MI_INTR_MASK_SET_AI ) != 0 ) { MI_INTR_MASK_REG |= MI_INTR_MASK_AI; }
-	if ( ( RegModValue & MI_INTR_MASK_CLR_VI ) != 0 ) { MI_INTR_MASK_REG &= ~MI_INTR_MASK_VI; }
-	if ( ( RegModValue & MI_INTR_MASK_SET_VI ) != 0 ) { MI_INTR_MASK_REG |= MI_INTR_MASK_VI; }
-	if ( ( RegModValue & MI_INTR_MASK_CLR_PI ) != 0 ) { MI_INTR_MASK_REG &= ~MI_INTR_MASK_PI; }
-	if ( ( RegModValue & MI_INTR_MASK_SET_PI ) != 0 ) { MI_INTR_MASK_REG |= MI_INTR_MASK_PI; }
-	if ( ( RegModValue & MI_INTR_MASK_CLR_DP ) != 0 ) { MI_INTR_MASK_REG &= ~MI_INTR_MASK_DP; }
-	if ( ( RegModValue & MI_INTR_MASK_SET_DP ) != 0 ) { MI_INTR_MASK_REG |= MI_INTR_MASK_DP; }
+	if ((RegModValue & MI_INTR_MASK_CLR_SP) != 0) { MI_INTR_MASK_REG &= ~MI_INTR_MASK_SP; }
+	if ((RegModValue & MI_INTR_MASK_SET_SP) != 0) { MI_INTR_MASK_REG |= MI_INTR_MASK_SP; }
+	if ((RegModValue & MI_INTR_MASK_CLR_SI) != 0) { MI_INTR_MASK_REG &= ~MI_INTR_MASK_SI; }
+	if ((RegModValue & MI_INTR_MASK_SET_SI) != 0) { MI_INTR_MASK_REG |= MI_INTR_MASK_SI; }
+	if ((RegModValue & MI_INTR_MASK_CLR_AI) != 0) { MI_INTR_MASK_REG &= ~MI_INTR_MASK_AI; }
+	if ((RegModValue & MI_INTR_MASK_SET_AI) != 0) { MI_INTR_MASK_REG |= MI_INTR_MASK_AI; }
+	if ((RegModValue & MI_INTR_MASK_CLR_VI) != 0) { MI_INTR_MASK_REG &= ~MI_INTR_MASK_VI; }
+	if ((RegModValue & MI_INTR_MASK_SET_VI) != 0) { MI_INTR_MASK_REG |= MI_INTR_MASK_VI; }
+	if ((RegModValue & MI_INTR_MASK_CLR_PI) != 0) { MI_INTR_MASK_REG &= ~MI_INTR_MASK_PI; }
+	if ((RegModValue & MI_INTR_MASK_SET_PI) != 0) { MI_INTR_MASK_REG |= MI_INTR_MASK_PI; }
+	if ((RegModValue & MI_INTR_MASK_CLR_DP) != 0) { MI_INTR_MASK_REG &= ~MI_INTR_MASK_DP; }
+	if ((RegModValue & MI_INTR_MASK_SET_DP) != 0) { MI_INTR_MASK_REG |= MI_INTR_MASK_DP; }
 }
+#ifndef MIN_SIZE
 void ChangeMiModeReg(void) {
 	MI_MODE_REG &= ~0x7F;
 	MI_MODE_REG |= (RegModValue & 0x7F);
-	if ( ( RegModValue & MI_CLR_INIT ) != 0 ) { MI_MODE_REG &= ~MI_MODE_INIT; }
-	if ( ( RegModValue & MI_SET_INIT ) != 0 ) { MI_MODE_REG |= MI_MODE_INIT; }
-	if ( ( RegModValue & MI_CLR_EBUS ) != 0 ) { MI_MODE_REG &= ~MI_MODE_EBUS; }
-	if ( ( RegModValue & MI_SET_EBUS ) != 0 ) { MI_MODE_REG |= MI_MODE_EBUS; }
-	if ( ( RegModValue & MI_CLR_DP_INTR ) != 0 ) { MI_INTR_REG &= ~MI_INTR_DP; }
-	if ( ( RegModValue & MI_CLR_RDRAM ) != 0 ) { MI_MODE_REG &= ~MI_MODE_RDRAM; }
-	if ( ( RegModValue & MI_SET_RDRAM ) != 0 ) { MI_MODE_REG |= MI_MODE_RDRAM; }
-}
-void ChangeSpStatus (void) {
-	if ( ( RegModValue & SP_CLR_HALT ) != 0) { SP_STATUS_REG &= ~SP_STATUS_HALT; }
-	if ( ( RegModValue & SP_SET_HALT ) != 0) { SP_STATUS_REG |= SP_STATUS_HALT;  }
-	if ( ( RegModValue & SP_CLR_BROKE ) != 0) { SP_STATUS_REG &= ~SP_STATUS_BROKE; }
-	if ( ( RegModValue & SP_CLR_INTR ) != 0) {
-		MI_INTR_REG &= ~MI_INTR_SP;
-		CheckInterrupts();
-	}
-	if ( ( RegModValue & SP_CLR_SSTEP ) != 0) { SP_STATUS_REG &= ~SP_STATUS_SSTEP; }
-	if ( ( RegModValue & SP_SET_SSTEP ) != 0) { SP_STATUS_REG |= SP_STATUS_SSTEP;  }
-	if ( ( RegModValue & SP_CLR_INTR_BREAK ) != 0) { SP_STATUS_REG &= ~SP_STATUS_INTR_BREAK; }
-	if ( ( RegModValue & SP_SET_INTR_BREAK ) != 0) { SP_STATUS_REG |= SP_STATUS_INTR_BREAK;  }
-	if ( ( RegModValue & SP_CLR_SIG0 ) != 0) { SP_STATUS_REG &= ~SP_STATUS_SIG0; }
-	if ( ( RegModValue & SP_SET_SIG0 ) != 0) {
-		SP_STATUS_REG |= SP_STATUS_SIG0;
-		if (AudioSignal) {
-			MI_INTR_REG |= MI_INTR_SP;
-			CheckInterrupts();
-		}
-	}
-	if ( ( RegModValue & SP_CLR_SIG1 ) != 0) { SP_STATUS_REG &= ~SP_STATUS_SIG1; }
-	if ( ( RegModValue & SP_SET_SIG1 ) != 0) { SP_STATUS_REG |= SP_STATUS_SIG1;  }
-	if ( ( RegModValue & SP_CLR_SIG2 ) != 0) { SP_STATUS_REG &= ~SP_STATUS_SIG2; }
-	if ( ( RegModValue & SP_SET_SIG2 ) != 0) { SP_STATUS_REG |= SP_STATUS_SIG2;  }
-	if ( ( RegModValue & SP_CLR_SIG3 ) != 0) { SP_STATUS_REG &= ~SP_STATUS_SIG3; }
-	if ( ( RegModValue & SP_SET_SIG3 ) != 0) { SP_STATUS_REG |= SP_STATUS_SIG3;  }
-	if ( ( RegModValue & SP_CLR_SIG4 ) != 0) { SP_STATUS_REG &= ~SP_STATUS_SIG4; }
-	if ( ( RegModValue & SP_SET_SIG4 ) != 0) { SP_STATUS_REG |= SP_STATUS_SIG4;  }
-	if ( ( RegModValue & SP_CLR_SIG5 ) != 0) { SP_STATUS_REG &= ~SP_STATUS_SIG5; }
-	if ( ( RegModValue & SP_SET_SIG5 ) != 0) { SP_STATUS_REG |= SP_STATUS_SIG5;  }
-	if ( ( RegModValue & SP_CLR_SIG6 ) != 0) { SP_STATUS_REG &= ~SP_STATUS_SIG6; }
-	if ( ( RegModValue & SP_SET_SIG6 ) != 0) { SP_STATUS_REG |= SP_STATUS_SIG6;  }
-	if ( ( RegModValue & SP_CLR_SIG7 ) != 0) { SP_STATUS_REG &= ~SP_STATUS_SIG7; }
-	if ( ( RegModValue & SP_SET_SIG7 ) != 0) { SP_STATUS_REG |= SP_STATUS_SIG7;  }
-	if (DelayRDP && *( DWORD *)(DMEM + 0xFC0) == 1 || DelayRSP && *( DWORD *)(DMEM + 0xFC0) == 2) {
-		ChangeTimer(RspTimer, 0x2000);
-		return;
-	}
-	RunRsp();
+	if ((RegModValue & MI_CLR_INIT) != 0) { MI_MODE_REG &= ~MI_MODE_INIT; }
+	if ((RegModValue & MI_SET_INIT) != 0) { MI_MODE_REG |= MI_MODE_INIT; }
+	if ((RegModValue & MI_CLR_EBUS) != 0) { MI_MODE_REG &= ~MI_MODE_EBUS; }
+	if ((RegModValue & MI_SET_EBUS) != 0) { MI_MODE_REG |= MI_MODE_EBUS; }
+	if ((RegModValue & MI_CLR_DP_INTR) != 0) { MI_INTR_REG &= ~MI_INTR_DP; }
+	if ((RegModValue & MI_CLR_RDRAM) != 0) { MI_MODE_REG &= ~MI_MODE_RDRAM; }
+	if ((RegModValue & MI_SET_RDRAM) != 0) { MI_MODE_REG |= MI_MODE_RDRAM; }
 }
 void ChangeDpcStatus(void) {
-	if ( ( RegModValue & DPC_CLR_XBUS_DMEM_DMA ) != 0) { DPC_STATUS_REG &= ~DPC_STATUS_XBUS_DMEM_DMA; }
-	if ( ( RegModValue & DPC_SET_XBUS_DMEM_DMA ) != 0) { DPC_STATUS_REG |= DPC_STATUS_XBUS_DMEM_DMA;  }
-	if ( ( RegModValue & DPC_CLR_FREEZE ) != 0) { DPC_STATUS_REG &= ~DPC_STATUS_FREEZE; }
-	if ( ( RegModValue & DPC_SET_FREEZE ) != 0) { DPC_STATUS_REG |= DPC_STATUS_FREEZE;  }
-	if ( ( RegModValue & DPC_CLR_FLUSH ) != 0) { DPC_STATUS_REG &= ~DPC_STATUS_FLUSH; }
-	if ( ( RegModValue & DPC_SET_FLUSH ) != 0) { DPC_STATUS_REG |= DPC_STATUS_FLUSH;  }
-	if ( ( RegModValue & DPC_CLR_FREEZE ) != 0)
+	if ((RegModValue & DPC_CLR_XBUS_DMEM_DMA) != 0) { DPC_STATUS_REG &= ~DPC_STATUS_XBUS_DMEM_DMA; }
+	if ((RegModValue & DPC_SET_XBUS_DMEM_DMA) != 0) { DPC_STATUS_REG |= DPC_STATUS_XBUS_DMEM_DMA;  }
+	if ((RegModValue & DPC_CLR_FREEZE) != 0) { DPC_STATUS_REG &= ~DPC_STATUS_FREEZE; }
+	if ((RegModValue & DPC_SET_FREEZE) != 0) { DPC_STATUS_REG |= DPC_STATUS_FREEZE;  }
+	if ((RegModValue & DPC_CLR_FLUSH) != 0) { DPC_STATUS_REG &= ~DPC_STATUS_FLUSH; }
+	if ((RegModValue & DPC_SET_FLUSH) != 0) { DPC_STATUS_REG |= DPC_STATUS_FLUSH;  }
+	if ((RegModValue & DPC_CLR_FREEZE) != 0)
 	{
-		if ( ( SP_STATUS_REG & SP_STATUS_HALT ) == 0)
+		if ((SP_STATUS_REG & SP_STATUS_HALT) == 0)
 		{
-			if ( ( SP_STATUS_REG & SP_STATUS_BROKE ) == 0 )
+			if ((SP_STATUS_REG & SP_STATUS_BROKE) == 0)
 			{
 				RunRsp();
 			}
 		}
 	}
 }
+#endif
+void ChangeSpStatus (void) {
+	if ((RegModValue & SP_CLR_HALT) != 0) { SP_STATUS_REG &= ~SP_STATUS_HALT; }
+	if ((RegModValue & SP_SET_HALT) != 0) { SP_STATUS_REG |= SP_STATUS_HALT;  }
+	if ((RegModValue & SP_CLR_BROKE) != 0) { SP_STATUS_REG &= ~SP_STATUS_BROKE; }
+	if ((RegModValue & SP_CLR_INTR) != 0) {
+		MI_INTR_REG &= ~MI_INTR_SP;
+		CheckInterrupts();
+	}
+	if ((RegModValue & SP_CLR_SSTEP) != 0) { SP_STATUS_REG &= ~SP_STATUS_SSTEP; }
+	if ((RegModValue & SP_SET_SSTEP) != 0) { SP_STATUS_REG |= SP_STATUS_SSTEP;  }
+	if ((RegModValue & SP_CLR_INTR_BREAK) != 0) { SP_STATUS_REG &= ~SP_STATUS_INTR_BREAK; }
+	if ((RegModValue & SP_SET_INTR_BREAK) != 0) { SP_STATUS_REG |= SP_STATUS_INTR_BREAK;  }
+	if ((RegModValue & SP_CLR_SIG0) != 0) { SP_STATUS_REG &= ~SP_STATUS_SIG0; }
+	if ((RegModValue & SP_SET_SIG0) != 0) {
+		SP_STATUS_REG |= SP_STATUS_SIG0;
+		if (AudioSignal) {
+			MI_INTR_REG |= MI_INTR_SP;
+			CheckInterrupts();
+		}
+	}
+	if ((RegModValue & SP_CLR_SIG1) != 0) { SP_STATUS_REG &= ~SP_STATUS_SIG1; }
+	if ((RegModValue & SP_SET_SIG1) != 0) { SP_STATUS_REG |= SP_STATUS_SIG1;  }
+	if ((RegModValue & SP_CLR_SIG2) != 0) { SP_STATUS_REG &= ~SP_STATUS_SIG2; }
+	if ((RegModValue & SP_SET_SIG2) != 0) { SP_STATUS_REG |= SP_STATUS_SIG2;  }
+	if ((RegModValue & SP_CLR_SIG3) != 0) { SP_STATUS_REG &= ~SP_STATUS_SIG3; }
+	if ((RegModValue & SP_SET_SIG3) != 0) { SP_STATUS_REG |= SP_STATUS_SIG3;  }
+	if ((RegModValue & SP_CLR_SIG4) != 0) { SP_STATUS_REG &= ~SP_STATUS_SIG4; }
+	if ((RegModValue & SP_SET_SIG4) != 0) { SP_STATUS_REG |= SP_STATUS_SIG4;  }
+	if ((RegModValue & SP_CLR_SIG5) != 0) { SP_STATUS_REG &= ~SP_STATUS_SIG5; }
+	if ((RegModValue & SP_SET_SIG5) != 0) { SP_STATUS_REG |= SP_STATUS_SIG5;  }
+	if ((RegModValue & SP_CLR_SIG6) != 0) { SP_STATUS_REG &= ~SP_STATUS_SIG6; }
+	if ((RegModValue & SP_SET_SIG6) != 0) { SP_STATUS_REG |= SP_STATUS_SIG6;  }
+	if ((RegModValue & SP_CLR_SIG7) != 0) { SP_STATUS_REG &= ~SP_STATUS_SIG7; }
+	if ((RegModValue & SP_SET_SIG7) != 0) { SP_STATUS_REG |= SP_STATUS_SIG7;  }
+	if (DelayRDP && *(DWORD *)(DMEM + 0xFC0) == 1 || DelayRSP && *(DWORD *)(DMEM + 0xFC0) == 2) {
+		ChangeTimer(RspTimer,0x2000);
+		return;
+	}
+	RunRsp();
+}
 int Free8BitX86Reg (BLOCK_SECTION * Section) {
-	int x86Reg, count, MapCount[10], MapReg[10];
+	int x86Reg,count,MapCount[10],MapReg[10];
 	if (x86Mapped(x86_EBX) == NotMapped && !x86Protected(x86_EBX)) {return x86_EBX; }
 	if (x86Mapped(x86_EAX) == NotMapped && !x86Protected(x86_EAX)) {return x86_EAX; }
 	if (x86Mapped(x86_EDX) == NotMapped && !x86Protected(x86_EDX)) {return x86_EDX; }
@@ -174,7 +176,7 @@ int Free8BitX86Reg (BLOCK_SECTION * Section) {
 	return -1;
 }
 int FreeX86Reg (BLOCK_SECTION * Section) {
-	int x86Reg, count, MapCount[10], MapReg[10], StackReg;
+	int x86Reg,count,MapCount[10],MapReg[10],StackReg;
 	if (x86Mapped(x86_EDI) == NotMapped && !x86Protected(x86_EDI)) {return x86_EDI; }
 	if (x86Mapped(x86_ESI) == NotMapped && !x86Protected(x86_ESI)) {return x86_ESI; }
 	if (x86Mapped(x86_EBX) == NotMapped && !x86Protected(x86_EBX)) {return x86_EBX; }
@@ -216,7 +218,7 @@ int FreeX86Reg (BLOCK_SECTION * Section) {
 	}
 	return -1;
 }
-void InitializeR4300iRegisters (int UsePif, int Country, int CIC_Chip) {
+void InitializeR4300iRegisters (int UsePif,int Country,int CIC_Chip) {
 	memset(CP0,0,sizeof(Registers.CP0));
 	memset(FPCR,0,sizeof(Registers.FPCR));
 	memset(RegRDRAM,0,sizeof(Registers.RDRAM));
@@ -278,10 +280,9 @@ void InitializeR4300iRegisters (int UsePif, int Country, int CIC_Chip) {
 			PIF_Ram[37] = 0x02;
 			PIF_Ram[38] = 0x85;
 			PIF_Ram[39] = 0x3F;
-			break;
 		}
 	} else {
-		memcpy( (N64MEM+0x4000040), (ROM + 0x040), 0xFBC);
+		memcpy((N64MEM+0x4000040),(ROM + 0x040),0xFBC);
 		PROGRAM_COUNTER = 0xA4000040;
 		GPR[0].DW=0x0000000000000000;
 		GPR[6].DW=0xFFFFFFFFA4001F0C;
@@ -414,7 +415,6 @@ void InitializeR4300iRegisters (int UsePif, int Country, int CIC_Chip) {
 			break;
 		case 9:
 			GPR[22].DW = 0x00000000000000DE;
-			break;
 		}
 	}
 	MemoryStack = (DWORD)(N64MEM+(GPR[29].W[0] & 0x1FFFFFFF));
@@ -426,7 +426,7 @@ BOOL Is8BitReg (int x86Reg) {
 	if (x86Reg == x86_EDX) return TRUE;
 	return FALSE;
 }
-void Load_FPR_ToTop (BLOCK_SECTION * Section, int Reg, int RegToLoad, int Format) {
+void Load_FPR_ToTop (BLOCK_SECTION * Section,int Reg,int RegToLoad,int Format) {
 	int i;
 	if (RegToLoad < 0 || Reg < 0) return;
 	if (Format == FPU_Double || Format == FPU_Qword) {
@@ -477,10 +477,10 @@ void Load_FPR_ToTop (BLOCK_SECTION * Section, int Reg, int RegToLoad, int Format
 				FpuState(StackTopPos)         = Format;
 			} else {
 				UnMap_FPR(Section,FpuMappedTo((StackTopPos - 1) & 7),TRUE);
-				Load_FPR_ToTop (Section,Reg, RegToLoad, Format);
+				Load_FPR_ToTop (Section,Reg,RegToLoad,Format);
 			}
 		} else {
-			DWORD RegPos, StackPos, i;
+			DWORD RegPos,StackPos,i;
 			for (i = 0; i < 8; i++) {
 				if (FpuMappedTo(i) == (DWORD)Reg) {
 					RegPos = i;
@@ -523,7 +523,6 @@ void Load_FPR_ToTop (BLOCK_SECTION * Section, int Reg, int RegToLoad, int Format
 		case FPU_Double:
 			MoveVariableToX86reg(&FPRDoubleLocation[RegToLoad],TempReg);
 			fpuLoadQwordFromX86Reg(&StackTopPos,TempReg);
-			break;
 		}
 		x86Protected(TempReg) = FALSE;
 		FpuRoundingModel(StackTopPos) = RoundDefault;
@@ -531,7 +530,7 @@ void Load_FPR_ToTop (BLOCK_SECTION * Section, int Reg, int RegToLoad, int Format
 		FpuState(StackTopPos)         = Format;
 	}
 }
-void Map_GPR_32bit (BLOCK_SECTION * Section, int Reg, BOOL SignValue, int MipsRegToLoad) {
+void Map_GPR_32bit (BLOCK_SECTION * Section,int Reg,BOOL SignValue,int MipsRegToLoad) {
 	int x86Reg,count;
 	if (Reg == 0) return;
 	if (IsUnknown(Reg) || IsConst(Reg)) {
@@ -574,8 +573,8 @@ void Map_GPR_32bit (BLOCK_SECTION * Section, int Reg, BOOL SignValue, int MipsRe
 	MipsRegLo(Reg) = x86Reg;
 	MipsRegState(Reg) = SignValue ? STATE_MAPPED_32_SIGN : STATE_MAPPED_32_ZERO;
 }
-void Map_GPR_64bit (BLOCK_SECTION * Section, int Reg, int MipsRegToLoad) {
-	int x86Hi, x86lo, count;
+void Map_GPR_64bit (BLOCK_SECTION * Section,int Reg,int MipsRegToLoad) {
+	int x86Hi,x86lo,count;
 	if (Reg == 0) return;
 	ProtectGPR(Section,Reg);
 	if (IsUnknown(Reg) || IsConst(Reg)) {
@@ -656,9 +655,9 @@ void Map_GPR_64bit (BLOCK_SECTION * Section, int Reg, int MipsRegToLoad) {
 	MipsRegLo(Reg) = x86lo;
 	MipsRegState(Reg) = STATE_MAPPED_64;
 }
-int Map_MemoryStack (BLOCK_SECTION * Section, BOOL AutoMap) {
+int Map_MemoryStack (BLOCK_SECTION * Section,BOOL AutoMap) {
 	int x86Reg;
-	for (x86Reg = 0; x86Reg < 10; x86Reg ++ ) {
+	for (x86Reg = 0; x86Reg < 10; x86Reg ++) {
 		if (x86Mapped(x86Reg) == Stack_Mapped) {
 			return x86Reg;
 		}
@@ -669,10 +668,10 @@ int Map_MemoryStack (BLOCK_SECTION * Section, BOOL AutoMap) {
 	MoveVariableToX86reg(&MemoryStack,x86Reg);
 	return x86Reg;
 }
-int Map_TempReg (BLOCK_SECTION * Section, int x86Reg, int MipsReg, BOOL LoadHiWord) {
+int Map_TempReg (BLOCK_SECTION * Section,int x86Reg,int MipsReg,BOOL LoadHiWord) {
 	int count;
 	if (x86Reg == x86_Any) {
-		for (count = 0; count < 10; count ++ ) {
+		for (count = 0; count < 10; count ++) {
 			if (x86Mapped(count) == Temp_Mapped) {
 				if (x86Protected(count) == FALSE) { x86Reg = count; }
 			}
@@ -790,14 +789,14 @@ int Map_TempReg (BLOCK_SECTION * Section, int x86Reg, int MipsReg, BOOL LoadHiWo
 	x86MapOrder(x86Reg) = 1;
 	return x86Reg;
 }
-void ProtectGPR(BLOCK_SECTION * Section, DWORD Reg) {
+void ProtectGPR(BLOCK_SECTION * Section,DWORD Reg) {
 	if (IsUnknown(Reg) || IsConst(Reg)) return;
 	if (Is64Bit(Reg)) {
 		x86Protected(MipsRegHi(Reg)) = TRUE;
 	}
 	x86Protected(MipsRegLo(Reg)) = TRUE;
 }
-BOOL RegInStack(BLOCK_SECTION * Section,int Reg, int Format) {
+BOOL RegInStack(BLOCK_SECTION * Section,int Reg,int Format) {
 	int i;
 	for (i = 0; i < 8; i++) {
 		if (FpuMappedTo(i) == (DWORD)Reg) {
@@ -864,25 +863,25 @@ int UnMap_8BitTempReg (BLOCK_SECTION * Section) {
 	}
 	return -1;
 }
-void UnMap_AllFPRs ( BLOCK_SECTION * Section ) {
+void UnMap_AllFPRs (BLOCK_SECTION * Section) {
 	DWORD StackPos;
 	for (;;) {
-		int i, StartPos;
+		int i,StartPos;
 		StackPos = StackTopPos;
-		if (FpuMappedTo(StackTopPos) != -1 ) {
+		if (FpuMappedTo(StackTopPos) != -1) {
 			UnMap_FPR(Section,FpuMappedTo(StackTopPos),TRUE);
 			continue;
 		}
 		//see if any more registers mapped
 		StartPos = StackTopPos;
 		for (i = 0; i < 8; i++) {
-			if (FpuMappedTo((StartPos + i) & 7) != -1 ) { fpuIncStack(&StackTopPos); }
+			if (FpuMappedTo((StartPos + i) & 7) != -1) { fpuIncStack(&StackTopPos); }
 		}
 		if (StackPos != StackTopPos) continue;
 		return;
 	}
 }
-void UnMap_FPR (BLOCK_SECTION * Section, int Reg, int WriteBackValue ) {
+void UnMap_FPR (BLOCK_SECTION * Section,int Reg,int WriteBackValue) {
 	int TempReg;
 	int i;
 	if (Reg < 0) return;
@@ -891,7 +890,7 @@ void UnMap_FPR (BLOCK_SECTION * Section, int Reg, int WriteBackValue ) {
 		if (WriteBackValue) {
 			int RegPos;
 			if (((i - StackTopPos + 8) & 7) != 0) {
-				DWORD RoundingModel, MappedTo, RegState;
+				DWORD RoundingModel,MappedTo,RegState;
 				RoundingModel = FpuRoundingModel(StackTopPos);
 				MappedTo      = FpuMappedTo(StackTopPos);
 				RegState      = FpuState(StackTopPos);
@@ -908,15 +907,15 @@ void UnMap_FPR (BLOCK_SECTION * Section, int Reg, int WriteBackValue ) {
 				fpuControl = 0;
 				fpuStoreControl(&fpuControl);
 				x86reg = Map_TempReg(Section,x86_Any,-1,FALSE);
-				MoveVariableToX86reg(&fpuControl, x86reg);
-				AndConstToX86Reg(x86reg, 0xF3FF);
+				MoveVariableToX86reg(&fpuControl,x86reg);
+				AndConstToX86Reg(x86reg,0xF3FF);
 				switch (FpuRoundingModel(i)) {
-				case RoundDefault: OrVariableToX86Reg(&FPU_RoundingMode, x86reg); break;
-				case RoundTruncate: OrConstToX86Reg(0x0C00, x86reg); break;
-				case RoundDown: OrConstToX86Reg(0x0400, x86reg); break;
-				case RoundUp: OrConstToX86Reg(0x0800, x86reg); break;
+				case RoundDefault: OrVariableToX86Reg(&FPU_RoundingMode,x86reg); break;
+				case RoundTruncate: OrConstToX86Reg(0x0C00,x86reg); break;
+				case RoundDown: OrConstToX86Reg(0x0400,x86reg); break;
+				case RoundUp: OrConstToX86Reg(0x0800,x86reg);
 				}
-				MoveX86regToVariable(x86reg, &fpuControl);
+				MoveX86regToVariable(x86reg,&fpuControl);
 				fpuLoadControl(&fpuControl);
 				CurrentRoundingModel = FpuRoundingModel(i);
 			}
@@ -925,20 +924,19 @@ void UnMap_FPR (BLOCK_SECTION * Section, int Reg, int WriteBackValue ) {
 			switch (FpuState(StackTopPos)) {
 			case FPU_Dword:
 				MoveVariableToX86reg(&FPRFloatLocation[FpuMappedTo(StackTopPos)],TempReg);
-				fpuStoreIntegerDwordFromX86Reg(&StackTopPos,TempReg, TRUE);
+				fpuStoreIntegerDwordFromX86Reg(&StackTopPos,TempReg,TRUE);
 				break;
 			case FPU_Qword:
 				MoveVariableToX86reg(&FPRDoubleLocation[FpuMappedTo(StackTopPos)],TempReg);
-				fpuStoreIntegerQwordFromX86Reg(&StackTopPos,TempReg, TRUE);
+				fpuStoreIntegerQwordFromX86Reg(&StackTopPos,TempReg,TRUE);
 				break;
 			case FPU_Float:
 				MoveVariableToX86reg(&FPRFloatLocation[FpuMappedTo(StackTopPos)],TempReg);
-				fpuStoreDwordFromX86Reg(&StackTopPos,TempReg, TRUE);
+				fpuStoreDwordFromX86Reg(&StackTopPos,TempReg,TRUE);
 				break;
 			case FPU_Double:
 				MoveVariableToX86reg(&FPRDoubleLocation[FpuMappedTo(StackTopPos)],TempReg);
-				fpuStoreQwordFromX86Reg(&StackTopPos,TempReg, TRUE);
-				break;
+				fpuStoreQwordFromX86Reg(&StackTopPos,TempReg,TRUE);
 			}
 			x86Protected(TempReg) = FALSE;
 			FpuRoundingModel(RegPos) = RoundDefault;
@@ -953,7 +951,7 @@ void UnMap_FPR (BLOCK_SECTION * Section, int Reg, int WriteBackValue ) {
 		return;
 	}
 }
-void UnMap_GPR (BLOCK_SECTION * Section, DWORD Reg, int WriteBackValue) {
+void UnMap_GPR (BLOCK_SECTION * Section,DWORD Reg,int WriteBackValue) {
 	if (Reg == 0 || IsUnknown(Reg)) return;
 	if (IsConst(Reg)) {
 		if (!WriteBackValue) {
@@ -1010,7 +1008,7 @@ int UnMap_TempReg (BLOCK_SECTION * Section) {
 	}
 	return -1;
 }
-BOOL UnMap_X86reg (BLOCK_SECTION * Section, DWORD x86Reg) {
+BOOL UnMap_X86reg (BLOCK_SECTION * Section,DWORD x86Reg) {
 	int count;
 	if (x86Mapped(x86Reg) == NotMapped && x86Protected(x86Reg) == FALSE) return TRUE;
 	if (x86Mapped(x86Reg) == Temp_Mapped) {
@@ -1047,7 +1045,7 @@ BOOL UnMap_X86reg (BLOCK_SECTION * Section, DWORD x86Reg) {
 	}
 	return FALSE;
 }
-void UnProtectGPR(BLOCK_SECTION * Section, DWORD Reg) {
+void UnProtectGPR(BLOCK_SECTION * Section,DWORD Reg) {
 	if (IsUnknown(Reg) || IsConst(Reg)) return;
 	if (Is64Bit(Reg)) {
 		x86Protected(MipsRegHi(Reg)) = FALSE;
@@ -1077,18 +1075,17 @@ void WriteBackRegisters (BLOCK_SECTION * Section) {
 	BOOL bEaxGprLo = FALSE;
 	BOOL bEbxGprHi = FALSE;
 	for (count = 1; count < 10; count ++) { x86Protected(count) = FALSE; }
-	for (count = 1; count < 10; count ++) { UnMap_X86reg (Section, count); }
+	for (count = 1; count < 10; count ++) { UnMap_X86reg (Section,count); }
 	/*************************************/
 	for (count = 1; count < 32; count ++) {
 		switch (MipsRegState(count)) {
-		case STATE_UNKNOWN: break;
 		case STATE_CONST_32:
 			if (!bEdiZero && (!MipsRegLo(count) || !(MipsRegLo(count) & 0x80000000))) {
-				XorX86RegToX86Reg(x86_EDI, x86_EDI);
+				XorX86RegToX86Reg(x86_EDI,x86_EDI);
 				bEdiZero = TRUE;
 			}
 			if (!bEsiSign && (MipsRegLo(count) & 0x80000000)) {
-				MoveConstToX86reg(0xFFFFFFFF, x86_ESI);
+				MoveConstToX86reg(0xFFFFFFFF,x86_ESI);
 				bEsiSign = TRUE;
 			}
 			if ((MipsRegLo(count) & 0x80000000) != 0) {
@@ -1103,14 +1100,14 @@ void WriteBackRegisters (BLOCK_SECTION * Section) {
 			} else
 				MoveConstToVariable(MipsRegLo(count),&GPR[count].UW[0]);
 			MipsRegState(count) = STATE_UNKNOWN;
-			break;
+		case STATE_UNKNOWN: break;
 		case STATE_CONST_64:
 			if (MipsRegLo(count) == 0 || MipsRegHi(count) == 0) {
-				XorX86RegToX86Reg(x86_EDI, x86_EDI);
+				XorX86RegToX86Reg(x86_EDI,x86_EDI);
 				bEdiZero = TRUE;
 			}
 			if (MipsRegLo(count) == 0xFFFFFFFF || MipsRegHi(count) == 0xFFFFFFFF) {
-				MoveConstToX86reg(0xFFFFFFFF, x86_ESI);
+				MoveConstToX86reg(0xFFFFFFFF,x86_ESI);
 				bEsiSign = TRUE;
 			}
 			if (MipsRegHi(count) == 0) {

@@ -5,8 +5,8 @@
       <Configuration>Release External</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Stable Defaults|Win32">
-      <Configuration>Stable Defaults</Configuration>
+    <ProjectConfiguration Include="Min Size|Win32">
+      <Configuration>Min Size</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
@@ -27,7 +27,7 @@
     <WholeProgramOptimization>false</WholeProgramOptimization>
     <PlatformToolset>v120_xp</PlatformToolset>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Stable Defaults|Win32'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Min Size|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
@@ -41,7 +41,7 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Stable Defaults|Win32'" Label="PropertySheets">
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Min Size|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
   </ImportGroup>
@@ -54,9 +54,9 @@
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Stable Defaults|Win32'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Min Size|Win32'">
     <OutDir>..\</OutDir>
-    <IntDir>.\Stable_Defaults\</IntDir>
+    <IntDir>.\Min_Size\</IntDir>
     <LinkIncremental>false</LinkIncremental>
     <TargetName>$(ProjectName)</TargetName>
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
@@ -122,17 +122,17 @@
       <EnableDPIAwareness>true</EnableDPIAwareness>
     </Manifest>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Stable Defaults|Win32'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Min Size|Win32'">
     <ClCompile>
       <Optimization>MinSpace</Optimization>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>STABLE_DEFAULTS;EXTERNAL_RELEASE;WIN32;_WINDOWS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AssemblerListingLocation>.\Stable_Defaults\</AssemblerListingLocation>
+      <PreprocessorDefinitions>MIN_SIZE;EXTERNAL_RELEASE;WIN32;_WINDOWS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AssemblerListingLocation>.\Min_Size\</AssemblerListingLocation>
       <BrowseInformation>true</BrowseInformation>
-      <PrecompiledHeaderOutputFile>.\Stable_Defaults\Project64.pch</PrecompiledHeaderOutputFile>
-      <ObjectFileName>.\Stable_Defaults\</ObjectFileName>
-      <ProgramDataBaseFileName>.\Stable_Defaults\</ProgramDataBaseFileName>
+      <PrecompiledHeaderOutputFile>.\Min_Size\Project64.pch</PrecompiledHeaderOutputFile>
+      <ObjectFileName>.\Min_Size\</ObjectFileName>
+      <ProgramDataBaseFileName>.\Min_Size\</ProgramDataBaseFileName>
       <CallingConvention>FastCall</CallingConvention>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
       <EnablePREfast>false</EnablePREfast>
@@ -150,17 +150,17 @@
     </ClCompile>
     <Midl>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <TypeLibraryName>.\Stable_Defaults\Project64.tlb</TypeLibraryName>
+      <TypeLibraryName>.\Min_Size\Project64.tlb</TypeLibraryName>
       <MkTypLibCompatible>true</MkTypLibCompatible>
       <TargetEnvironment>Win32</TargetEnvironment>
     </Midl>
     <ResourceCompile>
       <Culture>0x0c09</Culture>
-      <PreprocessorDefinitions>STABLE_DEFAULTS;EXTERNAL_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>MIN_SIZE;EXTERNAL_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>.\Stable_Defaults\Project64.bsc</OutputFile>
+      <OutputFile>.\Min_Size\Project64.bsc</OutputFile>
     </Bscmake>
     <Link>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -271,11 +271,11 @@
   <ItemGroup>
     <Library Include="zlib.lib">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release External|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Stable Defaults|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Min Size|Win32'">true</ExcludedFromBuild>
     </Library>
     <Library Include="zlib113.LIB">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release External|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Stable Defaults|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Min Size|Win32'">true</ExcludedFromBuild>
     </Library>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

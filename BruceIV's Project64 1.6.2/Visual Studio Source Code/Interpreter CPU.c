@@ -11,7 +11,7 @@
  * providing that this license information and copyright notice appear with
  * all copies and any derived work.
  *
- * This software is provided 'as-is', without any express or implied
+ * This software is provided 'as-is',without any express or implied
  * warranty. In no event shall the authors be held liable for any damages
  * arising from the use of this software.
  *
@@ -77,16 +77,19 @@ void _fastcall r4300i_COP1_L (void) {
 void _fastcall r4300i_COP2 (void) {
 	((void (_fastcall *)()) R4300i_CoP2[ Opcode.rs ])();
 }
-void _fastcall DUMMY () {}
-void _fastcall DTE_DUMMY() {
-	DisplayThreadExit("BuildInterpreter - i = 0; i < 64; i++");
+void _fastcall DTE_RESERVED() {
+	DisplayThreadExit("BuildInterpreter - i = 0; i < 64; i++\n\nThe emulator has crashed on a reserved Opcode at this location");
 }
-void BuildInterpreter (void ) {
+void _fastcall DTE_DUMMY() {
+	DisplayThreadExit("BuildInterpreter - i = 0; i < 64; i++\n\nThe emulator has crashed on an unknown Opcode at this location");
+}
+void _fastcall DUMMY() {}
+void BuildInterpreter (void) {
 	int i;
 	for (i = 0; i < 64; i++) {
-		R4300i_Opcode[i]	= DTE_DUMMY; // RESERVED: 28-31, 51, 59
-		R4300i_Special[i]	= DTE_DUMMY; // RESERVED: 1, 5, 10-11, 14, 21, 40-41, 53, 55, 57, 61
-		R4300i_Regimm[i]	= DTE_DUMMY; // RESERVED: 4-7, 13, 15, 20-31
+		R4300i_Opcode[i]	= DTE_RESERVED;
+		R4300i_Special[i]	= DTE_RESERVED;
+		R4300i_Regimm[i]	= DTE_RESERVED;
 		R4300i_CoP0[i]		= DTE_DUMMY;
 		R4300i_CoP0_Function[i]	= DTE_DUMMY;
 		R4300i_CoP1[i]		= DTE_DUMMY;
@@ -164,7 +167,7 @@ void BuildInterpreter (void ) {
 	R4300i_Special[ 8] = r4300i_SPECIAL_JR;
 	R4300i_Special[ 9] = r4300i_SPECIAL_JALR;
 	R4300i_Special[12] = r4300i_SPECIAL_SYSCALL;
-	R4300i_Special[13] = DUMMY; // SPECIAL_BREAK - Ocarina of Time Spirit Temple's White Bubble enemy doesn't crash using DUMMY instead of SYSCALL
+	R4300i_Special[13] = r4300i_SPECIAL_BREAK;
 	R4300i_Special[15] = DUMMY; // SPECIAL_SYNC
 	R4300i_Special[16] = r4300i_SPECIAL_MFHI;
 	R4300i_Special[17] = r4300i_SPECIAL_MTHI;
@@ -368,9 +371,9 @@ void BuildInterpreter (void ) {
 	R4300i_CoP2[ 7] = DUMMY; // COP2_DCT
 }
 void ExecuteInterpreterOpCode (void) {
-	if (!r4300i_LW_VAddr(PROGRAM_COUNTER, &Opcode.Hex)) {
+	if (!r4300i_LW_VAddr(PROGRAM_COUNTER,&Opcode.Hex)) {
 		DoTLBMiss(NextInstruction == JUMP,PROGRAM_COUNTER);
-		NextInstruction = NORMAL;
+		SetNormal
 		return;
 	}
 	COUNT_REGISTER += CountPerOp;
@@ -388,30 +391,30 @@ void ExecuteInterpreterOpCode (void) {
 		PROGRAM_COUNTER += 4;
 		break;
 	case DELAY_SLOT:
-		NextInstruction = JUMP;
+		SetJump
 		PROGRAM_COUNTER += 4;
 		break;
 	case JUMP:
 		PROGRAM_COUNTER  = JumpToLocation;
-		NextInstruction = NORMAL;
+		SetNormal
 		if ((int)Timers.Timer < 0) { TimerDone(); }
 		if (CPU_Action.DoSomething) { DoSomething(); }
 		}
 	}
-void StartInterpreterCPU (void ) {
+void StartInterpreterCPU (void) {
 	CoInitialize(NULL);
-	NextInstruction = NORMAL;
-	if (GfxRomOpen != NULL && (!inFullScreen || strcmp(GfxDLL, "Icepir8sLegacyLLE.dll") == 0)) { GfxRomOpen(); }
+	SetNormal
+	if (GfxRomOpen != NULL && (!inFullScreen || strcmp(GfxDLL,"Icepir8sLegacyLLE.dll") == 0)) { GfxRomOpen(); }
 	if (ContRomOpen != NULL && !GLideN64NeedsToBeSetupFirst) { ContRomOpen(); }
 	__try {
 		for (;;) {
 			ExecuteInterpreterOpCode();
 		}
-	} __except( r4300i_CPU_MemoryFilter( GetExceptionCode(), GetExceptionInformation()) ) {
-		DisplayThreadExit("StartInterpreterCPU - r4300i_CPU_MemoryFilter( GetExceptionCode(), GetExceptionInformation())");
+	} __except(r4300i_CPU_MemoryFilter(GetExceptionCode(),GetExceptionInformation())) {
+		DisplayThreadExit("StartInterpreterCPU - r4300i_CPU_MemoryFilter(GetExceptionCode(),GetExceptionInformation())");
 	}
 }
-void TestInterpreterJump (DWORD PC, DWORD TargetPC, int Reg1, int Reg2) {
+void TestInterpreterJump (DWORD PC,DWORD TargetPC,int Reg1,int Reg2) {
 	if (PC != TargetPC) return;
 	if (DelaySlotEffectsCompare(PC,Reg1,Reg2)) return;
 	if (CPU_Type != CPU_Interpreter) return;

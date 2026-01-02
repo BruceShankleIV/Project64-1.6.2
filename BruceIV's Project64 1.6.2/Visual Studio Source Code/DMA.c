@@ -11,7 +11,7 @@
  * providing that this license information and copyright notice appear with
  * all copies and any derived work.
  *
- * This software is provided 'as-is', without any express or implied
+ * This software is provided 'as-is',without any express or implied
  * warranty. In no event shall the authors be held liable for any damages
  * arising from the use of this software.
  *
@@ -30,7 +30,7 @@
 #include "SummerCart.h"
 int DMAUsed;
 void PI_DMA_READ (void) {
-	if ( PI_DRAM_ADDR_REG + PI_RD_LEN_REG + 1 > RDRAMsize) {
+	if (PI_DRAM_ADDR_REG + PI_RD_LEN_REG + 1 > RDRAMsize) {
 		PI_STATUS_REG &= ~PI_STATUS_DMA_BUSY;
 		MI_INTR_REG |= MI_INTR_PI;
 		CheckInterrupts();
@@ -239,39 +239,39 @@ void SI_DMA_READ (void) {
 	PifRamRead();
 	SI_DRAM_ADDR_REG &= 0xFFFFFFF8;
 	if ((int)SI_DRAM_ADDR_REG < 0) {
-		int count, RDRAMPos;
+		int count,RDRAMPos;
 		RDRAMPos = (int)SI_DRAM_ADDR_REG;
-		for (count = 0; count < 0x40; count++, RDRAMPos++) {
+		for (count = 0; count < 0x40; count++,RDRAMPos++) {
 			if (RDRAMPos < 0) continue;
 			N64MEM[RDRAMPos ^3] = PIF_Ram[count];
 		}
 	} else {
 		_asm {
-			mov edi, dword ptr [RegSI]
-			mov edi, dword ptr [edi]
-			add edi, N64MEM
-			mov ecx, PifRamPos
-			mov edx, 0
+			mov edi,dword ptr [RegSI]
+			mov edi,dword ptr [edi]
+			add edi,N64MEM
+			mov ecx,PifRamPos
+			mov edx,0
 	memcpyloop:
-			mov eax, dword ptr [ecx + edx]
+			mov eax,dword ptr [ecx + edx]
 			bswap eax
 			mov  dword ptr [edi + edx],eax
-			mov eax, dword ptr [ecx + edx + 4]
+			mov eax,dword ptr [ecx + edx + 4]
 			bswap eax
 			mov  dword ptr [edi + edx + 4],eax
-			mov eax, dword ptr [ecx + edx + 8]
+			mov eax,dword ptr [ecx + edx + 8]
 			bswap eax
 			mov  dword ptr [edi + edx + 8],eax
-			mov eax, dword ptr [ecx + edx + 12]
+			mov eax,dword ptr [ecx + edx + 12]
 			bswap eax
 			mov  dword ptr [edi + edx + 12],eax
-			add edx, 16
-			cmp edx, 64
+			add edx,16
+			cmp edx,64
 			jb memcpyloop
 		}
 	}
 	if (DelaySI) {
-		ChangeTimer(SiTimer, 0x2000);
+		ChangeTimer(SiTimer,0x2000);
 		return;
 	}
 	MI_INTR_REG |= MI_INTR_SI;
@@ -286,40 +286,40 @@ void SI_DMA_WRITE (void) {
 	}
 	SI_DRAM_ADDR_REG &= 0xFFFFFFF8;
 	if ((int)SI_DRAM_ADDR_REG < 0) {
-		int count, RDRAMPos;
+		int count,RDRAMPos;
 		RDRAMPos = (int)SI_DRAM_ADDR_REG;
-		for (count = 0; count < 0x40; count++, RDRAMPos++) {
+		for (count = 0; count < 0x40; count++,RDRAMPos++) {
 			if (RDRAMPos < 0) { PIF_Ram[count] = 0; continue; }
 			PIF_Ram[count] = N64MEM[RDRAMPos ^3];
 		}
 	} else {
 		_asm {
-			mov ecx, dword ptr [RegSI]
-			mov ecx, dword ptr [ecx]
-			add ecx, N64MEM
-			mov edi, PifRamPos
-			mov edx, 0
+			mov ecx,dword ptr [RegSI]
+			mov ecx,dword ptr [ecx]
+			add ecx,N64MEM
+			mov edi,PifRamPos
+			mov edx,0
 	memcpyloop:
-			mov eax, dword ptr [ecx + edx]
+			mov eax,dword ptr [ecx + edx]
 			bswap eax
 			mov  dword ptr [edi + edx],eax
-			mov eax, dword ptr [ecx + edx + 4]
+			mov eax,dword ptr [ecx + edx + 4]
 			bswap eax
 			mov  dword ptr [edi + edx + 4],eax
-			mov eax, dword ptr [ecx + edx + 8]
+			mov eax,dword ptr [ecx + edx + 8]
 			bswap eax
 			mov  dword ptr [edi + edx + 8],eax
-			mov eax, dword ptr [ecx + edx + 12]
+			mov eax,dword ptr [ecx + edx + 12]
 			bswap eax
 			mov  dword ptr [edi + edx + 12],eax
-			add edx, 16
-			cmp edx, 64
+			add edx,16
+			cmp edx,64
 			jb memcpyloop
 		}
 	}
 	PifRamWrite();
 	if (DelaySI) {
-		ChangeTimer(SiTimer, 0x2000);
+		ChangeTimer(SiTimer,0x2000);
 		return;
 	}
 	MI_INTR_REG |= MI_INTR_SI;
@@ -334,14 +334,14 @@ void SP_DMA_READ (void) {
 		return;
 	}
 	if (SP_RD_LEN_REG + 1  + (SP_MEM_ADDR_REG & 0xFFF) > 0x1000) return;
-	memcpy( DMEM + (SP_MEM_ADDR_REG & 0x1FFF), N64MEM + SP_DRAM_ADDR_REG, SP_RD_LEN_REG + 1 );
+	memcpy(DMEM + (SP_MEM_ADDR_REG & 0x1FFF),N64MEM + SP_DRAM_ADDR_REG,SP_RD_LEN_REG + 1);
 	SP_DMA_BUSY_REG = 0;
 	SP_STATUS_REG  &= ~SP_STATUS_DMA_BUSY;
 }
 void SP_DMA_WRITE (void) {
 	if (SP_DRAM_ADDR_REG > RDRAMsize) return;
 	if (SP_WR_LEN_REG + 1 + (SP_MEM_ADDR_REG & 0xFFF) > 0x1000) return;
-	memcpy( N64MEM + SP_DRAM_ADDR_REG, DMEM + (SP_MEM_ADDR_REG & 0x1FFF),SP_WR_LEN_REG + 1);
+	memcpy(N64MEM + SP_DRAM_ADDR_REG,DMEM + (SP_MEM_ADDR_REG & 0x1FFF),SP_WR_LEN_REG + 1);
 	SP_DMA_BUSY_REG = 0;
 	SP_STATUS_REG  &= ~SP_STATUS_DMA_BUSY;
 }

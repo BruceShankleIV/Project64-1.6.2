@@ -4,6 +4,7 @@ be ported to Versions 1.0 and 1.1 and I'd prefer to be consistent across 1.0/1.1
 
 
 "Skip\Starting in Link's House",D111AC82 00BB,8011AC8B 0000,D111AC82 00BB,8111AC82 0211
+"Skip\Intro",D111AC82 00BB,8111AC8A 0000
 "Enter Crawlspaces as Adult",803962EF 0000
 "Mute\SFX",8111C060 0000
 "Mute\Heart Beep",81066210 1000

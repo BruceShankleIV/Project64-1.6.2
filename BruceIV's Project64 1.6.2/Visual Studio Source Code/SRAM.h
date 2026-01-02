@@ -11,7 +11,7 @@
  * providing that this license information and copyright notice appear with
  * all copies and any derived work.
  *
- * This software is provided 'as-is', without any express or implied
+ * This software is provided 'as-is',without any express or implied
  * warranty. In no event shall the authors be held liable for any damages
  * arising from the use of this software.
  *
@@ -23,6 +23,6 @@
  * should be forwarded to them so if they want them.
  *
  */
-void CloseSRAM   ( void );
-void DMAfromSRAM ( BYTE * dest, int StartOffset, int len);
-void DMAtoSRAM   ( BYTE * Source, int StartOffset, int len);
+void CloseSRAM   (void);
+void DMAfromSRAM (BYTE * dest,int StartOffset,int len);
+void DMAtoSRAM   (BYTE * Source,int StartOffset,int len);

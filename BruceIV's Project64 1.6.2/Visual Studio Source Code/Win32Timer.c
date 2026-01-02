@@ -11,7 +11,7 @@
  * providing that this license information and copyright notice appear with
  * all copies and any derived work.
  *
- * This software is provided 'as-is', without any express or implied
+ * This software is provided 'as-is',without any express or implied
  * warranty. In no event shall the authors be held liable for any damages
  * arising from the use of this software.
  *
@@ -27,22 +27,22 @@
 #include "Language.h"
 /********************* Win32 Thread Timer ********************/
 struct {
-	DWORD Frames, LastTime;
+	DWORD Frames,LastTime;
 	DOUBLE Ratio;
-} FPSTimer = { 0,0, 1000.0F / 60.0F };
+} FPSTimer = { 0,0,1000.0F / 60.0F };
 void Timer_Initialize(double Hertz) {
 	FPSTimer.Ratio = 1000.0f / Hertz;
 }
 void Timer_Start(void) {
 	TIMECAPS Caps;
-	timeGetDevCaps(&Caps, sizeof(Caps));
-	if (timeBeginPeriod(Caps.wPeriodMin) == TIMERR_NOCANDO) MessageBox(NULL, "Error during timer begin", GS(MSG_ERROR_TITLE), MB_ICONERROR);
+	timeGetDevCaps(&Caps,sizeof(Caps));
+	if (timeBeginPeriod(Caps.wPeriodMin) == TIMERR_NOCANDO) MessageBox(NULL,"Error during timer begin",GS(MSG_ERROR_TITLE),MB_ICONERROR);
 	FPSTimer.Frames = 0;
 	FPSTimer.LastTime = timeGetTime();
 }
 void Timer_Stop(void) {
 	TIMECAPS Caps;
-	timeGetDevCaps(&Caps, sizeof(Caps));
+	timeGetDevCaps(&Caps,sizeof(Caps));
 	timeEndPeriod(Caps.wPeriodMin);
 }
 BOOL Timer_Process(DWORD * FrameRate) {
