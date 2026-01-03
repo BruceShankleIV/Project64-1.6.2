@@ -407,17 +407,16 @@ void _fastcall r4300i_SPECIAL_JALR (void) {
 	JumpToLocation = GPR[Opcode.rs].UW[0];
 	GPR[Opcode.rd].DW = (long)(PROGRAM_COUNTER + 8);
 }
-void _fastcall r4300i_SPECIAL_SYSCALL(void) {
+void _fastcall r4300i_SPECIAL_SYSCALL (void) {
 	DoSysCallException(NextInstruction == JUMP);
 	SetJump
 	JumpToLocation = PROGRAM_COUNTER;
 }
-void _fastcall r4300i_SPECIAL_BREAK(void) {
-	static BOOL Shown = FALSE;
-	if (Shown) return;
+void _fastcall r4300i_SPECIAL_BREAK (void) {
+	if (SPECIAL_BREAK_Trigger) return;
 	HandleModal1(hMainWindow);
 	if (MessageBox(NULL,GS(SPECIAL_BREAK),GS(OPTIONAL_CRASH),MB_YESNO | MB_ICONERROR | MB_SETFOREGROUND) == IDYES) r4300i_SPECIAL_SYSCALL();
-	else Shown = TRUE;
+	SPECIAL_BREAK_Trigger = TRUE;
 	HandleModal2(hMainWindow);
 }
 void _fastcall r4300i_SPECIAL_MFHI (void) {

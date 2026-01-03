@@ -41,7 +41,7 @@
 #include "Resource.h"
 #include "SummerCart.h"
 LARGE_INTEGER Frequency,Frames[9],LastFrame;
-BOOL AutoSleep,AutoHide,Recursion,LimitFPS,SpeedCap,AutoFullScreen,SystemCF,UsuallyonTop,BasicMode,BootupSettings = FALSE,SetupPluginsAfterSaveRomOpt = FALSE;
+BOOL AutoSleep,AutoHide,Recursion,LimitFPS,SpeedCap,AutoFullScreen,SystemCF,UsuallyonTop,BasicMode,BootupSettings = FALSE,SetupPluginsAfterSaveRomOpt = FALSE,SPECIAL_BREAK_Trigger = FALSE,BF_Trigger = FALSE;
 DWORD CurrentFrame,CPU_Type,SystemCPU_Type,SelfModCheck,SystemUseCache,SystemSelfModCheck,RomsToRemember,RomDirsToRemember;
 HWND hMainWindow,hHiddenWin,hStatusWnd;
 char CurrentSave[256];

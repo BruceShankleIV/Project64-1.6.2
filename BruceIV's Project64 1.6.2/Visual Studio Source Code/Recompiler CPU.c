@@ -56,13 +56,12 @@ void OpcodeSwitch (BLOCK_SECTION * Section) {
 		switch (Opcode.funct) {
 		case R4300i_SPECIAL_BREAK:
 			if (UseCache == REG_CACHE_OFF) {
-				static BOOL Shown = FALSE;
-				if (Shown) break;
+				if (SPECIAL_BREAK_Trigger) break;
 				HandleModal1(hMainWindow);
-				if (MessageBox(NULL,GS(SPECIAL_BREAK),GS(OPTIONAL_CRASH),MB_YESNO | MB_ICONERROR | MB_SETFOREGROUND) == IDNO) Shown = TRUE;
+				if (MessageBox(NULL,GS(SPECIAL_BREAK),GS(OPTIONAL_CRASH),MB_YESNO | MB_ICONERROR | MB_SETFOREGROUND) == IDNO) SPECIAL_BREAK_Trigger = TRUE;
 				HandleModal2(hMainWindow);
-				if (Shown) break;
-				Shown = TRUE;
+				if (SPECIAL_BREAK_Trigger) break;
+				SPECIAL_BREAK_Trigger = TRUE;
 			}
 		case R4300i_SPECIAL_SYSCALL: Compile_R4300i_SPECIAL_SYSCALL(Section);
 		case R4300i_SPECIAL_SYNC:

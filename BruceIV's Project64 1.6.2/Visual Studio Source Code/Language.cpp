@@ -254,7 +254,6 @@ LANG_STR DefaultString[] = {
 	{ SPECIAL_BREAK,	  "The game may crash at the upcoming r4300i_SPECIAL_BREAK. Do you want to emulate this potential crash?"},
 	{ OPTIONAL_CRASH,	  "Potential Upcoming Crash"},
 	{ N64_CRASH,		  "Nintendo 64 hardware would probably crash on the next frame at this location: r4300i_CPU_MemoryFilter - switch(*TypePos) - case 0x0F - switch(*(TypePos + 1)) - case 0xBF:"},
-	{ ONE_TIME_INFO,	  "One-time App Information"},
 };
 class CLanguage  {
 	void FindLangName  (int Index);

@@ -1055,13 +1055,12 @@ int r4300i_CPU_MemoryFilter (DWORD dwExptCode,LPEXCEPTION_POINTERS lpEP) {
 			return EXCEPTION_CONTINUE_EXECUTION;
 		case 0xBF:
 			if (UseCache == REG_CACHE_OFF) {
-				static BOOL Shown = FALSE;
-				if (!Shown) {
+				if (!BF_Trigger) {
 					HandleModal1(hMainWindow);
-					MessageBox(NULL,GS(N64_CRASH),GS(ONE_TIME_INFO),MB_OK | MB_ICONEXCLAMATION | MB_SETFOREGROUND);
+					MessageBox(NULL,GS(N64_CRASH),AppName,MB_OK | MB_ICONEXCLAMATION | MB_SETFOREGROUND);
 					HandleModal2(hMainWindow);
+					BF_Trigger = TRUE;
 				}
-				Shown = TRUE;
 			}
 			r4300i_LH_NonMemory(MemAddress,Reg,TRUE);
 			lpEP->ContextRecord->Eip = (DWORD)ReadPos;

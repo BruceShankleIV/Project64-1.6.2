@@ -202,6 +202,8 @@ void CheckTimer (void) {
 }
 void EndEmulation (void) {
 	DWORD ExitCode,count,OldProtect;
+	if (SPECIAL_BREAK_Trigger) SPECIAL_BREAK_Trigger = FALSE;
+	if (BF_Trigger) BF_Trigger = FALSE;
 	SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)"");
 	ManualPaused = FALSE;
 	CPU_Action.CloseCPU = TRUE;
@@ -731,6 +733,8 @@ BOOL Machine_LoadState(void) {
 	strcpy(LoadFileName,"");
 	sprintf(String,"%s: %s",GS(MSG_LOADED_STATE),FileName);
 	SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)String);
+	if (SPECIAL_BREAK_Trigger) SPECIAL_BREAK_Trigger = FALSE;
+	if (BF_Trigger) BF_Trigger = FALSE;
 	return TRUE;
 }
 BOOL Machine_SaveState(void) {
