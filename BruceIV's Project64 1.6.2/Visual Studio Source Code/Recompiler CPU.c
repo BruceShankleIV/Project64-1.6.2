@@ -58,9 +58,8 @@ void OpcodeSwitch (BLOCK_SECTION * Section) {
 			if (UseCache == REG_CACHE_OFF) {
 				static BOOL Shown = FALSE;
 				if (Shown) break;
-				Shown = TRUE;
 				HandleModal1(hMainWindow);
-				if (MessageBox(NULL,GS(SPECIAL_BREAK),GS(OPTIONAL_CRASH),MB_YESNO | MB_ICONERROR | MB_SETFOREGROUND) == IDYES) Shown = FALSE;
+				if (MessageBox(NULL,GS(SPECIAL_BREAK),GS(OPTIONAL_CRASH),MB_YESNO | MB_ICONERROR | MB_SETFOREGROUND) == IDNO) Shown = TRUE;
 				HandleModal2(hMainWindow);
 				if (Shown) break;
 				Shown = TRUE;
