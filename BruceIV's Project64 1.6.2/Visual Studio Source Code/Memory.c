@@ -30,6 +30,10 @@
 #include "x86.h"
 #include "Plugin.h"
 #include "SummerCart.h"
+#define Const86 MoveConstToX86reg(0,Reg);
+#define Var86 MoveVariableToX86reg(Addr + N64MEM,Reg);
+#define FalseVaddr if (!TranslateVaddr(&Addr)) return;
+#define Variable86 MoveX86regToVariable(x86Reg,Addr + N64MEM);
 DWORD *TLB_ReadMap,*TLB_WriteMap,RDRAMsize,SystemRDRAMsize;
 BYTE *N64MEM,*RDRAM,*DMEM,*IMEM,*ROM;
 void ** JumpTable,** DelaySlotTable;
@@ -129,7 +133,7 @@ void Compile_LB (int Reg,DWORD Addr,BOOL SignExtend) {
 		return;
 	}
 	Move:
-	MoveConstToX86reg(0,Reg);
+	Const86
 }
 void Compile_LH (int Reg,DWORD Addr,BOOL SignExtend) {
 	if (!TranslateVaddr(&Addr)) goto Move;
@@ -151,12 +155,12 @@ void Compile_LH (int Reg,DWORD Addr,BOOL SignExtend) {
 		return;
 	}
 	Move:
-	MoveConstToX86reg(0,Reg);
+	Const86
 }
 void Compile_LW (int Reg,DWORD Addr) {
 	if (!TranslateVaddr(&Addr)) {
-		MoveConstToX86reg(0,Reg);
-		return; // Original 1.6 did not have this,assuming it's a mistake
+		Const86
+		return; // Original 1.6 did not have this, assuming it's a mistake
 	}
 	switch (Addr & 0xFFF00000) {
 	case 0x00000000:
@@ -169,11 +173,11 @@ void Compile_LW (int Reg,DWORD Addr) {
 	case 0x00700000:
 	case 0x06000000: // N64DD IPL (J)
 	case 0x10000000:
-		MoveVariableToX86reg(Addr + N64MEM,Reg);
+		Var86
 		break;
 	case 0x04000000:
 		if (Addr < 0x04002000) {
-			MoveVariableToX86reg(Addr + N64MEM,Reg);
+			Var86
 			break;
 		}
 		switch (Addr) {
@@ -191,7 +195,7 @@ void Compile_LW (int Reg,DWORD Addr) {
 #endif
 		case 0x04080000: MoveVariableToX86reg(&SP_PC_REG,Reg); break;
 		default:
-			MoveConstToX86reg(0,Reg);
+			Const86
 		}
 		break;
 	case 0x04100000:
@@ -204,7 +208,7 @@ void Compile_LW (int Reg,DWORD Addr) {
 		case 0x0410001C: MoveVariableToX86reg(&DPC_TMEM_REG,Reg); break;
 #endif
 		default:
-			MoveVariableToX86reg(Addr + N64MEM,Reg);
+			Var86
 		}
 		break;
 	case 0x04300000:
@@ -214,7 +218,7 @@ void Compile_LW (int Reg,DWORD Addr) {
 		case 0x04300008: MoveVariableToX86reg(&MI_INTR_REG,Reg); break;
 		case 0x0430000C: MoveVariableToX86reg(&MI_INTR_MASK_REG,Reg); break;
 		default:
-			MoveConstToX86reg(0,Reg);
+			Const86
 		}
 		break;
 	case 0x04400000:
@@ -243,7 +247,7 @@ void Compile_LW (int Reg,DWORD Addr) {
 		case 0x04400034: MoveVariableToX86reg(&VI_Y_SCALE_REG,Reg); break;
 #endif
 		default:
-			MoveConstToX86reg(0,Reg);
+			Const86
 		}
 		break;
 	case 0x04500000: /* AI registers */
@@ -259,7 +263,7 @@ void Compile_LW (int Reg,DWORD Addr) {
 				Popad();
 				MoveVariableToX86reg(&TempValue,Reg);
 			} else {
-				MoveConstToX86reg(0,Reg);
+				Const86
 			}
 			break;
 		case 0x0450000C: MoveVariableToX86reg(&AI_STATUS_REG,Reg); break;
@@ -267,7 +271,7 @@ void Compile_LW (int Reg,DWORD Addr) {
 		case 0x04500014: MoveVariableToX86reg(&AI_BITRATE_REG,Reg); break;
 #endif
 		default:
-			MoveConstToX86reg(0,Reg);
+			Const86
 		}
 		break;
 	case 0x04600000:
@@ -288,7 +292,7 @@ void Compile_LW (int Reg,DWORD Addr) {
 		case 0x0460002C: MoveVariableToX86reg(&PI_BSD_DOM2_PGS_REG,Reg); break;
 		case 0x04600030: MoveVariableToX86reg(&PI_BSD_DOM2_RLS_REG,Reg); break;
 		default:
-			MoveConstToX86reg(0,Reg);
+			Const86
 		}
 		break;
 	case 0x04700000:
@@ -306,7 +310,7 @@ void Compile_LW (int Reg,DWORD Addr) {
 		case 0x0470001C: MoveVariableToX86reg(&RI_WERROR_REG,Reg); break;
 #endif
 		default:
-			MoveConstToX86reg(0,Reg);
+			Const86
 		}
 		break;
 	case 0x04800000:
@@ -318,23 +322,23 @@ void Compile_LW (int Reg,DWORD Addr) {
 #endif
 		case 0x04800018: MoveVariableToX86reg(&SI_STATUS_REG,Reg); break;
 		default:
-			MoveConstToX86reg(0,Reg);
+			Const86
 		}
 		break;
 #ifndef MIN_SIZE
 	case 0x05000000:
-		MoveConstToX86reg(0,Reg);
+		Const86
 		break;
 #endif
 	case 0x1FC00000:
-		MoveVariableToX86reg(Addr + N64MEM,Reg);
+		Var86
 		break;
 	default:
 		MoveConstToX86reg(((Addr & 0xFFFF) << 16) | (Addr & 0xFFFF),Reg);
 	}
 }
 void Compile_SB_Const (BYTE Value,DWORD Addr) {
-	if (!TranslateVaddr(&Addr)) return;
+	FalseVaddr
 	switch (Addr & 0xFFF00000) {
 	case 0x00000000:
 	case 0x00100000:
@@ -348,7 +352,7 @@ void Compile_SB_Const (BYTE Value,DWORD Addr) {
 	}
 }
 void Compile_SB_Register (int x86Reg,DWORD Addr) {
-	if (!TranslateVaddr(&Addr)) return;
+	FalseVaddr
 	switch (Addr & 0xFFF00000) {
 	case 0x00000000:
 	case 0x00100000:
@@ -362,7 +366,7 @@ void Compile_SB_Register (int x86Reg,DWORD Addr) {
 	}
 }
 void Compile_SH_Const (WORD Value,DWORD Addr) {
-	if (!TranslateVaddr(&Addr)) return;
+	FalseVaddr
 	switch (Addr & 0xFFF00000) {
 	case 0x00000000:
 	case 0x00100000:
@@ -376,7 +380,7 @@ void Compile_SH_Const (WORD Value,DWORD Addr) {
 	}
 }
 void Compile_SH_Register (int x86Reg,DWORD Addr) {
-	if (!TranslateVaddr(&Addr)) return;
+	FalseVaddr
 	switch (Addr & 0xFFF00000) {
 	case 0x00000000:
 	case 0x00100000:
@@ -391,7 +395,7 @@ void Compile_SH_Register (int x86Reg,DWORD Addr) {
 }
 void Compile_SW_Const (DWORD Value,DWORD Addr) {
 	BYTE * Jump;
-	if (!TranslateVaddr(&Addr)) return;
+	FalseVaddr
 	switch (Addr & 0xFFF00000) {
 	case 0x00000000:
 	case 0x00100000:
@@ -473,14 +477,14 @@ void Compile_SW_Const (DWORD Value,DWORD Addr) {
 				{
 					OrConstToVariable(MI_INTR_SP,&MI_INTR_REG);
 					Pushad();
-					Call_Direct(CheckInterrupts);
+					InterruptsCD
 					Popad();
 				}
 				if ((Value & SP_CLR_INTR) != 0) {
 					AndConstToVariable(~MI_INTR_SP,&MI_INTR_REG);
 					Pushad();
 					Call_Direct(RunRsp);
-					Call_Direct(CheckInterrupts);
+					InterruptsCD
 					Popad();
 				} else {
 					Pushad();
@@ -564,7 +568,7 @@ void Compile_SW_Const (DWORD Value,DWORD Addr) {
 		case 0x04400010:
 			AndConstToVariable(~MI_INTR_VI,&MI_INTR_REG);
 			Pushad();
-			Call_Direct(CheckInterrupts);
+			InterruptsCD
 			Popad();
 			break;
 		case 0x04400014: MoveConstToVariable(Value,&VI_BURST_REG); break;
@@ -593,7 +597,7 @@ void Compile_SW_Const (DWORD Value,DWORD Addr) {
 			AndConstToVariable(~MI_INTR_AI,&MI_INTR_REG);
 			AndConstToVariable(~MI_INTR_AI,&AudioIntrReg);
 			Pushad();
-			Call_Direct(CheckInterrupts);
+			InterruptsCD
 			Popad();
 			break;
 		case 0x04500014: MoveConstToVariable(Value,&AI_BITRATE_REG); break;
@@ -621,7 +625,7 @@ void Compile_SW_Const (DWORD Value,DWORD Addr) {
 			if ((Value & PI_CLR_INTR) != 0) {
 				AndConstToVariable(~MI_INTR_PI,&MI_INTR_REG);
 				Pushad();
-				Call_Direct(CheckInterrupts);
+				InterruptsCD
 				Popad();
 			}
 			break;
@@ -670,7 +674,7 @@ void Compile_SW_Const (DWORD Value,DWORD Addr) {
 			AndConstToVariable(~MI_INTR_SI,&MI_INTR_REG);
 			AndConstToVariable(~SI_STATUS_INTERRUPT,&SI_STATUS_REG);
 			Pushad();
-			Call_Direct(CheckInterrupts);
+			InterruptsCD
 			Popad();
 		}
 		break;
@@ -678,7 +682,7 @@ void Compile_SW_Const (DWORD Value,DWORD Addr) {
 }
 void Compile_SW_Register (int x86Reg,DWORD Addr) {
 	BYTE * Jump;
-	if (!TranslateVaddr(&Addr)) return;
+	FalseVaddr
 	switch (Addr & 0xFFF00000) {
 	case 0x00000000:
 	case 0x00100000:
@@ -688,7 +692,7 @@ void Compile_SW_Register (int x86Reg,DWORD Addr) {
 	case 0x00500000:
 	case 0x00600000:
 	case 0x00700000:
-		MoveX86regToVariable(x86Reg,Addr + N64MEM);
+		Variable86
 		break;
 	case 0x04000000:
 		switch (Addr) {
@@ -718,7 +722,7 @@ void Compile_SW_Register (int x86Reg,DWORD Addr) {
 			AndConstToVariable(0xFFC,&SP_PC_REG);
 			break;
 		default:
-			if (Addr < 0x04002000) MoveX86regToVariable(x86Reg,Addr + N64MEM);
+			if (Addr < 0x04002000) Variable86
 		}
 		break;
 	case 0x04100000:
@@ -730,7 +734,7 @@ void Compile_SW_Register (int x86Reg,DWORD Addr) {
 			Popad();
 		} else
 #endif
-		MoveX86regToVariable(x86Reg,Addr + N64MEM);
+		Variable86
 		break;
 	case 0x04300000:
 		switch (Addr) {
@@ -784,7 +788,7 @@ void Compile_SW_Register (int x86Reg,DWORD Addr) {
 		case 0x04400010:
 			AndConstToVariable(~MI_INTR_VI,&MI_INTR_REG);
 			Pushad();
-			Call_Direct(CheckInterrupts);
+			InterruptsCD
 			Popad();
 			break;
 		case 0x04400014: MoveX86regToVariable(x86Reg,&VI_BURST_REG); break;
@@ -815,12 +819,12 @@ void Compile_SW_Register (int x86Reg,DWORD Addr) {
 			AndConstToVariable(~MI_INTR_AI,&MI_INTR_REG);
 			AndConstToVariable(~MI_INTR_AI,&AudioIntrReg);
 			Pushad();
-			Call_Direct(CheckInterrupts);
+			InterruptsCD
 			Popad();
 			break;
 		case 0x04500014: MoveX86regToVariable(x86Reg,&AI_BITRATE_REG); break;
 		default:
-			MoveX86regToVariable(x86Reg,Addr + N64MEM);
+			Variable86
 		}
 		break;
 	case 0x04600000:
@@ -842,7 +846,7 @@ void Compile_SW_Register (int x86Reg,DWORD Addr) {
 		case 0x04600010:
 			AndConstToVariable(~MI_INTR_PI,&MI_INTR_REG);
 			Pushad();
-			Call_Direct(CheckInterrupts);
+			InterruptsCD
 			Popad();
 			break;
 		case 0x04600014:
@@ -911,12 +915,12 @@ void Compile_SW_Register (int x86Reg,DWORD Addr) {
 			AndConstToVariable(~MI_INTR_SI,&MI_INTR_REG);
 			AndConstToVariable(~SI_STATUS_INTERRUPT,&SI_STATUS_REG);
 			Pushad();
-			Call_Direct(CheckInterrupts);
+			InterruptsCD
 			Popad();
 		}
 		break;
 	case 0x1FC00000:
-		MoveX86regToVariable(x86Reg,Addr + N64MEM);
+		Variable86
 		break;
 	}
 }
@@ -1494,7 +1498,7 @@ BOOL r4300i_SH_VAddr (DWORD VAddr,WORD Value) {
 	return TRUE;
 }
 int r4300i_SW_NonMemory (DWORD PAddr,DWORD Value) {
-// This function is missing memory registers for ifndef MIN_SIZE!
+// This function is missing memory registers for ifndef MIN_SIZE! For now let's just use Min Size profile until it's revealed we need the extra memory registers for anything
 	if (PAddr >= 0x10000000 && PAddr < 0x16000000) {
 		if ((PAddr - 0x10000000) < RomFileSize) {
 			WrittenToRom = TRUE;

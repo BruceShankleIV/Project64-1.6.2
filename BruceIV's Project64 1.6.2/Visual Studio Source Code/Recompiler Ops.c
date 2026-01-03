@@ -1939,7 +1939,7 @@ void _fastcall ClearRecompilerCache (DWORD Address) {
 	DWORD Block = Address >> 12;
 	if (N64_Blocks.NoOfRDRAMBlocks[Block] > 0) {
 		N64_Blocks.NoOfRDRAMBlocks[Block] = 0;
-		memset(JumpTable + (Block << 10),0,0x5000);
+		memset(JumpTable + (Block << 10),0,0x4EA1); // >=0x4EA1 for Ocarina of Time, <=0x900D for Banjo Tooie
 		*(DelaySlotTable + Block) = NULL;
 	}
 }
@@ -3958,7 +3958,7 @@ void Compile_R4300i_COP0_MT (BLOCK_SECTION * Section) {
 		Popad();
 		*(BYTE *)(Jump)= (BYTE)(((BYTE)(RecompPos)) - (((BYTE)(Jump)) + 1));
 		Pushad();
-		Call_Direct(CheckInterrupts);
+		InterruptsCD
 		Popad();
 		break;
 	case 6: //Wired
@@ -3980,7 +3980,7 @@ void Compile_R4300i_COP0_MT (BLOCK_SECTION * Section) {
 			AndConstToVariable(0xFFFFCFF,&CP0[Opcode.rd]);
 		} else DisplayThreadExit("Compile_R4300i_COP0_MT - switch (Opcode.rd) - case 13: //cause - IsConst(Opcode.rt) - else\n\nThe emulator has crashed on an unknown Opcode at this location");
 		Pushad();
-		Call_Direct(CheckInterrupts);
+		InterruptsCD
 		Popad();
 		break;
 	default:

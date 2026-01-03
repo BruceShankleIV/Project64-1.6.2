@@ -1,6 +1,6 @@
 #1# "Nederlands/Dutch"
 #2# "Lily x BruceIV"
-#3# "19 WIP 2"
+#3# "19"
 #5# "Taal Database (.txt)"
 #6# "Auteur"
 #7# "Versie"
@@ -113,7 +113,7 @@
 #126# "Toevoegen ->"
 #127# "<- Verwijderen"
 #128# "Synchroniseer spel met audio"
-#129# "Geheugen controleren en instellen"
+#129# "Nintendo 64-hardware zou waarschijnlijk crashen bij het volgende frame op deze locatie: r4300i_CPU_MemoryFilter - switch(TypePos) - case 0x0F - switch((TypePos + 1)) - case 0xBF:"
 #131# "Standaard"
 #132# "Altijd Autodetecteren met 16kbit EEPROM"
 #134# "CPU Core-stijl:"
@@ -199,3 +199,5 @@ Als deze actie succesvol is, kun je weer gegevens opslaan op en laden van je vir
 #216# "Deze actie zal proberen 254 MB SD ruimte op je harde schijf toe te wijzen in een SDCARD0 partitie na het decompileren van AUTO0.
 
 Je zult geen gegevens kunnen opslaan op of laden van je virtuele SD-kaart totdat je de virtuele SD-kaartruimte opnieuw in AUTO0 compileert door deze optie opnieuw te gebruiken"
+#217# "Het spel kan crashen bij de aankomende r4300i_SPECIAL_BREAK. Wil je deze mogelijke crash emuleren?"
+#218# "Mogelijke aankomende crash"

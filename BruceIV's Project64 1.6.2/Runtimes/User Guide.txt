@@ -1,3 +1,4 @@
+START OF HEADER
 
 
 
@@ -21,6 +22,10 @@ https://mega.nz/folder/xL5BwaaQ#2yLK6SfwElrnJQtphdqXKw
 should also work in the latest release of this emulator. See further for texture pack setup instructions. Remember that texture packs can also be used with some ROMhacks!
 
 WIP Zelda64 hacks wiki - https://bruceivshankle.wixsite.com/centralocarina/home
+
+
+
+END OF HEADER
 
 
 
@@ -329,20 +334,19 @@ Static Interpreter - Currently only needed for GameBoy transfer pak emulation. A
 
 Section#4 Running ROMhacks
 --------------------------------------------------------------------------------------------------------
-Note: If you ran into a crash while trying to play a ROMhack with an unregistered game entry, like pause
-crashed an Ocarina of Time ROMhack, or the ROMhack just will not boot at all, you need to uncheck, "Hide
-Advanced Settings", go to the ROM Settings tab, and set Counter Factor from "Default" to 2 (to fix pause
-issues/or game not booting), and if that isn't enough then also try setting Register Caching to, "OFF"!!
-Remember to apply the setting as specified by the emulator (if the game is running, you need to reset)!!
+ROMhacks are essentially new games created from existing game ROMs, usually commercial titles like SM64,
+Ocarina of Time, or Majora's Mask. They are released in a patch format like .ppf, .bps, or .xdelta. This
+emulator loads ROM files only, so you must first apply the patch to the correct N64 ROM. If this ROMhack
+patch is not obtained from the Project64 1.6.2 ROMhacks Collection repository outside of an unregistered
+folder, then this hack won't have an entry in the Game.ini game configuration file. If this happens, you
+won't get information from the emulator about what plugins are required or suggested for this ROMhack!!!
+The hack may also be prone to crashing or other kinds of unexpected behavior if you aren't using certain
+ROM Settings with it, depending on what was hacked into the ROM, and the properties of the original ROM.
+A good idea to start with is using the same ROM Settings and fixes used for the original ROM. This would
+resolve most issues you would have just using the default, but there can be some cases where Interpreter
+CPU Core Style would be needed and require a specific video plugin, such as the Cosmic Goddess demo.
+Further information about setting up ROMhacks found below.
 
-A lot of ROMhacks should work meh with default settings/registries, but if you want to get the most bang
-for your buck, you need to learn how to setup ROM Settings for the ROMhack and/or modify the hack itself
-to take advantage of per-game hacks in Jabo's Direct3D8. To get per-game settings with Jabo's Direct3D8,
-you need to either change the checksum of the ROMhack to match with the original game it was hacked off,
-or change the internal name to match it. For example, if someone creates an Ocarina of Time v1.0 ROMhack
-or an Ocarina of Time v1.1/v1.2 ROMhack, you would ensure the internal name of the ROMhack reads as, THE
-LEGEND OF ZELDA to match with the original game, getting D3D8 to emulate effects (sun/pause/monochrome).
-The same will apply for GLideN64 which also currently checks the ROM's internal name for per-game hacks.
 
 For Zelda ROMHACKS, Majora's Mask hacks should always use the same internal name as their baserom, which
 is either ZELDA MAJORA'S MASK or THE MASK OF MUJURA. THE LEGEND OF ZELDA should get used for all Ocarina
@@ -352,10 +356,6 @@ which use monochrome, like during a flashback cutscene, or the sepia filter at t
 Then you would setup a ROM Database entry which can vary drastically from the original game depending on
 how much the hack differs from the original game with a Cheat0 added to fix any emulation/plugin issues.
 If you need help using the ROM Database, contact an advanced/experienced user or N64 developer to debug.
-
-Note: the ROMhacks on the Project64 1.6.2 ROMhacks Collection repository not found in the unlisted shall
-already have ini entries, so you just need to make sure you look at the ROM Notes and make sure you have
-the right plugins in use, and then you will be able to play the game if your PC supports them plugin(s).
 
 Flickering Note: a few games may have flickering with Jabo's Direct3D8. This bug can be fixed by setting
 Counter Factor to 1 and in some cases, also making sure that CF1-->0 is ON/enabled in your ROM Settings.
@@ -392,8 +392,9 @@ the game, and what emulation options are forced ON or forced OFF due to another 
 the guide shall give you a quick rundown on the default settings tab and all twenty of the ROM Settings!
 
 Note: You can fine-tune default settings for better compatibility by setting Register Caching OFF,
-and Counter Factor set to 2. However, Register Caching ON is usually good to get better framerate,
-and Counter Factor set to 2 can cause flickering, longer load times, and significant lag increase.
+and Counter Factor set to 1. However, Register Caching ON is usually good to get better framerate,
+and Counter Factor set to 1 can cause crashes or failure to boot. However, Counter Factor set to 2
+causes flickering (see Paper Mario), longer load times, and an extremely significant lag increase.
 
 
 CPU Core Style: By default, Recompiler but changeable from the advanced tab to Interpreter
@@ -412,8 +413,7 @@ the expansion pak, it is better to set it to 4MB to avoid memory waste and reduc
 Self-modifying Code Method: By default, Check Memory but changeable from the advanced tab
 * Disabled by the Interpreter
 Protect Memory is reliable but slow and sometimes has severe performance issues for specific ROMs. Check
-Memory isn't as reliable but it's a lot faster, and is the original PJ64 1.6 default. Check & Set Memory
-is a specialized version of Check Memory which also does custom setting of memory due to a 1.6 core bug.
+Memory isn't as reliable but it's a lot faster, and is the original PJ64 1.6 default. It's usually best.
 Cache is the least reliable but you can encounter a case where Cache is the only method that works for a
 game to boot at all seen with Rat Attack if using the alternative ROM Settings for single player gaming.
 
@@ -423,7 +423,7 @@ This gives a big performance boost to the Recompiler and usually works without i
 out plugins and cause seemingly random game crashes or weird behavior, so it's only to be used when safe
 to do so. If you're an advanced user, have it OFF by default from the advanced tab to prioritize compat,
 otherwise set it ON to prioritize the best performance. ON is for performance, OFF is for compatibility.
-Note: Setting Register Caching OFF will prevent some crashes on N64 hardware from being hidden!
+Note: Setting Register Caching OFF will notify you of a couple potential crashes!
 
 Counter Factor: By default, 2 but changeable from the advanced tab
 * Forces CF1-->0 off if not set to 1
@@ -463,13 +463,13 @@ issues while using the Shankle AziAudio plugin.
 
 Legacy AiLenChanged: By default, off
 * Forced off if sound plugin is No audio
-This is an alternate AI function from Project64 Legacy 1.6.3/1.6.4 which works better for certain games.
+This is an alternate AI function from Project64 Legacy 1.6.4 which works better sometimes (not always).
 
 RSP Recompiler: By default, off
-* Forced on if video plugin isn't Icepir8's LLE or the ROM Internal name is a Zelda one
+* Forced on if video plugin isn't Icepir8's LLE or if the ROM Internal name is Zelda
 The Project64 1.6 RSP has a Recompiler and an Interpreter just like the Project64 CPU Core Style. In many
 but not all cases, the Interpreter style works better with Icepir8's LLE and prevents strange crashes. To
-solve this, the Interpreter style will always be used and the Recompiler style will be used for the cases
+solve this, Interpreter is always used with Icepir8's LLE and Recompiler style will be used for the cases
 where Interpreter does not work well with Icepir8's LLE. This is due to lack of time to fully test games.
 
 TLB: By default, on
@@ -491,7 +491,7 @@ CF1-->0: By default, on
 Counter Factor 1 is converted to Counter Factor 0, making it truly lagless, but also less stable, as the
 more you lower the counter factor, the more likely you generally are to run into a game-dependent crash!
 However, having it turned on can be necessary to emulate some games properly or to get rid of lagging or
-delay like the equipment subscreen equip delay in Ocarina of Time on HLE video if not using a Cheat0.
+delay like the equipment subscreen equip delay in Ocarina of Time on HLE video if not using a Cheat fix.
 
 Align DMA: By default, off
 *Forced on by the Interpreter
@@ -504,7 +504,7 @@ for some games to boot.
 
 Delay RSP: By default, off
 It's either needed or it's not. The setting is needed for some games to boot. Known to break sound in
-some games when used.
+some games when used incorrectly.
 
 Delay SI: By default, off
 It's either needed or it's not. Notably fixes GB Tower not working with the Static Interpreter RSP while
@@ -514,6 +514,7 @@ using N-Rage. The setting is needed for some games to boot.
 The default area is just the defaults used for the ROM Settings whenever it says "Default".
 Then there is the force settings, they are self-explanatory. Keep in mind that activating these settings
 doesn't overwrite RDB entries so they're good for testing, but disactivating them can overwrite entries.
+Just do not go to ROM Settings tab and disactivate these force-enable/disable settings at the same time.
 --------------------------------------------------------------------------------------------------------
 
 Section#7 Known Issues

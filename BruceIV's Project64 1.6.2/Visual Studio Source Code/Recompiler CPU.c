@@ -31,6 +31,7 @@
 #include "x86.h"
 #include "Plugin.h"
 #define SectionCPC4 Section->CompilePC -= 4;
+#define LoopCD Call_Direct(InPermLoop);
 void _fastcall CreateSectionLinkage (BLOCK_SECTION * Section);
 void _fastcall DetermineLoop(BLOCK_SECTION * Section,DWORD Test,DWORD Test2,DWORD TestID);
 BOOL DisplaySectionInformation (BLOCK_SECTION * Section,DWORD ID,DWORD Test);
@@ -342,8 +343,8 @@ void OpcodeSwitch (BLOCK_SECTION * Section) {
 	case R4300i_SD: Compile_R4300i_SD(Section); break;
 	default:
 		if (SelfModCheck != ModCode_ProtectMemory) {
-			DisplayThreadExit("OpcodeSwitch - switch (Opcode.op) - default:\n\nThe emulator has crashed on a reserved Opcode at this location.\n\nNeeds 'Self-modifying Code Method=Protect Memory'?");
-		} else DisplayThreadExit("OpcodeSwitch - switch (Opcode.op) - default:\n\nThe emulator has crashed on a reserved Opcode at this location");
+			DisplayThreadExit("OpcodeSwitch - switch (Opcode.op) - default:\n\nThe emulator has crashed on a reserved Opcode at this location.\n\n\nPotential fault point: ClearRecompilerCache - memset(JumpTable + (Block << 10),0,0x4EA1);\n\nThis crash may be fixable by tweaking this line or using this setting for the current game instead: 'Self-modifying Code Method=Protect Memory'");
+		} else DisplayThreadExit("OpcodeSwitch - switch (Opcode.op) - default:\n\nThe emulator has crashed on a reserved Opcode at this location\n\nTry 'CPU Core Style=Interpreter'?");
 	}
 }
 void InitializeInitialCompilerVariable (void)
@@ -1567,7 +1568,7 @@ void GenerateSectionLinkage (BLOCK_SECTION * Section) {
 		if (!DelaySlotEffectsJump(Section->CompilePC)) {
 			WriteBackRegisters(Section);
 			memcpy(&Section->Jump.RegSet,&Section->RegWorking,sizeof(REG_INFO));
-			Call_Direct(InPermLoop);
+			LoopCD
 		}
 	}
 	if (TargetSection[0] != TargetSection[1] || TargetSection[0] == NULL) {
@@ -1638,7 +1639,7 @@ void GenerateSectionLinkage (BLOCK_SECTION * Section) {
 				JumpInfo[count]->RegSet.CycleCount = 0;
 				if (JumpInfo[count]->PermLoop) {
 					MoveConstToVariable(JumpInfo[count]->TargetPC,&PROGRAM_COUNTER);
-					Call_Direct(InPermLoop);
+					LoopCD
 					CompileSystemCheck(0,-1,JumpInfo[count]->RegSet);
 				} else {
 					CompileSystemCheck(CycleCount,JumpInfo[count]->TargetPC,JumpInfo[count]->RegSet);
@@ -1724,7 +1725,7 @@ void GenerateSectionLinkage (BLOCK_SECTION * Section) {
 				JumpInfo[count]->RegSet.CycleCount = 0;
 				if (JumpInfo[count]->PermLoop) {
 					MoveConstToVariable(JumpInfo[count]->TargetPC,&PROGRAM_COUNTER);
-					Call_Direct(InPermLoop);
+					LoopCD
 					CompileSystemCheck(0,-1,JumpInfo[count]->RegSet);
 				} else {
 					CompileSystemCheck(CycleCount,JumpInfo[count]->TargetPC,JumpInfo[count]->RegSet);

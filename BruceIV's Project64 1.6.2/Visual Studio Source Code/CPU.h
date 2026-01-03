@@ -51,6 +51,7 @@ typedef struct {
 	BOOL DoInterrupt;
 	BOOL Stepping;
 } CPU_ACTION;
+#define InterruptsCD Call_Direct(CheckInterrupts);
 #define SetEnd NextInstruction = END_BLOCK;
 #define SetNormal NextInstruction = NORMAL;
 #define SetJump NextInstruction = JUMP;
