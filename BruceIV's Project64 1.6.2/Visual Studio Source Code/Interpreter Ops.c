@@ -416,7 +416,7 @@ void _fastcall r4300i_SPECIAL_BREAK(void) {
 	static BOOL Shown = FALSE;
 	if (Shown) return;
 	HandleModal1(hMainWindow);
-	if (MessageBox(NULL,GS(SPECIAL_BREAK),GS(MSG_ERROR_TITLE),MB_YESNO | MB_ICONERROR | MB_SETFOREGROUND) == IDYES) r4300i_SPECIAL_SYSCALL();
+	if (MessageBox(NULL,GS(SPECIAL_BREAK),GS(OPTIONAL_CRASH),MB_YESNO | MB_ICONERROR | MB_SETFOREGROUND) == IDYES) r4300i_SPECIAL_SYSCALL();
 	else Shown = TRUE;
 	HandleModal2(hMainWindow);
 }

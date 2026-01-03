@@ -234,3 +234,4 @@ You will be able to save to or load from your virtual SD card again if this acti
 
 You will not be able to save to or load from your virtual SD card until you compile virtual SD card space back into AUTO0 by using this option again"
 #217# "The game is about to crash at r4300i_SPECIAL_BREAK. Do you want the game to crash?"
+#218# "Optional Crash"

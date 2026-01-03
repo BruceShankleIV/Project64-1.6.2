@@ -1353,6 +1353,7 @@ void SetCurrentSaveState (HWND hWnd,int State) {
 	CurrentSaveSlot = State;
 }
 void HandleModal1(HWND hWnd) {
+	if (inFullScreen) SendMessage(hMainWindow, WM_COMMAND, ID_OPTIONS_FULLSCREEN, 0);
 	if (UsuallyonTop) {
 		if (hManageWindow) SetWindowPos(hManageWindow,HWND_NOTOPMOST,0,0,0,0,SWP_NOMOVE | SWP_NOSIZE);
 		SetWindowPos(hWnd,HWND_NOTOPMOST,0,0,0,0,SWP_NOMOVE | SWP_NOREPOSITION | SWP_NOSIZE);

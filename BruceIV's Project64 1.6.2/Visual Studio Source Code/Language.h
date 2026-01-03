@@ -251,3 +251,4 @@ char * GS               (int StringID);
 #define AllocateCompile_SD_MENUDES	215
 #define Allocate_SD_Info		216
 #define SPECIAL_BREAK			217
+#define OPTIONAL_CRASH			218

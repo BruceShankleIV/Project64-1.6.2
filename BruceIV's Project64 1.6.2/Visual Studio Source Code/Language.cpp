@@ -17,7 +17,7 @@ typedef struct {
 LANG_STR DefaultString[] = {
     { LANGUAGE_AUTHOR,    "BruceIV"			  },
     { LANGUAGE_VERSION,   "18"				  },
-    { LANGUAGE_DATE,      "2026"			  },
+    { LANGUAGE_DATE,      "2026 January"		  },
 	{ INI_CURRENT_LANG,   "Language Database (.txt)" },
 	{ INI_AUTHOR,         "Author"                   },
 	{ INI_VERSION,        "Version"                  },
@@ -243,7 +243,7 @@ LANG_STR DefaultString[] = {
 	{ FPS_DISPLAY,           "Frames Per Second"},
 	{ FORCE_ENABLE_DMA,	  "Always Enable Align DMA"},
 	{ NUMBER_2,		  "2"},
-	{ NUMBER_3,              "3"},
+	{ NUMBER_3,		  "3"},
 	{ OFF,	  "OFF" },
 	{ MENUDES_GAME_SETTINGS, "Lets you read the ROM's notes (plugin/core/status)"},
 	{ MSG_EMULATION_RESET,	  "Emulation reset"},
@@ -252,6 +252,7 @@ LANG_STR DefaultString[] = {
 	{ AllocateCompile_SD_MENUDES,"Attempts to allocate or compile 254MB of space for virtual SD card emulation"},
 	{ Allocate_SD_Info,	  "This action will attempt to Allocate 254MB of SD space on your hard drive in an SDCARD0 partition after decompiling AUTO0.\n\nYou will not be able to save to or load from your virtual SD card until you compile virtual SD card space back into AUTO0 by using this option again"},
 	{ SPECIAL_BREAK,	  "The game is about to crash at r4300i_SPECIAL_BREAK. Do you want the game to crash?"},
+	{ OPTIONAL_CRASH,	  "Optional Crash"},
 };
 class CLanguage  {
 	void FindLangName  (int Index);

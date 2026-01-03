@@ -11,3 +11,5 @@ fix comment spacing in library licenses (accidental from a replace all)
 
 define common lines like MoveConstToX86reg(0,Reg); or MoveX86regToVariable(x86Reg,Addr + N64MEM);
 and then call them from a short define to slightly reduce total code size
+
+translations for #218# "Optional Crash"
