@@ -1,6 +1,6 @@
 /* zconf.h -- configuration of the zlib compression library
  * Copyright (C) 1995-1998 Jean-loup Gailly.
- * For conditions of distribution and use,see copyright notice in zlib.h
+ * For conditions of distribution and use, see copyright notice in zlib.h
  */
 /* @(#) $Id: ZCONF.H,v 1.1 2004/10/05 23:49:00 steve Exp $ */
 #ifndef _ZCONF_H
@@ -104,20 +104,20 @@
 /* The memory requirements for deflate are (in bytes):
             (1 << (windowBits+2)) +  (1 << (memLevel+9))
  that is: 128K for windowBits=15  +  128K for memLevel = 8  (default values)
- plus a few kilobytes for small objects. For example,if you want to reduce
- the default memory requirements from 256K to 128K,compile with
+ plus a few kilobytes for small objects. For example, if you want to reduce
+ the default memory requirements from 256K to 128K, compile with
      make CFLAGS="-O -DMAX_WBITS=14 -DMAX_MEM_LEVEL=7"
  Of course this will generally degrade compression (there's no free lunch).
    The memory requirements for inflate are (in bytes) 1 << windowBits
- that is,32K for windowBits=15 (default value) plus a few kilobytes
+ that is, 32K for windowBits=15 (default value) plus a few kilobytes
  for small objects.
 */
                         /* Type declarations */
 #ifndef OF /* function prototypes */
 #  ifdef STDC
-#    define OF(args)  args
+#    define OF(args) args
 #  else
-#    define OF(args) ()
+#    define OF(args)  ()
 #  endif
 #endif
 /* The following definitions for FAR are needed only for MSDOS mixed
