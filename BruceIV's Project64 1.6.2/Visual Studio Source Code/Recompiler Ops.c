@@ -1939,7 +1939,7 @@ void _fastcall ClearRecompilerCache (DWORD Address) {
 	DWORD Block = Address >> 12,SetMemory = (SelfModCheck == ModCode_CheckSetMemory) ? 0xB46 : 0x1000;
 	if (N64_Blocks.NoOfRDRAMBlocks[Block] > 0) {
 		N64_Blocks.NoOfRDRAMBlocks[Block] = 0;
-		memset(JumpTable + (Block << 10),0,SetMemory);
+		memset(JumpTable + (Block << 10),0,SetMemory); // TODO: Just tried 0xFFFF, may resolve setmem related crashes without introducing new one's. If so, set mem scm can be dropped completely. This has been a known problem affecting oot 1.0/1.1/1.2
 		*(DelaySlotTable + Block) = NULL;
 	}
 }
