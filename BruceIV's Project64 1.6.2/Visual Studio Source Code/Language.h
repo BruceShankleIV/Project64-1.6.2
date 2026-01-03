@@ -252,3 +252,5 @@ char * GS               (int StringID);
 #define Allocate_SD_Info		216
 #define SPECIAL_BREAK			217
 #define OPTIONAL_CRASH			218
+#define N64_CRASH			219
+#define ONE_TIME_INFO			220

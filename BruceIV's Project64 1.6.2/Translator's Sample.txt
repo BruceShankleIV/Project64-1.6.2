@@ -235,3 +235,5 @@ You will be able to save to or load from your virtual SD card again if this acti
 You will not be able to save to or load from your virtual SD card until you compile virtual SD card space back into AUTO0 by using this option again"
 #217# "The game is about to crash at r4300i_SPECIAL_BREAK. Do you want the game to crash?"
 #218# "Optional Crash"
+#219# "Nintendo 64 hardware would probably crash on the next frame at this location: r4300i_CPU_MemoryFilter - switch(*TypePos) - case 0x0F - switch(*(TypePos + 1)) - case 0xBF:"
+#220# "One-time App Information"

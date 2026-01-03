@@ -1053,7 +1053,16 @@ int r4300i_CPU_MemoryFilter (DWORD dwExptCode,LPEXCEPTION_POINTERS lpEP) {
 			r4300i_LB_NonMemory(MemAddress,Reg,TRUE);
 			lpEP->ContextRecord->Eip = (DWORD)ReadPos;
 			return EXCEPTION_CONTINUE_EXECUTION;
-		case 0xBF: // SR B1 Pipe Entry Optional Crash Point
+		case 0xBF:
+			if (UseCache == REG_CACHE_OFF) {
+				static BOOL Shown = FALSE;
+				if (!Shown) {
+					HandleModal1(hMainWindow);
+					MessageBox(NULL,GS(N64_CRASH),GS(ONE_TIME_INFO),MB_OK | MB_ICONEXCLAMATION | MB_SETFOREGROUND);
+					HandleModal2(hMainWindow);
+				}
+				Shown = TRUE;
+			}
 			r4300i_LH_NonMemory(MemAddress,Reg,TRUE);
 			lpEP->ContextRecord->Eip = (DWORD)ReadPos;
 			return EXCEPTION_CONTINUE_EXECUTION;
