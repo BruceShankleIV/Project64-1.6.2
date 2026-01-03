@@ -251,8 +251,8 @@ LANG_STR DefaultString[] = {
 	{ AllocateCompile_SD,	  "Manage SD Space"},
 	{ AllocateCompile_SD_MENUDES,"Attempts to allocate or compile 254MB of space for virtual SD card emulation"},
 	{ Allocate_SD_Info,	  "This action will attempt to Allocate 254MB of SD space on your hard drive in an SDCARD0 partition after decompiling AUTO0.\n\nYou will not be able to save to or load from your virtual SD card until you compile virtual SD card space back into AUTO0 by using this option again"},
-	{ SPECIAL_BREAK,	  "The game is about to crash at r4300i_SPECIAL_BREAK. Do you want the game to crash?"},
-	{ OPTIONAL_CRASH,	  "Optional Crash"},
+	{ SPECIAL_BREAK,	  "The game may crash at the upcoming r4300i_SPECIAL_BREAK. Do you want to emulate this potential crash?"},
+	{ OPTIONAL_CRASH,	  "Potential Upcoming Crash"},
 	{ N64_CRASH,		  "Nintendo 64 hardware would probably crash on the next frame at this location: r4300i_CPU_MemoryFilter - switch(*TypePos) - case 0x0F - switch(*(TypePos + 1)) - case 0xBF:"},
 	{ ONE_TIME_INFO,	  "One-time App Information"},
 };
