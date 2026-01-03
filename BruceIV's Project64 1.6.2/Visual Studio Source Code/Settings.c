@@ -205,7 +205,6 @@ BOOL CALLBACK DefaultOptionsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lPara
 		SetFlagControl(hDlg,&ForceAuto16kbit,IDC_ForceAuto16kbit,FORCE_AUTO4kbit);
 		AddDropDownItem(hDlg,IDC_CPU_TYPE,CORE_INTERPRETER,CPU_Interpreter,&SystemCPU_Type);
 		AddDropDownItem(hDlg,IDC_CPU_TYPE,CORE_RECOMPILER,CPU_Recompiler,&SystemCPU_Type);
-		AddDropDownItem(hDlg,IDC_SELFMOD,SMCM_CHECK_SET,ModCode_CheckSetMemory,&SystemSelfModCheck);
 		AddDropDownItem(hDlg,IDC_SELFMOD,SMCM_CACHE,ModCode_Cache,&SystemSelfModCheck);
 		AddDropDownItem(hDlg,IDC_SELFMOD,SMCM_PROTECTED,ModCode_ProtectMemory,&SystemSelfModCheck);
 		AddDropDownItem(hDlg,IDC_SELFMOD,SMCM_CHECK_ADV,ModCode_CheckMemory,&SystemSelfModCheck);
@@ -765,7 +764,6 @@ BOOL CALLBACK RomSettingsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) 
 		AddDropDownItem(hDlg,IDC_CPU_TYPE,CORE_RECOMPILER,CPU_Recompiler,&RomCPUType);
 		AddDropDownItem(hDlg,IDC_SELFMOD,DEFAULT_TEXT,ModCode_Default,&RomSelfModCheck);
 		AddDropDownItem(hDlg,IDC_SELFMOD,SMCM_CACHE,ModCode_Cache,&RomSelfModCheck);
-		AddDropDownItem(hDlg,IDC_SELFMOD,SMCM_CHECK_SET,ModCode_CheckSetMemory,&RomSelfModCheck);
 		AddDropDownItem(hDlg,IDC_SELFMOD,SMCM_CHECK_ADV,ModCode_CheckMemory,&RomSelfModCheck);
 		AddDropDownItem(hDlg,IDC_SELFMOD,SMCM_PROTECTED,ModCode_ProtectMemory,&RomSelfModCheck);
 		AddDropDownItem(hDlg,IDC_REGCACHE,DEFAULT_TEXT,UseCache_Default,&RomUseCache);

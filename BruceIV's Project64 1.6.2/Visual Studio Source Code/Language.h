@@ -151,7 +151,7 @@ char * GS               (int StringID);
 #define RB_ADD				126
 #define RB_REMOVE			127
 #define SyncGametoAudio_LANG			128
-#define SMCM_CHECK_SET				129
+#define N64_CRASH			129
 #define ON			130
 #define DEFAULT_TEXT		131
 #define FORCE_AUTO4kbit			132
@@ -252,4 +252,3 @@ char * GS               (int StringID);
 #define Allocate_SD_Info		216
 #define SPECIAL_BREAK			217
 #define OPTIONAL_CRASH			218
-#define N64_CRASH			219

@@ -34,7 +34,7 @@ extern "C" {
 #include "Settings API.h"
 #include "ROM Browser.h"
 #include "Language.h"
-/********* Source Version 19 WIP 3 *********/
+/********* Source Version 19 WIP 4 *********/
 /********* General Defaults **********/
 #define AppName						"BruceIV's Project64 1.6.2"
 #define IniName						"Game.ini"
@@ -71,10 +71,9 @@ extern "C" {
 /******* Self modifying code *********/
 #define ModCode_Default					-1
 #define ModCode_Cache					0
-#define ModCode_CheckSetMemory	1
-#define ModCode_CheckMemory		2
-#define ModCode_ProtectMemory			3
-#define Default_SelfModCheck			ModCode_CheckMemory // ProtectMemory would be ideal but low-end devices suffer significantly with it
+#define ModCode_CheckMemory		1
+#define ModCode_ProtectMemory			2
+#define Default_SelfModCheck			ModCode_CheckMemory
 /********** Rom Browser **************/
 #define Default_UseRB				TRUE
 #define Default_Recursion			TRUE

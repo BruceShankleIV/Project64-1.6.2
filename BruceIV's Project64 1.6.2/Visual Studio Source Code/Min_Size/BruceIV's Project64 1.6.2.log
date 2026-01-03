@@ -1,0 +1,34 @@
+﻿  N64 CIC-NUS-6105.c
+  Real-Time Clock.c
+  ROM Tools Common.c
+  Cheat.c
+  Main.c
+  ROM Browser.c
+  Settings Api.c
+  SummerCart.c
+  Settings.c
+  Win32Timer.c
+  UnZIP.c
+  ZIP.c
+  EEPROM.c
+  FlashRAM.c
+  MemPak.c
+  SRAM.c
+  CPU.c
+  DMA.c
+  Exception.c
+  Interpreter CPU.c
+  Interpreter Ops.c
+  Memory.c
+  PIF.c
+  Recompiler CPU.c
+  Recompiler Fpu Ops.c
+  Recompiler Ops.c
+  Registers.c
+  ROM.c
+  TLB.c
+  Plugin.c
+  x86 FPU.c
+  X86.c
+  Language.cpp
+  BruceIV's Project64 1.6.2.vcxproj -> C:\Users\a\Documents\GitHub\Project64-1.6.2\BruceIV's Project64 1.6.2\Visual Studio Source Code\..\Project64.exe

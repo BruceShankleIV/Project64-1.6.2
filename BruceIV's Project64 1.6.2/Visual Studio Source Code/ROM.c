@@ -516,7 +516,6 @@ void ReadRomOptions(void) {
 		} else {
 			_GetPrivateProfileString(Identifier,"Self-modifying Code Method","",String,sizeof(String),IniFileName);
 			if (strcmp(String,"Cache") == 0) { RomSelfModCheck = ModCode_Cache; }
-			else if (strcmp(String,"Check & Set Memory") == 0) { RomSelfModCheck = ModCode_CheckSetMemory; }
 			else if (strcmp(String,"Check Memory") == 0) { RomSelfModCheck = ModCode_CheckMemory; }
 			else if (strcmp(String,"Protect Memory") == 0) { RomSelfModCheck = ModCode_ProtectMemory; }
 			else RomSelfModCheck = ModCode_Default;
@@ -919,7 +918,6 @@ void SaveRomOptions (void) {
 		else {
 			switch (RomSelfModCheck) {
 			case ModCode_Cache: sprintf(String,"Cache"); break;
-			case ModCode_CheckSetMemory: sprintf(String,"Check & Set Memory"); break;
 			case ModCode_CheckMemory: sprintf(String,"Check Memory"); break;
 			case ModCode_ProtectMemory: sprintf(String,"Protect Memory"); break;
 			default: sprintf(String,"Default");

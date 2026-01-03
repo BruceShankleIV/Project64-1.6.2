@@ -153,7 +153,7 @@ LANG_STR DefaultString[] = {
 	{ RB_ADD,             "Add ->"},
 	{ RB_REMOVE,          "<- Remove"},
 	{ SyncGametoAudio_LANG,"Sync Game to Audio" },
-	{ SMCM_CHECK_SET,"Check & Set Memory" },
+	{ N64_CRASH,		  "Nintendo 64 hardware would probably crash on the next frame at this location: r4300i_CPU_MemoryFilter - switch(*TypePos) - case 0x0F - switch(*(TypePos + 1)) - case 0xBF:" },
 	{ ON,		  "ON" },
 	{ DEFAULT_TEXT,   "Default"},
 	{ FORCE_AUTO4kbit,	       "Always Autodetect With 16kbit EEPROM" },
@@ -253,7 +253,6 @@ LANG_STR DefaultString[] = {
 	{ Allocate_SD_Info,	  "This action will attempt to Allocate 254MB of SD space on your hard drive in an SDCARD0 partition after decompiling AUTO0.\n\nYou will not be able to save to or load from your virtual SD card until you compile virtual SD card space back into AUTO0 by using this option again"},
 	{ SPECIAL_BREAK,	  "The game may crash at the upcoming r4300i_SPECIAL_BREAK. Do you want to emulate this potential crash?"},
 	{ OPTIONAL_CRASH,	  "Potential Upcoming Crash"},
-	{ N64_CRASH,		  "Nintendo 64 hardware would probably crash on the next frame at this location: r4300i_CPU_MemoryFilter - switch(*TypePos) - case 0x0F - switch(*(TypePos + 1)) - case 0xBF:"},
 };
 class CLanguage  {
 	void FindLangName  (int Index);

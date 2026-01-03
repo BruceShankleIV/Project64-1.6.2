@@ -342,9 +342,7 @@ void OpcodeSwitch (BLOCK_SECTION * Section) {
 	case R4300i_SD: Compile_R4300i_SD(Section); break;
 	default:
 		if (SelfModCheck != ModCode_ProtectMemory) {
-			if (SelfModCheck == ModCode_CheckSetMemory) {
-				DisplayThreadExit("OpcodeSwitch - switch (Opcode.op) - default:\n\nThe emulator has crashed on a reserved Opcode at this location.\n\nNeeds 'Self-modifying Code Method=Protect Memory'?");
-			} else DisplayThreadExit("OpcodeSwitch - switch (Opcode.op) - default:\n\nThe emulator has crashed on a reserved Opcode at this location.\n\nNeeds 'Self-modifying Code Method=Check & Set Memory'?");
+			DisplayThreadExit("OpcodeSwitch - switch (Opcode.op) - default:\n\nThe emulator has crashed on a reserved Opcode at this location.\n\nNeeds 'Self-modifying Code Method=Protect Memory'?");
 		} else DisplayThreadExit("OpcodeSwitch - switch (Opcode.op) - default:\n\nThe emulator has crashed on a reserved Opcode at this location");
 	}
 }
@@ -507,7 +505,7 @@ void CompileExit (DWORD TargetPC,REG_INFO ExitRegSet,int reason,int CompileNow,v
 		Section.RegWorking.RandomModifier = 0;
 		Section.RegWorking.CycleCount = 0;
 		if (reason == Normal) { CompileSystemCheck(0,(DWORD)-1,Section.RegWorking);	}
-		if (SelfModCheck != ModCode_CheckSetMemory && SelfModCheck != ModCode_CheckMemory) {
+		if (SelfModCheck != ModCode_CheckMemory) {
 			BYTE * Jump,* Jump2;
 			if (TargetPC >= 0x80000000 && TargetPC < 0x90000000) {
 				DWORD pAddr = TargetPC & 0x1FFFFFFF;
@@ -2163,7 +2161,7 @@ void StartRecompilerCPU (void) {
 	DWORD Addr;
 	BYTE * Block;
 	CoInitialize(NULL);
-	if (SelfModCheck == ModCode_CheckMemory || SelfModCheck == ModCode_CheckSetMemory) {
+	if (SelfModCheck == ModCode_CheckMemory) {
 		if (TargetInfo == NULL) {
 			TargetInfo = VirtualAlloc(NULL,MaxCodeBlocks * sizeof(TARGET_INFO),MEM_COMMIT|MEM_RESERVE,PAGE_READWRITE);
 			if (TargetInfo == NULL) {
@@ -2234,12 +2232,11 @@ void StartRecompilerCPU (void) {
 					continue;
 				}
 				else {
-					if (SelfModCheck == ModCode_CheckSetMemory) DisplayThreadExit("StartRecompilerCPU - EXCEPTION_EXECUTE_HANDLER - PROGRAM_COUNTER >= 0xB0000000 && PROGRAM_COUNTER < (RomFileSize | 0xB0000000) - else\n\nNeeds 'Self-modifying Code Method=Protect Memory'?");
-					else if (RDRAMsize == 0x400000) DisplayThreadExit("StartRecompilerCPU - EXCEPTION_EXECUTE_HANDLER - PROGRAM_COUNTER >= 0xB0000000 && PROGRAM_COUNTER < (RomFileSize | 0xB0000000) - else\n\nNeeds 'Memory Size=8MB'?");
+					if (RDRAMsize == 0x400000) DisplayThreadExit("StartRecompilerCPU - EXCEPTION_EXECUTE_HANDLER - PROGRAM_COUNTER >= 0xB0000000 && PROGRAM_COUNTER < (RomFileSize | 0xB0000000) - else\n\nNeeds 'Memory Size=8MB'?");
 					else DisplayThreadExit("StartRecompilerCPU - EXCEPTION_EXECUTE_HANDLER - PROGRAM_COUNTER >= 0xB0000000 && PROGRAM_COUNTER < (RomFileSize | 0xB0000000) - else");
 				}
 			}
-			if ((SelfModCheck == ModCode_CheckMemory || SelfModCheck == ModCode_CheckSetMemory) && Block != NULL) {
+			if ((SelfModCheck == ModCode_CheckMemory) && Block != NULL) {
 				TARGET_INFO * Target = (TARGET_INFO *)Block;
 				if (*(QWORD *)(N64MEM+Addr) != Target->OriginalMemory) {
 					DWORD Start = (Addr & ~0xFFF) - 0x10000,End = Start + 0x20000,count;
@@ -2264,7 +2261,7 @@ void StartRecompilerCPU (void) {
 					ResetRecompCode();
 					Block = Compiler4300iBlock();
 				}
-				if (SelfModCheck == ModCode_CheckMemory || SelfModCheck == ModCode_CheckSetMemory) {
+				if (SelfModCheck == ModCode_CheckMemory) {
 					TargetInfo[TargetIndex].CodeBlock = Block;
 					TargetInfo[TargetIndex].OriginalMemory = *(QWORD *)(N64MEM+Addr);
 					*(JumpTable + (Addr >> 2)) = &TargetInfo[TargetIndex];

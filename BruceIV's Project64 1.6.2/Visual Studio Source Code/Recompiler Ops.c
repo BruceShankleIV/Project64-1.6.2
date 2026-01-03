@@ -1936,29 +1936,26 @@ void Compile_R4300i_SDR (BLOCK_SECTION * Section) {
 }
 void _fastcall ClearRecompilerCache (DWORD Address) {
 	if (!TranslateVaddr(&Address) || Address >= RDRAMsize) return;
-	DWORD Block = Address >> 12,SetMemory = (SelfModCheck == ModCode_CheckSetMemory) ? 0xB46 : 0x1000;
+	DWORD Block = Address >> 12;
 	if (N64_Blocks.NoOfRDRAMBlocks[Block] > 0) {
 		N64_Blocks.NoOfRDRAMBlocks[Block] = 0;
-		memset(JumpTable + (Block << 10),0,SetMemory); // TODO: Just tried 0xFFFF, may resolve setmem related crashes without introducing new one's. If so, set mem scm can be dropped completely. This has been a known problem affecting oot 1.0/1.1/1.2
+		memset(JumpTable + (Block << 10),0,0x5000);
 		*(DelaySlotTable + Block) = NULL;
 	}
 }
 void Compile_R4300i_CACHE (BLOCK_SECTION * Section) {
-	#define Lea LeaSourceAndOffset(x86_ECX,MipsRegLo(Opcode.base),(short)Opcode.offset);
 	if (SelfModCheck != ModCode_ProtectMemory && (Opcode.rt == 0 || Opcode.rt == 16)) {
 		Pushad();
-		if (SelfModCheck != ModCode_CheckSetMemory) {
-			if (IsConst(Opcode.base)) {
-				DWORD Address = MipsRegLo(Opcode.base) + (short)Opcode.offset;
-				MoveConstToX86reg(Address,x86_ECX);
-			} else if (IsMapped(Opcode.base)) {
-				if (MipsRegLo(Opcode.base) == x86_ECX) AddConstToX86Reg(x86_ECX,(short)Opcode.offset);
-				else Lea
-			} else {
-				MoveVariableToX86reg(&GPR[Opcode.base].UW[0],x86_ECX);
-				AddConstToX86Reg(x86_ECX,(short)Opcode.offset);
-			}
-		} else Lea
+		if (IsConst(Opcode.base)) {
+			DWORD Address = MipsRegLo(Opcode.base) + (short)Opcode.offset;
+			MoveConstToX86reg(Address,x86_ECX);
+		} else if (IsMapped(Opcode.base)) {
+			if (MipsRegLo(Opcode.base) == x86_ECX) AddConstToX86Reg(x86_ECX,(short)Opcode.offset);
+			else LeaSourceAndOffset(x86_ECX, MipsRegLo(Opcode.base), (short)Opcode.offset);
+		} else {
+			MoveVariableToX86reg(&GPR[Opcode.base].UW[0],x86_ECX);
+			AddConstToX86Reg(x86_ECX,(short)Opcode.offset);
+		}
 		Call_Direct(ClearRecompilerCache);
 		Popad();
 	}
