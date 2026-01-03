@@ -1,6 +1,6 @@
 #1# "Nederlands/Dutch"
 #2# "Lily x BruceIV"
-#3# "18"
+#3# "19 WIP 2"
 #5# "Taal Database (.txt)"
 #6# "Auteur"
 #7# "Versie"
@@ -199,4 +199,3 @@ Als deze actie succesvol is, kun je weer gegevens opslaan op en laden van je vir
 #216# "Deze actie zal proberen 254 MB SD ruimte op je harde schijf toe te wijzen in een SDCARD0 partitie na het decompileren van AUTO0.
 
 Je zult geen gegevens kunnen opslaan op of laden van je virtuele SD-kaart totdat je de virtuele SD-kaartruimte opnieuw in AUTO0 compileert door deze optie opnieuw te gebruiken"
-#217# "Het spel staat op het punt te crashen bij r4300i_SPECIAL_BREAK. Wil je dat het spel crasht?"
