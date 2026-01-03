@@ -417,12 +417,13 @@ is a specialized version of Check Memory which also does custom setting of memor
 Cache is the least reliable but you can encounter a case where Cache is the only method that works for a
 game to boot at all seen with Rat Attack if using the alternative ROM Settings for single player gaming.
 
-Register Caching: By default, off but changeable from the advanced tab
+Register Caching: By default, on but changeable from the advanced tab
 *Disabled by the Interpreter
 This gives a big performance boost to the Recompiler and usually works without issue, however it can bug
 out plugins and cause seemingly random game crashes or weird behavior, so it's only to be used when safe
 to do so. If you're an advanced user, have it OFF by default from the advanced tab to prioritize compat,
 otherwise set it ON to prioritize the best performance. ON is for performance, OFF is for compatibility.
+Note: Setting Register Caching OFF will prevent some crashes on N64 hardware from being hidden!
 
 Counter Factor: By default, 2 but changeable from the advanced tab
 * Forces CF1-->0 off if not set to 1
