@@ -1053,7 +1053,7 @@ int r4300i_CPU_MemoryFilter (DWORD dwExptCode,LPEXCEPTION_POINTERS lpEP) {
 			r4300i_LB_NonMemory(MemAddress,Reg,TRUE);
 			lpEP->ContextRecord->Eip = (DWORD)ReadPos;
 			return EXCEPTION_CONTINUE_EXECUTION;
-		case 0xBF:
+		case 0xBF: // SR B1 Pipe Entry Optional Crash Point
 			r4300i_LH_NonMemory(MemAddress,Reg,TRUE);
 			lpEP->ContextRecord->Eip = (DWORD)ReadPos;
 			return EXCEPTION_CONTINUE_EXECUTION;

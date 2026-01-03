@@ -59,7 +59,7 @@ void OpcodeSwitch (BLOCK_SECTION * Section) {
 			BOOL Shown = FALSE;
 			if (Shown) break;
 			HandleModal1(hMainWindow);
-			if (MessageBox(NULL, GS(OPTIONAL_CRASH), GS(MSG_ERROR_TITLE), MB_YESNO | MB_ICONERROR | MB_SETFOREGROUND) == IDNO) Shown = TRUE;
+			if (MessageBox(NULL,GS(SPECIAL_BREAK),GS(OPTIONAL_CRASH),MB_YESNO | MB_ICONERROR | MB_SETFOREGROUND) == IDNO) Shown = TRUE;
 			HandleModal2(hMainWindow);
 			if (Shown) break;
 		}
@@ -121,10 +121,10 @@ void OpcodeSwitch (BLOCK_SECTION * Section) {
 	break;
 	case R4300i_REGIMM:
 		switch (Opcode.rt) {
-		case R4300i_REGIMM_BLTZ: Compile_R4300i_Branch(Section, BLTZ_Compare, BranchTypeRs, FALSE); break;
-		case R4300i_REGIMM_BGEZ: Compile_R4300i_Branch(Section, BGEZ_Compare, BranchTypeRs, FALSE); break;
-		case R4300i_REGIMM_BLTZL: Compile_R4300i_BranchLikely(Section, BLTZ_Compare, FALSE); break;
-		case R4300i_REGIMM_BGEZL: Compile_R4300i_BranchLikely(Section, BGEZ_Compare, FALSE);
+		case R4300i_REGIMM_BLTZ: Compile_R4300i_Branch(Section,BLTZ_Compare,BranchTypeRs,FALSE); break;
+		case R4300i_REGIMM_BGEZ: Compile_R4300i_Branch(Section,BGEZ_Compare,BranchTypeRs,FALSE); break;
+		case R4300i_REGIMM_BLTZL: Compile_R4300i_BranchLikely(Section,BLTZ_Compare,FALSE); break;
+		case R4300i_REGIMM_BGEZL: Compile_R4300i_BranchLikely(Section,BGEZ_Compare,FALSE);
 		case R4300i_REGIMM_TGEI:
 		case R4300i_REGIMM_TGEIU:
 		case R4300i_REGIMM_TLTI:
@@ -134,18 +134,18 @@ void OpcodeSwitch (BLOCK_SECTION * Section) {
 		case R4300i_REGIMM_BLTZALL:
 		case R4300i_REGIMM_BGEZALL:
 		break;
-		case R4300i_REGIMM_BLTZAL: Compile_R4300i_Branch(Section, BLTZ_Compare, BranchTypeRs, TRUE); break;
-		case R4300i_REGIMM_BGEZAL: Compile_R4300i_Branch(Section, BGEZ_Compare, BranchTypeRs, TRUE); break;
+		case R4300i_REGIMM_BLTZAL: Compile_R4300i_Branch(Section,BLTZ_Compare,BranchTypeRs,TRUE); break;
+		case R4300i_REGIMM_BGEZAL: Compile_R4300i_Branch(Section,BGEZ_Compare,BranchTypeRs,TRUE); break;
 		default:
 			DisplayThreadExit("OpcodeSwitch - switch (Opcode.op) - case R4300i_REGIMM: - switch (Opcode.rt) - default:\nThe emulator has crashed on a reserved Opcode at this location");
 		}
 	break;
 	case R4300i_J: Compile_R4300i_J(Section); break;
 	case R4300i_JAL: Compile_R4300i_JAL(Section); break;
-	case R4300i_BEQ: Compile_R4300i_Branch(Section, BEQ_Compare, BranchTypeRsRt, FALSE); break;
-	case R4300i_BNE: Compile_R4300i_Branch(Section, BNE_Compare, BranchTypeRsRt, FALSE); break;
-	case R4300i_BLEZ: Compile_R4300i_Branch(Section, BLEZ_Compare, BranchTypeRs, FALSE); break;
-	case R4300i_BGTZ: Compile_R4300i_Branch(Section, BGTZ_Compare, BranchTypeRs, FALSE); break;
+	case R4300i_BEQ: Compile_R4300i_Branch(Section,BEQ_Compare,BranchTypeRsRt,FALSE); break;
+	case R4300i_BNE: Compile_R4300i_Branch(Section,BNE_Compare,BranchTypeRsRt,FALSE); break;
+	case R4300i_BLEZ: Compile_R4300i_Branch(Section,BLEZ_Compare,BranchTypeRs,FALSE); break;
+	case R4300i_BGTZ: Compile_R4300i_Branch(Section,BGTZ_Compare,BranchTypeRs,FALSE); break;
 	case R4300i_ADDI: Compile_R4300i_ADDI(Section); break;
 	case R4300i_ADDIU: Compile_R4300i_ADDIU(Section); break;
 	case R4300i_SLTI: Compile_R4300i_SLTI(Section); break;
@@ -185,10 +185,10 @@ void OpcodeSwitch (BLOCK_SECTION * Section) {
 		break;
 		case R4300i_COP1_BC:
 			switch (Opcode.ft) {
-			case R4300i_COP1_BC_BCF: Compile_R4300i_Branch(Section, COP1_BCF_Compare, BranchTypeCop1, FALSE); break;
-			case R4300i_COP1_BC_BCT: Compile_R4300i_Branch(Section, COP1_BCT_Compare, BranchTypeCop1, FALSE); break;
-			case R4300i_COP1_BC_BCFL: Compile_R4300i_BranchLikely(Section, COP1_BCF_Compare, FALSE); break;
-			case R4300i_COP1_BC_BCTL: Compile_R4300i_BranchLikely(Section, COP1_BCT_Compare, FALSE); break;
+			case R4300i_COP1_BC_BCF: Compile_R4300i_Branch(Section,COP1_BCF_Compare,BranchTypeCop1,FALSE); break;
+			case R4300i_COP1_BC_BCT: Compile_R4300i_Branch(Section,COP1_BCT_Compare,BranchTypeCop1,FALSE); break;
+			case R4300i_COP1_BC_BCFL: Compile_R4300i_BranchLikely(Section,COP1_BCF_Compare,FALSE); break;
+			case R4300i_COP1_BC_BCTL: Compile_R4300i_BranchLikely(Section,COP1_BCT_Compare,FALSE); break;
 			default:
 				DisplayThreadExit("OpcodeSwitch - switch (Opcode.op) - case R4300i_CP1: - switch (Opcode.rs) - case R4300i_COP1_BC: - switch (Opcode.ft) - default:\nThe emulator has crashed on an unknown Opcode at this location");
 			}
@@ -300,10 +300,10 @@ void OpcodeSwitch (BLOCK_SECTION * Section) {
 			DisplayThreadExit("OpcodeSwitch - switch (Opcode.op) - case R4300i_CP2: - default:\nThe emulator has crashed on an unknown Opcode at this location");
 		}
 	break;
-	case R4300i_BEQL: Compile_R4300i_BranchLikely(Section, BEQ_Compare, FALSE); break;
-	case R4300i_BNEL: Compile_R4300i_BranchLikely(Section, BNE_Compare, FALSE); break;
-	case R4300i_BLEZL: Compile_R4300i_BranchLikely(Section, BLEZ_Compare, FALSE); break;
-	case R4300i_BGTZL: Compile_R4300i_BranchLikely(Section, BGTZ_Compare, FALSE); break;
+	case R4300i_BEQL: Compile_R4300i_BranchLikely(Section,BEQ_Compare,FALSE); break;
+	case R4300i_BNEL: Compile_R4300i_BranchLikely(Section,BNE_Compare,FALSE); break;
+	case R4300i_BLEZL: Compile_R4300i_BranchLikely(Section,BLEZ_Compare,FALSE); break;
+	case R4300i_BGTZL: Compile_R4300i_BranchLikely(Section,BGTZ_Compare,FALSE); break;
 	case R4300i_DADDI:
 	case R4300i_DADDIU: Compile_R4300i_DADDIU(Section); break;
 	case R4300i_LDL: Compile_R4300i_LDL(Section); break;
