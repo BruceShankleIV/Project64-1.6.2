@@ -63,7 +63,7 @@ void OpcodeSwitch (BLOCK_SECTION * Section) {
 			HandleModal2(hMainWindow);
 			if (Shown) break;
 		}
-		case R4300i_SPECIAL_SYSCALL: Compile_R4300i_SPECIAL_SYSCALL(Section); break;
+		case R4300i_SPECIAL_SYSCALL: Compile_R4300i_SPECIAL_SYSCALL(Section);
 		case R4300i_SPECIAL_SYNC:
 		case R4300i_SPECIAL_TGE:
 		case R4300i_SPECIAL_TGEU:
@@ -221,7 +221,7 @@ void OpcodeSwitch (BLOCK_SECTION * Section) {
 			case R4300i_COP1_FUNCT_C_SEQ: case R4300i_COP1_FUNCT_C_NGL:
 			case R4300i_COP1_FUNCT_C_LT:  case R4300i_COP1_FUNCT_C_NGE:
 			case R4300i_COP1_FUNCT_C_LE:  case R4300i_COP1_FUNCT_C_NGT:
-				Compile_R4300i_COP1_S_CMP(Section);
+			Compile_R4300i_COP1_S_CMP(Section);
 			case R4300i_COP1_FUNCT_ROUND_L:
 			case R4300i_COP1_FUNCT_CVT_S:
 			break;
@@ -257,7 +257,7 @@ void OpcodeSwitch (BLOCK_SECTION * Section) {
 			case R4300i_COP1_FUNCT_C_SEQ: case R4300i_COP1_FUNCT_C_NGL:
 			case R4300i_COP1_FUNCT_C_LT:  case R4300i_COP1_FUNCT_C_NGE:
 			case R4300i_COP1_FUNCT_C_LE:  case R4300i_COP1_FUNCT_C_NGT:
-				Compile_R4300i_COP1_D_CMP(Section);
+			Compile_R4300i_COP1_D_CMP(Section);
 			case R4300i_COP1_FUNCT_ROUND_L:
 			case R4300i_COP1_FUNCT_CVT_D:
 			break;
@@ -272,7 +272,7 @@ void OpcodeSwitch (BLOCK_SECTION * Section) {
 			default:
 				DisplayThreadExit("OpcodeSwitch - switch (Opcode.op) - case R4300i_CP1: - switch (Opcode.rs) - case R4300i_COP1_W: - switch (Opcode.funct) - default:\nThe emulator has crashed on an unknown Opcode at this location");
 			}
-			break;
+		break;
 		case R4300i_COP1_L:
 			switch (Opcode.funct) {
 			case R4300i_COP1_FUNCT_CVT_S: Compile_R4300i_COP1_L_CVT_S(Section); break;
@@ -280,11 +280,11 @@ void OpcodeSwitch (BLOCK_SECTION * Section) {
 			default:
 				DisplayThreadExit("OpcodeSwitch - switch (Opcode.op) - case R4300i_CP1: - switch (Opcode.rs) - case R4300i_COP1_L: - switch (Opcode.funct) - default:\nThe emulator has crashed on an unknown Opcode at this location");
 			}
-			break;
+		break;
 		default:
 			DisplayThreadExit("OpcodeSwitch - switch (Opcode.op) - case R4300i_CP1: - default:\nThe emulator has crashed on an unknown Opcode at this location");
 		}
-		break;
+	break;
 	case R4300i_CP2:
 		switch (Opcode.rs) {
 		case R4300i_COP2_MF:
