@@ -34,7 +34,7 @@ extern "C" {
 #include "Settings API.h"
 #include "ROM Browser.h"
 #include "Language.h"
-/********* Source Version 19 WIP 5 *********/
+/********* Source Version 19 WIP 6 *********/
 /********* General Defaults **********/
 #define AppName						"BruceIV's Project64 1.6.2"
 #define IniName						"Game.ini"
@@ -67,7 +67,7 @@ extern "C" {
 #define UseCache_Default	-1
 #define REG_CACHE_ON		0
 #define REG_CACHE_OFF		1
-#define Default_UseCache REG_CACHE_ON // Use OFF if low-end devices aren't significantly affected
+#define Default_UseCache REG_CACHE_OFF
 /******* Self modifying code *********/
 #define ModCode_Default					-1
 #define ModCode_Cache					0
