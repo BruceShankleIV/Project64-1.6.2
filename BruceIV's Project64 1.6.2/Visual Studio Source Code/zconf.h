@@ -117,7 +117,7 @@
 #  ifdef STDC
 #    define OF(args) args
 #  else
-#    define OF(args)  ()
+#    define OF(args) ()
 #  endif
 #endif
 /* The following definitions for FAR are needed only for MSDOS mixed

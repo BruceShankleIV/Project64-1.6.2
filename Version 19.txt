@@ -3,3 +3,5 @@ Finish #217# #218# and #129# translations for Brazilian Portugese, French, and S
 Review ifndef MIN_SIZE stuff as well as potential missing memory registers in r4300i_SW_NonMemory for ifndef MIN_SIZE
 
 more hack support
+
+pmem entries to review, see if we can get working on cache of check mem
