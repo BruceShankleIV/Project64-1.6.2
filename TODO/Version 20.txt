@@ -1,0 +1,12 @@
+more hack support
+
+pmem entries to review, see if we can get working on cache of check mem
+
+^ what we really need to do is go through each game, optimizing counter factor and scm.
+
+reg caching and cpu type is already done, cf and scm are the main things
+ai settings/sync game can be added wherever it benefits
+
+make setmem a ROM Setting if needed if TLOZ auto isn't enough
+
+fix gliden64 gfx for RE2 with .custom setting somehow?

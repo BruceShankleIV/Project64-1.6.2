@@ -113,7 +113,7 @@
 #126# "Toevoegen ->"
 #127# "<- Verwijderen"
 #128# "Synchroniseer spel met audio"
-#129# "Nintendo 64-hardware zou waarschijnlijk crashen bij het volgende frame op deze locatie: r4300i_CPU_MemoryFilter - switch(TypePos) - case 0x0F - switch((TypePos + 1)) - case 0xBF:"
+#129# "Nintendo 64-hardware zou waarschijnlijk crashen bij het volgende frame op deze locatie:"
 #131# "Standaard"
 #132# "Altijd Autodetecteren met 16kbit EEPROM"
 #134# "CPU Core-stijl:"

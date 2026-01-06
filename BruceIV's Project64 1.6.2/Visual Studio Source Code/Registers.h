@@ -294,8 +294,8 @@
 #define	FPCSR_RM_RZ				0x00000001	/* round to zero */
 #define	FPCSR_RM_RP				0x00000002	/* round to positive infinity */
 #define	FPCSR_RM_RM				0x00000003	/* round to negative infinity */
-#define FPR_Type(Reg)	(Reg) == R4300i_COP1_S ? "S" : (Reg) == R4300i_COP1_D ? "D" :\
-						(Reg) == R4300i_COP1_W ? "W" : "L"
+#define FPR_Type(Reg)	(Reg)==R4300i_COP1_S?"S":(Reg)==R4300i_COP1_D?"D" :\
+						(Reg)==R4300i_COP1_W?"W":"L"
 typedef struct {
 	DWORD      PROGRAM_COUNTER;
     MIPS_DWORD GPR[32];

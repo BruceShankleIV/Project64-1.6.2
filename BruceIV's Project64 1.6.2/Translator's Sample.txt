@@ -128,7 +128,7 @@
 #126# "Add ->"
 #127# "<- Remove"
 #128# "Sync Game to Audio"
-#129# "Nintendo 64 hardware would probably crash on the next frame at this location: r4300i_CPU_MemoryFilter - switch(*TypePos) - case 0x0F - switch(*(TypePos + 1)) - case 0xBF:"
+#129# "Nintendo 64 hardware would probably crash on the next frame at this location:"
 #130# "ON"
 #131# "Default"
 #132# "Always Autodetect With 16kbit EEPROM"

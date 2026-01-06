@@ -35,7 +35,7 @@ extern "C" {
 #ifndef _ZLIB_H
 #include "zlib.h"
 #endif
-#if defined(STRICTUNZIP) || defined(STRICTZIPUNZIP)
+#if defined(STRICTUNZIP)||defined(STRICTZIPUNZIP)
 /* like the STRICT of WIN32, we define a pointer that cannot be converted
     from (void*) without cast */
 typedef struct TagunzFile__ { int unused; } unzFile__;
@@ -54,12 +54,12 @@ typedef voidp unzFile;
 /* tm_unz contain date/time info */
 typedef struct tm_unz_s
 {
-	uInt tm_sec;            /* seconds after the minute - [0,59] */
-	uInt tm_min;            /* minutes after the hour - [0,59] */
-	uInt tm_hour;           /* hours since midnight - [0,23] */
-	uInt tm_mday;           /* day of the month - [1,31] */
-	uInt tm_mon;            /* months since January - [0,11] */
-	uInt tm_year;           /* years - [1980..2044] */
+	uInt tm_sec;            /* seconds after the minute-[0,59] */
+	uInt tm_min;            /* minutes after the hour-[0,59] */
+	uInt tm_hour;           /* hours since midnight-[0,23] */
+	uInt tm_mday;           /* day of the month-[1,31] */
+	uInt tm_mon;            /* months since January-[0,11] */
+	uInt tm_year;           /* years-[1980..2044] */
 } tm_unz;
 /* unz_global_info structure contain global data about the ZIPfile
    These data comes from the end of central dir */
@@ -93,10 +93,10 @@ extern int ZEXPORT unzStringFileNameCompare OF ((const char* fileName1,
 												 int iCaseSensitivity));
 /*
    Compare two filename (fileName1,fileName2).
-   If iCaseSenisivity = 1, comparision is case sensitivity (like strcmp)
-   If iCaseSenisivity = 2, comparision is not case sensitivity (like strcmpi
+   If iCaseSenisivity=1, comparision is case sensitivity (like strcmp)
+   If iCaseSenisivity=2, comparision is not case sensitivity (like strcmpi
 								or strcasecmp)
-   If iCaseSenisivity = 0, case sensitivity is defaut of your operating system
+   If iCaseSenisivity=0, case sensitivity is defaut of your operating system
 	(like 1 on Unix, 2 on Windows)
 */
 extern unzFile ZEXPORT unzOpen OF((const char *path));

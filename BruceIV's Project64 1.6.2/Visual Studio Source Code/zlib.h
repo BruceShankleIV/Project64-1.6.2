@@ -127,7 +127,7 @@ typedef z_stream FAR *z_streamp;
 /* The deflate compression method (the only one supported in this version) */
 #define Z_NULL  0  /* for initializing zalloc, zfree, opaque */
 #define zlib_version zlibVersion()
-/* for compatibility with versions < 1.0.2 */
+/* for compatibility with versions<1.0.2 */
                         /* basic functions */
 ZEXTERN const char * ZEXPORT zlibVersion OF((void));
 /* The application can compare zlibVersion and ZLIB_VERSION for consistency.
@@ -161,11 +161,11 @@ ZEXTERN int ZEXPORT deflate OF((z_streamp strm,int flush));
   forced to flush.
     The detailed semantics are as follows. deflate performs one or both of the
   following actions:
-  - Compress more input starting at next_in and update next_in and avail_in
+ -Compress more input starting at next_in and update next_in and avail_in
     accordingly. If not all input can be processed (because there is not
     enough room in the output buffer), next_in and avail_in are updated and
     processing will resume at this point for the next call of deflate().
-  - Provide more output starting at next_out and update next_out and avail_out
+ -Provide more output starting at next_out and update next_out and avail_out
     accordingly. This action is forced if the parameter flush is non zero.
     Forcing flush frequently degrades the compression ratio, so this parameter
     should be set only when necessary (in interactive applications).
@@ -175,7 +175,7 @@ ZEXTERN int ZEXPORT deflate OF((z_streamp strm,int flush));
   more output, and updating avail_in or avail_out accordingly; avail_out
   should never be zero before the call. The application can consume the
   compressed output when it wants, for example when the output buffer is full
-  (avail_out == 0), or after each call of deflate(). If deflate returns Z_OK
+  (avail_out==0), or after each call of deflate(). If deflate returns Z_OK
   and with zero avail_out, it must be called again after making room in the
   output buffer because there might be more output pending.
     If the parameter flush is set to Z_SYNC_FLUSH, all pending output is
@@ -189,7 +189,7 @@ ZEXTERN int ZEXPORT deflate OF((z_streamp strm,int flush));
   restart from this point if previous compressed data has been damaged or if
   random access is desired. Using Z_FULL_FLUSH too often can seriously degrade
   the compression.
-    If deflate returns with avail_out == 0, this function must be called again
+    If deflate returns with avail_out==0, this function must be called again
   with the same value of the flush parameter and more output space (updated
   avail_out), until the flush is complete (deflate returns with non-zero
   avail_out).
@@ -253,11 +253,11 @@ ZEXTERN int ZEXPORT inflate OF((z_streamp strm,int flush));
   except when forced to flush.
   The detailed semantics are as follows. inflate performs one or both of the
   following actions:
-  - Decompress more input starting at next_in and update next_in and avail_in
+ -Decompress more input starting at next_in and update next_in and avail_in
     accordingly. If not all input can be processed (because there is not
     enough room in the output buffer), next_in is updated and processing
     will resume at this point for the next call of inflate().
-  - Provide more output starting at next_out and update next_out and avail_out
+ -Provide more output starting at next_out and update next_out and avail_out
     accordingly.  inflate() provides as much output as possible, until there
     is no more input data or no more space in the output buffer (see below
     about the flush parameter).
@@ -265,7 +265,7 @@ ZEXTERN int ZEXPORT inflate OF((z_streamp strm,int flush));
   one of the actions is possible, by providing more input and/or consuming
   more output, and updating the next_* and avail_* Values accordingly.
   The application can consume the uncompressed output when it wants, for
-  example when the output buffer is full (avail_out == 0), or after each
+  example when the output buffer is full (avail_out==0), or after each
   call of inflate(). If inflate returns Z_OK and with zero avail_out, it
   must be called again after making room in the output buffer because there
   might be more output pending.
@@ -662,11 +662,11 @@ ZEXTERN uLong ZEXPORT adler32 OF((uLong adler,const Bytef *buf,uInt len));
    the required initial value for the checksum.
    An Adler-32 checksum is almost as reliable as a CRC32 but can be computed
    much faster. Usage example:
-     uLong adler = adler32(0L,Z_NULL,0);
-     while (read_buffer(buffer,length) != EOF) {
-       adler = adler32(adler,buffer,length);
+     uLong adler=adler32(0L,Z_NULL,0);
+     while (read_buffer(buffer,length) !=EOF) {
+       adler=adler32(adler,buffer,length);
      }
-     if (adler != original_adler) error();
+     if (adler !=original_adler) error();
 */
 ZEXTERN uLong ZEXPORT crc32   OF((uLong crc,const Bytef *buf,uInt len));
 /*
@@ -675,11 +675,11 @@ ZEXTERN uLong ZEXPORT crc32   OF((uLong crc,const Bytef *buf,uInt len));
    for the crc. Pre- and post-conditioning (one's complement) is performed
    within this function so it shouldn't be done by the application.
    Usage example:
-     uLong crc = crc32(0L,Z_NULL, 0);
-     while (read_buffer(buffer,length) != EOF) {
-       crc = crc32(crc,buffer,length);
+     uLong crc=crc32(0L,Z_NULL, 0);
+     while (read_buffer(buffer,length) !=EOF) {
+       crc=crc32(crc,buffer,length);
      }
-     if (crc != original_crc) error();
+     if (crc !=original_crc) error();
 */
                         /* various hacks, don't look :) */
 /* deflateInit and inflateInit are macros to allow checking the zlib version

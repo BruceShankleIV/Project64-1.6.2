@@ -46,20 +46,20 @@
 #define STATE_SIGN				4
 #define STATE_32BIT				8
 #define STATE_UNKNOWN			0
-#define STATE_MAPPED_64			(STATE_KNOWN_VALUE | STATE_X86_MAPPED)
-#define STATE_MAPPED_32_ZERO	(STATE_KNOWN_VALUE | STATE_X86_MAPPED | STATE_32BIT)
-#define STATE_MAPPED_32_SIGN	(STATE_KNOWN_VALUE | STATE_X86_MAPPED | STATE_32BIT | STATE_SIGN)
+#define STATE_MAPPED_64			(STATE_KNOWN_VALUE|STATE_X86_MAPPED)
+#define STATE_MAPPED_32_ZERO	(STATE_KNOWN_VALUE|STATE_X86_MAPPED|STATE_32BIT)
+#define STATE_MAPPED_32_SIGN	(STATE_KNOWN_VALUE|STATE_X86_MAPPED|STATE_32BIT|STATE_SIGN)
 #define STATE_CONST_64			(STATE_KNOWN_VALUE)
-#define STATE_CONST_32			(STATE_KNOWN_VALUE | STATE_32BIT | STATE_SIGN)
-#define IsKnown(Reg)			((MipsRegState(Reg) & STATE_KNOWN_VALUE) != 0)
+#define STATE_CONST_32			(STATE_KNOWN_VALUE|STATE_32BIT|STATE_SIGN)
+#define IsKnown(Reg)			((MipsRegState(Reg) & STATE_KNOWN_VALUE) !=0)
 #define IsUnknown(Reg)			(!IsKnown(Reg))
-#define IsMapped(Reg)			(IsKnown(Reg) && (MipsRegState(Reg) & STATE_X86_MAPPED) != 0)
+#define IsMapped(Reg)			(IsKnown(Reg) && (MipsRegState(Reg) & STATE_X86_MAPPED) !=0)
 #define IsConst(Reg)			(IsKnown(Reg) && !IsMapped(Reg))
-#define IsSigned(Reg)			(IsKnown(Reg) && (MipsRegState(Reg) & STATE_SIGN) != 0)
+#define IsSigned(Reg)			(IsKnown(Reg) && (MipsRegState(Reg) & STATE_SIGN) !=0)
 #define IsUnsigned(Reg)			(IsKnown(Reg) && !IsSigned(Reg))
-#define Is32Bit(Reg)			(IsKnown(Reg) && (MipsRegState(Reg) & STATE_32BIT) != 0)
+#define Is32Bit(Reg)			(IsKnown(Reg) && (MipsRegState(Reg) & STATE_32BIT) !=0)
 #define Is64Bit(Reg)			(IsKnown(Reg) && !Is32Bit(Reg))
-#define Is32BitMapped(Reg)		(Is32Bit(Reg) && (MipsRegState(Reg) & STATE_X86_MAPPED) != 0)
+#define Is32BitMapped(Reg)		(Is32Bit(Reg) && (MipsRegState(Reg) & STATE_X86_MAPPED) !=0)
 #define Is64BitMapped(Reg)		(Is64Bit(Reg) && !Is32BitMapped(Reg))
 #define MipsRegState(Reg)		Section->RegWorking.MIPS_RegState[Reg]
 #define MipsReg(Reg)			Section->RegWorking.MIPS_RegVal[Reg].UDW
@@ -172,5 +172,5 @@ extern DWORD TLBLoadAddress,TargetIndex;
 extern ORIGINAL_MEMMARKER * OrigMem;
 extern TARGET_INFO * TargetInfo;
 extern WORD FPU_RoundingMode;
-#define SetJump32(Loc,JumpLoc) *(DWORD *)(Loc)= (DWORD)(((DWORD)(JumpLoc)) - (((DWORD)(Loc)) + 4));
-#define SetJump8(Loc,JumpLoc)  *(BYTE  *)(Loc)= (BYTE)(((BYTE)(JumpLoc)) - (((BYTE)(Loc)) + 1));
+#define SetJump32(Loc,JumpLoc) *(DWORD *)(Loc)=(DWORD)(((DWORD)(JumpLoc))-(((DWORD)(Loc))+4));
+#define SetJump8(Loc,JumpLoc)  *(BYTE  *)(Loc)=(BYTE)(((BYTE)(JumpLoc))-(((BYTE)(Loc))+1));

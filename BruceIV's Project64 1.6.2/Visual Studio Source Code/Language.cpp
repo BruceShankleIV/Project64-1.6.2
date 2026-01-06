@@ -14,9 +14,9 @@ typedef struct {
 	int    ID;
 	char   Str[MAX_STRING_LEN];
 } LANG_STR;
-LANG_STR DefaultString[] = {
+LANG_STR DefaultString[]={
     { LANGUAGE_AUTHOR,    "BruceIV"			  },
-    { LANGUAGE_VERSION,   "18"				  },
+    { LANGUAGE_VERSION,   "19"				  },
     { LANGUAGE_DATE,      "2026 January"		  },
 	{ INI_CURRENT_LANG,   "Language Database (.txt)" },
 	{ INI_AUTHOR,         "Author"                   },
@@ -153,7 +153,7 @@ LANG_STR DefaultString[] = {
 	{ RB_ADD,             "Add ->"},
 	{ RB_REMOVE,          "<- Remove"},
 	{ SyncGametoAudio_LANG,"Sync Game to Audio" },
-	{ N64_CRASH,		  "Nintendo 64 hardware would probably crash on the next frame at this location: r4300i_CPU_MemoryFilter - switch(*TypePos) - case 0x0F - switch(*(TypePos + 1)) - case 0xBF:" },
+	{ N64_CRASH,		  "Nintendo 64 hardware would probably crash on the next frame at this location:" },
 	{ ON,		  "ON" },
 	{ DEFAULT_TEXT,   "Default"},
 	{ FORCE_AUTO4kbit,	       "Always Autodetect With 16kbit EEPROM" },
@@ -286,34 +286,34 @@ CLanguage lng;
 * Code                                                                         *
 *******************************************************************************/
 CLanguage::CLanguage() {
-	m_NoOflangs = 0;
-	m_NoOfStrings = 0;
+	m_NoOflangs=0;
+	m_NoOfStrings=0;
 	strcpy(m_CurrentLangName,"");
 }
 int CLanguage::GetNumberLang(void) {
 	return m_NoOflangs;
 }
 const char * CLanguage::LangName  (int index) {
-	if (index >= MAX_LANGUAGES) { return NULL; }
+	if (index >=MAX_LANGUAGES) { return NULL; }
 	return m_LangName[index];
 }
 void CLanguage::LoadLanguage  (char * RegLocation) {
 	strncpy(m_RegKey,RegLocation,sizeof(m_RegKey));
 	LoadLangList();
 	strcpy(m_CurrentLangName,"");
-	HKEY hKeyResults = 0;
-	long lResult = RegOpenKeyEx(HKEY_CURRENT_USER,RegLocation,0,KEY_ALL_ACCESS,&hKeyResults);
-	if (lResult == ERROR_SUCCESS) {
-		DWORD Type,Bytes = sizeof(m_CurrentLangName);
-		lResult = RegQueryValueEx(hKeyResults,"Language",0,&Type,(LPBYTE)(m_CurrentLangName),&Bytes);
-		if (lResult != ERROR_SUCCESS) { strcpy(m_CurrentLangName,""); }
+	HKEY hKeyResults=0;
+	long lResult=RegOpenKeyEx(HKEY_CURRENT_USER,RegLocation,0,KEY_ALL_ACCESS,&hKeyResults);
+	if (lResult==ERROR_SUCCESS) {
+		DWORD Type,Bytes=sizeof(m_CurrentLangName);
+		lResult=RegQueryValueEx(hKeyResults,"Language",0,&Type,(LPBYTE)(m_CurrentLangName),&Bytes);
+		if (lResult !=ERROR_SUCCESS) { strcpy(m_CurrentLangName,""); }
 	}
 	RegCloseKey(hKeyResults);
-	bool Found = false;
-	for (int count = 0; count < m_NoOflangs; count++) {
-		if (strcmp(m_LangName[count],m_CurrentLangName) == 0) {
+	bool Found=false;
+	for (int count=0; count<m_NoOflangs; count++) {
+		if (strcmp(m_LangName[count],m_CurrentLangName)==0) {
 			LoadStrings(m_filenames[count]);
-			Found = true;
+			Found=true;
 			break;
 		}
 	}
@@ -323,41 +323,41 @@ void CLanguage::LoadLanguage  (char * RegLocation) {
 }
 void CLanguage::CreateLangList (HMENU hMenu,int uPosition,int MenuID) {
 	LoadLangList();
-	HMENU hSubMenu = CreateMenu();
+	HMENU hSubMenu=CreateMenu();
 	MENUITEMINFO menuinfo;
 	char String[100];
-	menuinfo.cbSize = sizeof(MENUITEMINFO);
-	menuinfo.fMask = MIIM_TYPE|MIIM_ID;
-	menuinfo.fType = MFT_STRING;
-	menuinfo.dwTypeData = String;
-	menuinfo.cch = sizeof(String);
-	if (GetNumberLang() == 0) {
-		menuinfo.wID = MenuID;
+	menuinfo.cbSize=sizeof(MENUITEMINFO);
+	menuinfo.fMask=MIIM_TYPE|MIIM_ID;
+	menuinfo.fType=MFT_STRING;
+	menuinfo.dwTypeData=String;
+	menuinfo.cch=sizeof(String);
+	if (GetNumberLang()==0) {
+		menuinfo.wID=MenuID;
 		strcpy(String,"App English");
 		InsertMenuItem(hSubMenu,0,TRUE,&menuinfo);
-		CheckMenuItem(hSubMenu,MenuID,MF_BYCOMMAND | MFS_CHECKED);
+		CheckMenuItem(hSubMenu,MenuID,MF_BYCOMMAND|MFS_CHECKED);
 		EnableMenuItem(hSubMenu,MenuID,MFS_DISABLED|MF_BYCOMMAND);
 	}
-	for (int count = 0; count < GetNumberLang(); count ++) {
-		menuinfo.wID = MenuID + count;
+	for (int count=0; count<GetNumberLang(); count ++) {
+		menuinfo.wID=MenuID+count;
 		strcpy(String,lng.LangName(count));
 		InsertMenuItem(hSubMenu,0,TRUE,&menuinfo);
-		if (strcmp(m_CurrentLangName,String) == 0) {
-			CheckMenuItem(hSubMenu,menuinfo.wID,MF_BYCOMMAND | MFS_CHECKED);
+		if (strcmp(m_CurrentLangName,String)==0) {
+			CheckMenuItem(hSubMenu,menuinfo.wID,MF_BYCOMMAND|MFS_CHECKED);
 		}
 	}
 	ModifyMenu(hMenu,uPosition,MF_STRING|MF_POPUP|MF_BYPOSITION,(DWORD)hSubMenu,GS(MENU_LANGUAGE));
 }
 char * CLanguage::GetString (int StringID) {
-	for (int count = 0; count < m_NoOfStrings; count ++) {
-		if (m_Strings[count].ID == StringID) { return m_Strings[count].Str; }
+	for (int count=0; count<m_NoOfStrings; count ++) {
+		if (m_Strings[count].ID==StringID) { return m_Strings[count].Str; }
 	}
 	return NULL;
 }
 void CLanguage::LoadLangList (void) {
 	char Directory[_MAX_PATH],SearchString[_MAX_PATH];
 	{
-		char path_buffer[_MAX_PATH],drive[_MAX_DRIVE] ,dir[_MAX_DIR];
+		char path_buffer[_MAX_PATH],drive[_MAX_DRIVE],dir[_MAX_DIR];
 		char fname[_MAX_FNAME],ext[_MAX_EXT];
 		GetModuleFileName(NULL,path_buffer,sizeof(path_buffer));
 		_splitpath(path_buffer,drive,dir,fname,ext);
@@ -366,25 +366,25 @@ void CLanguage::LoadLangList (void) {
 	}
 	WIN32_FIND_DATA find_data;
 	HANDLE   search_handle;
-	search_handle = FindFirstFile(SearchString,&find_data);
+	search_handle=FindFirstFile(SearchString,&find_data);
 	m_NoOflangs=0;
 	if(search_handle !=INVALID_HANDLE_VALUE) {
 		do {
 			strcpy(m_filenames[m_NoOflangs],Directory);
 			strcat(m_filenames[m_NoOflangs],find_data.cFileName);
-			m_NoOflangs += 1;
-		} while (FindNextFile(search_handle,&find_data) && search_handle != INVALID_HANDLE_VALUE);
+			m_NoOflangs +=1;
+		} while (FindNextFile(search_handle,&find_data) && search_handle !=INVALID_HANDLE_VALUE);
 		FindClose(search_handle);
 	}
-	for (int count = 0; count < m_NoOflangs; count ++) { FindLangName(count); }
+	for (int count=0; count<m_NoOflangs; count ++) { FindLangName(count); }
 }
 void CLanguage::LoadStrings  (char * FileName) {
-	m_NoOfStrings = 0;
-	FILE *file = fopen(FileName,"rb");
-	if (file == NULL) return;
+	m_NoOfStrings=0;
+	FILE *file=fopen(FileName,"rb");
+	if (file==NULL) return;
 	char  token=0;
 	while(!feof(file)) {
-		token = 0;
+		token=0;
 		//Search for token #
 		while(token!='#' && !feof(file)) { fread(&token,1,1,file); }
 		if(feof(file))continue;
@@ -396,27 +396,27 @@ void CLanguage::LoadStrings  (char * FileName) {
 		//Search for start of string '"'
 		while(token!='"' && !feof(file)) { fread(&token,1,1,file); }
 		if(feof(file))continue;
-		int pos = 0;
+		int pos=0;
 		fread(&token,1,1,file);
 		while(token!='"' && !feof(file)) {
-			m_Strings[m_NoOfStrings].Str[pos++] = token;
+			m_Strings[m_NoOfStrings].Str[pos++]=token;
 			fread(&token,1,1,file);
-			if (pos == MAX_STRING_LEN - 2) { token = '"'; }
+			if (pos==MAX_STRING_LEN-2) { token='"'; }
 		}
-		m_Strings[m_NoOfStrings].Str[pos++] = 0;
-		m_NoOfStrings += 1;
-		if (m_NoOfStrings == MAX_STRINGS) { break; }
+		m_Strings[m_NoOfStrings].Str[pos++]=0;
+		m_NoOfStrings +=1;
+		if (m_NoOfStrings==MAX_STRINGS) { break; }
 	}
 	fclose(file);
 }
 void CLanguage::FindLangName  (int Index) {
 	strcpy(m_LangName[Index],GS(UNKNOWN));
-	FILE *file = fopen(m_filenames[Index],"rb");
-	if (file == NULL) return;
+	FILE *file=fopen(m_filenames[Index],"rb");
+	if (file==NULL) return;
 	char  token=0;
 	int   StringID;
 	while(!feof(file)) {
-		token = 0;
+		token=0;
 		//Search for token #
 		while(token!='#' && !feof(file)) { fread(&token,1,1,file); }
 		if(feof(file))continue;
@@ -425,34 +425,34 @@ void CLanguage::FindLangName  (int Index) {
 		//Search for token #
 		while(token!='#' && !feof(file)) { fread(&token,1,1,file); }
 		if(feof(file))continue;
-		if (StringID != LANGUAGE_NAME) continue;
+		if (StringID !=LANGUAGE_NAME) continue;
 		//Search for start of string '"'
 		while(token!='"' && !feof(file)) { fread(&token,1,1,file); }
 		if(feof(file))continue;
-		int pos = 0;
+		int pos=0;
 		fread(&token,1,1,file);
 		while(token!='"' && !feof(file)) {
-			m_LangName[Index][pos++] = token;
+			m_LangName[Index][pos++]=token;
 			fread(&token,1,1,file);
-			if (pos == sizeof(m_LangName[Index]) - 2) { token = '"'; }
+			if (pos==sizeof(m_LangName[Index])-2) { token='"'; }
 		}
-		m_LangName[Index][pos++] = 0;
+		m_LangName[Index][pos++]=0;
 	}
 	fclose(file);
 }
 void CLanguage::SaveCurrentLang (char * String) {
 	long lResult;
-	HKEY hKeyResults = 0;
-	DWORD Disposition = 0;
-	lResult = RegCreateKeyEx(HKEY_CURRENT_USER,m_RegKey,0,"",REG_OPTION_NON_VOLATILE,
+	HKEY hKeyResults=0;
+	DWORD Disposition=0;
+	lResult=RegCreateKeyEx(HKEY_CURRENT_USER,m_RegKey,0,"",REG_OPTION_NON_VOLATILE,
 		KEY_ALL_ACCESS,NULL,&hKeyResults,&Disposition);
-	if (lResult == ERROR_SUCCESS) {
+	if (lResult==ERROR_SUCCESS) {
 		RegSetValueEx(hKeyResults,"Language",0,REG_SZ,(CONST BYTE *)String,strlen(String));
 		strcpy(m_CurrentLangName,String);
 	}
 	RegCloseKey(hKeyResults);
-	for (int count = 0; count < m_NoOflangs; count++) {
-		if (strcmp(m_LangName[count],m_CurrentLangName) == 0) {
+	for (int count=0; count<m_NoOflangs; count++) {
+		if (strcmp(m_LangName[count],m_CurrentLangName)==0) {
 			LoadStrings(m_filenames[count]);
 			break;
 		}
@@ -461,20 +461,20 @@ void CLanguage::SaveCurrentLang (char * String) {
 void CLanguage::SetCurrentLang (HMENU hMenu,int MenuIndx) {
 	MENUITEMINFO menuinfo;
 	char String[MAX_LANNAME_LEN];
-	menuinfo.cbSize = sizeof(MENUITEMINFO);
-	menuinfo.fMask = MIIM_TYPE;
-	menuinfo.fType = MFT_STRING;
-	menuinfo.dwTypeData = String;
-	menuinfo.cch = sizeof(String);
+	menuinfo.cbSize=sizeof(MENUITEMINFO);
+	menuinfo.fMask=MIIM_TYPE;
+	menuinfo.fType=MFT_STRING;
+	menuinfo.dwTypeData=String;
+	menuinfo.cch=sizeof(String);
 	GetMenuItemInfo(hMenu,MenuIndx,FALSE,&menuinfo);
 	SaveCurrentLang(String);
 }
 char * GS (int StringID) {
 	int count;
-	char * Ret = lng.GetString(StringID);
-	if (Ret != NULL) { return Ret; }
-	for (count = 0; count < (sizeof(DefaultString) / sizeof(LANG_STR)); count ++) {
-		if (DefaultString[count].ID == StringID) { return DefaultString[count].Str; }
+	char * Ret=lng.GetString(StringID);
+	if (Ret !=NULL) { return Ret; }
+	for (count=0; count<(sizeof(DefaultString) / sizeof(LANG_STR)); count ++) {
+		if (DefaultString[count].ID==StringID) { return DefaultString[count].Str; }
 	}
 	return "";
 }

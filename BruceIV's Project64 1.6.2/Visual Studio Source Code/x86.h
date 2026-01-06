@@ -24,7 +24,7 @@
  *
  */
 enum x86RegValues {
-	x86_Any	= 0,x86_EAX,x86_EBX,x86_ECX,x86_EDX,x86_ESI,x86_EDI,x86_EBP,x86_ESP,x86_Any8Bit
+	x86_Any	=0,x86_EAX,x86_EBX,x86_ECX,x86_EDX,x86_ESI,x86_EDI,x86_EBP,x86_ESP,x86_Any8Bit
 };
 enum x86FpuValues {
 	x86_ST0,x86_ST1,x86_ST2,x86_ST3,x86_ST4,x86_ST5,x86_ST6,x86_ST7

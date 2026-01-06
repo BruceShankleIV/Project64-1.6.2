@@ -43,10 +43,10 @@
 #  define voidpf	z_voidpf
 #  define voidp		z_voidp
 #endif
-#if (defined(_WIN32) || defined(__WIN32__)) && !defined(WIN32)
+#if (defined(_WIN32)||defined(__WIN32__)) && !defined(WIN32)
 #  define WIN32
 #endif
-#if defined(__GNUC__) || defined(WIN32) || defined(__386__) || defined(i386)
+#if defined(__GNUC__)||defined(WIN32)||defined(__386__)||defined(i386)
 #  ifndef __32BIT__
 #    define __32BIT__
 #  endif
@@ -64,10 +64,10 @@
 #ifdef MSDOS
 #  define UNALIGNED_OK
 #endif
-#if (defined(MSDOS) || defined(_WINDOWS) || defined(WIN32))  && !defined(STDC)
+#if (defined(MSDOS)||defined(_WINDOWS)||defined(WIN32))  && !defined(STDC)
 #  define STDC
 #endif
-#if defined(__STDC__) || defined(__cplusplus) || defined(__OS2__)
+#if defined(__STDC__)||defined(__cplusplus)||defined(__OS2__)
 #  ifndef STDC
 #    define STDC
 #  endif
@@ -78,11 +78,11 @@
 #  endif
 #endif
 /* Some Mac compilers merge all .h files incorrectly: */
-#if defined(__MWERKS__) || defined(applec) ||defined(THINK_C) ||defined(__SC__)
+#if defined(__MWERKS__)||defined(applec)||defined(THINK_C)||defined(__SC__)
 #  define NO_DUMMY_DECL
 #endif
 /* Old Borland C incorrectly complains about missing returns: */
-#if defined(__BORLANDC__) && (__BORLANDC__ < 0x500)
+#if defined(__BORLANDC__) && (__BORLANDC__<0x500)
 #  define NEED_DUMMY_RETURN
 #endif
 /* Maximum value for memLevel in deflateInit2 */
@@ -102,13 +102,13 @@
 #  define MAX_WBITS   15 /* 32K LZ77 window */
 #endif
 /* The memory requirements for deflate are (in bytes):
-            (1 << (windowBits+2)) +  (1 << (memLevel+9))
- that is: 128K for windowBits=15  +  128K for memLevel = 8  (default values)
+            (1<<(windowBits+2))+ (1<<(memLevel+9))
+ that is: 128K for windowBits=15+128K for memLevel=8  (default values)
  plus a few kilobytes for small objects. For example, if you want to reduce
  the default memory requirements from 256K to 128K, compile with
      make CFLAGS="-O -DMAX_WBITS=14 -DMAX_MEM_LEVEL=7"
  Of course this will generally degrade compression (there's no free lunch).
-   The memory requirements for inflate are (in bytes) 1 << windowBits
+   The memory requirements for inflate are (in bytes) 1<<windowBits
  that is, 32K for windowBits=15 (default value) plus a few kilobytes
  for small objects.
 */
@@ -126,7 +126,7 @@
  * to define NO_MEMCPY in zutil.h.  If you don't need the mixed model,
  * just define FAR to be empty.
  */
-#if (defined(M_I86SM) || defined(M_I86MM)) && !defined(__32BIT__)
+#if (defined(M_I86SM)||defined(M_I86MM)) && !defined(__32BIT__)
    /* MSC small or medium model */
 #  define SMALL_MEDIUM
 #  ifdef _MSC_VER
@@ -135,7 +135,7 @@
 #    define FAR far
 #  endif
 #endif
-#if defined(__BORLANDC__) && (defined(__SMALL__) || defined(__MEDIUM__))
+#if defined(__BORLANDC__) && (defined(__SMALL__)||defined(__MEDIUM__))
 #  ifndef __32BIT__
 #    define SMALL_MEDIUM
 #    define FAR _far
@@ -143,7 +143,7 @@
 #endif
 /* Compile with -DZLIB_DLL for Windows DLL support */
 #if defined(ZLIB_DLL)
-#  if defined(_WINDOWS) || defined(WINDOWS)
+#  if defined(_WINDOWS)||defined(WINDOWS)
 #    ifdef FAR
 #      undef FAR
 #    endif
@@ -156,7 +156,7 @@
 #    endif
 #  endif
 #  if defined (__BORLANDC__)
-#    if (__BORLANDC__ >= 0x0500) && defined (WIN32)
+#    if (__BORLANDC__ >=0x0500) && defined (WIN32)
 #      include <windows.h>
 #      define ZEXPORT __declspec(dllexport) WINAPI
 #      define ZEXPORTRVA __declspec(dllexport) WINAPIV

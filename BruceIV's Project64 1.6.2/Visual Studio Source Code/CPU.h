@@ -52,10 +52,10 @@ typedef struct {
 	BOOL Stepping;
 } CPU_ACTION;
 #define InterruptsCD Call_Direct(CheckInterrupts);
-#define SetEnd NextInstruction = END_BLOCK;
-#define SetNormal NextInstruction = NORMAL;
-#define SetJump NextInstruction = JUMP;
-#define SetDelay NextInstruction = DELAY_SLOT;
+#define SetEnd NextInstruction=END_BLOCK;
+#define SetNormal NextInstruction=NORMAL;
+#define SetJump NextInstruction=JUMP;
+#define SetDelay NextInstruction=DELAY_SLOT;
 #define MaxTimers	6
 #define CompareTimer			0
 #define SiTimer					1

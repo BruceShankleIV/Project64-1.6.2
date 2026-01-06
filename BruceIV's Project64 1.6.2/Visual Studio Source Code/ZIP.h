@@ -38,7 +38,7 @@ extern "C" {
 #ifndef _ZLIB_H
 #include "zlib.h"
 #endif
-#if defined(STRICTZIP) || defined(STRICTZIPUNZIP)
+#if defined(STRICTZIP)||defined(STRICTZIPUNZIP)
 /* like the STRICT of WIN32, we define a pointer that cannot be converted
     from (void*) without cast */
 typedef struct TagzipFile__ { int unused; } zipFile__;
@@ -53,17 +53,17 @@ typedef voidp zipFile;
 /* tm_zip contain date/time info */
 typedef struct tm_zip_s
 {
-	uInt tm_sec;            /* seconds after the minute - [0,59] */
-	uInt tm_min;            /* minutes after the hour - [0,59] */
-	uInt tm_hour;           /* hours since midnight - [0,23] */
-	uInt tm_mday;           /* day of the month - [1,31] */
-	uInt tm_mon;            /* months since January - [0,11] */
-	uInt tm_year;           /* years - [1980..2044] */
+	uInt tm_sec;            /* seconds after the minute-[0,59] */
+	uInt tm_min;            /* minutes after the hour-[0,59] */
+	uInt tm_hour;           /* hours since midnight-[0,23] */
+	uInt tm_mday;           /* day of the month-[1,31] */
+	uInt tm_mon;            /* months since January-[0,11] */
+	uInt tm_year;           /* years-[1980..2044] */
 } tm_zip;
 typedef struct
 {
 	tm_zip      tmz_date;       /* date in understandable format           */
-    uLong       dosDate;       /* if dos_date == 0, tmu_date is used      */
+    uLong       dosDate;       /* if dos_date==0, tmu_date is used      */
 /*    uLong       flag;        */   /* general purpose bit flag        2 bytes */
     uLong       internal_fa;    /* internal file attributes        2 bytes */
     uLong       external_fa;    /* external file attributes        4 bytes */
@@ -91,13 +91,13 @@ extern int ZEXPORT zipOpenNewFileInZip OF((zipFile file,
 					   int level));
 /*
   Open a file in the ZIP for writing.
-  filename : the filename in zip (if NULL, '-' without quote will be used
+  filename:the filename in zip (if NULL, '-' without quote will be used
   *zipfi contain supplemental information
   if extrafield_local!=NULL and size_extrafield_local>0, extrafield_local
     contains the extrafield data the the local header
   if extrafield_global!=NULL and size_extrafield_global>0, extrafield_global
     contains the extrafield data the the local header
-  if comment != NULL, comment contain the comment string
+  if comment !=NULL, comment contain the comment string
   method contain the compression method (0 for store, Z_DEFLATED for deflate)
   level contain the level of compression (can be Z_DEFAULT_COMPRESSION)
 */

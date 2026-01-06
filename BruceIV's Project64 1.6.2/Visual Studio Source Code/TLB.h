@@ -29,19 +29,19 @@ typedef struct {
 		unsigned long Value;
 		unsigned char A[4];
 		struct BreakDownPageMask{
-			unsigned zero : 13;
-			unsigned Mask : 12;
-			unsigned zero2 : 7;
+			unsigned zero:13;
+			unsigned Mask:12;
+			unsigned zero2:7;
 		} ;
 	} PageMask;
 	union {
 		unsigned long Value;
 		unsigned char A[4];
 		struct BreakDownEntryHi {
-			unsigned ASID : 8;
-			unsigned Zero : 4;
-			unsigned G : 1;
-			unsigned VPN2 : 19;
+			unsigned ASID:8;
+			unsigned Zero:4;
+			unsigned G:1;
+			unsigned VPN2:19;
 		};
 	} EntryHi;
 	union {
@@ -49,10 +49,10 @@ typedef struct {
 		unsigned char A[4];
 		struct BreakDownEntryLo0{
 			unsigned GLOBAL: 1;
-			unsigned V : 1;
-			unsigned D : 1;
-			unsigned C : 3;
-			unsigned PFN : 20;
+			unsigned V:1;
+			unsigned D:1;
+			unsigned C:3;
+			unsigned PFN:20;
 			unsigned ZERO: 6;
 		} ;
 	} EntryLo0;
@@ -61,10 +61,10 @@ typedef struct {
 		unsigned char A[4];
 		struct BreakDownEntryLo1{
 			unsigned GLOBAL: 1;
-			unsigned V : 1;
-			unsigned D : 1;
-			unsigned C : 3;
-			unsigned PFN : 20;
+			unsigned V:1;
+			unsigned D:1;
+			unsigned C:3;
+			unsigned PFN:20;
 			unsigned ZERO: 6;
 		} ;
 	} EntryLo1;

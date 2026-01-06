@@ -28,9 +28,9 @@
 #include "Main.h"
 #include "CPU.h"
 #include "x86.h"
-#define PUTDST8(dest,value)  (*((BYTE *)(dest))=(BYTE)(value)); dest += 1;
-#define PUTDST16(dest,value) (*((WORD *)(dest))=(WORD)(value)); dest += 2;
-#define PUTDST32(dest,value) (*((DWORD *)(dest))=(DWORD)(value)); dest += 4;
+#define PUTDST8(dest,value)  (*((BYTE *)(dest))=(BYTE)(value)); dest +=1;
+#define PUTDST16(dest,value) (*((WORD *)(dest))=(WORD)(value)); dest +=2;
+#define PUTDST32(dest,value) (*((DWORD *)(dest))=(DWORD)(value)); dest +=4;
 void fpuAbs(void) {
 	PUTDST16(RecompPos,0xE1D9);
 }
@@ -75,7 +75,7 @@ void fpuAddReg(int x86reg) {
 	}
 }
 void fpuAddRegPop(int * StackPos,int x86reg) {
-	*StackPos = (*StackPos + 1) & 7;
+	*StackPos=(*StackPos+1) & 7;
 	switch (x86reg) {
 	case x86_ST0: PUTDST16(RecompPos,0xC0DE); break;
 	case x86_ST1: PUTDST16(RecompPos,0xC1DE); break;
@@ -88,41 +88,41 @@ void fpuAddRegPop(int * StackPos,int x86reg) {
 	}
 }
 void fpuComDword(void *Variable,BOOL Pop) {
-	PUTDST16(RecompPos,(Pop == TRUE) ? 0x1DD8 : 0x15D8);
+	PUTDST16(RecompPos,(Pop==TRUE)?0x1DD8:0x15D8);
 	PUTDST32(RecompPos,Variable);
 }
 void fpuComDwordRegPointer(int x86Pointer,BOOL Pop) {
 	WORD x86Command;
 	switch (x86Pointer) {
-	case x86_EAX: x86Command = 0x10D8; break;
-	case x86_EBX: x86Command = 0x13D8; break;
-	case x86_ECX: x86Command = 0x11D8; break;
-	case x86_EDX: x86Command = 0x12D8; break;
-	case x86_ESI: x86Command = 0x16D8; break;
-	case x86_EDI: x86Command = 0x17D8;
+	case x86_EAX: x86Command=0x10D8; break;
+	case x86_EBX: x86Command=0x13D8; break;
+	case x86_ECX: x86Command=0x11D8; break;
+	case x86_EDX: x86Command=0x12D8; break;
+	case x86_ESI: x86Command=0x16D8; break;
+	case x86_EDI: x86Command=0x17D8;
 	}
-	if (Pop) { x86Command |= 0x0800; }
+	if (Pop) { x86Command|=0x0800; }
 	PUTDST16(RecompPos,x86Command);
 }
 void fpuComQword(void *Variable,BOOL Pop) {
-	PUTDST16(RecompPos,(Pop == TRUE) ? 0x1DDC : 0x15DC);
+	PUTDST16(RecompPos,(Pop==TRUE)?0x1DDC:0x15DC);
 	PUTDST32(RecompPos,Variable);
 }
 void fpuComQwordRegPointer(int x86Pointer,BOOL Pop) {
 	WORD x86Command;
 	switch (x86Pointer) {
-	case x86_EAX: x86Command = 0x10DC; break;
-	case x86_EBX: x86Command = 0x13DC; break;
-	case x86_ECX: x86Command = 0x11DC; break;
-	case x86_EDX: x86Command = 0x12DC; break;
-	case x86_ESI: x86Command = 0x16DC; break;
-	case x86_EDI: x86Command = 0x17DC;
+	case x86_EAX: x86Command=0x10DC; break;
+	case x86_EBX: x86Command=0x13DC; break;
+	case x86_ECX: x86Command=0x11DC; break;
+	case x86_EDX: x86Command=0x12DC; break;
+	case x86_ESI: x86Command=0x16DC; break;
+	case x86_EDI: x86Command=0x17DC;
 	}
-	if (Pop) { x86Command |= 0x0800; }
+	if (Pop) { x86Command|=0x0800; }
 	PUTDST16(RecompPos,x86Command);
 }
 void fpuComReg(int x86reg,BOOL Pop) {
-	int s = (Pop == TRUE) ? 0x0800 : 0x0000;
+	int s=(Pop==TRUE)?0x0800:0x0000;
 	switch (x86reg) {
 	case x86_ST0: PUTDST16(RecompPos,0xD0D8|s); break;
 	case x86_ST1: PUTDST16(RecompPos,0xD1D8|s); break;
@@ -211,11 +211,11 @@ void fpuFree(int Reg) {
 	}
 }
 void fpuDecStack(int * StackPos) {
-	*StackPos = (*StackPos - 1) & 7;
+	*StackPos=(*StackPos-1) & 7;
 	PUTDST16(RecompPos,0xF6D9);
 }
 void fpuIncStack(int * StackPos) {
-	*StackPos = (*StackPos + 1) & 7;
+	*StackPos=(*StackPos+1) & 7;
 	PUTDST16(RecompPos,0xF7D9);
 }
 void fpuLoadControl(void *Variable) {
@@ -223,12 +223,12 @@ void fpuLoadControl(void *Variable) {
 	PUTDST32(RecompPos,Variable);
 }
 void fpuLoadDword(int * StackPos,void *Variable) {
-	*StackPos = (*StackPos - 1) & 7;
+	*StackPos=(*StackPos-1) & 7;
 	PUTDST16(RecompPos,0x05D9);
 	PUTDST32(RecompPos,Variable);
 }
 void fpuLoadDwordFromX86Reg(int * StackPos,int x86Reg) {
-	*StackPos = (*StackPos - 1) & 7;
+	*StackPos=(*StackPos-1) & 7;
 	PUTDST8(RecompPos,0xD9);
 	switch (x86Reg) {
 	case x86_EAX: PUTDST8(RecompPos,0x00); break;
@@ -240,7 +240,7 @@ void fpuLoadDwordFromX86Reg(int * StackPos,int x86Reg) {
 	}
 }
 void fpuLoadDwordFromN64Mem(int * StackPos,int x86reg) {
-	*StackPos = (*StackPos - 1) & 7;
+	*StackPos=(*StackPos-1) & 7;
 	switch (x86reg) {
 	case x86_EAX: PUTDST16(RecompPos,0x80D9); break;
 	case x86_EBX: PUTDST16(RecompPos,0x83D9); break;
@@ -253,7 +253,7 @@ void fpuLoadDwordFromN64Mem(int * StackPos,int x86reg) {
 	PUTDST32(RecompPos,N64MEM);
 }
 void fpuLoadInt32bFromN64Mem(int * StackPos,int x86reg) {
-	*StackPos = (*StackPos - 1) & 7;
+	*StackPos=(*StackPos-1) & 7;
 	switch (x86reg) {
 	case x86_EAX: PUTDST16(RecompPos,0x80DB); break;
 	case x86_EBX: PUTDST16(RecompPos,0x83DB); break;
@@ -266,12 +266,12 @@ void fpuLoadInt32bFromN64Mem(int * StackPos,int x86reg) {
 	PUTDST32(RecompPos,N64MEM);
 }
 void fpuLoadIntegerDword(int * StackPos,void *Variable) {
-	*StackPos = (*StackPos - 1) & 7;
+	*StackPos=(*StackPos-1) & 7;
 	PUTDST16(RecompPos,0x05DB);
 	PUTDST32(RecompPos,Variable);
 }
 void fpuLoadIntegerDwordFromX86Reg(int * StackPos,int x86Reg) {
-	*StackPos = (*StackPos - 1) & 7;
+	*StackPos=(*StackPos-1) & 7;
 	PUTDST8(RecompPos,0xDB);
 	switch (x86Reg) {
 	case x86_EAX: PUTDST8(RecompPos,0x00); break;
@@ -283,12 +283,12 @@ void fpuLoadIntegerDwordFromX86Reg(int * StackPos,int x86Reg) {
 	}
 }
 void fpuLoadIntegerQword(int * StackPos,void *Variable) {
-	*StackPos = (*StackPos - 1) & 7;
+	*StackPos=(*StackPos-1) & 7;
 	PUTDST16(RecompPos,0x2DDF);
 	PUTDST32(RecompPos,Variable);
 }
 void fpuLoadIntegerQwordFromX86Reg(int * StackPos,int x86Reg) {
-	*StackPos = (*StackPos - 1) & 7;
+	*StackPos=(*StackPos-1) & 7;
 	PUTDST8(RecompPos,0xDF);
 	switch (x86Reg) {
 	case x86_EAX: PUTDST8(RecompPos,0x28); break;
@@ -300,12 +300,12 @@ void fpuLoadIntegerQwordFromX86Reg(int * StackPos,int x86Reg) {
 	}
 }
 void fpuLoadQword(int * StackPos,void *Variable) {
-	*StackPos = (*StackPos - 1) & 7;
+	*StackPos=(*StackPos-1) & 7;
 	PUTDST16(RecompPos,0x05DD);
 	PUTDST32(RecompPos,Variable);
 }
 void fpuLoadQwordFromX86Reg(int * StackPos,int x86Reg) {;
-	*StackPos = (*StackPos - 1) & 7;
+	*StackPos=(*StackPos-1) & 7;
 	PUTDST8(RecompPos,0xDD);
 	switch (x86Reg) {
 	case x86_EAX: PUTDST8(RecompPos,0x00); break;
@@ -317,7 +317,7 @@ void fpuLoadQwordFromX86Reg(int * StackPos,int x86Reg) {;
 	}
 }
 void fpuLoadQwordFromN64Mem(int * StackPos,int x86reg) {
-	*StackPos = (*StackPos - 1) & 7;
+	*StackPos=(*StackPos-1) & 7;
 	switch (x86reg) {
 	case x86_EAX: PUTDST16(RecompPos,0x80DD); break;
 	case x86_EBX: PUTDST16(RecompPos,0x83DD); break;
@@ -330,7 +330,7 @@ void fpuLoadQwordFromN64Mem(int * StackPos,int x86reg) {
 	PUTDST32(RecompPos,N64MEM);
 }
 void fpuLoadReg(int * StackPos,int Reg) {
-	*StackPos = (*StackPos - 1) & 7;
+	*StackPos=(*StackPos-1) & 7;
 	switch (Reg) {
 	case x86_ST0: PUTDST16(RecompPos,0xC0D9); break;
 	case x86_ST1: PUTDST16(RecompPos,0xC1D9); break;
@@ -408,27 +408,27 @@ void fpuStoreControl(void *Variable) {
 	PUTDST32(RecompPos,Variable);
 }
 void fpuStoreDword(int * StackPos,void *Variable,BOOL pop) {
-	if (pop) { *StackPos = (*StackPos + 1) & 7; }
-	PUTDST16(RecompPos,(pop == FALSE) ? 0x15D9 : 0x1DD9);
+	if (pop) { *StackPos=(*StackPos+1) & 7; }
+	PUTDST16(RecompPos,(pop==FALSE)?0x15D9:0x1DD9);
 	PUTDST32(RecompPos,Variable);
 }
 void fpuStoreDwordFromX86Reg(int * StackPos,int x86Reg,BOOL pop) {
 	BYTE Command;
-	if (pop) { *StackPos = (*StackPos + 1) & 7; }
+	if (pop) { *StackPos=(*StackPos+1) & 7; }
 	PUTDST8(RecompPos,0xD9);
 	switch (x86Reg) {
-	case x86_EAX: Command = 0x10; break;
-	case x86_EBX: Command = 0x13; break;
-	case x86_ECX: Command = 0x11; break;
-	case x86_EDX: Command = 0x12; break;
-	case x86_ESI: Command = 0x16; break;
-	case x86_EDI: Command = 0x17;
+	case x86_EAX: Command=0x10; break;
+	case x86_EBX: Command=0x13; break;
+	case x86_ECX: Command=0x11; break;
+	case x86_EDX: Command=0x12; break;
+	case x86_ESI: Command=0x16; break;
+	case x86_EDI: Command=0x17;
 	}
-	PUTDST8(RecompPos,(pop == FALSE) ? Command : (Command + 0x8));
+	PUTDST8(RecompPos,(pop==FALSE)?Command:(Command+0x8));
 }
 void fpuStoreDwordToN64Mem(int * StackPos,int x86reg,BOOL Pop) {
-	int s = (Pop == TRUE) ? 0x0800 : 0;
-	if (Pop) { *StackPos = (*StackPos + 1) & 7; }
+	int s=(Pop==TRUE)?0x0800:0;
+	if (Pop) { *StackPos=(*StackPos+1) & 7; }
 	switch (x86reg) {
 	case x86_EAX: PUTDST16(RecompPos,0x90D9|s); break;
 	case x86_EBX: PUTDST16(RecompPos,0x93D9|s); break;
@@ -441,56 +441,56 @@ void fpuStoreDwordToN64Mem(int * StackPos,int x86reg,BOOL Pop) {
 	PUTDST32(RecompPos,N64MEM);
 }
 void fpuStoreIntegerDword(int * StackPos,void *Variable,BOOL pop) {
-	if (pop) { *StackPos = (*StackPos + 1) & 7; }
-	PUTDST16(RecompPos,(pop == FALSE) ? 0x15DB : 0x1DDB);
+	if (pop) { *StackPos=(*StackPos+1) & 7; }
+	PUTDST16(RecompPos,(pop==FALSE)?0x15DB:0x1DDB);
 	PUTDST32(RecompPos,Variable);
 }
 void fpuStoreIntegerDwordFromX86Reg(int * StackPos,int x86Reg,BOOL pop) {
 	BYTE Command;
-	if (pop) { *StackPos = (*StackPos + 1) & 7; }
+	if (pop) { *StackPos=(*StackPos+1) & 7; }
 	PUTDST8(RecompPos,0xDB);
 	switch (x86Reg) {
-	case x86_EAX: Command = 0x10; break;
-	case x86_EBX: Command = 0x13; break;
-	case x86_ECX: Command = 0x11; break;
-	case x86_EDX: Command = 0x12; break;
-	case x86_ESI: Command = 0x16; break;
-	case x86_EDI: Command = 0x17;
+	case x86_EAX: Command=0x10; break;
+	case x86_EBX: Command=0x13; break;
+	case x86_ECX: Command=0x11; break;
+	case x86_EDX: Command=0x12; break;
+	case x86_ESI: Command=0x16; break;
+	case x86_EDI: Command=0x17;
 	}
-	PUTDST8(RecompPos,(pop == FALSE) ? Command : (Command + 0x8));
+	PUTDST8(RecompPos,(pop==FALSE)?Command:(Command+0x8));
 }
 void fpuStoreIntegerQword(int * StackPos,void *Variable,BOOL pop) {
-	if (pop) { *StackPos = (*StackPos + 1) & 7; }
-	PUTDST16(RecompPos,(pop == FALSE) ? 0x35DF : 0x3DDF);
+	if (pop) { *StackPos=(*StackPos+1) & 7; }
+	PUTDST16(RecompPos,(pop==FALSE)?0x35DF:0x3DDF);
 	PUTDST32(RecompPos,Variable);
 }
 void fpuStoreIntegerQwordFromX86Reg(int * StackPos,int x86Reg,BOOL pop) {
 	BYTE Command;
-	if (pop) { *StackPos = (*StackPos + 1) & 7; }
+	if (pop) { *StackPos=(*StackPos+1) & 7; }
 	PUTDST8(RecompPos,0xDF);
 	switch (x86Reg) {
-	case x86_EAX: Command = 0x30; break;
-	case x86_EBX: Command = 0x33; break;
-	case x86_ECX: Command = 0x31; break;
-	case x86_EDX: Command = 0x32; break;
-	case x86_ESI: Command = 0x36; break;
-	case x86_EDI: Command = 0x37;
+	case x86_EAX: Command=0x30; break;
+	case x86_EBX: Command=0x33; break;
+	case x86_ECX: Command=0x31; break;
+	case x86_EDX: Command=0x32; break;
+	case x86_ESI: Command=0x36; break;
+	case x86_EDI: Command=0x37;
 	}
-	PUTDST8(RecompPos,(pop == FALSE) ? Command : (Command + 0x8));
+	PUTDST8(RecompPos,(pop==FALSE)?Command:(Command+0x8));
 }
 void fpuStoreQwordFromX86Reg(int * StackPos,int x86Reg,BOOL pop) {
 	BYTE Command;
-	if (pop) { *StackPos = (*StackPos + 1) & 7; }
+	if (pop) { *StackPos=(*StackPos+1) & 7; }
 	PUTDST8(RecompPos,0xDD);
 	switch (x86Reg) {
-	case x86_EAX: Command = 0x10; break;
-	case x86_EBX: Command = 0x13; break;
-	case x86_ECX: Command = 0x11; break;
-	case x86_EDX: Command = 0x12; break;
-	case x86_ESI: Command = 0x16; break;
-	case x86_EDI: Command = 0x17;
+	case x86_EAX: Command=0x10; break;
+	case x86_EBX: Command=0x13; break;
+	case x86_ECX: Command=0x11; break;
+	case x86_EDX: Command=0x12; break;
+	case x86_ESI: Command=0x16; break;
+	case x86_EDI: Command=0x17;
 	}
-	PUTDST8(RecompPos,(pop == FALSE) ? Command : (Command + 0x8));
+	PUTDST8(RecompPos,(pop==FALSE)?Command:(Command+0x8));
 }
 void fpuStoreStatus(void) {
 	PUTDST16(RecompPos,0xE0DF);
@@ -570,8 +570,8 @@ int fpuSaveControl(BOOL bSetNormal) {
 	_asm {
 		fnstcw word ptr [fpucontrol]
 	}
-	if (bSetNormal == TRUE) {
-		unsigned short fpunormal = fpucontrol & 0xF3FF;
+	if (bSetNormal==TRUE) {
+		unsigned short fpunormal=fpucontrol & 0xF3FF;
 		_asm {
 			fldcw word ptr [fpunormal]
 		}
@@ -586,7 +586,7 @@ int fpuRestoreControl() {
 	return fpucontrol;
 }
 void fpuSetupDouble(void) {
-	int temp = 0;
+	int temp=0;
 	_asm {
 		fnstcw word ptr [temp]
 		or [temp],0x300
