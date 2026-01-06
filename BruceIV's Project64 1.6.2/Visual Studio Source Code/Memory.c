@@ -1061,7 +1061,7 @@ int r4300i_CPU_MemoryFilter (DWORD dwExptCode,LPEXCEPTION_POINTERS lpEP) {
 			if (UseCache==REG_CACHE_OFF) {
 				if (!BF_Trigger) {
 					HandleModal1(hMainWindow);
-					DisplayError,"%s r4300i_CPU_MemoryFilter-switch(*TypePos)-case 0x0F-switch(*(TypePos+1))-case 0xBF:",GS(N64_CRASH);
+					DisplayError"%s\n\nr4300i_CPU_MemoryFilter-switch(*TypePos)-case 0x0F-switch(*(TypePos+1))-case 0xBF:",GS(N64_CRASH);
 					HandleModal2(hMainWindow);
 					BF_Trigger=TRUE;
 				}
