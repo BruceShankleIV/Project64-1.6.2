@@ -52,23 +52,23 @@ DWORD (__cdecl *AiReadLengthPlugin)    (void);
 void __cdecl EmuAI_AiLenChanged (void) {
 	EmuAI_BitRate=AI_BITRATE_REG+1;
 	if (AI_LEN_REG==0) return;
-	if (LastVICntFrame !=EmuAI_VICntFrame && EmuAI_Frequency>0) {
+	if (LastVICntFrame!=EmuAI_VICntFrame&&EmuAI_Frequency>0) {
 		CountsPerByte=(double)(EmuAI_FrameRate * EmuAI_VICntFrame) / (double)(EmuAI_Frequency * (EmuAI_BitRate / 4));
 		LastVICntFrame=EmuAI_VICntFrame;
 	}
 	if (CountsPerByte==0)	CountsPerByte=(double)(EmuAI_FrameRate * EmuAI_VICntFrame) / (double)(22050 * (16 / 4));
 	if (EmuAI_Buffer[0]==0) {
 		Start_COUNT=COUNT_REGISTER;
-		if (RomAltEmulateAI) EmuAI_Buffer[1]=AI_LEN_REG & 0x3FFF8;
-		else EmuAI_Buffer[0]=AI_LEN_REG & 0x3FFF8;
+		if (RomAltEmulateAI) EmuAI_Buffer[1]=AI_LEN_REG&0x3FFF8;
+		else EmuAI_Buffer[0]=AI_LEN_REG&0x3FFF8;
 		AI_STATUS_REG|=0x40000000;
 		if (RomAltEmulateAI) ChangeTimer(AiTimer,(int)(CountsPerByte * 50));
 		else ChangeTimer(AiTimer,(int)(CountsPerByte * (double)(double)(EmuAI_Buffer[0])));
 	} else if (EmuAI_Buffer[1]==0) {
-		EmuAI_Buffer[1]=AI_LEN_REG & 0x3FFF8;
+		EmuAI_Buffer[1]=AI_LEN_REG&0x3FFF8;
 		AI_STATUS_REG|=0x80000000;
 	} else AI_STATUS_REG|=0x80000000;
-	if (AiLenChangedPlugin !=NULL) AiLenChangedPlugin();
+	if (AiLenChangedPlugin!=NULL) AiLenChangedPlugin();
 }
 DWORD __cdecl EmuAI_AiReadLength (void) {
 	DWORD SetTimer,RemainingCount,retVal=0;
@@ -78,15 +78,15 @@ DWORD __cdecl EmuAI_AiReadLength (void) {
 	retVal=(DWORD)((double)RemainingCount / CountsPerByte);
 	if (retVal<8) retVal=8;
 	AiReadLengthPlugin();
-	return retVal & ~0x7;
+	return retVal&~0x7;
 }
 void __cdecl EmuAI_AiDacrateChanged (int SystemType) {
 	if (EmuAI_FrameRate==60) {
 		EmuAI_Frequency=48681812 / (AI_DACRATE_REG+1);
-		if (AiDacrateChangedPlugin !=NULL) AiDacrateChangedPlugin(SYSTEM_NTSC);
+		if (AiDacrateChangedPlugin!=NULL) AiDacrateChangedPlugin(SYSTEM_NTSC);
 	} else {
 		EmuAI_Frequency=49656530 / (AI_DACRATE_REG+1);
-		if (AiDacrateChangedPlugin !=NULL) AiDacrateChangedPlugin(SYSTEM_PAL);
+		if (AiDacrateChangedPlugin!=NULL) AiDacrateChangedPlugin(SYSTEM_PAL);
 	}
 }
 void EmuAI_ClearAudio() {
@@ -123,13 +123,13 @@ void EmuAI_SetVICountPerFrame (DWORD value) {
 void EmuAI_SetNextTimer() {
 	EmuAI_Buffer[0]=EmuAI_Buffer[1];
 	EmuAI_Buffer[1]=0;
-	AI_STATUS_REG &=~0x80000000;
+	AI_STATUS_REG&=~0x80000000;
 	if (EmuAI_Buffer[0]>0) {
 		AI_STATUS_REG|=0x40000000;
 		ChangeTimer(AiTimer,(int)(CountsPerByte * (double)(EmuAI_Buffer[0])));
 		Start_COUNT=COUNT_REGISTER;
 	} else {
-		AI_STATUS_REG &=~0x40000000;
+		AI_STATUS_REG&=~0x40000000;
 		ChangeTimer(AiTimer,0);
 	}
 }
@@ -151,12 +151,12 @@ void DisplayThreadExit (char * ExitPoint) {
 }
 void INITIALIZECPUFlags (void) {
 	inFullScreen=FALSE;
-	CPURunning  =FALSE;
+	CPURunning =FALSE;
 	CurrentSaveSlot=ID_CURRENTSAVE_DEFAULT;
 }
 void ChangeCompareTimer(void) {
 	DWORD NextCompare=COMPARE_REGISTER-COUNT_REGISTER;
-	if ((NextCompare & 0x80000000) !=0) { NextCompare=0x7FFFFFFF; }
+	if ((NextCompare&0x80000000)!=0) { NextCompare=0x7FFFFFFF; }
 	if (NextCompare==0) { NextCompare=0x1; }
 	ChangeTimer(CompareTimer,NextCompare);
 }
@@ -174,7 +174,7 @@ void CheckTimer (void) {
 	int count;
 	for (count=0; count<MaxTimers; count++) {
 		if (!Timers.Active[count]) continue;
-		if (!(count==CompareTimer && Timers.NextTimer[count]==0x7FFFFFFF)) {
+		if (!(count==CompareTimer&&Timers.NextTimer[count]==0x7FFFFFFF)) {
 			Timers.NextTimer[count] +=Timers.Timer;
 		}
 	}
@@ -182,20 +182,20 @@ void CheckTimer (void) {
 	Timers.Timer=0x7FFFFFFF;
 	for (count=0; count<MaxTimers; count++) {
 		if (!Timers.Active[count]) continue;
-		if (Timers.NextTimer[count] >=Timers.Timer) continue;
+		if (Timers.NextTimer[count]>=Timers.Timer) continue;
 		Timers.Timer=Timers.NextTimer[count];
 		Timers.CurrentTimerType=count;
 	}
 	if (Timers.CurrentTimerType==-1) DisplayThreadExit("CheckTimer-Timers.CurrentTimerType==-1");
 	for (count=0; count<MaxTimers; count++) {
 		if (!Timers.Active[count]) continue;
-		if (!(count==CompareTimer && Timers.NextTimer[count]==0x7FFFFFFF)) {
+		if (!(count==CompareTimer&&Timers.NextTimer[count]==0x7FFFFFFF)) {
 			Timers.NextTimer[count] -=Timers.Timer;
 		}
 	}
 	if (Timers.NextTimer[CompareTimer]==0x7FFFFFFF) {
 		DWORD NextCompare=COMPARE_REGISTER-COUNT_REGISTER;
-		if ((NextCompare & 0x80000000)==0 && NextCompare !=0x7FFFFFFF) {
+		if ((NextCompare&0x80000000)==0&&NextCompare!=0x7FFFFFFF) {
 			ChangeCompareTimer();
 		}
 	}
@@ -215,13 +215,13 @@ void EndEmulation (void) {
 	for (count=0; count<20; count++) {
 		Sleep(100);
 		GetExitCodeThread(hCPU,&ExitCode);
-		if (ExitCode !=STILL_ACTIVE) {
+		if (ExitCode!=STILL_ACTIVE) {
 			hCPU=NULL;
 			count=100;
 		}
 	}
 	timeEndPeriod(16);
-	if (hCPU !=NULL) { TerminateThread(hCPU,0); hCPU=NULL; }
+	if (hCPU!=NULL) { TerminateThread(hCPU,0); hCPU=NULL; }
 	CloseHandle(CPU_Action.hStepping);
 	CloseEEPROM();
 	CloseMempak();
@@ -229,11 +229,11 @@ void EndEmulation (void) {
 	Timer_Stop();
 	VirtualProtect(N64MEM,RDRAMsize,PAGE_READWRITE,&OldProtect);
 	VirtualProtect(N64MEM+0x04000000,0x2000,PAGE_READWRITE,&OldProtect);
-	if (GfxRomClosed !=NULL && (!inFullScreen||strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0)) { GfxRomClosed(); }
+	if (GfxRomClosed!=NULL&&(!inFullScreen||strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0)) { GfxRomClosed(); }
 	if (!GLideN64NeedsToBeSetupFirst) {
-		if (AiRomClosed !=NULL) { AiRomClosed(); }
-		if (ContRomClosed !=NULL) { ContRomClosed(); }
-		if (RSPRomClosed !=NULL) { RSPRomClosed(); }
+		if (AiRomClosed!=NULL) { AiRomClosed(); }
+		if (ContRomClosed!=NULL) { ContRomClosed(); }
+		if (RSPRomClosed!=NULL) { RSPRomClosed(); }
 	}
 }
 int DelaySlotEffectsCompare (DWORD PC,DWORD Reg1,DWORD Reg2) {
@@ -297,7 +297,7 @@ int DelaySlotEffectsCompare (DWORD PC,DWORD Reg1,DWORD Reg2) {
 			if (Command.rt==Reg1||Command.rt==Reg2) return TRUE;
 		case R4300i_COP0_MT: break;
 		default:
-			if ((Command.rs & 0x10) !=0 && (Opcode.funct==R4300i_COP0_CO_TLBR||Opcode.funct==R4300i_COP0_CO_TLBWI||Opcode.funct==R4300i_COP0_CO_TLBWR||Opcode.funct==R4300i_COP0_CO_TLBP)) break;
+			if ((Command.rs&0x10)!=0&&(Opcode.funct==R4300i_COP0_CO_TLBR||Opcode.funct==R4300i_COP0_CO_TLBWI||Opcode.funct==R4300i_COP0_CO_TLBWR||Opcode.funct==R4300i_COP0_CO_TLBP)) break;
 			return TRUE;
 		}
 		break;
@@ -398,10 +398,10 @@ int DelaySlotEffectsJump (DWORD JumpPC) {
 					if (!r4300i_LW_VAddr(JumpPC+4,&NewCommand.Hex)) return TRUE;
 					EffectDelaySlot=FALSE;
 					if (NewCommand.op==R4300i_CP1) {
-						if (NewCommand.fmt==R4300i_COP1_S && (NewCommand.funct & 0x30)==0x30) {
+						if (NewCommand.fmt==R4300i_COP1_S&&(NewCommand.funct&0x30)==0x30) {
 							EffectDelaySlot=TRUE;
 						}
-						if (NewCommand.fmt==R4300i_COP1_D && (NewCommand.funct & 0x30)==0x30) {
+						if (NewCommand.fmt==R4300i_COP1_D&&(NewCommand.funct&0x30)==0x30) {
 							EffectDelaySlot=TRUE;
 						}
 					}
@@ -421,10 +421,10 @@ int DelaySlotEffectsJump (DWORD JumpPC) {
 void ProcessMessages (void) {
 	HANDLE hEvent;
 	MSG msg;
-	hEvent= CreateEvent(NULL,FALSE,FALSE,NULL);
+	hEvent=CreateEvent(NULL,FALSE,FALSE,NULL);
 	MsgWaitForMultipleObjects(1,&hEvent,FALSE,1000,QS_ALLINPUT);
 	CloseHandle(hEvent);
-	while (PeekMessage(&msg,NULL,0,0,PM_REMOVE) !=0) {
+	while (PeekMessage(&msg,NULL,0,0,PM_REMOVE)!=0) {
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
 		if (msg.message==WM_QUIT) {
@@ -458,7 +458,7 @@ void DoSomething (void) {
 			ReleaseMutex(hPauseMutex);
 			SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MSG_CPU_PAUSED));
 			DisplayFPS();
-			if (DrawScreen !=NULL) DrawScreen();
+			if (DrawScreen!=NULL) DrawScreen();
 			WaitForSingleObject(hPauseMutex,INFINITE);
 			if (CPU_Paused) {
 				ReleaseMutex(hPauseMutex);
@@ -499,7 +499,7 @@ void GetAutoSaveDir(char * Directory) {
 		DWORD Type,Value,Bytes;
 		Bytes=4;
 		lResult=RegQueryValueEx(hKeyResults,"AppPath Save Data",0,&Type,(LPBYTE)(&Value),&Bytes);
-		if (lResult==ERROR_SUCCESS && Value==FALSE) {
+		if (lResult==ERROR_SUCCESS&&Value==FALSE) {
 			Bytes=sizeof(Dir);
 			lResult=RegQueryValueEx(hKeyResults,"CustomPath Save Data",0,&Type,(LPBYTE)Dir,&Bytes);
 			if (lResult==ERROR_SUCCESS) { strcpy(Directory,Dir); }
@@ -521,7 +521,7 @@ void GetInstantSaveDir(char * Directory) {
 		DWORD Type,Value,Bytes;
 		Bytes=4;
 		lResult=RegQueryValueEx(hKeyResults,"AppPath Save States",0,&Type,(LPBYTE)(&Value),&Bytes);
-		if (lResult==ERROR_SUCCESS && Value==FALSE) {
+		if (lResult==ERROR_SUCCESS&&Value==FALSE) {
 			Bytes=sizeof(Dir);
 			lResult=RegQueryValueEx(hKeyResults,"CustomPath SaveStates",0,&Type,(LPBYTE)Dir,&Bytes);
 			if (lResult==ERROR_SUCCESS) { strcpy(Directory,Dir); }
@@ -533,11 +533,11 @@ void InPermLoop (void) {
 	// *** Changed ***/
 	if (CPU_Action.DoInterrupt) return;
 	/* Interrupts enabled */
-	if ((STATUS_REGISTER & STATUS_IE)==0||(STATUS_REGISTER & STATUS_EXL) !=0||(STATUS_REGISTER & STATUS_ERL) !=0||(STATUS_REGISTER & 0xFF00)==0) {
-		if (UpdateScreen !=NULL) { UpdateScreen(); }
+	if ((STATUS_REGISTER&STATUS_IE)==0||(STATUS_REGISTER&STATUS_EXL)!=0||(STATUS_REGISTER&STATUS_ERL)!=0||(STATUS_REGISTER&0xFF00)==0) {
+		if (UpdateScreen!=NULL) { UpdateScreen(); }
 		CurrentFrame=0;
 		DisplayFPS();
-		DisplayThreadExit("InPermLoop-(STATUS_REGISTER & STATUS_IE )==0||(STATUS_REGISTER & STATUS_EXL) !=0||(STATUS_REGISTER & STATUS_ERL) !=0||(STATUS_REGISTER & 0xFF00)==0");
+		DisplayThreadExit("InPermLoop-(STATUS_REGISTER&STATUS_IE )==0||(STATUS_REGISTER&STATUS_EXL)!=0||(STATUS_REGISTER&STATUS_ERL)!=0||(STATUS_REGISTER&0xFF00)==0");
 	}
 	/* check sound playing */
 	/* check RSP running */
@@ -562,38 +562,38 @@ BOOL Machine_LoadState(void) {
 		strcpy(ZipFile,LoadFileName);
 	}
 	file=unzOpen(ZipFile);
-	if (file !=NULL) {
+	if (file!=NULL) {
 		unz_file_info info;
 		char zname[132];
 		int port=0;
 		port=unzGoToFirstFile(file);
-		while (port==UNZ_OK && LoadedZipFile==FALSE) {
+		while (port==UNZ_OK&&LoadedZipFile==FALSE) {
 			unzGetCurrentFileInfo(file,&info,zname,128,NULL,0,NULL,0);
-			if (unzLocateFile(file,zname,1) !=UNZ_OK) {
+			if (unzLocateFile(file,zname,1)!=UNZ_OK) {
 				unzClose(file);
 				port=-1;
 				continue;
 			}
-			if(unzOpenCurrentFile(file) !=UNZ_OK) {
+			if(unzOpenCurrentFile(file)!=UNZ_OK) {
 				unzClose(file);
 				port=-1;
 				continue;
 			}
 			unzReadCurrentFile(file,&Value,4);
-			if (Value !=0x23D8A6C8) {
+			if (Value!=0x23D8A6C8) {
 				unzCloseCurrentFile(file);
 				continue;
 			}
 			unzReadCurrentFile(file,&SaveRDRAMsize,sizeof(SaveRDRAMsize));
 			unzReadCurrentFile(file,LoadHeader,0x40);
-			if (CPU_Type !=CPU_Interpreter) {
+			if (CPU_Type!=CPU_Interpreter) {
 				ResetRecompCode();
 			}
 			Timers.CurrentTimerType=-1;
 			Timers.Timer=0;
 			for (count=0; count<MaxTimers; count ++) { Timers.Active[count]=FALSE; }
 			//fix RDRAM size
-			if (SaveRDRAMsize !=RDRAMsize) {
+			if (SaveRDRAMsize!=RDRAMsize) {
 				if (RDRAMsize==0x400000) {
 					if (VirtualAlloc(N64MEM+0x400000,0x400000,MEM_COMMIT,PAGE_READWRITE)==NULL) {
 						DisplayError(GS(MSG_MEM_ALLOC_ERROR));
@@ -656,17 +656,17 @@ BOOL Machine_LoadState(void) {
 		}
 		SetFilePointer(hSaveFile,0,NULL,FILE_BEGIN);
 		ReadFile(hSaveFile,&Value,sizeof(Value),&dwRead,NULL);
-		if (Value !=0x23D8A6C8) return FALSE;
+		if (Value!=0x23D8A6C8) return FALSE;
 		ReadFile(hSaveFile,&SaveRDRAMsize,sizeof(SaveRDRAMsize),&dwRead,NULL);
 		ReadFile(hSaveFile,LoadHeader,0x40,&dwRead,NULL);
-		if (CPU_Type !=CPU_Interpreter) {
+		if (CPU_Type!=CPU_Interpreter) {
 			ResetRecompCode();
 		}
 		Timers.CurrentTimerType=-1;
 		Timers.Timer=0;
 		for (count=0; count<MaxTimers; count ++) { Timers.Active[count]=FALSE; }
 		//fix RDRAM size
-		if (SaveRDRAMsize !=RDRAMsize) {
+		if (SaveRDRAMsize!=RDRAMsize) {
 			if (RDRAMsize==0x400000) {
 				if (VirtualAlloc(N64MEM+0x400000,0x400000,MEM_COMMIT,PAGE_READWRITE)==NULL) {
 					DisplayError(GS(MSG_MEM_ALLOC_ERROR));
@@ -715,7 +715,7 @@ BOOL Machine_LoadState(void) {
 		sprintf(FileName,"%s%s",ZipFile,ext);
 	}
 	ChangeCompareTimer();
-	if (AiRomClosed !=NULL && !SyncGametoAudio) AiRomClosed();
+	if (AiRomClosed!=NULL&&!SyncGametoAudio) AiRomClosed();
 	DlistCount=0;
 	AlistCount=0;
 	AI_STATUS_REG=0;
@@ -744,7 +744,7 @@ BOOL Machine_SaveState(void) {
 	char drive[_MAX_DRIVE],dir[_MAX_DIR],ext[_MAX_EXT];
 	DWORD dwWritten,Value;
 	HANDLE hSaveFile;
-	if (Timers.CurrentTimerType !=CompareTimer && Timers.CurrentTimerType !=ViTimer) return FALSE;
+	if (Timers.CurrentTimerType!=CompareTimer&&Timers.CurrentTimerType!=ViTimer) return FALSE;
 	if (strlen(SaveAsFileName)==0) {
 		GetInstantSaveDir(Directory);
 		sprintf(FileName,"%s%s",Directory,CurrentSave);
@@ -793,7 +793,7 @@ BOOL Machine_SaveState(void) {
 		WriteFile(hSaveFile,RegSP,sizeof(DWORD)*10,&dwWritten,NULL);
 		WriteFile(hSaveFile,RegDPC,sizeof(DWORD)*10,&dwWritten,NULL);
 		Value=MI_INTR_REG;
-		if (AiReadLength() !=0) { MI_INTR_REG|=MI_INTR_AI; }
+		if (AiReadLength()!=0) { MI_INTR_REG|=MI_INTR_AI; }
 		WriteFile(hSaveFile,RegMI,sizeof(DWORD)*4,&dwWritten,NULL);
 		MI_INTR_REG=Value;
 		WriteFile(hSaveFile,RegVI,sizeof(DWORD)*14,&dwWritten,NULL);
@@ -837,7 +837,7 @@ void PauseCPU (void) {
 		MenuSetText(hSubMenu,1,GS(MENU_PAUSE),"F2/Shift+Caps Lock");
 		ManualPaused=FALSE;
 		CPU_Paused=FALSE;
-		if (LimitFPS && !SyncGametoAudio||!LimitFPS && SpeedCap) Timer_Start();
+		if (LimitFPS&&!SyncGametoAudio||!LimitFPS&&SpeedCap) Timer_Start();
 	} else {
 		CPU_Action.Pause=TRUE;
 		CPU_Action.DoSomething=TRUE;
@@ -847,21 +847,21 @@ void PauseCPU (void) {
 void RefreshScreen (void) {
 	static DWORD OLD_VI_V_SYNC_REG=0,VI_INTR_TIME=500000;
 	LARGE_INTEGER Time;
-	if (OLD_VI_V_SYNC_REG !=VI_V_SYNC_REG) {
+	if (OLD_VI_V_SYNC_REG!=VI_V_SYNC_REG) {
 		if (VI_V_SYNC_REG==0) {
 			VI_INTR_TIME=500000;
 		} else {
 			VI_INTR_TIME=(VI_V_SYNC_REG+1) * 1500;
-			if ((VI_V_SYNC_REG % 1) !=0) {
+			if ((VI_V_SYNC_REG % 1)!=0) {
 				VI_INTR_TIME -=38;
 			}
 		}
 	}
 	ChangeTimer(ViTimer,Timers.Timer+Timers.NextTimer[ViTimer]+VI_INTR_TIME);
 	EmuAI_SetVICountPerFrame(VI_INTR_TIME);
-	UpdateFieldSerration((VI_STATUS_REG & 0x40) !=0);
+	UpdateFieldSerration((VI_STATUS_REG&0x40)!=0);
 	if (LimitFPS||SpeedCap) { Timer_Process(NULL); }
-	if ((CurrentFrame & 7)==0) {
+	if ((CurrentFrame&7)==0) {
 		QueryPerformanceCounter(&Time);
 		Frames[(CurrentFrame>>3) % 9].QuadPart=Time.QuadPart-LastFrame.QuadPart;
 		LastFrame.QuadPart=Time.QuadPart;
@@ -869,17 +869,17 @@ void RefreshScreen (void) {
 	}
 	CurrentFrame +=1;
 	__try {
-		if (UpdateScreen !=NULL) UpdateScreen();
+		if (UpdateScreen!=NULL) UpdateScreen();
 	} __except (r4300i_CPU_MemoryFilter(GetExceptionCode(),GetExceptionInformation())) { DisplayThreadExit("RefreshScreen-r4300i_CPU_MemoryFilter(GetExceptionCode(),GetExceptionInformation())"); }
-	if ((STATUS_REGISTER & STATUS_IE) !=0) { ApplyCheats(); }
+	if ((STATUS_REGISTER&STATUS_IE)!=0) { ApplyCheats(); }
 }
 void RunRsp (void) {
-	if ((SP_STATUS_REG & SP_STATUS_HALT)==0) {
-		if ((SP_STATUS_REG & SP_STATUS_BROKE)==0) {
+	if ((SP_STATUS_REG&SP_STATUS_HALT)==0) {
+		if ((SP_STATUS_REG&SP_STATUS_BROKE)==0) {
 			DWORD Task=*(DWORD *)(DMEM+0xFC0);
 			switch (Task) {
 			case 1:
-				if ((DPC_STATUS_REG & DPC_STATUS_FREEZE) !=0) return;
+				if ((DPC_STATUS_REG&DPC_STATUS_FREEZE)!=0) return;
 				DlistCount +=1;
 				break;
 			case 2:
@@ -915,7 +915,7 @@ void TimerDone (void) {
 		break;
 	case PiTimer:
 		ChangeTimer(PiTimer,0);
-		PI_STATUS_REG &=~PI_STATUS_DMA_BUSY;
+		PI_STATUS_REG&=~PI_STATUS_DMA_BUSY;
 		MI_INTR_REG|=MI_INTR_PI;
 		CheckInterrupts();
 		break;

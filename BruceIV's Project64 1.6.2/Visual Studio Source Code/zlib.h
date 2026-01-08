@@ -663,10 +663,10 @@ ZEXTERN uLong ZEXPORT adler32 OF((uLong adler,const Bytef *buf,uInt len));
    An Adler-32 checksum is almost as reliable as a CRC32 but can be computed
    much faster. Usage example:
      uLong adler=adler32(0L,Z_NULL,0);
-     while (read_buffer(buffer,length) !=EOF) {
+     while (read_buffer(buffer,length)!=EOF) {
        adler=adler32(adler,buffer,length);
      }
-     if (adler !=original_adler) error();
+     if (adler!=original_adler) error();
 */
 ZEXTERN uLong ZEXPORT crc32   OF((uLong crc,const Bytef *buf,uInt len));
 /*
@@ -676,10 +676,10 @@ ZEXTERN uLong ZEXPORT crc32   OF((uLong crc,const Bytef *buf,uInt len));
    within this function so it shouldn't be done by the application.
    Usage example:
      uLong crc=crc32(0L,Z_NULL, 0);
-     while (read_buffer(buffer,length) !=EOF) {
+     while (read_buffer(buffer,length)!=EOF) {
        crc=crc32(crc,buffer,length);
      }
-     if (crc !=original_crc) error();
+     if (crc!=original_crc) error();
 */
                         /* various hacks, don't look :) */
 /* deflateInit and inflateInit are macros to allow checking the zlib version
@@ -698,7 +698,7 @@ ZEXTERN int ZEXPORT inflateInit2_ OF((z_streamp strm,int  windowBits,const char 
                       (strategy),           ZLIB_VERSION,sizeof(z_stream))
 #define inflateInit2(strm,windowBits) \
         inflateInit2_((strm),(windowBits),ZLIB_VERSION,sizeof(z_stream))
-#if !defined(_Z_UTIL_H) && !defined(NO_DUMMY_DECL)
+#if!defined(_Z_UTIL_H)&&!defined(NO_DUMMY_DECL)
     struct internal_state {int dummy;}; /* hack for buggy compilers */
 #endif
 ZEXTERN const char   * ZEXPORT zError           OF((int err));

@@ -43,7 +43,7 @@
 #  define voidpf	z_voidpf
 #  define voidp		z_voidp
 #endif
-#if (defined(_WIN32)||defined(__WIN32__)) && !defined(WIN32)
+#if (defined(_WIN32)||defined(__WIN32__))&&!defined(WIN32)
 #  define WIN32
 #endif
 #if defined(__GNUC__)||defined(WIN32)||defined(__386__)||defined(i386)
@@ -51,20 +51,20 @@
 #    define __32BIT__
 #  endif
 #endif
-#if defined(__MSDOS__) && !defined(MSDOS)
+#if defined(__MSDOS__)&&!defined(MSDOS)
 #  define MSDOS
 #endif
 /*
  * Compile with -DMAXSEG_64K if the alloc function cannot allocate more
  * than 64k bytes at a time (needed on systems with 16-bit int).
  */
-#if defined(MSDOS) && !defined(__32BIT__)
+#if defined(MSDOS)&&!defined(__32BIT__)
 #  define MAXSEG_64K
 #endif
 #ifdef MSDOS
 #  define UNALIGNED_OK
 #endif
-#if (defined(MSDOS)||defined(_WINDOWS)||defined(WIN32))  && !defined(STDC)
+#if (defined(MSDOS)||defined(_WINDOWS)||defined(WIN32)) &&!defined(STDC)
 #  define STDC
 #endif
 #if defined(__STDC__)||defined(__cplusplus)||defined(__OS2__)
@@ -73,7 +73,7 @@
 #  endif
 #endif
 #ifndef STDC
-#  ifndef const /* cannot use !defined(STDC) && !defined(const) on Mac */
+#  ifndef const /* cannot use!defined(STDC)&&!defined(const) on Mac */
 #    define const
 #  endif
 #endif
@@ -82,7 +82,7 @@
 #  define NO_DUMMY_DECL
 #endif
 /* Old Borland C incorrectly complains about missing returns: */
-#if defined(__BORLANDC__) && (__BORLANDC__<0x500)
+#if defined(__BORLANDC__)&&(__BORLANDC__<0x500)
 #  define NEED_DUMMY_RETURN
 #endif
 /* Maximum value for memLevel in deflateInit2 */
@@ -126,7 +126,7 @@
  * to define NO_MEMCPY in zutil.h.  If you don't need the mixed model,
  * just define FAR to be empty.
  */
-#if (defined(M_I86SM)||defined(M_I86MM)) && !defined(__32BIT__)
+#if (defined(M_I86SM)||defined(M_I86MM))&&!defined(__32BIT__)
    /* MSC small or medium model */
 #  define SMALL_MEDIUM
 #  ifdef _MSC_VER
@@ -135,7 +135,7 @@
 #    define FAR far
 #  endif
 #endif
-#if defined(__BORLANDC__) && (defined(__SMALL__)||defined(__MEDIUM__))
+#if defined(__BORLANDC__)&&(defined(__SMALL__)||defined(__MEDIUM__))
 #  ifndef __32BIT__
 #    define SMALL_MEDIUM
 #    define FAR _far
@@ -156,12 +156,12 @@
 #    endif
 #  endif
 #  if defined (__BORLANDC__)
-#    if (__BORLANDC__ >=0x0500) && defined (WIN32)
+#    if (__BORLANDC__>=0x0500)&&defined (WIN32)
 #      include <windows.h>
 #      define ZEXPORT __declspec(dllexport) WINAPI
 #      define ZEXPORTRVA __declspec(dllexport) WINAPIV
 #    else
-#      if defined (_Windows) && defined (__DLL__)
+#      if defined (_Windows)&&defined (__DLL__)
 #        define ZEXPORT _export
 #        define ZEXPORTVA _export
 #      endif
@@ -187,7 +187,7 @@
 #ifndef FAR
 #   define FAR
 #endif
-#if !defined(MACOS) && !defined(TARGET_OS_MAC)
+#if!defined(MACOS)&&!defined(TARGET_OS_MAC)
 typedef unsigned char  Byte;  /* 8 bits */
 #endif
 typedef unsigned int   uInt;  /* 16 bits or more */

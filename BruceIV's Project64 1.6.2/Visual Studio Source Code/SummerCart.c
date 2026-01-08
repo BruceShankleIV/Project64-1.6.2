@@ -11,12 +11,12 @@ extern BYTE* N64MEM,* RDRAM,* DMEM,* IMEM,* ROM;
 #define S8 3
 struct summercart SummerCart;
 static uint8_t* summercart_sd_addr(size_t size) {
-    uint32_t addr=SummerCart.data0 & 0x1fffffff;
-    if (addr >=0x1ffe0000 && addr+size<0x1ffe0000+8192)
+    uint32_t addr=SummerCart.data0&0x1fffffff;
+    if (addr>=0x1ffe0000&&addr+size<0x1ffe0000+8192)
     {
         return SummerCart.buffer+(addr-0x1ffe0000);
     }
-    if (addr >=0x10000000 && addr+size<0x10000000+0x4000000)
+    if (addr>=0x10000000&&addr+size<0x10000000+0x4000000)
     {
         return ROM+(addr-0x10000000);
     }
@@ -112,7 +112,7 @@ void init_summercart(struct summercart* summercart)
         0,
         _strPath);
     size_t len=strlen(_strPath);
-    if (len>0 && _strPath[len-1] !='\\') {
+    if (len>0&&_strPath[len-1]!='\\') {
         strcat(_strPath,"\\");
     }
     strcat(_strPath,"PJ64 1.6.2");
@@ -120,16 +120,16 @@ void init_summercart(struct summercart* summercart)
     char strPath2[1024];
     strcpy(strPath2,_strPath);
     len=strlen(_strPath);
-    if (len>0 && _strPath[len-1] !='\\') {
+    if (len>0&&_strPath[len-1]!='\\') {
         strcat(_strPath,"\\");
     }
     strcat(_strPath,"AUTO0.iso");
     len=strlen(strPath2);
-    if (len>0 && strPath2[len-1] !='\\') {
+    if (len>0&&strPath2[len-1]!='\\') {
         strcat(strPath2,"\\");
     }
     strcat(strPath2,"AUTO0.vhd");
-    if (_access(_strPath,0) && _access(strPath2,0))
+    if (_access(_strPath,0)&&_access(strPath2,0))
     {
         write_fat16_initial_image(_strPath);
     };
@@ -151,10 +151,10 @@ void poweron_summercart(struct summercart* summercart)
 int read_summercart_regs(void* opaque,uint32_t address,uint32_t* Value)
 {
     struct pi_controller* pi=(struct pi_controller*)opaque;
-    uint32_t addr=address & 0xFFFF;
+    uint32_t addr=address&0xFFFF;
     * Value=0;
     if (SummerCart.unlock) {
-        switch (address & 0xFFFF)
+        switch (address&0xFFFF)
         {
         case 0x00:  * Value=SummerCart.status; break;
         case 0x04:  * Value=SummerCart.data0;  break;
@@ -166,10 +166,10 @@ int read_summercart_regs(void* opaque,uint32_t address,uint32_t* Value)
 }
 int write_summercart_regs(void* opaque,uint32_t address,uint32_t value,uint32_t mask)
 {
-    uint32_t addr=address & 0xFFFF;
+    uint32_t addr=address&0xFFFF;
     if (addr==0x10)
     {
-        switch (value & mask)
+        switch (value&mask)
         {
         case 0xFFFFFFFF:
             SummerCart.unlock=0;
@@ -198,7 +198,7 @@ int write_summercart_regs(void* opaque,uint32_t address,uint32_t value,uint32_t 
         {
         case 0x00:
             SummerCart.status=0;
-            switch (value & mask)
+            switch (value&mask)
             {
             case 'c':
                 switch (SummerCart.data0)
@@ -263,10 +263,10 @@ int write_summercart_regs(void* opaque,uint32_t address,uint32_t value,uint32_t 
             }
             break;
         case 0x04:
-            SummerCart.data0=value & mask;
+            SummerCart.data0=value&mask;
             break;
         case 0x08:
-            SummerCart.data1=value & mask;
+            SummerCart.data1=value&mask;
         }
     }
     return 0;

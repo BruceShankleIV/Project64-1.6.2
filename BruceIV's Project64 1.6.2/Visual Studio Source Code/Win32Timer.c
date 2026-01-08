@@ -60,9 +60,9 @@ BOOL Timer_Process(DWORD * FrameRate) {
 		/* Refresh current time */
 		CurrentTime=timeGetTime();
 	}
-	if (CurrentTime-FPSTimer.LastTime >=1000) {
+	if (CurrentTime-FPSTimer.LastTime>=1000) {
 		/* Output FPS */
-		if (FrameRate !=NULL) { *FrameRate=FPSTimer.Frames; }
+		if (FrameRate!=NULL) { *FrameRate=FPSTimer.Frames; }
 		FPSTimer.Frames=0;
 		FPSTimer.LastTime=CurrentTime;
 		return TRUE;

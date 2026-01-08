@@ -59,7 +59,7 @@ int GetCicChipID (char * RomData) {
 void PifRamRead (void) {
 	int Channel,CurPos;
 	Channel=0;
-	CurPos =0;
+	CurPos=0;
 	if (PIF_Ram[0x3F]==0x2) {
 		char hold[32],resp[32]={0};
 		int i,j;
@@ -83,15 +83,15 @@ void PifRamRead (void) {
 		case 0xB4: case 0x56: case 0xB8: /* ??? */
 		break;
 		default:
-			if ((PIF_Ram[CurPos] & 0xC0)==0) {
+			if ((PIF_Ram[CurPos]&0xC0)==0) {
 				if (Channel<4) {
-					if (Controllers[Channel].Present && Controllers[Channel].RawData) {
+					if (Controllers[Channel].Present&&Controllers[Channel].RawData) {
 						if (ReadController) { ReadController(Channel,&PIF_Ram[CurPos]); }
 					} else {
 						ReadControllerCommand(Channel,&PIF_Ram[CurPos]);
 					}
 				}
-				CurPos +=PIF_Ram[CurPos]+(PIF_Ram[CurPos+1] & 0x3F)+1;
+				CurPos +=PIF_Ram[CurPos]+(PIF_Ram[CurPos+1]&0x3F)+1;
 				Channel +=1;
 			} else {
 				CurPos=0x40;
@@ -132,9 +132,9 @@ void PifRamWrite (void) {
 		case 0xB4: case 0x56: case 0xB8: /* ??? */
 		break;
 		default:
-			if ((PIF_Ram[CurPos] & 0xC0)==0) {
+			if ((PIF_Ram[CurPos]&0xC0)==0) {
 				if (Channel<4) {
-					if (Controllers[Channel].Present && Controllers[Channel].RawData) {
+					if (Controllers[Channel].Present&&Controllers[Channel].RawData) {
 						if (ControllerCommand) { ControllerCommand(Channel,&PIF_Ram[CurPos]); }
 					} else {
 						ProcessControllerCommand(Channel,&PIF_Ram[CurPos]);
@@ -142,7 +142,7 @@ void PifRamWrite (void) {
 				} else if (Channel==4) {
 					if (RTC_Command(&PIF_Ram[CurPos])==FALSE) EEPROMCommand(&PIF_Ram[CurPos]);
 				}
-				CurPos +=PIF_Ram[CurPos]+(PIF_Ram[CurPos+1] & 0x3F)+1;
+				CurPos +=PIF_Ram[CurPos]+(PIF_Ram[CurPos+1]&0x3F)+1;
 				Channel +=1;
 			} else {
 				CurPos=0x40;
@@ -155,8 +155,8 @@ void PifRamWrite (void) {
 void ProcessControllerCommand (int Control,BYTE * Command) {
 	switch (Command[2]) {
 	case 0x00: // check
-	case 0xFF: // reset & check ?
-		if ((Command[1] & 0x80) !=0) { break; }
+	case 0xFF: // reset&check ?
+		if ((Command[1]&0x80)!=0) { break; }
 		if (Controllers[Control].Present==TRUE) {
 			Command[3]=0x05;
 			Command[4]=0x00;
@@ -180,7 +180,7 @@ void ProcessControllerCommand (int Control,BYTE * Command) {
 			DWORD address=((Command[3]<<8)|Command[4]);
 			switch (Controllers[Control].Plugin) {
 			case PLUGIN_RUMBLE_PAK:
-				memset(&Command[5],(address >=0x8000 && address<0x9000)?0x80:0x00,0x20);
+				memset(&Command[5],(address>=0x8000&&address<0x9000)?0x80:0x00,0x20);
 				Command[0x25]=Mempacks_CalulateCrc(&Command[5]);
 				break;
 			case PLUGIN_MEMPAK: ReadFromMempak(Control,address,&Command[5]); break;
@@ -200,7 +200,7 @@ void ProcessControllerCommand (int Control,BYTE * Command) {
 			case PLUGIN_MEMPAK: WriteToMempak(Control,address,&Command[5]); break;
 			case PLUGIN_RAW: if (ControllerCommand) { ControllerCommand(Control,Command); } break;
 			case PLUGIN_RUMBLE_PAK:
-				if (RumbleCommand !=NULL) {
+				if (RumbleCommand!=NULL) {
 					RumbleCommand(Control,*(BOOL *)(&Command[5]));
 					break;
 				}

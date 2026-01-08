@@ -13,7 +13,7 @@ BYTE INTtoBCD (int val) {
 }
 BYTE BCDtoBYTE (BYTE val) {
 	val %=0x99;	// The maximum a BCD can store in 1 byte (8 bits).
-	return val-((val & 240)>>3) * 3;
+	return val-((val&240)>>3) * 3;
 }
 int RTC_Command (BYTE *Command) {
 	switch(Command[2]) {
@@ -79,7 +79,7 @@ void ReadFromRTC() {
 	GetAutoSaveDir(Directory);
 	sprintf(File,"%s%s.rtc",Directory,RomName);
 	fp=fopen(File,"r");
-	if (fp !=NULL) {
+	if (fp!=NULL) {
 		fscanf(fp,"%s",String);
 		seconds_offset=_atoi64(String);
 		fclose(fp);
@@ -94,7 +94,7 @@ void WriteToRTC() {
 	sprintf(File,"%s%s.rtc",Directory,RomName);
 	fp=fopen(File,"w");
 	// No error checking,write to it if possible otherwise don't bother.
-	if (fp !=NULL) {
+	if (fp!=NULL) {
 		_i64toa(seconds_offset,String,10);
 		fprintf(fp,String);
 		fclose(fp);

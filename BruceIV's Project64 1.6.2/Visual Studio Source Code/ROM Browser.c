@@ -176,7 +176,7 @@ void FillRomExtensionInfo(ROM_INFO * pRomInfo) {
 	char Identifier[100];
 	IniFileName=GetIniFileName();
 	sprintf(Identifier,"%08X-%08X-C:%X",pRomInfo->CRC1,pRomInfo->CRC2,pRomInfo->Country);
-	if (RomBrowserFields[RB_GameName].Pos >=0) {
+	if (RomBrowserFields[RB_GameName].Pos>=0) {
 		_GetPrivateProfileString(Identifier,"Game Name",GS(UNKNOWN),pRomInfo->GameName,sizeof(pRomInfo->GameName),IniFileName);
 		_GetPrivateProfileString(Identifier,"Status",GS(UNKNOWN),pRomInfo->Status,sizeof(pRomInfo->Status),IniFileName);
 		SetColors(pRomInfo->Status);
@@ -186,14 +186,14 @@ BOOL FillRomInfo(ROM_INFO * pRomInfo) {
 	char drive[_MAX_DRIVE],dir[_MAX_DIR],ext[_MAX_EXT];
 	BYTE RomData[0x1000];
 	int count;
-	if (RomBrowserFields[RB_CICChip].Pos >=0) {
+	if (RomBrowserFields[RB_CICChip].Pos>=0) {
 		if (!LoadDataFromRomFile(pRomInfo->szFullFileName,RomData,sizeof(RomData),&pRomInfo->RomSize)) return FALSE;
 	} else {
 		if (!LoadDataFromRomFile(pRomInfo->szFullFileName,RomData,0x40,&pRomInfo->RomSize)) return FALSE;
 	}
 	_splitpath(pRomInfo->szFullFileName,drive,dir,pRomInfo->FileName,ext);
 	strcat(pRomInfo->FileName,ext);
-	if (RomBrowserFields[RB_InternalName].Pos >=0) {
+	if (RomBrowserFields[RB_InternalName].Pos>=0) {
 		memcpy(pRomInfo->InternalName,(void *)(RomData+0x20),20);
 		for(count=0 ; count<20; count +=4) {
 			pRomInfo->InternalName[count] ^=pRomInfo->InternalName[count+3];
@@ -212,7 +212,7 @@ BOOL FillRomInfo(ROM_INFO * pRomInfo) {
 	pRomInfo->Country=*(RomData+0x3D);
 	pRomInfo->CRC1=*(DWORD *)(RomData+0x10);
 	pRomInfo->CRC2=*(DWORD *)(RomData+0x14);
-	if (RomBrowserFields[RB_CICChip].Pos >=0) pRomInfo->CicChip=GetCicChipID(RomData);
+	if (RomBrowserFields[RB_CICChip].Pos>=0) pRomInfo->CicChip=GetCicChipID(RomData);
 	FillRomExtensionInfo(pRomInfo);
 	return TRUE;
 }
@@ -242,7 +242,7 @@ void ResetRomBrowserColomuns (void) {
 		for (index=0; index<NoOfFields; index ++) {
 			if (RomBrowserFields[index].Pos==Coloumn) { break; }
 		}
-		if (index==NoOfFields||RomBrowserFields[index].Pos !=Coloumn) {
+		if (index==NoOfFields||RomBrowserFields[index].Pos!=Coloumn) {
 			FieldType[Coloumn]=-1;
 			break;
 		}
@@ -279,17 +279,17 @@ int CALLBACK RomList_CompareItems2(LPARAM lParam1,LPARAM lParam2,LPARAM lParamSo
 		pRomInfo2=&ItemList.List[SortFields->KeyAscend[count]?lParam2:lParam1];
 		switch (SortFields->Key[count]) {
 		case RB_FileName: result=(int)lstrcmpi(pRomInfo1->FileName,pRomInfo2->FileName); break;
-		case RB_InternalName: result= (int)lstrcmpi(pRomInfo1->InternalName,pRomInfo2->InternalName); break;
-		case RB_GameName: result= (int)lstrcmpi(pRomInfo1->GameName,pRomInfo2->GameName); break;
-		case RB_Status: result= (int)lstrcmpi(pRomInfo1->Status,pRomInfo2->Status); break;
-		case RB_RomSize: result= (int)pRomInfo1->RomSize-(int)pRomInfo2->RomSize; break;
-		case RB_CartridgeID: result= (int)lstrcmpi(pRomInfo1->CartID,pRomInfo2->CartID); break;
-		case RB_Crc1: result= (int)pRomInfo1->CRC1-(int)pRomInfo2->CRC1; break;
-		case RB_Crc2: result= (int)pRomInfo1->CRC2-(int)pRomInfo2->CRC2; break;
-		case RB_CICChip: result= (int)pRomInfo1->CicChip-(int)pRomInfo2->CicChip; break;
+		case RB_InternalName: result=(int)lstrcmpi(pRomInfo1->InternalName,pRomInfo2->InternalName); break;
+		case RB_GameName: result=(int)lstrcmpi(pRomInfo1->GameName,pRomInfo2->GameName); break;
+		case RB_Status: result=(int)lstrcmpi(pRomInfo1->Status,pRomInfo2->Status); break;
+		case RB_RomSize: result=(int)pRomInfo1->RomSize-(int)pRomInfo2->RomSize; break;
+		case RB_CartridgeID: result=(int)lstrcmpi(pRomInfo1->CartID,pRomInfo2->CartID); break;
+		case RB_Crc1: result=(int)pRomInfo1->CRC1-(int)pRomInfo2->CRC1; break;
+		case RB_Crc2: result=(int)pRomInfo1->CRC2-(int)pRomInfo2->CRC2; break;
+		case RB_CICChip: result=(int)pRomInfo1->CicChip-(int)pRomInfo2->CicChip; break;
 		default: result=0; break;
 		}
-		if (result !=0) { return result; }
+		if (result!=0) { return result; }
 	}
 	return 0;
 }
@@ -330,7 +330,7 @@ void RomList_PopupMenu(LPNMHDR pnmh) {
 	LONG iItem;
 	GetCursorPos(&Mouse);
 	iItem=ListView_GetNextItem(hRomList,-1,LVNI_SELECTED);
-	if (iItem !=-1) {
+	if (iItem!=-1) {
 		memset(&lvItem,0,sizeof(LV_ITEM));
 		lvItem.mask=LVIF_PARAM;
 		lvItem.iItem=iItem;
@@ -392,7 +392,7 @@ void RomListDrawItem (LPDRAWITEMSTRUCT ditem) {
 	lvItem.iItem=ditem->itemID;
 	if (!ListView_GetItem(hRomList,&lvItem)) return;
 	lvItem.state=ListView_GetItemState(hRomList,ditem->itemID,-1);
-	bSelected=(lvItem.state & LVIS_SELECTED);
+	bSelected=(lvItem.state&LVIS_SELECTED);
 	pRomInfo=&ItemList.List[lvItem.lParam];
 	if (bSelected) {
 		hBrush=CreateSolidBrush(GetColor(pRomInfo->Status,COLOR_HIGHLIGHTED));
@@ -443,10 +443,10 @@ void SelectRomDir (void) {
 	bi.ulFlags=BIF_RETURNFSANCESTORS|BIF_RETURNONLYFSDIRS;
 	bi.lpfn=(BFFCALLBACK)SelectRomDirCallBack;
 	bi.lParam=(DWORD)RomDir;
-	if ((pidl=SHBrowseForFolder(&bi)) !=NULL) {
+	if ((pidl=SHBrowseForFolder(&bi))!=NULL) {
 		if (SHGetPathFromIDList(pidl,Directory)) {
 			int len=strlen(Directory);
-			if (Directory[len-1] !='\\') {
+			if (Directory[len-1]!='\\') {
 				strcat(Directory,"\\");
 			}
 			SetRomDirectory(Directory);
@@ -458,7 +458,7 @@ void FillRomList (char * Directory) {
 	WIN32_FIND_DATA fd;
 	HANDLE hFind;
 	strcpy(SearchSpec,Directory);
-	if (SearchSpec[strlen(Directory)-1] !='\\') { strcat(SearchSpec,"\\"); }
+	if (SearchSpec[strlen(Directory)-1]!='\\') { strcat(SearchSpec,"\\"); }
 	strcat(SearchSpec,"*.*");
 	hFind=FindFirstFile(SearchSpec,&fd);
 	if (hFind==INVALID_HANDLE_VALUE) return;
@@ -467,14 +467,14 @@ void FillRomList (char * Directory) {
 		if (strcmp(fd.cFileName,".")==0) continue;
 		if (strcmp(fd.cFileName,"..")==0) continue;
 		strcpy(FullPath,Directory);
-		if (FullPath[strlen(Directory)-1] !='\\') { strcat(FullPath,"\\"); }
+		if (FullPath[strlen(Directory)-1]!='\\') { strcat(FullPath,"\\"); }
 		strcat(FullPath,fd.cFileName);
-		if ((fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) !=0) {
+		if ((fd.dwFileAttributes&FILE_ATTRIBUTE_DIRECTORY)!=0) {
 			if (Recursion) { FillRomList(FullPath); }
 			continue;
 		}
 		_splitpath(FullPath,drive,dir,FileName,ext);
-		//if (_stricmp(ext,".zip")==0 && fd.nFileSizeLow <=(30.1 * 1024 * 1024)) { AddRomToList(FullPath); continue; }
+		//if (_stricmp(ext,".zip")==0&&fd.nFileSizeLow <=(30.1 * 1024 * 1024)) { AddRomToList(FullPath); continue; }
 		if (_stricmp(ext,".v64")==0) { AddRomToList(FullPath); continue; }
 		if (_stricmp(ext,".z64")==0) { AddRomToList(FullPath); continue; }
 		if (_stricmp(ext,".n64")==0) { AddRomToList(FullPath); continue; }
@@ -488,8 +488,8 @@ void HideRomBrowser(void) {
 		Style=GetWindowLong(hMainWindow,GWL_STYLE);
 		if (strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) ChangeWinSize(hMainWindow,640,480,NULL);
 		else {
-			Style=Style & ~(WS_SIZEBOX|WS_MAXIMIZEBOX);
-			SetWindowLong(hMainWindow,GWL_EXSTYLE,GetWindowLong(hMainWindow,GWL_EXSTYLE) & ~WS_EX_COMPOSITED);
+			Style=Style&~(WS_SIZEBOX|WS_MAXIMIZEBOX);
+			SetWindowLong(hMainWindow,GWL_EXSTYLE,GetWindowLong(hMainWindow,GWL_EXSTYLE)&~WS_EX_COMPOSITED);
 		}
 		SetWindowLong(hMainWindow,GWL_STYLE,Style);
 		EnableWindow(hRomList,FALSE);
@@ -499,7 +499,7 @@ void HideRomBrowser(void) {
 		FixupMenubar(hMainWindow);
 		UsuallyonTopWindow(hMainWindow);
 	}
-	if (strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0 && !GLideN64HasBeenSetupFirst && !inFullScreen) {
+	if (strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0&&!GLideN64HasBeenSetupFirst&&!inFullScreen) {
 		GLideN64NeedsToBeSetupFirst=TRUE;
 		strcpy(GfxDLL,"GLideN64.dll");
 	}
@@ -508,7 +508,7 @@ void HideRomBrowser(void) {
 void HandleShutdown (HWND hParent) {
 	CPURunning=FALSE;
 	SetupPlugins(hHiddenWin);
-	if (strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) SetWindowLong(hMainWindow,GWL_EXSTYLE,GetWindowLong(hMainWindow,GWL_EXSTYLE) & ~WS_EX_COMPOSITED);
+	if (strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) SetWindowLong(hMainWindow,GWL_EXSTYLE,GetWindowLong(hMainWindow,GWL_EXSTYLE)&~WS_EX_COMPOSITED);
 	else SetWindowLong(hMainWindow,GWL_STYLE,GetWindowLong(hMainWindow,GWL_STYLE)|WS_SIZEBOX|WS_MAXIMIZEBOX);
 	if (hRomList==NULL) CreateRomListControl(hParent);
 	else EnableWindow(hRomList,TRUE);
@@ -516,14 +516,14 @@ void HandleShutdown (HWND hParent) {
 	ShowWindow(hRomList,SW_SHOW);
 	DrawMenuBar(hMainWindow);
 	ShowWindow(hMainWindow,SW_SHOW);
-	if (__argc !=0) RefreshRomBrowser();
-	if (__argc !=1) __argc=1;
+	if (__argc!=0) RefreshRomBrowser();
+	if (__argc!=1) __argc=1;
 	ListView_SetExtendedListViewStyleEx(hRomList,LVS_EX_DOUBLEBUFFER,LVS_EX_DOUBLEBUFFER);
 	UsuallyonTopWindow(hMainWindow);
 	SetForegroundWindow(hMainWindow);
 }
 void FreeRomBrowser (void) {
-	if (ItemList.ListAlloc !=0) {
+	if (ItemList.ListAlloc!=0) {
 		free(ItemList.List);
 		ItemList.ListAlloc=0;
 		ItemList.ListCount=0;
@@ -571,16 +571,16 @@ void SetColors(char *status) {
 	IniFileName=GetIniFileName();
 	if (ColorIndex(status)==-1) {
 		_GetPrivateProfileString("ROM Status",status,"000000",String,7,IniFileName);
-		count=(AsciiToHex(String) & 0xFFFFFF);
-		colors.Text=(count & 0x00FF00)|((count>>0x10) & 0xFF)|((count & 0xFF)<<0x10);
+		count=(AsciiToHex(String)&0xFFFFFF);
+		colors.Text=(count&0x00FF00)|((count>>0x10)&0xFF)|((count&0xFF)<<0x10);
 		sprintf(String,"%s.Sel",status);
 		_GetPrivateProfileString("ROM Status",String,"FFFFFFFF",String,9,IniFileName);
 		count=AsciiToHex(String);
 		if (count<0) {
 			colors.HighLight=COLOR_HIGHLIGHT+1;
 		} else {
-			count=(AsciiToHex(String) & 0xFFFFFF);
-			count=(count & 0x00FF00)|((count>>0x10) & 0xFF)|((count & 0xFF)<<0x10);
+			count=(AsciiToHex(String)&0xFFFFFF);
+			count=(count&0x00FF00)|((count>>0x10)&0xFF)|((count&0xFF)<<0x10);
 			colors.HighLight=count;
 		}
 		colors.SelectedText=0xFFFFFF;

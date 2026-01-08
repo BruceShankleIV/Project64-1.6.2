@@ -58,7 +58,7 @@ LRESULT CALLBACK AboutIniBoxProc (HWND,UINT,WPARAM,LPARAM);
 LRESULT CALLBACK Main_Proc       (HWND,UINT,WPARAM,LPARAM);
 LRESULT CALLBACK RomInfoProc     (HWND,UINT,WPARAM,LPARAM);
 int CALLBACK SelectRomDirCallBack (HWND hwnd,DWORD uMsg,DWORD lp,DWORD lpData) {
-	if (uMsg==BFFM_INITIALIZED && lpData) SendMessage((HWND)hwnd,BFFM_SETSELECTION,TRUE,lpData);
+	if (uMsg==BFFM_INITIALIZED&&lpData) SendMessage((HWND)hwnd,BFFM_SETSELECTION,TRUE,lpData);
 	return 0;
 }
 int ChooseN64RomToOpen (void) {
@@ -67,13 +67,13 @@ int ChooseN64RomToOpen (void) {
 	memset(&FileName,0,sizeof(FileName));
 	memset(&openfilename,0,sizeof(openfilename));
 	GetRomDirectory(Directory);
-	openfilename.lStructSize =sizeof(openfilename);
-	openfilename.hwndOwner   =hMainWindow;
-	openfilename.lpstrFilter ="N64 ROMs (*.zip,*.z64,*.v64,*.n64)\0*.zip;*.z64;*.v64;*.n64\0All files (*.*)\0*.*\0";
-	openfilename.lpstrFile   =FileName;
-	openfilename.lpstrInitialDir   =Directory;
-	openfilename.nMaxFile    =MAX_PATH;
-	openfilename.Flags       =OFN_FILEMUSTEXIST|OFN_HIDEREADONLY;
+	openfilename.lStructSize=sizeof(openfilename);
+	openfilename.hwndOwner  =hMainWindow;
+	openfilename.lpstrFilter="N64 ROMs (*.zip,*.z64,*.v64,*.n64)\0*.zip;*.z64;*.v64;*.n64\0All files (*.*)\0*.*\0";
+	openfilename.lpstrFile  =FileName;
+	openfilename.lpstrInitialDir  =Directory;
+	openfilename.nMaxFile   =MAX_PATH;
+	openfilename.Flags      =OFN_FILEMUSTEXIST|OFN_HIDEREADONLY;
 	if (GetOpenFileName (&openfilename)) {
 		strcpy(CurrentFileName,FileName);
 		return TRUE;
@@ -184,11 +184,11 @@ void ChangeWinSize (HWND hWnd,long width,long height,HWND hStatusBar) {
 	RECT rc1,swrect;
 	wndpl.length=sizeof(wndpl);
 	GetWindowPlacement(hWnd,&wndpl);
-	if (hStatusBar !=NULL) {
+	if (hStatusBar!=NULL) {
 		GetClientRect(hStatusBar,&swrect);
 		SetRect(&rc1,0,0,width,height+swrect.bottom);
 	} else SetRect(&rc1,0,0,width,height);
-	AdjustWindowRectEx(&rc1,GetWindowLong(hWnd,GWL_STYLE),GetMenu(hWnd) !=NULL,GetWindowLong(hWnd,GWL_EXSTYLE));
+	AdjustWindowRectEx(&rc1,GetWindowLong(hWnd,GWL_STYLE),GetMenu(hWnd)!=NULL,GetWindowLong(hWnd,GWL_EXSTYLE));
 	MoveWindow(hWnd,wndpl.rcNormalPosition.left,wndpl.rcNormalPosition.top,rc1.right-rc1.left,rc1.bottom-rc1.top,TRUE);
 }
 void __cdecl DisplayError (char * Message,...) {
@@ -309,58 +309,58 @@ void LoadSettings (void) {
 	lResult=RegOpenKeyEx(HKEY_CURRENT_USER,String,0,KEY_ALL_ACCESS,&hKeyResults);
 	if (lResult==ERROR_SUCCESS) {
 		lResult=RegQueryValueEx(hKeyResults,"Limit FPS",0,&Type,(LPBYTE)(&LimitFPS),&Bytes);
-		if (Type !=REG_DWORD||lResult !=ERROR_SUCCESS) { LimitFPS=Default_LimitFPS;	}
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) { LimitFPS=Default_LimitFPS;	}
 		lResult=RegQueryValueEx(hKeyResults,"Speed Cap",0,&Type,(LPBYTE)(&SpeedCap),&Bytes);
-		if (Type !=REG_DWORD||lResult !=ERROR_SUCCESS) { SpeedCap=Default_SpeedCap;	}
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) { SpeedCap=Default_SpeedCap;	}
 		lResult=RegQueryValueEx(hKeyResults,"Usually on Top",0,&Type,(LPBYTE)(&UsuallyonTop),&Bytes);
-		if (Type !=REG_DWORD||lResult !=ERROR_SUCCESS) { UsuallyonTop=Default_UsuallyonTop;	}
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) { UsuallyonTop=Default_UsuallyonTop;	}
 		RegCloseKey(hKeyResults);
 	}
 	sprintf(String,"PJ64 V 1.6.2\\Configuration\\Settings\\Options");
 	lResult=RegOpenKeyEx(HKEY_CURRENT_USER,String,0,KEY_ALL_ACCESS,&hKeyResults);
 	if (lResult==ERROR_SUCCESS) {
 		lResult=RegQueryValueEx(hKeyResults,"Basic Mode",0,&Type,(LPBYTE)(&BasicMode),&Bytes);
-		if (Type !=REG_DWORD||lResult !=ERROR_SUCCESS) { BasicMode=Default_BasicMode; }
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) { BasicMode=Default_BasicMode; }
 		lResult=RegQueryValueEx(hKeyResults,"Pause CPU Upon Focus Loss",0,&Type,(BYTE*)(&AutoSleep),&Bytes);
-		if (Type !=REG_DWORD||lResult !=ERROR_SUCCESS) { AutoSleep=Default_AutoSleep; }
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) { AutoSleep=Default_AutoSleep; }
 		lResult=RegQueryValueEx(hKeyResults,"Always Hide Cursor in Fullscreen",0,&Type,(BYTE*)(&AutoHide),&Bytes);
-		if (Type !=REG_DWORD||lResult !=ERROR_SUCCESS) { AutoHide=Default_AutoHide; }
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) { AutoHide=Default_AutoHide; }
 		lResult=RegQueryValueEx(hKeyResults,"Enter Fullscreen Mode Upon ROM Opening",0,&Type,(BYTE*)(&AutoFullScreen),&Bytes);
-		if (Type !=REG_DWORD||lResult !=ERROR_SUCCESS) { AutoFullScreen=FALSE; }
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) { AutoFullScreen=FALSE; }
 		RegCloseKey(hKeyResults);
 	}
 	sprintf(String,"PJ64 V 1.6.2\\Configuration\\Settings\\Advanced");
 	lResult=RegOpenKeyEx(HKEY_CURRENT_USER,String,0,KEY_ALL_ACCESS,&hKeyResults);
 	if (lResult==ERROR_SUCCESS) {
 		lResult=RegQueryValueEx(hKeyResults,"Always Disable TLB",0,&Type,(BYTE*)(&ForceDisableTLB),&Bytes);
-		if (Type !=REG_DWORD||lResult !=ERROR_SUCCESS) { ForceDisableTLB=Default_ForceDisableTLB; }
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) { ForceDisableTLB=Default_ForceDisableTLB; }
 		lResult=RegQueryValueEx(hKeyResults,"Always Enable Align DMA",0,&Type,(BYTE*)(&ForceEnableDMA),&Bytes);
-		if (Type !=REG_DWORD||lResult !=ERROR_SUCCESS) { ForceEnableDMA=Default_ForceEnableDMA; }
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) { ForceEnableDMA=Default_ForceEnableDMA; }
 		lResult=RegQueryValueEx(hKeyResults,"Always Disable Register Caching",0,&Type,(BYTE*)(&ForceDisableCaching),&Bytes);
-		if (Type !=REG_DWORD||lResult !=ERROR_SUCCESS) { ForceDisableCaching=Default_ForceDisableCaching; }
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) { ForceDisableCaching=Default_ForceDisableCaching; }
 		lResult=RegQueryValueEx(hKeyResults,"Always Autodetect With 16kbit",0,&Type,(BYTE*)(&ForceAuto16kbit),&Bytes);
-		if (Type !=REG_DWORD||lResult !=ERROR_SUCCESS) { ForceAuto16kbit=Default_ForceAuto16kbit; }
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) { ForceAuto16kbit=Default_ForceAuto16kbit; }
 		lResult=RegQueryValueEx(hKeyResults,"CPU Core Style",0,&Type,(BYTE*)(&SystemCPU_Type),&Bytes);
-		if (Type !=REG_DWORD||lResult !=ERROR_SUCCESS) { SystemCPU_Type=Default_CPU; }
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) { SystemCPU_Type=Default_CPU; }
 		lResult=RegQueryValueEx(hKeyResults,"Self-modifying Code Method",0,&Type,(LPBYTE)(&SystemSelfModCheck),&Bytes);
-		if (Type !=REG_DWORD||lResult !=ERROR_SUCCESS) { SystemSelfModCheck=Default_SelfModCheck; }
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) { SystemSelfModCheck=Default_SelfModCheck; }
 		lResult=RegQueryValueEx(hKeyResults,"Register Caching",0,&Type,(LPBYTE)(&SystemUseCache),&Bytes);
-		if (Type !=REG_DWORD||lResult !=ERROR_SUCCESS) { SystemUseCache=Default_UseCache; }
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) { SystemUseCache=Default_UseCache; }
 		lResult=RegQueryValueEx(hKeyResults,"Counter Factor",0,&Type,(LPBYTE)(&SystemCF),&Bytes);
-		if (Type !=REG_DWORD||lResult !=ERROR_SUCCESS) { SystemCF=Default_CountPerOp; }
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) { SystemCF=Default_CountPerOp; }
 		lResult=RegQueryValueEx(hKeyResults,"Memory Size",0,&Type,(LPBYTE)(&SystemRDRAMsize),&Bytes);
-		if (Type !=REG_DWORD||lResult !=ERROR_SUCCESS) { SystemRDRAMsize=Default_RDRAMsize; }
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) { SystemRDRAMsize=Default_RDRAMsize; }
 		RegCloseKey(hKeyResults);
 	}
 	sprintf(String,"PJ64 V 1.6.2\\Configuration\\Settings\\ROM Selection");
 	lResult=RegOpenKeyEx(HKEY_CURRENT_USER,String,0,KEY_ALL_ACCESS,&hKeyResults);
 	if (lResult==ERROR_SUCCESS) {
 		lResult=RegQueryValueEx(hKeyResults,"Directory Recursion",0,&Type,(BYTE*)(&Recursion),&Bytes);
-		if (Type !=REG_DWORD||lResult !=ERROR_SUCCESS) { Recursion=Default_Recursion; }
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) { Recursion=Default_Recursion; }
 		lResult=RegQueryValueEx(hKeyResults,"Max # of ROMs Remembered",0,&Type,(BYTE*)(&RomsToRemember),&Bytes);
-		if (Type !=REG_DWORD||lResult !=ERROR_SUCCESS) { RomsToRemember=Default_RomsToRemember; }
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) { RomsToRemember=Default_RomsToRemember; }
 		lResult=RegQueryValueEx(hKeyResults,"Max # of ROM Dirs Remembered",0,&Type,(BYTE*)(&RomDirsToRemember),&Bytes);
-		if (Type !=REG_DWORD||lResult !=ERROR_SUCCESS) { RomDirsToRemember=Default_RomsDirsToRemember; }
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) { RomDirsToRemember=Default_RomsDirsToRemember; }
 		RegCloseKey(hKeyResults);
 	}
 }
@@ -403,7 +403,7 @@ void CheckedMenuItem(UINT uMenuID,BOOL * Flag,char * FlagName) {
 	uState=GetMenuState(hMainMenu,uMenuID,MF_BYCOMMAND);
 	hKeyResults=0;
 	Disposition=0;
-	if (uState & MFS_CHECKED) {
+	if (uState&MFS_CHECKED) {
 		CheckMenuItem(hMainMenu,uMenuID,MF_BYCOMMAND|MFS_UNCHECKED);
 		*Flag=FALSE;
 	} else {
@@ -441,7 +441,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 	case WM_PAINT:
 		{ ValidateRect(hWnd,NULL); break; }
 		__try {
-			if (CPU_Paused && DrawScreen !=NULL) DrawScreen();
+			if (CPU_Paused&&DrawScreen!=NULL) DrawScreen();
 		}
 		__except (r4300i_CPU_MemoryFilter(GetExceptionCode(),GetExceptionInformation())) {
 			DisplayThreadExit("Main_Proc-r4300i_CPU_MemoryFilter(GetExceptionCode(),GetExceptionInformation())");
@@ -450,14 +450,14 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 		break;
 	case WM_MOVE:
 		if (hWnd==hHiddenWin) { break; }
-		if (MoveScreen !=NULL && CPURunning) {
+		if (MoveScreen!=NULL&&CPURunning) {
 			MoveScreen((int)(short)LOWORD(lParam),(int)(short)HIWORD(lParam));
 		}
 		if (IsIconic(hWnd)) {
-			if (!CPU_Paused && !inFullScreen) { PauseCPU(); }
+			if (!CPU_Paused&&!inFullScreen) { PauseCPU(); }
 			break;
 		} else {
-			if (!ManualPaused && (CPU_Paused||CPU_Action.Pause)) { PauseCPU(); }
+			if (!ManualPaused&&(CPU_Paused||CPU_Action.Pause)) { PauseCPU(); }
 		}
 		break;
 	case WM_SIZE:
@@ -479,11 +479,11 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 		break;
 	case WM_SETFOCUS:
 		if (hWnd==hHiddenWin) { break; }
-		if (AutoSleep && !ManualPaused && (CPU_Paused||CPU_Action.Pause)) { PauseCPU(); }
+		if (AutoSleep&&!ManualPaused&&(CPU_Paused||CPU_Action.Pause)) { PauseCPU(); }
 		break;
 	case WM_KILLFOCUS:
 		if (hWnd==hHiddenWin) { break; }
-		if (AutoSleep && !CPU_Paused) { PauseCPU(); }
+		if (AutoSleep&&!CPU_Paused) { PauseCPU(); }
 		break;
 	case WM_NOTIFY:
 		if (wParam==IDC_ROMLIST) { RomListNotify((LPNMHDR)lParam); }
@@ -617,11 +617,11 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 			SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MENUDES_GAME_SLOT));
 			break;
 		default:
-			if (LOWORD(wParam) >=ID_FILE_RECENT_FILE && LOWORD(wParam) <=(ID_FILE_RECENT_FILE+RomsToRemember)) {
+			if (LOWORD(wParam)>=ID_FILE_RECENT_FILE&&LOWORD(wParam) <=(ID_FILE_RECENT_FILE+RomsToRemember)) {
 				SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MENUDES_RECENT_ROM));
-			} else if (LOWORD(wParam) >=ID_FILE_RECENT_DIR && LOWORD(wParam) <=(ID_FILE_RECENT_DIR+RomDirsToRemember)) {
+			} else if (LOWORD(wParam)>=ID_FILE_RECENT_DIR&&LOWORD(wParam) <=(ID_FILE_RECENT_DIR+RomDirsToRemember)) {
 				SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MENUDES_RECENT_DIR));
-			} else if (LOWORD(wParam) >=ID_LANG_SELECT && LOWORD(wParam) <=(ID_LANG_SELECT+100)) {
+			} else if (LOWORD(wParam)>=ID_LANG_SELECT&&LOWORD(wParam) <=(ID_LANG_SELECT+100)) {
 				SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MENUDES_LANGUAGES));
 			} else {
 				SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)"");
@@ -639,7 +639,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 	case WM_USER+10:
 		if (hWnd==hHiddenWin) { break; }
 		if (!wParam) {
-			while (ShowCursor(FALSE) >=0) Sleep(0);
+			while (ShowCursor(FALSE)>=0) Sleep(0);
 		} else {
 			while (ShowCursor(TRUE)<0) Sleep(0);
 		}
@@ -696,7 +696,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 			CloseCheatWindow();
 			HandleWindowTitle();
 			if (!(__argc>1)) __argc=0;
-			if (DrawScreen !=NULL) DrawScreen();
+			if (DrawScreen!=NULL) DrawScreen();
 			HandleShutdown(hWnd);
 			SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MSG_EMULATION_ENDED));
 			break;
@@ -732,13 +732,13 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 				memset(&SaveFile,0,sizeof(SaveFile));
 				memset(&openfilename,0,sizeof(openfilename));
 				GetInstantSaveDir(Directory);
-				openfilename.lStructSize =sizeof(openfilename);
-				openfilename.hwndOwner   =hWnd;
-				openfilename.lpstrFilter ="All files (*.*)\0*\0Slots (*.st)\0*.st\0";
-				openfilename.lpstrFile   =SaveFile;
-				openfilename.lpstrInitialDir   =Directory;
-				openfilename.nMaxFile    =MAX_PATH;
-				openfilename.Flags       =OFN_OVERWRITEPROMPT|OFN_HIDEREADONLY;
+				openfilename.lStructSize=sizeof(openfilename);
+				openfilename.hwndOwner  =hWnd;
+				openfilename.lpstrFilter="All files (*.*)\0*\0Slots (*.st)\0*.st\0";
+				openfilename.lpstrFile  =SaveFile;
+				openfilename.lpstrInitialDir  =Directory;
+				openfilename.nMaxFile   =MAX_PATH;
+				openfilename.Flags      =OFN_OVERWRITEPROMPT|OFN_HIDEREADONLY;
 				if (GetSaveFileName (&openfilename)) {
 					_splitpath(SaveFile,drive,dir,fname,ext);
 					if (strcmp(ext,"st")==0) {
@@ -765,13 +765,13 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 				memset(&SaveFile,0,sizeof(SaveFile));
 				memset(&openfilename,0,sizeof(openfilename));
 				GetInstantSaveDir(Directory);
-				openfilename.lStructSize =sizeof(openfilename);
-				openfilename.hwndOwner   =hWnd;
-				openfilename.lpstrFilter ="All files (*.*)\0*\0Slots (*.st)\0*.st\0";
-				openfilename.lpstrFile   =SaveFile;
-				openfilename.lpstrInitialDir   =Directory;
-				openfilename.nMaxFile    =MAX_PATH;
-				openfilename.Flags       =OFN_FILEMUSTEXIST|OFN_HIDEREADONLY;
+				openfilename.lStructSize=sizeof(openfilename);
+				openfilename.hwndOwner  =hWnd;
+				openfilename.lpstrFilter="All files (*.*)\0*\0Slots (*.st)\0*.st\0";
+				openfilename.lpstrFile  =SaveFile;
+				openfilename.lpstrInitialDir  =Directory;
+				openfilename.nMaxFile   =MAX_PATH;
+				openfilename.Flags      =OFN_FILEMUSTEXIST|OFN_HIDEREADONLY;
 				if (GetOpenFileName (&openfilename)) {
 					strcpy(LoadFileName,SaveFile);
 					CPU_Action.RestoreState=TRUE;
@@ -909,7 +909,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 				if (AutoHide) ShowCursor(FALSE);
 				else if (strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) ShowCursor(TRUE);
 			}
-			if (!CPU_Paused && (LimitFPS && !SyncGametoAudio||!LimitFPS && SpeedCap)) Timer_Start();
+			if (!CPU_Paused&&(LimitFPS&&!SyncGametoAudio||!LimitFPS&&SpeedCap)) Timer_Start();
 			SetupMenu(hWnd);
 			break;
 		case ID_SYSTEM_ALTERNATEPAUSE:
@@ -928,7 +928,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 			UsuallyonTopWindow(hWnd);
 			break;
 		case ID_OPTIONS_CONFIG_GFX:
-		if (CPURunning && strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) SetWindowLong(hWnd,GWL_EXSTYLE,GetWindowLong(hWnd,GWL_EXSTYLE) & ~WS_EX_COMPOSITED);
+		if (CPURunning&&strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) SetWindowLong(hWnd,GWL_EXSTYLE,GetWindowLong(hWnd,GWL_EXSTYLE)&~WS_EX_COMPOSITED);
 		if (strcmp(GfxDLL,"GLideN64.dll")==0||strcmp(GfxDLL,"Glide64.dll")==0) {
 			HandleModal1(hWnd);
 			if (CPU_Paused) GFXDllConfig(hWnd);
@@ -945,25 +945,25 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 			}
 			HandleModal2(hWnd);
 		} else GFXDllConfig(hWnd);
-		if (CPURunning && strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) SetWindowLong(hWnd,GWL_EXSTYLE,GetWindowLong(hWnd,GWL_EXSTYLE)|WS_EX_COMPOSITED);
+		if (CPURunning&&strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) SetWindowLong(hWnd,GWL_EXSTYLE,GetWindowLong(hWnd,GWL_EXSTYLE)|WS_EX_COMPOSITED);
 		break;
 		case ID_OPTIONS_CONFIG_AUDIO:
-		if (CPURunning && strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) SetWindowLong(hWnd,GWL_EXSTYLE,GetWindowLong(hWnd,GWL_EXSTYLE) & ~WS_EX_COMPOSITED);
+		if (CPURunning&&strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) SetWindowLong(hWnd,GWL_EXSTYLE,GetWindowLong(hWnd,GWL_EXSTYLE)&~WS_EX_COMPOSITED);
 		AiDllConfig(hWnd);
-		if (CPURunning && strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) SetWindowLong(hWnd,GWL_EXSTYLE,GetWindowLong(hWnd,GWL_EXSTYLE)|WS_EX_COMPOSITED);
+		if (CPURunning&&strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) SetWindowLong(hWnd,GWL_EXSTYLE,GetWindowLong(hWnd,GWL_EXSTYLE)|WS_EX_COMPOSITED);
 		break;
 		case ID_OPTIONS_CONFIG_CONTROL:
-		if (CPURunning && strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) SetWindowLong(hWnd,GWL_EXSTYLE,GetWindowLong(hWnd,GWL_EXSTYLE) & ~WS_EX_COMPOSITED);
+		if (CPURunning&&strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) SetWindowLong(hWnd,GWL_EXSTYLE,GetWindowLong(hWnd,GWL_EXSTYLE)&~WS_EX_COMPOSITED);
 		if (strcmp(ControllerDLL,"shankle-sdl2-input.dll")==0) {
 			HandleModal1(hWnd);
 			if (CPURunning) ContConfig(hWnd);
 			else MessageBox(NULL,GS(MSG_PLS_START),AppName,MB_OK|MB_ICONEXCLAMATION|MB_SETFOREGROUND);
 			HandleModal2(hWnd);
 		} else ContConfig(hWnd);
-		if (CPURunning && strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) SetWindowLong(hWnd,GWL_EXSTYLE,GetWindowLong(hWnd,GWL_EXSTYLE)|WS_EX_COMPOSITED);
+		if (CPURunning&&strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) SetWindowLong(hWnd,GWL_EXSTYLE,GetWindowLong(hWnd,GWL_EXSTYLE)|WS_EX_COMPOSITED);
 		break;
 		case ID_OPTIONS_SETTINGS:
-		if (CPURunning && strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) SetWindowLong(hWnd,GWL_EXSTYLE,GetWindowLong(hWnd,GWL_EXSTYLE) & ~WS_EX_COMPOSITED);
+		if (CPURunning&&strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) SetWindowLong(hWnd,GWL_EXSTYLE,GetWindowLong(hWnd,GWL_EXSTYLE)&~WS_EX_COMPOSITED);
 		if (UsuallyonTop) SetWindowPos(hWnd,HWND_NOTOPMOST,0,0,0,0,SWP_NOMOVE|SWP_NOREPOSITION|SWP_NOSIZE);
 		if (Recursion) {
 			ChangeSettings(hWnd);
@@ -973,7 +973,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 			if (Recursion) RefreshRomBrowser();
 		}
 		UsuallyonTopWindow(hWnd);
-		if (CPURunning && strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) SetWindowLong(hWnd,GWL_EXSTYLE,GetWindowLong(hWnd,GWL_EXSTYLE)|WS_EX_COMPOSITED);
+		if (CPURunning&&strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) SetWindowLong(hWnd,GWL_EXSTYLE,GetWindowLong(hWnd,GWL_EXSTYLE)|WS_EX_COMPOSITED);
 		break;
 		case ID_OPTIONS_CHEATS:
 			if (CPURunning) ManageCheats(NULL);
@@ -1015,7 +1015,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 				GetModuleFileName(NULL,path_buffer,sizeof(path_buffer));
 				_splitpath(path_buffer,drive,dir,fname,ext);
 				sprintf(RuntimesSDdir,"%sRuntimes\\SD\\",dir);
-				if (GetFileAttributes(isoFilePath) !=INVALID_FILE_ATTRIBUTES) _makepath(HelpFileName,drive,RuntimesSDdir,"SD_Allocate","bat");
+				if (GetFileAttributes(isoFilePath)!=INVALID_FILE_ATTRIBUTES) _makepath(HelpFileName,drive,RuntimesSDdir,"SD_Allocate","bat");
 				else _makepath(HelpFileName,drive,RuntimesSDdir,"SD_Compile","bat");
 				if (HtmlHelp(hWnd,HelpFileName,HH_DISPLAY_INDEX,0)==NULL) ShellExecute(hWnd,"runas",HelpFileName,NULL,NULL,SW_SHOW);
 			}
@@ -1024,11 +1024,11 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 			break;
 		case ID_HELP_ABOUTSETTINGFILES: AboutIniBox(); break;
 		default:
-			if (LOWORD(wParam) >=ID_FILE_RECENT_FILE && LOWORD(wParam) <=(ID_FILE_RECENT_FILE+RomsToRemember)) {
+			if (LOWORD(wParam)>=ID_FILE_RECENT_FILE&&LOWORD(wParam) <=(ID_FILE_RECENT_FILE+RomsToRemember)) {
 				LoadRecentRom(LOWORD(wParam));
-			} else if (LOWORD(wParam) >=ID_FILE_RECENT_DIR && LOWORD(wParam) <=(ID_FILE_RECENT_DIR+RomDirsToRemember)) {
+			} else if (LOWORD(wParam)>=ID_FILE_RECENT_DIR&&LOWORD(wParam) <=(ID_FILE_RECENT_DIR+RomDirsToRemember)) {
 				SetRecentRomDir(LOWORD(wParam));
-			} else if (LOWORD(wParam) >=ID_LANG_SELECT && LOWORD(wParam) <=(ID_LANG_SELECT+100)) {
+			} else if (LOWORD(wParam)>=ID_LANG_SELECT&&LOWORD(wParam) <=(ID_LANG_SELECT+100)) {
 				SelectLangMenuItem(GetMenu(hWnd),LOWORD(wParam));
 				ResetRomBrowserColomuns();
 				SetupMenu(hWnd);
@@ -1065,7 +1065,7 @@ void MenuSetText (HMENU hMenu,int MenuPos,char * Title,char * Shortcut) {
 	MenuInfo.dwTypeData=String;
 	MenuInfo.cch=256;
 	GetMenuItemInfo(hMenu,MenuPos,TRUE,&MenuInfo);
-	if (strchr(Title,'\t') !=NULL) { *(strchr(Title,'\t'))='\0'; }
+	if (strchr(Title,'\t')!=NULL) { *(strchr(Title,'\t'))='\0'; }
 	strcpy(String,Title);
 	if (Shortcut) { sprintf(String,"%s\t%s",String,Shortcut); }
 	SetMenuItemInfo(hMenu,MenuPos,TRUE,&MenuInfo);
@@ -1167,7 +1167,7 @@ void SetupMenu (HWND hWnd) {
 	HMENU hMenu=GetMenu(hWnd),hSubMenu;
 	int State;
 	if (inFullScreen) return;
-	if (CPURunning && strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) SetWindowLong(hMainWindow,GWL_EXSTYLE,GetWindowLong(hMainWindow,GWL_EXSTYLE) & ~WS_EX_COMPOSITED);
+	if (CPURunning&&strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) SetWindowLong(hMainWindow,GWL_EXSTYLE,GetWindowLong(hMainWindow,GWL_EXSTYLE)&~WS_EX_COMPOSITED);
 	DestroyMenu(hMenu);
 	hMenu=LoadMenu(hInst,MAKEINTRESOURCE(MAIN_MENU));
 	FixMenuLang(hMenu);
@@ -1175,7 +1175,7 @@ void SetupMenu (HWND hWnd) {
 	CreateRecentDirList(hMenu);
 	CreateRecentFileList(hMenu);
 	CheckMenuItem(hMenu,CurrentSaveSlot,MF_BYCOMMAND|MFS_CHECKED);
-	if (SyncGametoAudio && CPURunning) {
+	if (SyncGametoAudio&&CPURunning) {
 		EnableMenuItem(hMenu,ID_SYSTEM_LIMITFPS,MFS_DISABLED|MF_BYCOMMAND);
 	}
 	if (LimitFPS) {
@@ -1187,7 +1187,7 @@ void SetupMenu (HWND hWnd) {
 	if (UsuallyonTop) {
 		CheckMenuItem(hMenu,ID_OPTIONS_UsuallyonTop,MF_BYCOMMAND|MFS_CHECKED);
 	}
-	if (strcmp(AudioDLL,"No Audio.dll") !=0) EnableMenuItem(hMenu,ID_OPTIONS_CONFIG_AUDIO,MF_BYCOMMAND|(AiDllConfig==NULL?MF_GRAYED:MF_ENABLED));
+	if (strcmp(AudioDLL,"No Audio.dll")!=0) EnableMenuItem(hMenu,ID_OPTIONS_CONFIG_AUDIO,MF_BYCOMMAND|(AiDllConfig==NULL?MF_GRAYED:MF_ENABLED));
 	EnableMenuItem(hMenu,ID_OPTIONS_CONFIG_GFX,MF_BYCOMMAND|(GFXDllConfig==NULL?MF_GRAYED:MF_ENABLED));
 	EnableMenuItem(hMenu,ID_OPTIONS_CONFIG_CONTROL,MF_BYCOMMAND|(ContConfig==NULL?MF_GRAYED:MF_ENABLED));
 	if (strlen(RomName)>0) EnableMenuItem(hMenu,ID_FILE_ROM_INFO,MFS_ENABLED|MF_BYCOMMAND);
@@ -1203,8 +1203,8 @@ void SetupMenu (HWND hWnd) {
 	EnableMenuItem(hMenu,ID_CPU_RESTORE,State|MF_BYCOMMAND);
 	EnableMenuItem(hMenu,ID_CPU_LOAD,State|MF_BYCOMMAND);
 	EnableMenuItem(hMenu,ID_SYSTEM_GSBUTTON,State|MF_BYCOMMAND);
-	if (CaptureScreen !=NULL && !ClearFrame) EnableMenuItem(hMenu,ID_SYSTEM_GENERATEBITMAP,State|MF_BYCOMMAND);
-	if (ChangeWindow !=NULL && strcmp(GfxDLL,"RiceVideo.dll") !=0) EnableMenuItem(hMenu,ID_OPTIONS_FULLSCREEN,State|MF_BYCOMMAND);
+	if (CaptureScreen!=NULL&&!ClearFrame) EnableMenuItem(hMenu,ID_SYSTEM_GENERATEBITMAP,State|MF_BYCOMMAND);
+	if (ChangeWindow!=NULL&&strcmp(GfxDLL,"RiceVideo.dll")!=0) EnableMenuItem(hMenu,ID_OPTIONS_FULLSCREEN,State|MF_BYCOMMAND);
 	else EnableMenuItem(hMenu,ID_OPTIONS_FULLSCREEN,MFS_DISABLED|MF_BYCOMMAND);
 	hSubMenu=GetSubMenu(hMenu,1); 	//System
 	EnableMenuItem(hSubMenu,13,State|MF_BYPOSITION);  //Save State
@@ -1217,8 +1217,8 @@ void SetupMenu (HWND hWnd) {
 	SetMenu(hWnd,hMenu);
 	hMainMenu=hMenu;
 	if (strlen(LastRoms[0])==0) EnableMenuItem(hMenu,ID_FILE_STARTEMULATION,MFS_DISABLED|MF_BYCOMMAND);
-	if (CPURunning && strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) SetWindowLong(hMainWindow,GWL_EXSTYLE,GetWindowLong(hMainWindow,GWL_EXSTYLE)|WS_EX_COMPOSITED);
-	if (strlen(RomName) !=0) EnableMenuItem(hMenu,ID_OPTIONS_CHEATS,MFS_ENABLED|MF_BYCOMMAND);
+	if (CPURunning&&strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) SetWindowLong(hMainWindow,GWL_EXSTYLE,GetWindowLong(hMainWindow,GWL_EXSTYLE)|WS_EX_COMPOSITED);
+	if (strlen(RomName)!=0) EnableMenuItem(hMenu,ID_OPTIONS_CHEATS,MFS_ENABLED|MF_BYCOMMAND);
 }
 void SetCurrentSaveState (HWND hWnd,int State) {
 	char String[256];
@@ -1367,7 +1367,7 @@ void HandleModal2(HWND hWnd) {
 }
 void ShutdownApplication (void) {
 	CloseCheatWindow();
-	if (TargetInfo !=NULL) VirtualFree(TargetInfo,0,MEM_RELEASE);
+	if (TargetInfo!=NULL) VirtualFree(TargetInfo,0,MEM_RELEASE);
 	SaveRomBrowserColoumnInfo();
 	FreeRomBrowser();
 	ShutdownPlugins();
@@ -1388,7 +1388,7 @@ void TerminatePreviousInstance() {
 	DWORD pid=GetCurrentProcessId();
 	if (Process32First(s,&e)) {
 		do {
-			if (!_tcsicmp(e.szExeFile,name) && e.th32ProcessID !=pid) {
+			if (!_tcsicmp(e.szExeFile,name)&&e.th32ProcessID!=pid) {
 				if (MessageBox(NULL,GS(EXTRA_PROJECT64),AppName,MB_YESNO|MB_ICONQUESTION|MB_SETFOREGROUND)==IDNO) {
 					CloseHandle(s);
 					return;
@@ -1446,7 +1446,7 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpszArgs,in
 	if (!RegisterWinClass()) return FALSE;
   	X=(GetSystemMetrics(SM_CXSCREEN)-WindowWidth) / 2;
 	Y=(GetSystemMetrics(SM_CYSCREEN)-WindowHeight) / 2;
-	AccelWinMode   =LoadAccelerators(hInst,MAKEINTRESOURCE(IDR_WINDOWMODE));
+	AccelWinMode  =LoadAccelerators(hInst,MAKEINTRESOURCE(IDR_WINDOWMODE));
 	AccelCPURunning=LoadAccelerators(hInst,MAKEINTRESOURCE(IDR_CPURUNNING));
 	AccelRomBrowser=LoadAccelerators(hInst,MAKEINTRESOURCE(IDR_ROMBROWSER));
 	hHiddenWin=CreateWindow(AppName,AppName,WS_OVERLAPPED|WS_CLIPCHILDREN|
@@ -1479,17 +1479,17 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpszArgs,in
 		for (int i=0; i<sizeof(regPaths) / sizeof(regPaths[0]); ++i) {
 			HKEY hKey;
 			LONG lRet=RegOpenKeyEx(HKEY_CURRENT_USER,regPaths[i],0,KEY_READ,&hKey);
-			if (lRet !=ERROR_SUCCESS) {
+			if (lRet!=ERROR_SUCCESS) {
 				lRet=RegCreateKeyEx(HKEY_CURRENT_USER,regPaths[i],0,NULL,REG_OPTION_NON_VOLATILE,KEY_WRITE,NULL,&hKey,&dwDisposition);
 				if (lRet==ERROR_SUCCESS) {
 					if (strstr(regPaths[i],"3")) {
 						RegSetValueEx(hKey,"Full Screen Format",0,REG_DWORD,(const BYTE*)&dwDataFSF,sizeof(dwDataFSF));
-						if (screenHeight >=960 && screenWidth >=1280) {
+						if (screenHeight>=960&&screenWidth>=1280) {
 							RegSetValueEx(hKey,"Full Screen Height",0,REG_DWORD,(const BYTE*)&dwDataFSH,sizeof(dwDataFSH));
 							RegSetValueEx(hKey,"Full Screen Width",0,REG_DWORD,(const BYTE*)&dwDataFSW,sizeof(dwDataFSW));
 						}
 					}
-					if (screenHeight >=2160 && screenWidth >=3840) {
+					if (screenHeight>=2160&&screenWidth>=3840) {
 						if (strstr(regPaths[i],"8")) RegSetValueEx(hKey,"Options",0,REG_DWORD,(const BYTE*)&dwDataOPT960Def,sizeof(dwDataOPT960Def));
 						if (strstr(regPaths[i],"L")) RegSetValueEx(hKey,"Options",0,REG_DWORD,(const BYTE*)&dwDataOPT960D3D9,sizeof(dwDataOPT960D3D9));
 					} else if (strstr(regPaths[i],"L")) RegSetValueEx(hKey,"Options",0,REG_DWORD,(const BYTE*)&dwDataOPT480D3D9,sizeof(dwDataOPT480D3D9));
@@ -1522,10 +1522,10 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpszArgs,in
 		}
 	}
 	while (GetMessage(&msg,NULL,0,0)) {
-		if (!CPURunning && TranslateAccelerator(hMainWindow,AccelRomBrowser,&msg)) continue;
+		if (!CPURunning&&TranslateAccelerator(hMainWindow,AccelRomBrowser,&msg)) continue;
 		if (CPURunning) {
 			if (TranslateAccelerator(hMainWindow,AccelCPURunning,&msg)) continue;
-			if (!inFullScreen && TranslateAccelerator(hMainWindow,AccelWinMode,&msg)) continue;
+			if (!inFullScreen&&TranslateAccelerator(hMainWindow,AccelWinMode,&msg)) continue;
 		}
 		if (IsDialogMessage(hManageWindow,&msg)) continue;
 		{

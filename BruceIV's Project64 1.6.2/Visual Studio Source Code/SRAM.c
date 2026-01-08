@@ -47,14 +47,14 @@ BOOL LoadSRAM (void) {
 			CreateDirectory(Directory,NULL);
 			hSRAMFile=CreateFile(File,GENERIC_WRITE|GENERIC_READ,FILE_SHARE_READ,NULL,OPEN_ALWAYS,FILE_ATTRIBUTE_NORMAL|FILE_FLAG_RANDOM_ACCESS,NULL);
 			if (hSRAMFile==INVALID_HANDLE_VALUE) {
-				FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER|FORMAT_MESSAGE_FROM_SYSTEM|FORMAT_MESSAGE_IGNORE_INSERTS,NULL,GetLastError(),MAKELANGID(LANG_NEUTRAL,SUBLANG_DEFAULT),(LPTSTR) &lpMsgBuf,0,NULL);
+				FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER|FORMAT_MESSAGE_FROM_SYSTEM|FORMAT_MESSAGE_IGNORE_INSERTS,NULL,GetLastError(),MAKELANGID(LANG_NEUTRAL,SUBLANG_DEFAULT),(LPTSTR)&lpMsgBuf,0,NULL);
 				DisplayError(lpMsgBuf);
 				LocalFree(lpMsgBuf);
 				return FALSE;
 			}
 			break;
 		default:
-			FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER|FORMAT_MESSAGE_FROM_SYSTEM|FORMAT_MESSAGE_IGNORE_INSERTS,NULL,GetLastError(),MAKELANGID(LANG_NEUTRAL,SUBLANG_DEFAULT),(LPTSTR) &lpMsgBuf,0,NULL);
+			FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER|FORMAT_MESSAGE_FROM_SYSTEM|FORMAT_MESSAGE_IGNORE_INSERTS,NULL,GetLastError(),MAKELANGID(LANG_NEUTRAL,SUBLANG_DEFAULT),(LPTSTR)&lpMsgBuf,0,NULL);
 			DisplayError(lpMsgBuf);
 			LocalFree(lpMsgBuf);
 			return FALSE;
@@ -67,7 +67,7 @@ void DMAfromSRAM(BYTE * dest,int StartOffset,int len) {
 	if (hSRAMFile==NULL) {
 		if (!LoadSRAM()) return;
 	}
-	StartOffset=((StartOffset>>3) & 0xFFFF8000)|(StartOffset & 0x7FFF);
+	StartOffset=((StartOffset>>3)&0xFFFF8000)|(StartOffset&0x7FFF);
 	SetFilePointer(hSRAMFile,StartOffset,NULL,FILE_BEGIN);
 	ReadFile(hSRAMFile,dest,len,&dwRead,NULL);
 }
@@ -76,8 +76,8 @@ void DMAtoSRAM(BYTE* Source,int StartOffset,int len) {
 	if (hSRAMFile==NULL) {
 		if (!LoadSRAM()) return;
 	}
-	StartOffset=((StartOffset>>3) & 0xFFFF8000)|(StartOffset & 0x7FFF);
-	if (((StartOffset & 3)==0)) {
+	StartOffset=((StartOffset>>3)&0xFFFF8000)|(StartOffset&0x7FFF);
+	if (((StartOffset&3)==0)) {
 		SetFilePointer(hSRAMFile,StartOffset,NULL,FILE_BEGIN);
 		WriteFile(hSRAMFile,Source,len,&dwWritten,NULL);
 	} else {

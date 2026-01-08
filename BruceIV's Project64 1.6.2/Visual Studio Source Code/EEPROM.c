@@ -42,19 +42,19 @@ void EEPROMCommand (BYTE * Command) {
 	}
 	switch (Command[2]) {
 	case 0: // check
-		if (SaveUsing !=EEPROM_4K &&  SaveUsing !=EEPROM_16K) {
+		if (SaveUsing!=EEPROM_4K&& SaveUsing!=EEPROM_16K) {
 			Command[1]|=0x80;
 			break;
 		}
-		if (Command[1] !=3) {
+		if (Command[1]!=3) {
 			Command[1]|=0x40;
-			if ((Command[1] & 3)>0) { Command[3]=0x00; }
+			if ((Command[1]&3)>0) { Command[3]=0x00; }
 			if (SaveUsing==EEPROM_4K) {
-				if ((Command[1] & 3)>1) { Command[4]=0x80; }
+				if ((Command[1]&3)>1) { Command[4]=0x80; }
 			} else {
-				if ((Command[1] & 3)>1) { Command[4]=0xC0; }
+				if ((Command[1]&3)>1) { Command[4]=0xC0; }
 			}
-			if ((Command[1] & 3)>2) { Command[5]=0x00; }
+			if ((Command[1]&3)>2) { Command[5]=0x00; }
 		} else {
 			Command[3]=0x00;
 			Command[4]=SaveUsing==EEPROM_4K?0x80:0xC0;

@@ -89,13 +89,13 @@ BYTE Mempacks_CalulateCrc(BYTE * DataToCrc) {
 	int Length;
 	BYTE CRC=0;
 	for (Count=0; Count<0x21; Count++) {
-		for (Length=0x80; Length >=1; Length >>=1) {
-			XorTap=(CRC & 0x80)?0x85:0;
+		for (Length=0x80; Length>=1; Length>>=1) {
+			XorTap=(CRC&0x80)?0x85:0;
 			CRC <<=1;
 			if (Count==0x20) {
-				CRC &=0xFF;
+				CRC&=0xFF;
 			} else {
-				if ((*DataToCrc & Length) !=0) {
+				if ((*DataToCrc&Length)!=0) {
 					CRC|=1;
 				}
 			}
@@ -111,7 +111,7 @@ void ReadFromMempak(int Control,int Address,BYTE * Buffer) {
 		Buffer[0x20]=Mempacks_CalulateCrc(Buffer);
 		return;
 	}
-	Address &=0xFFE0;
+	Address&=0xFFE0;
 	if (Address <=0x7FE0) {
 		if (hMempakFile==NULL) {
 			LoadMempak();
@@ -126,7 +126,7 @@ void ReadFromMempak(int Control,int Address,BYTE * Buffer) {
 void WriteToMempak(int Control,int Address,BYTE * Buffer) {
 	DWORD dwWritten;
 	if (Address==0x8001) { Buffer[0x20]=Mempacks_CalulateCrc(Buffer); return; }
-	Address &=0xFFE0;
+	Address&=0xFFE0;
 	if (Address <=0x7FE0) {
 		if (hMempakFile==NULL) {
 			LoadMempak();

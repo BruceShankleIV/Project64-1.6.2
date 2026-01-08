@@ -5,7 +5,7 @@
    Encryption and multi volume ZipFile (span) are not supported.
    Old compressions used by old PKZip 1.x are not supported
    THIS IS AN ALPHA VERSION. AT THIS STAGE OF DEVELOPPEMENT, SOMES API OR STRUCTURE
-   CAN CHANGE IN FUTURE VERSION !!
+   CAN CHANGE IN FUTURE VERSION!!
    I WAIT FEEDBACK at mail info@winimage.com
    Visit also http://www.winimage.com/zLibDll/unzip.htm for evolution
    Condition of use and distribution are the same than zlib :

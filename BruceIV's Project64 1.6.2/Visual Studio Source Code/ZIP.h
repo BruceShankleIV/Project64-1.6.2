@@ -7,7 +7,7 @@
    Old compressions used by old PKZip 1.x are not supported
   For uncompress .zip file, look at UnZIP.h
    THIS IS AN ALPHA VERSION. AT THIS STAGE OF DEVELOPPEMENT, SOMES API OR STRUCTURE
-   CAN CHANGE IN FUTURE VERSION !!
+   CAN CHANGE IN FUTURE VERSION!!
    I WAIT FEEDBACK at mail info@winimage.com
    Visit also http://www.winimage.com/zLibDll/zip.htm for evolution
    Condition of use and distribution are the same than zlib :
@@ -97,7 +97,7 @@ extern int ZEXPORT zipOpenNewFileInZip OF((zipFile file,
     contains the extrafield data the the local header
   if extrafield_global!=NULL and size_extrafield_global>0, extrafield_global
     contains the extrafield data the the local header
-  if comment !=NULL, comment contain the comment string
+  if comment!=NULL, comment contain the comment string
   method contain the compression method (0 for store, Z_DEFLATED for deflate)
   level contain the level of compression (can be Z_DEFAULT_COMPRESSION)
 */

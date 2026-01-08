@@ -23,7 +23,7 @@ THE PASSWORD TO THE PROJECT64 ZIP FILES IS password
 END OF HOW TO INSTALL
 
 
-The password to the Apps.zip is also password.
+The password to Apps.zip (bundled alongside this zip) is also password.
 
 
 Links:

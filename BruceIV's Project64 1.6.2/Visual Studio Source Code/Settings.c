@@ -92,7 +92,7 @@ void ChangeRomSettings(HWND hwndOwner) {
 	psh.pszCaption=(LPSTR)GS(MENU_SETTINGS);
 	psh.nPages=sizeof(psp) / sizeof(PROPSHEETPAGE);
 	psh.nStartPage=0;
-	psh.ppsp=(LPCPROPSHEETPAGE) &psp;
+	psh.ppsp=(LPCPROPSHEETPAGE)&psp;
 	psh.pfnCallback=NULL;
 	PropertySheet(&psh);
 	strncpy(RomName,OrigRomName,sizeof(RomName));
@@ -132,10 +132,10 @@ void ChangeSettings(HWND hwndOwner) {
 	psh.pszCaption=(LPSTR)GS(MENU_SETTINGS);
 	psh.nPages=(BasicMode?sizeof(BasicPsp):sizeof(psp)) / sizeof(PROPSHEETPAGE);
 	psh.nStartPage=0;
-	psh.ppsp=BasicMode?(LPCPROPSHEETPAGE) &BasicPsp:(LPCPROPSHEETPAGE) &psp;
+	psh.ppsp=BasicMode?(LPCPROPSHEETPAGE)&BasicPsp:(LPCPROPSHEETPAGE)&psp;
 	psh.pfnCallback=NULL;
 	PropertySheet(&psh);
-	if (!AutoSleep && !ManualPaused && (CPU_Paused||CPU_Action.Pause)) PauseCPU();
+	if (!AutoSleep&&!ManualPaused&&(CPU_Paused||CPU_Action.Pause)) PauseCPU();
 	if (SetupPluginsAfterSaveRomOpt) {
 		SetupPluginsAfterSaveRomOpt=FALSE;
 		SetupPlugins(hHiddenWin);
@@ -271,28 +271,28 @@ BOOL CALLBACK DirSelectProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 			if (lResult==ERROR_SUCCESS) {
 				DWORD Type,Value,Bytes=4;
 				lResult=RegQueryValueEx(hKeyResults,"AppPath ROMs",0,&Type,(LPBYTE)(&Value),&Bytes);
-				if (Type !=REG_DWORD||lResult !=ERROR_SUCCESS) { Value=FALSE; }
+				if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) { Value=FALSE; }
 				SendMessage(GetDlgItem(hDlg,Value?IDC_ROM_DEFAULT:IDC_ROM_OTHER),BM_SETCHECK,BST_CHECKED,0);
 				lResult=RegQueryValueEx(hKeyResults,"AppPath Save Data",0,&Type,(LPBYTE)(&Value),&Bytes);
-				if (Type !=REG_DWORD||lResult !=ERROR_SUCCESS) { Value=TRUE; }
+				if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) { Value=TRUE; }
 				SendMessage(GetDlgItem(hDlg,Value?IDC_AUTO_DEFAULT:IDC_AUTO_OTHER),BM_SETCHECK,BST_CHECKED,0);
 				lResult=RegQueryValueEx(hKeyResults,"AppPath Screenshots",0,&Type,(LPBYTE)(&Value),&Bytes);
-				if (Type !=REG_DWORD||lResult !=ERROR_SUCCESS) { Value=TRUE; }
+				if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) { Value=TRUE; }
 				SendMessage(GetDlgItem(hDlg,Value?IDC_SNAP_DEFAULT:IDC_SNAP_OTHER),BM_SETCHECK,BST_CHECKED,0);
 				lResult=RegQueryValueEx(hKeyResults,"AppPath Savestates",0,&Type,(LPBYTE)(&Value),&Bytes);
-				if (Type !=REG_DWORD||lResult !=ERROR_SUCCESS) { Value=TRUE; }
+				if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) { Value=TRUE; }
 				SendMessage(GetDlgItem(hDlg,Value?IDC_INSTANT_DEFAULT:IDC_INSTANT_OTHER),BM_SETCHECK,BST_CHECKED,0);
 				Bytes=sizeof(Directory);
 				lResult=RegQueryValueEx(hKeyResults,"CustomPath Savestates",0,&Type,(LPBYTE)Directory,&Bytes);
-				if (lResult !=ERROR_SUCCESS) { GetInstantSaveDir(Directory); }
+				if (lResult!=ERROR_SUCCESS) { GetInstantSaveDir(Directory); }
 				SetDlgItemText(hDlg,IDC_INSTANT_DIR,Directory);
 				Bytes=sizeof(Directory);
 				lResult=RegQueryValueEx(hKeyResults,"CustomPath Save Data",0,&Type,(LPBYTE)Directory,&Bytes);
-				if (lResult !=ERROR_SUCCESS) { GetAutoSaveDir(Directory); }
+				if (lResult!=ERROR_SUCCESS) { GetAutoSaveDir(Directory); }
 				SetDlgItemText(hDlg,IDC_AUTO_DIR,Directory);
 				Bytes=sizeof(Directory);
 				lResult=RegQueryValueEx(hKeyResults,"CustomPath Screenshots",0,&Type,(LPBYTE)Directory,&Bytes);
-				if (lResult !=ERROR_SUCCESS) { GetSnapShotDir(Directory); }
+				if (lResult!=ERROR_SUCCESS) { GetSnapShotDir(Directory); }
 				SetDlgItemText(hDlg,IDC_SNAP_DIR,Directory);
 			} else {
 				SendMessage(GetDlgItem(hDlg,IDC_ROM_DEFAULT),BM_SETCHECK,BST_CHECKED,0);
@@ -349,10 +349,10 @@ BOOL CALLBACK DirSelectProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 				bi.ulFlags=BIF_RETURNFSANCESTORS|BIF_RETURNONLYFSDIRS;
 				bi.lpfn=(BFFCALLBACK)SelectRomDirCallBack;
 				bi.lParam=(DWORD)Directory;
-				if ((pidl=SHBrowseForFolder(&bi)) !=NULL) {
+				if ((pidl=SHBrowseForFolder(&bi))!=NULL) {
 					if (SHGetPathFromIDList(pidl,Directory)) {
 						int len=strlen(Directory);
-						if (Directory[len-1] !='\\') { strcat(Directory,"\\"); }
+						if (Directory[len-1]!='\\') { strcat(Directory,"\\"); }
 						switch (LOWORD(wParam)) {
 						case IDC_SELECT_ROM_DIR:
 							SetDlgItemText(hDlg,IDC_ROM_DIR,Directory);
@@ -428,23 +428,23 @@ BOOL PluginsChanged (HWND hDlg) {
 	DWORD index;
 	index=SendMessage(GetDlgItem(hDlg,RSP_LIST),CB_GETCURSEL,0,0);
 	index=SendMessage(GetDlgItem(hDlg,RSP_LIST),CB_GETITEMDATA,(WPARAM)index,0);
-	if ((int)index >=0) {
-		if(_stricmp(RSPDLL,PluginNames[index]) !=0) return TRUE;
+	if ((int)index>=0) {
+		if(_stricmp(RSPDLL,PluginNames[index])!=0) return TRUE;
 	}
 	index=SendMessage(GetDlgItem(hDlg,GFX_LIST),CB_GETCURSEL,0,0);
 	index=SendMessage(GetDlgItem(hDlg,GFX_LIST),CB_GETITEMDATA,(WPARAM)index,0);
-	if ((int)index >=0) {
-		if(_stricmp(GfxDLL,PluginNames[index]) !=0) return TRUE;
+	if ((int)index>=0) {
+		if(_stricmp(GfxDLL,PluginNames[index])!=0) return TRUE;
 	}
 	index=SendMessage(GetDlgItem(hDlg,AUDIO_LIST),CB_GETCURSEL,0,0);
 	index=SendMessage(GetDlgItem(hDlg,AUDIO_LIST),CB_GETITEMDATA,(WPARAM)index,0);
-	if ((int)index >=0) {
-		if(_stricmp(AudioDLL,PluginNames[index]) !=0) return TRUE;
+	if ((int)index>=0) {
+		if(_stricmp(AudioDLL,PluginNames[index])!=0) return TRUE;
 	}
 	index=SendMessage(GetDlgItem(hDlg,CONT_LIST),CB_GETCURSEL,0,0);
 	index=SendMessage(GetDlgItem(hDlg,CONT_LIST),CB_GETITEMDATA,(WPARAM)index,0);
-	if ((int)index >=0) {
-		if(_stricmp(ControllerDLL,PluginNames[index]) !=0) return TRUE;
+	if ((int)index>=0) {
+		if(_stricmp(ControllerDLL,PluginNames[index])!=0) return TRUE;
 	}
 	return FALSE;
 }
@@ -476,7 +476,7 @@ BOOL CALLBACK PluginSelectProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam)
 				hLib=LoadLibrary(Plugin);
 				if (hLib==NULL) { DisplayError("%s %s",GS(MSG_FAIL_LOAD_PLUGIN),Plugin); }
 				RSPDLLAbout=(void (__cdecl *)(HWND))GetProcAddress(hLib,"DllAbout");
-				EnableWindow(GetDlgItem(hDlg,RSP_ABOUT),RSPDLLAbout !=NULL?TRUE:FALSE);
+				EnableWindow(GetDlgItem(hDlg,RSP_ABOUT),RSPDLLAbout!=NULL?TRUE:FALSE);
 			}
 			break;
 		case GFX_LIST:
@@ -489,7 +489,7 @@ BOOL CALLBACK PluginSelectProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam)
 				hLib=LoadLibrary(Plugin);
 				if (hLib==NULL) { DisplayError("%s %s",GS(MSG_FAIL_LOAD_PLUGIN),Plugin); }
 				GFXDllAbout=(void (__cdecl *)(HWND))GetProcAddress(hLib,"DllAbout");
-				EnableWindow(GetDlgItem(hDlg,GFX_ABOUT),GFXDllAbout !=NULL?TRUE:FALSE);
+				EnableWindow(GetDlgItem(hDlg,GFX_ABOUT),GFXDllAbout!=NULL?TRUE:FALSE);
 			}
 			if (BootupSettings) PostMessage(GetParent(hDlg),WM_COMMAND,IDCANCEL,0);
 			break;
@@ -503,7 +503,7 @@ BOOL CALLBACK PluginSelectProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam)
 				hLib=LoadLibrary(Plugin);
 				if (hLib==NULL) { DisplayError("%s %s",GS(MSG_FAIL_LOAD_PLUGIN),Plugin); }
 				AiDllAbout=(void (__cdecl *)(HWND))GetProcAddress(hLib,"DllAbout");
-				EnableWindow(GetDlgItem(hDlg,GFX_ABOUT),GFXDllAbout !=NULL?TRUE:FALSE);
+				EnableWindow(GetDlgItem(hDlg,GFX_ABOUT),GFXDllAbout!=NULL?TRUE:FALSE);
 			}
 			break;
 		case CONT_LIST:
@@ -516,7 +516,7 @@ BOOL CALLBACK PluginSelectProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam)
 				hLib=LoadLibrary(Plugin);
 				if (hLib==NULL) { DisplayError("%s %s",GS(MSG_FAIL_LOAD_PLUGIN),Plugin); }
 				ContDllAbout=(void (__cdecl *)(HWND))GetProcAddress(hLib,"DllAbout");
-				EnableWindow(GetDlgItem(hDlg,CONT_ABOUT),ContDllAbout !=NULL?TRUE:FALSE);
+				EnableWindow(GetDlgItem(hDlg,CONT_ABOUT),ContDllAbout!=NULL?TRUE:FALSE);
 			}
 			break;
 		case RSP_ABOUT: RSPDLLAbout(hDlg); break;
@@ -619,7 +619,7 @@ BOOL CALLBACK RomBrowserProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 				Data=SendMessage(GetDlgItem(hDlg,IDC_AVAILABLE),LB_GETITEMDATA,index,0);
 				SendDlgItemMessage(hDlg,IDC_AVAILABLE,LB_DELETESTRING,index,0);
 				listCount=SendDlgItemMessage(hDlg,IDC_AVAILABLE,LB_GETCOUNT,0,0);
-				if (index >=listCount) { index -=1;}
+				if (index>=listCount) { index -=1;}
 				SendDlgItemMessage(hDlg,IDC_AVAILABLE,LB_SETCURSEL,index,0);
 				index=SendDlgItemMessage(hDlg,IDC_USING,LB_ADDSTRING,0,(LPARAM)String);
 				SendDlgItemMessage(hDlg,IDC_USING,LB_SETITEMDATA,index,Data);
@@ -635,7 +635,7 @@ BOOL CALLBACK RomBrowserProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 				Data=SendMessage(GetDlgItem(hDlg,IDC_USING),LB_GETITEMDATA,index,0);
 				SendDlgItemMessage(hDlg,IDC_USING,LB_DELETESTRING,index,0);
 				listCount=SendDlgItemMessage(hDlg,IDC_USING,LB_GETCOUNT,0,0);
-				if (index >=listCount) { index -=1;}
+				if (index>=listCount) { index -=1;}
 				SendDlgItemMessage(hDlg,IDC_USING,LB_SETCURSEL,index,0);
 				index=SendDlgItemMessage(hDlg,IDC_AVAILABLE,LB_ADDSTRING,0,(LPARAM)String);
 				SendDlgItemMessage(hDlg,IDC_AVAILABLE,LB_SETITEMDATA,index,Data);
@@ -702,7 +702,7 @@ BOOL CALLBACK RomNotesProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 					if (strrchr(Status,'=')==NULL) continue;
 					*(strrchr(Status,'='))=0;
 					len=strlen(Status);
-					if (len>4 && _strnicmp(&Status[len-4],".Sel",4)==0) continue;
+					if (len>4&&_strnicmp(&Status[len-4],".Sel",4)==0) continue;
 					index=SendMessage(GetDlgItem(hDlg,IDC_STATUS),CB_ADDSTRING,0,(LPARAM)Status);
 					if (strcmp(Status,RomStatus)==0) { SendMessage(GetDlgItem(hDlg,IDC_STATUS),CB_SETCURSEL,index,0); }
 					if (SendMessage(GetDlgItem(hDlg,IDC_STATUS),CB_GETCOUNT,0,0)==0) { SendMessage(GetDlgItem(hDlg,IDC_STATUS),CB_SETCURSEL,0,0); }
@@ -819,12 +819,12 @@ BOOL CALLBACK RomSettingsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) 
 			EnableWindow(GetDlgItem(hDlg,IDC_REGCACHE_TEXT),FALSE);
 			EnableWindow(GetDlgItem(hDlg,IDC_REGCACHE),FALSE);
 		}
-		if (strlen(RomName)==0||RomCPUType==CPU_Interpreter||RomCF !=-1 && RomCF !=1) EnableWindow(GetDlgItem(hDlg,IDC_CF1_CF0),FALSE);
-		if (strlen(RomName)==0||strcmp(RSPDLL,"RSP.dll") !=0||strcmp(GfxDLL,"Icepir8sLegacyLLE.dll") !=0||strcmp(RomName,"THE LEGEND OF ZELDA")==0||strcmp(RomName,"THE MASK OF MUJURA")==0||strcmp(RomName,"ZELDA MAJORA'S MASK")==0) EnableWindow(GetDlgItem(hDlg,IDC_RSP_RECOMPILER),FALSE);
-		if (strlen(RomName)==0||!RomJAI && !RomShankleAziAI) EnableWindow(GetDlgItem(hDlg,ALTERNATE_EMUAI),FALSE);
-		if (strlen(RomName)==0||strcmp(AudioDLL,"Shankle_Audio.dll") !=0) EnableWindow(GetDlgItem(hDlg,SHANKLE_AZI_AI),FALSE);
-		if (strlen(RomName)==0||strcmp(AudioDLL,"Jabo_Dsound.dll") !=0) EnableWindow(GetDlgItem(hDlg,IDC_JAI),FALSE);
-		if (strlen(RomName)==0||RomJAI||strcmp(AudioDLL,"Jabo_Dsound.dll") !=0) EnableWindow(GetDlgItem(hDlg,IDC_SyncGametoAudio),FALSE);
+		if (strlen(RomName)==0||RomCPUType==CPU_Interpreter||RomCF!=-1&&RomCF!=1) EnableWindow(GetDlgItem(hDlg,IDC_CF1_CF0),FALSE);
+		if (strlen(RomName)==0||strcmp(RSPDLL,"RSP.dll")!=0||strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")!=0||strcmp(RomName,"THE LEGEND OF ZELDA")==0||strcmp(RomName,"THE MASK OF MUJURA")==0||strcmp(RomName,"ZELDA MAJORA'S MASK")==0||strcmp(RomName,"BANJO KAZOOIE 2")==0||strcmp(RomName,"BANJO TOOIE")==0||strcmp(RomName,"CONKER BFD")==0||strcmp(RomName,"DONKEY KONG 64")==0||strcmp(RomName,"JET FORCE GEMINI")==0||strcmp(RomName,"STAR TWINS")==0||strcmp(RomName,"Perfect Dark")==0) EnableWindow(GetDlgItem(hDlg,IDC_RSP_RECOMPILER),FALSE);
+		if (strlen(RomName)==0||!RomJAI&&!RomShankleAziAI) EnableWindow(GetDlgItem(hDlg,ALTERNATE_EMUAI),FALSE);
+		if (strlen(RomName)==0||strcmp(AudioDLL,"Shankle_Audio.dll")!=0) EnableWindow(GetDlgItem(hDlg,SHANKLE_AZI_AI),FALSE);
+		if (strlen(RomName)==0||strcmp(AudioDLL,"Jabo_Dsound.dll")!=0) EnableWindow(GetDlgItem(hDlg,IDC_JAI),FALSE);
+		if (strlen(RomName)==0||RomJAI||strcmp(AudioDLL,"Jabo_Dsound.dll")!=0) EnableWindow(GetDlgItem(hDlg,IDC_SyncGametoAudio),FALSE);
 		break;
 	case WM_NOTIFY:
 		if (((NMHDR FAR*) lParam)->code==PSN_APPLY) {

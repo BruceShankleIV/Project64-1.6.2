@@ -36,7 +36,7 @@ char * LineFeed="\n";
 #endif
 int AsciiToInt(char * String,int Maxlen) {
 	int result=0;
-	for(; Maxlen && *String==' '; Maxlen--,String++);
+	for(; Maxlen&&*String==' '; Maxlen--,String++);
 	while(Maxlen--) {
 		if(isdigit(*String)) {
 			result=result * 10+(*String-'0');
@@ -53,7 +53,7 @@ int fGetString(FILE * File,char * String,int MaxLen) {
 		result=fgetc(File);
 		if (result==EOF||result==10) {
 			String[count]=0;
-			if (result==EOF && count==0) {
+			if (result==EOF&&count==0) {
 				return -1;
 			}
 			return count;
@@ -75,7 +75,7 @@ int fGetString2(FILE * File,char **String,BYTE **Data,int * DataSize,int *Left) 
 		int count;
 		for (count=0; count<*Left; count ++) {
 			if ((*Data)[count]=='\n') {
-				if (*String !=NULL) {
+				if (*String!=NULL) {
 					free(*String);
 					*String=NULL;
 				}
@@ -162,25 +162,25 @@ unsigned int _GetPrivateProfileInt(
 	result=fGetString2(fInput,&Input,&Data,&DataLen,&DataLeft);
 	if (result>1) {
 		Pos=Input;
-		while (Pos !=NULL) {
+		while (Pos!=NULL) {
 			Pos=strchr(Pos,'/');
-			if (Pos !=NULL) {
+			if (Pos!=NULL) {
 				if (Pos[1]=='/') { Pos[0]=0; } else { Pos +=1; }
 			}
 		}
-		for (count=strlen(&Input[0])-1; count >=0; count --) {
-			if (Input[count] !=' ' && Input[count] !='\r') { break; }
+		for (count=strlen(&Input[0])-1; count>=0; count --) {
+			if (Input[count]!=' '&&Input[count]!='\r') { break; }
 			Input[count]=0;
 		}
 		//stip leading spaces
 		if (strlen(Input)>1) {
-			if (Input[0]=='[' && Input[strlen(Input)-1]==']') {
+			if (Input[0]=='['&&Input[strlen(Input)-1]==']') {
 				strcpy(CurrentSection,&Input[1]);
 				CurrentSection[strlen(CurrentSection)-1]=0;
 			}
 		}
 	}
-	if (strcmp(lpAppName,CurrentSection) !=0) {
+	if (strcmp(lpAppName,CurrentSection)!=0) {
 		DataLen=0;
 		DataLeft=0;
 		free(Data);
@@ -188,42 +188,42 @@ unsigned int _GetPrivateProfileInt(
 		fseek(fInput,0,SEEK_SET);
 	}
 	do {
-		if (strcmp(lpAppName,CurrentSection) !=0) {
+		if (strcmp(lpAppName,CurrentSection)!=0) {
 			Fpos=ftell(fInput)-DataLeft;
 		}
 		result=fGetString2(fInput,&Input,&Data,&DataLen,&DataLeft);
 		if (result <=1) continue;
 		Pos=Input;
-		while (Pos !=NULL) {
+		while (Pos!=NULL) {
 			Pos=strchr(Pos,'/');
-			if (Pos !=NULL) {
+			if (Pos!=NULL) {
 				if (Pos[1]=='/') { Pos[0]=0; } else { Pos +=1; }
 			}
 		}
-		for (count=strlen(&Input[0])-1; count >=0; count --) {
-			if (Input[count] !=' ' && Input[count] !='\r') { break; }
+		for (count=strlen(&Input[0])-1; count>=0; count --) {
+			if (Input[count]!=' '&&Input[count]!='\r') { break; }
 			Input[count]=0;
 		}
 		//stip leading spaces
 		if (strlen(Input) <=1) continue;
 		if (Input[0]=='[') {
-			if (Input[strlen(Input)-1] !=']') continue;
+			if (Input[strlen(Input)-1]!=']') continue;
 			strcpy(CurrentSection,&Input[1]);
 			CurrentSection[strlen(CurrentSection)-1]=0;
 			continue;
 		}
-		if (strcmp(lpAppName,CurrentSection) !=0) {
+		if (strcmp(lpAppName,CurrentSection)!=0) {
 			continue;
 		}
 		Pos=strchr(Input,'=');
 		Pos[0]=0;
-		if (strcmp(Input,lpKeyName) !=0) continue;
+		if (strcmp(Input,lpKeyName)!=0) continue;
 		result=atoi(&Pos[1]);
 		fclose(fInput);
 		if (Input) { free(Input);  Input=NULL; }
 		if (Data) { free(Data);  Data=NULL; }
 		return result;
-	} while (result >=0);
+	} while (result>=0);
 	fclose(fInput);
 	if (Input) { free(Input);  Input=NULL; }
 	if (Data) { free(Data);  Data=NULL; }
@@ -252,25 +252,25 @@ unsigned int _GetPrivateProfileString(
 	result=fGetString2(fInput,&Input,&Data,&DataLen,&DataLeft);
 	if (result>1) {
 		Pos=Input;
-		while (Pos !=NULL) {
+		while (Pos!=NULL) {
 			Pos=strchr(Pos,'/');
-			if (Pos !=NULL) {
+			if (Pos!=NULL) {
 				if (Pos[1]=='/') { Pos[0]=0; } else { Pos +=1; }
 			}
 		}
-		for (count=strlen(&Input[0])-1; count >=0; count --) {
-			if (Input[count] !=' ' && Input[count] !='\r') { break; }
+		for (count=strlen(&Input[0])-1; count>=0; count --) {
+			if (Input[count]!=' '&&Input[count]!='\r') { break; }
 			Input[count]=0;
 		}
 		//stip leading spaces
 		if (strlen(Input)>1) {
-			if (Input[0]=='[' && Input[strlen(Input)-1]==']') {
+			if (Input[0]=='['&&Input[strlen(Input)-1]==']') {
 				strcpy(CurrentSection,&Input[1]);
 				CurrentSection[strlen(CurrentSection)-1]=0;
 			}
 		}
 	}
-	if (strcmp(lpAppName,CurrentSection) !=0) {
+	if (strcmp(lpAppName,CurrentSection)!=0) {
 		DataLen=0;
 		DataLeft=0;
 		free(Data);
@@ -278,44 +278,44 @@ unsigned int _GetPrivateProfileString(
 		fseek(fInput,0,SEEK_SET);
 	}
 	do {
-		if (strcmp(lpAppName,CurrentSection) !=0) {
+		if (strcmp(lpAppName,CurrentSection)!=0) {
 			Fpos=ftell(fInput)-DataLeft;
 		}
 		result=fGetString2(fInput,&Input,&Data,&DataLen,&DataLeft);
 		if (result <=1) continue;
 		Pos=Input;
-		while (Pos !=NULL) {
+		while (Pos!=NULL) {
 			Pos=strchr(Pos,'/');
-			if (Pos !=NULL) {
+			if (Pos!=NULL) {
 				if (Pos[1]=='/') { Pos[0]=0; } else { Pos +=1; }
 			}
 		}
-		for (count=strlen(&Input[0])-1; count >=0; count --) {
-			if (Input[count] !=' ' && Input[count] !='\r') { break; }
+		for (count=strlen(&Input[0])-1; count>=0; count --) {
+			if (Input[count]!=' '&&Input[count]!='\r') { break; }
 			Input[count]=0;
 		}
 		//stip leading spaces
 		if (strlen(Input) <=1) continue;
 		if (Input[0]=='[') {
-			if (Input[strlen(Input)-1] !=']') continue;
+			if (Input[strlen(Input)-1]!=']') continue;
 			strcpy(CurrentSection,&Input[1]);
 			CurrentSection[strlen(CurrentSection)-1]=0;
 			continue;
 		}
-		if (strcmp(lpAppName,CurrentSection) !=0) {
+		if (strcmp(lpAppName,CurrentSection)!=0) {
 			continue;
 		}
 		Pos=strchr(Input,'=');
 		if (Pos==NULL) continue;
 		Pos[0]=0;
-		if (strcmp(Input,lpKeyName) !=0) continue;
+		if (strcmp(Input,lpKeyName)!=0) continue;
 		strncpy(lpReturnedString,&Pos[1],nSize-1);
 		lpReturnedString[nSize-1]=0;
 		fclose(fInput);
 		if (Input) { free(Input);  Input=NULL; }
 		if (Data) { free(Data);  Data=NULL; }
 		return strlen(lpReturnedString);
-	} while (result >=0);
+	} while (result>=0);
 	fclose(fInput);
 	if (Input) { free(Input);  Input=NULL; }
 	if (Data) { free(Data);  Data=NULL; }
@@ -344,25 +344,25 @@ unsigned int _GetPrivateProfileString2(
 	result=fGetString2(fInput,&Input,&Data,&DataLen,&DataLeft);
 	if (result>1) {
 		Pos=Input;
-		while (Pos !=NULL) {
+		while (Pos!=NULL) {
 			Pos=strchr(Pos,'/');
-			if (Pos !=NULL) {
+			if (Pos!=NULL) {
 				if (Pos[1]=='/') { Pos[0]=0; } else { Pos +=1; }
 			}
 		}
-		for (count=strlen(&Input[0])-1; count >=0; count --) {
-			if (Input[count] !=' ' && Input[count] !='\r') { break; }
+		for (count=strlen(&Input[0])-1; count>=0; count --) {
+			if (Input[count]!=' '&&Input[count]!='\r') { break; }
 			Input[count]=0;
 		}
 		//stip leading spaces
 		if (strlen(Input)>1) {
-			if (Input[0]=='[' && Input[strlen(Input)-1]==']') {
+			if (Input[0]=='['&&Input[strlen(Input)-1]==']') {
 				strcpy(CurrentSection,&Input[1]);
 				CurrentSection[strlen(CurrentSection)-1]=0;
 			}
 		}
 	}
-	if (strcmp(lpAppName,CurrentSection) !=0) {
+	if (strcmp(lpAppName,CurrentSection)!=0) {
 		DataLen=0;
 		DataLeft=0;
 		free(Data);
@@ -370,37 +370,37 @@ unsigned int _GetPrivateProfileString2(
 		fseek(fInput,0,SEEK_SET);
 	}
 	do {
-		if (strcmp(lpAppName,CurrentSection) !=0) {
+		if (strcmp(lpAppName,CurrentSection)!=0) {
 			Fpos=ftell(fInput)-DataLeft;
 		}
 		result=fGetString2(fInput,&Input,&Data,&DataLen,&DataLeft);
 		if (result <=1) continue;
 		Pos=Input;
-		while (Pos !=NULL) {
+		while (Pos!=NULL) {
 			Pos=strchr(Pos,'/');
-			if (Pos !=NULL) {
+			if (Pos!=NULL) {
 				if (Pos[1]=='/') { Pos[0]=0; } else { Pos +=1; }
 			}
 		}
-		for (count=strlen(&Input[0])-1; count >=0; count --) {
-			if (Input[count] !=' ' && Input[count] !='\r') { break; }
+		for (count=strlen(&Input[0])-1; count>=0; count --) {
+			if (Input[count]!=' '&&Input[count]!='\r') { break; }
 			Input[count]=0;
 		}
 		//stip leading spaces
 		if (strlen(Input) <=1) continue;
 		if (Input[0]=='[') {
-			if (Input[strlen(Input)-1] !=']') continue;
+			if (Input[strlen(Input)-1]!=']') continue;
 			strcpy(CurrentSection,&Input[1]);
 			CurrentSection[strlen(CurrentSection)-1]=0;
 			continue;
 		}
-		if (strcmp(lpAppName,CurrentSection) !=0) {
+		if (strcmp(lpAppName,CurrentSection)!=0) {
 			continue;
 		}
 		Pos=strchr(Input,'=');
 		if (Pos==NULL) continue;
 		Pos[0]=0;
-		if (strcmp(Input,lpKeyName) !=0) continue;
+		if (strcmp(Input,lpKeyName)!=0) continue;
 		len=strlen(&Pos[1]);
 		if (*lpReturnedString) { free(*lpReturnedString); }
 		*lpReturnedString=malloc(len+1);
@@ -409,7 +409,7 @@ unsigned int _GetPrivateProfileString2(
 		if (Input) { free(Input);  Input=NULL; }
 		if (Data) { free(Data);  Data=NULL; }
 		return len;
-	} while (result >=0);
+	} while (result>=0);
 	fclose(fInput);
 	if (Input) { free(Input);  Input=NULL; }
 	if (Data) { free(Data);  Data=NULL; }
@@ -438,26 +438,26 @@ int _DeletePrivateProfileString(
 	}
 	CurrentSection[0]=0;
 	do {
-		if (strcmp(lpAppName,CurrentSection) !=0) {
+		if (strcmp(lpAppName,CurrentSection)!=0) {
 			Fpos=ftell(fInput)-DataLeft;
 		}
 		result=fGetString2(fInput,&Input,&Data,&DataLen,&DataLeft);
 		if (result <=1) continue;
 		Pos=Input;
-		while (Pos !=NULL) {
+		while (Pos!=NULL) {
 			Pos=strchr(Pos,'/');
-			if (Pos !=NULL) {
+			if (Pos!=NULL) {
 				if (Pos[1]=='/') { Pos[0]=0; } else { Pos +=1; }
 			}
 		}
-		for (count=strlen(&Input[0])-1; count >=0; count --) {
-			if (Input[count] !=' ' && Input[count] !='\r') { break; }
+		for (count=strlen(&Input[0])-1; count>=0; count --) {
+			if (Input[count]!=' '&&Input[count]!='\r') { break; }
 			Input[count]=0;
 		}
 		//stip leading spaces
 		if (strlen(Input) <=1) continue;
 		if (Input[0]=='[') {
-			if (Input[strlen(Input)-1] !=']') continue;
+			if (Input[strlen(Input)-1]!=']') continue;
 			if (strcmp(lpAppName,CurrentSection)==0) {
 				result=-1;
 				continue;
@@ -467,20 +467,20 @@ int _DeletePrivateProfileString(
 			WritePos=ftell(fInput)-DataLeft;
 			continue;
 		}
-		if (strcmp(lpAppName,CurrentSection) !=0) {
+		if (strcmp(lpAppName,CurrentSection)!=0) {
 			continue;
 		}
 		Pos=strchr(Input,'=');
 		if (Pos==NULL) continue;
 		Pos[0]=0;
-		if (strcmp(Input,lpKeyName) !=0) {
+		if (strcmp(Input,lpKeyName)!=0) {
 			WritePos=ftell(fInput)-DataLeft;
 			continue;
 		}
 		{
 			long OldLen=(ftell(fInput)-DataLeft)-WritePos;
 			int Newlen=0;
-			if (OldLen !=Newlen) {
+			if (OldLen!=Newlen) {
 				fInsertSpaces(fInput,WritePos,Newlen-OldLen);
 			}
 			fclose(fInput);
@@ -488,7 +488,7 @@ int _DeletePrivateProfileString(
 		if (Input) { free(Input);  Input=NULL; }
 		if (Data) { free(Data);  Data=NULL; }
 		return 0;
-	} while (result >=0);
+	} while (result>=0);
 	fclose(fInput);
 	if (Input) { free(Input);  Input=NULL; }
 	if (Data) { free(Data);  Data=NULL; }
@@ -513,26 +513,26 @@ int _WritePrivateProfileString(
 	}
 	CurrentSection[0]=0;
 	do {
-		if (strcmp(lpAppName,CurrentSection) !=0) {
+		if (strcmp(lpAppName,CurrentSection)!=0) {
 			Fpos=ftell(fInput)-DataLeft;
 		}
 		result=fGetString2(fInput,&Input,&Data,&DataLen,&DataLeft);
 		if (result <=1) continue;
 		Pos=Input;
-		while (Pos !=NULL) {
+		while (Pos!=NULL) {
 			Pos=strchr(Pos,'/');
-			if (Pos !=NULL) {
+			if (Pos!=NULL) {
 				if (Pos[1]=='/') { Pos[0]=0; } else { Pos +=1; }
 			}
 		}
-		for (count=strlen(&Input[0])-1; count >=0; count --) {
-			if (Input[count] !=' ' && Input[count] !='\r') { break; }
+		for (count=strlen(&Input[0])-1; count>=0; count --) {
+			if (Input[count]!=' '&&Input[count]!='\r') { break; }
 			Input[count]=0;
 		}
 		//stip leading spaces
 		if (strlen(Input) <=1) continue;
 		if (Input[0]=='[') {
-			if (Input[strlen(Input)-1] !=']') continue;
+			if (Input[strlen(Input)-1]!=']') continue;
 			if (strcmp(lpAppName,CurrentSection)==0) {
 				result=-1;
 				continue;
@@ -542,20 +542,20 @@ int _WritePrivateProfileString(
 			WritePos=ftell(fInput)-DataLeft;
 			continue;
 		}
-		if (strcmp(lpAppName,CurrentSection) !=0) {
+		if (strcmp(lpAppName,CurrentSection)!=0) {
 			continue;
 		}
 		Pos=strchr(Input,'=');
 		if (Pos==NULL) continue;
 		Pos[0]=0;
-		if (strcmp(Input,lpKeyName) !=0) {
+		if (strcmp(Input,lpKeyName)!=0) {
 			WritePos=ftell(fInput)-DataLeft;
 			continue;
 		}
 		{
 			long OldLen=(ftell(fInput)-DataLeft)-WritePos;
 			int Newlen=strlen(lpKeyName)+strlen(lpString)+strlen(LineFeed)+1;
-			if (OldLen !=Newlen) {
+			if (OldLen!=Newlen) {
 				fInsertSpaces(fInput,WritePos,Newlen-OldLen);
 			}
 			fseek(fInput,WritePos,SEEK_SET);
@@ -569,7 +569,7 @@ int _WritePrivateProfileString(
 		if (Input) { free(Input);  Input=NULL; }
 		if (Data) { free(Data);  Data=NULL; }
 		return 0;
-	} while (result >=0);
+	} while (result>=0);
 	if (strcmp(lpAppName,CurrentSection)==0) {
 		int len=strlen(lpKeyName)+strlen(lpString)+strlen(LineFeed)+1;
 		fInsertSpaces(fInput,WritePos,len);
@@ -608,7 +608,7 @@ unsigned int _GetPrivateProfileSectionNames(									//added by Witten
 	memset(String,'\0',sizeof(String));
 	memset(Section,'\0',sizeof(Section));
 	fseek(fInput,Fpos,SEEK_SET);
-	while (fgets(String,1024,fInput) !=NULL) {
+	while (fgets(String,1024,fInput)!=NULL) {
 		if (String[0]=='[') {
 			if(String[strlen(String)-3]==']') {
 				strncpy(buf+pos,String+1,strlen(String)-4);
@@ -617,7 +617,7 @@ unsigned int _GetPrivateProfileSectionNames(									//added by Witten
 		}
 		memset(String,'\0',sizeof(String));
 	}
-	while (strchr(buf,'\n') !=NULL) {	//replace all newline characters by null characters
+	while (strchr(buf,'\n')!=NULL) {	//replace all newline characters by null characters
 		seekpos=strrchr(buf,'\n');
 		strncpy(seekpos,"\0",1);
 	}

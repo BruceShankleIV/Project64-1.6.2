@@ -31,10 +31,10 @@ FASTTLB FastTlb[64];
 TLB tlb[32];
 BOOL AddressDefined (DWORD VAddr) {
 	DWORD i;
-	if (VAddr >=0x80000000 && VAddr <=0xBFFFFFFF) return TRUE;
+	if (VAddr>=0x80000000&&VAddr <=0xBFFFFFFF) return TRUE;
 	for (i=0; i<64; i++) {
 		if (FastTlb[i].ValidEntry==FALSE) continue;
-		if (VAddr >=FastTlb[i].VSTART && VAddr <=FastTlb[i].VEND) return TRUE;
+		if (VAddr>=FastTlb[i].VSTART&&VAddr <=FastTlb[i].VEND) return TRUE;
 	}
 	return FALSE;
 }
@@ -49,8 +49,8 @@ void SetupTLB (void) {
 	memset(TLB_ReadMap,0,(0xFFFFF * sizeof(DWORD)));
 	memset(TLB_WriteMap,0,(0xFFFFF * sizeof(DWORD)));
 	for (count=0x80000000; count<0xC0000000; count +=0x1000) {
-		TLB_ReadMap[count>>12]=((DWORD)N64MEM+(count & 0x1FFFFFFF))-count;
-		TLB_WriteMap[count>>12]=((DWORD)N64MEM+(count & 0x1FFFFFFF))-count;
+		TLB_ReadMap[count>>12]=((DWORD)N64MEM+(count&0x1FFFFFFF))-count;
+		TLB_WriteMap[count>>12]=((DWORD)N64MEM+(count&0x1FFFFFFF))-count;
 	}
 	for (count=0; count<32; count ++) { SetupTLB_Entry(count); }
 }
@@ -63,7 +63,7 @@ void SetupTLB_Entry (int Entry) {
 	FastTlb[FastIndx].PHYSSTART=tlb[Entry].EntryLo0.PFN<<12;
 	FastTlb[FastIndx].VALID=tlb[Entry].EntryLo0.V;
 	FastTlb[FastIndx].DIRTY=tlb[Entry].EntryLo0.D;
-	FastTlb[FastIndx].GLOBAL=tlb[Entry].EntryLo0.GLOBAL & tlb[Entry].EntryLo1.GLOBAL;
+	FastTlb[FastIndx].GLOBAL=tlb[Entry].EntryLo0.GLOBAL&tlb[Entry].EntryLo1.GLOBAL;
 	FastTlb[FastIndx].ValidEntry=FALSE;
 	FastIndx=(Entry<<1)+1;
 	FastTlb[FastIndx].VSTART=(tlb[Entry].EntryHi.VPN2<<13)+((tlb[Entry].PageMask.Mask<<12)+0xFFF+1);
@@ -71,7 +71,7 @@ void SetupTLB_Entry (int Entry) {
 	FastTlb[FastIndx].PHYSSTART=tlb[Entry].EntryLo1.PFN<<12;
 	FastTlb[FastIndx].VALID=tlb[Entry].EntryLo1.V;
 	FastTlb[FastIndx].DIRTY=tlb[Entry].EntryLo1.D;
-	FastTlb[FastIndx].GLOBAL=tlb[Entry].EntryLo0.GLOBAL & tlb[Entry].EntryLo1.GLOBAL;
+	FastTlb[FastIndx].GLOBAL=tlb[Entry].EntryLo0.GLOBAL&tlb[Entry].EntryLo1.GLOBAL;
 	FastTlb[FastIndx].ValidEntry=FALSE;
 	for (FastIndx=Entry<<1; FastIndx <=(Entry<<1)+1; FastIndx++) {
 		DWORD count;
@@ -83,7 +83,7 @@ void SetupTLB_Entry (int Entry) {
 		if (FastTlb[FastIndx].VEND <=FastTlb[FastIndx].VSTART) {
 			continue;
 		}
-		if (FastTlb[FastIndx].VSTART >=0x80000000 && FastTlb[FastIndx].VEND <=0xBFFFFFFF) {
+		if (FastTlb[FastIndx].VSTART>=0x80000000&&FastTlb[FastIndx].VEND <=0xBFFFFFFF) {
 			continue;
 		}
 		if (FastTlb[FastIndx].PHYSSTART>0x1FFFFFFF||physend>0x1FFFFFFF) {
@@ -102,11 +102,11 @@ void TLB_Probe (void) {
 	int Counter;
 	INDEX_REGISTER|=0x80000000;
 	for (Counter=0; Counter<32; Counter ++) {
-		DWORD TlbValue=tlb[Counter].EntryHi.Value & (~tlb[Counter].PageMask.Mask<<13);
-		DWORD EntryHi=ENTRYHI_REGISTER & (~tlb[Counter].PageMask.Mask<<13);
+		DWORD TlbValue=tlb[Counter].EntryHi.Value&(~tlb[Counter].PageMask.Mask<<13);
+		DWORD EntryHi=ENTRYHI_REGISTER&(~tlb[Counter].PageMask.Mask<<13);
 		if (TlbValue==EntryHi) {
-			BOOL Global=(tlb[Counter].EntryHi.Value & 0x100) !=0;
-			BOOL SameAsid=((tlb[Counter].EntryHi.Value & 0xFF)==(ENTRYHI_REGISTER & 0xFF));
+			BOOL Global=(tlb[Counter].EntryHi.Value&0x100)!=0;
+			BOOL SameAsid=((tlb[Counter].EntryHi.Value&0xFF)==(ENTRYHI_REGISTER&0xFF));
 			if (Global||SameAsid) {
 				INDEX_REGISTER=Counter;
 				return;
@@ -115,9 +115,9 @@ void TLB_Probe (void) {
 	}
 }
 void TLB_Read (void) {
-	DWORD index=INDEX_REGISTER & 0x1F;
+	DWORD index=INDEX_REGISTER&0x1F;
 	PAGE_MASK_REGISTER=tlb[index].PageMask.Value ;
-	ENTRYHI_REGISTER=(tlb[index].EntryHi.Value & ~tlb[index].PageMask.Value) ;
+	ENTRYHI_REGISTER=(tlb[index].EntryHi.Value&~tlb[index].PageMask.Value) ;
 	ENTRYLO0_REGISTER=tlb[index].EntryLo0.Value;
 	ENTRYLO1_REGISTER=tlb[index].EntryLo1.Value;
 }
@@ -129,7 +129,7 @@ BOOL TranslateVaddr (DWORD * Addr) {
 void _fastcall WriteTLBEntry (int index) {
 	int FastIndx;
 	FastIndx=index<<1;
-	if ((PROGRAM_COUNTER >=FastTlb[FastIndx].VSTART && PROGRAM_COUNTER<FastTlb[FastIndx].VEND && FastTlb[FastIndx].ValidEntry && FastTlb[FastIndx].VALID)||(PROGRAM_COUNTER >=FastTlb[FastIndx+1].VSTART && PROGRAM_COUNTER<FastTlb[FastIndx+1].VEND && FastTlb[FastIndx+1].ValidEntry && FastTlb[FastIndx+1].VALID)) return;
+	if ((PROGRAM_COUNTER>=FastTlb[FastIndx].VSTART&&PROGRAM_COUNTER<FastTlb[FastIndx].VEND&&FastTlb[FastIndx].ValidEntry&&FastTlb[FastIndx].VALID)||(PROGRAM_COUNTER>=FastTlb[FastIndx+1].VSTART&&PROGRAM_COUNTER<FastTlb[FastIndx+1].VEND&&FastTlb[FastIndx+1].ValidEntry&&FastTlb[FastIndx+1].VALID)) return;
 	if (tlb[index].EntryDefined) {
 		DWORD count;
 		for (FastIndx=index<<1; FastIndx <=(index<<1)+1; FastIndx++) {

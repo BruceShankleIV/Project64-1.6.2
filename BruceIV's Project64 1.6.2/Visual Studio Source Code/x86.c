@@ -79,7 +79,7 @@ void AddConstToVariable (DWORD Const,void * Variable) {
 	PUTDST32(RecompPos,Const);
 }
 void AddConstToX86Reg (int x86Reg,DWORD Const) {
-	if ((Const & 0xFFFFFF80) !=0 && (Const & 0xFFFFFF80) !=0xFFFFFF80) {
+	if ((Const&0xFFFFFF80)!=0&&(Const&0xFFFFFF80)!=0xFFFFFF80) {
 		switch (x86Reg) {
 		case x86_EAX: PUTDST16(RecompPos,0xC081); break;
 		case x86_EBX: PUTDST16(RecompPos,0xC381); break;
@@ -161,7 +161,7 @@ void AndConstToVariable (DWORD Const,void * Variable) {
 	PUTDST32(RecompPos,Const);
 }
 void AndConstToX86Reg(int x86Reg,DWORD Const) {
-	if ((Const & 0xFFFFFF80) !=0 && (Const & 0xFFFFFF80) !=0xFFFFFF80) {
+	if ((Const&0xFFFFFF80)!=0&&(Const&0xFFFFFF80)!=0xFFFFFF80) {
 		switch (x86Reg) {
 		case x86_EAX: PUTDST16(RecompPos,0xE081); break;
 		case x86_EBX: PUTDST16(RecompPos,0xE381); break;
@@ -266,7 +266,7 @@ void CompConstToVariable(DWORD Const,void * Variable) {
 	PUTDST32(RecompPos,Const);
 }
 void CompConstToX86reg(int x86Reg,DWORD Const) {
-	if ((Const & 0xFFFFFF80) !=0 && (Const & 0xFFFFFF80) !=0xFFFFFF80) {
+	if ((Const&0xFFFFFF80)!=0&&(Const&0xFFFFFF80)!=0xFFFFFF80) {
 		switch (x86Reg) {
 		case x86_EAX: PUTDST16(RecompPos,0xF881); break;
 		case x86_EBX: PUTDST16(RecompPos,0xFB81); break;
@@ -1629,7 +1629,7 @@ void OrConstToVariable(DWORD Const,void * Variable) {
 	PUTDST32(RecompPos,Const);
 }
 void OrConstToX86Reg(DWORD Const,int  x86Reg) {
-	if ((Const & 0xFFFFFF80) !=0 && (Const & 0xFFFFFF80) !=0xFFFFFF80) {
+	if ((Const&0xFFFFFF80)!=0&&(Const&0xFFFFFF80)!=0xFFFFFF80) {
 		switch (x86Reg) {
 		case x86_EAX: PUTDST16(RecompPos,0xC881); break;
 		case x86_EBX: PUTDST16(RecompPos,0xCB81); break;
@@ -2003,7 +2003,7 @@ void ShiftRightUnsignImmed(int x86reg,BYTE Immediate) {
 	PUTDST8(RecompPos,Immediate);
 }
 void SbbConstFromX86Reg (int x86Reg,DWORD Const) {
-	if ((Const & 0xFFFFFF80) !=0 && (Const & 0xFFFFFF80) !=0xFFFFFF80) {
+	if ((Const&0xFFFFFF80)!=0&&(Const&0xFFFFFF80)!=0xFFFFFF80) {
 		switch (x86Reg) {
 		case x86_EAX: PUTDST16(RecompPos,0xD881); break;
 		case x86_EBX: PUTDST16(RecompPos,0xDB81); break;
@@ -2072,7 +2072,7 @@ void SubConstFromVariable (DWORD Const,void *Variable) {
 	PUTDST32(RecompPos,Const);
 }
 void SubConstFromX86Reg (int x86Reg,DWORD Const) {
-	if ((Const & 0xFFFFFF80) !=0 && (Const & 0xFFFFFF80) !=0xFFFFFF80) {
+	if ((Const&0xFFFFFF80)!=0&&(Const&0xFFFFFF80)!=0xFFFFFF80) {
 		switch (x86Reg) {
 		case x86_EAX: PUTDST16(RecompPos,0xE881); break;
 		case x86_EBX: PUTDST16(RecompPos,0xEB81); break;
@@ -2178,7 +2178,7 @@ void TestX86RegToX86Reg(int Destination,int Source) {
 	PUTDST16(RecompPos,x86Command);
 }
 void XorConstToX86Reg(int x86Reg,DWORD Const) {
-	if ((Const & 0xFFFFFF80) !=0 && (Const & 0xFFFFFF80) !=0xFFFFFF80) {
+	if ((Const&0xFFFFFF80)!=0&&(Const&0xFFFFFF80)!=0xFFFFFF80) {
 		switch (x86Reg) {
 		case x86_EAX: PUTDST16(RecompPos,0xF081); break;
 		case x86_EBX: PUTDST16(RecompPos,0xF381); break;

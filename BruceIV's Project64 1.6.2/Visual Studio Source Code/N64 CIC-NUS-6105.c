@@ -39,13 +39,13 @@ void N64_CIC_NUS_6105(char chl[],char rsp[],int len)
     char key,*lut;
     int i,sgn,mag,mod;
     for (key=0xB,lut=lut0,i=0; i<len; i++) {
-        rsp[i]=(key+5 * chl[i]) & 0xF;
+        rsp[i]=(key+5 * chl[i])&0xF;
         key=lut[rsp[i]];
-        sgn=(rsp[i]>>3) & 0x1;
-        mag=((sgn==1)?~rsp[i]:rsp[i]) & 0x7;
+        sgn=(rsp[i]>>3)&0x1;
+        mag=((sgn==1)?~rsp[i]:rsp[i])&0x7;
         mod=(mag % 3==1)?sgn:1-sgn;
-        if (lut==lut1 && (rsp[i]==0x1||rsp[i]==0x9)) mod=1;
-        if (lut==lut1 && (rsp[i]==0xB||rsp[i]==0xE)) mod=0;
+        if (lut==lut1&&(rsp[i]==0x1||rsp[i]==0x9)) mod=1;
+        if (lut==lut1&&(rsp[i]==0xB||rsp[i]==0xE)) mod=0;
         lut=(mod==1)?lut1:lut0;
     }
 }

@@ -16,7 +16,7 @@ typedef struct {
 } LANG_STR;
 LANG_STR DefaultString[]={
     { LANGUAGE_AUTHOR,    "BruceIV"			  },
-    { LANGUAGE_VERSION,   "19"				  },
+    { LANGUAGE_VERSION,   "19"				  }, // Update to current source version once this gets changed again
     { LANGUAGE_DATE,      "2026 January"		  },
 	{ INI_CURRENT_LANG,   "Language Database (.txt)" },
 	{ INI_AUTHOR,         "Author"                   },
@@ -294,7 +294,7 @@ int CLanguage::GetNumberLang(void) {
 	return m_NoOflangs;
 }
 const char * CLanguage::LangName  (int index) {
-	if (index >=MAX_LANGUAGES) { return NULL; }
+	if (index>=MAX_LANGUAGES) { return NULL; }
 	return m_LangName[index];
 }
 void CLanguage::LoadLanguage  (char * RegLocation) {
@@ -306,7 +306,7 @@ void CLanguage::LoadLanguage  (char * RegLocation) {
 	if (lResult==ERROR_SUCCESS) {
 		DWORD Type,Bytes=sizeof(m_CurrentLangName);
 		lResult=RegQueryValueEx(hKeyResults,"Language",0,&Type,(LPBYTE)(m_CurrentLangName),&Bytes);
-		if (lResult !=ERROR_SUCCESS) { strcpy(m_CurrentLangName,""); }
+		if (lResult!=ERROR_SUCCESS) { strcpy(m_CurrentLangName,""); }
 	}
 	RegCloseKey(hKeyResults);
 	bool Found=false;
@@ -368,12 +368,12 @@ void CLanguage::LoadLangList (void) {
 	HANDLE   search_handle;
 	search_handle=FindFirstFile(SearchString,&find_data);
 	m_NoOflangs=0;
-	if(search_handle !=INVALID_HANDLE_VALUE) {
+	if(search_handle!=INVALID_HANDLE_VALUE) {
 		do {
 			strcpy(m_filenames[m_NoOflangs],Directory);
 			strcat(m_filenames[m_NoOflangs],find_data.cFileName);
 			m_NoOflangs +=1;
-		} while (FindNextFile(search_handle,&find_data) && search_handle !=INVALID_HANDLE_VALUE);
+		} while (FindNextFile(search_handle,&find_data)&&search_handle!=INVALID_HANDLE_VALUE);
 		FindClose(search_handle);
 	}
 	for (int count=0; count<m_NoOflangs; count ++) { FindLangName(count); }
@@ -386,19 +386,19 @@ void CLanguage::LoadStrings  (char * FileName) {
 	while(!feof(file)) {
 		token=0;
 		//Search for token #
-		while(token!='#' && !feof(file)) { fread(&token,1,1,file); }
+		while(token!='#'&&!feof(file)) { fread(&token,1,1,file); }
 		if(feof(file))continue;
 		//get StringID after token
 		fscanf(file,"%d",&m_Strings[m_NoOfStrings].ID);
 		//Search for token #
-		while(token!='#' && !feof(file)) { fread(&token,1,1,file); }
+		while(token!='#'&&!feof(file)) { fread(&token,1,1,file); }
 		if(feof(file))continue;
 		//Search for start of string '"'
-		while(token!='"' && !feof(file)) { fread(&token,1,1,file); }
+		while(token!='"'&&!feof(file)) { fread(&token,1,1,file); }
 		if(feof(file))continue;
 		int pos=0;
 		fread(&token,1,1,file);
-		while(token!='"' && !feof(file)) {
+		while(token!='"'&&!feof(file)) {
 			m_Strings[m_NoOfStrings].Str[pos++]=token;
 			fread(&token,1,1,file);
 			if (pos==MAX_STRING_LEN-2) { token='"'; }
@@ -418,20 +418,20 @@ void CLanguage::FindLangName  (int Index) {
 	while(!feof(file)) {
 		token=0;
 		//Search for token #
-		while(token!='#' && !feof(file)) { fread(&token,1,1,file); }
+		while(token!='#'&&!feof(file)) { fread(&token,1,1,file); }
 		if(feof(file))continue;
 		//get StringID after token
 		fscanf(file,"%d",&StringID);
 		//Search for token #
-		while(token!='#' && !feof(file)) { fread(&token,1,1,file); }
+		while(token!='#'&&!feof(file)) { fread(&token,1,1,file); }
 		if(feof(file))continue;
-		if (StringID !=LANGUAGE_NAME) continue;
+		if (StringID!=LANGUAGE_NAME) continue;
 		//Search for start of string '"'
-		while(token!='"' && !feof(file)) { fread(&token,1,1,file); }
+		while(token!='"'&&!feof(file)) { fread(&token,1,1,file); }
 		if(feof(file))continue;
 		int pos=0;
 		fread(&token,1,1,file);
-		while(token!='"' && !feof(file)) {
+		while(token!='"'&&!feof(file)) {
 			m_LangName[Index][pos++]=token;
 			fread(&token,1,1,file);
 			if (pos==sizeof(m_LangName[Index])-2) { token='"'; }
@@ -472,7 +472,7 @@ void CLanguage::SetCurrentLang (HMENU hMenu,int MenuIndx) {
 char * GS (int StringID) {
 	int count;
 	char * Ret=lng.GetString(StringID);
-	if (Ret !=NULL) { return Ret; }
+	if (Ret!=NULL) { return Ret; }
 	for (count=0; count<(sizeof(DefaultString) / sizeof(LANG_STR)); count ++) {
 		if (DefaultString[count].ID==StringID) { return DefaultString[count].Str; }
 	}

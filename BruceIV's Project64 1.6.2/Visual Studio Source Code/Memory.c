@@ -42,7 +42,7 @@ BOOL WrittenToRom;
 DWORD WroteToRom;
 DWORD TempValue;
 int Allocate_ROM (void) {
-	if (ROM !=NULL) { 	VirtualFree(ROM,0,MEM_RELEASE); }
+	if (ROM!=NULL) { 	VirtualFree(ROM,0,MEM_RELEASE); }
 	ROM=(BYTE *)VirtualAlloc(NULL,RomFileSize,MEM_RESERVE|MEM_COMMIT|MEM_TOP_DOWN,PAGE_READWRITE);
 	WrittenToRom=FALSE;
 	return ROM==NULL?FALSE:TRUE;
@@ -99,9 +99,9 @@ int Allocate_Memory (void) {
 		return FALSE;
 	}
 	RDRAM=(unsigned char *)(N64MEM);
-	DMEM =(unsigned char *)(N64MEM+0x04000000);
-	IMEM =(unsigned char *)(N64MEM+0x04001000);
-	ROM  =NULL;
+	DMEM=(unsigned char *)(N64MEM+0x04000000);
+	IMEM=(unsigned char *)(N64MEM+0x04001000);
+	ROM =NULL;
 	/* Jump Table */
 	if (VirtualAlloc(JumpTable,0x00400000,MEM_COMMIT,PAGE_READWRITE)==NULL) {
 		DisplayError(GS(MSG_MEM_ALLOC_ERROR));
@@ -115,7 +115,7 @@ int Allocate_Memory (void) {
 }
 void Compile_LB (int Reg,DWORD Addr,BOOL SignExtend) {
 	if (!TranslateVaddr(&Addr)) goto Move;
-	switch (Addr & 0xFFF00000) {
+	switch (Addr&0xFFF00000) {
 	case 0x00000000:
 	case 0x00100000:
 	case 0x00200000:
@@ -137,7 +137,7 @@ void Compile_LB (int Reg,DWORD Addr,BOOL SignExtend) {
 }
 void Compile_LH (int Reg,DWORD Addr,BOOL SignExtend) {
 	if (!TranslateVaddr(&Addr)) goto Move;
-	switch (Addr & 0xFFF00000) {
+	switch (Addr&0xFFF00000) {
 	case 0x00000000:
 	case 0x00100000:
 	case 0x00200000:
@@ -162,7 +162,7 @@ void Compile_LW (int Reg,DWORD Addr) {
 		Const86
 		return; // Original 1.6 did not have this, assuming it's a mistake
 	}
-	switch (Addr & 0xFFF00000) {
+	switch (Addr&0xFFF00000) {
 	case 0x00000000:
 	case 0x00100000:
 	case 0x00200000:
@@ -256,7 +256,7 @@ void Compile_LW (int Reg,DWORD Addr) {
 		case 0x04500000: MoveVariableToX86reg(&AI_DRAM_ADDR_REG,Reg); break;
 #endif
 		case 0x04500004:
-			if (AiReadLength !=NULL) {
+			if (AiReadLength!=NULL) {
 				Pushad();
 				Call_Direct(AiReadLength);
 				MoveX86regToVariable(x86_EAX,&TempValue);
@@ -334,12 +334,12 @@ void Compile_LW (int Reg,DWORD Addr) {
 		Var86
 		break;
 	default:
-		MoveConstToX86reg(((Addr & 0xFFFF)<<16)|(Addr & 0xFFFF),Reg);
+		MoveConstToX86reg(((Addr&0xFFFF)<<16)|(Addr&0xFFFF),Reg);
 	}
 }
 void Compile_SB_Const (BYTE Value,DWORD Addr) {
 	FalseVaddr
-	switch (Addr & 0xFFF00000) {
+	switch (Addr&0xFFF00000) {
 	case 0x00000000:
 	case 0x00100000:
 	case 0x00200000:
@@ -353,7 +353,7 @@ void Compile_SB_Const (BYTE Value,DWORD Addr) {
 }
 void Compile_SB_Register (int x86Reg,DWORD Addr) {
 	FalseVaddr
-	switch (Addr & 0xFFF00000) {
+	switch (Addr&0xFFF00000) {
 	case 0x00000000:
 	case 0x00100000:
 	case 0x00200000:
@@ -367,7 +367,7 @@ void Compile_SB_Register (int x86Reg,DWORD Addr) {
 }
 void Compile_SH_Const (WORD Value,DWORD Addr) {
 	FalseVaddr
-	switch (Addr & 0xFFF00000) {
+	switch (Addr&0xFFF00000) {
 	case 0x00000000:
 	case 0x00100000:
 	case 0x00200000:
@@ -381,7 +381,7 @@ void Compile_SH_Const (WORD Value,DWORD Addr) {
 }
 void Compile_SH_Register (int x86Reg,DWORD Addr) {
 	FalseVaddr
-	switch (Addr & 0xFFF00000) {
+	switch (Addr&0xFFF00000) {
 	case 0x00000000:
 	case 0x00100000:
 	case 0x00200000:
@@ -396,7 +396,7 @@ void Compile_SH_Register (int x86Reg,DWORD Addr) {
 void Compile_SW_Const (DWORD Value,DWORD Addr) {
 	BYTE * Jump;
 	FalseVaddr
-	switch (Addr & 0xFFF00000) {
+	switch (Addr&0xFFF00000) {
 	case 0x00000000:
 	case 0x00100000:
 	case 0x00200000:
@@ -447,40 +447,40 @@ void Compile_SW_Const (DWORD Value,DWORD Addr) {
 			{
 				DWORD ModValue;
 				ModValue=0;
-				if ((Value & SP_CLR_HALT) !=0) { ModValue|=SP_STATUS_HALT; }
-				if ((Value & SP_CLR_BROKE) !=0) { ModValue|=SP_STATUS_BROKE; }
-				if ((Value & SP_CLR_SSTEP) !=0) { ModValue|=SP_STATUS_SSTEP; }
-				if ((Value & SP_CLR_INTR_BREAK) !=0) { ModValue|=SP_STATUS_INTR_BREAK; }
-				if ((Value & SP_CLR_SIG0) !=0) { ModValue|=SP_STATUS_SIG0; }
-				if ((Value & SP_CLR_SIG1) !=0) { ModValue|=SP_STATUS_SIG1; }
-				if ((Value & SP_CLR_SIG2) !=0) { ModValue|=SP_STATUS_SIG2; }
-				if ((Value & SP_CLR_SIG3) !=0) { ModValue|=SP_STATUS_SIG3; }
-				if ((Value & SP_CLR_SIG4) !=0) { ModValue|=SP_STATUS_SIG4; }
-				if ((Value & SP_CLR_SIG5) !=0) { ModValue|=SP_STATUS_SIG5; }
-				if ((Value & SP_CLR_SIG6) !=0) { ModValue|=SP_STATUS_SIG6; }
-				if ((Value & SP_CLR_SIG7) !=0) { ModValue|=SP_STATUS_SIG7; }
-				if (ModValue !=0) AndConstToVariable(~ModValue,&SP_STATUS_REG);
+				if ((Value&SP_CLR_HALT)!=0) { ModValue|=SP_STATUS_HALT; }
+				if ((Value&SP_CLR_BROKE)!=0) { ModValue|=SP_STATUS_BROKE; }
+				if ((Value&SP_CLR_SSTEP)!=0) { ModValue|=SP_STATUS_SSTEP; }
+				if ((Value&SP_CLR_INTR_BREAK)!=0) { ModValue|=SP_STATUS_INTR_BREAK; }
+				if ((Value&SP_CLR_SIG0)!=0) { ModValue|=SP_STATUS_SIG0; }
+				if ((Value&SP_CLR_SIG1)!=0) { ModValue|=SP_STATUS_SIG1; }
+				if ((Value&SP_CLR_SIG2)!=0) { ModValue|=SP_STATUS_SIG2; }
+				if ((Value&SP_CLR_SIG3)!=0) { ModValue|=SP_STATUS_SIG3; }
+				if ((Value&SP_CLR_SIG4)!=0) { ModValue|=SP_STATUS_SIG4; }
+				if ((Value&SP_CLR_SIG5)!=0) { ModValue|=SP_STATUS_SIG5; }
+				if ((Value&SP_CLR_SIG6)!=0) { ModValue|=SP_STATUS_SIG6; }
+				if ((Value&SP_CLR_SIG7)!=0) { ModValue|=SP_STATUS_SIG7; }
+				if (ModValue!=0) AndConstToVariable(~ModValue,&SP_STATUS_REG);
 				ModValue=0;
-				if ((Value & SP_SET_HALT) !=0) { ModValue|=SP_STATUS_HALT; }
-				if ((Value & SP_SET_SSTEP) !=0) { ModValue|=SP_STATUS_SSTEP; }
-				if ((Value & SP_SET_INTR_BREAK) !=0) { ModValue|=SP_STATUS_INTR_BREAK;  }
-				if ((Value & SP_SET_SIG0) !=0) { ModValue|=SP_STATUS_SIG0; }
-				if ((Value & SP_SET_SIG1) !=0) { ModValue|=SP_STATUS_SIG1; }
-				if ((Value & SP_SET_SIG2) !=0) { ModValue|=SP_STATUS_SIG2; }
-				if ((Value & SP_SET_SIG3) !=0) { ModValue|=SP_STATUS_SIG3; }
-				if ((Value & SP_SET_SIG4) !=0) { ModValue|=SP_STATUS_SIG4; }
-				if ((Value & SP_SET_SIG5) !=0) { ModValue|=SP_STATUS_SIG5; }
-				if ((Value & SP_SET_SIG6) !=0) { ModValue|=SP_STATUS_SIG6; }
-				if ((Value & SP_SET_SIG7) !=0) { ModValue|=SP_STATUS_SIG7; }
-				if (ModValue !=0) OrConstToVariable(ModValue,&SP_STATUS_REG);
-				if ((Value & SP_SET_SIG0) !=0 && AudioSignal)
+				if ((Value&SP_SET_HALT)!=0) { ModValue|=SP_STATUS_HALT; }
+				if ((Value&SP_SET_SSTEP)!=0) { ModValue|=SP_STATUS_SSTEP; }
+				if ((Value&SP_SET_INTR_BREAK)!=0) { ModValue|=SP_STATUS_INTR_BREAK;  }
+				if ((Value&SP_SET_SIG0)!=0) { ModValue|=SP_STATUS_SIG0; }
+				if ((Value&SP_SET_SIG1)!=0) { ModValue|=SP_STATUS_SIG1; }
+				if ((Value&SP_SET_SIG2)!=0) { ModValue|=SP_STATUS_SIG2; }
+				if ((Value&SP_SET_SIG3)!=0) { ModValue|=SP_STATUS_SIG3; }
+				if ((Value&SP_SET_SIG4)!=0) { ModValue|=SP_STATUS_SIG4; }
+				if ((Value&SP_SET_SIG5)!=0) { ModValue|=SP_STATUS_SIG5; }
+				if ((Value&SP_SET_SIG6)!=0) { ModValue|=SP_STATUS_SIG6; }
+				if ((Value&SP_SET_SIG7)!=0) { ModValue|=SP_STATUS_SIG7; }
+				if (ModValue!=0) OrConstToVariable(ModValue,&SP_STATUS_REG);
+				if ((Value&SP_SET_SIG0)!=0&&AudioSignal)
 				{
 					OrConstToVariable(MI_INTR_SP,&MI_INTR_REG);
 					Pushad();
 					InterruptsCD
 					Popad();
 				}
-				if ((Value & SP_CLR_INTR) !=0) {
+				if ((Value&SP_CLR_INTR)!=0) {
 					AndConstToVariable(~MI_INTR_SP,&MI_INTR_REG);
 					Pushad();
 					Call_Direct(RunRsp);
@@ -494,7 +494,7 @@ void Compile_SW_Const (DWORD Value,DWORD Addr) {
 			}
 			break;
 		case 0x0404001C: MoveConstToVariable(0,&SP_SEMAPHORE_REG); break;
-		case 0x04080000: MoveConstToVariable(Value & 0xFFC,&SP_PC_REG);
+		case 0x04080000: MoveConstToVariable(Value&0xFFC,&SP_PC_REG);
 		}
 		break;
 	case 0x04300000:
@@ -503,44 +503,44 @@ void Compile_SW_Const (DWORD Value,DWORD Addr) {
 			{
 				DWORD ModValue;
 				ModValue=0x7F;
-				if ((Value & MI_CLR_INIT) !=0) { ModValue|=MI_MODE_INIT; }
-				if ((Value & MI_CLR_EBUS) !=0) { ModValue|=MI_MODE_EBUS; }
-				if ((Value & MI_CLR_RDRAM) !=0) { ModValue|=MI_MODE_RDRAM; }
-				if (ModValue !=0) AndConstToVariable(~ModValue,&MI_MODE_REG);
-				ModValue=(Value & 0x7F);
-				if ((Value & MI_SET_INIT) !=0) { ModValue|=MI_MODE_INIT; }
-				if ((Value & MI_SET_EBUS) !=0) { ModValue|=MI_MODE_EBUS; }
-				if ((Value & MI_SET_RDRAM) !=0) { ModValue|=MI_MODE_RDRAM; }
-				if (ModValue !=0) OrConstToVariable(ModValue,&MI_MODE_REG);
-				if ((Value & MI_CLR_DP_INTR) !=0) AndConstToVariable(~MI_INTR_DP,&MI_INTR_REG);
+				if ((Value&MI_CLR_INIT)!=0) { ModValue|=MI_MODE_INIT; }
+				if ((Value&MI_CLR_EBUS)!=0) { ModValue|=MI_MODE_EBUS; }
+				if ((Value&MI_CLR_RDRAM)!=0) { ModValue|=MI_MODE_RDRAM; }
+				if (ModValue!=0) AndConstToVariable(~ModValue,&MI_MODE_REG);
+				ModValue=(Value&0x7F);
+				if ((Value&MI_SET_INIT)!=0) { ModValue|=MI_MODE_INIT; }
+				if ((Value&MI_SET_EBUS)!=0) { ModValue|=MI_MODE_EBUS; }
+				if ((Value&MI_SET_RDRAM)!=0) { ModValue|=MI_MODE_RDRAM; }
+				if (ModValue!=0) OrConstToVariable(ModValue,&MI_MODE_REG);
+				if ((Value&MI_CLR_DP_INTR)!=0) AndConstToVariable(~MI_INTR_DP,&MI_INTR_REG);
 			}
 			break;
 		case 0x0430000C:
 			{
 				DWORD ModValue;
 				ModValue=0;
-				if ((Value & MI_INTR_MASK_CLR_SP) !=0) { ModValue|=MI_INTR_MASK_SP; }
-				if ((Value & MI_INTR_MASK_CLR_SI) !=0) { ModValue|=MI_INTR_MASK_SI; }
-				if ((Value & MI_INTR_MASK_CLR_AI) !=0) { ModValue|=MI_INTR_MASK_AI; }
-				if ((Value & MI_INTR_MASK_CLR_VI) !=0) { ModValue|=MI_INTR_MASK_VI; }
-				if ((Value & MI_INTR_MASK_CLR_PI) !=0) { ModValue|=MI_INTR_MASK_PI; }
-				if ((Value & MI_INTR_MASK_CLR_DP) !=0) { ModValue|=MI_INTR_MASK_DP; }
-				if (ModValue !=0) AndConstToVariable(~ModValue,&MI_INTR_MASK_REG);
+				if ((Value&MI_INTR_MASK_CLR_SP)!=0) { ModValue|=MI_INTR_MASK_SP; }
+				if ((Value&MI_INTR_MASK_CLR_SI)!=0) { ModValue|=MI_INTR_MASK_SI; }
+				if ((Value&MI_INTR_MASK_CLR_AI)!=0) { ModValue|=MI_INTR_MASK_AI; }
+				if ((Value&MI_INTR_MASK_CLR_VI)!=0) { ModValue|=MI_INTR_MASK_VI; }
+				if ((Value&MI_INTR_MASK_CLR_PI)!=0) { ModValue|=MI_INTR_MASK_PI; }
+				if ((Value&MI_INTR_MASK_CLR_DP)!=0) { ModValue|=MI_INTR_MASK_DP; }
+				if (ModValue!=0) AndConstToVariable(~ModValue,&MI_INTR_MASK_REG);
 				ModValue=0;
-				if ((Value & MI_INTR_MASK_SET_SP) !=0) { ModValue|=MI_INTR_MASK_SP; }
-				if ((Value & MI_INTR_MASK_SET_SI) !=0) { ModValue|=MI_INTR_MASK_SI; }
-				if ((Value & MI_INTR_MASK_SET_AI) !=0) { ModValue|=MI_INTR_MASK_AI; }
-				if ((Value & MI_INTR_MASK_SET_VI) !=0) { ModValue|=MI_INTR_MASK_VI; }
-				if ((Value & MI_INTR_MASK_SET_PI) !=0) { ModValue|=MI_INTR_MASK_PI; }
-				if ((Value & MI_INTR_MASK_SET_DP) !=0) { ModValue|=MI_INTR_MASK_DP; }
-				if (ModValue !=0) OrConstToVariable(ModValue,&MI_INTR_MASK_REG);
+				if ((Value&MI_INTR_MASK_SET_SP)!=0) { ModValue|=MI_INTR_MASK_SP; }
+				if ((Value&MI_INTR_MASK_SET_SI)!=0) { ModValue|=MI_INTR_MASK_SI; }
+				if ((Value&MI_INTR_MASK_SET_AI)!=0) { ModValue|=MI_INTR_MASK_AI; }
+				if ((Value&MI_INTR_MASK_SET_VI)!=0) { ModValue|=MI_INTR_MASK_VI; }
+				if ((Value&MI_INTR_MASK_SET_PI)!=0) { ModValue|=MI_INTR_MASK_PI; }
+				if ((Value&MI_INTR_MASK_SET_DP)!=0) { ModValue|=MI_INTR_MASK_DP; }
+				if (ModValue!=0) OrConstToVariable(ModValue,&MI_INTR_MASK_REG);
 			}
 		}
 		break;
 	case 0x04400000:
 		switch (Addr) {
 		case 0x04400000:
-			if (ViStatusChanged !=NULL) {
+			if (ViStatusChanged!=NULL) {
 				CompConstToVariable(Value,&VI_STATUS_REG);
 				JeLabel8(0);
 				Jump=RecompPos-1;
@@ -551,9 +551,9 @@ void Compile_SW_Const (DWORD Value,DWORD Addr) {
 				*((BYTE *)(Jump))=(BYTE)(RecompPos-Jump-1);
 			}
 			break;
-		case 0x04400004: MoveConstToVariable((Value & 0xFFFFFF),&VI_ORIGIN_REG); break;
+		case 0x04400004: MoveConstToVariable((Value&0xFFFFFF),&VI_ORIGIN_REG); break;
 		case 0x04400008:
-			if (ViWidthChanged !=NULL) {
+			if (ViWidthChanged!=NULL) {
 				CompConstToVariable(Value,&VI_WIDTH_REG);
 				JeLabel8(0);
 				Jump=RecompPos-1;
@@ -591,7 +591,7 @@ void Compile_SW_Const (DWORD Value,DWORD Addr) {
 			Call_Direct(AiLenChanged);
 			Popad();
 			break;
-		case 0x04500008: MoveConstToVariable((Value & 1),&AI_CONTROL_REG); break;
+		case 0x04500008: MoveConstToVariable((Value&1),&AI_CONTROL_REG); break;
 		case 0x0450000C:
 			/* Clear Interrupt */;
 			AndConstToVariable(~MI_INTR_AI,&MI_INTR_REG);
@@ -622,22 +622,22 @@ void Compile_SW_Const (DWORD Value,DWORD Addr) {
 			Popad();
 			break;
 		case 0x04600010:
-			if ((Value & PI_CLR_INTR) !=0) {
+			if ((Value&PI_CLR_INTR)!=0) {
 				AndConstToVariable(~MI_INTR_PI,&MI_INTR_REG);
 				Pushad();
 				InterruptsCD
 				Popad();
 			}
 			break;
-		case 0x04600014: MoveConstToVariable((Value & 0xFF),&PI_DOMAIN1_REG); break;
-		case 0x04600018: MoveConstToVariable((Value & 0xFF),&PI_BSD_DOM1_PWD_REG); break;
-		case 0x0460001C: MoveConstToVariable((Value & 0xFF),&PI_BSD_DOM1_PGS_REG); break;
-		case 0x04600020: MoveConstToVariable((Value & 0xFF),&PI_BSD_DOM1_RLS_REG); break;
+		case 0x04600014: MoveConstToVariable((Value&0xFF),&PI_DOMAIN1_REG); break;
+		case 0x04600018: MoveConstToVariable((Value&0xFF),&PI_BSD_DOM1_PWD_REG); break;
+		case 0x0460001C: MoveConstToVariable((Value&0xFF),&PI_BSD_DOM1_PGS_REG); break;
+		case 0x04600020: MoveConstToVariable((Value&0xFF),&PI_BSD_DOM1_RLS_REG); break;
 #ifndef MIN_SIZE
-		case 0x04600024: MoveConstToVariable((Value & 0xFF),&PI_DOMAIN2_REG); break;
-		case 0x04600028: MoveConstToVariable((Value & 0xFF),&PI_BSD_DOM2_PWD_REG); break;
-		case 0x0460002C: MoveConstToVariable((Value & 0xFF),&PI_BSD_DOM2_PGS_REG); break;
-		case 0x04600030: MoveConstToVariable((Value & 0xFF),&PI_BSD_DOM2_RLS_REG);
+		case 0x04600024: MoveConstToVariable((Value&0xFF),&PI_DOMAIN2_REG); break;
+		case 0x04600028: MoveConstToVariable((Value&0xFF),&PI_BSD_DOM2_PWD_REG); break;
+		case 0x0460002C: MoveConstToVariable((Value&0xFF),&PI_BSD_DOM2_PGS_REG); break;
+		case 0x04600030: MoveConstToVariable((Value&0xFF),&PI_BSD_DOM2_RLS_REG);
 #endif
 		}
 		break;
@@ -683,7 +683,7 @@ void Compile_SW_Const (DWORD Value,DWORD Addr) {
 void Compile_SW_Register (int x86Reg,DWORD Addr) {
 	BYTE * Jump;
 	FalseVaddr
-	switch (Addr & 0xFFF00000) {
+	switch (Addr&0xFFF00000) {
 	case 0x00000000:
 	case 0x00100000:
 	case 0x00200000:
@@ -757,7 +757,7 @@ void Compile_SW_Register (int x86Reg,DWORD Addr) {
 	case 0x04400000:
 		switch (Addr) {
 		case 0x04400000:
-			if (ViStatusChanged !=NULL) {
+			if (ViStatusChanged!=NULL) {
 				CompX86regToVariable(x86Reg,&VI_STATUS_REG);
 				JeLabel8(0);
 				Jump=RecompPos-1;
@@ -773,7 +773,7 @@ void Compile_SW_Register (int x86Reg,DWORD Addr) {
 			AndConstToVariable(0xFFFFFF,&VI_ORIGIN_REG);
 			break;
 		case 0x04400008:
-			if (ViWidthChanged !=NULL) {
+			if (ViWidthChanged!=NULL) {
 				CompX86regToVariable(x86Reg,&VI_WIDTH_REG);
 				JeLabel8(0);
 				Jump=RecompPos-1;
@@ -927,7 +927,7 @@ void Compile_SW_Register (int x86Reg,DWORD Addr) {
 int r4300i_Command_MemoryFilter(DWORD dwExptCode,LPEXCEPTION_POINTERS lpEP) {
 	DWORD MemAddress=(char *)lpEP->ExceptionRecord->ExceptionInformation[1]-(char *)N64MEM;
 	EXCEPTION_RECORD exRec;
-	if (dwExptCode !=EXCEPTION_ACCESS_VIOLATION) {
+	if (dwExptCode!=EXCEPTION_ACCESS_VIOLATION) {
 		return EXCEPTION_CONTINUE_SEARCH;
 	}
 	exRec=*lpEP->ExceptionRecord;
@@ -955,13 +955,13 @@ int r4300i_CPU_MemoryFilter (DWORD dwExptCode,LPEXCEPTION_POINTERS lpEP) {
 	EXCEPTION_RECORD exRec;
 	BYTE * ReadPos,* TypePos;
 	void * Reg;
-	if (dwExptCode !=EXCEPTION_ACCESS_VIOLATION) {
+	if (dwExptCode!=EXCEPTION_ACCESS_VIOLATION) {
 		return EXCEPTION_CONTINUE_SEARCH;
 	}
 	TypePos=(unsigned char *)lpEP->ContextRecord->Eip;
 	exRec=*lpEP->ExceptionRecord;
 	if ((int)(MemAddress)<0||MemAddress>0x1FFFFFFF) { return EXCEPTION_CONTINUE_SEARCH; }
-	if (*TypePos==0xF3 && *(TypePos+1)==0xA5) {
+	if (*TypePos==0xF3&&*(TypePos+1)==0xA5) {
 		DWORD Start,End,count,OldProtect;
 		Start=(lpEP->ContextRecord->Edi-(DWORD)N64MEM);
 		End=(Start+(lpEP->ContextRecord->Ecx<<2)-1);
@@ -972,21 +972,21 @@ int r4300i_CPU_MemoryFilter (DWORD dwExptCode,LPEXCEPTION_POINTERS lpEP) {
 			for (count=Start; count<End; count +=0x1000) {
 				if (N64_Blocks.NoOfRDRAMBlocks[(count>>12)]>0) {
 					N64_Blocks.NoOfRDRAMBlocks[(count>>12)]=0;
-					memset(JumpTable+((count & 0x00FFFFF0)>>2),0,0x1000);
+					memset(JumpTable+((count&0x00FFFFF0)>>2),0,0x1000);
 					*(DelaySlotTable+count)=NULL;
 					VirtualProtect(N64MEM+count,4,PAGE_READWRITE,&OldProtect);
 				}
 			}
 			return EXCEPTION_CONTINUE_EXECUTION;
 		}
-		if (Start >=0x04000000 && End<0x04001000) {
+		if (Start>=0x04000000&&End<0x04001000) {
 			N64_Blocks.NoOfDMEMBlocks=0;
 			memset(JumpTable+(0x04000000>>2),0,0x1000);
 			*(DelaySlotTable+(0x04000000>>12))=NULL;
 			VirtualProtect(N64MEM+0x04000000,4,PAGE_READWRITE,&OldProtect);
 			return EXCEPTION_CONTINUE_EXECUTION;
 		}
-		if (Start >=0x04001000 && End<0x04002000) {
+		if (Start>=0x04001000&&End<0x04002000) {
 			N64_Blocks.NoOfIMEMBlocks=0;
 			memset(JumpTable+(0x04001000>>2),0,0x1000);
 			*(DelaySlotTable+(0x04001000>>12))=NULL;
@@ -995,20 +995,20 @@ int r4300i_CPU_MemoryFilter (DWORD dwExptCode,LPEXCEPTION_POINTERS lpEP) {
 		}
 		return EXCEPTION_CONTINUE_SEARCH;
 	}
-	if (*TypePos==0x0F && *(TypePos+1)==0xB6) {
+	if (*TypePos==0x0F&&*(TypePos+1)==0xB6) {
 		ReadPos=TypePos+2;
-	} else if (*TypePos==0x0F && *(TypePos+1)==0xB7) {
+	} else if (*TypePos==0x0F&&*(TypePos+1)==0xB7) {
 		ReadPos=TypePos+2;
-	} else if (*TypePos==0x0F && *(TypePos+1)==0xBE) {
+	} else if (*TypePos==0x0F&&*(TypePos+1)==0xBE) {
 		ReadPos=TypePos+2;
-	} else if (*TypePos==0x0F && *(TypePos+1)==0xBF) {
+	} else if (*TypePos==0x0F&&*(TypePos+1)==0xBF) {
 		ReadPos=TypePos+2;
 	} else if (*TypePos==0x66) {
 		ReadPos=TypePos+2;
 	} else {
 		ReadPos=TypePos+1;
 	}
-	switch ((*ReadPos & 0x38)) {
+	switch ((*ReadPos&0x38)) {
 	case 0x00: Reg=&lpEP->ContextRecord->Eax; break;
 	case 0x08: Reg=&lpEP->ContextRecord->Ecx; break;
 	case 0x10: Reg=&lpEP->ContextRecord->Edx; break;
@@ -1018,7 +1018,7 @@ int r4300i_CPU_MemoryFilter (DWORD dwExptCode,LPEXCEPTION_POINTERS lpEP) {
 	case 0x30: Reg=&lpEP->ContextRecord->Esi; break;
 	case 0x38: Reg=&lpEP->ContextRecord->Edi; break;
 	}
-	switch ((*ReadPos & 0xC7)) {
+	switch ((*ReadPos&0xC7)) {
 	case 0:
 	case 1:
 	case 2:
@@ -1061,7 +1061,7 @@ int r4300i_CPU_MemoryFilter (DWORD dwExptCode,LPEXCEPTION_POINTERS lpEP) {
 			if (UseCache==REG_CACHE_OFF) {
 				if (!BF_Trigger) {
 					HandleModal1(hMainWindow);
-					DisplayError"%s\n\nr4300i_CPU_MemoryFilter-switch(*TypePos)-case 0x0F-switch(*(TypePos+1))-case 0xBF:",GS(N64_CRASH);
+					DisplayError("%s\n\nr4300i_CPU_MemoryFilter-switch(*TypePos)-case 0x0F-switch(*(TypePos+1))-case 0xBF:"),GS(N64_CRASH);
 					HandleModal2(hMainWindow);
 					BF_Trigger=TRUE;
 				}
@@ -1084,7 +1084,7 @@ int r4300i_CPU_MemoryFilter (DWORD dwExptCode,LPEXCEPTION_POINTERS lpEP) {
 			lpEP->ContextRecord->Eip=(DWORD)ReadPos;
 			return EXCEPTION_CONTINUE_EXECUTION;
 		case 0xC7:
-			if (Reg !=&lpEP->ContextRecord->Eax) { return EXCEPTION_CONTINUE_SEARCH; }
+			if (Reg!=&lpEP->ContextRecord->Eax) { return EXCEPTION_CONTINUE_SEARCH; }
 			r4300i_SH_NonMemory(MemAddress,*(WORD *)ReadPos);
 			lpEP->ContextRecord->Eip=(DWORD)(ReadPos+2);
 			return EXCEPTION_CONTINUE_EXECUTION;
@@ -1109,12 +1109,12 @@ int r4300i_CPU_MemoryFilter (DWORD dwExptCode,LPEXCEPTION_POINTERS lpEP) {
 		lpEP->ContextRecord->Eip=(DWORD)ReadPos;
 		return EXCEPTION_CONTINUE_EXECUTION;
 	case 0xC6:
-		if (Reg !=&lpEP->ContextRecord->Eax) { return EXCEPTION_CONTINUE_SEARCH; }
+		if (Reg!=&lpEP->ContextRecord->Eax) { return EXCEPTION_CONTINUE_SEARCH; }
 		r4300i_SB_NonMemory(MemAddress,*(BYTE *)ReadPos);
 		lpEP->ContextRecord->Eip=(DWORD)(ReadPos+1);
 		return EXCEPTION_CONTINUE_EXECUTION;
 	case 0xC7:
-		if (Reg !=&lpEP->ContextRecord->Eax) { return EXCEPTION_CONTINUE_SEARCH; }
+		if (Reg!=&lpEP->ContextRecord->Eax) { return EXCEPTION_CONTINUE_SEARCH; }
 		r4300i_SW_NonMemory(MemAddress,*(DWORD *)ReadPos);
 		lpEP->ContextRecord->Eip=(DWORD)(ReadPos+4);
 		return EXCEPTION_CONTINUE_EXECUTION;
@@ -1123,9 +1123,9 @@ int r4300i_CPU_MemoryFilter (DWORD dwExptCode,LPEXCEPTION_POINTERS lpEP) {
 	}
 }
 int r4300i_LB_NonMemory (DWORD PAddr,DWORD * Value,BOOL SignExtend) {
-	if (PAddr >=0x10000000 && PAddr<0x16000000) {
+	if (PAddr>=0x10000000&&PAddr<0x16000000) {
 		if (WrittenToRom) return FALSE;
-		if ((PAddr & 2)==0) { PAddr=(PAddr+4) ^ 2; }
+		if ((PAddr&2)==0) { PAddr=(PAddr+4) ^ 2; }
 		if ((PAddr-0x10000000)<RomFileSize) {
 			if (SignExtend) {
 				(int)* Value=(char)ROM[PAddr-0x10000000];
@@ -1161,15 +1161,15 @@ BOOL r4300i_LH_VAddr (DWORD VAddr,WORD * Value) {
 int r4300i_LW_NonMemory (DWORD PAddr,DWORD * Value) {
 	DWORD base;
 	// 0x06000000 0x08000000 N64DD IPL (J)
-	if (PAddr >=0x06000000 && PAddr<0x08000000) {
+	if (PAddr>=0x06000000&&PAddr<0x08000000) {
 		base=0x06000000;
 		goto HandleROM;
 	}
-	if (PAddr >=0x10000000 && PAddr<0x16000000) {
+	if (PAddr>=0x10000000&&PAddr<0x16000000) {
 		base=0x10000000;
 		goto HandleROM;
 	}
-	if (PAddr >=0x06000000 && PAddr<0x08000000) {
+	if (PAddr>=0x06000000&&PAddr<0x08000000) {
 		if (WrittenToRom) {
 			* Value=WroteToRom;
 			WrittenToRom=FALSE;
@@ -1179,12 +1179,12 @@ int r4300i_LW_NonMemory (DWORD PAddr,DWORD * Value) {
 			* Value=*(DWORD *)&ROM[PAddr-0x06000000];
 			return TRUE;
 		} else {
-			* Value=PAddr & 0xFFFF;
+			* Value=PAddr&0xFFFF;
 			* Value=(* Value<<16)|* Value;
 			return FALSE;
 		}
 	}
-	if (PAddr >=0x10000000 && PAddr<0x16000000) {
+	if (PAddr>=0x10000000&&PAddr<0x16000000) {
 		if (WrittenToRom) {
 			* Value=WroteToRom;
 			WrittenToRom=FALSE;
@@ -1194,12 +1194,12 @@ int r4300i_LW_NonMemory (DWORD PAddr,DWORD * Value) {
 			* Value=*(DWORD *)&ROM[PAddr-0x10000000];
 			return TRUE;
 		} else {
-			* Value=PAddr & 0xFFFF;
+			* Value=PAddr&0xFFFF;
 			* Value=(* Value<<16)|* Value;
 			return FALSE;
 		}
 	}
-	switch (PAddr & 0xFFF00000) {
+	switch (PAddr&0xFFF00000) {
 	case 0x03F00000:
 		switch (PAddr) {
 		case 0x03F00000: * Value=RDRAM_CONFIG_REG; break;
@@ -1290,7 +1290,7 @@ int r4300i_LW_NonMemory (DWORD PAddr,DWORD * Value) {
 		case 0x04500000: * Value=AI_DRAM_ADDR_REG; break;
 #endif
 		case 0x04500004:
-			if (AiReadLength !=NULL) {
+			if (AiReadLength!=NULL) {
 				* Value=AiReadLength();
 			} else {
 				* Value=0;
@@ -1361,8 +1361,8 @@ int r4300i_LW_NonMemory (DWORD PAddr,DWORD * Value) {
 		break;
 	case 0x08000000:
 		if (SaveUsing==Auto) { SaveUsing=FlashRAM; }
-		if (SaveUsing !=FlashRAM) {
-			* Value=PAddr & 0xFFFF;
+		if (SaveUsing!=FlashRAM) {
+			* Value=PAddr&0xFFFF;
 			* Value=(* Value<<16)|* Value;
 			return FALSE;
 		}
@@ -1396,7 +1396,7 @@ int r4300i_LW_NonMemory (DWORD PAddr,DWORD * Value) {
 		read_summercart_regs(NULL,PAddr,Value);
 		break;
 	default:
-		* Value=PAddr & 0xFFFF;
+		* Value=PAddr&0xFFFF;
 		* Value=(* Value<<16)|* Value;
 		return FALSE;
 	}
@@ -1411,28 +1411,28 @@ int r4300i_LW_NonMemory (DWORD PAddr,DWORD * Value) {
 			* Value=*(DWORD *)&ROM[PAddr-base];
 			return TRUE;
 		}
-		* Value=PAddr & 0xFFFF;
+		* Value=PAddr&0xFFFF;
 		* Value=(*Value<<16)|*Value;
 		return FALSE;
 }
 BOOL r4300i_LW_VAddr(DWORD VAddr,DWORD* Value) {
 	if (TLB_ReadMap[VAddr>>12]==0) return FALSE;
 	* Value=*(DWORD *)(TLB_ReadMap[VAddr>>12]+VAddr);
-	if (* Value==0x14200005 && (VAddr & 0xFF000000)==0x80000000) {
+	if (* Value==0x14200005&&(VAddr&0xFF000000)==0x80000000) {
 		const DWORD sBusyLoopPrologue[]={ 0x3C02A440,0xA7380000,0x8C830000,0x34420010,0x3C0CA440,0x8C680008,0x8D090004,0xAC69000C,0x8C4A0000,0x2D41000B };
 		int sCheckSize=sizeof(sBusyLoopPrologue) / sizeof(*sBusyLoopPrologue),i;
 		for (i=0; i<sCheckSize; i++) {
 			DWORD ivaddr=VAddr-(sCheckSize-i) * 4,val;
 			if (TLB_ReadMap[ivaddr>>12]==0) break;
 			val=*(DWORD *)(TLB_ReadMap[ivaddr>>12]+ivaddr);
-			if (val !=sBusyLoopPrologue[i]) break;
+			if (val!=sBusyLoopPrologue[i]) break;
 		}
 		if (i==sCheckSize) * Value=0x10000005;
 	}
 	return TRUE;
 }
 int r4300i_SB_NonMemory (DWORD PAddr,BYTE Value) {
-	switch (PAddr & 0xFFF00000) {
+	switch (PAddr&0xFFF00000) {
 	case 0x00000000:
 	case 0x00100000:
 	case 0x00200000:
@@ -1445,10 +1445,10 @@ int r4300i_SB_NonMemory (DWORD PAddr,BYTE Value) {
 			DWORD OldProtect;
 			VirtualProtect((N64MEM+PAddr),1,PAGE_READWRITE,&OldProtect);
 			*(BYTE *)(N64MEM+PAddr)=Value;
-			if (N64_Blocks.NoOfRDRAMBlocks[(PAddr & 0x00FFFFF0)>>12]==0) { break; }
-			N64_Blocks.NoOfRDRAMBlocks[(PAddr & 0x00FFFFF0)>>12]=0;
-			memset(JumpTable+((PAddr & 0xFFFFF000)>>2),0,0x1000);
-			*(DelaySlotTable+((PAddr & 0xFFFFF000)>>12))=NULL;
+			if (N64_Blocks.NoOfRDRAMBlocks[(PAddr&0x00FFFFF0)>>12]==0) { break; }
+			N64_Blocks.NoOfRDRAMBlocks[(PAddr&0x00FFFFF0)>>12]=0;
+			memset(JumpTable+((PAddr&0xFFFFF000)>>2),0,0x1000);
+			*(DelaySlotTable+((PAddr&0xFFFFF000)>>12))=NULL;
 		}
 		break;
 	default:
@@ -1462,7 +1462,7 @@ BOOL r4300i_SB_VAddr (DWORD VAddr,BYTE Value) {
 	return TRUE;
 }
 int r4300i_SH_NonMemory (DWORD PAddr,WORD Value) {
-	switch (PAddr & 0xFFF00000) {
+	switch (PAddr&0xFFF00000) {
 	case 0x00000000:
 	case 0x00100000:
 	case 0x00200000:
@@ -1475,10 +1475,10 @@ int r4300i_SH_NonMemory (DWORD PAddr,WORD Value) {
 			DWORD OldProtect;
 			VirtualProtect((N64MEM+PAddr),2,PAGE_READWRITE,&OldProtect);
 			*(WORD *)(N64MEM+PAddr)=Value;
-			if (N64_Blocks.NoOfRDRAMBlocks[(PAddr & 0x00FFFFF0)>>12]==0) { break; }
-			N64_Blocks.NoOfRDRAMBlocks[(PAddr & 0x00FFFFF0)>>12]=0;
-			memset(JumpTable+((PAddr & 0xFFFFF000)>>2),0,0x1000);
-			*(DelaySlotTable+((PAddr & 0xFFFFF000)>>12))=NULL;
+			if (N64_Blocks.NoOfRDRAMBlocks[(PAddr&0x00FFFFF0)>>12]==0) { break; }
+			N64_Blocks.NoOfRDRAMBlocks[(PAddr&0x00FFFFF0)>>12]=0;
+			memset(JumpTable+((PAddr&0xFFFFF000)>>2),0,0x1000);
+			*(DelaySlotTable+((PAddr&0xFFFFF000)>>12))=NULL;
 		}
 		break;
 	default:
@@ -1499,7 +1499,7 @@ BOOL r4300i_SH_VAddr (DWORD VAddr,WORD Value) {
 }
 int r4300i_SW_NonMemory (DWORD PAddr,DWORD Value) {
 // This function is missing memory registers for ifndef MIN_SIZE! For now let's just use Min Size profile until it's revealed we need the extra memory registers for anything
-	if (PAddr >=0x10000000 && PAddr<0x16000000) {
+	if (PAddr>=0x10000000&&PAddr<0x16000000) {
 		if ((PAddr-0x10000000)<RomFileSize) {
 			WrittenToRom=TRUE;
 			WroteToRom=Value;
@@ -1507,7 +1507,7 @@ int r4300i_SW_NonMemory (DWORD PAddr,DWORD Value) {
 			return FALSE;
 		}
 	}
-	switch (PAddr & 0xFFF00000) {
+	switch (PAddr&0xFFF00000) {
 	case 0x00000000:
 	case 0x00100000:
 	case 0x00200000:
@@ -1520,10 +1520,10 @@ int r4300i_SW_NonMemory (DWORD PAddr,DWORD Value) {
 			DWORD OldProtect;
 			VirtualProtect((N64MEM+PAddr),4,PAGE_READWRITE,&OldProtect);
 			*(DWORD *)(N64MEM+PAddr)=Value;
-			if (N64_Blocks.NoOfRDRAMBlocks[(PAddr & 0x00FFFFF0)>>12]==0) { break; }
-			N64_Blocks.NoOfRDRAMBlocks[(PAddr & 0x00FFFFF0)>>12]=0;
-			memset(JumpTable+((PAddr & 0xFFFFF000)>>2),0,0x1000);
-			*(DelaySlotTable+((PAddr & 0xFFFFF000)>>12))=NULL;
+			if (N64_Blocks.NoOfRDRAMBlocks[(PAddr&0x00FFFFF0)>>12]==0) { break; }
+			N64_Blocks.NoOfRDRAMBlocks[(PAddr&0x00FFFFF0)>>12]=0;
+			memset(JumpTable+((PAddr&0xFFFFF000)>>2),0,0x1000);
+			*(DelaySlotTable+((PAddr&0xFFFFF000)>>12))=NULL;
 		}
 		break;
 	case 0x03F00000:
@@ -1560,8 +1560,8 @@ int r4300i_SW_NonMemory (DWORD PAddr,DWORD Value) {
 				if (N64_Blocks.NoOfIMEMBlocks==0) { break; }
 				N64_Blocks.NoOfIMEMBlocks=0;
 			}
-			memset(JumpTable+((PAddr & 0xFFFFF000)>>2),0,0x1000);
-			*(DelaySlotTable+((PAddr & 0xFFFFF000)>>12))=NULL;
+			memset(JumpTable+((PAddr&0xFFFFF000)>>2),0,0x1000);
+			*(DelaySlotTable+((PAddr&0xFFFFF000)>>12))=NULL;
 			return TRUE;
 		}
 		switch (PAddr) {
@@ -1576,47 +1576,47 @@ int r4300i_SW_NonMemory (DWORD PAddr,DWORD Value) {
 			SP_DMA_WRITE();
 			break;
 		case 0x04040010:
-			if ((Value & SP_CLR_HALT) !=0) { SP_STATUS_REG &=~SP_STATUS_HALT; }
-			if ((Value & SP_SET_HALT) !=0) { SP_STATUS_REG|=SP_STATUS_HALT;  }
-			if ((Value & SP_CLR_BROKE) !=0) { SP_STATUS_REG &=~SP_STATUS_BROKE; }
-			if ((Value & SP_CLR_INTR) !=0) {
-				MI_INTR_REG &=~MI_INTR_SP;
+			if ((Value&SP_CLR_HALT)!=0) { SP_STATUS_REG&=~SP_STATUS_HALT; }
+			if ((Value&SP_SET_HALT)!=0) { SP_STATUS_REG|=SP_STATUS_HALT;  }
+			if ((Value&SP_CLR_BROKE)!=0) { SP_STATUS_REG&=~SP_STATUS_BROKE; }
+			if ((Value&SP_CLR_INTR)!=0) {
+				MI_INTR_REG&=~MI_INTR_SP;
 				CheckInterrupts();
 			}
-			if ((Value & SP_CLR_SSTEP) !=0) { SP_STATUS_REG &=~SP_STATUS_SSTEP; }
-			if ((Value & SP_SET_SSTEP) !=0) { SP_STATUS_REG|=SP_STATUS_SSTEP;  }
-			if ((Value & SP_CLR_INTR_BREAK) !=0) { SP_STATUS_REG &=~SP_STATUS_INTR_BREAK; }
-			if ((Value & SP_SET_INTR_BREAK) !=0) { SP_STATUS_REG|=SP_STATUS_INTR_BREAK;  }
-			if ((Value & SP_CLR_SIG0) !=0) { SP_STATUS_REG &=~SP_STATUS_SIG0; }
-			if ((Value & SP_SET_SIG0) !=0) {
+			if ((Value&SP_CLR_SSTEP)!=0) { SP_STATUS_REG&=~SP_STATUS_SSTEP; }
+			if ((Value&SP_SET_SSTEP)!=0) { SP_STATUS_REG|=SP_STATUS_SSTEP;  }
+			if ((Value&SP_CLR_INTR_BREAK)!=0) { SP_STATUS_REG&=~SP_STATUS_INTR_BREAK; }
+			if ((Value&SP_SET_INTR_BREAK)!=0) { SP_STATUS_REG|=SP_STATUS_INTR_BREAK;  }
+			if ((Value&SP_CLR_SIG0)!=0) { SP_STATUS_REG&=~SP_STATUS_SIG0; }
+			if ((Value&SP_SET_SIG0)!=0) {
 				SP_STATUS_REG|=SP_STATUS_SIG0;
 				if (AudioSignal) {
 					MI_INTR_REG|=MI_INTR_SP;
 					CheckInterrupts();
 				}
 			}
-			if ((Value & SP_CLR_SIG1) !=0) { SP_STATUS_REG &=~SP_STATUS_SIG1; }
-			if ((Value & SP_SET_SIG1) !=0) { SP_STATUS_REG|=SP_STATUS_SIG1;  }
-			if ((Value & SP_CLR_SIG2) !=0) { SP_STATUS_REG &=~SP_STATUS_SIG2; }
-			if ((Value & SP_SET_SIG2) !=0) { SP_STATUS_REG|=SP_STATUS_SIG2;  }
-			if ((Value & SP_CLR_SIG3) !=0) { SP_STATUS_REG &=~SP_STATUS_SIG3; }
-			if ((Value & SP_SET_SIG3) !=0) { SP_STATUS_REG|=SP_STATUS_SIG3;  }
-			if ((Value & SP_CLR_SIG4) !=0) { SP_STATUS_REG &=~SP_STATUS_SIG4; }
-			if ((Value & SP_SET_SIG4) !=0) { SP_STATUS_REG|=SP_STATUS_SIG4;  }
-			if ((Value & SP_CLR_SIG5) !=0) { SP_STATUS_REG &=~SP_STATUS_SIG5; }
-			if ((Value & SP_SET_SIG5) !=0) { SP_STATUS_REG|=SP_STATUS_SIG5;  }
-			if ((Value & SP_CLR_SIG6) !=0) { SP_STATUS_REG &=~SP_STATUS_SIG6; }
-			if ((Value & SP_SET_SIG6) !=0) { SP_STATUS_REG|=SP_STATUS_SIG6;  }
-			if ((Value & SP_CLR_SIG7) !=0) { SP_STATUS_REG &=~SP_STATUS_SIG7; }
-			if ((Value & SP_SET_SIG7) !=0) { SP_STATUS_REG|=SP_STATUS_SIG7;  }
-			if (DelayRDP && *(DWORD *)(DMEM+0xFC0)==1||DelayRSP && *(DWORD *)(DMEM+0xFC0)==2) {
+			if ((Value&SP_CLR_SIG1)!=0) { SP_STATUS_REG&=~SP_STATUS_SIG1; }
+			if ((Value&SP_SET_SIG1)!=0) { SP_STATUS_REG|=SP_STATUS_SIG1;  }
+			if ((Value&SP_CLR_SIG2)!=0) { SP_STATUS_REG&=~SP_STATUS_SIG2; }
+			if ((Value&SP_SET_SIG2)!=0) { SP_STATUS_REG|=SP_STATUS_SIG2;  }
+			if ((Value&SP_CLR_SIG3)!=0) { SP_STATUS_REG&=~SP_STATUS_SIG3; }
+			if ((Value&SP_SET_SIG3)!=0) { SP_STATUS_REG|=SP_STATUS_SIG3;  }
+			if ((Value&SP_CLR_SIG4)!=0) { SP_STATUS_REG&=~SP_STATUS_SIG4; }
+			if ((Value&SP_SET_SIG4)!=0) { SP_STATUS_REG|=SP_STATUS_SIG4;  }
+			if ((Value&SP_CLR_SIG5)!=0) { SP_STATUS_REG&=~SP_STATUS_SIG5; }
+			if ((Value&SP_SET_SIG5)!=0) { SP_STATUS_REG|=SP_STATUS_SIG5;  }
+			if ((Value&SP_CLR_SIG6)!=0) { SP_STATUS_REG&=~SP_STATUS_SIG6; }
+			if ((Value&SP_SET_SIG6)!=0) { SP_STATUS_REG|=SP_STATUS_SIG6;  }
+			if ((Value&SP_CLR_SIG7)!=0) { SP_STATUS_REG&=~SP_STATUS_SIG7; }
+			if ((Value&SP_SET_SIG7)!=0) { SP_STATUS_REG|=SP_STATUS_SIG7;  }
+			if (DelayRDP&&*(DWORD *)(DMEM+0xFC0)==1||DelayRSP&&*(DWORD *)(DMEM+0xFC0)==2) {
 				ChangeTimer(RspTimer,0x2000);
 				break;
 			}
 			RunRsp();
 			break;
 		case 0x0404001C: SP_SEMAPHORE_REG=0; break;
-		case 0x04080000: SP_PC_REG=Value & 0xFFC; break;
+		case 0x04080000: SP_PC_REG=Value&0xFFC; break;
 		default:
 			return FALSE;
 		}
@@ -1632,17 +1632,17 @@ int r4300i_SW_NonMemory (DWORD PAddr,DWORD Value) {
 			if (ProcessRDPList) { ProcessRDPList(); }
 			break;
 		case 0x0410000C:
-			if ((Value & DPC_CLR_XBUS_DMEM_DMA) !=0) { DPC_STATUS_REG &=~DPC_STATUS_XBUS_DMEM_DMA; }
-			if ((Value & DPC_SET_XBUS_DMEM_DMA) !=0) { DPC_STATUS_REG|=DPC_STATUS_XBUS_DMEM_DMA;  }
-			if ((Value & DPC_CLR_FREEZE) !=0) { DPC_STATUS_REG &=~DPC_STATUS_FREEZE; }
-			if ((Value & DPC_SET_FREEZE) !=0) { DPC_STATUS_REG|=DPC_STATUS_FREEZE;  }
-			if ((Value & DPC_CLR_FLUSH) !=0) { DPC_STATUS_REG &=~DPC_STATUS_FLUSH; }
-			if ((Value & DPC_SET_FLUSH) !=0) { DPC_STATUS_REG|=DPC_STATUS_FLUSH;  }
-			if ((Value & DPC_CLR_FREEZE) !=0)
+			if ((Value&DPC_CLR_XBUS_DMEM_DMA)!=0) { DPC_STATUS_REG&=~DPC_STATUS_XBUS_DMEM_DMA; }
+			if ((Value&DPC_SET_XBUS_DMEM_DMA)!=0) { DPC_STATUS_REG|=DPC_STATUS_XBUS_DMEM_DMA;  }
+			if ((Value&DPC_CLR_FREEZE)!=0) { DPC_STATUS_REG&=~DPC_STATUS_FREEZE; }
+			if ((Value&DPC_SET_FREEZE)!=0) { DPC_STATUS_REG|=DPC_STATUS_FREEZE;  }
+			if ((Value&DPC_CLR_FLUSH)!=0) { DPC_STATUS_REG&=~DPC_STATUS_FLUSH; }
+			if ((Value&DPC_SET_FLUSH)!=0) { DPC_STATUS_REG|=DPC_STATUS_FLUSH;  }
+			if ((Value&DPC_CLR_FREEZE)!=0)
 			{
-				if ((SP_STATUS_REG & SP_STATUS_HALT)==0)
+				if ((SP_STATUS_REG&SP_STATUS_HALT)==0)
 				{
-					if ((SP_STATUS_REG & SP_STATUS_BROKE)==0)
+					if ((SP_STATUS_REG&SP_STATUS_BROKE)==0)
 					{
 						RunRsp();
 					}
@@ -1656,32 +1656,32 @@ int r4300i_SW_NonMemory (DWORD PAddr,DWORD Value) {
 	case 0x04300000:
 		switch (PAddr) {
 		case 0x04300000:
-			MI_MODE_REG &=~0x7F;
-			MI_MODE_REG|=(Value & 0x7F);
-			if ((Value & MI_CLR_INIT) !=0) { MI_MODE_REG &=~MI_MODE_INIT; }
-			if ((Value & MI_SET_INIT) !=0) { MI_MODE_REG|=MI_MODE_INIT; }
-			if ((Value & MI_CLR_EBUS) !=0) { MI_MODE_REG &=~MI_MODE_EBUS; }
-			if ((Value & MI_SET_EBUS) !=0) { MI_MODE_REG|=MI_MODE_EBUS; }
-			if ((Value & MI_CLR_DP_INTR) !=0) {
-				MI_INTR_REG &=~MI_INTR_DP;
+			MI_MODE_REG&=~0x7F;
+			MI_MODE_REG|=(Value&0x7F);
+			if ((Value&MI_CLR_INIT)!=0) { MI_MODE_REG&=~MI_MODE_INIT; }
+			if ((Value&MI_SET_INIT)!=0) { MI_MODE_REG|=MI_MODE_INIT; }
+			if ((Value&MI_CLR_EBUS)!=0) { MI_MODE_REG&=~MI_MODE_EBUS; }
+			if ((Value&MI_SET_EBUS)!=0) { MI_MODE_REG|=MI_MODE_EBUS; }
+			if ((Value&MI_CLR_DP_INTR)!=0) {
+				MI_INTR_REG&=~MI_INTR_DP;
 				CheckInterrupts();
 			}
-			if ((Value & MI_CLR_RDRAM) !=0) { MI_MODE_REG &=~MI_MODE_RDRAM; }
-			if ((Value & MI_SET_RDRAM) !=0) { MI_MODE_REG|=MI_MODE_RDRAM; }
+			if ((Value&MI_CLR_RDRAM)!=0) { MI_MODE_REG&=~MI_MODE_RDRAM; }
+			if ((Value&MI_SET_RDRAM)!=0) { MI_MODE_REG|=MI_MODE_RDRAM; }
 			break;
 		case 0x0430000C:
-			if ((Value & MI_INTR_MASK_CLR_SP) !=0) { MI_INTR_MASK_REG &=~MI_INTR_MASK_SP; }
-			if ((Value & MI_INTR_MASK_SET_SP) !=0) { MI_INTR_MASK_REG|=MI_INTR_MASK_SP; }
-			if ((Value & MI_INTR_MASK_CLR_SI) !=0) { MI_INTR_MASK_REG &=~MI_INTR_MASK_SI; }
-			if ((Value & MI_INTR_MASK_SET_SI) !=0) { MI_INTR_MASK_REG|=MI_INTR_MASK_SI; }
-			if ((Value & MI_INTR_MASK_CLR_AI) !=0) { MI_INTR_MASK_REG &=~MI_INTR_MASK_AI; }
-			if ((Value & MI_INTR_MASK_SET_AI) !=0) { MI_INTR_MASK_REG|=MI_INTR_MASK_AI; }
-			if ((Value & MI_INTR_MASK_CLR_VI) !=0) { MI_INTR_MASK_REG &=~MI_INTR_MASK_VI; }
-			if ((Value & MI_INTR_MASK_SET_VI) !=0) { MI_INTR_MASK_REG|=MI_INTR_MASK_VI; }
-			if ((Value & MI_INTR_MASK_CLR_PI) !=0) { MI_INTR_MASK_REG &=~MI_INTR_MASK_PI; }
-			if ((Value & MI_INTR_MASK_SET_PI) !=0) { MI_INTR_MASK_REG|=MI_INTR_MASK_PI; }
-			if ((Value & MI_INTR_MASK_CLR_DP) !=0) { MI_INTR_MASK_REG &=~MI_INTR_MASK_DP; }
-			if ((Value & MI_INTR_MASK_SET_DP) !=0) { MI_INTR_MASK_REG|=MI_INTR_MASK_DP; }
+			if ((Value&MI_INTR_MASK_CLR_SP)!=0) { MI_INTR_MASK_REG&=~MI_INTR_MASK_SP; }
+			if ((Value&MI_INTR_MASK_SET_SP)!=0) { MI_INTR_MASK_REG|=MI_INTR_MASK_SP; }
+			if ((Value&MI_INTR_MASK_CLR_SI)!=0) { MI_INTR_MASK_REG&=~MI_INTR_MASK_SI; }
+			if ((Value&MI_INTR_MASK_SET_SI)!=0) { MI_INTR_MASK_REG|=MI_INTR_MASK_SI; }
+			if ((Value&MI_INTR_MASK_CLR_AI)!=0) { MI_INTR_MASK_REG&=~MI_INTR_MASK_AI; }
+			if ((Value&MI_INTR_MASK_SET_AI)!=0) { MI_INTR_MASK_REG|=MI_INTR_MASK_AI; }
+			if ((Value&MI_INTR_MASK_CLR_VI)!=0) { MI_INTR_MASK_REG&=~MI_INTR_MASK_VI; }
+			if ((Value&MI_INTR_MASK_SET_VI)!=0) { MI_INTR_MASK_REG|=MI_INTR_MASK_VI; }
+			if ((Value&MI_INTR_MASK_CLR_PI)!=0) { MI_INTR_MASK_REG&=~MI_INTR_MASK_PI; }
+			if ((Value&MI_INTR_MASK_SET_PI)!=0) { MI_INTR_MASK_REG|=MI_INTR_MASK_PI; }
+			if ((Value&MI_INTR_MASK_CLR_DP)!=0) { MI_INTR_MASK_REG&=~MI_INTR_MASK_DP; }
+			if ((Value&MI_INTR_MASK_SET_DP)!=0) { MI_INTR_MASK_REG|=MI_INTR_MASK_DP; }
 			break;
 		default:
 			return FALSE;
@@ -1690,23 +1690,23 @@ int r4300i_SW_NonMemory (DWORD PAddr,DWORD Value) {
 	case 0x04400000:
 		switch (PAddr) {
 		case 0x04400000:
-			if (VI_STATUS_REG !=Value) {
+			if (VI_STATUS_REG!=Value) {
 				VI_STATUS_REG=Value;
-				if (ViStatusChanged !=NULL) { ViStatusChanged(); }
+				if (ViStatusChanged!=NULL) { ViStatusChanged(); }
 			}
 			break;
 		case 0x04400004:
-			VI_ORIGIN_REG=(Value & 0xFFFFFF);
+			VI_ORIGIN_REG=(Value&0xFFFFFF);
 			break;
 		case 0x04400008:
-			if (VI_WIDTH_REG !=Value) {
+			if (VI_WIDTH_REG!=Value) {
 				VI_WIDTH_REG=Value;
-				if (ViWidthChanged !=NULL) { ViWidthChanged(); }
+				if (ViWidthChanged!=NULL) { ViWidthChanged(); }
 			}
 			break;
 		case 0x0440000C: VI_INTR_REG=Value; break;
 		case 0x04400010:
-			MI_INTR_REG &=~MI_INTR_VI;
+			MI_INTR_REG&=~MI_INTR_VI;
 			CheckInterrupts();
 			break;
 		case 0x04400014: VI_BURST_REG=Value; break;
@@ -1727,18 +1727,18 @@ int r4300i_SW_NonMemory (DWORD PAddr,DWORD Value) {
 		case 0x04500000: AI_DRAM_ADDR_REG=Value; break;
 		case 0x04500004:
 			AI_LEN_REG=Value;
-			if (AiLenChanged !=NULL) { AiLenChanged(); }
+			if (AiLenChanged!=NULL) { AiLenChanged(); }
 			break;
-		case 0x04500008: AI_CONTROL_REG=(Value & 1); break;
+		case 0x04500008: AI_CONTROL_REG=(Value&1); break;
 		case 0x0450000C:
 			/* Clear Interrupt */;
-			MI_INTR_REG &=~MI_INTR_AI;
-			AudioIntrReg &=~MI_INTR_AI;
+			MI_INTR_REG&=~MI_INTR_AI;
+			AudioIntrReg&=~MI_INTR_AI;
 			CheckInterrupts();
 			break;
 		case 0x04500010:
 			AI_DACRATE_REG=Value;
-			if (AiDacrateChanged !=NULL) { AiDacrateChanged(SYSTEM_NTSC); }
+			if (AiDacrateChanged!=NULL) { AiDacrateChanged(SYSTEM_NTSC); }
 			break;
 		case 0x04500014: AI_BITRATE_REG=Value; break;
 		default:
@@ -1758,20 +1758,20 @@ int r4300i_SW_NonMemory (DWORD PAddr,DWORD Value) {
 			PI_DMA_WRITE();
 			break;
 		case 0x04600010:
-			if ((Value & PI_CLR_INTR) !=0) {
-				MI_INTR_REG &=~MI_INTR_PI;
+			if ((Value&PI_CLR_INTR)!=0) {
+				MI_INTR_REG&=~MI_INTR_PI;
 				CheckInterrupts();
 			}
 			break;
-		case 0x04600014: PI_DOMAIN1_REG=(Value & 0xFF); break;
-		case 0x04600018: PI_BSD_DOM1_PWD_REG=(Value & 0xFF); break;
-		case 0x0460001C: PI_BSD_DOM1_PGS_REG=(Value & 0xFF); break;
-		case 0x04600020: PI_BSD_DOM1_RLS_REG=(Value & 0xFF); break;
+		case 0x04600014: PI_DOMAIN1_REG=(Value&0xFF); break;
+		case 0x04600018: PI_BSD_DOM1_PWD_REG=(Value&0xFF); break;
+		case 0x0460001C: PI_BSD_DOM1_PGS_REG=(Value&0xFF); break;
+		case 0x04600020: PI_BSD_DOM1_RLS_REG=(Value&0xFF); break;
 #ifndef MIN_SIZE
-		case 0x04600024: PI_DOMAIN2_REG=(Value & 0xFF); break;
-		case 0x04600028: PI_BSD_DOM2_PWD_REG=(Value & 0xFF); break;
-		case 0x0460002C: PI_BSD_DOM2_PGS_REG=(Value & 0xFF); break;
-		case 0x04600030: PI_BSD_DOM2_RLS_REG=(Value & 0xFF); break;
+		case 0x04600024: PI_DOMAIN2_REG=(Value&0xFF); break;
+		case 0x04600028: PI_BSD_DOM2_PWD_REG=(Value&0xFF); break;
+		case 0x0460002C: PI_BSD_DOM2_PGS_REG=(Value&0xFF); break;
+		case 0x04600030: PI_BSD_DOM2_RLS_REG=(Value&0xFF); break;
 #endif
 		default:
 			return FALSE;
@@ -1803,8 +1803,8 @@ int r4300i_SW_NonMemory (DWORD PAddr,DWORD Value) {
 			SI_DMA_WRITE();
 			break;
 		case 0x04800018:
-			MI_INTR_REG &=~MI_INTR_SI;
-			SI_STATUS_REG &=~SI_STATUS_INTERRUPT;
+			MI_INTR_REG&=~MI_INTR_SI;
+			SI_STATUS_REG&=~SI_STATUS_INTERRUPT;
 			CheckInterrupts();
 			break;
 		default:
@@ -1812,9 +1812,9 @@ int r4300i_SW_NonMemory (DWORD PAddr,DWORD Value) {
 		}
 		break;
 	case 0x08000000:
-		if (PAddr !=0x08010000) return FALSE;
+		if (PAddr!=0x08010000) return FALSE;
 		if (SaveUsing==Auto) { SaveUsing=FlashRAM; }
-		if (SaveUsing !=FlashRAM) return TRUE;
+		if (SaveUsing!=FlashRAM) return TRUE;
 		WriteToFlashCommand(Value);
 		break;
 	case 0x1FC00000:
@@ -1847,8 +1847,8 @@ BOOL r4300i_SW_VAddr (DWORD VAddr,DWORD Value) {
 	return TRUE;
 }
 void Release_Memory (void) {
-	if (OrigMem !=NULL) { VirtualFree(OrigMem,0,MEM_RELEASE); }
-	if (ROM !=NULL) { 	VirtualFree(ROM,0,MEM_RELEASE); }
+	if (OrigMem!=NULL) { VirtualFree(OrigMem,0,MEM_RELEASE); }
+	if (ROM!=NULL) { 	VirtualFree(ROM,0,MEM_RELEASE); }
 	VirtualFree(TLB_ReadMap,0,MEM_RELEASE);
 	VirtualFree(TLB_WriteMap,0,MEM_RELEASE);
 	VirtualFree(N64MEM,0,MEM_RELEASE);
@@ -1859,7 +1859,7 @@ void Release_Memory (void) {
 void ResetMemoryStack (BLOCK_SECTION * Section) {
 	int x86reg,TempReg;
 	x86reg=Map_MemoryStack(Section,FALSE);
-	if (x86reg >=0) { UnMap_X86reg(Section,x86reg); }
+	if (x86reg>=0) { UnMap_X86reg(Section,x86reg); }
 	x86reg=Map_TempReg(Section,x86_Any,29,FALSE);
 	if (UseTLB) {
 		TempReg=Map_TempReg(Section,x86_Any,-1,FALSE);

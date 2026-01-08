@@ -383,7 +383,7 @@ void ExecuteInterpreterOpCode (void) {
 		RANDOM_REGISTER=31;
 	}
 	((void (_fastcall *)()) R4300i_Opcode[ Opcode.op ])();
-	if (GPR[0].DW !=0) {
+	if (GPR[0].DW!=0) {
 		GPR[0].DW=0;
 	}
 	switch (NextInstruction) {
@@ -395,7 +395,7 @@ void ExecuteInterpreterOpCode (void) {
 		PROGRAM_COUNTER +=4;
 		break;
 	case JUMP:
-		PROGRAM_COUNTER =JumpToLocation;
+		PROGRAM_COUNTER=JumpToLocation;
 		SetNormal
 		if ((int)Timers.Timer<0) { TimerDone(); }
 		if (CPU_Action.DoSomething) { DoSomething(); }
@@ -404,8 +404,8 @@ void ExecuteInterpreterOpCode (void) {
 void StartInterpreterCPU (void) {
 	CoInitialize(NULL);
 	SetNormal
-	if (GfxRomOpen !=NULL && (!inFullScreen||strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0)) { GfxRomOpen(); }
-	if (ContRomOpen !=NULL && !GLideN64NeedsToBeSetupFirst) { ContRomOpen(); }
+	if (GfxRomOpen!=NULL&&(!inFullScreen||strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0)) { GfxRomOpen(); }
+	if (ContRomOpen!=NULL&&!GLideN64NeedsToBeSetupFirst) { ContRomOpen(); }
 	__try {
 		for (;;) {
 			ExecuteInterpreterOpCode();
@@ -415,7 +415,7 @@ void StartInterpreterCPU (void) {
 	}
 }
 void TestInterpreterJump (DWORD PC,DWORD TargetPC,int Reg1,int Reg2) {
-	if (PC !=TargetPC) return;
+	if (PC!=TargetPC) return;
 	if (DelaySlotEffectsCompare(PC,Reg1,Reg2)) return;
-	if (CPU_Type !=CPU_Interpreter) return;
+	if (CPU_Type!=CPU_Interpreter) return;
 }

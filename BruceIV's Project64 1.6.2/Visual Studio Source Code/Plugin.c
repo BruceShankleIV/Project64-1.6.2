@@ -51,25 +51,25 @@ void GetCurrentDlls (void) {
 	if (lResult==ERROR_SUCCESS) {
 		DWORD Type,Bytes=100;
 		lResult=RegQueryValueEx(hKeyResults,"RSP Dll",0,&Type,(LPBYTE)(RSPDLL),&Bytes);
-		if (lResult !=ERROR_SUCCESS) sprintf(RSPDLL,"%s",DefaultRSPDLL);
+		if (lResult!=ERROR_SUCCESS) sprintf(RSPDLL,"%s",DefaultRSPDLL);
 		if (!inFullScreen) {
 			Bytes=100;
 			lResult=RegQueryValueEx(hKeyResults,"Graphics Dll",0,&Type,(LPBYTE)(GfxDLL),&Bytes);
-			if (lResult !=ERROR_SUCCESS) sprintf(GfxDLL,"%s",DefaultGFXDll);
+			if (lResult!=ERROR_SUCCESS) sprintf(GfxDLL,"%s",DefaultGFXDll);
 		}
 		Bytes=100;
 		lResult=RegQueryValueEx(hKeyResults,"Audio Dll",0,&Type,(LPBYTE)(AudioDLL),&Bytes);
-		if (lResult !=ERROR_SUCCESS) sprintf(AudioDLL,"%s",DefaultAudioDll);
+		if (lResult!=ERROR_SUCCESS) sprintf(AudioDLL,"%s",DefaultAudioDll);
 		Bytes=100;
 		lResult=RegQueryValueEx(hKeyResults,"Controller Dll",0,&Type,(LPBYTE)(ControllerDLL),&Bytes);
-		if (lResult !=ERROR_SUCCESS) sprintf(ControllerDLL,"%s",DefaultControllerDll);
+		if (lResult!=ERROR_SUCCESS) sprintf(ControllerDLL,"%s",DefaultControllerDll);
 	} else {
 		sprintf(RSPDLL,"%s",DefaultRSPDLL);
 		sprintf(GfxDLL,"%s",DefaultGFXDll);
 		sprintf(AudioDLL,"%s",DefaultAudioDll);
 		sprintf(ControllerDLL,"%s",DefaultControllerDll);
 	}
-	if ((strcmp(GfxDLL,"Glide64.dll")==0||strcmp(GfxDLL,"Jabo_Direct3D8.dll")==0||strcmp(GfxDLL,"Jabo_Direct3DL.dll")==0||strcmp(GfxDLL,"RiceVideo.dll")==0) && strcmp(RSPDLL,"Icepir8sLegacyRSP.dll")==0) strcpy(RSPDLL,"RSP.dll");
+	if ((strcmp(GfxDLL,"Glide64.dll")==0||strcmp(GfxDLL,"Jabo_Direct3D8.dll")==0||strcmp(GfxDLL,"Jabo_Direct3DL.dll")==0||strcmp(GfxDLL,"RiceVideo.dll")==0)&&strcmp(RSPDLL,"Icepir8sLegacyRSP.dll")==0) strcpy(RSPDLL,"RSP.dll");
 }
 void GetPluginDir(char * Directory) {
 	char path_buffer[_MAX_PATH],drive[_MAX_DRIVE],dir[_MAX_DIR],fname[_MAX_FNAME],ext[_MAX_EXT];
@@ -93,7 +93,7 @@ void GetSnapShotDir(char * Directory) {
 		DWORD Type,Value,Bytes;
 		Bytes=4;
 		lResult=RegQueryValueEx(hKeyResults,"AppPath Screenshots",0,&Type,(LPBYTE)(&Value),&Bytes);
-		if (lResult==ERROR_SUCCESS && Value==FALSE) {
+		if (lResult==ERROR_SUCCESS&&Value==FALSE) {
 			Bytes=sizeof(Dir);
 			lResult=RegQueryValueEx(hKeyResults,"CustomPath Screenshots",0,&Type,(LPBYTE)Dir,&Bytes);
 			if (lResult==ERROR_SUCCESS) { strcpy(Directory,Dir); }
@@ -199,7 +199,7 @@ BOOL LoadGFXDll(char * RSPDLL) {
 	if (ViStatusChanged==NULL) return FALSE;
 	ViWidthChanged=(void (__cdecl *)(void))GetProcAddress(hGfxDll,"ViWidthChanged");
 	if (ViWidthChanged==NULL) return FALSE;
-	if (PluginInfo.Version >=0x0103) {
+	if (PluginInfo.Version>=0x0103) {
 		ProcessRDPList=(void (__cdecl *)(void))GetProcAddress(hGfxDll,"ProcessRDPList");
 		if (ProcessRDPList==NULL) return FALSE;
 		CaptureScreen=(void (__cdecl *)(char *))GetProcAddress(hGfxDll,"CaptureScreen");
@@ -256,7 +256,7 @@ void SetupPlugins (HWND hWnd) {
 			DisplayError(GS(MSG_MEM_ALLOC_ERROR));
 			DisplayThreadExit("SetupPlugins-VirtualAlloc(RecompCode,LargeCompileBufferSize,MEM_COMMIT,PAGE_EXECUTE_READWRITE)==NULL");
 		}
-		if (NewRAMsize !=RDRAMsize) {
+		if (NewRAMsize!=RDRAMsize) {
 			if (RDRAMsize==0x400000) {
 				if (VirtualAlloc(N64MEM+0x400000,0x400000,MEM_COMMIT,PAGE_READWRITE)==NULL) {
 					DisplayError(GS(MSG_MEM_ALLOC_ERROR));
@@ -278,15 +278,20 @@ void SetupPlugins (HWND hWnd) {
 		}
 		RDRAMsize=NewRAMsize;
 		CPU_Type=SystemCPU_Type;
-		if (RomCPUType !=CPU_Default) CPU_Type=RomCPUType;
+		if (RomCPUType!=CPU_Default) CPU_Type=RomCPUType;
 		CountPerOp=SystemCF;
-		if (RomCF !=-1) CountPerOp=RomCF;
+		if (RomCF!=-1) CountPerOp=RomCF;
 		SelfModCheck=SystemSelfModCheck;
-		if (RomSelfModCheck !=ModCode_Default) SelfModCheck=RomSelfModCheck;
+		if (RomSelfModCheck!=ModCode_Default) SelfModCheck=RomSelfModCheck;
 		UseCache=SystemUseCache;
-		if (RomUseCache !=UseCache_Default) UseCache=RomUseCache;
-		if (RomSaveUsing==Auto && strcmp(RomName,"THE LEGEND OF ZELDA")==0) SaveUsing=SRAM;
-		else SaveUsing=RomSaveUsing;
+		if (RomUseCache!=UseCache_Default) UseCache=RomUseCache;
+		SaveUsing=RomSaveUsing;
+		if (RomSaveUsing==Auto) {
+			if (strcmp(RomName,"CONKER BFD")==0||strcmp(RomName,"DRACULA MOKUSHIROKU")==0||strcmp(RomName,"DRACULA MOKUSHIROKU2")==0||strcmp(RomName,"BANJO KAZOOIE 2")==0||strcmp(RomName,"BANJO TOOIE")==0||strcmp(RomName,"CRUIS'N WORLD")==0||strcmp(RomName,"CUSTOMROBOV2")==0||strcmp(RomName,"DONKEY KONG 64")==0||strcmp(RomName,"ÄÞ×´ÓÝ2 Ë¶ØÉ¼ÝÃÞÝ")==0||strcmp(RomName,"ÄÞ×´ÓÝ3 ÉËÞÀÉÏÁSOS!")==0||strcmp(RomName,"EXCITEBIKE64")==0||strcmp(RomName,"²ÃÞÖ³½¹ÉÏ°¼Þ¬Ý¼Þ­¸")==0||strcmp(RomName,"NBA COURTSIDE")==0||strcmp(RomName,"Madden NFL 2002")==0||strcmp(RomName,"MarioParty3")==0||strcmp(RomName,"MarioTennis")==0||strcmp(RomName,"MarioTennis64")==0||strcmp(RomName,"EVANGELION")==0||strcmp(RomName,"Parlor PRO 64")==0||strcmp(RomName,"Ultraman Battle JAPA")==0||strcmp(RomName,"Perfect Dark")==0||strcmp(RomName,"RIDGE RACER 64")==0||strcmp(RomName,"Robopon 64")==0||strcmp(RomName,"STAR WARS EP1 RACER")==0||strcmp(RomName,"YOSHI STORY")==0) SaveUsing=EEPROM_16K;
+			if (strcmp(RomName,"THE LEGEND OF ZELDA")==0) SaveUsing=SRAM;
+			if (strcmp(RomName,"NBA Courtside 2")==0) SaveUsing=FlashRAM;
+			// This part can mask autodetect issues with ROMhacks. Does not cover for Pokémon Stadium (J) (Region-Exclusive)
+		}
 		ClearFrame=RomClearFrame;
 		AudioSignal=RomAudioSignal;
 		UseTLB=RomUseTLB;
@@ -454,7 +459,7 @@ void SetupPlugins (HWND hWnd) {
 			HKEY hKey;
 			LONG lRet;
 			lRet=RegCreateKeyExA(HKEY_CURRENT_USER,regPath,0,NULL,REG_OPTION_NON_VOLATILE,KEY_SET_VALUE,NULL,&hKey,&dwDisposition);
-			if (lRet==ERROR_SUCCESS && CPURunning && strcmp(RSPDLL,"RSP.dll")==0) {
+			if (lRet==ERROR_SUCCESS&&CPURunning&&strcmp(RSPDLL,"RSP.dll")==0) {
 				if (RomRspRecompiler) RegSetValueEx(hKey,"RSP Core",0,REG_DWORD,(const BYTE*)&dwDataListsToPluginRecompilerCore,sizeof(dwDataListsToPluginRecompilerCore));
 				else RegSetValueEx(hKey,"RSP Core",0,REG_DWORD,(const BYTE*)&dwDataListsFromPluginInterpreterCore,sizeof(dwDataListsFromPluginInterpreterCore));
 				if (strcmp(AudioDLL,"Jabo_Dsound.dll")==0) RegSetValueEx(hKey,"List Type",0,REG_DWORD,(const BYTE*)&dwDataListsFromPluginInterpreterCore,sizeof(dwDataListsFromPluginInterpreterCore));
@@ -557,7 +562,7 @@ void SetupPlugins (HWND hWnd) {
 		case CPU_Interpreter: hCPU=CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)StartInterpreterCPU,NULL,0,&ThreadID); break;
 		case CPU_Recompiler: hCPU=CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)StartRecompilerCPU,NULL,0,&ThreadID); break;
 		}
-		if (strcmp(GfxDLL,"GLideN64.dll")==0 && !GLideN64HasBeenSetupFirst) GLideN64HasBeenSetupFirst=TRUE;
+		if (strcmp(GfxDLL,"GLideN64.dll")==0&&!GLideN64HasBeenSetupFirst) GLideN64HasBeenSetupFirst=TRUE;
 		if (GLideN64NeedsToBeSetupFirst) {
 			EndEmulation();
 			GLideN64NeedsToBeSetupFirst=FALSE;
@@ -565,7 +570,7 @@ void SetupPlugins (HWND hWnd) {
 			SetupPlugins(hMainWindow);
 			return;
 		}
-		if (EmulateAI && !LimitFPS) {
+		if (EmulateAI&&!LimitFPS) {
 			LimitFPS=TRUE;
 			HandleTimers();
 			LimitFPS=FALSE;
@@ -599,7 +604,7 @@ void SetupPluginScreen (HWND hDlg) {
 		GetPluginDir(Plugin);
 		strcat(Plugin,PluginNames[PluginCount]);
 		hLib=LoadLibrary(Plugin);
-		if (hLib==NULL && !BootupSettings) {
+		if (hLib==NULL&&!BootupSettings) {
 			DisplayError("%s\n %s",GS(MSG_FAIL_LOAD_PLUGIN),Plugin);
 			if (FindNextFile(hFind,&FindData)==0) return;
 			continue;
@@ -612,7 +617,7 @@ void SetupPluginScreen (HWND hDlg) {
 		}
 		GetDllInfo(&PluginInfo);
 		if (!ValidPluginVersion(&PluginInfo)||
-			(PluginInfo.Type !=PLUGIN_TYPE_CONTROLLER && PluginInfo.MemoryBswaped==FALSE))
+			(PluginInfo.Type!=PLUGIN_TYPE_CONTROLLER&&PluginInfo.MemoryBswaped==FALSE))
 		{
 			FreeLibrary(hLib);
 			if (FindNextFile(hFind,&FindData)==0) return;
@@ -625,7 +630,7 @@ void SetupPluginScreen (HWND hDlg) {
 			if(_stricmp(RSPDLL,PluginNames[PluginCount])==0) {
 				SendMessage(GetDlgItem(hDlg,RSP_LIST),CB_SETCURSEL,(WPARAM)index,(LPARAM)0);
 				RSPDLLAbout=(void (__cdecl *)(HWND))GetProcAddress(hLib,"DllAbout");
-				EnableWindow(GetDlgItem(hDlg,RSP_ABOUT),RSPDLLAbout !=NULL?TRUE:FALSE);
+				EnableWindow(GetDlgItem(hDlg,RSP_ABOUT),RSPDLLAbout!=NULL?TRUE:FALSE);
 			} else {
 				FreeLibrary(hLib);
 			}
@@ -636,7 +641,7 @@ void SetupPluginScreen (HWND hDlg) {
 			if(_stricmp(GfxDLL,PluginNames[PluginCount])==0) {
 				SendMessage(GetDlgItem(hDlg,GFX_LIST),CB_SETCURSEL,(WPARAM)index,(LPARAM)0);
 				GFXDllAbout=(void (__cdecl *)(HWND))GetProcAddress(hLib,"DllAbout");
-				EnableWindow(GetDlgItem(hDlg,GFX_ABOUT),GFXDllAbout !=NULL?TRUE:FALSE);
+				EnableWindow(GetDlgItem(hDlg,GFX_ABOUT),GFXDllAbout!=NULL?TRUE:FALSE);
 			} else {
 				FreeLibrary(hLib);
 			}
@@ -647,7 +652,7 @@ void SetupPluginScreen (HWND hDlg) {
 			if(_stricmp(AudioDLL,PluginNames[PluginCount])==0) {
 				SendMessage(GetDlgItem(hDlg,AUDIO_LIST),CB_SETCURSEL,(WPARAM)index,(LPARAM)0);
 				AiDllAbout=(void (__cdecl *)(HWND))GetProcAddress(hLib,"DllAbout");
-				EnableWindow(GetDlgItem(hDlg,AUDIO_ABOUT),AiDllAbout !=NULL?TRUE:FALSE);
+				EnableWindow(GetDlgItem(hDlg,AUDIO_ABOUT),AiDllAbout!=NULL?TRUE:FALSE);
 			} else {
 				FreeLibrary(hLib);
 			}
@@ -658,7 +663,7 @@ void SetupPluginScreen (HWND hDlg) {
 			if(_stricmp(ControllerDLL,PluginNames[PluginCount])==0) {
 				SendMessage(GetDlgItem(hDlg,CONT_LIST),CB_SETCURSEL,(WPARAM)index,(LPARAM)0);
 				ContDllAbout=(void (__cdecl *)(HWND))GetProcAddress(hLib,"DllAbout");
-				EnableWindow(GetDlgItem(hDlg,CONT_ABOUT),ContDllAbout !=NULL?TRUE:FALSE);
+				EnableWindow(GetDlgItem(hDlg,CONT_ABOUT),ContDllAbout!=NULL?TRUE:FALSE);
 			} else {
 				FreeLibrary(hLib);
 			}
@@ -670,16 +675,16 @@ void SetupPluginScreen (HWND hDlg) {
 }
 void ShutdownPlugins (void) {
 	if (!inFullScreen) {
-		if (GFXCloseDLL !=NULL) { GFXCloseDLL(); }
+		if (GFXCloseDLL!=NULL) { GFXCloseDLL(); }
 		FreeLibrary(hGfxDll);
 	}
 	if (!GLideN64NeedsToBeSetupFirst) {
 		TerminateThread(hAudioThread,0);
-		if (AiCloseDLL !=NULL) { AiCloseDLL(); }
+		if (AiCloseDLL!=NULL) { AiCloseDLL(); }
 		FreeLibrary(hAudioDll);
-		if (ContCloseDLL !=NULL) { ContCloseDLL(); }
+		if (ContCloseDLL!=NULL) { ContCloseDLL(); }
 		FreeLibrary(hControllerDll);
-		if (RSPCloseDLL !=NULL) { RSPCloseDLL(); }
+		if (RSPCloseDLL!=NULL) { RSPCloseDLL(); }
 		FreeLibrary(hRSPDLL);
 	}
 	PluginsInitialized=FALSE;

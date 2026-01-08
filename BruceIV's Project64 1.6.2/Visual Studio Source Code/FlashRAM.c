@@ -50,7 +50,7 @@ void DMAfromFlashRAM(BYTE * dest,int StartOffset,int len) {
 		if (len>0x10000) {
 			len=0x10000;
 		}
-		if ((len & 3) !=0) {
+		if ((len&3)!=0) {
 			return;
 		}
 		memset(FlipBuffer,0,sizeof(FlipBuffer));
@@ -75,7 +75,7 @@ void DMAfromFlashRAM(BYTE * dest,int StartOffset,int len) {
 		}
 		break;
 	case FlashRAM_MODE_STATUS:
-		if (StartOffset !=0 && len !=8) {
+		if (StartOffset!=0&&len!=8) {
 		}
 		*((DWORD *)(dest))=(DWORD)(FlashStatus>>32);
 		*((DWORD *)(dest)+1)=(DWORD)(FlashStatus);
@@ -117,7 +117,7 @@ BOOL LoadFlashRAM (void) {
 void WriteToFlashCommand(DWORD FlashRAM_Command) {
 	BYTE EmptyBlock[128],FlipBuffer[128];
 	DWORD dwWritten;
-	switch (FlashRAM_Command & 0xFF000000) {
+	switch (FlashRAM_Command&0xFF000000) {
 	case 0xD2000000:
 		switch (FlashFlag) {
 		case FlashRAM_MODE_ERASE:
@@ -162,7 +162,7 @@ void WriteToFlashCommand(DWORD FlashRAM_Command) {
 		FlashStatus=0x11118004F0000000;
 		break;
 	case 0x4B000000:
-		FlashRAM_Offset=(FlashRAM_Command & 0xffff) * 128;
+		FlashRAM_Offset=(FlashRAM_Command&0xffff) * 128;
 		break;
 	case 0x78000000:
 		FlashFlag=FlashRAM_MODE_ERASE;
@@ -172,7 +172,7 @@ void WriteToFlashCommand(DWORD FlashRAM_Command) {
 		FlashFlag=FlashRAM_MODE_WRITE;
 		break;
 	case 0xA5000000:
-		FlashRAM_Offset=(FlashRAM_Command & 0xffff) * 128;
+		FlashRAM_Offset=(FlashRAM_Command&0xffff) * 128;
 		FlashStatus=0x1111800400C20000;
 		break;
 	}
