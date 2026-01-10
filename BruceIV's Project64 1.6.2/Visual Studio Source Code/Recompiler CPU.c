@@ -344,7 +344,7 @@ void OpcodeSwitch (BLOCK_SECTION * Section) {
 	default:
 		if (SelfModCheck!=ModCode_ProtectMemory) {
 			DisplayThreadExit("OpcodeSwitch-switch (Opcode.op)-default:\n\nThe emulator has crashed on a reserved Opcode at this location.\n\n\nPotential fault point: ClearRecompilerCache-memset(JumpTable+(Block<<10),0,SetMem);\n\nTry 'Self-modifying Code Method=Protect Memory'?");
-		} else DisplayThreadExit("OpcodeSwitch-switch (Opcode.op)-default:\n\nThe emulator has crashed on a reserved Opcode at this location\n\nTry 'CPU Core Style=Interpreter'?");
+		} else DisplayThreadExit("OpcodeSwitch-switch (Opcode.op)-default:\n\nThe emulator has crashed on a reserved Opcode at this location\n\nTry 'CPU Recompiler=OFF'?");
 	}
 }
 void InitializeInitialCompilerVariable (void)
@@ -2239,7 +2239,7 @@ void StartRecompilerCPU (void) {
 					continue;
 				}
 				else {
-					if (RDRAMsize==0x400000) DisplayThreadExit("StartRecompilerCPU-EXCEPTION_EXECUTE_HANDLER-PROGRAM_COUNTER>=0xB0000000&&PROGRAM_COUNTER<(RomFileSize|0xB0000000)-else\n\nNeeds 'Memory Size=8MB'?");
+					if (RDRAMsize==0x400000) DisplayThreadExit("StartRecompilerCPU-EXCEPTION_EXECUTE_HANDLER-PROGRAM_COUNTER>=0xB0000000&&PROGRAM_COUNTER<(RomFileSize|0xB0000000)-else\n\nNeeds 'Jumper Pak=ON' removed?");
 					else DisplayThreadExit("StartRecompilerCPU-EXCEPTION_EXECUTE_HANDLER-PROGRAM_COUNTER>=0xB0000000&&PROGRAM_COUNTER<(RomFileSize|0xB0000000)-else");
 				}
 			}

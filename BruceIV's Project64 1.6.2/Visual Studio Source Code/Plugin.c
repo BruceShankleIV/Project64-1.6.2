@@ -250,8 +250,8 @@ void SetupPlugins (HWND hWnd) {
 	ShutdownPlugins();
 	if (CPURunning) {
 		ReadRomOptions();
-		NewRAMsize=RomRamSize;
-		if ((int)RomRamSize<0) { NewRAMsize=SystemRDRAMsize; }
+		NewRAMsize=0x800000;
+		if (RomJumperPak) NewRAMsize=0x400000;
 		if (VirtualAlloc(RecompCode,LargeCompileBufferSize,MEM_COMMIT,PAGE_EXECUTE_READWRITE)==NULL) {
 			DisplayError(GS(MSG_MEM_ALLOC_ERROR));
 			DisplayThreadExit("SetupPlugins-VirtualAlloc(RecompCode,LargeCompileBufferSize,MEM_COMMIT,PAGE_EXECUTE_READWRITE)==NULL");
@@ -277,8 +277,7 @@ void SetupPlugins (HWND hWnd) {
 			}
 		}
 		RDRAMsize=NewRAMsize;
-		CPU_Type=SystemCPU_Type;
-		if (RomCPUType!=CPU_Default) CPU_Type=RomCPUType;
+		CpuRecompiler=RomCpuRecompiler;
 		CountPerOp=SystemCF;
 		if (RomCF!=-1) CountPerOp=RomCF;
 		SelfModCheck=SystemSelfModCheck;
@@ -558,10 +557,8 @@ void SetupPlugins (HWND hWnd) {
 		CPU_Paused=FALSE;
 		ManualPaused=FALSE;
 		Timer_Start();
-		switch (CPU_Type) {
-		case CPU_Interpreter: hCPU=CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)StartInterpreterCPU,NULL,0,&ThreadID); break;
-		case CPU_Recompiler: hCPU=CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)StartRecompilerCPU,NULL,0,&ThreadID); break;
-		}
+		if (CpuRecompiler) hCPU=CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)StartRecompilerCPU,NULL,0,&ThreadID);
+		else hCPU=CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)StartInterpreterCPU,NULL,0,&ThreadID);
 		if (strcmp(GfxDLL,"GLideN64.dll")==0&&!GLideN64HasBeenSetupFirst) GLideN64HasBeenSetupFirst=TRUE;
 		if (GLideN64NeedsToBeSetupFirst) {
 			EndEmulation();

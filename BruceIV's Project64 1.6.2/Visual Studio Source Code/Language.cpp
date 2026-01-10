@@ -137,7 +137,6 @@ LANG_STR DefaultString[]={
 	{ DIR_SELECT_AUTO,  "Select Save Data Directory"},
 	{ DIR_SELECT_INSTANT,"Select Save States Directory"},
         { DIR_SELECT_SCREEN,"Select Screenshots Directory"},
-//Options (general) Tab
 	{ OPTION_AUTO_SLEEP,     "Pause CPU Upon Focus Loss"},
 	{ OPTION_AUTO_FULLSCREEN,"Enter Fullscreen Mode Upon ROM Opening"},
 	{ OPTION_BASIC_MODE,     "Hide Advanced Settings"},
@@ -158,9 +157,9 @@ LANG_STR DefaultString[]={
 	{ DEFAULT_TEXT,   "Default"},
 	{ FORCE_AUTO4kbit,	       "Always Autodetect With 16kbit EEPROM" },
 	{ NUMBER_1,	       "1"},
-	{ ROM_CPU_STYLE,      "CPU Core Style:"},
+	{ SPECIAL_BREAK,	  "The game may crash at the upcoming r4300i_SPECIAL_BREAK. Do you want to emulate this potential crash?"},
 	{ ROM_SMCM,           "Self-modifying Code Method:"},
-	{ ROM_MEM_SIZE,       "Memory Size:" },
+	{ Allocate_SD_Info,	  "This action will attempt to Allocate 254MB of SD space on your hard drive in an SDCARD0 partition after decompiling AUTO0.\n\nYou will not be able to save to or load from your virtual SD card until you compile virtual SD card space back into AUTO0 by using this option again"},
 	{ ROM_AUDIO_SIGNAL,            "Signal"},
 	{ ROM_SAVE_TYPE,      "Save Type:"},
 	{ ROM_COUNTER_FACTOR, "Counter Factor:"},
@@ -174,12 +173,11 @@ LANG_STR DefaultString[]={
 	{ ROM_DELAY_RDP,      "Delay RDP"},
 	{ ROM_DELAY_RSP,      "Delay RSP"},
 	{ USUALLYONTOP_ON,	   "Usually on Top on"},
-//Core Styles
-	{ CORE_INTERPRETER,   "Interpreter"},
-	{ CORE_RECOMPILER,    "Recompiler"},
+	{ OPTIONAL_CRASH,	  "Potential Upcoming Crash"},
+	{ CORE_RECOMPILER,    "CPU Recompiler"},
 //RDRAM Size
-	{ RDRAM_4MB,          "4 MB" },
-	{ RDRAM_8MB,          "8 MB" },
+	{ AllocateCompile_SD, "Manage SD Space"},
+	{ AllocateCompile_SD_MENUDES,"Attempts to allocate or compile 254MB of space for virtual SD card emulation"},
 	{ EXTRA_PROJECT64,    "Project64 is already running.\n\nWould you like to force-kill the current Project64 before starting another one? Force-killing prevents save data issues but this may disrupt plugin behavior" },
 	{ SMCM_CACHE,         "Cache"},
 	{ SMCM_PROTECTED,     "Protect Memory"},
@@ -210,7 +208,7 @@ LANG_STR DefaultString[]={
 	{ INFO_CRC1_TEXT,        "1st CRC:"},
 	{ INFO_CRC2_TEXT,        "2nd CRC:"},
 	{ INFO_CIC_CHIP_TEXT,    "CIC Chip:"},
-	{ ROM_ALIGN_DMA,		  "Align DMA"},
+	{ ROM_ALIGN_DMA,		 "Align DMA"},
 /*********************************************************************************
 * Messages                                                                       *
 *********************************************************************************/
@@ -248,11 +246,7 @@ LANG_STR DefaultString[]={
 	{ MENUDES_GAME_SETTINGS, "Lets you read the ROM's notes (plugin/core/status)"},
 	{ MSG_EMULATION_RESET,	  "Emulation reset"},
 	{ MSG_PLS_START,		  "You must start emulation to configure this plugin"},
-	{ AllocateCompile_SD,	  "Manage SD Space"},
-	{ AllocateCompile_SD_MENUDES,"Attempts to allocate or compile 254MB of space for virtual SD card emulation"},
-	{ Allocate_SD_Info,	  "This action will attempt to Allocate 254MB of SD space on your hard drive in an SDCARD0 partition after decompiling AUTO0.\n\nYou will not be able to save to or load from your virtual SD card until you compile virtual SD card space back into AUTO0 by using this option again"},
-	{ SPECIAL_BREAK,	  "The game may crash at the upcoming r4300i_SPECIAL_BREAK. Do you want to emulate this potential crash?"},
-	{ OPTIONAL_CRASH,	  "Potential Upcoming Crash"},
+	{ JUMPER_PAK,			  "Jumper Pak"},
 };
 class CLanguage  {
 	void FindLangName  (int Index);

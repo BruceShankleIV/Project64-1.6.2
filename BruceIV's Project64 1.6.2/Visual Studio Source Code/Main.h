@@ -42,7 +42,6 @@ extern "C" {
 #define LangFileName				"English.txt"
 #define Default_AutoSleep			FALSE
 #define Default_AutoHide			TRUE
-#define Default_RDRAMsize			0x800000
 #define Default_LimitFPS			TRUE
 #define Default_SpeedCap			FALSE
 #define Default_UsuallyonTop		FALSE
@@ -58,11 +57,6 @@ extern "C" {
 #define ID_FILE_RECENT_FILE		1000
 #define ID_FILE_RECENT_DIR		1100
 #define ID_LANG_SELECT			2000
-/************ CPU Core ***************/
-#define CPU_Default				-1
-#define CPU_Interpreter			0
-#define CPU_Recompiler			1
-#define Default_CPU			CPU_Recompiler
 /********* Register Caching **********/
 #define UseCache_Default	-1
 #define REG_CACHE_ON		0
@@ -80,7 +74,7 @@ extern "C" {
 /********* Global Variables **********/
 extern LARGE_INTEGER Frequency,Frames[9],LastFrame;
 extern BOOL AutoSleep,AutoHide,Recursion,LimitFPS,SpeedCap,AutoFullScreen,SystemCF,UsuallyonTop,BasicMode,BootupSettings,SetupPluginsAfterSaveRomOpt,SPECIAL_BREAK_Trigger,BF_Trigger,SPECIAL_BREAK_Yes;
-extern DWORD CurrentFrame,CPU_Type,SystemCPU_Type,SelfModCheck,SystemSelfModCheck,SystemUseCache,RomsToRemember,RomDirsToRemember;
+extern DWORD CurrentFrame,SelfModCheck,SystemSelfModCheck,SystemUseCache,RomsToRemember,RomDirsToRemember;
 extern HWND hMainWindow,hHiddenWin,hStatusWnd;
 extern char CurrentSave[256];
 extern HMENU hMainMenu;

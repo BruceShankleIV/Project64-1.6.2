@@ -132,9 +132,11 @@
 #130# "ON"
 #131# "Default"
 #132# "Always Autodetect With 16kbit EEPROM"
-#134# "CPU Core Style:"
+#134# "The game may crash at the upcoming r4300i_SPECIAL_BREAK. Do you want to emulate this potential crash?"
 #135# "Self-modifying Code Method:"
-#136# "Memory Size:"
+#136# "This action will attempt to Allocate 254MB of SD space on your hard drive in an SDCARD0 partition after decompiling AUTO0.
+
+You will not be able to save to or load from your virtual SD card until you compile virtual SD card space back into AUTO0 by using this option again"
 #137# "Signal"
 #138# "Save Type:"
 #139# "Counter Factor:"
@@ -148,10 +150,10 @@
 #147# "Delay RDP"
 #148# "Delay RSP"
 #149# "Usually on Top on"
-#150# "Interpreter"
+#150# "Potential Upcoming Crash"
 #151# "Recompiler"
-#152# "4 MB"
-#153# "8 MB"
+#152# "Manage SD Space"
+#153# "Attempts to allocate or compile 254MB of space for virtual SD card emulation"
 #154# "Project64 is already running.
 
 Would you like to force-kill the current Project64 before starting another one? Force-killing prevents save data issues but this may disrupt plugin behavior"
@@ -228,10 +230,4 @@ You will be able to save to or load from your virtual SD card again if this acti
 #211# "Lets you read the ROM's notes (plugin/core/status)"
 #212# "Emulation reset"
 #213# "You must start emulation to configure this plugin"
-#214# "Manage SD Space"
-#215# "Attempts to allocate or compile 254MB of space for virtual SD card emulation"
-#216# "This action will attempt to Allocate 254MB of SD space on your hard drive in an SDCARD0 partition after decompiling AUTO0.
-
-You will not be able to save to or load from your virtual SD card until you compile virtual SD card space back into AUTO0 by using this option again"
-#217# "The game may crash at the upcoming r4300i_SPECIAL_BREAK. Do you want to emulate this potential crash?"
-#218# "Potential Upcoming Crash"
+#214# "Jumper Pak"

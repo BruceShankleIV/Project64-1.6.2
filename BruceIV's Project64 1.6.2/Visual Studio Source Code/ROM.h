@@ -23,7 +23,7 @@
  * should be forwarded to them so if they want them.
  *
  */
-extern DWORD ClearFrame,RomClearFrame,RomFileSize,RomRamSize,SaveUsing,RomSaveUsing,CPUType,RomCPUType,RomSelfModCheck,UseTLB,RomUseTLB,FiftyNineHertz,RomFiftyNineHertz,RomJAI,AudioSignal,RomAudioSignal,RomCF,UseCache,RomUseCache,RomShankleAziAI,RomAltEmulateAI,SyncGametoAudio,RomSyncGametoAudio,CF1CF0,RomCF1CF0,DelayRDP,RomDelayRDP,DelayRSP,RomDelayRSP,AlignDMA,RomAlignDMA,DelayRDP,RomDelayRDP,DelayRSP,RomDelayRSP,DelaySI,RomRspRecompiler,RomDelaySI,ForceAuto16kbit,ForceDisableTLB,ForceDisableCaching,ForceEnableDMA,EmulateAI;
+extern DWORD ClearFrame,RomClearFrame,RomFileSize,SaveUsing,RomSaveUsing,RomSelfModCheck,UseTLB,RomUseTLB,FiftyNineHertz,RomFiftyNineHertz,RomJAI,AudioSignal,RomAudioSignal,RomCF,UseCache,RomUseCache,RomShankleAziAI,RomAltEmulateAI,SyncGametoAudio,RomSyncGametoAudio,CF1CF0,RomCF1CF0,DelayRDP,RomDelayRDP,DelayRSP,RomDelayRSP,AlignDMA,RomAlignDMA,DelayRDP,RomDelayRDP,DelayRSP,RomDelayRSP,DelaySI,RomRspRecompiler,CpuRecompiler,RomCpuRecompiler,RomJumperPak,RomDelaySI,ForceAuto16kbit,ForceDisableTLB,ForceDisableCaching,ForceEnableDMA,EmulateAI;
 extern char CurrentFileName[MAX_PATH+1],RomName[MAX_PATH+1],RomHeader[0x1000],LastRoms[10][MAX_PATH+1],LastDirs[10][MAX_PATH+1];
 void AddRecentFile           (HWND hWnd,char * addition);
 void ChangeRomOptionMemSize  (DWORD NewSize);

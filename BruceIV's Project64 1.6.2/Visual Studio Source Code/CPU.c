@@ -586,7 +586,7 @@ BOOL Machine_LoadState(void) {
 			}
 			unzReadCurrentFile(file,&SaveRDRAMsize,sizeof(SaveRDRAMsize));
 			unzReadCurrentFile(file,LoadHeader,0x40);
-			if (CPU_Type!=CPU_Interpreter) {
+			if (CpuRecompiler) {
 				ResetRecompCode();
 			}
 			Timers.CurrentTimerType=-1;
@@ -594,7 +594,7 @@ BOOL Machine_LoadState(void) {
 			for (count=0; count<MaxTimers; count ++) { Timers.Active[count]=FALSE; }
 			//fix RDRAM size
 			if (SaveRDRAMsize!=RDRAMsize) {
-				if (RDRAMsize==0x400000) {
+				if (RDRAMsize == 0x400000) {
 					if (VirtualAlloc(N64MEM+0x400000,0x400000,MEM_COMMIT,PAGE_READWRITE)==NULL) {
 						DisplayError(GS(MSG_MEM_ALLOC_ERROR));
 						DisplayThreadExit("1 Machine_LoadState-VirtualAlloc(N64MEM+0x400000,0x400000,MEM_COMMIT,PAGE_READWRITE)==NULL");
@@ -659,7 +659,7 @@ BOOL Machine_LoadState(void) {
 		if (Value!=0x23D8A6C8) return FALSE;
 		ReadFile(hSaveFile,&SaveRDRAMsize,sizeof(SaveRDRAMsize),&dwRead,NULL);
 		ReadFile(hSaveFile,LoadHeader,0x40,&dwRead,NULL);
-		if (CPU_Type!=CPU_Interpreter) {
+		if (CpuRecompiler) {
 			ResetRecompCode();
 		}
 		Timers.CurrentTimerType=-1;

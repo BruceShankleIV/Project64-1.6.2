@@ -156,9 +156,9 @@ char * GS               (int StringID);
 #define DEFAULT_TEXT		131
 #define FORCE_AUTO4kbit			132
 #define NUMBER_1			133
-#define ROM_CPU_STYLE			134
+#define SPECIAL_BREAK			134
 #define ROM_SMCM			135
-#define ROM_MEM_SIZE			136
+#define Allocate_SD_Info		136
 #define ROM_AUDIO_SIGNAL		137
 #define ROM_SAVE_TYPE			138
 #define ROM_COUNTER_FACTOR		139
@@ -173,11 +173,11 @@ char * GS               (int StringID);
 #define ROM_DELAY_RSP			148
 #define USUALLYONTOP_ON			149
 //Core Styles
-#define CORE_INTERPRETER		150
+#define OPTIONAL_CRASH			150
 #define CORE_RECOMPILER			151
 //RDRAM Size
-#define RDRAM_4MB			152
-#define RDRAM_8MB			153
+#define AllocateCompile_SD		152
+#define AllocateCompile_SD_MENUDES	153
 //Core Styles
 #define EXTRA_PROJECT64			154
 #define SMCM_CACHE			155
@@ -247,8 +247,4 @@ char * GS               (int StringID);
 #define MENUDES_GAME_SETTINGS		211
 #define MSG_EMULATION_RESET		212
 #define MSG_PLS_START			213
-#define AllocateCompile_SD		214
-#define AllocateCompile_SD_MENUDES	215
-#define Allocate_SD_Info		216
-#define SPECIAL_BREAK			217
-#define OPTIONAL_CRASH			218
+#define JUMPER_PAK				214

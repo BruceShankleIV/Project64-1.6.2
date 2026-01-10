@@ -417,5 +417,5 @@ void StartInterpreterCPU (void) {
 void TestInterpreterJump (DWORD PC,DWORD TargetPC,int Reg1,int Reg2) {
 	if (PC!=TargetPC) return;
 	if (DelaySlotEffectsCompare(PC,Reg1,Reg2)) return;
-	if (CPU_Type!=CPU_Interpreter) return;
+	if (CpuRecompiler) return;
 }

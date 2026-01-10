@@ -34,7 +34,7 @@
 #define Var86 MoveVariableToX86reg(Addr+N64MEM,Reg);
 #define FalseVaddr if (!TranslateVaddr(&Addr)) return;
 #define Variable86 MoveX86regToVariable(x86Reg,Addr+N64MEM);
-DWORD *TLB_ReadMap,*TLB_WriteMap,RDRAMsize,SystemRDRAMsize;
+DWORD *TLB_ReadMap,*TLB_WriteMap,RDRAMsize;
 BYTE *N64MEM,*RDRAM,*DMEM,*IMEM,*ROM;
 void ** JumpTable,** DelaySlotTable;
 BYTE *RecompCode,*RecompPos;

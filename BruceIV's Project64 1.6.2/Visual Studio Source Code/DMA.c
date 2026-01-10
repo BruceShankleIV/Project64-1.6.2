@@ -132,7 +132,7 @@ void PI_DMA_WRITE (void) {
 	DWORD i;
 	PI_DRAM_ADDR_REG&=0x1FFFFFFF;
 	if (PI_WR_LEN_REG!=2&&(PI_WR_LEN_REG&1)==0) PI_WR_LEN_REG++;
-	if (AlignDMA||CPU_Type==CPU_Interpreter) {
+	if (AlignDMA) {
 		PI_CART_ADDR_REG&=~1;
 		PI_DRAM_ADDR_REG&=~7;
 	}

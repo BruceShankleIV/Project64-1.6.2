@@ -34,7 +34,6 @@
 #define AUDIO_ABOUT                     1031
 #define CONT_LIST                       1032
 #define CONT_ABOUT                      1035
-#define IDC_RDRAM                       1046
 #define IDC_ROM_OTHER                   1062
 #define IDC_ROM_DIR                     1063
 #define IDC_ROM_DEFAULT                 1064
@@ -56,14 +55,10 @@
 #define IDC_USE_TLB                     1084
 #define IDC_SELFMOD                     1085
 #define IDC_AUDIO_SIGNAL				1086
-#define IDC_RDRAM_SIZE                  1087
-#define IDC_CPU_TYPE                    1088
 #define IDC_SAVE_TYPE                   1089
-#define IDC_MEMORY_SIZE_TEXT            1090
 #define IDC_CF                          1094
 #define IDC_FiftyNineHertz				1123
-#define IDC_SAVE_TYPE_TEXT              1091
-#define IDC_CPU_TYPE_TEXT               1092
+#define IDC_SAVE_TYPE_TEXT              10912
 #define IDC_SELFMOD_TEXT                1093
 #define IDC_REMEMBER                    1095
 #define IDC_CF_TEXT              1095
@@ -79,13 +74,13 @@
 #define IDC_CF1_CF0						1106
 #define IDC_HIDE						1107
 #define IDC_TEXT3                       1108
-#define IDC_TEXT4                       1109
 #define IDC_TEXT5                       1110
 #define IDC_ROMSEL_TEXT1                1111
 #define IDC_ROMSEL_TEXT2                1112
 #define IDC_ROMSEL_TEXT3                1113
 #define IDC_ROMSEL_TEXT4                1114
 #define IDC_RSP_RECOMPILER				1116
+#define IDC_CPU_RECOMPILER				1117
 #define IDC_DELETE                      1118
 #define IDC_UNMARK                      1119
 #define IDC_NOTES                       1120
@@ -98,7 +93,6 @@
 #define IDC_DIR_FRAME4                  1129
 #define IDC_CODE_NAME                   1130
 #define IDC_DIR_FRAME5                  1131
-#define IDC_TEXT2                       1133
 #define IDC_USING                       1134
 #define IDC_AVAILABLE                   1135
 #define IDC_TEXT6						1136
@@ -162,7 +156,8 @@
 #define IDC_DELAY_RDP                   1238
 #define IDC_DELAY_RSP                   1239
 #define IDC_ALIGN_DMA					1240
-#define IDC_SyncGametoAudio					1241
+#define IDC_SyncGametoAudio				1241
+#define IDC_JUMPER_PAK					1242
 #define ID_FILE_OPEN_ROM                40001
 #define ID_FILE_ROM_INFO                40002
 #define ID_FILE_EXIT                    40005
