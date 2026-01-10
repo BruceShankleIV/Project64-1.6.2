@@ -19,7 +19,7 @@ This way, you always have access to these resources with every copy of the emula
 
 ## Project Status
 
-V17 released - NO MORE CHANGES PLANNED, but happy to review bug reports or add/update database entries.
+I keep saying I'm done with it. I keep saying, that's it, it's perfect to me. Then I improve it more somehow anyway. So the status is: always ongoing no matter what I keep telling myself.
 
 ## What This Project Is About
 
