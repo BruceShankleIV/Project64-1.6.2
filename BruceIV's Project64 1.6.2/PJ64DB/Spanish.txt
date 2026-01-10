@@ -1,7 +1,7 @@
 #1# "Español/Spanish"
 #2# "TrulyNaN x  BruceIV"
-#3# "19 WIP 5"
-#4# "Jan 3 2025"
+#3# "21 WIP"
+#4# "Jan 2026"
 #5# "Base de datos de idiomas (.txt)"
 #6# "Autor"
 #7# "Versión"
@@ -124,9 +124,11 @@
 #128# "Sincronisar Juego con Audio"
 #131# "Por Defecto"
 #132# "Siempre Autodetectar Con EEPROM de 16kbit"
-#134# "Estilo de núcleo de CPU:"
+#134# "This is supposed to be V20 hashtag217hashtag"
 #135# "Auto-modificando Método de Código:"
-#136# "Tamaño de la Memoria:"
+#136# "Esta acción va probar asignar 254MB de espacio SD en tu disco duro en una partición SDCARD0 despues decompilar AUTO0.
+
+No podrás guardar o cargar de tu tarjeta SD virtual hasta compilas el espacio de tarjeta SD virtual de vuelta en AUTO0 con usar esta opción de nuevo"
 #137# "Señal"
 #138# "Tipo de Guardado:"
 #139# "Factor de Contador:"
@@ -137,8 +139,10 @@
 #147# "Retrasar RDP"
 #148# "Retrasar RSP"
 #149# "Generalmente al Frente activado"
-#150# "Intérprete"
+#150# "This is supposed to be V20 hashtag218hashtag"
 #151# "Recompilador"
+#152# "Gestionar el espacio SD"
+#153# "Prueba asignar o compilar 254MB de espacio para la emulación de la tarjeta SD virtual"
 #154# "Project64 ya está ejecutando.
 
 ¿Quieres forzar la terminación del Project64 actual antes de iniciar otro? Forzar la terminación previene problemas con datos de guardado, pero podría afectar el comportamiento de los complementos"
@@ -211,8 +215,4 @@ Vas poder guardar o cargar de tu tarjeta SD virtual de nuevo si esta acción func
 #211# "Te permiter leer las notas de la ROM (plugin/core/status)"
 #212# "Se renició la emulación"
 #213# "Debes iniciar la emulación para configurar este complemento"
-#214# "Gestionar el espacio SD"
-#215# "Prueba asignar o compilar 254MB de espacio para la emulación de la tarjeta SD virtual"
-#216# "Esta acción va probar asignar 254MB de espacio SD en tu disco duro en una partición SDCARD0 despues decompilar AUTO0.
-
-No podrás guardar o cargar de tu tarjeta SD virtual hasta compilas el espacio de tarjeta SD virtual de vuelta en AUTO0 con usar esta opción de nuevo"
+#214# "This is supposd to be quoteJumper Pakquote"

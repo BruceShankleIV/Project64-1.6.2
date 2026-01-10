@@ -34,7 +34,7 @@ extern "C" {
 #include "Settings API.h"
 #include "ROM Browser.h"
 #include "Language.h"
-/********* Source Version 20 *********/
+/********* Source Version 21 *********/
 /********* General Defaults **********/
 #define AppName						"BruceIV's Project64 1.6.2"
 #define IniName						"Game.ini"

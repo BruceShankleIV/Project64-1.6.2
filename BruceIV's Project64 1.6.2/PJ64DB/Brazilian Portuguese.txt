@@ -1,7 +1,7 @@
 #1# "Português brasileiro/Brazilian Portuguese"
 #2# "TrulyNaN x BruceIV"
-#3# "19 WIP 5"
-#4# "Jan 3 2025"
+#3# "21 WIP"
+#4# "Jan 2026"
 #5# "Banco de dados de língua (.txt)"
 #6# "Autor"
 #7# "Versão"
@@ -123,9 +123,11 @@
 #128# "Sincronizar Jogo com Áudio"
 #131# "Padrão"
 #132# "Sempre Detectar Automaticamente com EEPROM de 16kbit"
-#134# "Estilo do Núcleo da CPU:"
+#134# "I am supposed to be V20 hashtag217hashtag"
 #135# "Método de Código Automodificando:"
-#136# "Tamanho da Memória:"
+#136# "Essa ação va tentar alocar 254MB de espaço SD no seu disco numa partição SDCARD0 depois decompilar AUTO0.
+
+Você não sera capaz salvar ou carregar do seu cartão SD virtual até compilar espaço de cartão SD virtual de volta em AUTO0 com usar essa opção novamente"
 #137# "Sinal"
 #138# "Tipo de Salvo:"
 #139# "Fator de Contador:"
@@ -137,8 +139,10 @@
 #147# "Atrasar RDP"
 #148# "Atrasar RSP"
 #149# "Habitualmente no Topo ativado"
-#150# "Interpretador"
+#150# "I am supposed to be V20 hashtag218hashtag"
+#152# "Gerir Espaço SD"
 #151# "Recompilador"
+#153# "Isso está tentando alocar ou compilar 254MB de espaço para emulação de cartão SD virtual"
 #154# "Project64 já está em execução.
 
 Você quer forçar encerramento do atual Project64 antes de iniciar um outro? Forçar encerramento evita problemas com dados de salvo, mas isso pode afetar comportamento dos módulos de extensão"
@@ -210,8 +214,4 @@ Você será capaz salvar ou carregar do seu cartão SD virtual se essa ação for bem
 #211# "Permite ler as notas da ROM (plugin/core/status)"
 #212# "Reiniciar emulação"
 #213# "Você precisa iniciar emulação para configurar esse módulo de extensão"
-#214# "Gerir Espaço SD"
-#215# "Isso está tentando alocar ou compilar 254MB de espaço para emulação de cartão SD virtual"
-#216# "Essa ação va tentar alocar 254MB de espaço SD no seu disco numa partição SDCARD0 depois decompilar AUTO0.
-
-Você não sera capaz salvar ou carregar do seu cartão SD virtual até compilar espaço de cartão SD virtual de volta em AUTO0 com usar essa opção novamente"
+#214# "I am supposed to be quoteJumper Pakquote"
