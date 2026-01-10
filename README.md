@@ -301,6 +301,11 @@ These are my special thanks and shoutouts to awesome people for their work, assi
 Miroku - Your RAM hacking skills have been extremely useful to this project with improved cheat support,
 	 reduced pause delay, instant load times, and zero lag thanks to your RAM hackings. Thanks Miro!
 
+darkmariomodder - Thanks for providing feedback about the Linux Operating System experience using Lutris
+		  and Proton for this N64 Emulator! I am so happy that it works well for you, so much so
+		  that you even suggest it over native options. Thanks for this praise and motivating me
+		  to work on the project further. You are a kind soul ♥.
+
 z64me - For being supportive and addressing issues during the project's primitive stages when I started.
 
 aglab2 - I'm so glad that you researched and documented about the vulnerability inside of N64 emulators.

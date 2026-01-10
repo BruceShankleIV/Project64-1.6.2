@@ -289,8 +289,8 @@ void SetupPlugins (HWND hWnd) {
 		if (RomSaveUsing==Auto) {
 			if (strcmp(RomName,"CONKER BFD")==0||strcmp(RomName,"DRACULA MOKUSHIROKU")==0||strcmp(RomName,"DRACULA MOKUSHIROKU2")==0||strcmp(RomName,"BANJO KAZOOIE 2")==0||strcmp(RomName,"BANJO TOOIE")==0||strcmp(RomName,"CRUIS'N WORLD")==0||strcmp(RomName,"CUSTOMROBOV2")==0||strcmp(RomName,"DONKEY KONG 64")==0||strcmp(RomName,"ÄÞ×´ÓÝ2 Ë¶ØÉ¼ÝÃÞÝ")==0||strcmp(RomName,"ÄÞ×´ÓÝ3 ÉËÞÀÉÏÁSOS!")==0||strcmp(RomName,"EXCITEBIKE64")==0||strcmp(RomName,"²ÃÞÖ³½¹ÉÏ°¼Þ¬Ý¼Þ­¸")==0||strcmp(RomName,"NBA COURTSIDE")==0||strcmp(RomName,"Madden NFL 2002")==0||strcmp(RomName,"MarioParty3")==0||strcmp(RomName,"MarioTennis")==0||strcmp(RomName,"MarioTennis64")==0||strcmp(RomName,"EVANGELION")==0||strcmp(RomName,"Parlor PRO 64")==0||strcmp(RomName,"Ultraman Battle JAPA")==0||strcmp(RomName,"Perfect Dark")==0||strcmp(RomName,"RIDGE RACER 64")==0||strcmp(RomName,"Robopon 64")==0||strcmp(RomName,"STAR WARS EP1 RACER")==0||strcmp(RomName,"YOSHI STORY")==0) SaveUsing=EEPROM_16K;
 			if (strcmp(RomName,"THE LEGEND OF ZELDA")==0) SaveUsing=SRAM;
-			if (strcmp(RomName,"NBA Courtside 2")==0) SaveUsing=FlashRAM;
-			// This part can mask autodetect issues with ROMhacks. Does not cover for Pokémon Stadium (J) (Region-Exclusive)
+			if (strcmp(RomName,"NBA Courtside 2")==0||strcmp(RomName,"POKEMON STADIUM")==0) SaveUsing=FlashRAM;
+			// This masks most auto save type issues to extend compatibility for ROMhacks. The reason why it is stil set manually per Game.ini is for hacks with custom internal name and shared CRC.
 		}
 		ClearFrame=RomClearFrame;
 		AudioSignal=RomAudioSignal;

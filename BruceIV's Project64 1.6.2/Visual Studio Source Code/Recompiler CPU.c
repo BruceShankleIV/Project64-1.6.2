@@ -117,7 +117,7 @@ void OpcodeSwitch (BLOCK_SECTION * Section) {
 		case R4300i_SPECIAL_DSRL32: Compile_R4300i_SPECIAL_DSRL32(Section); break;
 		case R4300i_SPECIAL_DSRA32: Compile_R4300i_SPECIAL_DSRA32(Section); break;
 		default:
-			DisplayThreadExit("OpcodeSwitch-switch (Opcode.op)-case R4300i_SPECIAL:-switch (Opcode.funct)-default:\nThe emulator has crashed on a reserved Opcode at this location");
+			DisplayThreadExit("OpcodeSwitch-switch (Opcode.op)-case R4300i_SPECIAL:-switch (Opcode.funct)-default:\nThe emulator has crashed on a reserved Opcode at this location\n\nSelf-modifying Code Method-related?");
 	}
 	break;
 	case R4300i_REGIMM:
@@ -1768,7 +1768,10 @@ BOOL GenerateX86Code (BLOCK_SECTION * Section,DWORD Test) {
 	do {
 		__try {
 			if (BlockCycleCount>1&&CF1CF0) BlockCycleCount=1;
-			if (!r4300i_LW_VAddr(Section->CompilePC,&Opcode.Hex)) DisplayThreadExit("GenerateX86Code-!r4300i_LW_VAddr(Section->CompilePC,&Opcode.Hex)\n\nSelf-modifying Code Method-related?");
+			if (!r4300i_LW_VAddr(Section->CompilePC,&Opcode.Hex)) {
+				if (UseTLB) DisplayThreadExit("GenerateX86Code-!r4300i_LW_VAddr(Section->CompilePC,&Opcode.Hex)\n\nSelf-modifying Code Method-related?");
+				else DisplayThreadExit("GenerateX86Code-!r4300i_LW_VAddr(Section->CompilePC,&Opcode.Hex)\n\nNeeds 'TLB=ON'?");
+			}
 		} __except(r4300i_CPU_MemoryFilter(GetExceptionCode(),GetExceptionInformation())) {
 			DisplayThreadExit("GenerateX86Code-r4300i_CPU_MemoryFilter(GetExceptionCode(),GetExceptionInformation()");
 		}
