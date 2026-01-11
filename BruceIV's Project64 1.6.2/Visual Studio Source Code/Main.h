@@ -34,6 +34,16 @@ extern "C" {
 #include "Settings API.h"
 #include "ROM Browser.h"
 #include "Language.h"
+/* NOTES
+* I'm not sure if Cache SCM is even needed for any game.
+* If Cache SCM isn't needed, it can be dropped if the performance boost it provides over Check Memory is considered negligible enough.
+* If Cache is dropped, we do not need a dropdown/default SCM system, in which case Protect Memory could become a ROM Setting checkbox.
+* I haven't tested the current memsize used in ClearRecompilerCache for ROMs outside of Ocarina of Time 1.0/1.1/1.2, needs more tests.
+* If that memsize used needs to be done specifically only for those versions, it needs to be made a new ROM Setting and used for hacks
+* which are based off of those versions and suffer from the issue. Don't recklessly make the change, confirm if LW exit crash happens,
+* as it doesn't seem to happen in the T Percent demo. But if we remove the SCM dropdown system and no default choice, it is regressing
+* in that a user cannot prioritize stable self-mod emulation assuming that Check Memory is the hard-coded default since Protect Memory
+* has stutter on low-end devices, which is why I haven't made this change yet.
 /********* Source Version 21 *********/
 /********* General Defaults **********/
 #define AppName						"BruceIV's Project64 1.6.2"

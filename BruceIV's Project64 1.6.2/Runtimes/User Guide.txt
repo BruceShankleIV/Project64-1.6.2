@@ -343,8 +343,8 @@ won't get information from the emulator about what plugins are required or sugge
 The hack may also be prone to crashing or other kinds of unexpected behavior if you aren't using certain
 ROM Settings with it, depending on what was hacked into the ROM, and the properties of the original ROM.
 A good idea to start with is using the same ROM Settings and fixes used for the original ROM. This would
-resolve most issues you would have just using the default, but there can be some cases where Interpreter
-CPU Core Style would be needed and require a specific video plugin, such as the Cosmic Goddess demo.
+resolve most issues you would have just using the defaults but there can be some cases where turning the
+CPU Recompiler off would be needed and require a specific video plugin, such as the Cosmic Goddess demo.
 Further information about setting up ROMhacks found below.
 
 
@@ -389,26 +389,13 @@ After unchecking Hide Advanced Settings under Settings->Options and reloading th
 will be a ROM Settings tab. The tab is looking at the currently loaded Game's CRC inside PJ64DB\Game.ini
 and showing you what emulation options are enabled for the game, what emulation options are disabled for
 the game, and what emulation options are forced ON or forced OFF due to another setting. This section of
-the guide shall give you a quick rundown on the default settings tab and all twenty of the ROM Settings!
+the guide shall give you a quick rundown on the default settings tab and all the ROM Settings!
 
 Note: You can fine-tune default settings for better compatibility by setting Register Caching OFF,
 and Counter Factor set to 1. However, Register Caching ON is usually good to get better framerate,
 and Counter Factor set to 1 can cause crashes or failure to boot. However, Counter Factor set to 2
 causes flickering (see Paper Mario), longer load times, and an extremely significant lag increase.
 
-
-CPU Core Style: By default, Recompiler but changeable from the advanced tab to Interpreter
-* Forces CF1-->0 off if set to Interpreter
-* Forces Align DMA on if set to Interpreter
-The Recompiler and the Interpreter have a big performance difference between each other, especially when
-Register Caching is set ON for the Recompiler. The Interpreter also generally (but not always) is closer
-to replicating N64 hardware and its limitations, as such it has generally worse ROMhack game support and
-should never be used if you are able to get a game working with the Recompiler. The Interpreter can't be
-affected by Self-modifying Code Method, Register Caching, or CF1-->0, they're recompiler style-specific!
-
-Memory Size: By default, 8MB but changeable from the advanced tab to 4MB
-If set to 8MB, it is like having an expansion pak in. However, if a game doesn't benefit from or require
-the expansion pak, it is better to set it to 4MB to avoid memory waste and reduce size on the savestates.
 
 Self-modifying Code Method: By default, Check Memory but changeable from the advanced tab
 * Disabled by the Interpreter
@@ -467,12 +454,21 @@ Legacy AiLenChanged: By default, off
 * Forced off if sound plugin is No audio
 This is an alternate AI function from Project64 Legacy 1.6.4 which works better sometimes (not always).
 
-RSP Recompiler: By default, off
-* Forced on if video plugin isn't Icepir8's LLE or if the ROM Internal name is Zelda
-The Project64 1.6 RSP has a Recompiler and an Interpreter just like the Project64 CPU Core Style. In many
+RSP Recompiler: By default, variable
+* Forced on if the video plugin is not Icepir8's LLE or if the ROM is known to require it (internal name)
+The Project64 1.6 RSP has a Recompiler and an Interpreter just like the Project64 internal core. In many,
 but not all cases, the Interpreter style works better with Icepir8's LLE and prevents strange crashes. To
 solve this, Interpreter is always used with Icepir8's LLE and Recompiler style will be used for the cases
-where Interpreter does not work well with Icepir8's LLE. This is due to lack of time to fully test games.
+where Interpreter does not work well with Icepir8's LLE.
+
+CPU Recompiler: By default, on
+* Forces TLB on if off
+If off, Register Caching/Self-modifying Code Method/TLB will have no effect as this app uses Interpreter
+style emulation when not using Recompiler style. You should always use the CPU Recompiler unless there's
+no way to emulate the game properly with it such as in the case of Cosmic Goddess (try it and see). When
+using CPU Recompiler, it's important to use Register Caching for a boost in performance if there are not
+any negative side effects from doing so, to disable TLB sparingly on a per-game basis, and to always use
+the highestmost Self-modifying Code Method which will work with a game for the best performance you can.
 
 TLB: By default, on
 *Forced on by the Interpreter

@@ -506,8 +506,7 @@ void ReadRomOptions(void) {
 		if (strcmp(String,"ON")==0&&strcmp(AudioDLL,"Jabo_Dsound.dll")==0) { RomSyncGametoAudio=TRUE; RomJAI=TRUE; }
 		_GetPrivateProfileString(Identifier,"Legacy AiLenChanged","",String,sizeof(String),IniFileName);
 		if (strcmp(String,"ON")==0&&(RomJAI||RomShankleAziAI)) RomAltEmulateAI=TRUE;
-		if (!RomCpuRecompiler) RomUseTLB=TRUE;
-		else {
+		if (RomCpuRecompiler) {
 			_GetPrivateProfileString(Identifier,"Self-modifying Code Method","",String,sizeof(String),IniFileName);
 			if (strcmp(String,"Cache")==0) { RomSelfModCheck=ModCode_Cache; }
 			else if (strcmp(String,"Check Memory")==0) { RomSelfModCheck=ModCode_CheckMemory; }
@@ -519,7 +518,7 @@ void ReadRomOptions(void) {
 				else if (strcmp(String,"OFF")==0) { RomUseCache=REG_CACHE_OFF; }
 				else RomUseCache=UseCache_Default;
 			}
-		}
+		} else RomUseTLB = TRUE;
 		if (!RomCpuRecompiler||RomCF!=-1&&RomCF!=1) RomCF1CF0=FALSE;
 	}
 }
