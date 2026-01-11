@@ -1,4 +1,7 @@
 Finish #217# #218# and #129# translations for Brazilian Portugese, French, and Spanish.
+217 is now 134
+218 is now 150
+need translation for 214 "Jumper Pak"
 
 Review ifndef MIN_SIZE stuff as well as potential missing memory registers in r4300i_SW_NonMemory for ifndef MIN_SIZE
 
@@ -9,21 +12,6 @@ Look in the demo's for ongoing projects, when those are complete we can upload t
 
 Need to review ALL ENTRIES USING PROTECT MEMORY, can we use a lower scm setting to get working
 better on lower end devices
-
-may consider depreciating the entire self mod code method system, and just making a per rom setting
-called "protect memory" (recompiler only), using check memory in place of everywhere cache is used.
-
-We can also depreciate the mem size dropdown system. just always use 8mb by default, make 4mb a ROM
-setting checkbox. There is not much reason a user would ever pick 4mb by default.
-Alternatively, we could just never use 4mb at all, but 4mb is good for lower sizes and no mem waste
-
-If cache is depreciated, update the core notes for rat attack entries
-
-There is a perf diff between check mem and cache! Cache is faster than check mem for sure.
-Could keep it as a checkbox per-rom setting. But maybe that perf diff isn't worth it?
-cache sm64: 650 or 700ish
-check mem: 600ish
-the difference can be greater sometimes (game-dependent)
 
 make "set memory" a ROM Setting if needed if TLOZ auto isn't enough (cannot be active with pmem if
 self mod system is dropped since pmem doesn't execute code in the function block where setmem is done

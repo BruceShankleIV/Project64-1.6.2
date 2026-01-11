@@ -594,7 +594,7 @@ BOOL Machine_LoadState(void) {
 			for (count=0; count<MaxTimers; count ++) { Timers.Active[count]=FALSE; }
 			//fix RDRAM size
 			if (SaveRDRAMsize!=RDRAMsize) {
-				if (RDRAMsize == 0x400000) {
+				if (RDRAMsize==0x400000) {
 					if (VirtualAlloc(N64MEM+0x400000,0x400000,MEM_COMMIT,PAGE_READWRITE)==NULL) {
 						DisplayError(GS(MSG_MEM_ALLOC_ERROR));
 						DisplayThreadExit("1 Machine_LoadState-VirtualAlloc(N64MEM+0x400000,0x400000,MEM_COMMIT,PAGE_READWRITE)==NULL");
