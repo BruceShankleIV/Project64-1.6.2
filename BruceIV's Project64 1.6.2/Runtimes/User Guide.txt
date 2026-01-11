@@ -463,6 +463,7 @@ where Interpreter does not work well with Icepir8's LLE.
 
 CPU Recompiler: By default, on
 * Forces TLB on if off
+* Forces Self-modifying Code Method and Register Caching to Default if off (they would have no effect)
 If off, Register Caching/Self-modifying Code Method/TLB will have no effect as this app uses Interpreter
 style emulation when not using Recompiler style. You should always use the CPU Recompiler unless there's
 no way to emulate the game properly with it such as in the case of Cosmic Goddess (try it and see). When
@@ -491,10 +492,16 @@ more you lower the counter factor, the more likely you generally are to run into
 However, having it turned on can be necessary to emulate some games properly or to get rid of lagging or
 delay like the equipment subscreen equip delay in Ocarina of Time on HLE video if not using a Cheat fix.
 
+Jumper Pak: By default, off
+This emulates the Jumper Pak which comes with original Nintendo 64 hardware. If you want to make a game
+which works on original hardware, you need to enable this option. Most ROMhacks do not work on original
+hardware and many N64 games do not either so you generally want to keep this on. But in the cases where
+it can be turned on, it reduces the emulator's total memory use and generates smaller-sized savestates.
+
 Align DMA: By default, off
-*Forced on by the Interpreter
 This setting fixes broken interface positions in games but also emulates a limitation breaking ROMhacks.
-There is currently only one game which needs this setting, but there could be more in the future.
+There is currently only one game which needs this setting, but there could be more in the future. If CPU
+Recompiler is turned off, you may want to turn this on if that still doesn't fix a game's graphical bug.
 
 Delay RDP: By default, off
 It's either needed or it's not. Notably fixes the HUD in Kirby 64 for some reason. The setting is needed
