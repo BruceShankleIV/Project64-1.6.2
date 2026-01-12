@@ -642,9 +642,8 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 		switch (LOWORD(wParam)) {
 		case ID_PLAYGAME:
 			if (strlen(CurrentRBFileName)>0) {
-				DWORD ThreadID;
 				strcpy(CurrentFileName,CurrentRBFileName);
-				CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)OpenChosenFile,NULL,0,&ThreadID);
+				CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)OpenChosenFile,NULL,0,NULL);
 			}
 			break;
 		case ID_EDITCHEATS: ChangeRomCheats(hWnd); break;
@@ -671,19 +670,11 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 				RomFileSize=OrigFileSize;
 			}
 			break;
-		case ID_FILE_OPEN_ROM: {
-				DWORD ThreadID;
-				if (ChooseN64RomToOpen()) CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)OpenChosenFile,NULL,0,&ThreadID);
-				}
-				break;
+		case ID_FILE_OPEN_ROM: if (ChooseN64RomToOpen()) CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)OpenChosenFile,NULL,0,NULL); break;
 		case ID_FILE_ROM_INFO: RomInfo(); break;
-		case ID_FILE_STARTEMULATION: {
-				DWORD ThreadID;
-				HMENU hMenu=GetMenu(hWnd);
-				EnableMenuItem(hMenu,ID_FILE_STARTEMULATION,MFS_DISABLED|MF_BYCOMMAND);
-				strcpy(CurrentFileName,LastRoms[0]);
-				CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)OpenChosenFile,NULL,0,&ThreadID);
-			}
+		case ID_FILE_STARTEMULATION:
+			strcpy(CurrentFileName,LastRoms[0]);
+			CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)OpenChosenFile,NULL,0,NULL);
 			break;
 		case ID_FILE_ENDEMULATION:
 			CloseCheatWindow();
@@ -697,12 +688,9 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 		case ID_FILE_REFRESHROMLIST: RefreshRomBrowser(); break;
 		case ID_FILE_EXIT: DestroyWindow(hWnd); break;
 		case ID_CPU_RESET:
-			{
-				DWORD ThreadID;
 				EndEmulation();
-				CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)ResetFunction,NULL,0,&ThreadID);
+				CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)ResetFunction,NULL,0,NULL);
 				SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MSG_EMULATION_RESET));
-			}
 			break;
 		case ID_CPU_PAUSE:
 			ManualPaused=TRUE;
@@ -1034,11 +1022,10 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 		break;
 	case WM_DROPFILES: {
 		HDROP hDrop=(HDROP)wParam;
-		DWORD ThreadID;
 		DragQueryFile(hDrop,0,CurrentFileName,sizeof(CurrentFileName));
 		DragFinish(hDrop);
 		SetForegroundWindow(hWnd);
-		CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)OpenChosenFile,NULL,0,&ThreadID);
+		CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)OpenChosenFile,NULL,0,NULL);
 		break;
 	}
 	default:
@@ -1500,12 +1487,11 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpszArgs,in
 		}
 	}
 	if (__argc>1) {
-		DWORD ThreadID;
 		CreateRomListControl(hMainWindow);
 		ShowWindow(hMainWindow,SW_SHOW);
 		SetupMenu(hMainWindow);
 		strcpy(CurrentFileName,__argv[1]);
-		CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)OpenChosenFile,NULL,0,&ThreadID);
+		CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)OpenChosenFile,NULL,0,NULL);
 	} else {
 		HandleShutdown(hMainWindow);
 		if (strcmp(GfxDLL,"GLideN64.dll")==0||strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) {

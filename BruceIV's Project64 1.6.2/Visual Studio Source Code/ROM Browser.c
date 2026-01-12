@@ -362,7 +362,6 @@ void RomList_PopupMenu(LPNMHDR pnmh) {
 void RomList_OpenRom(LPNMHDR pnmh) {
 	ROM_INFO * pRomInfo;
 	LV_ITEM lvItem;
-	DWORD ThreadID;
 	LONG iItem;
 	iItem=ListView_GetNextItem(hRomList,-1,LVNI_SELECTED);
 	if (iItem==-1) return;
@@ -373,7 +372,7 @@ void RomList_OpenRom(LPNMHDR pnmh) {
 	pRomInfo=&ItemList.List[lvItem.lParam];
 	if (!pRomInfo) return;
 	strcpy(CurrentFileName,pRomInfo->szFullFileName);
-	CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)OpenChosenFile,NULL,0,&ThreadID);
+	CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)OpenChosenFile,NULL,0,NULL);
 }
 void RomList_SortList (void) {
 	SORT_FIELDS SortFields;

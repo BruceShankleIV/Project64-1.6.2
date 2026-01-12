@@ -412,8 +412,7 @@ void SetupPlugins (HWND hWnd) {
 				HandleModal2(hMainWindow);
 			}
 			if (AiUpdate) {
-				DWORD ThreadID;
-				hAudioThread=CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)AudioThread,(LPVOID)NULL,0,&ThreadID);
+				hAudioThread=CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)AudioThread,(LPVOID)NULL,0,NULL);
 			}
 		}
 		if (!LoadControllerDll(ControllerDLL)) {
@@ -537,7 +536,7 @@ void SetupPlugins (HWND hWnd) {
 	}
 	if (!GLideN64NeedsToBeSetupFirst) SetupMenu(hMainWindow);
 	if (CPURunning) {
-		DWORD ThreadID,count;
+		DWORD count;
 		memset(&CPU_Action,0,sizeof(CPU_Action));
 		CPU_Action.hStepping=CreateEvent(NULL,FALSE,FALSE,NULL);
 		WrittenToRom=FALSE;
@@ -557,8 +556,8 @@ void SetupPlugins (HWND hWnd) {
 		CPU_Paused=FALSE;
 		ManualPaused=FALSE;
 		Timer_Start();
-		if (CpuRecompiler) hCPU=CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)StartRecompilerCPU,NULL,0,&ThreadID);
-		else hCPU=CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)StartInterpreterCPU,NULL,0,&ThreadID);
+		if (CpuRecompiler) hCPU=CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)StartRecompilerCPU,NULL,0,NULL);
+		else hCPU=CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)StartInterpreterCPU,NULL,0,NULL);
 		if (strcmp(GfxDLL,"GLideN64.dll")==0&&!GLideN64HasBeenSetupFirst) GLideN64HasBeenSetupFirst=TRUE;
 		if (GLideN64NeedsToBeSetupFirst) {
 			EndEmulation();

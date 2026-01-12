@@ -325,11 +325,10 @@ void CreateRecentFileList(HMENU hMenu) {
 	}
 }
 void LoadRecentRom (DWORD Index) {
-	DWORD ThreadID;
 	Index -=ID_FILE_RECENT_FILE;
 	if (Index<0||Index>RomsToRemember) return;
 	strcpy(CurrentFileName,LastRoms[Index]);
-	CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)OpenChosenFile,NULL,0,&ThreadID);
+	CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)OpenChosenFile,NULL,0,NULL);
 }
 BOOL LoadRomHeader (void) {
 	char drive[_MAX_DRIVE],FileName[_MAX_DIR],dir[_MAX_DIR],ext[_MAX_EXT];
