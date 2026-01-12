@@ -2240,7 +2240,8 @@ void StartRecompilerCPU (void) {
 				}
 				else {
 					if (RDRAMsize==0x400000) DisplayThreadExit("StartRecompilerCPU-EXCEPTION_EXECUTE_HANDLER-PROGRAM_COUNTER>=0xB0000000&&PROGRAM_COUNTER<(RomFileSize|0xB0000000)-else\n\nNeeds 'Jumper Pak=ON' removed?");
-					else DisplayThreadExit("StartRecompilerCPU-EXCEPTION_EXECUTE_HANDLER-PROGRAM_COUNTER>=0xB0000000&&PROGRAM_COUNTER<(RomFileSize|0xB0000000)-else");
+					else if (SelfModCheck==ModCode_Cache) DisplayThreadExit("StartRecompilerCPU-EXCEPTION_EXECUTE_HANDLER-PROGRAM_COUNTER>=0xB0000000&&PROGRAM_COUNTER<(RomFileSize|0xB0000000)-else\n\nSelf-modifying Code Method-related?");
+					else DisplayThreadExit("StartRecompilerCPU-EXCEPTION_EXECUTE_HANDLER-PROGRAM_COUNTER>=0xB0000000&&PROGRAM_COUNTER<(RomFileSize|0xB0000000)-else\n\nNeeds 'Self-modifying Code Method=Cache'?");
 				}
 			}
 			if ((SelfModCheck==ModCode_CheckMemory)&&Block!=NULL) {
