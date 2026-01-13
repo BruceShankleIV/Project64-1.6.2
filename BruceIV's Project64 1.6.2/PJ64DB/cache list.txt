@@ -1,0 +1,114 @@
+cache entries to test:
+
+NOTE:
+TESTING ON CHECK MEM TO DEPRECIATE CACHE (NO SELF MOD USED AT ALL)
+TO GET RID OF DROPDOWN, DOING CHECKMEM CODE ALWAYS AND THEN MAKE PMEM
+A CHECKBOX SETTING, NEED TO SEE IF PMEM WORKS PROPERLY WITH CHECK
+MEM CODE BEING EXECUTED! 2ND PMEM IN RECOMOP CPU NEEDED FOR BOMBERMAN,
+IS FIRST PMEM IN RECOMPILER CPU NEEDED? DOES CLEARRECOMP NEED TO BE
+RETURNED FOR PMEM?
+
+TEST WITH JABO DSOUND TO SEE WHHICH HAVE SLOWDOWN OR FREEZED BOOTUP
+WITH SYNC GAME
+
+AeroGauge
+All Star Tennis '99
+Army Men - Sarge's Heroes 1and 2
+Asteroids Hyper 64
+Automobili Lamborghini
+Bassmasters 2000
+BattleTanx - Global Assault
+Blast Corps - check this one first
+Blast Dozer - J of above?
+Brunswick Circuit Pro Bowling
+California Speed
+Chameleon Twist 1 and 2
+Charlie Blast's Territory
+Chopper Attack
+Clay Fighter - sculptor's cut and 63 1/3
+Conker's Bad Fur Day
+Cruis'n World
+CyberTiger
+Diddy Kong Racing
+Disney's Donald Duck - Goin' Qu@ckers*! - UH, SOMETHING WRONG WITH GAMENAME ON THIS ONE?
+Doom 64
+Doraemon - Nobita to 3tsu no Seireiseki
+Dr. Mario 64
+Duke Nukem 64
+Earthworm Jim 3D
+Elmo's Letter Adventure
+Elmo's Number Journey
+F-1 Pole Position 64
+FIFA - Road to World Cup 98
+FIFA Soccer 64
+Fox Sports College Hoops '98
+Glover
+Golden Nugget 64
+Hamster Monogatari 64
+Harvest Moon 64 - check this one first too?
+Bokujou Monogatari 2
+Hexen
+Hey You, Pikachu!
+Human Grand Prix - New Generation
+J.League Live 64 - RED FLAG! ALSO WHY IS REG CACHING OFF
+Jet Force Gemini
+Kobe Bryant's NBA Courtside
+Mace - The Dark Age
+Magical Tetris Challenge
+Mahjong 64
+Mario Kart 64 - IMPORTANT TO TEST THIS ONE
+Milo's Astro Lanes
+Mission Impossible
+Monster Truck Madness 64
+Mortal Kombat 4
+N64DD IPL
+Namco Musuem 64
+NBA Hangtime
+NBA In the Zone 2000 - GAMENAME, MISSING THE CAPITALIZAITON?
+^ JP wrong number?
+NBA In the Zone '98 - missing capital?
+NBA In the Zone '99 - same deal
+NBA Live 99
+Olympic Hockey Nagano '98
+Operation WinBack
+Paperboy
+Penny Racers
+Pilotwings 64
+Power League 64
+SABAN'S POWER RANGERS LIGHTSPEED RESCUE
+Puyo Puyo Sun 64
+Quake 64
+Rampage - World Tour
+Ready 2 Rumble Boxing - 1 and 2
+Road Rash 64
+Robotron 64
+Rocket - Robot on Wheels
+S.C.A.R.S.
+Scooby-Doo
+Snowboard Kids
+Space Invaders
+Star Soldier - Vanishing Earth
+Star Wars Episode I - Racer
+Super Mario 64
+Super Mario 64 Shindou
+Super Speed Race 64
+Superman
+Tetris 64
+Tetrisphere
+Tonic Trouble - ISSUE: WHERE IS THE U 1.0 ENTRY?!?!
+Tony Hawk's Pro Skater
+Transformers
+Turok - Dinosaur Hunter
+Turok - Rage Wars
+Turok 2 - Seeds of Evil
+Turok 3
+Virtual Chess 64
+Virtual Pool 64
+War Gods
+Wave Race 64
+Wave Race 64 Shindou
+Wayne Gretzky's 3D Hockey
+Wild Choppers
+WWF - War Zone
+Xena Warrior Princess - ISSUE: MISMATCH SCM BETWEEN E AND U
+Xeno Crisis

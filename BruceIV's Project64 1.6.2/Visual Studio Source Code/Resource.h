@@ -53,13 +53,11 @@
 #define SHANKLE_AZI_AI					1082
 #define ALTERNATE_EMUAI					1083
 #define IDC_USE_TLB                     1084
-#define IDC_SELFMOD                     1085
 #define IDC_AUDIO_SIGNAL				1086
 #define IDC_SAVE_TYPE                   1089
 #define IDC_CF                          1094
 #define IDC_FiftyNineHertz				1123
 #define IDC_SAVE_TYPE_TEXT              10912
-#define IDC_SELFMOD_TEXT                1093
 #define IDC_REMEMBER                    1095
 #define IDC_CF_TEXT              1095
 #define IDC_AUTOSLEEP                   1096
@@ -73,7 +71,6 @@
 #define IDC_CONT_NAME                   1105
 #define IDC_CF1_CF0						1106
 #define IDC_HIDE						1107
-#define IDC_TEXT3                       1108
 #define IDC_TEXT5                       1110
 #define IDC_ROMSEL_TEXT1                1111
 #define IDC_ROMSEL_TEXT2                1112
@@ -158,6 +155,7 @@
 #define IDC_ALIGN_DMA					1240
 #define IDC_SyncGametoAudio				1241
 #define IDC_JUMPER_PAK					1242
+#define IDC_PROTECT_MEMORY				1243
 #define ID_FILE_OPEN_ROM                40001
 #define ID_FILE_ROM_INFO                40002
 #define ID_FILE_EXIT                    40005

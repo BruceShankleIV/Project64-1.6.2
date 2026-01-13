@@ -42,7 +42,7 @@
 #include "SummerCart.h"
 LARGE_INTEGER Frequency,Frames[9],LastFrame;
 BOOL AutoSleep,AutoHide,Recursion,LimitFPS,SpeedCap,AutoFullScreen,SystemCF,UsuallyonTop,BasicMode,BootupSettings=FALSE,SetupPluginsAfterSaveRomOpt=FALSE,SPECIAL_BREAK_Trigger=FALSE,BF_Trigger=FALSE,SPECIAL_BREAK_Yes=FALSE;
-DWORD CurrentFrame,SelfModCheck,SystemUseCache,SystemSelfModCheck,RomsToRemember,RomDirsToRemember;
+DWORD CurrentFrame,SystemUseCache,RomsToRemember,RomDirsToRemember;
 HWND hMainWindow,hHiddenWin,hStatusWnd;
 char CurrentSave[256];
 HMENU hMainMenu;
@@ -285,7 +285,6 @@ void LoadSettings (void) {
 	DWORD Type,Bytes=4;
 	char String[256];
 	long lResult;
-	SystemSelfModCheck=Default_SelfModCheck;
 	SystemUseCache=Default_UseCache;
 	SystemCF=Default_CountPerOp;
 	AutoSleep=Default_AutoSleep;
@@ -337,8 +336,6 @@ void LoadSettings (void) {
 		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) { ForceDisableCaching=Default_ForceDisableCaching; }
 		lResult=RegQueryValueEx(hKeyResults,"Always Autodetect With 16kbit",0,&Type,(BYTE*)(&ForceAuto16kbit),&Bytes);
 		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) { ForceAuto16kbit=Default_ForceAuto16kbit; }
-		lResult=RegQueryValueEx(hKeyResults,"Self-modifying Code Method",0,&Type,(LPBYTE)(&SystemSelfModCheck),&Bytes);
-		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) { SystemSelfModCheck=Default_SelfModCheck; }
 		lResult=RegQueryValueEx(hKeyResults,"Register Caching",0,&Type,(LPBYTE)(&SystemUseCache),&Bytes);
 		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) { SystemUseCache=Default_UseCache; }
 		lResult=RegQueryValueEx(hKeyResults,"Counter Factor",0,&Type,(LPBYTE)(&SystemCF),&Bytes);

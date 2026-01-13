@@ -158,7 +158,7 @@ LANG_STR DefaultString[]={
 	{ FORCE_AUTO4kbit,	       "Always Autodetect With 16kbit EEPROM" },
 	{ NUMBER_1,	       "1"},
 	{ SPECIAL_BREAK,	  "The game may crash at the upcoming r4300i_SPECIAL_BREAK. Do you want to emulate this potential crash?"},
-	{ ROM_SMCM,           "Self-modifying Code Method:"},
+	{ JUMPER_PAK,			  "Jumper Pak"},
 	{ Allocate_SD_Info,	  "This action will attempt to Allocate 254MB of SD space on your hard drive in an SDCARD0 partition after decompiling AUTO0.\n\nYou will not be able to save to or load from your virtual SD card until you compile virtual SD card space back into AUTO0 by using this option again"},
 	{ ROM_AUDIO_SIGNAL,            "Signal"},
 	{ ROM_SAVE_TYPE,      "Save Type:"},
@@ -179,11 +179,11 @@ LANG_STR DefaultString[]={
 	{ AllocateCompile_SD, "Manage SD Space"},
 	{ AllocateCompile_SD_MENUDES,"Attempts to allocate or compile 254MB of space for virtual SD card emulation"},
 	{ EXTRA_PROJECT64,    "Project64 is already running.\n\nWould you like to force-kill the current Project64 before starting another one? Force-killing prevents save data issues but this may disrupt plugin behavior" },
-	{ SMCM_CACHE,         "Cache"},
+	{ MSG_EMULATION_RESET,	  "Emulation reset"},
 	{ SMCM_PROTECTED,     "Protect Memory"},
 	{ FORCE_RSP_RECOMPILER,"RSP Recompiler"},
 	{ USUALLYONTOP_OFF,	   "Usually on Top off" },
-	{ SMCM_CHECK_ADV,     "Check Memory"},
+	{ MSG_PLS_START,		  "You must start emulation to configure this plugin"},
 	{ SPEEDCAP_OFF,	       "2x Speed Cap revoked from Limit FPS off" },
 	{ FORCE_DISABLE_TLB,  "Always Disable TLB"},
 	{ FORCE_DISABLE_REGISTERCACHING,"Always Disable Register Caching" },
@@ -244,9 +244,6 @@ LANG_STR DefaultString[]={
 	{ NUMBER_3,		  "3"},
 	{ OFF,	  "OFF" },
 	{ MENUDES_GAME_SETTINGS, "Lets you read the ROM's notes (plugin/core/status)"},
-	{ MSG_EMULATION_RESET,	  "Emulation reset"},
-	{ MSG_PLS_START,		  "You must start emulation to configure this plugin"},
-	{ JUMPER_PAK,			  "Jumper Pak"},
 };
 class CLanguage  {
 	void FindLangName  (int Index);

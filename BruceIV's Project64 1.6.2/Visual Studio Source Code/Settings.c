@@ -194,16 +194,12 @@ BOOL CALLBACK DefaultOptionsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lPara
 	case WM_INITDIALOG:
 		if (CPURunning) SetDlgItemText(hDlg,IDC_ROMSETTWARN,GS(ROMSETTWARN));
 		SetDlgItemText(hDlg,IDC_CORE_DEFAULTS,GS(DEFAULT_TEXT));
-		SetDlgItemText(hDlg,IDC_TEXT3,GS(ROM_SMCM));
 		SetDlgItemText(hDlg,IDC_TEXT5,GS(ROM_COUNTER_FACTOR));
 		SetDlgItemText(hDlg,IDC_TEXT6,GS(REG_CACHE));
 		SetFlagControl(hDlg,&ForceDisableTLB,IDC_ForceDisableTLB,FORCE_DISABLE_TLB);
 		SetFlagControl(hDlg,&ForceEnableDMA,IDC_ForceEnableDMA,FORCE_ENABLE_DMA);
 		SetFlagControl(hDlg,&ForceDisableCaching,IDC_ForceDisableCaching,FORCE_DISABLE_REGISTERCACHING);
 		SetFlagControl(hDlg,&ForceAuto16kbit,IDC_ForceAuto16kbit,FORCE_AUTO4kbit);
-		AddDropDownItem(hDlg,IDC_SELFMOD,SMCM_CACHE,ModCode_Cache,&SystemSelfModCheck);
-		AddDropDownItem(hDlg,IDC_SELFMOD,SMCM_PROTECTED,ModCode_ProtectMemory,&SystemSelfModCheck);
-		AddDropDownItem(hDlg,IDC_SELFMOD,SMCM_CHECK_ADV,ModCode_CheckMemory,&SystemSelfModCheck);
 		AddDropDownItem(hDlg,IDC_REGCACHE,ON,REG_CACHE_ON,&SystemUseCache);
 		AddDropDownItem(hDlg,IDC_REGCACHE,OFF,REG_CACHE_OFF,&SystemUseCache);
 		AddDropDownItem(hDlg,IDC_CF,NUMBER_1,1,&SystemCF);
@@ -228,9 +224,6 @@ BOOL CALLBACK DefaultOptionsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lPara
 				RegSetValueEx(hKeyResults,"Always Disable Register Caching",0,REG_DWORD,(BYTE*)&ForceDisableCaching,sizeof(DWORD));
 				ForceAuto16kbit=SendMessage(GetDlgItem(hDlg,IDC_ForceAuto16kbit),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
 				RegSetValueEx(hKeyResults,"Always Autodetect With 16kbit",0,REG_DWORD,(BYTE*)&ForceAuto16kbit,sizeof(DWORD));
-				indx=SendMessage(GetDlgItem(hDlg,IDC_SELFMOD),CB_GETCURSEL,0,0);
-				SystemSelfModCheck=SendMessage(GetDlgItem(hDlg,IDC_SELFMOD),CB_GETITEMDATA,indx,0);
-				RegSetValueEx(hKeyResults,"Self-modifying Code Method",0,REG_DWORD,(BYTE *)&SystemSelfModCheck,sizeof(DWORD));
 				indx=SendMessage(GetDlgItem(hDlg,IDC_REGCACHE),CB_GETCURSEL,0,0);
 				SystemUseCache=SendMessage(GetDlgItem(hDlg,IDC_REGCACHE),CB_GETITEMDATA,indx,0);
 				RegSetValueEx(hKeyResults,"Register Caching",0,REG_DWORD,(BYTE*)&SystemUseCache,sizeof(DWORD));
@@ -741,14 +734,9 @@ BOOL CALLBACK RomSettingsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) 
 	case WM_INITDIALOG:
 		ReadRomOptions();
 		if (CPURunning) SetDlgItemText(hDlg,IDC_ROMSETTWARN,GS(ROMSETTWARN));
-		SetDlgItemText(hDlg,IDC_SELFMOD_TEXT,GS(ROM_SMCM));
 		SetDlgItemText(hDlg,IDC_REGCACHE_TEXT,GS(REG_CACHE));
 		SetDlgItemText(hDlg,IDC_SAVE_TYPE_TEXT,GS(ROM_SAVE_TYPE));
 		SetDlgItemText(hDlg,IDC_CF_TEXT,GS(ROM_COUNTER_FACTOR));
-		AddDropDownItem(hDlg,IDC_SELFMOD,DEFAULT_TEXT,ModCode_Default,&RomSelfModCheck);
-		AddDropDownItem(hDlg,IDC_SELFMOD,SMCM_CACHE,ModCode_Cache,&RomSelfModCheck);
-		AddDropDownItem(hDlg,IDC_SELFMOD,SMCM_CHECK_ADV,ModCode_CheckMemory,&RomSelfModCheck);
-		AddDropDownItem(hDlg,IDC_SELFMOD,SMCM_PROTECTED,ModCode_ProtectMemory,&RomSelfModCheck);
 		AddDropDownItem(hDlg,IDC_REGCACHE,DEFAULT_TEXT,UseCache_Default,&RomUseCache);
 		AddDropDownItem(hDlg,IDC_REGCACHE,ON,REG_CACHE_ON,&RomUseCache);
 		AddDropDownItem(hDlg,IDC_REGCACHE,OFF,REG_CACHE_OFF,&RomUseCache);
@@ -771,6 +759,7 @@ BOOL CALLBACK RomSettingsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) 
 		SetFlagControl(hDlg,&RomDelaySI,IDC_DELAY_SI,ROM_DELAY_SI);
 		SetFlagControl(hDlg,&RomRspRecompiler,IDC_RSP_RECOMPILER,FORCE_RSP_RECOMPILER);
 		SetFlagControl(hDlg,&RomCpuRecompiler,IDC_CPU_RECOMPILER,CORE_RECOMPILER);
+		SetFlagControl(hDlg,&RomProtectMemory,IDC_PROTECT_MEMORY,SMCM_PROTECTED);
 		SetFlagControl(hDlg,&RomJumperPak,IDC_JUMPER_PAK,JUMPER_PAK);
 		SetFlagControl(hDlg,&RomDelayRDP,IDC_DELAY_RDP,ROM_DELAY_RDP);
 		SetFlagControl(hDlg,&RomDelayRSP,IDC_DELAY_RSP,ROM_DELAY_RSP);
@@ -794,10 +783,9 @@ BOOL CALLBACK RomSettingsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) 
 		if (strlen(RomName)==0||!RomCpuRecompiler||ForceDisableTLB) EnableWindow(GetDlgItem(hDlg,IDC_USE_TLB),FALSE);
 		if (strlen(RomName)==0||ForceEnableDMA) EnableWindow(GetDlgItem(hDlg,IDC_ALIGN_DMA),FALSE);
 		if (strlen(RomName)==0||!RomCpuRecompiler) {
-			EnableWindow(GetDlgItem(hDlg,IDC_SELFMOD_TEXT),FALSE);
-			EnableWindow(GetDlgItem(hDlg,IDC_SELFMOD),FALSE);
 			EnableWindow(GetDlgItem(hDlg,IDC_REGCACHE_TEXT),FALSE);
 			EnableWindow(GetDlgItem(hDlg,IDC_REGCACHE),FALSE);
+			EnableWindow(GetDlgItem(hDlg,IDC_PROTECT_MEMORY),FALSE);
 		}
 		if (strlen(RomName)==0||!RomCpuRecompiler||RomCF!=-1&&RomCF!=1) EnableWindow(GetDlgItem(hDlg,IDC_CF1_CF0),FALSE);
 		if (strlen(RomName)==0||strcmp(RSPDLL,"RSP.dll")!=0||strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")!=0||strcmp(RomName,"THE LEGEND OF ZELDA")==0||strcmp(RomName,"THE MASK OF MUJURA")==0||strcmp(RomName,"ZELDA MAJORA'S MASK")==0||strcmp(RomName,"BANJO KAZOOIE 2")==0||strcmp(RomName,"BANJO TOOIE")==0||strcmp(RomName,"CONKER BFD")==0||strcmp(RomName,"DONKEY KONG 64")==0||strcmp(RomName,"JET FORCE GEMINI")==0||strcmp(RomName,"STAR TWINS")==0||strcmp(RomName,"Perfect Dark")==0) EnableWindow(GetDlgItem(hDlg,IDC_RSP_RECOMPILER),FALSE);
@@ -816,12 +804,11 @@ BOOL CALLBACK RomSettingsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) 
 				RomCF=SendMessage(GetDlgItem(hDlg,IDC_CF),CB_GETITEMDATA,indx,0);
 				indx=SendMessage(GetDlgItem(hDlg,IDC_REGCACHE),CB_GETCURSEL,0,0);
 				RomUseCache=SendMessage(GetDlgItem(hDlg,IDC_REGCACHE),CB_GETITEMDATA,indx,0);
-				indx=SendMessage(GetDlgItem(hDlg,IDC_SELFMOD),CB_GETCURSEL,0,0);
-				RomSelfModCheck=SendMessage(GetDlgItem(hDlg,IDC_SELFMOD),CB_GETITEMDATA,indx,0);
 				RomAudioSignal=SendMessage(GetDlgItem(hDlg,IDC_AUDIO_SIGNAL),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
 				RomDelaySI=SendMessage(GetDlgItem(hDlg,IDC_DELAY_SI),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
 				RomRspRecompiler=SendMessage(GetDlgItem(hDlg,IDC_RSP_RECOMPILER),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
 				RomCpuRecompiler=SendMessage(GetDlgItem(hDlg,IDC_CPU_RECOMPILER),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
+				RomProtectMemory=SendMessage(GetDlgItem(hDlg,IDC_PROTECT_MEMORY),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
 				RomJumperPak=SendMessage(GetDlgItem(hDlg,IDC_JUMPER_PAK),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
 				RomDelayRDP=SendMessage(GetDlgItem(hDlg,IDC_DELAY_RDP),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
 				RomDelayRSP=SendMessage(GetDlgItem(hDlg,IDC_DELAY_RSP),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;

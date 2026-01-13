@@ -157,7 +157,7 @@ char * GS               (int StringID);
 #define FORCE_AUTO4kbit			132
 #define NUMBER_1			133
 #define SPECIAL_BREAK			134
-#define ROM_SMCM			135
+#define JUMPER_PAK				135
 #define Allocate_SD_Info		136
 #define ROM_AUDIO_SIGNAL		137
 #define ROM_SAVE_TYPE			138
@@ -180,11 +180,11 @@ char * GS               (int StringID);
 #define AllocateCompile_SD_MENUDES	153
 //Core Styles
 #define EXTRA_PROJECT64			154
-#define SMCM_CACHE			155
+#define MSG_EMULATION_RESET		155
 #define SMCM_PROTECTED			156
 #define FORCE_RSP_RECOMPILER	157
 #define USUALLYONTOP_OFF		158
-#define SMCM_CHECK_ADV			159
+#define MSG_PLS_START			159
 #define SPEEDCAP_OFF			160
 #define FORCE_DISABLE_TLB		161
 #define FORCE_DISABLE_REGISTERCACHING	162
@@ -245,6 +245,3 @@ char * GS               (int StringID);
 #define NUMBER_3		        209
 #define OFF		210
 #define MENUDES_GAME_SETTINGS		211
-#define MSG_EMULATION_RESET		212
-#define MSG_PLS_START			213
-#define JUMPER_PAK				214

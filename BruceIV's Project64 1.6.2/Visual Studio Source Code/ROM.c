@@ -36,7 +36,7 @@
 #include "ROM Tools Common.h"
 #define MenuLocOfUsedFiles	11
 #define MenuLocOfUsedDirs	(MenuLocOfUsedFiles+1)
-DWORD ClearFrame,RomClearFrame,RomFileSize,SaveUsing,RomSaveUsing,CPUType,RomSelfModCheck,UseTLB,RomUseTLB,FiftyNineHertz,RomFiftyNineHertz,RomJAI,AudioSignal,RomAudioSignal,RomCF,UseCache,RomUseCache,RomShankleAziAI,RomAltEmulateAI,SyncGametoAudio,RomSyncGametoAudio,CF1CF0,RomCF1CF0,DelayRDP,RomDelayRDP,DelayRSP,RomDelayRSP,AlignDMA,RomAlignDMA,DelayRDP,RomDelayRDP,DelayRSP,RomDelayRSP,DelaySI,RomDelaySI,RomRspRecompiler,CpuRecompiler,RomCpuRecompiler,RomJumperPak,ForceAuto16kbit,ForceDisableTLB,ForceDisableCaching,ForceEnableDMA,EmulateAI;
+DWORD ClearFrame,RomClearFrame,RomFileSize,SaveUsing,RomSaveUsing,CPUType,UseTLB,RomUseTLB,FiftyNineHertz,RomFiftyNineHertz,RomJAI,AudioSignal,RomAudioSignal,RomCF,UseCache,RomUseCache,RomShankleAziAI,RomAltEmulateAI,SyncGametoAudio,RomSyncGametoAudio,CF1CF0,RomCF1CF0,DelayRDP,RomDelayRDP,DelayRSP,RomDelayRSP,AlignDMA,RomAlignDMA,DelayRDP,RomDelayRDP,DelayRSP,RomDelayRSP,DelaySI,RomDelaySI,RomRspRecompiler,CpuRecompiler,RomCpuRecompiler,ProtectMemory,RomProtectMemory,RomJumperPak,ForceAuto16kbit,ForceDisableTLB,ForceDisableCaching,ForceEnableDMA,EmulateAI;
 char CurrentFileName[MAX_PATH+1]={ "" },RomName[MAX_PATH+1]={ "" },RomHeader[0x1000],LastRoms[10][MAX_PATH+1],LastDirs[10][MAX_PATH+1];
 BOOL IsValidRomImage (BYTE Test[4]);
 void AddRecentDir(HWND hWnd,char * addition) {
@@ -438,7 +438,6 @@ void ReadRomOptions(void) {
 	RomSaveUsing=Auto;
 	RomCF=-1;
 	RomAudioSignal=FALSE;
-	RomSelfModCheck=ModCode_Default;
 	if (ForceDisableTLB) RomUseTLB=FALSE;
 	else RomUseTLB=TRUE;
 	RomClearFrame=FALSE;
@@ -447,6 +446,7 @@ void ReadRomOptions(void) {
 	if (strcmp(RSPDLL,"RSP.dll")==0&&(strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")!=0||strcmp(RomName,"THE LEGEND OF ZELDA")==0||strcmp(RomName,"THE MASK OF MUJURA")==0||strcmp(RomName,"ZELDA MAJORA'S MASK")==0||strcmp(RomName,"BANJO KAZOOIE 2")==0||strcmp(RomName,"BANJO TOOIE")==0||strcmp(RomName,"CONKER BFD")==0||strcmp(RomName,"DONKEY KONG 64")==0||strcmp(RomName,"JET FORCE GEMINI")==0||strcmp(RomName,"STAR TWINS")==0||strcmp(RomName,"Perfect Dark")==0)) RomRspRecompiler=TRUE;
 	else RomRspRecompiler=FALSE;
 	RomCpuRecompiler=TRUE;
+	RomProtectMemory=FALSE;
 	RomJumperPak=FALSE;
 	RomCF1CF0=TRUE;
 	RomDelayRDP=FALSE;
@@ -506,11 +506,8 @@ void ReadRomOptions(void) {
 		_GetPrivateProfileString(Identifier,"Legacy AiLenChanged","",String,sizeof(String),IniFileName);
 		if (strcmp(String,"ON")==0&&(RomJAI||RomShankleAziAI)) RomAltEmulateAI=TRUE;
 		if (RomCpuRecompiler) {
-			_GetPrivateProfileString(Identifier,"Self-modifying Code Method","",String,sizeof(String),IniFileName);
-			if (strcmp(String,"Cache")==0) { RomSelfModCheck=ModCode_Cache; }
-			else if (strcmp(String,"Check Memory")==0) { RomSelfModCheck=ModCode_CheckMemory; }
-			else if (strcmp(String,"Protect Memory")==0) { RomSelfModCheck=ModCode_ProtectMemory; }
-			else RomSelfModCheck=ModCode_Default;
+			_GetPrivateProfileString(Identifier,"Protect Memory","",String,sizeof(String),IniFileName);
+			if (strcmp(String,"ON")==0) RomProtectMemory=TRUE;
 			if (!ForceDisableCaching) {
 				_GetPrivateProfileString(Identifier,"Register Caching","",String,sizeof(String),IniFileName);
 				if (strcmp(String,"ON")==0) { RomUseCache=REG_CACHE_ON; }
@@ -894,16 +891,6 @@ void SaveRomOptions (void) {
 	sprintf(String,"%s",__DATE__);
 	_WritePrivateProfileString(Identifier,"Date",String,GetIniFileName());
 	sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD *)(&RomHeader[0x10]),*(DWORD *)(&RomHeader[0x14]),RomHeader[0x3D]);
-	if (!RomCpuRecompiler) _WritePrivateProfileString(Identifier,"Self-modifying Code Method","Default",GetIniFileName());
-	else {
-		switch (RomSelfModCheck) {
-		case ModCode_Cache: sprintf(String,"Cache"); break;
-		case ModCode_CheckMemory: sprintf(String,"Check Memory"); break;
-		case ModCode_ProtectMemory: sprintf(String,"Protect Memory"); break;
-		default: sprintf(String,"Default");
-		}
-		_WritePrivateProfileString(Identifier,"Self-modifying Code Method",String,GetIniFileName());
-	}
 	if (!RomCpuRecompiler) _WritePrivateProfileString(Identifier,"Register Caching","Default",GetIniFileName());
 	else if (!ForceDisableCaching) {
 		switch (RomUseCache) {
@@ -944,6 +931,8 @@ void SaveRomOptions (void) {
 	else _WritePrivateProfileString(Identifier,"CF1-->0",RomCF1CF0?"Default":"OFF",GetIniFileName());
 	if (!ForceEnableDMA) _WritePrivateProfileString(Identifier,"Align DMA",RomAlignDMA?"ON":"Default",GetIniFileName());
 	_WritePrivateProfileString(Identifier,"Jumper Pak",RomJumperPak?"ON":"Default",GetIniFileName());
+	if (RomCpuRecompiler) _WritePrivateProfileString(Identifier,"Protect Memory",RomProtectMemory?"ON":"Default",GetIniFileName());
+	else _WritePrivateProfileString(Identifier,"Protect Memory","Default",GetIniFileName());
 	_WritePrivateProfileString(Identifier,"Delay RDP",RomDelayRDP?"ON":"Default",GetIniFileName());
 	_WritePrivateProfileString(Identifier,"Delay RSP",RomDelayRSP?"ON":"Default",GetIniFileName());
 	_WritePrivateProfileString(Identifier,"Delay SI",RomDelaySI?"ON":"Default",GetIniFileName());

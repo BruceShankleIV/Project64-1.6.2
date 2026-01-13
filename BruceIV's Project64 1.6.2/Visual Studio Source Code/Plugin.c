@@ -280,8 +280,6 @@ void SetupPlugins (HWND hWnd) {
 		CpuRecompiler=RomCpuRecompiler;
 		CountPerOp=SystemCF;
 		if (RomCF!=-1) CountPerOp=RomCF;
-		SelfModCheck=SystemSelfModCheck;
-		if (RomSelfModCheck!=ModCode_Default) SelfModCheck=RomSelfModCheck;
 		UseCache=SystemUseCache;
 		if (RomUseCache!=UseCache_Default) UseCache=RomUseCache;
 		SaveUsing=RomSaveUsing;
@@ -301,6 +299,7 @@ void SetupPlugins (HWND hWnd) {
 		AlignDMA=RomAlignDMA;
 		FiftyNineHertz=RomFiftyNineHertz;
 		SyncGametoAudio=RomSyncGametoAudio;
+		ProtectMemory=RomProtectMemory;
 		if (SyncGametoAudio) LimitFPS=TRUE;
 		EmulateAI=FALSE;
 		if (strcmp(AudioDLL,"No Audio.dll")==0||RomJAI||RomShankleAziAI) EmulateAI=TRUE;

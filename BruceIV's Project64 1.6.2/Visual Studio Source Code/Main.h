@@ -34,11 +34,7 @@ extern "C" {
 #include "Settings API.h"
 #include "ROM Browser.h"
 #include "Language.h"
-/* NOTES
-* I haven't tested the current memsize used in ClearRecompilerCache for ROMs outside of Ocarina of Time 1.0/1.1/1.2, needs more tests.
-* If that memsize used needs to be done specifically only for those versions, it needs to be made a new ROM Setting and used for hacks
-* which are based off of those versions and suffer from the issue. Don't recklessly make the change, confirm if LW exit crash happens.
-/********* Source Version 21 *********/
+/********* Source Version 22 *********/
 /********* General Defaults **********/
 #define AppName						"BruceIV's Project64 1.6.2"
 #define IniName						"Game.ini"
@@ -66,19 +62,13 @@ extern "C" {
 #define REG_CACHE_ON		0
 #define REG_CACHE_OFF		1
 #define Default_UseCache REG_CACHE_OFF
-/******* Self modifying code *********/
-#define ModCode_Default					-1
-#define ModCode_Cache					0
-#define ModCode_CheckMemory		1
-#define ModCode_ProtectMemory			2
-#define Default_SelfModCheck			ModCode_CheckMemory
 /********** Rom Browser **************/
 #define Default_UseRB				TRUE
 #define Default_Recursion			TRUE
 /********* Global Variables **********/
 extern LARGE_INTEGER Frequency,Frames[9],LastFrame;
 extern BOOL AutoSleep,AutoHide,Recursion,LimitFPS,SpeedCap,AutoFullScreen,SystemCF,UsuallyonTop,BasicMode,BootupSettings,SetupPluginsAfterSaveRomOpt,SPECIAL_BREAK_Trigger,BF_Trigger,SPECIAL_BREAK_Yes;
-extern DWORD CurrentFrame,SelfModCheck,SystemSelfModCheck,SystemUseCache,RomsToRemember,RomDirsToRemember;
+extern DWORD CurrentFrame,SystemUseCache,RomsToRemember,RomDirsToRemember;
 extern HWND hMainWindow,hHiddenWin,hStatusWnd;
 extern char CurrentSave[256];
 extern HMENU hMainMenu;

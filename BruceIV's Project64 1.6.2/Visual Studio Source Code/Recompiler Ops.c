@@ -1944,7 +1944,7 @@ void _fastcall ClearRecompilerCache (DWORD Address) {
 	}
 }
 void Compile_R4300i_CACHE (BLOCK_SECTION * Section) {
-	if (SelfModCheck!=ModCode_ProtectMemory&&(Opcode.rt==0||Opcode.rt==16)) {
+	if (!ProtectMemory&&(Opcode.rt==0||Opcode.rt==16)) {
 		Pushad();
 		if (IsConst(Opcode.base)) {
 			DWORD Address=MipsRegLo(Opcode.base)+(short)Opcode.offset;
