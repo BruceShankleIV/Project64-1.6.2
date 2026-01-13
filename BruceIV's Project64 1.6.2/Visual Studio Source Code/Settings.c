@@ -139,7 +139,7 @@ void ChangeSettings(HWND hwndOwner) {
 	if (SetupPluginsAfterSaveRomOpt) {
 		SetupPluginsAfterSaveRomOpt=FALSE;
 		SetupPlugins(hHiddenWin);
-	}
+	} else SetupMenu(hMainWindow);
 }
 void SetFlagControl (HWND hDlg,BOOL * Flag,WORD CtrlID,int StringID) {
 	SetDlgItemText(hDlg,CtrlID,GS(StringID));
