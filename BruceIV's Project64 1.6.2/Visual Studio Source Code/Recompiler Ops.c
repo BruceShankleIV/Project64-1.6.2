@@ -1936,7 +1936,7 @@ void Compile_R4300i_SDR (BLOCK_SECTION * Section) {
 }
 void _fastcall ClearRecompilerCache (DWORD Address) {
 	if (!TranslateVaddr(&Address)||Address>=RDRAMsize) return;
-	DWORD Block=Address>>12,SetMem=(strcmp(RomName,"THE LEGEND OF ZELDA")==0)?0x4EA1:0x1000; // TLOZ Auto because Indiana breaks past 0x3000
+	DWORD Block=Address>>12,SetMem=(strcmp(RomName,"THE LEGEND OF ZELDA")==0&&!ProtectMemory)?0x4EA1:0x1000; // TLOZ Auto because Indiana breaks past 0x3000
 	if (N64_Blocks.NoOfRDRAMBlocks[Block]>0) {
 		N64_Blocks.NoOfRDRAMBlocks[Block]=0;
 		memset(JumpTable+(Block<<10),0,SetMem);
