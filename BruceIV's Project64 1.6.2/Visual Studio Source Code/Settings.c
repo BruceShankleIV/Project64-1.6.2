@@ -737,6 +737,7 @@ BOOL CALLBACK RomSettingsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) 
 		SetDlgItemText(hDlg,IDC_REGCACHE_TEXT,GS(REG_CACHE));
 		SetDlgItemText(hDlg,IDC_SAVE_TYPE_TEXT,GS(ROM_SAVE_TYPE));
 		SetDlgItemText(hDlg,IDC_CF_TEXT,GS(ROM_COUNTER_FACTOR));
+		SetDlgItemText(hDlg,IDC_RECOMPILER_SETTINGS,GS(CORE_RECOMPILER));
 		AddDropDownItem(hDlg,IDC_REGCACHE,DEFAULT_TEXT,UseCache_Default,&RomUseCache);
 		AddDropDownItem(hDlg,IDC_REGCACHE,ON,REG_CACHE_ON,&RomUseCache);
 		AddDropDownItem(hDlg,IDC_REGCACHE,OFF,REG_CACHE_OFF,&RomUseCache);
@@ -779,14 +780,14 @@ BOOL CALLBACK RomSettingsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) 
 			EnableWindow(GetDlgItem(hDlg,IDC_CPU_RECOMPILER),FALSE);
 			EnableWindow(GetDlgItem(hDlg,IDC_JUMPER_PAK),FALSE);
 		}
-		if (strlen(RomName)==0||ForceDisableCaching||!RomCpuRecompiler) EnableWindow(GetDlgItem(hDlg,IDC_REGCACHE),FALSE);
+		if (strlen(RomName)==0||ForceDisableCaching||!RomCpuRecompiler) {
+			EnableWindow(GetDlgItem(hDlg,IDC_REGCACHE),FALSE);
+			EnableWindow(GetDlgItem(hDlg,IDC_REGCACHE_TEXT),FALSE);
+		}
+		if (strlen(RomName)==0||!RomCpuRecompiler) EnableWindow(GetDlgItem(hDlg,IDC_RECOMPILER_SETTINGS),FALSE);
 		if (strlen(RomName)==0||!RomCpuRecompiler||ForceDisableTLB) EnableWindow(GetDlgItem(hDlg,IDC_USE_TLB),FALSE);
 		if (strlen(RomName)==0||ForceEnableDMA) EnableWindow(GetDlgItem(hDlg,IDC_ALIGN_DMA),FALSE);
-		if (strlen(RomName)==0||!RomCpuRecompiler) {
-			EnableWindow(GetDlgItem(hDlg,IDC_REGCACHE_TEXT),FALSE);
-			EnableWindow(GetDlgItem(hDlg,IDC_REGCACHE),FALSE);
-			EnableWindow(GetDlgItem(hDlg,IDC_PROTECT_MEMORY),FALSE);
-		}
+		if (strlen(RomName)==0||!RomCpuRecompiler) EnableWindow(GetDlgItem(hDlg,IDC_PROTECT_MEMORY),FALSE);
 		if (strlen(RomName)==0||!RomCpuRecompiler||RomCF!=-1&&RomCF!=1) EnableWindow(GetDlgItem(hDlg,IDC_CF1_CF0),FALSE);
 		if (strlen(RomName)==0||strcmp(RSPDLL,"RSP.dll")!=0||strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")!=0||strcmp(RomName,"THE LEGEND OF ZELDA")==0||strcmp(RomName,"THE MASK OF MUJURA")==0||strcmp(RomName,"ZELDA MAJORA'S MASK")==0||strcmp(RomName,"BANJO KAZOOIE 2")==0||strcmp(RomName,"BANJO TOOIE")==0||strcmp(RomName,"CONKER BFD")==0||strcmp(RomName,"DONKEY KONG 64")==0||strcmp(RomName,"JET FORCE GEMINI")==0||strcmp(RomName,"STAR TWINS")==0||strcmp(RomName,"Perfect Dark")==0) EnableWindow(GetDlgItem(hDlg,IDC_RSP_RECOMPILER),FALSE);
 		if (strlen(RomName)==0||!RomJAI&&!RomShankleAziAI) EnableWindow(GetDlgItem(hDlg,ALTERNATE_EMUAI),FALSE);

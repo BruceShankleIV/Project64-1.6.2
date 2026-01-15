@@ -396,23 +396,11 @@ and Counter Factor set to 1. However, Register Caching ON is usually good to get
 and Counter Factor set to 1 can cause crashes or failure to boot. However, Counter Factor set to 2
 causes flickering (see Paper Mario), longer load times, and an extremely significant lag increase.
 
-
-Self-modifying Code Method: By default, Check Memory but changeable from the advanced tab
-* Disabled by the Interpreter
-Protect Memory is reliable but slow and sometimes has severe performance issues for specific ROMs. Check
-Memory isn't as reliable but it's a lot faster, and is the original PJ64 1.6 default. It's usually best.
-Cache is the least reliable but you can encounter a case where Cache is the only method that works for a
-game to boot at all seen with Rat Attack if using the alternative ROM Settings for single player gaming.
-Note: Try the next lower SCM if not on Pmem if a crash is labeled as Self-modifying Code Method-related!
-
-Register Caching: By default, off but changeable from the advanced tab
-*Disabled by the Interpreter
-Having this setting ON will greatly improve performance for msot games, but does not always behave right
-with plugins (causing them to fail to properly initialize) and can break sound or graphics in some cases
-which is why this setting is OFF by default and suggested to stay off. Having this setting off will also
-display potential points of a crash on real hardware instead of silently masking them. Suggest you don't
-mess with the setting unless you really need extra speed and know it won't hurt you or if you experience
-a lot of crash warning messages which can be skipped over without issue with the setting set ON instead.
+Save Type: Varies by default
+The emulator usually correctly figures out the right save type but assumes 4kbit for EEPROM, not 16kbit.
+This means all games which require 16kbit EEPROM need to have the save type manually set in the Game.ini
+from the ROM Settings, or type it. You may also need to specify FlashRAM or 256kbit SRAM for some games.
+You can however autodetect to 16kbit EEPROM from the advanced tab if this suits your usage of Project64.
 
 Counter Factor: By default, 2 but changeable from the advanced tab
 * Forces CF1-->0 off if not set to 1
@@ -422,12 +410,6 @@ a safe default so it's not suggested you go any lower (or higher) from this unle
 that you are confident require 3 or will work with 1. Setting to 1 will notably get rid of some flickers
 and cause faster loading times and you will never have any lag in a game.
 WARNING: Having this too low or too high can cause Limit FPS off to crash (game and plugin-dependent)!!!
-
-Save Type: Varies by default
-The emulator usually correctly figures out the right save type but assumes 4kbit for EEPROM, not 16kbit.
-This means all games which require 16kbit EEPROM need to have the save type manually set in the Game.ini
-from the ROM Settings, or type it. You may also need to specify FlashRAM or 256kbit SRAM for some games.
-You can however autodetect to 16kbit EEPROM from the advanced tab if this suits your usage of Project64.
 
 Sync Game to Audio: By default, on
 * Forced off if sound plugin isn't Jabo's DirectSound
@@ -445,14 +427,36 @@ Jabo AI: By default, off
 Just like Azi AI described below but for Jabo_Dsound, also a good substitute for Sync Game to Audio if a
 ROM doesn't work well with Sync Game to Audio on/off by itself, or if this fixes Jabo_Dsound stuttering.
 
+Align DMA: By default, off
+This setting fixes broken interface positions in games but also emulates a limitation breaking ROMhacks.
+There is currently only one game which needs this setting, but there could be more in the future. If CPU
+Recompiler is turned off, you may want to turn this on if that still doesn't fix a game's graphical bug.
+
+Legacy AiLenChanged: By default, off
+* Forced off if sound plugin is No audio
+This is an alternate AI function from Project64 Legacy 1.6.4 which works better sometimes (not always).
+
 Azi AI: By default, off
 * Forced off if sound plugin isn't Shankle AziAudio
 This emulates AI for Shankle AziAudio, used to get sound working in some games or to solve Limit FPS off
 issues while using the Shankle AziAudio plugin.
 
-Legacy AiLenChanged: By default, off
-* Forced off if sound plugin is No audio
-This is an alternate AI function from Project64 Legacy 1.6.4 which works better sometimes (not always).
+Delay RDP: By default, off
+It's either needed or it's not. Notably fixes the HUD in Kirby 64 for some reason. The setting is needed
+for some games to boot.
+
+Jumper Pak: By default, off
+This emulates the Jumper Pak which comes with original Nintendo 64 hardware. If you want to make a game
+which works on original hardware, you need to enable this option. Most ROMhacks do not work on original
+hardware and many N64 games do not either so you generally want to keep this on. But in the cases where
+it can be turned on, it reduces the emulator's total memory use and generates smaller-sized savestates.
+
+Signal: By default, off
+It's either needed or it's not. The setting is needed for some games to boot.
+
+Delay RSP: By default, off
+It's either needed or it's not. The setting is needed for some games to boot. Known to break sound in
+some games when used incorrectly.
 
 RSP Recompiler: By default, variable
 * Forced on if the video plugin is not Icepir8's LLE or if the ROM is known to require it (internal name)
@@ -461,59 +465,52 @@ but not all cases, the Interpreter style works better with Icepir8's LLE and pre
 solve this, Interpreter is always used with Icepir8's LLE and Recompiler style will be used for the cases
 where Interpreter does not work well with Icepir8's LLE.
 
+59Hz: By default, off
+This setting fixes a game running at the wrong speed (misdetected as 50Hz) but this is very very rare...
+There is currently only one game which needs this setting, but there could be more in the future.
+
+Delay SI: By default, off
+It's either needed or it's not. Notably fixes GB Tower not working with the Static Interpreter RSP while
+using N-Rage. The setting is needed for some games to boot.
+
 CPU Recompiler: By default, on
 * Forces TLB on if off
-* Forces Self-modifying Code Method and Register Caching to Default if off (they would have no effect)
-If off, Register Caching/Self-modifying Code Method/TLB will have no effect as this app uses Interpreter
+If off, Register Caching/TLB/Protect Memory will have no effect, as this app uses a CPU Interpreter core
 style emulation when not using Recompiler style. You should always use the CPU Recompiler unless there's
 no way to emulate the game properly with it such as in the case of Cosmic Goddess (try it and see). When
 using CPU Recompiler, it's important to use Register Caching for a boost in performance if there are not
 any negative side effects from doing so, to disable TLB sparingly on a per-game basis, and to always use
-the highestmost Self-modifying Code Method which will work with a game for the best performance you can.
+Protect Memory only when needed.
+
+CPU RECOMPILER SETTINGS FROM HERE (DISABLED IF CPU RECOMPILER IS OFF)
 
 TLB: By default, on
-*Forced on by the Interpreter
 This Translation Lookaside Buffer is either required for a game or not. If the game does not require it,
 it's best to turn it off to avoid issues that this setting can cause, although with most games it's fine
 to leave it on. Generally, just leave this on unless you know a game works better with, or needs it off.
 Turning it off notably improves performance and can get ROMhacks working.
 
-Signal: By default, off
-It's either needed or it's not. The setting is needed for some games to boot.
-
-59Hz: By default, off
-This setting fixes a game running at the wrong speed (misdetected as 50Hz) but this is very very rare...
-There is currently only one game which needs this setting, but there could be more in the future.
-
 CF1-->0: By default, on
-* Forced off by the Interpreter or Counter Factor not set to 1
+* Forced off by Counter Factor not set to 1
 Counter Factor 1 is converted to Counter Factor 0, making it truly lagless, but also less stable, as the
 more you lower the counter factor, the more likely you generally are to run into a game-dependent crash!
 However, having it turned on can be necessary to emulate some games properly or to get rid of lagging or
 delay like the equipment subscreen equip delay in Ocarina of Time on HLE video if not using a Cheat fix.
 
-Jumper Pak: By default, off
-This emulates the Jumper Pak which comes with original Nintendo 64 hardware. If you want to make a game
-which works on original hardware, you need to enable this option. Most ROMhacks do not work on original
-hardware and many N64 games do not either so you generally want to keep this on. But in the cases where
-it can be turned on, it reduces the emulator's total memory use and generates smaller-sized savestates.
+Protect Memory: By default, off
+This is a self-modifying code emulation setting exclusively for the Recompiler. This setting can provide
+a significant boost to performance for certain games and fix some crashes, but causes worse performance,
+severe slowdown, or annoying interruption depending on the game being played and the user's PC hardware.
+An example of a game which has performance benefits from this setting is Super Mario 64 or Rat Attack.
 
-Align DMA: By default, off
-This setting fixes broken interface positions in games but also emulates a limitation breaking ROMhacks.
-There is currently only one game which needs this setting, but there could be more in the future. If CPU
-Recompiler is turned off, you may want to turn this on if that still doesn't fix a game's graphical bug.
+Register Caching: By default, off but changeable from the advanced tab
+Having this setting ON will greatly improve performance for most games, but does not always behave right
+with plugins (causing them to fail to properly initialize) and can break sound or graphics in some cases
+which is why this setting is OFF by default and suggested to stay off. Having this setting off will also
+display potential points of a crash on real hardware instead of silently masking them. Suggest you don't
+mess with the setting unless you really need extra speed and know it won't hurt you or if you experience
+a lot of crash warning messages which can be skipped over without issue with the setting set ON instead.
 
-Delay RDP: By default, off
-It's either needed or it's not. Notably fixes the HUD in Kirby 64 for some reason. The setting is needed
-for some games to boot.
-
-Delay RSP: By default, off
-It's either needed or it's not. The setting is needed for some games to boot. Known to break sound in
-some games when used incorrectly.
-
-Delay SI: By default, off
-It's either needed or it's not. Notably fixes GB Tower not working with the Static Interpreter RSP while
-using N-Rage. The setting is needed for some games to boot.
 
 
 The default area is just the defaults used for the ROM Settings whenever it says "Default".

@@ -1,6 +1,6 @@
 #1# "Français/French"
 #2# "TrulyNaN x Andzura x BruceIV"
-#3# "21 WIP"
+#3# "22 WIP"
 #5# "Base de données des langues (.txt)"
 #6# "Auteur"
 #9# "Limite de FPS activée"
@@ -117,7 +117,7 @@
 #131# "Défaut"
 #132# "Toujours détecter automatiquement avec 16 kbit EEPROM"
 #134# "This is supposed to be V20 hashtag217hashtag"
-#135# "Méthode de code auto-modifiable:"
+#135# "This is supposed to be quoteJumper Pakquote"
 #136# "Cette action va tenter d'allouer 254MB d'espace SD sur votre disque dur dans une partition SDCARD0 après avoir décompilé AUTO0.
 
 Vous ne pourrez pas sauvegarder ou charger vers ou depuis la carte SD virtuelle tant que vous ne compilerez pas l'espace de la carte SD virtuelle dans AUTO0 en utilisant cette option à nouveau"
@@ -136,10 +136,11 @@ Vous ne pourrez pas sauvegarder ou charger vers ou depuis la carte SD virtuelle 
 #154# "Project64 est déjà en cours d'exécution.
 
 Aimeriez-vous forcer l'arrêt de la présente instance de Project64 avant d'en démarrer une autre? Forcer l'arrêt prévient des problèmes avec les données de sauvegarde, mais peut affecter le comportement des plugins"
+#155# "Émulation redémarrée"
 #156# "Protéger la Mémoire"
 #157# "RSP Recompileur"
 #158# "Toujours visible désactivée"
-#159# "Vérifier la mémoire"
+#159# "Vous devez démarrer l'émulation pour configurer ce plugin"
 #160# "Cap de vitesse 2x désactivé quand la limite de FPS est désactivée"
 #161# "Toujours désactiver TLB"
 #162# "Toujours désactiver la mise en cache des registres"
@@ -199,6 +200,3 @@ Vous pourrez sauvegarder ou charger vers ou depuis la carte SD virtuelle si cett
 #206# "Image Par Seconde"
 #207# "Toujours activer Aligner DMA"
 #211# "Permet de lire les notes de la ROM (plugin/Cœur/État)"
-#212# "Émulation redémarrée"
-#213# "Vous devez démarrer l'émulation pour configurer ce plugin"
-#214# "This is supposed to be quoteJumper Pakquote"

@@ -1,6 +1,6 @@
 #1# "Português brasileiro/Brazilian Portuguese"
 #2# "TrulyNaN x BruceIV"
-#3# "21 WIP"
+#3# "22 WIP"
 #4# "Jan 2026"
 #5# "Banco de dados de língua (.txt)"
 #6# "Autor"
@@ -124,7 +124,7 @@
 #131# "Padrão"
 #132# "Sempre Detectar Automaticamente com EEPROM de 16kbit"
 #134# "I am supposed to be V20 hashtag217hashtag"
-#135# "Método de Código Automodificando:"
+#135# "I am supposed to be quoteJumper Pakquote"
 #136# "Essa ação va tentar alocar 254MB de espaço SD no seu disco numa partição SDCARD0 depois decompilar AUTO0.
 
 Você não sera capaz salvar ou carregar do seu cartão SD virtual até compilar espaço de cartão SD virtual de volta em AUTO0 com usar essa opção novamente"
@@ -146,10 +146,11 @@ Você não sera capaz salvar ou carregar do seu cartão SD virtual até compilar esp
 #154# "Project64 já está em execução.
 
 Você quer forçar encerramento do atual Project64 antes de iniciar um outro? Forçar encerramento evita problemas com dados de salvo, mas isso pode afetar comportamento dos módulos de extensão"
+#155# "Reiniciar emulação"
 #156# "Proteger Memória"
 #157# "Recompilador RSP"
 #158# "Habitualmente no Topo desativado"
-#159# "Verificar Memória"
+#159# "Você precisa iniciar emulação para configurar esse módulo de extensão"
 #160# "2x Limite de Velocidade revogada por FPS Sem Limite"
 #161# "Sempre Desativar TLB"
 #162# "Sempre Desativar Cache de Registro"
@@ -212,6 +213,3 @@ Você será capaz salvar ou carregar do seu cartão SD virtual se essa ação for bem
 #206# "Frames Per Second Quadros Por Segundo"
 #207# "Sempre Ativar Alinhar DMA"
 #211# "Permite ler as notas da ROM (plugin/core/status)"
-#212# "Reiniciar emulação"
-#213# "Você precisa iniciar emulação para configurar esse módulo de extensão"
-#214# "I am supposed to be quoteJumper Pakquote"

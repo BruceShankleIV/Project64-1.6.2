@@ -1,6 +1,6 @@
 #1# "Nederlands/Dutch"
 #2# "Lily x BruceIV"
-#3# "21"
+#3# "22"
 #5# "Taal Database (.txt)"
 #6# "Auteur"
 #7# "Versie"
@@ -117,7 +117,7 @@
 #131# "Standaard"
 #132# "Altijd Autodetecteren met 16kbit EEPROM"
 #134# "Het spel kan crashen bij de aankomende r4300i_SPECIAL_BREAK. Wil je deze mogelijke crash emuleren?"
-#135# "Zelfmodificerende Code-methode:"
+#135# "This is supposed to be quoteJumper Pakquote"
 #136# "Deze actie zal proberen 254 MB SD ruimte op je harde schijf toe te wijzen in een SDCARD0 partitie na het decompileren van AUTO0.
 
 Je zult geen gegevens kunnen opslaan op of laden van je virtuele SD-kaart totdat je de virtuele SD-kaartruimte opnieuw in AUTO0 compileert door deze optie opnieuw te gebruiken"
@@ -134,10 +134,11 @@ Je zult geen gegevens kunnen opslaan op of laden van je virtuele SD-kaart totdat
 #153# "Pogingen om 254 MB ruimte toe te wijzen of te compileren voor virtuele SD kaartemulatie"
 #154# "Project64 Is al gestart.
 Zou je de huidige Project64 geforceerd willen afsluiten voordat je een nieuwe start? Geforceerd afsluiten voorkomt problemen met opgeslagen gegevens, maar kan het gedrag van plug-ins verstoren"
+#155# "Emulatie gereset"
 #156# "Bescherm Geheugen"
 #157# "Controleer Geheugen & Cache"
 #158# "Altijd op de Voorgrond uit"
-#159# "Geheugen controleren"
+#159# "Je moet emulatie starten om deze plugin te configureren"
 #160# "2x Snelheidslimiet verwijderd van Beperk FPS uit"
 #161# "Altijd TLB Uitschakelen"
 #162# "Altijd registercaching Uitschakelen"
@@ -197,6 +198,3 @@ Als deze actie succesvol is, kun je weer gegevens opslaan op en laden van je vir
 #206# "Frames Per Seconde"
 #207# "Altijd DMA Uitlijnen Inschakelen"
 #211# "Laat je de notities van de ROM lezen (plugin/core/status)"
-#212# "Emulatie gereset"
-#213# "Je moet emulatie starten om deze plugin te configureren"
-#214# "This is supposed to be quoteJumper Pakquote"

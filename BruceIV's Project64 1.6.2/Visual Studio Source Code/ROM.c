@@ -514,7 +514,7 @@ void ReadRomOptions(void) {
 				else if (strcmp(String,"OFF")==0) { RomUseCache=REG_CACHE_OFF; }
 				else RomUseCache=UseCache_Default;
 			}
-		} else RomUseTLB = TRUE;
+		} else RomUseTLB = FALSE;
 		if (!RomCpuRecompiler||RomCF!=-1&&RomCF!=1) RomCF1CF0=FALSE;
 	}
 }
@@ -891,20 +891,6 @@ void SaveRomOptions (void) {
 	sprintf(String,"%s",__DATE__);
 	_WritePrivateProfileString(Identifier,"Date",String,GetIniFileName());
 	sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD *)(&RomHeader[0x10]),*(DWORD *)(&RomHeader[0x14]),RomHeader[0x3D]);
-	if (!RomCpuRecompiler) _WritePrivateProfileString(Identifier,"Register Caching","Default",GetIniFileName());
-	else if (!ForceDisableCaching) {
-		switch (RomUseCache) {
-		case REG_CACHE_ON: sprintf(String,"ON"); break;
-		case REG_CACHE_OFF: sprintf(String,"OFF"); break;
-		default: sprintf(String,"Default");
-		}
-		_WritePrivateProfileString(Identifier,"Register Caching",String,GetIniFileName());
-	}
-	switch (RomCF) {
-	case 1: case 2: case 3: sprintf(String,"%d",RomCF); break;
-	default: sprintf(String,"Default");
-	}
-	_WritePrivateProfileString(Identifier,"Counter Factor",String,GetIniFileName());
 	switch (RomSaveUsing) {
 	case EEPROM_4K: sprintf(String,"4kbit EEPROM"); break;
 	case EEPROM_16K: sprintf(String,"16kbit EEPROM"); break;
@@ -913,29 +899,46 @@ void SaveRomOptions (void) {
 	default: sprintf(String,"Default");
 	}
 	_WritePrivateProfileString(Identifier,"Save Type",String,GetIniFileName());
+	switch (RomCF) {
+	case 1: case 2: case 3: sprintf(String,"%d",RomCF); break;
+	default: sprintf(String,"Default");
+	}
+	_WritePrivateProfileString(Identifier,"Counter Factor",String,GetIniFileName());
 	if (strcmp(AudioDLL,"Jabo_Dsound.dll")==0) {
 		if (RomJAI) _WritePrivateProfileString(Identifier,"Sync Game to Audio","Default",GetIniFileName());
 		else _WritePrivateProfileString(Identifier,"Sync Game to Audio",RomSyncGametoAudio?"Default":"OFF",GetIniFileName());
 		_WritePrivateProfileString(Identifier,"Jabo AI",RomJAI?"ON":"Default",GetIniFileName());
 	}
-	if (strcmp(AudioDLL,"Shankle_Audio.dll")==0) _WritePrivateProfileString(Identifier,"Azi AI",RomShankleAziAI?"ON":"Default",GetIniFileName());
+	if (!ForceEnableDMA) _WritePrivateProfileString(Identifier,"Align DMA",RomAlignDMA?"ON":"Default",GetIniFileName());
 	if (RomJAI||RomShankleAziAI) _WritePrivateProfileString(Identifier,"Legacy AiLenChanged",RomAltEmulateAI?"ON":"Default",GetIniFileName());
 	else _WritePrivateProfileString(Identifier,"Legacy AiLenChanged","Default",GetIniFileName());
-	if (strcmp(RSPDLL, "RSP.dll")==0&&(strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0||strcmp(RomName,"THE LEGEND OF ZELDA")==0||strcmp(RomName,"THE MASK OF MUJURA")==0||strcmp(RomName,"ZELDA MAJORA'S MASK")==0||strcmp(RomName,"BANJO KAZOOIE 2")==0||strcmp(RomName,"BANJO TOOIE")==0||strcmp(RomName,"CONKER BFD")==0||strcmp(RomName,"DONKEY KONG 64")==0||strcmp(RomName,"JET FORCE GEMINI")==0||strcmp(RomName,"STAR TWINS")==0||strcmp(RomName,"Perfect Dark")==0)) _WritePrivateProfileString(Identifier,"RSP Recompiler",RomRspRecompiler?"ON":"Default",GetIniFileName());
-	_WritePrivateProfileString(Identifier,"CPU Recompiler",RomCpuRecompiler?"Default":"OFF",GetIniFileName());
-	if (!RomCpuRecompiler) _WritePrivateProfileString(Identifier,"TLB","Default",GetIniFileName());
-	else if (!ForceDisableTLB) _WritePrivateProfileString(Identifier,"TLB",RomUseTLB?"Default":"OFF",GetIniFileName());
+	if (strcmp(AudioDLL,"Shankle_Audio.dll")==0) _WritePrivateProfileString(Identifier,"Azi AI",RomShankleAziAI?"ON":"Default",GetIniFileName());
+	_WritePrivateProfileString(Identifier,"Delay RDP",RomDelayRDP?"ON":"Default",GetIniFileName());
+	_WritePrivateProfileString(Identifier,"Jumper Pak",RomJumperPak?"ON":"Default",GetIniFileName());
 	_WritePrivateProfileString(Identifier,"Signal",RomAudioSignal?"ON":"Default",GetIniFileName());
+	_WritePrivateProfileString(Identifier,"Delay RSP",RomDelayRSP?"ON":"Default",GetIniFileName());
+	if (strcmp(RSPDLL, "RSP.dll")==0&&(strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0||strcmp(RomName,"THE LEGEND OF ZELDA")==0||strcmp(RomName,"THE MASK OF MUJURA")==0||strcmp(RomName,"ZELDA MAJORA'S MASK")==0||strcmp(RomName,"BANJO KAZOOIE 2")==0||strcmp(RomName,"BANJO TOOIE")==0||strcmp(RomName,"CONKER BFD")==0||strcmp(RomName,"DONKEY KONG 64")==0||strcmp(RomName,"JET FORCE GEMINI")==0||strcmp(RomName,"STAR TWINS")==0||strcmp(RomName,"Perfect Dark")==0)) _WritePrivateProfileString(Identifier,"RSP Recompiler",RomRspRecompiler?"ON":"Default",GetIniFileName());
 	_WritePrivateProfileString(Identifier,"59 Hz",RomFiftyNineHertz?"ON":"Default",GetIniFileName());
+	_WritePrivateProfileString(Identifier,"Delay SI",RomDelaySI?"ON":"Default",GetIniFileName());
+	_WritePrivateProfileString(Identifier,"CPU Recompiler",RomCpuRecompiler?"Default":"OFF",GetIniFileName());
 	if (!RomCpuRecompiler||RomCF!=-1&&RomCF!=1) _WritePrivateProfileString(Identifier,"CF1-->0","Default",GetIniFileName());
 	else _WritePrivateProfileString(Identifier,"CF1-->0",RomCF1CF0?"Default":"OFF",GetIniFileName());
-	if (!ForceEnableDMA) _WritePrivateProfileString(Identifier,"Align DMA",RomAlignDMA?"ON":"Default",GetIniFileName());
-	_WritePrivateProfileString(Identifier,"Jumper Pak",RomJumperPak?"ON":"Default",GetIniFileName());
-	if (RomCpuRecompiler) _WritePrivateProfileString(Identifier,"Protect Memory",RomProtectMemory?"ON":"Default",GetIniFileName());
-	else _WritePrivateProfileString(Identifier,"Protect Memory","Default",GetIniFileName());
-	_WritePrivateProfileString(Identifier,"Delay RDP",RomDelayRDP?"ON":"Default",GetIniFileName());
-	_WritePrivateProfileString(Identifier,"Delay RSP",RomDelayRSP?"ON":"Default",GetIniFileName());
-	_WritePrivateProfileString(Identifier,"Delay SI",RomDelaySI?"ON":"Default",GetIniFileName());
+	if (RomCpuRecompiler) {
+		if (!ForceDisableTLB) _WritePrivateProfileString(Identifier, "TLB", RomUseTLB ? "Default" : "OFF", GetIniFileName());
+		_WritePrivateProfileString(Identifier,"Protect Memory",RomProtectMemory?"ON":"Default",GetIniFileName());
+		if (!ForceDisableCaching) {
+			switch (RomUseCache) {
+			case REG_CACHE_ON: sprintf(String,"ON"); break;
+			case REG_CACHE_OFF: sprintf(String,"OFF"); break;
+			default: sprintf(String,"Default");
+			}
+			_WritePrivateProfileString(Identifier,"Register Caching",String,GetIniFileName());
+		}
+	} else {
+		_WritePrivateProfileString(Identifier,"TLB","Default",GetIniFileName());
+		_WritePrivateProfileString(Identifier,"Protect Memory","Default",GetIniFileName());
+		_WritePrivateProfileString(Identifier,"Register Caching","Default",GetIniFileName());
+	}
 	if (!CPURunning) HandleWindowTitle();
 }
 void SetRecentRomDir (DWORD Index) {

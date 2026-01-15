@@ -117,7 +117,8 @@ void OpcodeSwitch (BLOCK_SECTION * Section) {
 		case R4300i_SPECIAL_DSRL32: Compile_R4300i_SPECIAL_DSRL32(Section); break;
 		case R4300i_SPECIAL_DSRA32: Compile_R4300i_SPECIAL_DSRA32(Section); break;
 		default:
-			DisplayThreadExit("OpcodeSwitch-switch (Opcode.op)-case R4300i_SPECIAL:-switch (Opcode.funct)-default:\nThe emulator has crashed on a reserved Opcode at this location\n\nSelf-modifying Code Method-related?");
+			if (ProtectMemory) DisplayThreadExit("OpcodeSwitch-switch (Opcode.op)-case R4300i_SPECIAL:-switch (Opcode.funct)-default:\nThe emulator has crashed on a reserved Opcode at this location\n\nTry 'CPU Recompiler=OFF'?");
+			else DisplayThreadExit("OpcodeSwitch-switch (Opcode.op)-case R4300i_SPECIAL:-switch (Opcode.funct)-default:\nThe emulator has crashed on a reserved Opcode at this location\n\nTry 'Protect Memory=ON'?");
 	}
 	break;
 	case R4300i_REGIMM:
@@ -343,7 +344,7 @@ void OpcodeSwitch (BLOCK_SECTION * Section) {
 	case R4300i_SD: Compile_R4300i_SD(Section); break;
 	default:
 		if (ProtectMemory) DisplayThreadExit("OpcodeSwitch-switch (Opcode.op)-default:\n\nThe emulator has crashed on a reserved Opcode at this location\n\nTry 'CPU Recompiler=OFF'?");
-		else DisplayThreadExit("OpcodeSwitch-switch (Opcode.op)-default:\n\nThe emulator has crashed on a reserved Opcode at this location.\n\n\nPotential fault point: ClearRecompilerCache-memset(JumpTable+(Block<<10),0,SetMem);\n\nTry 'Self-modifying Code Method=Protect Memory'?");
+		else DisplayThreadExit("OpcodeSwitch-switch (Opcode.op)-default:\n\nThe emulator has crashed on a reserved Opcode at this location.\n\n\nPotential fault point: ClearRecompilerCache-memset(JumpTable+(Block<<10),0,SetMem);\n\nTry 'Protect Memory=ON'?");
 	}
 }
 void InitializeInitialCompilerVariable (void)
@@ -505,7 +506,7 @@ void CompileExit (DWORD TargetPC,REG_INFO ExitRegSet,int reason,int CompileNow,v
 		Section.RegWorking.RandomModifier=0;
 		Section.RegWorking.CycleCount=0;
 		if (reason==Normal) { CompileSystemCheck(0,(DWORD)-1,Section.RegWorking);	}
-		if (ProtectMemory) {
+		if (ProtectMemory) { // This part can give Protect Memory a performance edge
 			BYTE * Jump,* Jump2;
 			if (TargetPC>=0x80000000&&TargetPC<0x90000000) {
 				DWORD pAddr=TargetPC&0x1FFFFFFF;
@@ -522,8 +523,7 @@ void CompileExit (DWORD TargetPC,REG_INFO ExitRegSet,int reason,int CompileNow,v
 				AddConstToX86Reg(x86_ECX,(DWORD)JumpTable-(DWORD)N64MEM);
 				MoveX86regPointerToX86reg(x86_ECX,x86_EBX,x86_ECX);
 			}
-			if (TargetPC<0x90000000||TargetPC>=0xC0000000)
-			{
+			if (TargetPC<0x90000000||TargetPC>=0xC0000000) {
 				JecxzLabel8(0);
 				Jump=RecompPos-1;
 				JmpDirectReg(x86_ECX);
@@ -1768,8 +1768,10 @@ BOOL GenerateX86Code (BLOCK_SECTION * Section,DWORD Test) {
 		__try {
 			if (BlockCycleCount>1&&CF1CF0) BlockCycleCount=1;
 			if (!r4300i_LW_VAddr(Section->CompilePC,&Opcode.Hex)) {
-				if (UseTLB) DisplayThreadExit("GenerateX86Code-!r4300i_LW_VAddr(Section->CompilePC,&Opcode.Hex)\n\nSelf-modifying Code Method-related?");
-				else DisplayThreadExit("GenerateX86Code-!r4300i_LW_VAddr(Section->CompilePC,&Opcode.Hex)\n\nNeeds 'TLB=ON'?");
+				if (UseTLB) {
+					if (ProtectMemory) DisplayThreadExit("GenerateX86Code-!r4300i_LW_VAddr(Section->CompilePC,&Opcode.Hex)\n\nTry 'CPU Recompiler=OFF'?");
+					else DisplayThreadExit("GenerateX86Code-!r4300i_LW_VAddr(Section->CompilePC,&Opcode.Hex)\n\nTry 'Protect Memory=ON'?");
+				} else DisplayThreadExit("GenerateX86Code-!r4300i_LW_VAddr(Section->CompilePC,&Opcode.Hex)\n\nNeeds 'TLB=ON'?");
 			}
 		} __except(r4300i_CPU_MemoryFilter(GetExceptionCode(),GetExceptionInformation())) {
 			DisplayThreadExit("GenerateX86Code-r4300i_CPU_MemoryFilter(GetExceptionCode(),GetExceptionInformation()");
@@ -2225,8 +2227,10 @@ void StartRecompilerCPU (void) {
 						}
 						continue;
 					} else {
-						if (UseTLB) DisplayThreadExit("StartRecompilerCPU-Addr>0x10000000-PROGRAM_COUNTER>=0xB0000000&&PROGRAM_COUNTER<(RomFileSize|0xB0000000)-else\n\nSelf-modifying Code Method-related?");
-						else DisplayThreadExit("StartRecompilerCPU-Addr>0x10000000-PROGRAM_COUNTER>=0xB0000000&&PROGRAM_COUNTER<(RomFileSize|0xB0000000)-else\n\nNeeds 'TLB=ON'?");
+						if (UseTLB) {
+							if (ProtectMemory) DisplayThreadExit("StartRecompilerCPU-Addr>0x10000000-PROGRAM_COUNTER>=0xB0000000&&PROGRAM_COUNTER<(RomFileSize|0xB0000000)-else\n\nTry 'CPU Recompiler=OFF'?");
+							else DisplayThreadExit("StartRecompilerCPU-Addr>0x10000000-PROGRAM_COUNTER>=0xB0000000&&PROGRAM_COUNTER<(RomFileSize|0xB0000000)-else\n\nTry 'Protect Memory=ON'?");
+						} else DisplayThreadExit("StartRecompilerCPU-Addr>0x10000000-PROGRAM_COUNTER>=0xB0000000&&PROGRAM_COUNTER<(RomFileSize|0xB0000000)-else\n\nNeeds 'TLB=ON'?");
 					}
 				}
 				Block=*(JumpTable+(Addr>>2));
@@ -2242,7 +2246,7 @@ void StartRecompilerCPU (void) {
 					else DisplayThreadExit("StartRecompilerCPU-EXCEPTION_EXECUTE_HANDLER-PROGRAM_COUNTER>=0xB0000000&&PROGRAM_COUNTER<(RomFileSize|0xB0000000)-else\n\nNeeds unused cache SCM?");
 				}
 			}
-			if ((!ProtectMemory)&&Block!=NULL) {
+			if (!ProtectMemory&&Block!=NULL&&strcmp(RomName,"RAT ATTACK")!=0) {
 				TARGET_INFO * Target=(TARGET_INFO *)Block;
 				if (*(QWORD *)(N64MEM+Addr)!=Target->OriginalMemory) {
 					DWORD Start=(Addr&~0xFFF)-0x10000,End=Start+0x20000,count;
@@ -2267,9 +2271,9 @@ void StartRecompilerCPU (void) {
 					ResetRecompCode();
 					Block=Compiler4300iBlock();
 				}
-				if (ProtectMemory) {
+				if (ProtectMemory||strcmp(RomName,"RAT ATTACK")==0) {
 					*(JumpTable+(Addr>>2))=Block;
-					VirtualProtect(N64MEM+Addr,4,PAGE_READONLY,&OldProtect);
+					if (strcmp(RomName,"RAT ATTACK")!=0) VirtualProtect(N64MEM+Addr,4,PAGE_READONLY,&OldProtect);
 				} else {
 					TargetInfo[TargetIndex].CodeBlock=Block;
 					TargetInfo[TargetIndex].OriginalMemory=*(QWORD *)(N64MEM+Addr);

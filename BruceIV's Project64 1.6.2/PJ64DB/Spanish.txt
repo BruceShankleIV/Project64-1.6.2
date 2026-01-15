@@ -125,7 +125,7 @@
 #131# "Por Defecto"
 #132# "Siempre Autodetectar Con EEPROM de 16kbit"
 #134# "This is supposed to be V20 hashtag217hashtag"
-#135# "Auto-modificando Método de Código:"
+#135# "This is supposd to be quoteJumper Pakquote"
 #136# "Esta acción va probar asignar 254MB de espacio SD en tu disco duro en una partición SDCARD0 despues decompilar AUTO0.
 
 No podrás guardar o cargar de tu tarjeta SD virtual hasta compilas el espacio de tarjeta SD virtual de vuelta en AUTO0 con usar esta opción de nuevo"
@@ -146,11 +146,11 @@ No podrás guardar o cargar de tu tarjeta SD virtual hasta compilas el espacio de
 #154# "Project64 ya está ejecutando.
 
 ¿Quieres forzar la terminación del Project64 actual antes de iniciar otro? Forzar la terminación previene problemas con datos de guardado, pero podría afectar el comportamiento de los complementos"
-#155# "Caché"
+#155# "Se renició la emulación"
 #156# "Proteger Memoria"
 #157# "Recompilador RSP"
 #158# "Generalmente al Frente desactivado"
-#159# "Comprobar Memoria"
+#159# "Debes iniciar la emulación para configurar este complemento"
 #160# "2x Limite de Velocidad revocado por Limitar FPS desactivado "
 #161# "Siempre Desactivar TLB"
 #162# "Siempre Desactivar Almacenamiento de Caché de Registro"
@@ -213,6 +213,3 @@ Vas poder guardar o cargar de tu tarjeta SD virtual de nuevo si esta acción func
 #206# "Fotogramas Por Segundo"
 #207# "Siempre Activar Alinear DMA"
 #211# "Te permiter leer las notas de la ROM (plugin/core/status)"
-#212# "Se renició la emulación"
-#213# "Debes iniciar la emulación para configurar este complemento"
-#214# "This is supposd to be quoteJumper Pakquote"

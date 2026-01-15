@@ -156,6 +156,7 @@
 #define IDC_SyncGametoAudio				1241
 #define IDC_JUMPER_PAK					1242
 #define IDC_PROTECT_MEMORY				1243
+#define IDC_RECOMPILER_SETTINGS			1244
 #define ID_FILE_OPEN_ROM                40001
 #define ID_FILE_ROM_INFO                40002
 #define ID_FILE_EXIT                    40005

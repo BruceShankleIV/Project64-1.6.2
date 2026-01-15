@@ -10,9 +10,6 @@ lookout for Paper Mario Code Name Abyss ROMhack
 Check Mark Kurko, often uploads ROMhacks
 Look in the demo's for ongoing projects, when those are complete we can upload the full version
 
-Need to review ALL ENTRIES USING PROTECT MEMORY, can we use a lower scm setting to get working
-better on lower end devices
-
 make "set memory" a ROM Setting if needed if TLOZ auto isn't enough (cannot be active with pmem if
 self mod system is dropped since pmem doesn't execute code in the function block where setmem is done
 inside the clear recomp)
@@ -20,18 +17,125 @@ inside the clear recomp)
 games with scm change which need to be reviewed (a lot of these are cache/may not need to be reviewed
 if cache is depreciated to eliminate self mod dropdown):
 
+Some Games to Test:
 The World Is Not Enough
 1080 Snowboarding
 International Superstar Soccer 64
-Jet Force Gemini/Star Twins
-Mission Impossible
-Namco Musuem 64
-mon Stadium - ctrl-f
+Namco
+Pokémon Stadium (ALL VERSIONS)
 South Park Rally
 Star Fox 64
 Star Wars - Rogue Squadron
+
+127 Protect Memory entries to test (test to see if we need a rat attack
+hack in COMPILE_R4300I_CACHE block to execute for it)
+^ When we test them, see if we can get away with pmem off instead!
+
+Many many ex-cache entries to test
+
+NOTE:
+
+TEST WITH JABO DSOUND TO SEE WHHICH HAVE SLOWDOWN OR FREEZED BOOTUP
+WITH SYNC GAME
+
+AeroGauge
+All Star Tennis '99
+Army Men - Sarge's Heroes 1and 2
+Asteroids Hyper 64
+Automobili Lamborghini
+Bassmasters 2000
+BattleTanx - Global Assault
+Blast Corps - check this one first
+Blast Dozer - J of above?
+Brunswick Circuit Pro Bowling
+California Speed
+Chameleon Twist 1 and 2
+Charlie Blast's Territory
+Chopper Attack
+Clay Fighter - sculptor's cut and 63 1/3
+Conker's Bad Fur Day
+Cruis'n World
+CyberTiger
+Diddy Kong Racing
+Disney's Donald Duck - Goin' Qu@ckers*! - UH, SOMETHING WRONG WITH GAMENAME ON THIS ONE?
+Doom 64
+Doraemon - Nobita to 3tsu no Seireiseki
+Dr. Mario 64
+Duke Nukem 64
+Earthworm Jim 3D
+Elmo's Letter Adventure
+Elmo's Number Journey
+F-1 Pole Position 64
+FIFA - Road to World Cup 98
+FIFA Soccer 64
+Fox Sports College Hoops '98
+Glover
+Golden Nugget 64
+Hamster Monogatari 64
+Harvest Moon 64 - check this one first too?
+Bokujou Monogatari 2
+Hexen
+Hey You, Pikachu!
+Human Grand Prix - New Generation
+J.League Live 64 - RED FLAG! ALSO WHY IS REG CACHING OFF
+Jet Force Gemini
+Kobe Bryant's NBA Courtside
+Mace - The Dark Age
+Magical Tetris Challenge
+Mahjong 64
+Mario Kart 64 - IMPORTANT TO TEST THIS ONE
+Milo's Astro Lanes
+Mission Impossible
+Monster Truck Madness 64
+Mortal Kombat 4
+N64DD IPL
+Namco Musuem 64
+NBA Hangtime
+NBA In the Zone 2000
+^ JP wrong number?
+NBA In the Zone '98 - missing capital?
+NBA In the Zone '99 - same deal
+NBA Live 99
+Olympic Hockey Nagano '98
+Operation WinBack
+Paperboy
+Penny Racers
+Pilotwings 64
+Power League 64
+SABAN'S POWER RANGERS LIGHTSPEED RESCUE
+Puyo Puyo Sun 64
+Quake 64
+Rampage - World Tour
+Ready 2 Rumble Boxing - 1 and 2
+Road Rash 64
+Robotron 64
+Rocket - Robot on Wheels
+S.C.A.R.S.
+Scooby-Doo
+Snowboard Kids
+Space Invaders
+Star Soldier - Vanishing Earth
 Star Wars Episode I - Racer
+Super Mario 64
+Super Mario 64 Shindou
+Super Speed Race 64
+Superman
+Tetris 64
+Tetrisphere
+Tonic Trouble - ISSUE: WHERE IS THE U 1.0 ENTRY?!?!
 Tony Hawk's Pro Skater
-Turok - ctrl-f
-Wace Race 64
-Wace Race 64 Shindou
+Transformers
+Turok - Dinosaur Hunter
+Turok - Rage Wars
+Turok 2 - Seeds of Evil
+Turok 3
+Virtual Chess 64
+Virtual Pool 64
+War Gods
+Wave Race 64
+Wave Race 64 Shindou
+Wayne Gretzky's 3D Hockey
+Wild Choppers
+WWF - War Zone
+Xena Warrior Princess
+Xeno Crisis

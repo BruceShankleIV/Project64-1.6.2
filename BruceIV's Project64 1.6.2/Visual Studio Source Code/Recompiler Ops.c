@@ -1944,14 +1944,14 @@ void _fastcall ClearRecompilerCache (DWORD Address) {
 	}
 }
 void Compile_R4300i_CACHE (BLOCK_SECTION * Section) {
-	if (!ProtectMemory&&(Opcode.rt==0||Opcode.rt==16)) {
+	if (Opcode.rt==0||Opcode.rt==16) { // EXPERIMENTAL: TRYING TO GET BETTER COMPATIBILITY WITH PMEM (THIS FUNCTION IS NEEDED FOR RAT ATTACK)
 		Pushad();
 		if (IsConst(Opcode.base)) {
 			DWORD Address=MipsRegLo(Opcode.base)+(short)Opcode.offset;
 			MoveConstToX86reg(Address,x86_ECX);
 		} else if (IsMapped(Opcode.base)) {
 			if (MipsRegLo(Opcode.base)==x86_ECX) AddConstToX86Reg(x86_ECX,(short)Opcode.offset);
-			else LeaSourceAndOffset(x86_ECX, MipsRegLo(Opcode.base), (short)Opcode.offset);
+			else LeaSourceAndOffset(x86_ECX,MipsRegLo(Opcode.base),(short)Opcode.offset);
 		} else {
 			MoveVariableToX86reg(&GPR[Opcode.base].UW[0],x86_ECX);
 			AddConstToX86Reg(x86_ECX,(short)Opcode.offset);
