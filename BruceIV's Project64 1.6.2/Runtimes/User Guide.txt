@@ -482,7 +482,16 @@ using CPU Recompiler, it's important to use Register Caching for a boost in perf
 any negative side effects from doing so, to disable TLB sparingly on a per-game basis, and to always use
 Protect Memory only when needed.
 
+
 CPU RECOMPILER SETTINGS FROM HERE (DISABLED IF CPU RECOMPILER IS OFF)
+
+
+CF1-->0: By default, on
+* Forced off if Counter Factor not set to 1
+Counter Factor 1 is converted to Counter Factor 0, making it truly lagless, but also less stable, as the
+more you lower the counter factor, the more likely you generally are to run into a game-dependent crash!
+However, having it turned on can be necessary to emulate some games properly or to get rid of lagging or
+delay like the equipment subscreen equip delay in Ocarina of Time on HLE video if not using a Cheat fix.
 
 TLB: By default, on
 This Translation Lookaside Buffer is either required for a game or not. If the game does not require it,
@@ -490,18 +499,10 @@ it's best to turn it off to avoid issues that this setting can cause, although w
 to leave it on. Generally, just leave this on unless you know a game works better with, or needs it off.
 Turning it off notably improves performance and can get ROMhacks working.
 
-CF1-->0: By default, on
-* Forced off by Counter Factor not set to 1
-Counter Factor 1 is converted to Counter Factor 0, making it truly lagless, but also less stable, as the
-more you lower the counter factor, the more likely you generally are to run into a game-dependent crash!
-However, having it turned on can be necessary to emulate some games properly or to get rid of lagging or
-delay like the equipment subscreen equip delay in Ocarina of Time on HLE video if not using a Cheat fix.
-
 Protect Memory: By default, off
-This is a self-modifying code emulation setting exclusively for the Recompiler. This setting can provide
-a significant boost to performance for certain games and fix some crashes, but causes worse performance,
-severe slowdown, or annoying interruption depending on the game being played and the user's PC hardware.
-An example of a game which has performance benefits from this setting is Super Mario 64 or Rat Attack.
+This is a self-modifying code method which can provide a significant performance boost for certain games
+and fix some crashes, but can cause worse performance, severe slowdown, or interruption! An example of a
+game which has performance benefits from this setting is Super Mario 64 or Rat Attack.
 
 Register Caching: By default, off but changeable from the advanced tab
 Having this setting ON will greatly improve performance for most games, but does not always behave right
