@@ -3,7 +3,7 @@
 struct summercart
 {
     uint8_t buffer[8192];
-    const char* sd_path;
+    const char*sd_path;
     long sd_size;
     uint32_t status;
     uint32_t data0;
@@ -15,7 +15,7 @@ struct summercart
     char lock_seq;
 };
 extern struct summercart SummerCart;
-void init_summercart(struct summercart* summercart);
-void poweron_summercart(struct summercart* summercart);
-int read_summercart_regs(void* opaque,uint32_t address,uint32_t* Value);
-int write_summercart_regs(void* opaque,uint32_t address,uint32_t value,uint32_t mask);
+void init_summercart(struct summercart*summercart);
+void poweron_summercart(struct summercart*summercart);
+int read_summercart_regs(void*opaque,uint32_t address,uint32_t*Value);
+int write_summercart_regs(void*opaque,uint32_t address,uint32_t value,uint32_t mask);

@@ -1,28 +1,28 @@
 /*
- * Project 64 - A Nintendo 64 emulator.
- *
- * (c) Copyright 2001 zilmar (zilmar@emulation64.com) and
- * Jabo (jabo@emulation64.com).
- *
- * pj64 homepage: www.pj64.net
- *
- * Permission to use, copy, modify and distribute Project64 in both binary and
- * source form, for non-commercial purposes, is hereby granted without fee,
- * providing that this license information and copyright notice appear with
- * all copies and any derived work.
- *
- * This software is provided 'as-is', without any express or implied
- * warranty. In no event shall the authors be held liable for any damages
- * arising from the use of this software.
- *
- * Project64 is freeware for PERSONAL USE only. Commercial users should
- * seek permission of the copyright holders first. Commercial use includes
- * charging money for Project64 or software derived from Project64.
- *
- * The copyright holders request that bug fixes and improvements to the code
- * should be forwarded to them so if they want them.
- *
- */
+*Project 64 - A Nintendo 64 emulator.
+*
+*(c) Copyright 2001 zilmar (zilmar@emulation64.com) and
+*Jabo (jabo@emulation64.com).
+*
+*pj64 homepage: www.pj64.net
+*
+*Permission to use, copy, modify and distribute Project64 in both binary and
+*source form, for non-commercial purposes, is hereby granted without fee,
+*providing that this license information and copyright notice appear with
+*all copies and any derived work.
+*
+*This software is provided 'as-is', without any express or implied
+*warranty. In no event shall the authors be held liable for any damages
+*arising from the use of this software.
+*
+*Project64 is freeware for PERSONAL USE only. Commercial users should
+*seek permission of the copyright holders first. Commercial use includes
+*charging money for Project64 or software derived from Project64.
+*
+*The copyright holders request that bug fixes and improvements to the code
+*should be forwarded to them so if they want them.
+*
+*/
 #include <Windows.h>
 #include <stdio.h>
 #include "Main.h"
@@ -82,9 +82,9 @@ void PI_DMA_READ (void) {
 		}
 		DWORD dram_address=PI_DRAM_ADDR_REG;
 		DWORD rom_address=(PI_CART_ADDR_REG-0x10000000);
-		BYTE * dram=RDRAM;
-		BYTE * rom=ROM;
-		for (i=0; i<length; ++i)
+		BYTE*dram=RDRAM;
+		BYTE*rom=ROM;
+		for (i=0; i<length;++i)
 			rom[(rom_address+i) ^ 3]=dram[(dram_address+i) ^ 3];
 		PI_STATUS_REG&=~PI_STATUS_DMA_BUSY;
 		MI_INTR_REG|=MI_INTR_PI;
@@ -108,9 +108,9 @@ void PI_DMA_READ (void) {
 		}
 		DWORD dram_address=PI_DRAM_ADDR_REG;
 		DWORD rom_address=(PI_CART_ADDR_REG-0x1ffe0000);
-		BYTE * dram=RDRAM;
-		BYTE * rom=SummerCart.buffer;
-		for (i=0; i<length; ++i)
+		BYTE*dram=RDRAM;
+		BYTE*rom=SummerCart.buffer;
+		for (i=0; i<length;++i)
 			rom[(rom_address+i) ^ 3]=dram[(dram_address+i) ^ 3];
 		PI_STATUS_REG&=~PI_STATUS_DMA_BUSY;
 		MI_INTR_REG|=MI_INTR_PI;
@@ -186,12 +186,12 @@ void PI_DMA_WRITE (void) {
 				*(N64MEM+((PI_DRAM_ADDR_REG+i) ^ 3))=0;
 			}
 		}
-		if (PI_CART_ADDR_REG>=0x06000000&&PI_CART_ADDR_REG<0x08000000) PI_CART_ADDR_REG +=0x06000000;
-		else PI_CART_ADDR_REG +=0x10000000;
+		if (PI_CART_ADDR_REG>=0x06000000&&PI_CART_ADDR_REG<0x08000000) PI_CART_ADDR_REG+=0x06000000;
+		else PI_CART_ADDR_REG+=0x10000000;
 		if (!DMAUsed) {
 			DMAUsed=TRUE;
-			if (GetCicChipID(ROM)==5) *(DWORD *)&N64MEM[0x3F0]=RDRAMsize;
-			else *(DWORD *)&N64MEM[0x318]=RDRAMsize;
+			if (GetCicChipID(ROM)==5)*(DWORD*)&N64MEM[0x3F0]=RDRAMsize;
+			else*(DWORD*)&N64MEM[0x318]=RDRAMsize;
 		}
 		PI_STATUS_REG&=~PI_STATUS_DMA_BUSY;
 		MI_INTR_REG|=MI_INTR_PI;
@@ -201,7 +201,7 @@ void PI_DMA_WRITE (void) {
 	}
 	if (PI_CART_ADDR_REG>=0x1ffe0000&&PI_CART_ADDR_REG<0x1fff0000)
 	{
-		/* SC64 BUFFER */
+		/*SC64 BUFFER*/
 		DWORD length=(PI_WR_LEN_REG&0xFFFFFE)+2;
 		DWORD i=(PI_CART_ADDR_REG-0x1ffe0000);
 		length=(i+length)>8192?(8192-i):length;
@@ -216,9 +216,9 @@ void PI_DMA_WRITE (void) {
 		}
 		DWORD dram_address=PI_DRAM_ADDR_REG;
 		DWORD rom_address=(PI_CART_ADDR_REG-0x1ffe0000);
-		BYTE * dram=RDRAM;
-		BYTE * rom=SummerCart.buffer;
-		for (i=0; i<length; ++i)
+		BYTE*dram=RDRAM;
+		BYTE*rom=SummerCart.buffer;
+		for (i=0; i<length;++i)
 			dram[(dram_address+i) ^ 3]=rom[(rom_address+i) ^ 3];
 		PI_STATUS_REG&=~PI_STATUS_DMA_BUSY;
 		MI_INTR_REG|=MI_INTR_PI;
@@ -231,7 +231,7 @@ void PI_DMA_WRITE (void) {
 	CheckInterrupts();
 }
 void SI_DMA_READ (void) {
-	BYTE * PifRamPos=&PIF_Ram[0];
+	BYTE*PifRamPos=&PIF_Ram[0];
 	SI_DRAM_ADDR_REG&=0x1FFFFFFF;
 	if ((int)SI_DRAM_ADDR_REG>(int)RDRAMsize) {
 		return;
@@ -279,7 +279,7 @@ void SI_DMA_READ (void) {
 	CheckInterrupts();
 }
 void SI_DMA_WRITE (void) {
-	BYTE * PifRamPos=&PIF_Ram[0];
+	BYTE*PifRamPos=&PIF_Ram[0];
 	SI_DRAM_ADDR_REG&=0x1FFFFFFF;
 	if ((int)SI_DRAM_ADDR_REG>(int)RDRAMsize) {
 		return;
@@ -333,7 +333,7 @@ void SP_DMA_READ (void) {
 		SP_STATUS_REG &=~SP_STATUS_DMA_BUSY;
 		return;
 	}
-	if (SP_RD_LEN_REG+1 +(SP_MEM_ADDR_REG&0xFFF)>0x1000) return;
+	if (SP_RD_LEN_REG+1+(SP_MEM_ADDR_REG&0xFFF)>0x1000) return;
 	memcpy(DMEM+(SP_MEM_ADDR_REG&0x1FFF),N64MEM+SP_DRAM_ADDR_REG,SP_RD_LEN_REG+1);
 	SP_DMA_BUSY_REG=0;
 	SP_STATUS_REG &=~SP_STATUS_DMA_BUSY;

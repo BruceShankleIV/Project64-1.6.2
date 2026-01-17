@@ -1,42 +1,42 @@
 /*
- * Project 64 - A Nintendo 64 emulator.
- *
- * (c) Copyright 2001 zilmar (zilmar@emulation64.com) and
- * Jabo (jabo@emulation64.com).
- *
- * pj64 homepage: www.pj64.net
- *
- * Permission to use, copy, modify and distribute Project64 in both binary and
- * source form, for non-commercial purposes, is hereby granted without fee,
- * providing that this license information and copyright notice appear with
- * all copies and any derived work.
- *
- * This software is provided 'as-is', without any express or implied
- * warranty. In no event shall the authors be held liable for any damages
- * arising from the use of this software.
- *
- * Project64 is freeware for PERSONAL USE only. Commercial users should
- * seek permission of the copyright holders first. Commercial use includes
- * charging money for Project64 or software derived from Project64.
- *
- * The copyright holders request that bug fixes and improvements to the code
- * should be forwarded to them so if they want them.
- *
- */
+*Project 64 - A Nintendo 64 emulator.
+*
+*(c) Copyright 2001 zilmar (zilmar@emulation64.com) and
+*Jabo (jabo@emulation64.com).
+*
+*pj64 homepage: www.pj64.net
+*
+*Permission to use, copy, modify and distribute Project64 in both binary and
+*source form, for non-commercial purposes, is hereby granted without fee,
+*providing that this license information and copyright notice appear with
+*all copies and any derived work.
+*
+*This software is provided 'as-is', without any express or implied
+*warranty. In no event shall the authors be held liable for any damages
+*arising from the use of this software.
+*
+*Project64 is freeware for PERSONAL USE only. Commercial users should
+*seek permission of the copyright holders first. Commercial use includes
+*charging money for Project64 or software derived from Project64.
+*
+*The copyright holders request that bug fixes and improvements to the code
+*should be forwarded to them so if they want them.
+*
+*/
 #include <windows.h>
 #include <stdio.h>
 #include "Main.h"
 #include "CPU.h"
 #include "x86.h"
-#define PUTDST8(dest,value)  (*((BYTE *)(dest))=(BYTE)(value)); dest +=1;
-#define PUTDST16(dest,value) (*((WORD *)(dest))=(WORD)(value)); dest +=2;
-#define PUTDST32(dest,value) (*((DWORD *)(dest))=(DWORD)(value)); dest +=4;
-void AdcConstToVariable(void *Variable,BYTE Constant) {
+#define PUTDST8(dest,value)  (*((BYTE*)(dest))=(BYTE)(value)); dest+=1;
+#define PUTDST16(dest,value) (*((WORD*)(dest))=(WORD)(value)); dest+=2;
+#define PUTDST32(dest,value) (*((DWORD*)(dest))=(DWORD)(value)); dest+=4;
+void AdcConstToVariable(void*Variable,BYTE Constant) {
 	PUTDST16(RecompPos,0x1583);
 	PUTDST32(RecompPos,Variable);
 	PUTDST8(RecompPos,Constant);
 }
-void AdcVariableToX86reg(int x86reg,void * Variable) {
+void AdcVariableToX86reg(int x86reg,void*Variable) {
 	switch (x86reg) {
 	case x86_EAX: PUTDST16(RecompPos,0x0513); break;
 	case x86_EBX: PUTDST16(RecompPos,0x1D13); break;
@@ -62,18 +62,18 @@ void AdcX86RegToX86Reg(int Destination,int Source) {
 	case x86_EBP: x86Command=0x0513;
 	}
 	switch (Destination) {
-	case x86_EAX: x86Command +=0xC000; break;
-	case x86_EBX: x86Command +=0xD800; break;
-	case x86_ECX: x86Command +=0xC800; break;
-	case x86_EDX: x86Command +=0xD000; break;
-	case x86_ESI: x86Command +=0xF000; break;
-	case x86_EDI: x86Command +=0xF800; break;
-	case x86_ESP: x86Command +=0xE000; break;
-	case x86_EBP: x86Command +=0xE800;
+	case x86_EAX: x86Command+=0xC000; break;
+	case x86_EBX: x86Command+=0xD800; break;
+	case x86_ECX: x86Command+=0xC800; break;
+	case x86_EDX: x86Command+=0xD000; break;
+	case x86_ESI: x86Command+=0xF000; break;
+	case x86_EDI: x86Command+=0xF800; break;
+	case x86_ESP: x86Command+=0xE000; break;
+	case x86_EBP: x86Command+=0xE800;
 	}
 	PUTDST16(RecompPos,x86Command);
 }
-void AddConstToVariable (DWORD Const,void * Variable) {
+void AddConstToVariable (DWORD Const,void*Variable) {
 	PUTDST16(RecompPos,0x0581);
 	PUTDST32(RecompPos,Variable);
 	PUTDST32(RecompPos,Const);
@@ -105,7 +105,7 @@ void AddConstToX86Reg (int x86Reg,DWORD Const) {
 		PUTDST8(RecompPos,Const);
 	}
 }
-void AddVariableToX86reg(int x86reg,void * Variable) {
+void AddVariableToX86reg(int x86reg,void*Variable) {
 	switch (x86reg) {
 	case x86_EAX: PUTDST16(RecompPos,0x0503); break;
 	case x86_EBX: PUTDST16(RecompPos,0x1D03); break;
@@ -118,7 +118,7 @@ void AddVariableToX86reg(int x86reg,void * Variable) {
 	}
 	PUTDST32(RecompPos,Variable);
 }
-void AddX86regToVariable(int x86reg,void * Variable) {
+void AddX86regToVariable(int x86reg,void*Variable) {
 	switch (x86reg) {
 	case x86_EAX: PUTDST16(RecompPos,0x0501); break;
 	case x86_EBX: PUTDST16(RecompPos,0x1D01); break;
@@ -144,18 +144,18 @@ void AddX86RegToX86Reg(int Destination,int Source) {
 	case x86_EBP: x86Command=0x0503;
 	}
 	switch (Destination) {
-	case x86_EAX: x86Command +=0xC000; break;
-	case x86_EBX: x86Command +=0xD800; break;
-	case x86_ECX: x86Command +=0xC800; break;
-	case x86_EDX: x86Command +=0xD000; break;
-	case x86_ESI: x86Command +=0xF000; break;
-	case x86_EDI: x86Command +=0xF800; break;
-	case x86_ESP: x86Command +=0xE000; break;
-	case x86_EBP: x86Command +=0xE800;
+	case x86_EAX: x86Command+=0xC000; break;
+	case x86_EBX: x86Command+=0xD800; break;
+	case x86_ECX: x86Command+=0xC800; break;
+	case x86_EDX: x86Command+=0xD000; break;
+	case x86_ESI: x86Command+=0xF000; break;
+	case x86_EDI: x86Command+=0xF800; break;
+	case x86_ESP: x86Command+=0xE000; break;
+	case x86_EBP: x86Command+=0xE800;
 	}
 	PUTDST16(RecompPos,x86Command);
 }
-void AndConstToVariable (DWORD Const,void * Variable) {
+void AndConstToVariable (DWORD Const,void*Variable) {
 	PUTDST16(RecompPos,0x2581);
 	PUTDST32(RecompPos,Variable);
 	PUTDST32(RecompPos,Const);
@@ -187,7 +187,7 @@ void AndConstToX86Reg(int x86Reg,DWORD Const) {
 		PUTDST8(RecompPos,Const);
 	}
 }
-void AndVariableDispToX86Reg(void * Variable,int x86Reg,int AddrReg,int Multiplier) {
+void AndVariableDispToX86Reg(void*Variable,int x86Reg,int AddrReg,int Multiplier) {
 	int x;
 	PUTDST8(RecompPos,0x23);
 	switch (x86Reg) {
@@ -200,13 +200,13 @@ void AndVariableDispToX86Reg(void * Variable,int x86Reg,int AddrReg,int Multipli
 	case x86_ESP: PUTDST8(RecompPos,0x24); break;
 	case x86_EBP: PUTDST8(RecompPos,0x2C);
 	}
-	/* put in shifter 2(01),4(10),8(11) */
+	/*put in shifter 2(01),4(10),8(11)*/
 	switch (Multiplier) {
 	case 2: x=0x40; break;
 	case 4: x=0x80; break;
 	case 8: x=0xC0;
 	}
-	/* format xx|000000 */
+	/*format xx|000000*/
 	switch (AddrReg) {
 	case x86_EAX: PUTDST8(RecompPos,0x05|x); break;
 	case x86_EBX: PUTDST8(RecompPos,0x1D|x); break;
@@ -219,7 +219,7 @@ void AndVariableDispToX86Reg(void * Variable,int x86Reg,int AddrReg,int Multipli
 	}
 	PUTDST32(RecompPos,Variable);
 }
-void AndVariableToX86Reg(void * Variable,int x86Reg) {
+void AndVariableToX86Reg(void*Variable,int x86Reg) {
 	switch (x86Reg) {
 	case x86_EAX: PUTDST16(RecompPos,0x0523); break;
 	case x86_EBX: PUTDST16(RecompPos,0x1D23); break;
@@ -245,22 +245,22 @@ void AndX86RegToX86Reg(int Destination,int Source) {
 	case x86_EBP: x86Command=0x0521;
 	}
 	switch (Source) {
-	case x86_EAX: x86Command +=0xC000; break;
-	case x86_EBX: x86Command +=0xD800; break;
-	case x86_ECX: x86Command +=0xC800; break;
-	case x86_EDX: x86Command +=0xD000; break;
-	case x86_ESI: x86Command +=0xF000; break;
-	case x86_EDI: x86Command +=0xF800; break;
-	case x86_ESP: x86Command +=0xE000; break;
-	case x86_EBP: x86Command +=0xE800;
+	case x86_EAX: x86Command+=0xC000; break;
+	case x86_EBX: x86Command+=0xD800; break;
+	case x86_ECX: x86Command+=0xC800; break;
+	case x86_EDX: x86Command+=0xD000; break;
+	case x86_ESI: x86Command+=0xF000; break;
+	case x86_EDI: x86Command+=0xF800; break;
+	case x86_ESP: x86Command+=0xE000; break;
+	case x86_EBP: x86Command+=0xE800;
 	}
 	PUTDST16(RecompPos,x86Command);
 }
-void Call_Direct(void * FunctAddress) {
+void Call_Direct(void*FunctAddress) {
 	PUTDST8(RecompPos,0xE8);
 	PUTDST32(RecompPos,(DWORD)FunctAddress-(DWORD)RecompPos-4);
 }
-void CompConstToVariable(DWORD Const,void * Variable) {
+void CompConstToVariable(DWORD Const,void*Variable) {
 	PUTDST16(RecompPos,0x3D81);
 	PUTDST32(RecompPos,Variable);
 	PUTDST32(RecompPos,Const);
@@ -292,7 +292,7 @@ void CompConstToX86reg(int x86Reg,DWORD Const) {
 		PUTDST8(RecompPos,Const);
 	}
 }
-void CompX86regToVariable(int x86Reg,void * Variable) {
+void CompX86regToVariable(int x86Reg,void*Variable) {
 	switch (x86Reg) {
 	case x86_EAX: PUTDST16(RecompPos,0x053B); break;
 	case x86_EBX: PUTDST16(RecompPos,0x1D3B); break;
@@ -318,14 +318,14 @@ void CompX86RegToX86Reg(int Destination,int Source) {
 	case x86_EBP: x86Command=0x053B;
 	}
 	switch (Destination) {
-	case x86_EAX: x86Command +=0xC000; break;
-	case x86_EBX: x86Command +=0xD800; break;
-	case x86_ECX: x86Command +=0xC800; break;
-	case x86_EDX: x86Command +=0xD000; break;
-	case x86_ESI: x86Command +=0xF000; break;
-	case x86_EDI: x86Command +=0xF800; break;
-	case x86_ESP: x86Command +=0xE000; break;
-	case x86_EBP: x86Command +=0xE800;
+	case x86_EAX: x86Command+=0xC000; break;
+	case x86_EBX: x86Command+=0xD800; break;
+	case x86_ECX: x86Command+=0xC800; break;
+	case x86_EDX: x86Command+=0xD000; break;
+	case x86_ESI: x86Command+=0xF000; break;
+	case x86_EDI: x86Command+=0xF800; break;
+	case x86_ESP: x86Command+=0xE000; break;
+	case x86_EBP: x86Command+=0xE800;
 	}
 	PUTDST16(RecompPos,x86Command);
 }
@@ -524,13 +524,13 @@ void LeaRegReg(int x86RegDest,int x86RegSrc,int multiplier) {
 	case x86_ESP: PUTDST8(RecompPos,0x24); break;
 	case x86_EBP: PUTDST8(RecompPos,0x2C);
 	}
-	/* put in shifter 2(01),4(10),8(11) */
+	/*put in shifter 2(01),4(10),8(11)*/
 	switch(multiplier) {
 	case 2: s=0x40; break;
 	case 4: s=0x80; break;
 	case 8: s=0xC0;
 	}
-	/* format ss|000000 */
+	/*format ss|000000*/
 	switch (x86RegSrc) {
 	case x86_EAX: PUTDST8(RecompPos,0x05|s); break;
 	case x86_EBX: PUTDST8(RecompPos,0x1D|s); break;
@@ -556,14 +556,14 @@ void LeaSourceAndOffset(int x86DestReg,int x86SourceReg,int offset) {
 		case x86_EBP: x86Command=0xA88D;
 		}
 		switch (x86SourceReg) {
-		case x86_EAX: x86Command +=0x0000; break;
-		case x86_EBX: x86Command +=0x0300; break;
-		case x86_ECX: x86Command +=0x0100; break;
-		case x86_EDX: x86Command +=0x0200; break;
-		case x86_ESI: x86Command +=0x0600; break;
-		case x86_EDI: x86Command +=0x0700; break;
-		case x86_ESP: x86Command +=0x0400; break;
-		case x86_EBP: x86Command +=0x0500;
+		case x86_EAX: x86Command+=0x0000; break;
+		case x86_EBX: x86Command+=0x0300; break;
+		case x86_ECX: x86Command+=0x0100; break;
+		case x86_EDX: x86Command+=0x0200; break;
+		case x86_ESI: x86Command+=0x0600; break;
+		case x86_EDI: x86Command+=0x0700; break;
+		case x86_ESP: x86Command+=0x0400; break;
+		case x86_EBP: x86Command+=0x0500;
 		}
 		PUTDST16(RecompPos,x86Command);
 		PUTDST32(RecompPos,offset);
@@ -579,14 +579,14 @@ void LeaSourceAndOffset(int x86DestReg,int x86SourceReg,int offset) {
 		case x86_EBP: x86Command=0x688D;
 		}
 		switch (x86SourceReg) {
-		case x86_EAX: x86Command +=0x0000; break;
-		case x86_EBX: x86Command +=0x0300; break;
-		case x86_ECX: x86Command +=0x0100; break;
-		case x86_EDX: x86Command +=0x0200; break;
-		case x86_ESI: x86Command +=0x0600; break;
-		case x86_EDI: x86Command +=0x0700; break;
-		case x86_ESP: x86Command +=0x0400; break;
-		case x86_EBP: x86Command +=0x0500;
+		case x86_EAX: x86Command+=0x0000; break;
+		case x86_EBX: x86Command+=0x0300; break;
+		case x86_ECX: x86Command+=0x0100; break;
+		case x86_EDX: x86Command+=0x0200; break;
+		case x86_ESI: x86Command+=0x0600; break;
+		case x86_EDI: x86Command+=0x0700; break;
+		case x86_ESP: x86Command+=0x0400; break;
+		case x86_EBP: x86Command+=0x0500;
 		}
 		PUTDST16(RecompPos,x86Command);
 		PUTDST8(RecompPos,offset);
@@ -606,7 +606,7 @@ void MoveConstByteToN64Mem(BYTE Const,int AddrReg) {
 	PUTDST32(RecompPos,N64MEM);
 	PUTDST8(RecompPos,Const);
 }
-void MoveConstByteToVariable (BYTE Const,void *Variable) {
+void MoveConstByteToVariable (BYTE Const,void*Variable) {
 	PUTDST16(RecompPos,0x05C6);
 	PUTDST32(RecompPos,Variable);
 	PUTDST8(RecompPos,Const);
@@ -626,7 +626,7 @@ void MoveConstHalfToN64Mem(WORD Const,int AddrReg) {
 	PUTDST32(RecompPos,N64MEM);
 	PUTDST16(RecompPos,Const);
 }
-void MoveConstHalfToVariable (WORD Const,void *Variable) {
+void MoveConstHalfToVariable (WORD Const,void*Variable) {
 	PUTDST8(RecompPos,0x66);
 	PUTDST16(RecompPos,0x05C7);
 	PUTDST32(RecompPos,Variable);
@@ -645,14 +645,14 @@ void MoveConstHalfToX86regPointer(WORD Const,int AddrReg1,int AddrReg2) {
 	case x86_EDI: Param=0x07;
 	}
 	switch (AddrReg2) {
-	case x86_EAX: Param +=0x00; break;
-	case x86_EBX: Param +=0x18; break;
-	case x86_ECX: Param +=0x08; break;
-	case x86_EDX: Param +=0x10; break;
-	case x86_ESI: Param +=0x30; break;
-	case x86_EDI: Param +=0x38; break;
-	case x86_ESP: Param +=0x20; break;
-	case x86_EBP: Param +=0x28;
+	case x86_EAX: Param+=0x00; break;
+	case x86_EBX: Param+=0x18; break;
+	case x86_ECX: Param+=0x08; break;
+	case x86_EDX: Param+=0x10; break;
+	case x86_ESI: Param+=0x30; break;
+	case x86_EDI: Param+=0x38; break;
+	case x86_ESP: Param+=0x20; break;
+	case x86_EBP: Param+=0x28;
 	}
 	PUTDST8(RecompPos,Param);
 	PUTDST16(RecompPos,Const);
@@ -699,7 +699,7 @@ void MoveConstToN64MemDisp (DWORD Const,int AddrReg,BYTE Disp) {
 	PUTDST32(RecompPos,N64MEM+Disp);
 	PUTDST32(RecompPos,Const);
 }
-void MoveConstToVariable (DWORD Const,void *Variable) {
+void MoveConstToVariable (DWORD Const,void*Variable) {
 	PUTDST16(RecompPos,0x05C7);
 	PUTDST32(RecompPos,Variable);
 	PUTDST32(RecompPos,Const);
@@ -742,14 +742,14 @@ void MoveConstByteToX86regPointer(BYTE Const,int AddrReg1,int AddrReg2) {
 	case x86_EDI: Param=0x07;
 	}
 	switch (AddrReg2) {
-	case x86_EAX: Param +=0x00; break;
-	case x86_EBX: Param +=0x18; break;
-	case x86_ECX: Param +=0x08; break;
-	case x86_EDX: Param +=0x10; break;
-	case x86_ESI: Param +=0x30; break;
-	case x86_EDI: Param +=0x38; break;
-	case x86_ESP: Param +=0x20; break;
-	case x86_EBP: Param +=0x28;
+	case x86_EAX: Param+=0x00; break;
+	case x86_EBX: Param+=0x18; break;
+	case x86_ECX: Param+=0x08; break;
+	case x86_EDX: Param+=0x10; break;
+	case x86_ESI: Param+=0x30; break;
+	case x86_EDI: Param+=0x38; break;
+	case x86_ESP: Param+=0x20; break;
+	case x86_EBP: Param+=0x28;
 	}
 	PUTDST8(RecompPos,Param);
 	PUTDST8(RecompPos,Const);
@@ -766,14 +766,14 @@ void MoveConstToX86regPointer(DWORD Const,int AddrReg1,int AddrReg2) {
 	case x86_EDI: Param=0x07;
 	}
 	switch (AddrReg2) {
-	case x86_EAX: Param +=0x00; break;
-	case x86_EBX: Param +=0x18; break;
-	case x86_ECX: Param +=0x08; break;
-	case x86_EDX: Param +=0x10; break;
-	case x86_ESI: Param +=0x30; break;
-	case x86_EDI: Param +=0x38; break;
-	case x86_ESP: Param +=0x20; break;
-	case x86_EBP: Param +=0x28;
+	case x86_EAX: Param+=0x00; break;
+	case x86_EBX: Param+=0x18; break;
+	case x86_ECX: Param+=0x08; break;
+	case x86_EDX: Param+=0x10; break;
+	case x86_ESI: Param+=0x30; break;
+	case x86_EDI: Param+=0x38; break;
+	case x86_ESP: Param+=0x20; break;
+	case x86_EBP: Param+=0x28;
 	}
 	PUTDST8(RecompPos,Param);
 	PUTDST32(RecompPos,Const);
@@ -791,14 +791,14 @@ void MoveN64MemDispToX86reg(int x86reg,int AddrReg,BYTE Disp) {
 	case x86_EBP: x86Command=0x058B;
 	}
 	switch (x86reg) {
-	case x86_EAX: x86Command +=0x8000; break;
-	case x86_EBX: x86Command +=0x9800; break;
-	case x86_ECX: x86Command +=0x8800; break;
-	case x86_EDX: x86Command +=0x9000; break;
-	case x86_ESI: x86Command +=0xB000; break;
-	case x86_EDI: x86Command +=0xB800; break;
-	case x86_ESP: x86Command +=0xA000; break;
-	case x86_EBP: x86Command +=0xA800;
+	case x86_EAX: x86Command+=0x8000; break;
+	case x86_EBX: x86Command+=0x9800; break;
+	case x86_ECX: x86Command+=0x8800; break;
+	case x86_EDX: x86Command+=0x9000; break;
+	case x86_ESI: x86Command+=0xB000; break;
+	case x86_EDI: x86Command+=0xB800; break;
+	case x86_ESP: x86Command+=0xA000; break;
+	case x86_EBP: x86Command+=0xA800;
 	}
 	PUTDST16(RecompPos,x86Command);
 	PUTDST32(RecompPos,N64MEM+Disp);
@@ -816,14 +816,14 @@ void MoveN64MemToX86reg(int x86reg,int AddrReg) {
 	case x86_EBP: x86Command=0x058B;
 	}
 	switch (x86reg) {
-	case x86_EAX: x86Command +=0x8000; break;
-	case x86_EBX: x86Command +=0x9800; break;
-	case x86_ECX: x86Command +=0x8800; break;
-	case x86_EDX: x86Command +=0x9000; break;
-	case x86_ESI: x86Command +=0xB000; break;
-	case x86_EDI: x86Command +=0xB800; break;
-	case x86_ESP: x86Command +=0xA000; break;
-	case x86_EBP: x86Command +=0xA800;
+	case x86_EAX: x86Command+=0x8000; break;
+	case x86_EBX: x86Command+=0x9800; break;
+	case x86_ECX: x86Command+=0x8800; break;
+	case x86_EDX: x86Command+=0x9000; break;
+	case x86_ESI: x86Command+=0xB000; break;
+	case x86_EDI: x86Command+=0xB800; break;
+	case x86_ESP: x86Command+=0xA000; break;
+	case x86_EBP: x86Command+=0xA800;
 	}
 	PUTDST16(RecompPos,x86Command);
 	PUTDST32(RecompPos,N64MEM);
@@ -841,10 +841,10 @@ void MoveN64MemToX86regByte(int x86reg,int AddrReg) {
 	case x86_EBP: x86Command=0x058A;
 	}
 	switch (x86reg) {
-	case x86_EAX: x86Command +=0x8000; break;
-	case x86_EBX: x86Command +=0x9800; break;
-	case x86_ECX: x86Command +=0x8800; break;
-	case x86_EDX: x86Command +=0x9000;
+	case x86_EAX: x86Command+=0x8000; break;
+	case x86_EBX: x86Command+=0x9800; break;
+	case x86_ECX: x86Command+=0x8800; break;
+	case x86_EDX: x86Command+=0x9000;
 	}
 	PUTDST16(RecompPos,x86Command);
 	PUTDST32(RecompPos,N64MEM);
@@ -863,14 +863,14 @@ void MoveN64MemToX86regHalf(int x86reg,int AddrReg) {
 	case x86_EBP: x86Command=0x058B;
 	}
 	switch (x86reg) {
-	case x86_EAX: x86Command +=0x8000; break;
-	case x86_EBX: x86Command +=0x9800; break;
-	case x86_ECX: x86Command +=0x8800; break;
-	case x86_EDX: x86Command +=0x9000; break;
-	case x86_ESI: x86Command +=0xB000; break;
-	case x86_EDI: x86Command +=0xB800; break;
-	case x86_ESP: x86Command +=0xA000; break;
-	case x86_EBP: x86Command +=0xA800;
+	case x86_EAX: x86Command+=0x8000; break;
+	case x86_EBX: x86Command+=0x9800; break;
+	case x86_ECX: x86Command+=0x8800; break;
+	case x86_EDX: x86Command+=0x9000; break;
+	case x86_ESI: x86Command+=0xB000; break;
+	case x86_EDI: x86Command+=0xB800; break;
+	case x86_ESP: x86Command+=0xA000; break;
+	case x86_EBP: x86Command+=0xA800;
 	}
 	PUTDST16(RecompPos,x86Command);
 	PUTDST32(RecompPos,N64MEM);
@@ -897,14 +897,14 @@ void MoveSxByteX86regPointerToX86reg(int AddrReg1,int AddrReg2,int x86reg) {
 	case x86_EDI: Param=0x07;
 	}
 	switch (AddrReg2) {
-	case x86_EAX: Param +=0x00; break;
-	case x86_EBX: Param +=0x18; break;
-	case x86_ECX: Param +=0x08; break;
-	case x86_EDX: Param +=0x10; break;
-	case x86_ESI: Param +=0x30; break;
-	case x86_EDI: Param +=0x38; break;
-	case x86_ESP: Param +=0x20; break;
-	case x86_EBP: Param +=0x28;
+	case x86_EAX: Param+=0x00; break;
+	case x86_EBX: Param+=0x18; break;
+	case x86_ECX: Param+=0x08; break;
+	case x86_EDX: Param+=0x10; break;
+	case x86_ESI: Param+=0x30; break;
+	case x86_EDI: Param+=0x38; break;
+	case x86_ESP: Param+=0x20; break;
+	case x86_EBP: Param+=0x28;
 	}
 	PUTDST8(RecompPos,Param);
 }
@@ -930,14 +930,14 @@ void MoveSxHalfX86regPointerToX86reg(int AddrReg1,int AddrReg2,int x86reg) {
 	case x86_EDI: Param=0x07;
 	}
 	switch (AddrReg2) {
-	case x86_EAX: Param +=0x00; break;
-	case x86_EBX: Param +=0x18; break;
-	case x86_ECX: Param +=0x08; break;
-	case x86_EDX: Param +=0x10; break;
-	case x86_ESI: Param +=0x30; break;
-	case x86_EDI: Param +=0x38; break;
-	case x86_ESP: Param +=0x20; break;
-	case x86_EBP: Param +=0x28;
+	case x86_EAX: Param+=0x00; break;
+	case x86_EBX: Param+=0x18; break;
+	case x86_ECX: Param+=0x08; break;
+	case x86_EDX: Param+=0x10; break;
+	case x86_ESI: Param+=0x30; break;
+	case x86_EDI: Param+=0x38; break;
+	case x86_ESP: Param+=0x20; break;
+	case x86_EBP: Param+=0x28;
 	}
 	PUTDST8(RecompPos,Param);
 }
@@ -954,14 +954,14 @@ void MoveSxN64MemToX86regByte(int x86reg,int AddrReg) {
 	case x86_EBP: x86Command=0x05BE;
 	}
 	switch (x86reg) {
-	case x86_EAX: x86Command +=0x8000; break;
-	case x86_EBX: x86Command +=0x9800; break;
-	case x86_ECX: x86Command +=0x8800; break;
-	case x86_EDX: x86Command +=0x9000; break;
-	case x86_ESI: x86Command +=0xB000; break;
-	case x86_EDI: x86Command +=0xB800; break;
-	case x86_ESP: x86Command +=0xA000; break;
-	case x86_EBP: x86Command +=0xA800;
+	case x86_EAX: x86Command+=0x8000; break;
+	case x86_EBX: x86Command+=0x9800; break;
+	case x86_ECX: x86Command+=0x8800; break;
+	case x86_EDX: x86Command+=0x9000; break;
+	case x86_ESI: x86Command+=0xB000; break;
+	case x86_EDI: x86Command+=0xB800; break;
+	case x86_ESP: x86Command+=0xA000; break;
+	case x86_EBP: x86Command+=0xA800;
 	}
 	PUTDST8(RecompPos,0x0f);
 	PUTDST16(RecompPos,x86Command);
@@ -980,20 +980,20 @@ void MoveSxN64MemToX86regHalf(int x86reg,int AddrReg) {
 	case x86_EBP: x86Command=0x05BF;
 	}
 	switch (x86reg) {
-	case x86_EAX: x86Command +=0x8000; break;
-	case x86_EBX: x86Command +=0x9800; break;
-	case x86_ECX: x86Command +=0x8800; break;
-	case x86_EDX: x86Command +=0x9000; break;
-	case x86_ESI: x86Command +=0xB000; break;
-	case x86_EDI: x86Command +=0xB800; break;
-	case x86_ESP: x86Command +=0xA000; break;
-	case x86_EBP: x86Command +=0xA800;
+	case x86_EAX: x86Command+=0x8000; break;
+	case x86_EBX: x86Command+=0x9800; break;
+	case x86_ECX: x86Command+=0x8800; break;
+	case x86_EDX: x86Command+=0x9000; break;
+	case x86_ESI: x86Command+=0xB000; break;
+	case x86_EDI: x86Command+=0xB800; break;
+	case x86_ESP: x86Command+=0xA000; break;
+	case x86_EBP: x86Command+=0xA800;
 	}
 	PUTDST8(RecompPos,0x0f);
 	PUTDST16(RecompPos,x86Command);
 	PUTDST32(RecompPos,N64MEM);
 }
-void MoveSxVariableToX86regByte(void *Variable,int x86reg) {
+void MoveSxVariableToX86regByte(void*Variable,int x86reg) {
 	PUTDST16(RecompPos,0xbe0f);
 	switch (x86reg) {
 	case x86_EAX: PUTDST8(RecompPos,0x05); break;
@@ -1007,7 +1007,7 @@ void MoveSxVariableToX86regByte(void *Variable,int x86reg) {
 	}
 	PUTDST32(RecompPos,Variable);
 }
-void MoveSxVariableToX86regHalf(void *Variable,int x86reg) {
+void MoveSxVariableToX86regHalf(void*Variable,int x86reg) {
 	PUTDST16(RecompPos,0xbf0f);
 	switch (x86reg) {
 	case x86_EAX: PUTDST8(RecompPos,0x05); break;
@@ -1021,7 +1021,7 @@ void MoveSxVariableToX86regHalf(void *Variable,int x86reg) {
 	}
 	PUTDST32(RecompPos,Variable);
 }
-void MoveVariableToX86reg(void *Variable,int x86reg) {
+void MoveVariableToX86reg(void*Variable,int x86reg) {
 	switch (x86reg) {
 	case x86_EAX: PUTDST16(RecompPos,0x058B); break;
 	case x86_EBX: PUTDST16(RecompPos,0x1D8B); break;
@@ -1034,7 +1034,7 @@ void MoveVariableToX86reg(void *Variable,int x86reg) {
 	}
 	PUTDST32(RecompPos,Variable);
 }
-void MoveVariableDispToX86Reg(void *Variable,int x86Reg,int AddrReg,int Multiplier) {
+void MoveVariableDispToX86Reg(void*Variable,int x86Reg,int AddrReg,int Multiplier) {
 	int x;
 	PUTDST8(RecompPos,0x8B);
 	switch (x86Reg) {
@@ -1047,14 +1047,14 @@ void MoveVariableDispToX86Reg(void *Variable,int x86Reg,int AddrReg,int Multipli
 	case x86_ESP: PUTDST8(RecompPos,0x24); break;
 	case x86_EBP: PUTDST8(RecompPos,0x2C);
 	}
-	/* put in shifter 2(01),4(10),8(11) */
+	/*put in shifter 2(01),4(10),8(11)*/
 	switch (Multiplier) {
 	case 1: x=0; break;
 	case 2: x=0x40; break;
 	case 4: x=0x80; break;
 	case 8: x=0xC0;
 	}
-	/* format xx|000000 */
+	/*format xx|000000*/
 	switch (AddrReg) {
 	case x86_EAX: PUTDST8(RecompPos,0x05|x); break;
 	case x86_EBX: PUTDST8(RecompPos,0x1D|x); break;
@@ -1078,15 +1078,15 @@ void MoveX86regByteToN64Mem(int x86reg,int AddrReg) {
 	case x86_EDI: x86Command=0x0788;
 	}
 	switch (x86reg) {
-	case x86_EAX: x86Command +=0x8000; break;
-	case x86_EBX: x86Command +=0x9800; break;
-	case x86_ECX: x86Command +=0x8800; break;
-	case x86_EDX: x86Command +=0x9000;
+	case x86_EAX: x86Command+=0x8000; break;
+	case x86_EBX: x86Command+=0x9800; break;
+	case x86_ECX: x86Command+=0x8800; break;
+	case x86_EDX: x86Command+=0x9000;
 	}
 	PUTDST16(RecompPos,x86Command);
 	PUTDST32(RecompPos,N64MEM);
 }
-void MoveX86regByteToVariable(int x86reg,void * Variable) {
+void MoveX86regByteToVariable(int x86reg,void*Variable) {
 	switch (x86reg) {
 	case x86_EAX: PUTDST16(RecompPos,0x0588); break;
 	case x86_EBX: PUTDST16(RecompPos,0x1D88); break;
@@ -1116,14 +1116,14 @@ void MoveX86regByteToX86regPointer(int x86reg,int AddrReg1,int AddrReg2) {
 	case x86_EDI: Param=0x07;
 	}
 	switch (AddrReg2) {
-	case x86_EAX: Param +=0x00; break;
-	case x86_EBX: Param +=0x18; break;
-	case x86_ECX: Param +=0x08; break;
-	case x86_EDX: Param +=0x10; break;
-	case x86_ESI: Param +=0x30; break;
-	case x86_EDI: Param +=0x38; break;
-	case x86_ESP: Param +=0x20; break;
-	case x86_EBP: Param +=0x28;
+	case x86_EAX: Param+=0x00; break;
+	case x86_EBX: Param+=0x18; break;
+	case x86_ECX: Param+=0x08; break;
+	case x86_EDX: Param+=0x10; break;
+	case x86_ESI: Param+=0x30; break;
+	case x86_EDI: Param+=0x38; break;
+	case x86_ESP: Param+=0x20; break;
+	case x86_EBP: Param+=0x28;
 	}
 	PUTDST8(RecompPos,Param);
 }
@@ -1141,19 +1141,19 @@ void MoveX86regHalfToN64Mem(int x86reg,int AddrReg) {
 	case x86_EBP: x86Command=0x0589;
 	}
 	switch (x86reg) {
-	case x86_EAX: x86Command +=0x8000; break;
-	case x86_EBX: x86Command +=0x9800; break;
-	case x86_ECX: x86Command +=0x8800; break;
-	case x86_EDX: x86Command +=0x9000; break;
-	case x86_ESI: x86Command +=0xB000; break;
-	case x86_EDI: x86Command +=0xB800; break;
-	case x86_ESP: x86Command +=0xA000; break;
-	case x86_EBP: x86Command +=0xA800;
+	case x86_EAX: x86Command+=0x8000; break;
+	case x86_EBX: x86Command+=0x9800; break;
+	case x86_ECX: x86Command+=0x8800; break;
+	case x86_EDX: x86Command+=0x9000; break;
+	case x86_ESI: x86Command+=0xB000; break;
+	case x86_EDI: x86Command+=0xB800; break;
+	case x86_ESP: x86Command+=0xA000; break;
+	case x86_EBP: x86Command+=0xA800;
 	}
 	PUTDST16(RecompPos,x86Command);
 	PUTDST32(RecompPos,N64MEM);
 }
-void MoveX86regHalfToVariable(int x86reg,void * Variable) {
+void MoveX86regHalfToVariable(int x86reg,void*Variable) {
 	PUTDST8(RecompPos,0x66);
 	switch (x86reg) {
 	case x86_EAX: PUTDST16(RecompPos,0x0589); break;
@@ -1189,14 +1189,14 @@ void MoveX86regHalfToX86regPointer(int x86reg,int AddrReg1,int AddrReg2) {
 	case x86_EDI: Param=0x07;
 	}
 	switch (AddrReg2) {
-	case x86_EAX: Param +=0x00; break;
-	case x86_EBX: Param +=0x18; break;
-	case x86_ECX: Param +=0x08; break;
-	case x86_EDX: Param +=0x10; break;
-	case x86_ESI: Param +=0x30; break;
-	case x86_EDI: Param +=0x38; break;
-	case x86_ESP: Param +=0x20; break;
-	case x86_EBP: Param +=0x28;
+	case x86_EAX: Param+=0x00; break;
+	case x86_EBX: Param+=0x18; break;
+	case x86_ECX: Param+=0x08; break;
+	case x86_EDX: Param+=0x10; break;
+	case x86_ESI: Param+=0x30; break;
+	case x86_EDI: Param+=0x38; break;
+	case x86_ESP: Param+=0x20; break;
+	case x86_EBP: Param+=0x28;
 	}
 	PUTDST8(RecompPos,Param);
 }
@@ -1211,14 +1211,14 @@ void MoveX86PointerToX86reg(int x86reg,int X86Pointer) {
 	case x86_EDI: x86Command=0x078B;
 	}
 	switch (x86reg) {
-	case x86_EAX: x86Command +=0x0000; break;
-	case x86_EBX: x86Command +=0x1800; break;
-	case x86_ECX: x86Command +=0x0800; break;
-	case x86_EDX: x86Command +=0x1000; break;
-	case x86_ESI: x86Command +=0x3000; break;
-	case x86_EDI: x86Command +=0x3800; break;
-	case x86_ESP: x86Command +=0x2000; break;
-	case x86_EBP: x86Command +=0x2800;
+	case x86_EAX: x86Command+=0x0000; break;
+	case x86_EBX: x86Command+=0x1800; break;
+	case x86_ECX: x86Command+=0x0800; break;
+	case x86_EDX: x86Command+=0x1000; break;
+	case x86_ESI: x86Command+=0x3000; break;
+	case x86_EDI: x86Command+=0x3800; break;
+	case x86_ESP: x86Command+=0x2000; break;
+	case x86_EBP: x86Command+=0x2800;
 	}
 	PUTDST16(RecompPos,x86Command);
 }
@@ -1243,14 +1243,14 @@ void MoveX86regPointerToX86reg(int AddrReg1,int AddrReg2,int x86reg) {
 	case x86_EDI: Param=0x07;
 	}
 	switch (AddrReg2) {
-	case x86_EAX: Param +=0x00; break;
-	case x86_EBX: Param +=0x18; break;
-	case x86_ECX: Param +=0x08; break;
-	case x86_EDX: Param +=0x10; break;
-	case x86_ESI: Param +=0x30; break;
-	case x86_EDI: Param +=0x38; break;
-	case x86_ESP: Param +=0x20; break;
-	case x86_EBP: Param +=0x28;
+	case x86_EAX: Param+=0x00; break;
+	case x86_EBX: Param+=0x18; break;
+	case x86_ECX: Param+=0x08; break;
+	case x86_EDX: Param+=0x10; break;
+	case x86_ESI: Param+=0x30; break;
+	case x86_EDI: Param+=0x38; break;
+	case x86_ESP: Param+=0x20; break;
+	case x86_EBP: Param+=0x28;
 	}
 	PUTDST8(RecompPos,Param);
 }
@@ -1275,14 +1275,14 @@ void MoveX86regPointerToX86regDisp8(int AddrReg1,int AddrReg2,int x86reg,BYTE of
 	case x86_EDI: Param=0x07;
 	}
 	switch (AddrReg2) {
-	case x86_EAX: Param +=0x00; break;
-	case x86_EBX: Param +=0x18; break;
-	case x86_ECX: Param +=0x08; break;
-	case x86_EDX: Param +=0x10; break;
-	case x86_ESI: Param +=0x30; break;
-	case x86_EDI: Param +=0x38; break;
-	case x86_ESP: Param +=0x20; break;
-	case x86_EBP: Param +=0x28;
+	case x86_EAX: Param+=0x00; break;
+	case x86_EBX: Param+=0x18; break;
+	case x86_ECX: Param+=0x08; break;
+	case x86_EDX: Param+=0x10; break;
+	case x86_ESI: Param+=0x30; break;
+	case x86_EDI: Param+=0x38; break;
+	case x86_ESP: Param+=0x20; break;
+	case x86_EBP: Param+=0x28;
 	}
 	PUTDST8(RecompPos,Param);
 	PUTDST8(RecompPos,offset);
@@ -1300,14 +1300,14 @@ void MoveX86regToMemory(int x86reg,int AddrReg,DWORD Disp) {
 	case x86_EBP: x86Command=0x0589;
 	}
 	switch (x86reg) {
-	case x86_EAX: x86Command +=0x8000; break;
-	case x86_EBX: x86Command +=0x9800; break;
-	case x86_ECX: x86Command +=0x8800; break;
-	case x86_EDX: x86Command +=0x9000; break;
-	case x86_ESI: x86Command +=0xB000; break;
-	case x86_EDI: x86Command +=0xB800; break;
-	case x86_ESP: x86Command +=0xA000; break;
-	case x86_EBP: x86Command +=0xA800;
+	case x86_EAX: x86Command+=0x8000; break;
+	case x86_EBX: x86Command+=0x9800; break;
+	case x86_ECX: x86Command+=0x8800; break;
+	case x86_EDX: x86Command+=0x9000; break;
+	case x86_ESI: x86Command+=0xB000; break;
+	case x86_EDI: x86Command+=0xB800; break;
+	case x86_ESP: x86Command+=0xA000; break;
+	case x86_EBP: x86Command+=0xA800;
 	}
 	PUTDST16(RecompPos,x86Command);
 	PUTDST32(RecompPos,Disp);
@@ -1325,14 +1325,14 @@ void MoveX86regToN64Mem(int x86reg,int AddrReg) {
 	case x86_EBP: x86Command=0x0589;
 	}
 	switch (x86reg) {
-	case x86_EAX: x86Command +=0x8000; break;
-	case x86_EBX: x86Command +=0x9800; break;
-	case x86_ECX: x86Command +=0x8800; break;
-	case x86_EDX: x86Command +=0x9000; break;
-	case x86_ESI: x86Command +=0xB000; break;
-	case x86_EDI: x86Command +=0xB800; break;
-	case x86_ESP: x86Command +=0xA000; break;
-	case x86_EBP: x86Command +=0xA800;
+	case x86_EAX: x86Command+=0x8000; break;
+	case x86_EBX: x86Command+=0x9800; break;
+	case x86_ECX: x86Command+=0x8800; break;
+	case x86_EDX: x86Command+=0x9000; break;
+	case x86_ESI: x86Command+=0xB000; break;
+	case x86_EDI: x86Command+=0xB800; break;
+	case x86_ESP: x86Command+=0xA000; break;
+	case x86_EBP: x86Command+=0xA800;
 	}
 	PUTDST16(RecompPos,x86Command);
 	PUTDST32(RecompPos,N64MEM);
@@ -1350,19 +1350,19 @@ void MoveX86regToN64MemDisp(int x86reg,int AddrReg,BYTE Disp) {
 	case x86_EBP: x86Command=0x0589;
 	}
 	switch (x86reg) {
-	case x86_EAX: x86Command +=0x8000; break;
-	case x86_EBX: x86Command +=0x9800; break;
-	case x86_ECX: x86Command +=0x8800; break;
-	case x86_EDX: x86Command +=0x9000; break;
-	case x86_ESI: x86Command +=0xB000; break;
-	case x86_EDI: x86Command +=0xB800; break;
-	case x86_ESP: x86Command +=0xA000; break;
-	case x86_EBP: x86Command +=0xA800;
+	case x86_EAX: x86Command+=0x8000; break;
+	case x86_EBX: x86Command+=0x9800; break;
+	case x86_ECX: x86Command+=0x8800; break;
+	case x86_EDX: x86Command+=0x9000; break;
+	case x86_ESI: x86Command+=0xB000; break;
+	case x86_EDI: x86Command+=0xB800; break;
+	case x86_ESP: x86Command+=0xA000; break;
+	case x86_EBP: x86Command+=0xA800;
 	}
 	PUTDST16(RecompPos,x86Command);
 	PUTDST32(RecompPos,N64MEM+Disp);
 }
-void MoveX86regToVariable(int x86reg,void * Variable) {
+void MoveX86regToVariable(int x86reg,void*Variable) {
 	switch (x86reg) {
 	case x86_EAX: PUTDST16(RecompPos,0x0589); break;
 	case x86_EBX: PUTDST16(RecompPos,0x1D89); break;
@@ -1388,14 +1388,14 @@ void MoveX86RegToX86Reg(int Source,int Destination) {
 	case x86_EBP: x86Command=0x0589;
 	}
 	switch (Source) {
-	case x86_EAX: x86Command +=0xC000; break;
-	case x86_EBX: x86Command +=0xD800; break;
-	case x86_ECX: x86Command +=0xC800; break;
-	case x86_EDX: x86Command +=0xD000; break;
-	case x86_ESI: x86Command +=0xF000; break;
-	case x86_EDI: x86Command +=0xF800; break;
-	case x86_ESP: x86Command +=0xE000; break;
-	case x86_EBP: x86Command +=0xE800;
+	case x86_EAX: x86Command+=0xC000; break;
+	case x86_EBX: x86Command+=0xD800; break;
+	case x86_ECX: x86Command+=0xC800; break;
+	case x86_EDX: x86Command+=0xD000; break;
+	case x86_ESI: x86Command+=0xF000; break;
+	case x86_EDI: x86Command+=0xF800; break;
+	case x86_ESP: x86Command+=0xE000; break;
+	case x86_EBP: x86Command+=0xE800;
 	}
 	PUTDST16(RecompPos,x86Command);
 }
@@ -1410,14 +1410,14 @@ void MoveX86regToX86Pointer(int x86reg,int X86Pointer) {
 	case x86_EDI: x86Command=0x0789;
 	}
 	switch (x86reg) {
-	case x86_EAX: x86Command +=0x0000; break;
-	case x86_EBX: x86Command +=0x1800; break;
-	case x86_ECX: x86Command +=0x0800; break;
-	case x86_EDX: x86Command +=0x1000; break;
-	case x86_ESI: x86Command +=0x3000; break;
-	case x86_EDI: x86Command +=0x3800; break;
-	case x86_ESP: x86Command +=0x2000; break;
-	case x86_EBP: x86Command +=0x2800;
+	case x86_EAX: x86Command+=0x0000; break;
+	case x86_EBX: x86Command+=0x1800; break;
+	case x86_ECX: x86Command+=0x0800; break;
+	case x86_EDX: x86Command+=0x1000; break;
+	case x86_ESI: x86Command+=0x3000; break;
+	case x86_EDI: x86Command+=0x3800; break;
+	case x86_ESP: x86Command+=0x2000; break;
+	case x86_EBP: x86Command+=0x2800;
 	}
 	PUTDST16(RecompPos,x86Command);
 }
@@ -1442,14 +1442,14 @@ void MoveX86regToX86regPointer(int x86reg,int AddrReg1,int AddrReg2) {
 	case x86_EDI: Param=0x07;
 	}
 	switch (AddrReg2) {
-	case x86_EAX: Param +=0x00; break;
-	case x86_EBX: Param +=0x18; break;
-	case x86_ECX: Param +=0x08; break;
-	case x86_EDX: Param +=0x10; break;
-	case x86_ESI: Param +=0x30; break;
-	case x86_EDI: Param +=0x38; break;
-	case x86_ESP: Param +=0x20; break;
-	case x86_EBP: Param +=0x28;
+	case x86_EAX: Param+=0x00; break;
+	case x86_EBX: Param+=0x18; break;
+	case x86_ECX: Param+=0x08; break;
+	case x86_EDX: Param+=0x10; break;
+	case x86_ESI: Param+=0x30; break;
+	case x86_EDI: Param+=0x38; break;
+	case x86_ESP: Param+=0x20; break;
+	case x86_EBP: Param+=0x28;
 	}
 	PUTDST8(RecompPos,Param);
 }
@@ -1475,14 +1475,14 @@ void MoveZxByteX86regPointerToX86reg(int AddrReg1,int AddrReg2,int x86reg) {
 	case x86_EDI: Param=0x07;
 	}
 	switch (AddrReg2) {
-	case x86_EAX: Param +=0x00; break;
-	case x86_EBX: Param +=0x18; break;
-	case x86_ECX: Param +=0x08; break;
-	case x86_EDX: Param +=0x10; break;
-	case x86_ESI: Param +=0x30; break;
-	case x86_EDI: Param +=0x38; break;
-	case x86_ESP: Param +=0x20; break;
-	case x86_EBP: Param +=0x28;
+	case x86_EAX: Param+=0x00; break;
+	case x86_EBX: Param+=0x18; break;
+	case x86_ECX: Param+=0x08; break;
+	case x86_EDX: Param+=0x10; break;
+	case x86_ESI: Param+=0x30; break;
+	case x86_EDI: Param+=0x38; break;
+	case x86_ESP: Param+=0x20; break;
+	case x86_EBP: Param+=0x28;
 	}
 	PUTDST8(RecompPos,Param);
 }
@@ -1508,14 +1508,14 @@ void MoveZxHalfX86regPointerToX86reg(int AddrReg1,int AddrReg2,int x86reg) {
 	case x86_EDI: Param=0x07;
 	}
 	switch (AddrReg2) {
-	case x86_EAX: Param +=0x00; break;
-	case x86_EBX: Param +=0x18; break;
-	case x86_ECX: Param +=0x08; break;
-	case x86_EDX: Param +=0x10; break;
-	case x86_ESI: Param +=0x30; break;
-	case x86_EDI: Param +=0x38; break;
-	case x86_ESP: Param +=0x20; break;
-	case x86_EBP: Param +=0x28;
+	case x86_EAX: Param+=0x00; break;
+	case x86_EBX: Param+=0x18; break;
+	case x86_ECX: Param+=0x08; break;
+	case x86_EDX: Param+=0x10; break;
+	case x86_ESI: Param+=0x30; break;
+	case x86_EDI: Param+=0x38; break;
+	case x86_ESP: Param+=0x20; break;
+	case x86_EBP: Param+=0x28;
 	}
 	PUTDST8(RecompPos,Param);
 }
@@ -1532,14 +1532,14 @@ void MoveZxN64MemToX86regByte(int x86reg,int AddrReg) {
 	case x86_EBP: x86Command=0x05B6;
 	}
 	switch (x86reg) {
-	case x86_EAX: x86Command +=0x8000; break;
-	case x86_EBX: x86Command +=0x9800; break;
-	case x86_ECX: x86Command +=0x8800; break;
-	case x86_EDX: x86Command +=0x9000; break;
-	case x86_ESI: x86Command +=0xB000; break;
-	case x86_EDI: x86Command +=0xB800; break;
-	case x86_ESP: x86Command +=0xA000; break;
-	case x86_EBP: x86Command +=0xA800;
+	case x86_EAX: x86Command+=0x8000; break;
+	case x86_EBX: x86Command+=0x9800; break;
+	case x86_ECX: x86Command+=0x8800; break;
+	case x86_EDX: x86Command+=0x9000; break;
+	case x86_ESI: x86Command+=0xB000; break;
+	case x86_EDI: x86Command+=0xB800; break;
+	case x86_ESP: x86Command+=0xA000; break;
+	case x86_EBP: x86Command+=0xA800;
 	}
 	PUTDST8(RecompPos,0x0f);
 	PUTDST16(RecompPos,x86Command);
@@ -1558,20 +1558,20 @@ void MoveZxN64MemToX86regHalf(int x86reg,int AddrReg) {
 	case x86_EBP: x86Command=0x05B7;
 	}
 	switch (x86reg) {
-	case x86_EAX: x86Command +=0x8000; break;
-	case x86_EBX: x86Command +=0x9800; break;
-	case x86_ECX: x86Command +=0x8800; break;
-	case x86_EDX: x86Command +=0x9000; break;
-	case x86_ESI: x86Command +=0xB000; break;
-	case x86_EDI: x86Command +=0xB800; break;
-	case x86_ESP: x86Command +=0xA000; break;
-	case x86_EBP: x86Command +=0xA800;
+	case x86_EAX: x86Command+=0x8000; break;
+	case x86_EBX: x86Command+=0x9800; break;
+	case x86_ECX: x86Command+=0x8800; break;
+	case x86_EDX: x86Command+=0x9000; break;
+	case x86_ESI: x86Command+=0xB000; break;
+	case x86_EDI: x86Command+=0xB800; break;
+	case x86_ESP: x86Command+=0xA000; break;
+	case x86_EBP: x86Command+=0xA800;
 	}
 	PUTDST8(RecompPos,0x0f);
 	PUTDST16(RecompPos,x86Command);
 	PUTDST32(RecompPos,N64MEM);
 }
-void MoveZxVariableToX86regByte(void *Variable,int x86reg) {
+void MoveZxVariableToX86regByte(void*Variable,int x86reg) {
 	PUTDST16(RecompPos,0xb60f);
 	switch (x86reg) {
 	case x86_EAX: PUTDST8(RecompPos,0x05); break;
@@ -1585,7 +1585,7 @@ void MoveZxVariableToX86regByte(void *Variable,int x86reg) {
 	}
 	PUTDST32(RecompPos,Variable);
 }
-void MoveZxVariableToX86regHalf(void *Variable,int x86reg) {
+void MoveZxVariableToX86regHalf(void*Variable,int x86reg) {
 	PUTDST16(RecompPos,0xb70f);
 	switch (x86reg) {
 	case x86_EAX: PUTDST8(RecompPos,0x05); break;
@@ -1623,7 +1623,7 @@ void NotX86Reg(int  x86Reg) {
 	case x86_EBP: PUTDST16(RecompPos,0xD5F7);
 	}
 }
-void OrConstToVariable(DWORD Const,void * Variable) {
+void OrConstToVariable(DWORD Const,void*Variable) {
 	PUTDST16(RecompPos,0x0D81);
 	PUTDST32(RecompPos,Variable);
 	PUTDST32(RecompPos,Const);
@@ -1655,7 +1655,7 @@ void OrConstToX86Reg(DWORD Const,int  x86Reg) {
 		PUTDST8(RecompPos,Const);
 	}
 }
-void OrVariableToX86Reg(void * Variable,int x86Reg) {
+void OrVariableToX86Reg(void*Variable,int x86Reg) {
 	switch (x86Reg) {
 	case x86_EAX: PUTDST16(RecompPos,0x050B); break;
 	case x86_EBX: PUTDST16(RecompPos,0x1D0B); break;
@@ -1668,7 +1668,7 @@ void OrVariableToX86Reg(void * Variable,int x86Reg) {
 	}
 	PUTDST32(RecompPos,Variable);
 }
-void OrX86RegToVariable(void * Variable,int x86Reg) {
+void OrX86RegToVariable(void*Variable,int x86Reg) {
 	switch (x86Reg) {
 	case x86_EAX: PUTDST16(RecompPos,0x0509); break;
 	case x86_EBX: PUTDST16(RecompPos,0x1D09); break;
@@ -1694,14 +1694,14 @@ void OrX86RegToX86Reg(int Destination,int Source) {
 	case x86_EBP: x86Command=0x050B;
 	}
 	switch (Destination) {
-	case x86_EAX: x86Command +=0xC000; break;
-	case x86_EBX: x86Command +=0xD800; break;
-	case x86_ECX: x86Command +=0xC800; break;
-	case x86_EDX: x86Command +=0xD000; break;
-	case x86_ESI: x86Command +=0xF000; break;
-	case x86_EDI: x86Command +=0xF800; break;
-	case x86_ESP: x86Command +=0xE000; break;
-	case x86_EBP: x86Command +=0xE800;
+	case x86_EAX: x86Command+=0xC000; break;
+	case x86_EBX: x86Command+=0xD800; break;
+	case x86_ECX: x86Command+=0xC800; break;
+	case x86_EDX: x86Command+=0xD000; break;
+	case x86_ESI: x86Command+=0xF000; break;
+	case x86_EDI: x86Command+=0xF800; break;
+	case x86_ESP: x86Command+=0xE000; break;
+	case x86_EBP: x86Command+=0xE800;
 	}
 	PUTDST16(RecompPos,x86Command);
 }
@@ -1735,7 +1735,7 @@ void Pop(int x86reg) {
 	case x86_EBP: PUTDST8(RecompPos,0x5D);
 	}
 }
-void PushImm32(char * String,DWORD Value) {
+void PushImm32(char*String,DWORD Value) {
 	PUTDST8(RecompPos,0x68);
 	PUTDST32(RecompPos,Value);
 }
@@ -1751,7 +1751,7 @@ void Seta(int x86reg) {
 	case x86_EDX: PUTDST8(RecompPos,0xC2);
 	}
 }
-void SetaVariable(void * Variable) {
+void SetaVariable(void*Variable) {
 	PUTDST16(RecompPos,0x970F);
 	PUTDST8(RecompPos,0x05);
 	PUTDST32(RecompPos,Variable);
@@ -1774,7 +1774,7 @@ void Setb(int x86reg) {
 	case x86_EDX: PUTDST8(RecompPos,0xC2);
 	}
 }
-void SetbVariable(void * Variable) {
+void SetbVariable(void*Variable) {
 	PUTDST16(RecompPos,0x920F);
 	PUTDST8(RecompPos,0x05);
 	PUTDST32(RecompPos,Variable);
@@ -1788,7 +1788,7 @@ void Setg(int x86reg) {
 	case x86_EDX: PUTDST8(RecompPos,0xC2);
 	}
 }
-void SetgVariable(void * Variable) {
+void SetgVariable(void*Variable) {
 	PUTDST16(RecompPos,0x9F0F);
 	PUTDST8(RecompPos,0x05);
 	PUTDST32(RecompPos,Variable);
@@ -1802,7 +1802,7 @@ void Setl(int x86reg) {
 	case x86_EDX: PUTDST8(RecompPos,0xC2);
 	}
 }
-void SetlVariable(void * Variable) {
+void SetlVariable(void*Variable) {
 	PUTDST16(RecompPos,0x9C0F);
 	PUTDST8(RecompPos,0x05);
 	PUTDST32(RecompPos,Variable);
@@ -2029,7 +2029,7 @@ void SbbConstFromX86Reg (int x86Reg,DWORD Const) {
 		PUTDST8(RecompPos,Const);
 	}
 }
-void SbbVariableFromX86reg(int x86reg,void * Variable) {
+void SbbVariableFromX86reg(int x86reg,void*Variable) {
 	switch (x86reg) {
 	case x86_EAX: PUTDST16(RecompPos,0x051B); break;
 	case x86_EBX: PUTDST16(RecompPos,0x1D1B); break;
@@ -2055,18 +2055,18 @@ void SbbX86RegToX86Reg(int Destination,int Source) {
 	case x86_EBP: x86Command=0x051B;
 	}
 	switch (Destination) {
-	case x86_EAX: x86Command +=0xC000; break;
-	case x86_EBX: x86Command +=0xD800; break;
-	case x86_ECX: x86Command +=0xC800; break;
-	case x86_EDX: x86Command +=0xD000; break;
-	case x86_ESI: x86Command +=0xF000; break;
-	case x86_EDI: x86Command +=0xF800; break;
-	case x86_ESP: x86Command +=0xE000; break;
-	case x86_EBP: x86Command +=0xE800;
+	case x86_EAX: x86Command+=0xC000; break;
+	case x86_EBX: x86Command+=0xD800; break;
+	case x86_ECX: x86Command+=0xC800; break;
+	case x86_EDX: x86Command+=0xD000; break;
+	case x86_ESI: x86Command+=0xF000; break;
+	case x86_EDI: x86Command+=0xF800; break;
+	case x86_ESP: x86Command+=0xE000; break;
+	case x86_EBP: x86Command+=0xE800;
 	}
 	PUTDST16(RecompPos,x86Command);
 }
-void SubConstFromVariable (DWORD Const,void *Variable) {
+void SubConstFromVariable (DWORD Const,void*Variable) {
 	PUTDST16(RecompPos,0x2D81);
 	PUTDST32(RecompPos,Variable);
 	PUTDST32(RecompPos,Const);
@@ -2098,7 +2098,7 @@ void SubConstFromX86Reg (int x86Reg,DWORD Const) {
 		PUTDST8(RecompPos,Const);
 	}
 }
-void SubVariableFromX86reg(int x86reg,void * Variable) {
+void SubVariableFromX86reg(int x86reg,void*Variable) {
 	switch (x86reg) {
 	case x86_EAX: PUTDST16(RecompPos,0x052B); break;
 	case x86_EBX: PUTDST16(RecompPos,0x1D2B); break;
@@ -2124,14 +2124,14 @@ void SubX86RegToX86Reg(int Destination,int Source) {
 	case x86_EBP: x86Command=0x052B;
 	}
 	switch (Destination) {
-	case x86_EAX: x86Command +=0xC000; break;
-	case x86_EBX: x86Command +=0xD800; break;
-	case x86_ECX: x86Command +=0xC800; break;
-	case x86_EDX: x86Command +=0xD000; break;
-	case x86_ESI: x86Command +=0xF000; break;
-	case x86_EDI: x86Command +=0xF800; break;
-	case x86_ESP: x86Command +=0xE000; break;
-	case x86_EBP: x86Command +=0xE800;
+	case x86_EAX: x86Command+=0xC000; break;
+	case x86_EBX: x86Command+=0xD800; break;
+	case x86_ECX: x86Command+=0xC800; break;
+	case x86_EDX: x86Command+=0xD000; break;
+	case x86_ESI: x86Command+=0xF000; break;
+	case x86_EDI: x86Command+=0xF800; break;
+	case x86_ESP: x86Command+=0xE000; break;
+	case x86_EBP: x86Command+=0xE800;
 	}
 	PUTDST16(RecompPos,x86Command);
 }
@@ -2148,7 +2148,7 @@ void TestConstToX86Reg(DWORD Const,int x86reg) {
 	}
 	PUTDST32(RecompPos,Const);
 }
-void TestVariable(DWORD Const,void * Variable) {
+void TestVariable(DWORD Const,void*Variable) {
 	PUTDST16(RecompPos,0x05F7);
 	PUTDST32(RecompPos,Variable);
 	PUTDST32(RecompPos,Const);
@@ -2166,14 +2166,14 @@ void TestX86RegToX86Reg(int Destination,int Source) {
 	case x86_EBP: x86Command=0x0585;
 	}
 	switch (Destination) {
-	case x86_EAX: x86Command +=0xC000; break;
-	case x86_EBX: x86Command +=0xD800; break;
-	case x86_ECX: x86Command +=0xC800; break;
-	case x86_EDX: x86Command +=0xD000; break;
-	case x86_ESI: x86Command +=0xF000; break;
-	case x86_EDI: x86Command +=0xF800; break;
-	case x86_ESP: x86Command +=0xE000; break;
-	case x86_EBP: x86Command +=0xE800;
+	case x86_EAX: x86Command+=0xC000; break;
+	case x86_EBX: x86Command+=0xD800; break;
+	case x86_ECX: x86Command+=0xC800; break;
+	case x86_EDX: x86Command+=0xD000; break;
+	case x86_ESI: x86Command+=0xF000; break;
+	case x86_EDI: x86Command+=0xF800; break;
+	case x86_ESP: x86Command+=0xE000; break;
+	case x86_EBP: x86Command+=0xE800;
 	}
 	PUTDST16(RecompPos,x86Command);
 }
@@ -2217,18 +2217,18 @@ void XorX86RegToX86Reg(int Source,int Destination) {
 	case x86_EBP: x86Command=0x0531;
 	}
 	switch (Destination) {
-	case x86_EAX: x86Command +=0xC000; break;
-	case x86_EBX: x86Command +=0xD800; break;
-	case x86_ECX: x86Command +=0xC800; break;
-	case x86_EDX: x86Command +=0xD000; break;
-	case x86_ESI: x86Command +=0xF000; break;
-	case x86_EDI: x86Command +=0xF800; break;
-	case x86_ESP: x86Command +=0xE000; break;
-	case x86_EBP: x86Command +=0xE800;
+	case x86_EAX: x86Command+=0xC000; break;
+	case x86_EBX: x86Command+=0xD800; break;
+	case x86_ECX: x86Command+=0xC800; break;
+	case x86_EDX: x86Command+=0xD000; break;
+	case x86_ESI: x86Command+=0xF000; break;
+	case x86_EDI: x86Command+=0xF800; break;
+	case x86_ESP: x86Command+=0xE000; break;
+	case x86_EBP: x86Command+=0xE800;
 	}
 	PUTDST16(RecompPos,x86Command);
 }
-void XorVariableToX86reg(void *Variable,int x86reg) {
+void XorVariableToX86reg(void*Variable,int x86reg) {
 	switch (x86reg) {
 	case x86_EAX: PUTDST16(RecompPos,0x0533); break;
 	case x86_EBX: PUTDST16(RecompPos,0x1D33); break;

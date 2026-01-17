@@ -1,4 +1,4 @@
-/* zip.h -- IO for compress .zip files using zlib
+/*zip.h -- IO for compress .zip files using zlib
    Version 0.15 alpha, Mar 19th, 1998,
    Copyright (C) 1998 Gilles Vollant
    This unzip package allow creates .ZIP file, compatible with PKZip 2.04g
@@ -25,7 +25,7 @@
      misrepresented as being the original software.
   3. This notice may not be removed or altered from any source distribution.
 */
-/* for more info about .ZIP format, see
+/*for more info about .ZIP format, see
       ftp://ftp.cdrom.com/pub/infozip/doc/appnote-970311-iz.zip
    PkWare has also a specification at :
       ftp://ftp.pkware.com/probdesc.zip
@@ -39,10 +39,10 @@ extern "C" {
 #include "zlib.h"
 #endif
 #if defined(STRICTZIP)||defined(STRICTZIPUNZIP)
-/* like the STRICT of WIN32, we define a pointer that cannot be converted
-    from (void*) without cast */
+/*like the STRICT of WIN32, we define a pointer that cannot be converted
+    from (void*) without cast*/
 typedef struct TagzipFile__ { int unused; } zipFile__;
-typedef zipFile__ *zipFile;
+typedef zipFile__*zipFile;
 #else
 typedef voidp zipFile;
 #endif
@@ -50,25 +50,25 @@ typedef voidp zipFile;
 #define ZIP_ERRNO               (Z_ERRNO)
 #define ZIP_PARAMERROR                  (-102)
 #define ZIP_INTERNALERROR               (-104)
-/* tm_zip contain date/time info */
+/*tm_zip contain date/time info*/
 typedef struct tm_zip_s
 {
-	uInt tm_sec;            /* seconds after the minute-[0,59] */
-	uInt tm_min;            /* minutes after the hour-[0,59] */
-	uInt tm_hour;           /* hours since midnight-[0,23] */
-	uInt tm_mday;           /* day of the month-[1,31] */
-	uInt tm_mon;            /* months since January-[0,11] */
-	uInt tm_year;           /* years-[1980..2044] */
+	uInt tm_sec;            /*seconds after the minute-[0,59]*/
+	uInt tm_min;            /*minutes after the hour-[0,59]*/
+	uInt tm_hour;           /*hours since midnight-[0,23]*/
+	uInt tm_mday;           /*day of the month-[1,31]*/
+	uInt tm_mon;            /*months since January-[0,11]*/
+	uInt tm_year;           /*years-[1980..2044]*/
 } tm_zip;
 typedef struct
 {
-	tm_zip      tmz_date;       /* date in understandable format           */
-    uLong       dosDate;       /* if dos_date==0, tmu_date is used      */
-/*    uLong       flag;        */   /* general purpose bit flag        2 bytes */
-    uLong       internal_fa;    /* internal file attributes        2 bytes */
-    uLong       external_fa;    /* external file attributes        4 bytes */
+	tm_zip      tmz_date;       /*date in understandable format          */
+    uLong       dosDate;       /*if dos_date==0, tmu_date is used     */
+/*   uLong       flag;       */   /*general purpose bit flag        2 bytes*/
+    uLong       internal_fa;    /*internal file attributes        2 bytes*/
+    uLong       external_fa;    /*external file attributes        4 bytes*/
 } zip_fileinfo;
-extern zipFile ZEXPORT zipOpen OF((const char *pathname,int append));
+extern zipFile ZEXPORT zipOpen OF((const char*pathname,int append));
 /*
   Create a zipfile.
 	 pathname contain on Windows NT a filename like "c:\\zlib\\zlib111.zip" or on
@@ -80,19 +80,19 @@ extern zipFile ZEXPORT zipOpen OF((const char *pathname,int append));
 	   of this zip package.
 */
 extern int ZEXPORT zipOpenNewFileInZip OF((zipFile file,
-					   const char* filename,
-					   const zip_fileinfo* zipfi,
-					   const void* extrafield_local,
+					   const char*filename,
+					   const zip_fileinfo*zipfi,
+					   const void*extrafield_local,
 					   uInt size_extrafield_local,
-					   const void* extrafield_global,
+					   const void*extrafield_global,
 					   uInt size_extrafield_global,
-					   const char* comment,
+					   const char*comment,
 					   int method,
 					   int level));
 /*
   Open a file in the ZIP for writing.
   filename:the filename in zip (if NULL, '-' without quote will be used
-  *zipfi contain supplemental information
+ *zipfi contain supplemental information
   if extrafield_local!=NULL and size_extrafield_local>0, extrafield_local
     contains the extrafield data the the local header
   if extrafield_global!=NULL and size_extrafield_global>0, extrafield_global
@@ -112,11 +112,11 @@ extern int ZEXPORT zipCloseFileInZip OF((zipFile file));
   Close the current file in the zipfile
 */
 extern int ZEXPORT zipClose OF((zipFile file,
-				const char* global_comment));
+				const char*global_comment));
 /*
   Close the zipfile
 */
 #ifdef __cplusplus
 }
 #endif
-#endif /* _zip_H */
+#endif /*_zip_H*/

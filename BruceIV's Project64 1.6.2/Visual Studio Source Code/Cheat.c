@@ -1,28 +1,28 @@
 /*
- * Project 64 - A Nintendo 64 emulator.
- *
- * (c) Copyright 2001 zilmar (zilmar@emulation64.com) and
- * Jabo (jabo@emulation64.com).
- *
- * pj64 homepage: www.pj64.net
- *
- * Permission to use, copy, modify and distribute Project64 in both binary and
- * source form, for non-commercial purposes, is hereby granted without fee,
- * providing that this license information and copyright notice appear with
- * all copies and any derived work.
- *
- * This software is provided 'as-is', without any express or implied
- * warranty. In no event shall the authors be held liable for any damages
- * arising from the use of this software.
- *
- * Project64 is freeware for PERSONAL USE only. Commercial users should
- * seek permission of the copyright holders first. Commercial use includes
- * charging money for Project64 or software derived from Project64.
- *
- * The copyright holders request that bug fixes and improvements to the code
- * should be forwarded to them so if they want them.
- *
- */
+*Project 64 - A Nintendo 64 emulator.
+*
+*(c) Copyright 2001 zilmar (zilmar@emulation64.com) and
+*Jabo (jabo@emulation64.com).
+*
+*pj64 homepage: www.pj64.net
+*
+*Permission to use, copy, modify and distribute Project64 in both binary and
+*source form, for non-commercial purposes, is hereby granted without fee,
+*providing that this license information and copyright notice appear with
+*all copies and any derived work.
+*
+*This software is provided 'as-is', without any express or implied
+*warranty. In no event shall the authors be held liable for any damages
+*arising from the use of this software.
+*
+*Project64 is freeware for PERSONAL USE only. Commercial users should
+*seek permission of the copyright holders first. Commercial use includes
+*charging money for Project64 or software derived from Project64.
+*
+*The copyright holders request that bug fixes and improvements to the code
+*should be forwarded to them so if they want them.
+*
+*/
 #include <Windows.h>
 #include <windowsx.h>
 #include <commctrl.h>
@@ -60,14 +60,14 @@ int numoptions;
 int ReadCodeString (HWND hDlg);
 void ReadOptionsString(HWND hDlg);
 /********************************************************************************************/
-BOOL CheatUsesCodeExtensions (char * CheatString);
+BOOL CheatUsesCodeExtensions (char*CheatString);
 void DeleteCheat           (int CheatNo);
-BOOL GetCheatName          (int CheatNo,char * CheatName,int CheatNameLen);
-BOOL LoadCheatExt          (char * CheatName,char * CheatExt,int MaxCheatExtLen);
+BOOL GetCheatName          (int CheatNo,char*CheatName,int CheatNameLen);
+BOOL LoadCheatExt          (char*CheatName,char*CheatExt,int MaxCheatExtLen);
 void RefreshCheatManager   (void);
 void RenameCheat           (int CheatNo);
-void SaveCheat             (char * CheatName,BOOL Active);
-void SaveCheatExt          (char * CheatName,char * CheatExt);
+void SaveCheat             (char*CheatName,BOOL Active);
+void SaveCheatExt          (char*CheatName,char*CheatExt);
 int  _TreeView_GetCheckState(HWND hwndTreeView,HTREEITEM hItem);
 BOOL _TreeView_SetCheckState(HWND hwndTreeView,HTREEITEM hItem,int State);
 LRESULT CALLBACK ManageCheatsProc (HWND,UINT,WPARAM,LPARAM);
@@ -87,10 +87,10 @@ enum TV_CHECK_STATE{
 } DialogState;
 int MinSizeDlg;
 int MaxSizeDlg;
-void AddCheatExtension(int CheatNo,char * CheatName,int CheatNameLen) {
-	char *String=NULL,Identifier[100],CheatNumber[20];
+void AddCheatExtension(int CheatNo,char*CheatName,int CheatNameLen) {
+	char*String=NULL,Identifier[100],CheatNumber[20];
 	LPSTR IniFileName=GetCheatIniFileName();
-	sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD *)(&RomHeader[0x10]),*(DWORD *)(&RomHeader[0x14]),RomHeader[0x3D]);
+	sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD*)(&RomHeader[0x10]),*(DWORD*)(&RomHeader[0x14]),RomHeader[0x3D]);
 	sprintf(CheatNumber,"Cheat%d",CheatNo);
 	_GetPrivateProfileString2(Identifier,CheatNumber,"",&String,IniFileName);
 	//Add cheat extension to the end
@@ -109,9 +109,9 @@ void AddCheatExtension(int CheatNo,char * CheatName,int CheatNameLen) {
 DWORD ConvertXP64Address(DWORD Address) {
 	DWORD tmpAddress;
 	tmpAddress=(Address ^ 0x68000000)&0xFF000000;
-	tmpAddress +=((Address+0x002B0000) ^ 0x00810000)&0x00FF0000;
-	tmpAddress +=((Address+0x00002B00) ^ 0x00008200)&0x0000FF00;
-	tmpAddress +=((Address+0x0000002B) ^ 0x00000083)&0x000000FF;
+	tmpAddress+=((Address+0x002B0000) ^ 0x00810000)&0x00FF0000;
+	tmpAddress+=((Address+0x00002B00) ^ 0x00008200)&0x0000FF00;
+	tmpAddress+=((Address+0x0000002B) ^ 0x00000083)&0x000000FF;
 	return tmpAddress;
 }
 /********************************************************************************************
@@ -122,7 +122,7 @@ DWORD ConvertXP64Address(DWORD Address) {
 WORD ConvertXP64Value(WORD Value) {
 	WORD  tmpValue;
 	tmpValue=((Value+0x2B00) ^ 0x8400)&0xFF00;
-	tmpValue +=((Value+0x002B) ^ 0x0085)&0x00FF;
+	tmpValue+=((Value+0x002B) ^ 0x0085)&0x00FF;
 	return tmpValue;
 }
 void ApplyGSButton (void) {
@@ -145,8 +145,8 @@ void ApplyGSButton (void) {
 					Memory=Codes[count].Code[count2].Value;
 					for (count3=0; count3<numrepeats; count3++) {
 						r4300i_SB_VAddr(Address,(BYTE)Memory);
-						Address +=offset;
-						Memory +=incr;
+						Address+=offset;
+						Memory+=incr;
 					}
 					break;
 				case 0x89000000:
@@ -154,8 +154,8 @@ void ApplyGSButton (void) {
 					Memory=Codes[count].Code[count2].Value;
 					for (count3=0; count3<numrepeats; count3++) {
 						r4300i_SH_VAddr(Address,(WORD)Memory);
-						Address +=offset;
-						Memory +=incr;
+						Address+=offset;
+						Memory+=incr;
 					}
 					break;
 				// Xplorer64
@@ -164,8 +164,8 @@ void ApplyGSButton (void) {
 					Memory=ConvertXP64Value(Codes[count].Code[count2].Value);
 					for (count3=0; count3<numrepeats; count3++) {
 						r4300i_SB_VAddr(Address,(BYTE)Memory);
-						Address +=offset;
-						Memory +=incr;
+						Address+=offset;
+						Memory+=incr;
 					}
 					break;
 				case 0xA9000000:
@@ -173,8 +173,8 @@ void ApplyGSButton (void) {
 					Memory=ConvertXP64Value(Codes[count].Code[count2].Value);
 					for (count3=0; count3<numrepeats; count3++) {
 						r4300i_SH_VAddr(Address,(WORD)Memory);
-						Address +=offset;
-						Memory +=incr;
+						Address+=offset;
+						Memory+=incr;
 					}
 					break;
 				}
@@ -209,7 +209,7 @@ void ApplyGSButton (void) {
   ApplyCheats
   Purpose: Patch codes into memory
 ********************************************************************************************/
-int ApplyCheatEntry (GAMESHARK_CODE * Code,BOOL Execute) {
+int ApplyCheatEntry (GAMESHARK_CODE*Code,BOOL Execute) {
 	DWORD Address;
 	WORD  Memory;
 	switch (Code->Command&0xFF000000) {
@@ -225,8 +225,8 @@ int ApplyCheatEntry (GAMESHARK_CODE * Code,BOOL Execute) {
 				Memory=Code[1].Value;
 				for (count=0; count<numrepeats; count++) {
 					r4300i_SB_VAddr(Address,(BYTE)Memory);
-					Address +=offset;
-					Memory +=incr;
+					Address+=offset;
+					Memory+=incr;
 				}
 				return 2;
 			case 0x81000000:
@@ -234,8 +234,8 @@ int ApplyCheatEntry (GAMESHARK_CODE * Code,BOOL Execute) {
 				Memory=Code[1].Value;
 				for (count=0; count<numrepeats; count++) {
 					r4300i_SH_VAddr(Address,(WORD)Memory);
-					Address +=offset;
-					Memory +=incr;
+					Address+=offset;
+					Memory+=incr;
 				}
 				return 2;
 			default: return 1;
@@ -337,9 +337,9 @@ int ApplyCheatEntry (GAMESHARK_CODE * Code,BOOL Execute) {
 }
 void ApplyCheats (void) {
 	int CurrentCheat,CurrentEntry;
-	for (CurrentCheat=0; CurrentCheat<NoOfCodes; CurrentCheat ++) {
+	for (CurrentCheat=0; CurrentCheat<NoOfCodes; CurrentCheat++) {
 		for (CurrentEntry=0; CurrentEntry<MaxGSEntries;) {
-			CurrentEntry +=ApplyCheatEntry(&Codes[CurrentCheat].Code[CurrentEntry],TRUE);
+			CurrentEntry+=ApplyCheatEntry(&Codes[CurrentCheat].Code[CurrentEntry],TRUE);
 		}
 	}
 }
@@ -370,11 +370,11 @@ void ChangeRomCheats(HWND hwndOwner) {
   True: cheat is active
   False: cheat isn't active or cheat isn't found in registry
 ********************************************************************************************/
-BOOL CheatActive (char * Name) {
+BOOL CheatActive (char*Name) {
 	char String[300],Identifier[100];
 	HKEY hKeyResults=0;
 	long lResult;
-	sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD *)(&RomHeader[0x10]),*(DWORD *)(&RomHeader[0x14]),RomHeader[0x3D]);
+	sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD*)(&RomHeader[0x10]),*(DWORD*)(&RomHeader[0x14]),RomHeader[0x3D]);
 	sprintf(String,"PJ64 V 1.6.2\\Configuration\\Cheats\\%s",Identifier);
 	lResult=RegOpenKeyEx(HKEY_CURRENT_USER,String,0,KEY_ALL_ACCESS,&hKeyResults); // check is game ID exists in registry
 	if (lResult==ERROR_SUCCESS) {
@@ -392,7 +392,7 @@ LRESULT CALLBACK CheatsCodeExProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lPar
 	case WM_INITDIALOG:
 		CheatNo=lParam;
 		{
-			char * String=NULL,Identifier[100],CheatName[300],CheatExt[300],* ReadPos;
+			char*String=NULL,Identifier[100],CheatName[300],CheatExt[300],*ReadPos;
 			LPSTR IniFileName;
 			DWORD len;
 			SetWindowText(hDlg,"Code Extensions");
@@ -402,7 +402,7 @@ LRESULT CALLBACK CheatsCodeExProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lPar
 			SetDlgItemText(hDlg,IDC_CHEAT_NAME,CheatName);
 			LoadCheatExt(CheatName,CheatExt,sizeof(CheatExt));
 			IniFileName=GetCheatIniFileName();
-			sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD *)(&RomHeader[0x10]),*(DWORD *)(&RomHeader[0x14]),RomHeader[0x3D]);
+			sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD*)(&RomHeader[0x10]),*(DWORD*)(&RomHeader[0x14]),RomHeader[0x3D]);
 			sprintf(CheatName,"Cheat%d_O",CheatNo);
 			_GetPrivateProfileString2(Identifier,CheatName,"",&String,IniFileName);
 			ReadPos=String;
@@ -421,7 +421,7 @@ LRESULT CALLBACK CheatsCodeExProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lPar
 					SendMessage(GetDlgItem(hDlg,IDC_CHEAT_LIST),LB_SETCURSEL,index,0);
 				}
 				if (strchr(ReadPos,',')==NULL) {
-					ReadPos +=strlen(ReadPos);
+					ReadPos+=strlen(ReadPos);
 				} else {
 					ReadPos=strchr(ReadPos,',')+1;
 				}
@@ -456,15 +456,15 @@ LRESULT CALLBACK CheatsCodeExProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lPar
 	}
 	return TRUE;
 }
-BOOL CheatUsesCodeExtensions (char * CheatString) {
+BOOL CheatUsesCodeExtensions (char*CheatString) {
 	BOOL CodeExtension;
 	DWORD count,len;
-	char * ReadPos;
+	char*ReadPos;
 	if (strlen(CheatString)==0||strchr(CheatString,'"')==NULL) return FALSE;
 	len=strrchr(CheatString,'"')-strchr(CheatString,'"')-1;
 	ReadPos=strrchr(CheatString,'"')+2;
 	CodeExtension=FALSE;
-	for (count=0; count<MaxGSEntries&&CodeExtension==FALSE; count ++) {
+	for (count=0; count<MaxGSEntries&&CodeExtension==FALSE; count++) {
 		if (strchr(ReadPos,' ')==NULL) { break; }
 		ReadPos=strchr(ReadPos,' ')+1;
 		if (ReadPos[0]=='?'&&ReadPos[1]=='?') { CodeExtension=TRUE; }
@@ -478,9 +478,9 @@ int ReadCodeString (HWND hDlg) {
 	int numlines,linecount,len;
 	char str[128];
 	int i;
-	char* formatnormal= "XXXXXXXX XXXX";
-	char* formatoptionlb="XXXXXXXX XX??";
-	char* formatoptionw="XXXXXXXX ????";
+	char*formatnormal= "XXXXXXXX XXXX";
+	char*formatoptionlb="XXXXXXXX XX??";
+	char*formatoptionw="XXXXXXXX ????";
 	char tempformat[128];
 	validcodes=TRUE;
 	nooptions=TRUE;
@@ -667,11 +667,11 @@ LRESULT CALLBACK CheatAddProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) 
 			break;
 		case IDC_ADD:
 			{
-				char Identifier[100],CheatName[200],NewCheatName[200],* cheat;
+				char Identifier[100],CheatName[200],NewCheatName[200],*cheat;
 				int CheatLen,count,CheatNo;
 				LPSTR IniFileName;
 				GetDlgItemText(hDlg,IDC_CODE_NAME,NewCheatName,sizeof(NewCheatName));
-				for (count=0; ; count ++) {
+				for (count=0; ; count++) {
 					GetCheatName(count,CheatName,sizeof(CheatName));
 					if (strlen(CheatName)==0) {
 						CheatNo=count;
@@ -689,7 +689,7 @@ LRESULT CALLBACK CheatAddProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) 
 				strcat(cheat,codestring);
 				//Add to ini
 				IniFileName=GetCheatIniFileName();
-				sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD *)(&RomHeader[0x10]),*(DWORD *)(&RomHeader[0x14]),RomHeader[0x3D]);
+				sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD*)(&RomHeader[0x10]),*(DWORD*)(&RomHeader[0x14]),RomHeader[0x3D]);
 				sprintf(NewCheatName,"Cheat%d",CheatNo);
 				_WritePrivateProfileString(Identifier,NewCheatName,cheat,IniFileName);
 				if (cheat) { free(cheat); cheat=NULL; }
@@ -745,7 +745,7 @@ LRESULT CALLBACK CheatEditProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam)
 		SetWindowText(GetDlgItem(hDlg,IDC_CHEATNOTES)," Cheat Notes: ");
 		SetWindowText(GetDlgItem(hDlg,IDC_ADD),"Update Cheat");
 		{
-			char * String=NULL,* ReadPos,*Buffer,Identifier[100],CheatName[500];
+			char*String=NULL,*ReadPos,*Buffer,Identifier[100],CheatName[500];
 			LPSTR IniFileName;
 			TVITEM item;
 			int len;
@@ -755,7 +755,7 @@ LRESULT CALLBACK CheatEditProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam)
 			CheatNo=item.lParam;
 			IniFileName=GetCheatIniFileName();
 			//Get Main cheat Entry
-			sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD *)(&RomHeader[0x10]),*(DWORD *)(&RomHeader[0x14]),RomHeader[0x3D]);
+			sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD*)(&RomHeader[0x10]),*(DWORD*)(&RomHeader[0x14]),RomHeader[0x3D]);
 			sprintf(CheatName,"Cheat%d",CheatNo);
 			_GetPrivateProfileString2(Identifier,CheatName,"",&String,IniFileName);
 			//Set Cheat Name
@@ -772,7 +772,7 @@ LRESULT CALLBACK CheatEditProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam)
 				ReadPos=strchr(ReadPos,',');
 				if (ReadPos!=NULL) {
 					strcat(Buffer,"\r\n");
-					ReadPos +=1;
+					ReadPos+=1;
 				}
 			} while (ReadPos);
 			SetDlgItemText(hDlg,IDC_CHEAT_CODES,Buffer);
@@ -790,7 +790,7 @@ LRESULT CALLBACK CheatEditProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam)
 					ReadPos=strchr(ReadPos,'$');
 					if (ReadPos!=NULL) {
 						strcat(Buffer,"\r\n");
-						ReadPos +=1;
+						ReadPos+=1;
 					}
 				} while (ReadPos);
 				SetDlgItemText(hDlg,IDC_CHEAT_OPTIONS,Buffer);
@@ -853,14 +853,14 @@ LRESULT CALLBACK CheatEditProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam)
 			break;
 		case IDC_ADD:
 			{
-				char Identifier[100],Key[100],* Ext[]={"","_N","_O","_R" };
-				char NewCheatName[200],* cheat;
+				char Identifier[100],Key[100],*Ext[]={"","_N","_O","_R" };
+				char NewCheatName[200],*cheat;
 				int CheatLen,type;
 				LPSTR IniFileName;
 				IniFileName=GetCheatIniFileName();
-				sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD *)(&RomHeader[0x10]),*(DWORD *)(&RomHeader[0x14]),RomHeader[0x3D]);
+				sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD*)(&RomHeader[0x10]),*(DWORD*)(&RomHeader[0x14]),RomHeader[0x3D]);
 				//Delete old Entries
-				for (type=0; type<(sizeof(Ext) / sizeof(char *)); type ++) {
+				for (type=0; type<(sizeof(Ext) / sizeof(char*)); type++) {
 					sprintf(Key,"Cheat%d%s",CheatNo,Ext[type]);
 					_DeletePrivateProfileString(Identifier,Key,IniFileName);
 				}
@@ -1070,14 +1070,14 @@ LRESULT CALLBACK CheatListProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam)
 				HTREEITEM hItem;
 				hItem=TreeView_GetSelection(hCheatTree);
 				if (TreeView_GetChild(hCheatTree,hItem)==NULL) {
-					char * String=NULL,Lookup[40],Identifier[100];
+					char*String=NULL,Lookup[40],Identifier[100];
 					LPSTR IniFileName;
 					TVITEM item;
 					item.mask=TVIF_PARAM ;
 					item.hItem=hItem;
 					TreeView_GetItem(hCheatTree,&item);
 					IniFileName=GetCheatIniFileName();
-					sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD *)(&RomHeader[0x10]),*(DWORD *)(&RomHeader[0x14]),RomHeader[0x3D]);
+					sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD*)(&RomHeader[0x10]),*(DWORD*)(&RomHeader[0x14]),RomHeader[0x3D]);
 					sprintf(Lookup,"Cheat%d_N",item.lParam);
 					_GetPrivateProfileString2(Identifier,Lookup,"",&String,IniFileName);
 					SetDlgItemText(hDlg,IDC_NOTES,String);
@@ -1088,7 +1088,7 @@ LRESULT CALLBACK CheatListProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam)
 		break;
 	case UM_CHANGECODEEXTENSION:
 		{
-			char Identifier[100],* String=NULL,CheatName[500],CheatExt[300];
+			char Identifier[100],*String=NULL,CheatName[500],CheatExt[300];
 			HTREEITEM hItemChanged=(HTREEITEM)lParam;
 			LPSTR IniFileName;
 			TVITEM item;
@@ -1096,7 +1096,7 @@ LRESULT CALLBACK CheatListProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam)
 			item.hItem=hItemChanged;
 			TreeView_GetItem(hCheatTree,&item);
 			IniFileName=GetCheatIniFileName();
-			sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD *)(&RomHeader[0x10]),*(DWORD *)(&RomHeader[0x14]),RomHeader[0x3D]);
+			sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD*)(&RomHeader[0x10]),*(DWORD*)(&RomHeader[0x14]),RomHeader[0x3D]);
 			sprintf(CheatName,"Cheat%d",item.lParam);
 			_GetPrivateProfileString2(Identifier,CheatName,"",&String,IniFileName);
 			if (!CheatUsesCodeExtensions(String)) {
@@ -1129,31 +1129,31 @@ LRESULT CALLBACK CheatListProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam)
 	return TRUE;
 }
 void DeleteCheat(int CheatNo) {
-	char Identifier[100],Key[100],* Ext[]={"","_N","_O","_R" };
+	char Identifier[100],Key[100],*Ext[]={"","_N","_O","_R" };
 	LPSTR IniFileName;
 	int type;
 	IniFileName=GetCheatIniFileName();
-	sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD *)(&RomHeader[0x10]),*(DWORD *)(&RomHeader[0x14]),RomHeader[0x3D]);
-	for (type=0; type<(sizeof(Ext) / sizeof(char *)); type ++) {
+	sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD*)(&RomHeader[0x10]),*(DWORD*)(&RomHeader[0x14]),RomHeader[0x3D]);
+	for (type=0; type<(sizeof(Ext) / sizeof(char*)); type++) {
 		sprintf(Key,"Cheat%d%s",CheatNo,Ext[type]);
 		_DeletePrivateProfileString(Identifier,Key,IniFileName);
 	}
 	RenameCheat(CheatNo);
 }
 void RenameCheat(int CheatNo) {
-	char *Input=NULL,*Data=NULL,* Pos=NULL,Identifier[100],CurrentSection[300];
+	char*Input=NULL,*Data=NULL,*Pos=NULL,Identifier[100],CurrentSection[300];
 	int DataLen=0,DataLeft,result,count;
 	static long Fpos=0;
 	LPSTR IniFileName;
 	long WritePos;
-	FILE * fInput;
+	FILE*fInput;
 #ifdef WIN32
-char * LineFeed="\r\n";
+char*LineFeed="\r\n";
 #else
-char * LineFeed="\n";
+char*LineFeed="\n";
 #endif
 	IniFileName=GetCheatIniFileName();
-	sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD *)(&RomHeader[0x10]),*(DWORD *)(&RomHeader[0x14]),RomHeader[0x3D]);
+	sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD*)(&RomHeader[0x10]),*(DWORD*)(&RomHeader[0x14]),RomHeader[0x3D]);
 	fInput=fopen(IniFileName,"r+b");
 	if (fInput==NULL) {
 		fInput=fopen(IniFileName,"w+b");
@@ -1170,7 +1170,7 @@ char * LineFeed="\n";
 		while (Pos!=NULL) {
 			Pos=strchr(Pos,'/');
 			if (Pos!=NULL) {
-				if (Pos[1]=='/') { Pos[0]=0; } else { Pos +=1; }
+				if (Pos[1]=='/') { Pos[0]=0; } else { Pos+=1; }
 			}
 		}
 		for (count=strlen(&Input[0])-1; count>=0; count --) {
@@ -1210,10 +1210,10 @@ char * LineFeed="\n";
 			long CurrentPos=ftell(fInput);
 			char Header[100];
 			sprintf(Header,"Cheat%d",atoi(&Input[5])-1);
-			Newlen +=strlen(Header);
+			Newlen+=strlen(Header);
 			if (OldLen!=Newlen) {
 				fInsertSpaces(fInput,WritePos,Newlen-OldLen);
-				CurrentPos +=Newlen-OldLen;
+				CurrentPos+=Newlen-OldLen;
 			}
 			fseek(fInput,WritePos,SEEK_SET);
 			fprintf(fInput,"%s%s%s",Header,Pos,LineFeed);
@@ -1229,12 +1229,12 @@ char * LineFeed="\n";
 void DisableAllCheats(void) {
 	char CheatName[500];
 	int count;
-	for (count=0; ; count ++) {
+	for (count=0; ; count++) {
 		if (!GetCheatName(count,CheatName,sizeof(CheatName))) { break; }
 		SaveCheat(CheatName,FALSE);
 	}
 }
-char * GetCheatIniFileName(void) {
+char*GetCheatIniFileName(void) {
 	char path_buffer[_MAX_PATH],drive[_MAX_DRIVE],dir[_MAX_DIR];
 	char fname[_MAX_FNAME],ext[_MAX_EXT];
 	static char IniFileName[_MAX_PATH];
@@ -1243,12 +1243,12 @@ char * GetCheatIniFileName(void) {
 	sprintf(IniFileName,"%s%sPJ64DB\\%s",drive,dir,CheatIniName);
 	return IniFileName;
 }
-BOOL GetCheatName(int CheatNo,char * CheatName,int CheatNameLen) {
-	char *String=NULL,Identifier[100];
+BOOL GetCheatName(int CheatNo,char*CheatName,int CheatNameLen) {
+	char*String=NULL,Identifier[100];
 	DWORD len;
 	LPSTR IniFileName;
 	IniFileName=GetCheatIniFileName();
-	sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD *)(&RomHeader[0x10]),*(DWORD *)(&RomHeader[0x14]),RomHeader[0x3D]);
+	sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD*)(&RomHeader[0x10]),*(DWORD*)(&RomHeader[0x14]),RomHeader[0x3D]);
 	sprintf(CheatName,"Cheat%d",CheatNo);
 	_GetPrivateProfileString2(Identifier,CheatName,"",&String,IniFileName);
 	if (strlen(String)==0) {
@@ -1266,7 +1266,7 @@ void CloseCheatWindow (void) {
 	if (hManageWindow) SendMessage(hManageWindow,UM_CLOSE_CHEATS,0,0);
 	if (CPURunning) EndEmulation();
 }
-BOOL LoadCheatExt(char * CheatName,char * CheatExt,int MaxCheatExtLen) {
+BOOL LoadCheatExt(char*CheatName,char*CheatExt,int MaxCheatExtLen) {
 	char String[350],Identifier[100];
 	HKEY hKeyResults=0;
 	long lResult;
@@ -1274,7 +1274,7 @@ BOOL LoadCheatExt(char * CheatName,char * CheatExt,int MaxCheatExtLen) {
 	{
 		return FALSE;
 	}
-	sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD *)(&RomHeader[0x10]),*(DWORD *)(&RomHeader[0x14]),RomHeader[0x3D]);
+	sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD*)(&RomHeader[0x10]),*(DWORD*)(&RomHeader[0x14]),RomHeader[0x3D]);
 	sprintf(String,"PJ64 V 1.6.2\\Configuration\\Cheats\\%s",Identifier);
 	lResult=RegOpenKeyEx(HKEY_CURRENT_USER,String,0,KEY_ALL_ACCESS,&hKeyResults);
 	if (lResult==ERROR_SUCCESS) {
@@ -1289,9 +1289,9 @@ BOOL LoadCheatExt(char * CheatName,char * CheatExt,int MaxCheatExtLen) {
 }
 void LoadCode (LPSTR CheatName,LPSTR CheatString)
 {
-	char * ReadPos=CheatString;
+	char*ReadPos=CheatString;
 	int count2;
-	for (count2=0; count2<MaxGSEntries; count2 ++) {
+	for (count2=0; count2<MaxGSEntries; count2++) {
 		char CheatExt[200];
 		WORD Value;
 		Codes[NoOfCodes].Code[count2].Command=AsciiToHex(ReadPos);
@@ -1311,7 +1311,7 @@ void LoadCode (LPSTR CheatName,LPSTR CheatString)
 			} else {
 				count2=0; break;
 			}
-			Codes[NoOfCodes].Code[count2].Value +=(Value<<16);
+			Codes[NoOfCodes].Code[count2].Value+=(Value<<16);
 		} else if (strncmp(&ReadPos[2],"??",2)==0) {
 			Codes[NoOfCodes].Code[count2].Value=(WORD)(AsciiToHex(ReadPos)<<16);
 			if (LoadCheatExt(CheatName,CheatExt,sizeof(CheatExt))) {
@@ -1319,7 +1319,7 @@ void LoadCode (LPSTR CheatName,LPSTR CheatString)
 			} else {
 				count2=0; break;
 			}
-			Codes[NoOfCodes].Code[count2].Value +=Value;
+			Codes[NoOfCodes].Code[count2].Value+=Value;
 		} else {
 			Codes[NoOfCodes].Code[count2].Value=(WORD)AsciiToHex(ReadPos);
 		}
@@ -1331,17 +1331,17 @@ void LoadCode (LPSTR CheatName,LPSTR CheatString)
 		Codes[NoOfCodes].Code[count2].Command=0;
 		Codes[NoOfCodes].Code[count2].Value=0;
 	}
-	NoOfCodes +=1;
+	NoOfCodes+=1;
 }
 void LoadPermCheats (void)
 {
 	LPSTR IniFileName;
-	char * String=NULL;
+	char*String=NULL;
 	char Identifier[100];
 	int count;
 	IniFileName=GetIniFileName();
-	sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD *)(&RomHeader[0x10]),*(DWORD *)(&RomHeader[0x14]),RomHeader[0x3D]);
-	for (count=0; ; count ++)
+	sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD*)(&RomHeader[0x10]),*(DWORD*)(&RomHeader[0x14]),RomHeader[0x3D]);
+	for (count=0; ; count++)
 	{
 		char CheatName[300];
 		sprintf(CheatName,"Cheat%d",count);
@@ -1354,15 +1354,15 @@ void LoadPermCheats (void)
 void LoadCheats (void) {
 	DWORD len,count;
 	LPSTR IniFileName;
-	char * String=NULL;
+	char*String=NULL;
 	char Identifier[100];
 	char CheatName[300];
 	IniFileName=GetCheatIniFileName();
-	sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD *)(&RomHeader[0x10]),*(DWORD *)(&RomHeader[0x14]),RomHeader[0x3D]);
+	sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD*)(&RomHeader[0x10]),*(DWORD*)(&RomHeader[0x14]),RomHeader[0x3D]);
 	NoOfCodes=0;
 	LoadPermCheats();
-	for (count=0; ; count ++) {
-		char * ReadPos;
+	for (count=0; ; count++) {
+		char*ReadPos;
 		sprintf(CheatName,"Cheat%d",count);
 		_GetPrivateProfileString2(Identifier,CheatName,"",&String,IniFileName);
 		if (strlen(String)==0) { break; }
@@ -1487,7 +1487,7 @@ LRESULT CALLBACK ManageCheatsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lPar
 		hManageWindow=hDlg;
 		{
 			WINDOWPLACEMENT WndPlac;
-			RECT *rc;
+			RECT*rc;
 			WndPlac.length=sizeof(WndPlac);
 			GetWindowPlacement(hDlg,&WndPlac);
 			rc=&WndPlac.rcNormalPosition;
@@ -1527,12 +1527,12 @@ LRESULT CALLBACK ManageCheatsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lPar
 	}
 	return TRUE;
 }
-void AddCodeLayers (int CheatNumber,char * CheatName,HTREEITEM hParent,BOOL CheatActive) {
+void AddCodeLayers (int CheatNumber,char*CheatName,HTREEITEM hParent,BOOL CheatActive) {
 	char Text[500],Item[500];
 	TV_INSERTSTRUCT tv;
 	//Work out text to add
 	strcpy(Text,CheatName);
-	if (strchr(Text,'\\')>0) { *strchr(Text,'\\')=0; }
+	if (strchr(Text,'\\')>0) {*strchr(Text,'\\')=0; }
 	//See if text is already added
 	tv.item.mask     =TVIF_TEXT;
 	tv.item.pszText  =Item;
@@ -1568,43 +1568,43 @@ void RefreshCheatManager(void) {
 	DWORD count;
 	if (hManageWindow==NULL) return;
 	TreeView_DeleteAllItems(hCheatTree);
-	for (count=0; ; count ++) {
+	for (count=0; ; count++) {
 		if (!GetCheatName(count,CheatName,sizeof(CheatName))) { break; }
 		IsCheatActive=CheatActive (CheatName);
 		AddCheatExtension(count,CheatName,sizeof(CheatName));
 		AddCodeLayers(count,CheatName,TVI_ROOT,IsCheatActive);
 	}
 }
-void SaveCheat(char * CheatName,BOOL Active) {
+void SaveCheat(char*CheatName,BOOL Active) {
 	char String[300],Identifier[100];
 	DWORD Disposition=0;
 	HKEY hKeyResults=0;
 	long lResult;
-	sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD *)(&RomHeader[0x10]),*(DWORD *)(&RomHeader[0x14]),RomHeader[0x3D]);
+	sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD*)(&RomHeader[0x10]),*(DWORD*)(&RomHeader[0x14]),RomHeader[0x3D]);
 	sprintf(String,"PJ64 V 1.6.2\\Configuration\\Cheats\\%s",Identifier);
 	lResult=RegCreateKeyEx(HKEY_CURRENT_USER,String,0,"",REG_OPTION_NON_VOLATILE,
 		KEY_ALL_ACCESS,NULL,&hKeyResults,&Disposition);
 	if (lResult==ERROR_SUCCESS) {
 		if (Active) {
-			RegSetValueEx(hKeyResults,CheatName,0,REG_DWORD,(CONST BYTE *)(&Active),sizeof(DWORD));
+			RegSetValueEx(hKeyResults,CheatName,0,REG_DWORD,(CONST BYTE*)(&Active),sizeof(DWORD));
 		} else {
 			RegDeleteValue(hKeyResults,CheatName);
 		}
 		RegCloseKey(hKeyResults);
 	}
 }
-void SaveCheatExt(char * CheatName,char * CheatExt) {
+void SaveCheatExt(char*CheatName,char*CheatExt) {
 	char String[300],Identifier[100];
 	DWORD Disposition=0;
 	HKEY hKeyResults=0;
 	long lResult;
-	sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD *)(&RomHeader[0x10]),*(DWORD *)(&RomHeader[0x14]),RomHeader[0x3D]);
+	sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD*)(&RomHeader[0x10]),*(DWORD*)(&RomHeader[0x14]),RomHeader[0x3D]);
 	sprintf(String,"PJ64 V 1.6.2\\Configuration\\Cheats\\%s",Identifier);
 	lResult=RegCreateKeyEx(HKEY_CURRENT_USER,String,0,"",REG_OPTION_NON_VOLATILE,
 		KEY_ALL_ACCESS,NULL,&hKeyResults,&Disposition);
 	if (lResult==ERROR_SUCCESS) {
 		sprintf(String,"%s.exten",CheatName);
-		RegSetValueEx(hKeyResults,String,0,REG_SZ,(CONST BYTE *)CheatExt,strlen(CheatExt));
+		RegSetValueEx(hKeyResults,String,0,REG_SZ,(CONST BYTE*)CheatExt,strlen(CheatExt));
 		RegCloseKey(hKeyResults);
 	}
 }

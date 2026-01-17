@@ -1,28 +1,28 @@
 /*
- * Project 64 - A Nintendo 64 emulator.
- *
- * (c) Copyright 2001 zilmar (zilmar@emulation64.com) and
- * Jabo (jabo@emulation64.com).
- *
- * pj64 homepage: www.pj64.net
- *
- * Permission to use, copy, modify and distribute Project64 in both binary and
- * source form, for non-commercial purposes, is hereby granted without fee,
- * providing that this license information and copyright notice appear with
- * all copies and any derived work.
- *
- * This software is provided 'as-is', without any express or implied
- * warranty. In no event shall the authors be held liable for any damages
- * arising from the use of this software.
- *
- * Project64 is freeware for PERSONAL USE only. Commercial users should
- * seek permission of the copyright holders first. Commercial use includes
- * charging money for Project64 or software derived from Project64.
- *
- * The copyright holders request that bug fixes and improvements to the code
- * should be forwarded to them so if they want them.
- *
- */
+*Project 64 - A Nintendo 64 emulator.
+*
+*(c) Copyright 2001 zilmar (zilmar@emulation64.com) and
+*Jabo (jabo@emulation64.com).
+*
+*pj64 homepage: www.pj64.net
+*
+*Permission to use, copy, modify and distribute Project64 in both binary and
+*source form, for non-commercial purposes, is hereby granted without fee,
+*providing that this license information and copyright notice appear with
+*all copies and any derived work.
+*
+*This software is provided 'as-is', without any express or implied
+*warranty. In no event shall the authors be held liable for any damages
+*arising from the use of this software.
+*
+*Project64 is freeware for PERSONAL USE only. Commercial users should
+*seek permission of the copyright holders first. Commercial use includes
+*charging money for Project64 or software derived from Project64.
+*
+*The copyright holders request that bug fixes and improvements to the code
+*should be forwarded to them so if they want them.
+*
+*/
 #include <windows.h>
 #include <commctrl.h>
 #include <commdlg.h>
@@ -47,7 +47,7 @@ HWND hMainWindow,hHiddenWin,hStatusWnd;
 char CurrentSave[256];
 HMENU hMainMenu;
 HINSTANCE hInst;
-void MenuSetText (HMENU hMenu,int MenuPos,char * Title,char * Shortcut);
+void MenuSetText (HMENU hMenu,int MenuPos,char*Title,char*Shortcut);
 void RomInfo     (void);
 void ShutdownApplication (void);
 void FixupMenuBar(HWND hWnd);
@@ -87,7 +87,7 @@ LRESULT CALLBACK AboutIniBoxProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lPara
 	switch (uMsg) {
 	case WM_INITDIALOG:
 		{
-			char * IniFile,String[256],String2[256];
+			char*IniFile,String[256],String2[256];
 			SetWindowText(hDlg,GS(MENU_ABOUT_INI));
 			//Language.txt
 			SetDlgItemText(hDlg,IDC_LAN,GS(INI_CURRENT_LANG));
@@ -149,28 +149,28 @@ void UsuallyonTopWindow(HWND hWnd) {
 	SetWindowPos(hManageWindow,(UsuallyonTop?HWND_TOPMOST:HWND_NOTOPMOST),0,0,0,0,SWP_NOMOVE|SWP_NOREPOSITION|SWP_NOSIZE);
 	SetWindowPos(hWnd,(UsuallyonTop?HWND_TOPMOST:HWND_NOTOPMOST),0,0,0,0,SWP_NOMOVE|SWP_NOREPOSITION|SWP_NOSIZE);
 }
-DWORD AsciiToHex (char * HexValue) {
+DWORD AsciiToHex (char*HexValue) {
 	DWORD Count,Finish,Value=0;
 	Finish=strlen(HexValue);
 	if (Finish>8) { Finish=8; }
 	for (Count=0; Count<Finish; Count++) {
 		Value=(Value<<4);
 		switch(HexValue[Count]) {
-		case '1': Value +=1; break;
-		case '2': Value +=2; break;
-		case '3': Value +=3; break;
-		case '4': Value +=4; break;
-		case '5': Value +=5; break;
-		case '6': Value +=6; break;
-		case '7': Value +=7; break;
-		case '8': Value +=8; break;
-		case '9': Value +=9; break;
-		case 'A': case 'a': Value +=10; break;
-		case 'B': case 'b': Value +=11; break;
-		case 'C': case 'c': Value +=12; break;
-		case 'D': case 'd': Value +=13; break;
-		case 'E': case 'e': Value +=14; break;
-		case 'F': case 'f': Value +=15;
+		case '1': Value+=1; break;
+		case '2': Value+=2; break;
+		case '3': Value+=3; break;
+		case '4': Value+=4; break;
+		case '5': Value+=5; break;
+		case '6': Value+=6; break;
+		case '7': Value+=7; break;
+		case '8': Value+=8; break;
+		case '9': Value+=9; break;
+		case 'A': case 'a': Value+=10; break;
+		case 'B': case 'b': Value+=11; break;
+		case 'C': case 'c': Value+=12; break;
+		case 'D': case 'd': Value+=13; break;
+		case 'E': case 'e': Value+=14; break;
+		case 'F': case 'f': Value+=15;
 		case '0': break;
 		default:
 			Value=(Value>>4);
@@ -191,7 +191,7 @@ void ChangeWinSize (HWND hWnd,long width,long height,HWND hStatusBar) {
 	AdjustWindowRectEx(&rc1,GetWindowLong(hWnd,GWL_STYLE),GetMenu(hWnd)!=NULL,GetWindowLong(hWnd,GWL_EXSTYLE));
 	MoveWindow(hWnd,wndpl.rcNormalPosition.left,wndpl.rcNormalPosition.top,rc1.right-rc1.left,rc1.bottom-rc1.top,TRUE);
 }
-void __cdecl DisplayError (char * Message,...) {
+void __cdecl DisplayError (char*Message,...) {
 	char Msg[255];
 	va_list ap;
 	if (inFullScreen) SendMessage(hMainWindow,WM_COMMAND,ID_OPTIONS_FULLSCREEN,0);
@@ -208,7 +208,7 @@ void DisplayFPS (void) {
 		char Message[100];
 		int count;
 		Total.QuadPart=0;
-		for (count=0; count<9; count ++) Total.QuadPart +=Frames[count].QuadPart;
+		for (count=0; count<9; count++) Total.QuadPart+=Frames[count].QuadPart;
 		if (CPURunning) sprintf(Message,"%s: %.3f",GS(FPS_DISPLAY),Frequency.QuadPart / ((double)Total.QuadPart / (9<<3)));
 		else sprintf(Message,"%s: 00.000",GS(FPS_DISPLAY));
 		SendMessage(hStatusWnd,SB_SETTEXT,1,(LPARAM)Message);
@@ -262,7 +262,7 @@ void FixMenuLang (HMENU hMenu) {
 	MenuSetText(hSubMenu,0,GS(MENU_USER_GUIDE),NULL);
 	MenuSetText(hSubMenu,1,GS(MENU_ABOUT_INI),NULL);
 }
-char * GetIniFileName(void) {
+char*GetIniFileName(void) {
 	char path_buffer[_MAX_PATH],drive[_MAX_DRIVE],dir[_MAX_DIR];
 	char fname[_MAX_FNAME],ext[_MAX_EXT];
 	static char IniFileName[_MAX_PATH];
@@ -271,7 +271,7 @@ char * GetIniFileName(void) {
 	sprintf(IniFileName,"%s%sPJ64DB\\%s",drive,dir,IniName);
 	return IniFileName;
 }
-char * GetLangFileName(void) {
+char*GetLangFileName(void) {
 	char path_buffer[_MAX_PATH],drive[_MAX_DRIVE],dir[_MAX_DIR];
 	char fname[_MAX_FNAME],ext[_MAX_EXT];
 	static char IniFileName[_MAX_PATH];
@@ -384,7 +384,7 @@ int InitializeApplication (HINSTANCE hInstance) {
 	InitializeInitialCompilerVariable();
 	return TRUE;
 }
-void CheckedMenuItem(UINT uMenuID,BOOL * Flag,char * FlagName) {
+void CheckedMenuItem(UINT uMenuID,BOOL*Flag,char*FlagName) {
 	char String[256];
 	DWORD Disposition;
 	HKEY hKeyResults;
@@ -404,7 +404,7 @@ void CheckedMenuItem(UINT uMenuID,BOOL * Flag,char * FlagName) {
 	lResult=RegCreateKeyEx(HKEY_CURRENT_USER,String,0,"",
 		REG_OPTION_NON_VOLATILE,KEY_ALL_ACCESS,NULL,&hKeyResults,&Disposition);
 	if (lResult==ERROR_SUCCESS) {
-		RegSetValueEx(hKeyResults,FlagName,0,REG_DWORD,(BYTE *)Flag,sizeof(DWORD));
+		RegSetValueEx(hKeyResults,FlagName,0,REG_DWORD,(BYTE*)Flag,sizeof(DWORD));
 	}
 	RegCloseKey(hKeyResults);
 }
@@ -457,7 +457,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 			int Parts[2];
 			GetClientRect(hWnd,&clrect);
 			GetClientRect(hStatusWnd,&swrect);
-			Parts[0]=(LOWORD(lParam)-(int)(clrect.right * 0.25));
+			Parts[0]=(LOWORD(lParam)-(int)(clrect.right*0.25));
 			Parts[1]=LOWORD(lParam);
 			SendMessage(hStatusWnd,SB_SETPARTS,2,(LPARAM)&Parts[0]);
 			MoveWindow(hStatusWnd,0,clrect.bottom-swrect.bottom,
@@ -1030,7 +1030,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 	}
 	return TRUE;
 }
-void MenuSetText (HMENU hMenu,int MenuPos,char * Title,char * Shortcut) {
+void MenuSetText (HMENU hMenu,int MenuPos,char*Title,char*Shortcut) {
 	MENUITEMINFO MenuInfo;
 	char String[256];
 	if (Title==NULL||strlen(Title)==0) return;
@@ -1042,7 +1042,7 @@ void MenuSetText (HMENU hMenu,int MenuPos,char * Title,char * Shortcut) {
 	MenuInfo.dwTypeData=String;
 	MenuInfo.cch=256;
 	GetMenuItemInfo(hMenu,MenuPos,TRUE,&MenuInfo);
-	if (strchr(Title,'\t')!=NULL) { *(strchr(Title,'\t'))='\0'; }
+	if (strchr(Title,'\t')!=NULL) {*(strchr(Title,'\t'))='\0'; }
 	strcpy(String,Title);
 	if (Shortcut) { sprintf(String,"%s\t%s",String,Shortcut); }
 	SetMenuItemInfo(hMenu,MenuPos,TRUE,&MenuInfo);
@@ -1085,8 +1085,8 @@ LRESULT CALLBACK RomInfoProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 		SetDlgItemText(hDlg,IDC_CRC1,GS(INFO_CRC1_TEXT));
 		SetDlgItemText(hDlg,IDC_CRC2,GS(INFO_CRC2_TEXT));
 		SetDlgItemText(hDlg,IDC_CIC_CHIP,GS(INFO_CIC_CHIP_TEXT));
-		memcpy(&String[1],(void *)(&RomHeader[0x20]),20);
-		for(count=1 ; count<21; count +=4) {
+		memcpy(&String[1],(void*)(&RomHeader[0x20]),20);
+		for(count=1 ; count<21; count+=4) {
 			String[count] ^=String[count+3];
 			String[count+3] ^=String[count];
 			String[count] ^=String[count+3];
@@ -1110,9 +1110,9 @@ LRESULT CALLBACK RomInfoProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 		String[2]=RomHeader[0x3E];
 		String[3]='\0';
 		SetDlgItemText(hDlg,IDC_INFO_CARTID,String);
-		sprintf(&String[1],"0x%08X",*(DWORD *)(&RomHeader[0x10]));
+		sprintf(&String[1],"0x%08X",*(DWORD*)(&RomHeader[0x10]));
 		SetDlgItemText(hDlg,IDC_INFO_CRC1,String);
-		sprintf(&String[1],"0x%08X",*(DWORD *)(&RomHeader[0x14]));
+		sprintf(&String[1],"0x%08X",*(DWORD*)(&RomHeader[0x14]));
 		SetDlgItemText(hDlg,IDC_INFO_CRC2,String);
 		if (GetCicChipID(RomHeader)<0) {
 			sprintf(&String[1],GS(UNKNOWN));
@@ -1402,10 +1402,10 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpszArgs,in
 		JOB_OBJECT_LIMIT_PROCESS_MEMORY|
 		JOB_OBJECT_LIMIT_WORKINGSET;
 	jeli.BasicLimitInformation.ActiveProcessLimit=1;
-	jeli.JobMemoryLimit=100 * 1024 * 1024;
-	jeli.ProcessMemoryLimit=50 * 1024 * 1024;
-	jeli.BasicLimitInformation.MinimumWorkingSetSize=10 * 1024 * 1024;
-	jeli.BasicLimitInformation.MaximumWorkingSetSize=50 * 1024 * 1024;
+	jeli.JobMemoryLimit=100*1024*1024;
+	jeli.ProcessMemoryLimit=50*1024*1024;
+	jeli.BasicLimitInformation.MinimumWorkingSetSize=10*1024*1024;
+	jeli.BasicLimitInformation.MaximumWorkingSetSize=50*1024*1024;
 	jeli.BasicLimitInformation.Affinity=1;
 	jeli.BasicLimitInformation.PriorityClass=NORMAL_PRIORITY_CLASS;
 	if (!SetInformationJobObject(hJob,JobObjectExtendedLimitInformation,&jeli,sizeof(jeli))) CloseHandle(hJob);
@@ -1431,7 +1431,7 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpszArgs,in
 		NULL,NULL,hInst,NULL
 	);
 	if (!hHiddenWin) return FALSE;
-	char * IniFile,String[256],String2[256],title[256];
+	char*IniFile,String[256],String2[256],title[256];
 	IniFile=GetIniFileName();
 	_GetPrivateProfileString("Meta","Version","",String,sizeof(String),IniFile);
 	_GetPrivateProfileString("Meta","Date","",String2,sizeof(String2),IniFile);
@@ -1448,12 +1448,12 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpszArgs,in
 		DWORD dwDataFSF=0x00000016,dwDataFSH=0x000003c0,dwDataFSW=0x00000500,dwDataOPT960Def=0x00000807,dwDataOPT480D3D9=0x08000803,dwDataOPT960D3D9=0x08000807,dwDataRange=0x0000003f,dwDisposition,FirstBoot=TRUE;
   		int screenHeight=GetSystemMetrics(SM_CYSCREEN);
   		int screenWidth=GetSystemMetrics(SM_CXSCREEN);
-		const char* regPaths[]={
+		const char*regPaths[]={
 			"PJ64 V 1.6.2\\Jabo Ver1.6.2 Regs\\Direct3D8 1.6.2",
 			"PJ64 V 1.6.2\\Jabo Ver1.6.2 Regs\\Legacy Direct3D",
 			"PJ64 V 1.6.2\\Jabo Ver1.6.2 Regs\\DirectInput7 1.6.2   ",
 		};
-		for (int i=0; i<sizeof(regPaths) / sizeof(regPaths[0]); ++i) {
+		for (int i=0; i<sizeof(regPaths) / sizeof(regPaths[0]);++i) {
 			HKEY hKey;
 			LONG lRet=RegOpenKeyEx(HKEY_CURRENT_USER,regPaths[i],0,KEY_READ,&hKey);
 			if (lRet!=ERROR_SUCCESS) {

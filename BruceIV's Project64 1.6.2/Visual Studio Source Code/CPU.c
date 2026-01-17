@@ -1,28 +1,28 @@
 /*
- * Project 64 - A Nintendo 64 emulator.
- *
- * (c) Copyright 2001 zilmar (zilmar@emulation64.com) and
- * Jabo (jabo@emulation64.com).
- *
- * pj64 homepage: www.pj64.net
- *
- * Permission to use, copy, modify and distribute Project64 in both binary and
- * source form, for non-commercial purposes, is hereby granted without fee,
- * providing that this license information and copyright notice appear with
- * all copies and any derived work.
- *
- * This software is provided 'as-is', without any express or implied
- * warranty. In no event shall the authors be held liable for any damages
- * arising from the use of this software.
- *
- * Project64 is freeware for PERSONAL USE only. Commercial users should
- * seek permission of the copyright holders first. Commercial use includes
- * charging money for Project64 or software derived from Project64.
- *
- * The copyright holders request that bug fixes and improvements to the code
- * should be forwarded to them so if they want them.
- *
- */
+*Project 64 - A Nintendo 64 emulator.
+*
+*(c) Copyright 2001 zilmar (zilmar@emulation64.com) and
+*Jabo (jabo@emulation64.com).
+*
+*pj64 homepage: www.pj64.net
+*
+*Permission to use, copy, modify and distribute Project64 in both binary and
+*source form, for non-commercial purposes, is hereby granted without fee,
+*providing that this license information and copyright notice appear with
+*all copies and any derived work.
+*
+*This software is provided 'as-is', without any express or implied
+*warranty. In no event shall the authors be held liable for any damages
+*arising from the use of this software.
+*
+*Project64 is freeware for PERSONAL USE only. Commercial users should
+*seek permission of the copyright holders first. Commercial use includes
+*charging money for Project64 or software derived from Project64.
+*
+*The copyright holders request that bug fixes and improvements to the code
+*should be forwarded to them so if they want them.
+*
+*/
 #include <windows.h>
 #include <commctrl.h>
 #include <stdio.h>
@@ -45,25 +45,25 @@ OPCODE Opcode;
 HANDLE hCPU;
 BOOL inFullScreen,CPURunning;
 DWORD MemoryStack,EmuAI_Frequency,EmuAI_VICntFrame,EmuAI_BitRate,EmuAI_Buffer[2],LastVICntFrame;
-char *TimeName[MaxTimers]={ "CompareTimer","SiTimer","PiTimer","ViTimer" };
-void (__cdecl *AiDacrateChangedPlugin) (int SystemType);
-void (__cdecl *AiLenChangedPlugin)     (void);
-DWORD (__cdecl *AiReadLengthPlugin)    (void);
+char*TimeName[MaxTimers]={ "CompareTimer","SiTimer","PiTimer","ViTimer" };
+void (__cdecl*AiDacrateChangedPlugin) (int SystemType);
+void (__cdecl*AiLenChangedPlugin)     (void);
+DWORD (__cdecl*AiReadLengthPlugin)    (void);
 void __cdecl EmuAI_AiLenChanged (void) {
 	EmuAI_BitRate=AI_BITRATE_REG+1;
 	if (AI_LEN_REG==0) return;
 	if (LastVICntFrame!=EmuAI_VICntFrame&&EmuAI_Frequency>0) {
-		CountsPerByte=(double)(EmuAI_FrameRate * EmuAI_VICntFrame) / (double)(EmuAI_Frequency * (EmuAI_BitRate / 4));
+		CountsPerByte=(double)(EmuAI_FrameRate*EmuAI_VICntFrame) / (double)(EmuAI_Frequency*(EmuAI_BitRate / 4));
 		LastVICntFrame=EmuAI_VICntFrame;
 	}
-	if (CountsPerByte==0)	CountsPerByte=(double)(EmuAI_FrameRate * EmuAI_VICntFrame) / (double)(22050 * (16 / 4));
+	if (CountsPerByte==0)	CountsPerByte=(double)(EmuAI_FrameRate*EmuAI_VICntFrame) / (double)(22050*(16 / 4));
 	if (EmuAI_Buffer[0]==0) {
 		Start_COUNT=COUNT_REGISTER;
 		if (RomAltEmulateAI) EmuAI_Buffer[1]=AI_LEN_REG&0x3FFF8;
 		else EmuAI_Buffer[0]=AI_LEN_REG&0x3FFF8;
 		AI_STATUS_REG|=0x40000000;
-		if (RomAltEmulateAI) ChangeTimer(AiTimer,(int)(CountsPerByte * 50));
-		else ChangeTimer(AiTimer,(int)(CountsPerByte * (double)(double)(EmuAI_Buffer[0])));
+		if (RomAltEmulateAI) ChangeTimer(AiTimer,(int)(CountsPerByte*50));
+		else ChangeTimer(AiTimer,(int)(CountsPerByte*(double)(double)(EmuAI_Buffer[0])));
 	} else if (EmuAI_Buffer[1]==0) {
 		EmuAI_Buffer[1]=AI_LEN_REG&0x3FFF8;
 		AI_STATUS_REG|=0x80000000;
@@ -72,7 +72,7 @@ void __cdecl EmuAI_AiLenChanged (void) {
 }
 DWORD __cdecl EmuAI_AiReadLength (void) {
 	DWORD SetTimer,RemainingCount,retVal=0;
-	SetTimer=(DWORD)(int)(CountsPerByte * (double)(EmuAI_Buffer[0]));
+	SetTimer=(DWORD)(int)(CountsPerByte*(double)(EmuAI_Buffer[0]));
 	RemainingCount=SetTimer-(COUNT_REGISTER-Start_COUNT);
 	if (EmuAI_Buffer[0]==0) return 0;
 	retVal=(DWORD)((double)RemainingCount / CountsPerByte);
@@ -126,7 +126,7 @@ void EmuAI_SetNextTimer() {
 	AI_STATUS_REG&=~0x80000000;
 	if (EmuAI_Buffer[0]>0) {
 		AI_STATUS_REG|=0x40000000;
-		ChangeTimer(AiTimer,(int)(CountsPerByte * (double)(EmuAI_Buffer[0])));
+		ChangeTimer(AiTimer,(int)(CountsPerByte*(double)(EmuAI_Buffer[0])));
 		Start_COUNT=COUNT_REGISTER;
 	} else {
 		AI_STATUS_REG&=~0x40000000;
@@ -143,7 +143,7 @@ void ResetFunction (void) {
 		else SetupPlugins(hMainWindow);
 	}
 }
-void DisplayThreadExit (char * ExitPoint) {
+void DisplayThreadExit (char*ExitPoint) {
 	DisplayError(GS(THREAD_EXIT));
 	if (UsuallyonTop) SetWindowPos(hMainWindow,HWND_NOTOPMOST,0,0,0,0,SWP_NOMOVE|SWP_NOREPOSITION|SWP_NOSIZE);
 	DisplayError("Exit Point: %s",ExitPoint);
@@ -175,7 +175,7 @@ void CheckTimer (void) {
 	for (count=0; count<MaxTimers; count++) {
 		if (!Timers.Active[count]) continue;
 		if (!(count==CompareTimer&&Timers.NextTimer[count]==0x7FFFFFFF)) {
-			Timers.NextTimer[count] +=Timers.Timer;
+			Timers.NextTimer[count]+=Timers.Timer;
 		}
 	}
 	Timers.CurrentTimerType=-1;
@@ -485,7 +485,7 @@ void DoSomething (void) {
 	}
 	if (CPU_Action.DoInterrupt==TRUE) { CPU_Action.DoSomething=TRUE; }
 }
-void GetAutoSaveDir(char * Directory) {
+void GetAutoSaveDir(char*Directory) {
 	char path_buffer[_MAX_PATH],drive[_MAX_DRIVE],dir[_MAX_DIR],fname[_MAX_FNAME],ext[_MAX_EXT],Dir[255],Group[200];
 	long lResult;
 	HKEY hKeyResults=0;
@@ -507,7 +507,7 @@ void GetAutoSaveDir(char * Directory) {
 	}
 	RegCloseKey(hKeyResults);
 }
-void GetInstantSaveDir(char * Directory) {
+void GetInstantSaveDir(char*Directory) {
 	char path_buffer[_MAX_PATH],drive[_MAX_DRIVE],dir[_MAX_DIR],fname[_MAX_FNAME],ext[_MAX_EXT],Dir[255],Group[200];
 	long lResult;
 	HKEY hKeyResults=0;
@@ -530,20 +530,20 @@ void GetInstantSaveDir(char * Directory) {
 	RegCloseKey(hKeyResults);
 }
 void InPermLoop (void) {
-	// *** Changed ***/
+	//***Changed***/
 	if (CPU_Action.DoInterrupt) return;
-	/* Interrupts enabled */
+	/*Interrupts enabled*/
 	if ((STATUS_REGISTER&STATUS_IE)==0||(STATUS_REGISTER&STATUS_EXL)!=0||(STATUS_REGISTER&STATUS_ERL)!=0||(STATUS_REGISTER&0xFF00)==0) {
 		if (UpdateScreen!=NULL) { UpdateScreen(); }
 		CurrentFrame=0;
 		DisplayFPS();
 		DisplayThreadExit("InPermLoop-(STATUS_REGISTER&STATUS_IE )==0||(STATUS_REGISTER&STATUS_EXL)!=0||(STATUS_REGISTER&STATUS_ERL)!=0||(STATUS_REGISTER&0xFF00)==0");
 	}
-	/* check sound playing */
-	/* check RSP running */
-	/* check RDP running */
+	/*check sound playing*/
+	/*check RSP running*/
+	/*check RDP running*/
 	if (Timers.Timer>0) {
-		COUNT_REGISTER +=Timers.Timer+1;
+		COUNT_REGISTER+=Timers.Timer+1;
 		Timers.Timer=-1;
 	}
 }
@@ -591,7 +591,7 @@ BOOL Machine_LoadState(void) {
 			}
 			Timers.CurrentTimerType=-1;
 			Timers.Timer=0;
-			for (count=0; count<MaxTimers; count ++) { Timers.Active[count]=FALSE; }
+			for (count=0; count<MaxTimers; count++) { Timers.Active[count]=FALSE; }
 			//fix RDRAM size
 			if (SaveRDRAMsize!=RDRAMsize) {
 				if (RDRAMsize==0x400000) {
@@ -664,7 +664,7 @@ BOOL Machine_LoadState(void) {
 		}
 		Timers.CurrentTimerType=-1;
 		Timers.Timer=0;
-		for (count=0; count<MaxTimers; count ++) { Timers.Active[count]=FALSE; }
+		for (count=0; count<MaxTimers; count++) { Timers.Active[count]=FALSE; }
 		//fix RDRAM size
 		if (SaveRDRAMsize!=RDRAMsize) {
 			if (RDRAMsize==0x400000) {
@@ -727,7 +727,7 @@ BOOL Machine_LoadState(void) {
 	//Fix up Memory stack location
 	MemoryStack=GPR[29].W[0];
 	TranslateVaddr(&MemoryStack);
-	MemoryStack +=(DWORD)N64MEM;
+	MemoryStack+=(DWORD)N64MEM;
 	CheckInterrupts();
 	DMAUsed=TRUE;
 	strcpy(SaveAsFileName,"");
@@ -773,7 +773,7 @@ BOOL Machine_SaveState(void) {
 			}
 		}
 		while ((int)Registers.CP0[1]<(int)Registers.CP0[6]) {
-			Registers.CP0[1] +=32-Registers.CP0[6];
+			Registers.CP0[1]+=32-Registers.CP0[6];
 		}
 		SetFilePointer(hSaveFile,0,NULL,FILE_BEGIN);
 		Value=0x23D8A6C8;
@@ -851,7 +851,7 @@ void RefreshScreen (void) {
 		if (VI_V_SYNC_REG==0) {
 			VI_INTR_TIME=500000;
 		} else {
-			VI_INTR_TIME=(VI_V_SYNC_REG+1) * 1500;
+			VI_INTR_TIME=(VI_V_SYNC_REG+1)*1500;
 			if ((VI_V_SYNC_REG % 1)!=0) {
 				VI_INTR_TIME -=38;
 			}
@@ -867,7 +867,7 @@ void RefreshScreen (void) {
 		LastFrame.QuadPart=Time.QuadPart;
 		DisplayFPS();
 	}
-	CurrentFrame +=1;
+	CurrentFrame+=1;
 	__try {
 		if (UpdateScreen!=NULL) UpdateScreen();
 	} __except (r4300i_CPU_MemoryFilter(GetExceptionCode(),GetExceptionInformation())) { DisplayThreadExit("RefreshScreen-r4300i_CPU_MemoryFilter(GetExceptionCode(),GetExceptionInformation())"); }
@@ -876,14 +876,14 @@ void RefreshScreen (void) {
 void RunRsp (void) {
 	if ((SP_STATUS_REG&SP_STATUS_HALT)==0) {
 		if ((SP_STATUS_REG&SP_STATUS_BROKE)==0) {
-			DWORD Task=*(DWORD *)(DMEM+0xFC0);
+			DWORD Task=*(DWORD*)(DMEM+0xFC0);
 			switch (Task) {
 			case 1:
 				if ((DPC_STATUS_REG&DPC_STATUS_FREEZE)!=0) return;
-				DlistCount +=1;
+				DlistCount+=1;
 				break;
 			case 2:
-				AlistCount +=1;
+				AlistCount+=1;
 				break;
 			}
 		}

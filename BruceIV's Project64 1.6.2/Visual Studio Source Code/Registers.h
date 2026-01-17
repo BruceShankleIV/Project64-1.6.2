@@ -1,28 +1,28 @@
 /*
- * Project 64 - A Nintendo 64 emulator.
- *
- * (c) Copyright 2001 zilmar (zilmar@emulation64.com) and
- * Jabo (jabo@emulation64.com).
- *
- * pj64 homepage: www.pj64.net
- *
- * Permission to use, copy, modify and distribute Project64 in both binary and
- * source form, for non-commercial purposes, is hereby granted without fee,
- * providing that this license information and copyright notice appear with
- * all copies and any derived work.
- *
- * This software is provided 'as-is', without any express or implied
- * warranty. In no event shall the authors be held liable for any damages
- * arising from the use of this software.
- *
- * Project64 is freeware for PERSONAL USE only. Commercial users should
- * seek permission of the copyright holders first. Commercial use includes
- * charging money for Project64 or software derived from Project64.
- *
- * The copyright holders request that bug fixes and improvements to the code
- * should be forwarded to them so if they want them.
- *
- */
+*Project 64 - A Nintendo 64 emulator.
+*
+*(c) Copyright 2001 zilmar (zilmar@emulation64.com) and
+*Jabo (jabo@emulation64.com).
+*
+*pj64 homepage: www.pj64.net
+*
+*Permission to use, copy, modify and distribute Project64 in both binary and
+*source form, for non-commercial purposes, is hereby granted without fee,
+*providing that this license information and copyright notice appear with
+*all copies and any derived work.
+*
+*This software is provided 'as-is', without any express or implied
+*warranty. In no event shall the authors be held liable for any damages
+*arising from the use of this software.
+*
+*Project64 is freeware for PERSONAL USE only. Commercial users should
+*seek permission of the copyright holders first. Commercial use includes
+*charging money for Project64 or software derived from Project64.
+*
+*The copyright holders request that bug fixes and improvements to the code
+*should be forwarded to them so if they want them.
+*
+*/
 #define INDEX_REGISTER			CP0[0]
 #define RANDOM_REGISTER			CP0[1]
 #define ENTRYLO0_REGISTER		CP0[2]
@@ -167,101 +167,101 @@
 #define CAUSE_IP6				0x4000
 #define CAUSE_IP7				0x8000
 #define CAUSE_BD				0x80000000
-#define SP_CLR_HALT				0x00001	    /* Bit  0: clear halt */
-#define SP_SET_HALT				0x00002	    /* Bit  1: set halt */
-#define SP_CLR_BROKE			0x00004	    /* Bit  2: clear broke */
-#define SP_CLR_INTR				0x00008	    /* Bit  3: clear intr */
-#define SP_SET_INTR				0x00010	    /* Bit  4: set intr */
-#define SP_CLR_SSTEP			0x00020	    /* Bit  5: clear sstep */
-#define SP_SET_SSTEP			0x00040	    /* Bit  6: set sstep */
-#define SP_CLR_INTR_BREAK		0x00080	    /* Bit  7: clear intr on break */
-#define SP_SET_INTR_BREAK		0x00100	    /* Bit  8: set intr on break */
-#define SP_CLR_SIG0				0x00200	    /* Bit  9: clear signal 0 */
-#define SP_SET_SIG0				0x00400	    /* Bit 10: set signal 0 */
-#define SP_CLR_SIG1				0x00800	    /* Bit 11: clear signal 1 */
-#define SP_SET_SIG1				0x01000	    /* Bit 12: set signal 1 */
-#define SP_CLR_SIG2				0x02000	    /* Bit 13: clear signal 2 */
-#define SP_SET_SIG2				0x04000	    /* Bit 14: set signal 2 */
-#define SP_CLR_SIG3				0x08000	    /* Bit 15: clear signal 3 */
-#define SP_SET_SIG3				0x10000	    /* Bit 16: set signal 3 */
-#define SP_CLR_SIG4				0x20000	    /* Bit 17: clear signal 4 */
-#define SP_SET_SIG4				0x40000	    /* Bit 18: set signal 4 */
-#define SP_CLR_SIG5				0x80000	    /* Bit 19: clear signal 5 */
-#define SP_SET_SIG5				0x100000	/* Bit 20: set signal 5 */
-#define SP_CLR_SIG6				0x200000	/* Bit 21: clear signal 6 */
-#define SP_SET_SIG6				0x400000	/* Bit 22: set signal 6 */
-#define SP_CLR_SIG7				0x800000	/* Bit 23: clear signal 7 */
-#define SP_SET_SIG7				0x1000000   /* Bit 24: set signal 7 */
-#define SP_STATUS_HALT			0x001		/* Bit  0: halt */
-#define SP_STATUS_BROKE			0x002		/* Bit  1: broke */
-#define SP_STATUS_DMA_BUSY		0x004		/* Bit  2: dma busy */
-#define SP_STATUS_DMA_FULL		0x008		/* Bit  3: dma full */
-#define SP_STATUS_IO_FULL		0x010		/* Bit  4: io full */
-#define SP_STATUS_SSTEP			0x020		/* Bit  5: single step */
-#define SP_STATUS_INTR_BREAK	0x040		/* Bit  6: interrupt on break */
-#define SP_STATUS_SIG0			0x080		/* Bit  7: signal 0 set */
-#define SP_STATUS_SIG1			0x100		/* Bit  8: signal 1 set */
-#define SP_STATUS_SIG2			0x200		/* Bit  9: signal 2 set */
-#define SP_STATUS_SIG3			0x400		/* Bit 10: signal 3 set */
-#define SP_STATUS_SIG4			0x800		/* Bit 11: signal 4 set */
-#define SP_STATUS_SIG5	       0x1000		/* Bit 12: signal 5 set */
-#define SP_STATUS_SIG6	       0x2000		/* Bit 13: signal 6 set */
-#define SP_STATUS_SIG7	       0x4000		/* Bit 14: signal 7 set */
-#define DPC_CLR_XBUS_DMEM_DMA	0x0001		/* Bit 0: clear xbus_dmem_dma */
-#define DPC_SET_XBUS_DMEM_DMA	0x0002		/* Bit 1: set xbus_dmem_dma */
-#define DPC_CLR_FREEZE			0x0004		/* Bit 2: clear freeze */
-#define DPC_SET_FREEZE			0x0008		/* Bit 3: set freeze */
-#define DPC_CLR_FLUSH			0x0010		/* Bit 4: clear flush */
-#define DPC_SET_FLUSH			0x0020		/* Bit 5: set flush */
-#define DPC_CLR_TMEM_CTR		0x0040		/* Bit 6: clear tmem ctr */
-#define DPC_CLR_PIPE_CTR		0x0080		/* Bit 7: clear pipe ctr */
-#define DPC_CLR_CMD_CTR			0x0100		/* Bit 8: clear cmd ctr */
-#define DPC_CLR_CLOCK_CTR		0x0200		/* Bit 9: clear clock ctr */
-#define DPC_STATUS_XBUS_DMEM_DMA	0x001	/* Bit  0: xbus_dmem_dma */
-#define DPC_STATUS_FREEZE			0x002	/* Bit  1: freeze */
-#define DPC_STATUS_FLUSH			0x004	/* Bit  2: flush */
-#define DPC_STATUS_START_GCLK		0x008	/* Bit  3: start gclk */
-#define DPC_STATUS_TMEM_BUSY		0x010	/* Bit  4: tmem busy */
-#define DPC_STATUS_PIPE_BUSY		0x020	/* Bit  5: pipe busy */
-#define DPC_STATUS_CMD_BUSY			0x040	/* Bit  6: cmd busy */
-#define DPC_STATUS_CBUF_READY		0x080	/* Bit  7: cbuf ready */
-#define DPC_STATUS_DMA_BUSY			0x100	/* Bit  8: dma busy */
-#define DPC_STATUS_END_VALID		0x200	/* Bit  9: end valid */
-#define DPC_STATUS_START_VALID		0x400	/* Bit 10: start valid */
-#define MI_CLR_INIT				0x0080		/* Bit  7: clear init mode */
-#define MI_SET_INIT				0x0100		/* Bit  8: set init mode */
-#define MI_CLR_EBUS				0x0200		/* Bit  9: clear ebus test */
-#define MI_SET_EBUS				0x0400		/* Bit 10: set ebus test mode */
-#define MI_CLR_DP_INTR			0x0800		/* Bit 11: clear dp interrupt */
-#define MI_CLR_RDRAM			0x1000		/* Bit 12: clear RDRAM reg */
-#define MI_SET_RDRAM			0x2000		/* Bit 13: set RDRAM reg mode */
-#define MI_MODE_INIT			0x0080		/* Bit  7: init mode */
-#define MI_MODE_EBUS			0x0100		/* Bit  8: ebus test mode */
-#define MI_MODE_RDRAM			0x0200		/* Bit  9: RDRAM reg mode */
-#define MI_INTR_MASK_CLR_SP		0x0001		/* Bit  0: clear SP mask */
-#define MI_INTR_MASK_SET_SP		0x0002		/* Bit  1: set SP mask */
-#define MI_INTR_MASK_CLR_SI		0x0004		/* Bit  2: clear SI mask */
-#define MI_INTR_MASK_SET_SI		0x0008		/* Bit  3: set SI mask */
-#define MI_INTR_MASK_CLR_AI		0x0010		/* Bit  4: clear AI mask */
-#define MI_INTR_MASK_SET_AI		0x0020		/* Bit  5: set AI mask */
-#define MI_INTR_MASK_CLR_VI		0x0040		/* Bit  6: clear VI mask */
-#define MI_INTR_MASK_SET_VI		0x0080		/* Bit  7: set VI mask */
-#define MI_INTR_MASK_CLR_PI		0x0100		/* Bit  8: clear PI mask */
-#define MI_INTR_MASK_SET_PI		0x0200		/* Bit  9: set PI mask */
-#define MI_INTR_MASK_CLR_DP		0x0400		/* Bit 10: clear DP mask */
-#define MI_INTR_MASK_SET_DP		0x0800		/* Bit 11: set DP mask */
-#define MI_INTR_MASK_SP			0x01		/* Bit 0: SP intr mask */
-#define MI_INTR_MASK_SI			0x02		/* Bit 1: SI intr mask */
-#define MI_INTR_MASK_AI			0x04		/* Bit 2: AI intr mask */
-#define MI_INTR_MASK_VI			0x08		/* Bit 3: VI intr mask */
-#define MI_INTR_MASK_PI			0x10		/* Bit 4: PI intr mask */
-#define MI_INTR_MASK_DP			0x20		/* Bit 5: DP intr mask */
-#define MI_INTR_SP				0x01		/* Bit 0: SP intr */
-#define MI_INTR_SI				0x02		/* Bit 1: SI intr */
-#define MI_INTR_AI				0x04		/* Bit 2: AI intr */
-#define MI_INTR_VI				0x08		/* Bit 3: VI intr */
-#define MI_INTR_PI				0x10		/* Bit 4: PI intr */
-#define MI_INTR_DP				0x20		/* Bit 5: DP intr */
+#define SP_CLR_HALT				0x00001	    /*Bit  0: clear halt*/
+#define SP_SET_HALT				0x00002	    /*Bit  1: set halt*/
+#define SP_CLR_BROKE			0x00004	    /*Bit  2: clear broke*/
+#define SP_CLR_INTR				0x00008	    /*Bit  3: clear intr*/
+#define SP_SET_INTR				0x00010	    /*Bit  4: set intr*/
+#define SP_CLR_SSTEP			0x00020	    /*Bit  5: clear sstep*/
+#define SP_SET_SSTEP			0x00040	    /*Bit  6: set sstep*/
+#define SP_CLR_INTR_BREAK		0x00080	    /*Bit  7: clear intr on break*/
+#define SP_SET_INTR_BREAK		0x00100	    /*Bit  8: set intr on break*/
+#define SP_CLR_SIG0				0x00200	    /*Bit  9: clear signal 0*/
+#define SP_SET_SIG0				0x00400	    /*Bit 10: set signal 0*/
+#define SP_CLR_SIG1				0x00800	    /*Bit 11: clear signal 1*/
+#define SP_SET_SIG1				0x01000	    /*Bit 12: set signal 1*/
+#define SP_CLR_SIG2				0x02000	    /*Bit 13: clear signal 2*/
+#define SP_SET_SIG2				0x04000	    /*Bit 14: set signal 2*/
+#define SP_CLR_SIG3				0x08000	    /*Bit 15: clear signal 3*/
+#define SP_SET_SIG3				0x10000	    /*Bit 16: set signal 3*/
+#define SP_CLR_SIG4				0x20000	    /*Bit 17: clear signal 4*/
+#define SP_SET_SIG4				0x40000	    /*Bit 18: set signal 4*/
+#define SP_CLR_SIG5				0x80000	    /*Bit 19: clear signal 5*/
+#define SP_SET_SIG5				0x100000	/*Bit 20: set signal 5*/
+#define SP_CLR_SIG6				0x200000	/*Bit 21: clear signal 6*/
+#define SP_SET_SIG6				0x400000	/*Bit 22: set signal 6*/
+#define SP_CLR_SIG7				0x800000	/*Bit 23: clear signal 7*/
+#define SP_SET_SIG7				0x1000000   /*Bit 24: set signal 7*/
+#define SP_STATUS_HALT			0x001		/*Bit  0: halt*/
+#define SP_STATUS_BROKE			0x002		/*Bit  1: broke*/
+#define SP_STATUS_DMA_BUSY		0x004		/*Bit  2: dma busy*/
+#define SP_STATUS_DMA_FULL		0x008		/*Bit  3: dma full*/
+#define SP_STATUS_IO_FULL		0x010		/*Bit  4: io full*/
+#define SP_STATUS_SSTEP			0x020		/*Bit  5: single step*/
+#define SP_STATUS_INTR_BREAK	0x040		/*Bit  6: interrupt on break*/
+#define SP_STATUS_SIG0			0x080		/*Bit  7: signal 0 set*/
+#define SP_STATUS_SIG1			0x100		/*Bit  8: signal 1 set*/
+#define SP_STATUS_SIG2			0x200		/*Bit  9: signal 2 set*/
+#define SP_STATUS_SIG3			0x400		/*Bit 10: signal 3 set*/
+#define SP_STATUS_SIG4			0x800		/*Bit 11: signal 4 set*/
+#define SP_STATUS_SIG5	       0x1000		/*Bit 12: signal 5 set*/
+#define SP_STATUS_SIG6	       0x2000		/*Bit 13: signal 6 set*/
+#define SP_STATUS_SIG7	       0x4000		/*Bit 14: signal 7 set*/
+#define DPC_CLR_XBUS_DMEM_DMA	0x0001		/*Bit 0: clear xbus_dmem_dma*/
+#define DPC_SET_XBUS_DMEM_DMA	0x0002		/*Bit 1: set xbus_dmem_dma*/
+#define DPC_CLR_FREEZE			0x0004		/*Bit 2: clear freeze*/
+#define DPC_SET_FREEZE			0x0008		/*Bit 3: set freeze*/
+#define DPC_CLR_FLUSH			0x0010		/*Bit 4: clear flush*/
+#define DPC_SET_FLUSH			0x0020		/*Bit 5: set flush*/
+#define DPC_CLR_TMEM_CTR		0x0040		/*Bit 6: clear tmem ctr*/
+#define DPC_CLR_PIPE_CTR		0x0080		/*Bit 7: clear pipe ctr*/
+#define DPC_CLR_CMD_CTR			0x0100		/*Bit 8: clear cmd ctr*/
+#define DPC_CLR_CLOCK_CTR		0x0200		/*Bit 9: clear clock ctr*/
+#define DPC_STATUS_XBUS_DMEM_DMA	0x001	/*Bit  0: xbus_dmem_dma*/
+#define DPC_STATUS_FREEZE			0x002	/*Bit  1: freeze*/
+#define DPC_STATUS_FLUSH			0x004	/*Bit  2: flush*/
+#define DPC_STATUS_START_GCLK		0x008	/*Bit  3: start gclk*/
+#define DPC_STATUS_TMEM_BUSY		0x010	/*Bit  4: tmem busy*/
+#define DPC_STATUS_PIPE_BUSY		0x020	/*Bit  5: pipe busy*/
+#define DPC_STATUS_CMD_BUSY			0x040	/*Bit  6: cmd busy*/
+#define DPC_STATUS_CBUF_READY		0x080	/*Bit  7: cbuf ready*/
+#define DPC_STATUS_DMA_BUSY			0x100	/*Bit  8: dma busy*/
+#define DPC_STATUS_END_VALID		0x200	/*Bit  9: end valid*/
+#define DPC_STATUS_START_VALID		0x400	/*Bit 10: start valid*/
+#define MI_CLR_INIT				0x0080		/*Bit  7: clear init mode*/
+#define MI_SET_INIT				0x0100		/*Bit  8: set init mode*/
+#define MI_CLR_EBUS				0x0200		/*Bit  9: clear ebus test*/
+#define MI_SET_EBUS				0x0400		/*Bit 10: set ebus test mode*/
+#define MI_CLR_DP_INTR			0x0800		/*Bit 11: clear dp interrupt*/
+#define MI_CLR_RDRAM			0x1000		/*Bit 12: clear RDRAM reg*/
+#define MI_SET_RDRAM			0x2000		/*Bit 13: set RDRAM reg mode*/
+#define MI_MODE_INIT			0x0080		/*Bit  7: init mode*/
+#define MI_MODE_EBUS			0x0100		/*Bit  8: ebus test mode*/
+#define MI_MODE_RDRAM			0x0200		/*Bit  9: RDRAM reg mode*/
+#define MI_INTR_MASK_CLR_SP		0x0001		/*Bit  0: clear SP mask*/
+#define MI_INTR_MASK_SET_SP		0x0002		/*Bit  1: set SP mask*/
+#define MI_INTR_MASK_CLR_SI		0x0004		/*Bit  2: clear SI mask*/
+#define MI_INTR_MASK_SET_SI		0x0008		/*Bit  3: set SI mask*/
+#define MI_INTR_MASK_CLR_AI		0x0010		/*Bit  4: clear AI mask*/
+#define MI_INTR_MASK_SET_AI		0x0020		/*Bit  5: set AI mask*/
+#define MI_INTR_MASK_CLR_VI		0x0040		/*Bit  6: clear VI mask*/
+#define MI_INTR_MASK_SET_VI		0x0080		/*Bit  7: set VI mask*/
+#define MI_INTR_MASK_CLR_PI		0x0100		/*Bit  8: clear PI mask*/
+#define MI_INTR_MASK_SET_PI		0x0200		/*Bit  9: set PI mask*/
+#define MI_INTR_MASK_CLR_DP		0x0400		/*Bit 10: clear DP mask*/
+#define MI_INTR_MASK_SET_DP		0x0800		/*Bit 11: set DP mask*/
+#define MI_INTR_MASK_SP			0x01		/*Bit 0: SP intr mask*/
+#define MI_INTR_MASK_SI			0x02		/*Bit 1: SI intr mask*/
+#define MI_INTR_MASK_AI			0x04		/*Bit 2: AI intr mask*/
+#define MI_INTR_MASK_VI			0x08		/*Bit 3: VI intr mask*/
+#define MI_INTR_MASK_PI			0x10		/*Bit 4: PI intr mask*/
+#define MI_INTR_MASK_DP			0x20		/*Bit 5: DP intr mask*/
+#define MI_INTR_SP				0x01		/*Bit 0: SP intr*/
+#define MI_INTR_SI				0x02		/*Bit 1: SI intr*/
+#define MI_INTR_AI				0x04		/*Bit 2: AI intr*/
+#define MI_INTR_VI				0x08		/*Bit 3: VI intr*/
+#define MI_INTR_PI				0x10		/*Bit 4: PI intr*/
+#define MI_INTR_DP				0x20		/*Bit 5: DP intr*/
 #define	PI_STATUS_DMA_BUSY		0x01
 #define	PI_STATUS_IO_BUSY		0x02
 #define	PI_STATUS_ERROR			0x04
@@ -271,29 +271,29 @@
 #define	SI_STATUS_RD_BUSY		0x0002
 #define	SI_STATUS_DMA_ERROR		0x0008
 #define	SI_STATUS_INTERRUPT		0x1000
-#define FPCSR_FS				0x01000000	/* flush denorm to zero */
-#define	FPCSR_C					0x00800000	/* condition bit */
-#define	FPCSR_CE				0x00020000	/* cause: unimplemented operation */
-#define	FPCSR_CV				0x00010000	/* cause: invalid operation */
-#define	FPCSR_CZ				0x00008000	/* cause: division by zero */
-#define	FPCSR_CO				0x00004000	/* cause: overflow */
-#define	FPCSR_CU				0x00002000	/* cause: underflow */
-#define	FPCSR_CI				0x00001000	/* cause: inexact operation */
-#define	FPCSR_EV				0x00000800	/* enable: invalid operation */
-#define	FPCSR_EZ				0x00000400	/* enable: division by zero */
-#define	FPCSR_EO				0x00000200	/* enable: overflow */
-#define	FPCSR_EU				0x00000100	/* enable: underflow */
-#define	FPCSR_EI				0x00000080	/* enable: inexact operation */
-#define	FPCSR_FV				0x00000040	/* flag: invalid operation */
-#define	FPCSR_FZ				0x00000020	/* flag: division by zero */
-#define	FPCSR_FO				0x00000010	/* flag: overflow */
-#define	FPCSR_FU				0x00000008	/* flag: underflow */
-#define	FPCSR_FI				0x00000004	/* flag: inexact operation */
-#define	FPCSR_RM_MASK			0x00000003	/* rounding mode mask */
-#define	FPCSR_RM_RN				0x00000000	/* round to nearest */
-#define	FPCSR_RM_RZ				0x00000001	/* round to zero */
-#define	FPCSR_RM_RP				0x00000002	/* round to positive infinity */
-#define	FPCSR_RM_RM				0x00000003	/* round to negative infinity */
+#define FPCSR_FS				0x01000000	/*flush denorm to zero*/
+#define	FPCSR_C					0x00800000	/*condition bit*/
+#define	FPCSR_CE				0x00020000	/*cause: unimplemented operation*/
+#define	FPCSR_CV				0x00010000	/*cause: invalid operation*/
+#define	FPCSR_CZ				0x00008000	/*cause: division by zero*/
+#define	FPCSR_CO				0x00004000	/*cause: overflow*/
+#define	FPCSR_CU				0x00002000	/*cause: underflow*/
+#define	FPCSR_CI				0x00001000	/*cause: inexact operation*/
+#define	FPCSR_EV				0x00000800	/*enable: invalid operation*/
+#define	FPCSR_EZ				0x00000400	/*enable: division by zero*/
+#define	FPCSR_EO				0x00000200	/*enable: overflow*/
+#define	FPCSR_EU				0x00000100	/*enable: underflow*/
+#define	FPCSR_EI				0x00000080	/*enable: inexact operation*/
+#define	FPCSR_FV				0x00000040	/*flag: invalid operation*/
+#define	FPCSR_FZ				0x00000020	/*flag: division by zero*/
+#define	FPCSR_FO				0x00000010	/*flag: overflow*/
+#define	FPCSR_FU				0x00000008	/*flag: underflow*/
+#define	FPCSR_FI				0x00000004	/*flag: inexact operation*/
+#define	FPCSR_RM_MASK			0x00000003	/*rounding mode mask*/
+#define	FPCSR_RM_RN				0x00000000	/*round to nearest*/
+#define	FPCSR_RM_RZ				0x00000001	/*round to zero*/
+#define	FPCSR_RM_RP				0x00000002	/*round to positive infinity*/
+#define	FPCSR_RM_RM				0x00000003	/*round to negative infinity*/
 #define FPR_Type(Reg)	(Reg)==R4300i_COP1_S?"S":(Reg)==R4300i_COP1_D?"D" :\
 						(Reg)==R4300i_COP1_W?"W":"L"
 typedef struct {
@@ -316,10 +316,10 @@ typedef struct {
 	BYTE       PIF_Ram[0x40];
 	int        DMAUsed;
 } N64_REGISTERS;
-extern DWORD PROGRAM_COUNTER,* CP0,*FPCR,*RegRDRAM,*RegSP,*RegDPC,*RegMI,*RegVI,*RegAI,*RegPI,
+extern DWORD PROGRAM_COUNTER,*CP0,*FPCR,*RegRDRAM,*RegSP,*RegDPC,*RegMI,*RegVI,*RegAI,*RegPI,
 	*RegRI,*RegSI,HalfLine,RegModValue,ViFieldSerration,LLBit,LLAddr;
-void * FPRDoubleLocation[32],* FPRFloatLocation[32];
-extern MIPS_DWORD *GPR,*FPR,HI,LO;
+void*FPRDoubleLocation[32],*FPRFloatLocation[32];
+extern MIPS_DWORD*GPR,*FPR,HI,LO;
 extern N64_REGISTERS Registers;
 enum FPU_Format {
 	FPU_Unkown,FPU_Dword,FPU_Qword,FPU_Float,FPU_Double
@@ -327,7 +327,7 @@ enum FPU_Format {
 enum FPU_RoundingModel {
 	RoundUnknown,RoundDefault,RoundTruncate,RoundNearest,RoundDown,RoundUp
 };
-void ChangeFPURegFormat       (BLOCK_SECTION * Section,int Reg,int OldFormat,int NewFormat,int RoundingModel);
+void ChangeFPURegFormat       (BLOCK_SECTION*Section,int Reg,int OldFormat,int NewFormat,int RoundingModel);
 void ChangeMiIntrMask         (void);
 #ifndef MIN_SIZE
 void ChangeMiModeReg          (void);
@@ -336,21 +336,21 @@ void ChangeDpcStatus          (void);
 void ChangeSpStatus           (void);
 void InitializeR4300iRegisters (int UsePif,int Country,int CIC_Chip);
 BOOL Is8BitReg                (int x86Reg);
-void Load_FPR_ToTop           (BLOCK_SECTION * Section,int Reg,int RegToLoad,int Format);
-void Map_GPR_32bit            (BLOCK_SECTION * Section,int Reg,BOOL SignValue,int MipsRegToLoad);
-void Map_GPR_64bit            (BLOCK_SECTION * Section,int Reg,int MipsRegToLoad);
-int  Map_MemoryStack          (BLOCK_SECTION * Section,BOOL AutoMap);
-int  Map_TempReg              (BLOCK_SECTION * Section,int x86Reg,int MipsReg,BOOL LoadHiWord);
-BOOL RegInStack               (BLOCK_SECTION * Section,int Reg,int Format);
-void ProtectGPR               (BLOCK_SECTION * Section,DWORD Reg);
+void Load_FPR_ToTop           (BLOCK_SECTION*Section,int Reg,int RegToLoad,int Format);
+void Map_GPR_32bit            (BLOCK_SECTION*Section,int Reg,BOOL SignValue,int MipsRegToLoad);
+void Map_GPR_64bit            (BLOCK_SECTION*Section,int Reg,int MipsRegToLoad);
+int  Map_MemoryStack          (BLOCK_SECTION*Section,BOOL AutoMap);
+int  Map_TempReg              (BLOCK_SECTION*Section,int x86Reg,int MipsReg,BOOL LoadHiWord);
+BOOL RegInStack               (BLOCK_SECTION*Section,int Reg,int Format);
+void ProtectGPR               (BLOCK_SECTION*Section,DWORD Reg);
 void SetFpuLocations          (void);
-void SetupRegisters           (N64_REGISTERS * n64_Registers);
-int  StackPosition            (BLOCK_SECTION * Section,int Reg);
-void UnMap_AllFPRs            (BLOCK_SECTION * Section);
-void UnMap_FPR                (BLOCK_SECTION * Section,int Reg,int WriteBackValue);
-void UnMap_GPR                (BLOCK_SECTION * Section,DWORD Reg,int WriteBackValue);
-BOOL UnMap_X86reg             (BLOCK_SECTION * Section,DWORD x86Reg);
-void UnProtectGPR             (BLOCK_SECTION * Section,DWORD Reg);
+void SetupRegisters           (N64_REGISTERS*n64_Registers);
+int  StackPosition            (BLOCK_SECTION*Section,int Reg);
+void UnMap_AllFPRs            (BLOCK_SECTION*Section);
+void UnMap_FPR                (BLOCK_SECTION*Section,int Reg,int WriteBackValue);
+void UnMap_GPR                (BLOCK_SECTION*Section,DWORD Reg,int WriteBackValue);
+BOOL UnMap_X86reg             (BLOCK_SECTION*Section,DWORD x86Reg);
+void UnProtectGPR             (BLOCK_SECTION*Section,DWORD Reg);
 void UpdateCurrentHalfLine    (void);
 void UpdateFieldSerration     (int interlaced);
-void WriteBackRegisters       (BLOCK_SECTION * Section);
+void WriteBackRegisters       (BLOCK_SECTION*Section);

@@ -58,7 +58,7 @@ Conker's Bad Fur Day
 Cruis'n World
 CyberTiger
 Diddy Kong Racing
-Disney's Donald Duck - Goin' Qu@ckers*! - UH, SOMETHING WRONG WITH GAMENAME ON THIS ONE?
+Disney's Donald Duck - Goin' Qu@ckers*!
 Doom 64
 Doraemon - Nobita to 3tsu no Seireiseki
 Dr. Mario 64
@@ -69,7 +69,7 @@ Elmo's Number Journey
 F-1 Pole Position 64
 FIFA - Road to World Cup 98
 FIFA Soccer 64
-Fox Sports College Hoops '98
+Fox Sports College Hoops '99
 Glover
 Golden Nugget 64
 Hamster Monogatari 64
@@ -77,7 +77,7 @@ Harvest Moon 64 - check this one first too?
 Bokujou Monogatari 2
 Hexen
 Hey You, Pikachu!
-Human Grand Prix - New Generation
+Human Grand Prix
 J.League Live 64 - RED FLAG! ALSO WHY IS REG CACHING OFF
 Jet Force Gemini
 Kobe Bryant's NBA Courtside
@@ -98,7 +98,7 @@ NBA In the Zone '98 - missing capital?
 NBA In the Zone '99 - same deal
 NBA Live 99
 Olympic Hockey Nagano '98
-Operation WinBack
+Operation WinBack - Review Game Name
 Paperboy
 Penny Racers
 Pilotwings 64
@@ -120,10 +120,10 @@ Star Wars Episode I - Racer
 Super Mario 64
 Super Mario 64 Shindou
 Super Speed Race 64
-Superman
+Superman - Review Game Name
 Tetris 64
 Tetrisphere
-Tonic Trouble - ISSUE: WHERE IS THE U 1.0 ENTRY?!?!
+Tonic Trouble
 Tony Hawk's Pro Skater
 Transformers
 Turok - Dinosaur Hunter

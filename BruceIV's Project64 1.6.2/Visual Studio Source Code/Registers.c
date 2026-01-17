@@ -1,44 +1,44 @@
 /*
- * Project 64 - A Nintendo 64 emulator.
- *
- * (c) Copyright 2001 zilmar (zilmar@emulation64.com) and
- * Jabo (jabo@emulation64.com).
- *
- * pj64 homepage: www.pj64.net
- *
- * Permission to use, copy, modify and distribute Project64 in both binary and
- * source form, for non-commercial purposes, is hereby granted without fee,
- * providing that this license information and copyright notice appear with
- * all copies and any derived work.
- *
- * This software is provided 'as-is', without any express or implied
- * warranty. In no event shall the authors be held liable for any damages
- * arising from the use of this software.
- *
- * Project64 is freeware for PERSONAL USE only. Commercial users should
- * seek permission of the copyright holders first. Commercial use includes
- * charging money for Project64 or software derived from Project64.
- *
- * The copyright holders request that bug fixes and improvements to the code
- * should be forwarded to them so if they want them.
- *
- */
+*Project 64 - A Nintendo 64 emulator.
+*
+*(c) Copyright 2001 zilmar (zilmar@emulation64.com) and
+*Jabo (jabo@emulation64.com).
+*
+*pj64 homepage: www.pj64.net
+*
+*Permission to use, copy, modify and distribute Project64 in both binary and
+*source form, for non-commercial purposes, is hereby granted without fee,
+*providing that this license information and copyright notice appear with
+*all copies and any derived work.
+*
+*This software is provided 'as-is', without any express or implied
+*warranty. In no event shall the authors be held liable for any damages
+*arising from the use of this software.
+*
+*Project64 is freeware for PERSONAL USE only. Commercial users should
+*seek permission of the copyright holders first. Commercial use includes
+*charging money for Project64 or software derived from Project64.
+*
+*The copyright holders request that bug fixes and improvements to the code
+*should be forwarded to them so if they want them.
+*
+*/
 #include <windows.h>
 #include <stdio.h>
 #include "Main.h"
 #include "CPU.h"
 #include "x86.h"
 #include "ROM Tools Common.h"
-DWORD PROGRAM_COUNTER,* CP0,*FPCR,*RegRDRAM,*RegSP,*RegDPC,*RegMI,*RegVI,*RegAI,*RegPI,
+DWORD PROGRAM_COUNTER,*CP0,*FPCR,*RegRDRAM,*RegSP,*RegDPC,*RegMI,*RegVI,*RegAI,*RegPI,
 	*RegRI,*RegSI,HalfLine,RegModValue,ViFieldSerration,LLBit,LLAddr;
-void * FPRDoubleLocation[32],* FPRFloatLocation[32];
-MIPS_DWORD *GPR,*FPR,HI,LO;
+void*FPRDoubleLocation[32],*FPRFloatLocation[32];
+MIPS_DWORD*GPR,*FPR,HI,LO;
 N64_REGISTERS Registers;
 int fpuControl;
-int  UnMap_8BitTempReg (BLOCK_SECTION * Section);
-int  UnMap_TempReg     (BLOCK_SECTION * Section);
-BOOL UnMap_X86reg      (BLOCK_SECTION * Section,DWORD x86Reg);
-void ChangeFPURegFormat (BLOCK_SECTION * Section,int Reg,int OldFormat,int NewFormat,int RoundingModel) {
+int  UnMap_8BitTempReg (BLOCK_SECTION*Section);
+int  UnMap_TempReg     (BLOCK_SECTION*Section);
+BOOL UnMap_X86reg      (BLOCK_SECTION*Section,DWORD x86Reg);
+void ChangeFPURegFormat (BLOCK_SECTION*Section,int Reg,int OldFormat,int NewFormat,int RoundingModel) {
 	DWORD i;
 	for (i=0; i<8; i++) {
 		if (FpuMappedTo(i)==(DWORD)Reg) {
@@ -133,13 +133,13 @@ void ChangeSpStatus (void) {
 	if ((RegModValue&SP_SET_SIG6)!=0) { SP_STATUS_REG|=SP_STATUS_SIG6;  }
 	if ((RegModValue&SP_CLR_SIG7)!=0) { SP_STATUS_REG&=~SP_STATUS_SIG7; }
 	if ((RegModValue&SP_SET_SIG7)!=0) { SP_STATUS_REG|=SP_STATUS_SIG7;  }
-	if (DelayRDP&&*(DWORD *)(DMEM+0xFC0)==1||DelayRSP&&*(DWORD *)(DMEM+0xFC0)==2) {
+	if (DelayRDP&&*(DWORD*)(DMEM+0xFC0)==1||DelayRSP&&*(DWORD*)(DMEM+0xFC0)==2) {
 		ChangeTimer(RspTimer,0x2000);
 		return;
 	}
 	RunRsp();
 }
-int Free8BitX86Reg (BLOCK_SECTION * Section) {
+int Free8BitX86Reg (BLOCK_SECTION*Section) {
 	int x86Reg,count,MapCount[10],MapReg[10];
 	if (x86Mapped(x86_EBX)==NotMapped&&!x86Protected(x86_EBX)) {return x86_EBX; }
 	if (x86Mapped(x86_EAX)==NotMapped&&!x86Protected(x86_EAX)) {return x86_EAX; }
@@ -147,13 +147,13 @@ int Free8BitX86Reg (BLOCK_SECTION * Section) {
 	if (x86Mapped(x86_ECX)==NotMapped&&!x86Protected(x86_ECX)) {return x86_ECX; }
 	x86Reg=UnMap_8BitTempReg(Section);
 	if (x86Reg>0) { return x86Reg; }
-	for (count=0; count<10; count ++) {
+	for (count=0; count<10; count++) {
 		MapCount[count]=x86MapOrder(count);
 		MapReg[count]=count;
 	}
-	for (count=0; count<10; count ++) {
+	for (count=0; count<10; count++) {
 		int i;
-		for (i=0; i<9; i ++) {
+		for (i=0; i<9; i++) {
 			int temp;
 			if (MapCount[i]<MapCount[i+1]) {
 				temp=MapCount[i];
@@ -165,7 +165,7 @@ int Free8BitX86Reg (BLOCK_SECTION * Section) {
 			}
 		}
 	}
-	for (count=0; count<10; count ++) {
+	for (count=0; count<10; count++) {
 		if (MapCount[count]>0) {
 			if (!Is8BitReg(count)) { continue; }
 			if (UnMap_X86reg(Section,count)) {
@@ -175,7 +175,7 @@ int Free8BitX86Reg (BLOCK_SECTION * Section) {
 	}
 	return -1;
 }
-int FreeX86Reg (BLOCK_SECTION * Section) {
+int FreeX86Reg (BLOCK_SECTION*Section) {
 	int x86Reg,count,MapCount[10],MapReg[10],StackReg;
 	if (x86Mapped(x86_EDI)==NotMapped&&!x86Protected(x86_EDI)) {return x86_EDI; }
 	if (x86Mapped(x86_ESI)==NotMapped&&!x86Protected(x86_ESI)) {return x86_ESI; }
@@ -185,13 +185,13 @@ int FreeX86Reg (BLOCK_SECTION * Section) {
 	if (x86Mapped(x86_ECX)==NotMapped&&!x86Protected(x86_ECX)) {return x86_ECX; }
 	x86Reg=UnMap_TempReg(Section);
 	if (x86Reg>0) { return x86Reg; }
-	for (count=0; count<10; count ++) {
+	for (count=0; count<10; count++) {
 		MapCount[count]=x86MapOrder(count);
 		MapReg[count]=count;
 	}
-	for (count=0; count<10; count ++) {
+	for (count=0; count<10; count++) {
 		int i;
-		for (i=0; i<9; i ++) {
+		for (i=0; i<9; i++) {
 			int temp;
 			if (MapCount[i]<MapCount[i+1]) {
 				temp=MapCount[i];
@@ -204,7 +204,7 @@ int FreeX86Reg (BLOCK_SECTION * Section) {
 		}
 	}
 	StackReg=-1;
-	for (count=0; count<10; count ++) {
+	for (count=0; count<10; count++) {
 		if (MapCount[count]>0&&x86Mapped(MapReg[count])!=Stack_Mapped) {
 			if (UnMap_X86reg(Section,MapReg[count])) {
 				return MapReg[count];
@@ -315,7 +315,7 @@ void InitializeR4300iRegisters (int UsePif,int Country,int CIC_Chip) {
 				GPR[24].DW=0x0000000000000000;
 				break;
 			case 5:
-				*(DWORD *)&IMEM[0x04]=0xBDA807FC;
+				*(DWORD*)&IMEM[0x04]=0xBDA807FC;
 				GPR[5].DW=0xFFFFFFFFDECAAAD1;
 				GPR[14].DW=0x000000000CF85C13;
 				GPR[24].DW=0x0000000000000002;
@@ -341,7 +341,7 @@ void InitializeR4300iRegisters (int UsePif,int Country,int CIC_Chip) {
 				GPR[14].DW=0x000000005BACA1DF;
 				break;
 			case 5:
-				*(DWORD *)&IMEM[0x04]=0x8DA807FC;
+				*(DWORD*)&IMEM[0x04]=0x8DA807FC;
 				GPR[5].DW=0x000000005493FB9A;
 				GPR[14].DW=0xFFFFFFFFC2C20384;
 			case 6:
@@ -381,13 +381,13 @@ void InitializeR4300iRegisters (int UsePif,int Country,int CIC_Chip) {
 			GPR[25].DW=0xFFFFFFFF825B21C9;
 			break;
 		case 5:
-			*(DWORD *)&IMEM[0x00]=0x3C0DBFC0;
-			*(DWORD *)&IMEM[0x08]=0x25AD07C0;
-			*(DWORD *)&IMEM[0x0C]=0x31080080;
-			*(DWORD *)&IMEM[0x10]=0x5500FFFC;
-			*(DWORD *)&IMEM[0x14]=0x3C0DBFC0;
-			*(DWORD *)&IMEM[0x18]=0x8DA80024;
-			*(DWORD *)&IMEM[0x1C]=0x3C0BB000;
+			*(DWORD*)&IMEM[0x00]=0x3C0DBFC0;
+			*(DWORD*)&IMEM[0x08]=0x25AD07C0;
+			*(DWORD*)&IMEM[0x0C]=0x31080080;
+			*(DWORD*)&IMEM[0x10]=0x5500FFFC;
+			*(DWORD*)&IMEM[0x14]=0x3C0DBFC0;
+			*(DWORD*)&IMEM[0x18]=0x8DA80024;
+			*(DWORD*)&IMEM[0x1C]=0x3C0BB000;
 			GPR[1].DW=0x0000000000000000;
 			GPR[2].DW=0xFFFFFFFFF58B0FBF;
 			GPR[3].DW=0xFFFFFFFFF58B0FBF;
@@ -426,7 +426,7 @@ BOOL Is8BitReg (int x86Reg) {
 	if (x86Reg==x86_EDX) return TRUE;
 	return FALSE;
 }
-void Load_FPR_ToTop (BLOCK_SECTION * Section,int Reg,int RegToLoad,int Format) {
+void Load_FPR_ToTop (BLOCK_SECTION*Section,int Reg,int RegToLoad,int Format) {
 	int i;
 	if (RegToLoad<0||Reg<0) return;
 	if (Format==FPU_Double||Format==FPU_Qword) {
@@ -530,7 +530,7 @@ void Load_FPR_ToTop (BLOCK_SECTION * Section,int Reg,int RegToLoad,int Format) {
 		FpuState(StackTopPos)       =Format;
 	}
 }
-void Map_GPR_32bit (BLOCK_SECTION * Section,int Reg,BOOL SignValue,int MipsRegToLoad) {
+void Map_GPR_32bit (BLOCK_SECTION*Section,int Reg,BOOL SignValue,int MipsRegToLoad) {
 	int x86Reg,count;
 	if (Reg==0) return;
 	if (IsUnknown(Reg)||IsConst(Reg)) {
@@ -545,9 +545,9 @@ void Map_GPR_32bit (BLOCK_SECTION * Section,int Reg,BOOL SignValue,int MipsRegTo
 		}
 		x86Reg=MipsRegLo(Reg);
 	}
-	for (count=0; count<10; count ++) {
+	for (count=0; count<10; count++) {
 		if (x86MapOrder(count)>0) {
-			x86MapOrder(count) +=1;
+			x86MapOrder(count)+=1;
 		}
 	}
 	x86MapOrder(x86Reg)=1;
@@ -573,7 +573,7 @@ void Map_GPR_32bit (BLOCK_SECTION * Section,int Reg,BOOL SignValue,int MipsRegTo
 	MipsRegLo(Reg)=x86Reg;
 	MipsRegState(Reg)=SignValue?STATE_MAPPED_32_SIGN:STATE_MAPPED_32_ZERO;
 }
-void Map_GPR_64bit (BLOCK_SECTION * Section,int Reg,int MipsRegToLoad) {
+void Map_GPR_64bit (BLOCK_SECTION*Section,int Reg,int MipsRegToLoad) {
 	int x86Hi,x86lo,count;
 	if (Reg==0) return;
 	ProtectGPR(Section,Reg);
@@ -595,8 +595,8 @@ void Map_GPR_64bit (BLOCK_SECTION * Section,int Reg,int MipsRegToLoad) {
 			x86Hi=MipsRegHi(Reg);
 		}
 	}
-	for (count=0; count<10; count ++) {
-		if (x86MapOrder(count)>0) { x86MapOrder(count) +=1; }
+	for (count=0; count<10; count++) {
+		if (x86MapOrder(count)>0) { x86MapOrder(count)+=1; }
 	}
 	x86MapOrder(x86Hi)=1;
 	x86MapOrder(x86lo)=1;
@@ -655,9 +655,9 @@ void Map_GPR_64bit (BLOCK_SECTION * Section,int Reg,int MipsRegToLoad) {
 	MipsRegLo(Reg)=x86lo;
 	MipsRegState(Reg)=STATE_MAPPED_64;
 }
-int Map_MemoryStack (BLOCK_SECTION * Section,BOOL AutoMap) {
+int Map_MemoryStack (BLOCK_SECTION*Section,BOOL AutoMap) {
 	int x86Reg;
-	for (x86Reg=0; x86Reg<10; x86Reg ++) {
+	for (x86Reg=0; x86Reg<10; x86Reg++) {
 		if (x86Mapped(x86Reg)==Stack_Mapped) {
 			return x86Reg;
 		}
@@ -668,10 +668,10 @@ int Map_MemoryStack (BLOCK_SECTION * Section,BOOL AutoMap) {
 	MoveVariableToX86reg(&MemoryStack,x86Reg);
 	return x86Reg;
 }
-int Map_TempReg (BLOCK_SECTION * Section,int x86Reg,int MipsReg,BOOL LoadHiWord) {
+int Map_TempReg (BLOCK_SECTION*Section,int x86Reg,int MipsReg,BOOL LoadHiWord) {
 	int count;
 	if (x86Reg==x86_Any) {
-		for (count=0; count<10; count ++) {
+		for (count=0; count<10; count++) {
 			if (x86Mapped(count)==Temp_Mapped) {
 				if (x86Protected(count)==FALSE) { x86Reg=count; }
 			}
@@ -702,7 +702,7 @@ int Map_TempReg (BLOCK_SECTION * Section,int x86Reg,int MipsReg,BOOL LoadHiWord)
 			}
 			x86Protected(x86Reg)=TRUE;
 			NewReg=FreeX86Reg(Section);
-			for (count=1; count<32; count ++) {
+			for (count=1; count<32; count++) {
 				if (IsMapped(count)) {
 					if (MipsRegLo(count)==(DWORD)x86Reg) {
 						if (NewReg<0) {
@@ -781,22 +781,22 @@ int Map_TempReg (BLOCK_SECTION * Section,int x86Reg,int MipsReg,BOOL LoadHiWord)
 	}
 	x86Mapped(x86Reg)=Temp_Mapped;
 	x86Protected(x86Reg)=TRUE;
-	for (count=0; count<10; count ++) {
+	for (count=0; count<10; count++) {
 		if (x86MapOrder(count)>0) {
-			x86MapOrder(count) +=1;
+			x86MapOrder(count)+=1;
 		}
 	}
 	x86MapOrder(x86Reg)=1;
 	return x86Reg;
 }
-void ProtectGPR(BLOCK_SECTION * Section,DWORD Reg) {
+void ProtectGPR(BLOCK_SECTION*Section,DWORD Reg) {
 	if (IsUnknown(Reg)||IsConst(Reg)) return;
 	if (Is64Bit(Reg)) {
 		x86Protected(MipsRegHi(Reg))=TRUE;
 	}
 	x86Protected(MipsRegLo(Reg))=TRUE;
 }
-BOOL RegInStack(BLOCK_SECTION * Section,int Reg,int Format) {
+BOOL RegInStack(BLOCK_SECTION*Section,int Reg,int Format) {
 	int i;
 	for (i=0; i<8; i++) {
 		if (FpuMappedTo(i)==(DWORD)Reg) {
@@ -810,18 +810,18 @@ BOOL RegInStack(BLOCK_SECTION * Section,int Reg,int Format) {
 void SetFpuLocations (void) {
 	int count;
 	if ((STATUS_REGISTER&STATUS_FR)==0) {
-		for (count=0; count<32; count ++) {
-			FPRFloatLocation[count]=(void *)(&FPR[count&~1].W[count&1]);
-			FPRDoubleLocation[count]=(void *)(&FPR[count&~1].DW);
+		for (count=0; count<32; count++) {
+			FPRFloatLocation[count]=(void*)(&FPR[count&~1].W[count&1]);
+			FPRDoubleLocation[count]=(void*)(&FPR[count&~1].DW);
 		}
 	} else {
-		for (count=0; count<32; count ++) {
-			FPRFloatLocation[count]=(void *)(&FPR[count].W[0]);
-			FPRDoubleLocation[count]=(void *)(&FPR[count].DW);
+		for (count=0; count<32; count++) {
+			FPRFloatLocation[count]=(void*)(&FPR[count].W[0]);
+			FPRDoubleLocation[count]=(void*)(&FPR[count].DW);
 		}
 	}
 }
-void SetupRegisters(N64_REGISTERS * n64_Registers) {
+void SetupRegisters(N64_REGISTERS*n64_Registers) {
 	PROGRAM_COUNTER=n64_Registers->PROGRAM_COUNTER;
 	HI.DW  =n64_Registers->HI.DW;
 	LO.DW  =n64_Registers->LO.DW;
@@ -841,7 +841,7 @@ void SetupRegisters(N64_REGISTERS * n64_Registers) {
 	PIF_Ram=n64_Registers->PIF_Ram;
 	DMAUsed=n64_Registers->DMAUsed;
 }
-int StackPosition (BLOCK_SECTION * Section,int Reg) {
+int StackPosition (BLOCK_SECTION*Section,int Reg) {
 	int i;
 	for (i=0; i<8; i++) {
 		if (FpuMappedTo(i)==(DWORD)Reg) {
@@ -850,9 +850,9 @@ int StackPosition (BLOCK_SECTION * Section,int Reg) {
 	}
 	return -1;
 }
-int UnMap_8BitTempReg (BLOCK_SECTION * Section) {
+int UnMap_8BitTempReg (BLOCK_SECTION*Section) {
 	int count;
-	for (count=0; count<10; count ++) {
+	for (count=0; count<10; count++) {
 		if (!Is8BitReg(count)) continue;
 		if (MipsRegState(count)==Temp_Mapped) {
 			if (x86Protected(count)==FALSE) {
@@ -863,7 +863,7 @@ int UnMap_8BitTempReg (BLOCK_SECTION * Section) {
 	}
 	return -1;
 }
-void UnMap_AllFPRs (BLOCK_SECTION * Section) {
+void UnMap_AllFPRs (BLOCK_SECTION*Section) {
 	DWORD StackPos;
 	for (;;) {
 		int i,StartPos;
@@ -881,7 +881,7 @@ void UnMap_AllFPRs (BLOCK_SECTION * Section) {
 		return;
 	}
 }
-void UnMap_FPR (BLOCK_SECTION * Section,int Reg,int WriteBackValue) {
+void UnMap_FPR (BLOCK_SECTION*Section,int Reg,int WriteBackValue) {
 	int TempReg;
 	int i;
 	if (Reg<0) return;
@@ -951,7 +951,7 @@ void UnMap_FPR (BLOCK_SECTION * Section,int Reg,int WriteBackValue) {
 		return;
 	}
 }
-void UnMap_GPR (BLOCK_SECTION * Section,DWORD Reg,int WriteBackValue) {
+void UnMap_GPR (BLOCK_SECTION*Section,DWORD Reg,int WriteBackValue) {
 	if (Reg==0||IsUnknown(Reg)) return;
 	if (IsConst(Reg)) {
 		if (!WriteBackValue) {
@@ -996,9 +996,9 @@ void UnMap_GPR (BLOCK_SECTION * Section,DWORD Reg,int WriteBackValue) {
 	}
 	MipsRegState(Reg)=STATE_UNKNOWN;
 }
-int UnMap_TempReg (BLOCK_SECTION * Section) {
+int UnMap_TempReg (BLOCK_SECTION*Section) {
 	int count;
-	for (count=0; count<10; count ++) {
+	for (count=0; count<10; count++) {
 		if (x86Mapped(count)==Temp_Mapped) {
 			if (x86Protected(count)==FALSE) {
 				x86Mapped(count)=NotMapped;
@@ -1008,7 +1008,7 @@ int UnMap_TempReg (BLOCK_SECTION * Section) {
 	}
 	return -1;
 }
-BOOL UnMap_X86reg (BLOCK_SECTION * Section,DWORD x86Reg) {
+BOOL UnMap_X86reg (BLOCK_SECTION*Section,DWORD x86Reg) {
 	int count;
 	if (x86Mapped(x86Reg)==NotMapped&&x86Protected(x86Reg)==FALSE) return TRUE;
 	if (x86Mapped(x86Reg)==Temp_Mapped) {
@@ -1018,7 +1018,7 @@ BOOL UnMap_X86reg (BLOCK_SECTION * Section,DWORD x86Reg) {
 		}
 		return FALSE;
 	}
-	for (count=1; count<32; count ++) {
+	for (count=1; count<32; count++) {
 		if (IsMapped(count)) {
 			if (Is64Bit(count)) {
 				if (MipsRegHi(count)==x86Reg) {
@@ -1045,7 +1045,7 @@ BOOL UnMap_X86reg (BLOCK_SECTION * Section,DWORD x86Reg) {
 	}
 	return FALSE;
 }
-void UnProtectGPR(BLOCK_SECTION * Section,DWORD Reg) {
+void UnProtectGPR(BLOCK_SECTION*Section,DWORD Reg) {
 	if (IsUnknown(Reg)||IsConst(Reg)) return;
 	if (Is64Bit(Reg)) {
 		x86Protected(MipsRegHi(Reg))=FALSE;
@@ -1067,17 +1067,17 @@ void UpdateFieldSerration(int interlaced)
 	ViFieldSerration ^=1;
 	ViFieldSerration&=interlaced;
 }
-void WriteBackRegisters (BLOCK_SECTION * Section) {
+void WriteBackRegisters (BLOCK_SECTION*Section) {
 	int count;
 	BOOL bEdiZero=FALSE;
 	BOOL bEsiSign=FALSE;
-	/*** coming soon ***/
+	/***coming soon***/
 	BOOL bEaxGprLo=FALSE;
 	BOOL bEbxGprHi=FALSE;
-	for (count=1; count<10; count ++) { x86Protected(count)=FALSE; }
-	for (count=1; count<10; count ++) { UnMap_X86reg (Section,count); }
+	for (count=1; count<10; count++) { x86Protected(count)=FALSE; }
+	for (count=1; count<10; count++) { UnMap_X86reg (Section,count); }
 	/*************************************/
-	for (count=1; count<32; count ++) {
+	for (count=1; count<32; count++) {
 		switch (MipsRegState(count)) {
 		case STATE_CONST_32:
 			if (!bEdiZero&&(!MipsRegLo(count)||!(MipsRegLo(count)&0x80000000))) {

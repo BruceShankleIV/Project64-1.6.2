@@ -1,15 +1,15 @@
 #if defined(__cplusplus)
 extern "C" {
 #endif
-void LoadLanguage       (char * RegLocation);
+void LoadLanguage       (char*RegLocation);
 void CreateLangList     (HMENU hMenu,int uPosition,int MenuID);
 void SelectLangMenuItem (HMENU hMenu,int LangMenuID);
-char * GS               (int StringID);
+char*GS               (int StringID);
 #if defined(__cplusplus)
 }
 #endif
 /*********************************************************************************
-* Meta Information                                                               *
+*Meta Information                                                              *
 *********************************************************************************/
 #define LANGUAGE_NAME	                1
 #define LANGUAGE_AUTHOR	                2
@@ -94,7 +94,7 @@ char * GS               (int StringID);
 #define MENUDES_UNINSTALLAPP	79
 #define MSG_LOADED_STATE		80
 /*********************************************************************************
-* Rom Browser                                                                    *
+*Rom Browser                                                                   *
 *********************************************************************************/
 //Rom Browser Fields
 #define RB_FILENAME			81
@@ -111,7 +111,7 @@ char * GS               (int StringID);
 #define UNKNOWN		        91
 #define FIFTYNINEHERTZ_LANG		92
 /*********************************************************************************
-* Options                                                                        *
+*Options                                                                       *
 *********************************************************************************/
 #define TAB_PLUGIN			93
 #define TAB_DIRECTORY			94
@@ -197,7 +197,7 @@ char * GS               (int StringID);
 #define NOTE_CORE			168
 #define NOTE_PLUGIN			169
 /*********************************************************************************
-* ROM Information                                                                *
+*ROM Information                                                               *
 *********************************************************************************/
 //Rom Info Title
 #define INFO_TITLE			170
@@ -211,7 +211,7 @@ char * GS               (int StringID);
 #define INFO_CIC_CHIP_TEXT		178
 #define ROM_ALIGN_DMA			179
 /*********************************************************************************
-* Messages                                                                       *
+*Messages                                                                      *
 *********************************************************************************/
 #define MSG_CPU_PAUSED			180
 #define MSG_CPU_RESUMED			181

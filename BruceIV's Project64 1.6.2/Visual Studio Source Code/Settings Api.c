@@ -1,28 +1,28 @@
 /*
- * Project 64 - A Nintendo 64 emulator.
- *
- * (c) Copyright 2001 zilmar (zilmar@emulation64.com) and
- * Jabo (jabo@emulation64.com).
- *
- * pj64 homepage: www.pj64.net
- *
- * Permission to use, copy, modify and distribute Project64 in both binary and
- * source form, for non-commercial purposes, is hereby granted without fee,
- * providing that this license information and copyright notice appear with
- * all copies and any derived work.
- *
- * This software is provided 'as-is', without any express or implied
- * warranty. In no event shall the authors be held liable for any damages
- * arising from the use of this software.
- *
- * Project64 is freeware for PERSONAL USE only. Commercial users should
- * seek permission of the copyright holders first. Commercial use includes
- * charging money for Project64 or software derived from Project64.
- *
- * The copyright holders request that bug fixes and improvements to the code
- * should be forwarded to them so if they want them.
- *
- */
+*Project 64 - A Nintendo 64 emulator.
+*
+*(c) Copyright 2001 zilmar (zilmar@emulation64.com) and
+*Jabo (jabo@emulation64.com).
+*
+*pj64 homepage: www.pj64.net
+*
+*Permission to use, copy, modify and distribute Project64 in both binary and
+*source form, for non-commercial purposes, is hereby granted without fee,
+*providing that this license information and copyright notice appear with
+*all copies and any derived work.
+*
+*This software is provided 'as-is', without any express or implied
+*warranty. In no event shall the authors be held liable for any damages
+*arising from the use of this software.
+*
+*Project64 is freeware for PERSONAL USE only. Commercial users should
+*seek permission of the copyright holders first. Commercial use includes
+*charging money for Project64 or software derived from Project64.
+*
+*The copyright holders request that bug fixes and improvements to the code
+*should be forwarded to them so if they want them.
+*
+*/
 #include <Windows.h>
 #include <stdio.h>
 #include <string.h>
@@ -30,25 +30,25 @@
 #include <malloc.h>
 #include "Main.h"
 #ifdef WIN32
-char * LineFeed="\r\n";
+char*LineFeed="\r\n";
 #else
-char * LineFeed="\n";
+char*LineFeed="\n";
 #endif
-int AsciiToInt(char * String,int Maxlen) {
+int AsciiToInt(char*String,int Maxlen) {
 	int result=0;
 	for(; Maxlen&&*String==' '; Maxlen--,String++);
 	while(Maxlen--) {
 		if(isdigit(*String)) {
-			result=result * 10+(*String-'0');
+			result=result*10+(*String-'0');
 		}
 		String++;
 	}
 	return(result);
 }
-int fGetString(FILE * File,char * String,int MaxLen) {
+int fGetString(FILE*File,char*String,int MaxLen) {
 	int count;
 	if (String==NULL||MaxLen<1) return -1;
-	for (count=0; count<(MaxLen-1); count ++) {
+	for (count=0; count<(MaxLen-1); count++) {
 		int result;
 		result=fgetc(File);
 		if (result==EOF||result==10) {
@@ -63,7 +63,7 @@ int fGetString(FILE * File,char * String,int MaxLen) {
 	String[MaxLen]='\0';
 	return MaxLen-1;
 }
-int fGetString2(FILE * File,char **String,BYTE **Data,int * DataSize,int *Left) {
+int fGetString2(FILE*File,char**String,BYTE**Data,int*DataSize,int*Left) {
 #define BufferIncrease	1024
 	int dwRead=BufferIncrease;
 	if (*DataSize==0) {
@@ -73,7 +73,7 @@ int fGetString2(FILE * File,char **String,BYTE **Data,int * DataSize,int *Left) 
 	}
 	for (;;) {
 		int count;
-		for (count=0; count<*Left; count ++) {
+		for (count=0; count<*Left; count++) {
 			if ((*Data)[count]=='\n') {
 				if (*String!=NULL) {
 					free(*String);
@@ -91,18 +91,18 @@ int fGetString2(FILE * File,char **String,BYTE **Data,int * DataSize,int *Left) 
 		}
 		if (dwRead==0) { return -1; }
 		if ((*DataSize-*Left)==0) {
-			*DataSize +=BufferIncrease;
-			*Data=(BYTE *)realloc(*Data,*DataSize);
+			*DataSize+=BufferIncrease;
+			*Data=(BYTE*)realloc(*Data,*DataSize);
 			if (*Data==NULL) {
 				DisplayError(GS(MSG_MEM_ALLOC_ERROR));
 				return -1;
 			}
 		}
 		dwRead=fread(&((*Data)[*Left]),1,*DataSize-*Left,File);
-		*Left +=dwRead;
+		*Left+=dwRead;
 	}
 }
-void fInsertSpaces(FILE * File,int Pos,int NoOfSpaces) {
+void fInsertSpaces(FILE*File,int Pos,int NoOfSpaces) {
 #define fIS_MvSize 0x1000
 	unsigned char Data[fIS_MvSize+1];
 	int SizeToRead,result;
@@ -114,7 +114,7 @@ void fInsertSpaces(FILE * File,int Pos,int NoOfSpaces) {
 			SizeToRead=end-Pos;
 			if (SizeToRead>fIS_MvSize) { SizeToRead=fIS_MvSize; }
 			if (SizeToRead>0) {
-				fseek(File,SizeToRead * -1,SEEK_CUR);
+				fseek(File,SizeToRead*-1,SEEK_CUR);
 				WritePos=ftell(File);
 				memset(Data,0,sizeof(Data));
 				fread(Data,SizeToRead,1,File);
@@ -127,7 +127,7 @@ void fInsertSpaces(FILE * File,int Pos,int NoOfSpaces) {
 			}
 		} while (SizeToRead>0);
 	} if (NoOfSpaces<0) {
-		int ReadPos=Pos+(NoOfSpaces * -1);
+		int ReadPos=Pos+(NoOfSpaces*-1);
 		int WritePos=Pos;
 		do {
 			SizeToRead=end-ReadPos;
@@ -136,24 +136,24 @@ void fInsertSpaces(FILE * File,int Pos,int NoOfSpaces) {
 			fread(Data,SizeToRead,1,File);
 			fseek(File,WritePos,SEEK_SET);
 			fwrite(Data,SizeToRead,1,File);
-			ReadPos +=SizeToRead;
-			WritePos +=SizeToRead;
+			ReadPos+=SizeToRead;
+			WritePos+=SizeToRead;
 		} while (SizeToRead>0);
 		fseek(File,WritePos,SEEK_SET);
-		fprintf(File,"%*c",(NoOfSpaces * -1),' ');
+		fprintf(File,"%*c",(NoOfSpaces*-1),' ');
 	}
 }
 unsigned int _GetPrivateProfileInt(
-  const char * lpAppName, // address of section name
-  const char * lpKeyName, // address of key name
+  const char*lpAppName, // address of section name
+  const char*lpKeyName, // address of key name
   int nDefault,      // return value if key name is not found
-  const char * lpFileName  // address of initialization filename
+  const char*lpFileName  // address of initialization filename
 )
 {
-	char *Input=NULL,*Data=NULL,* Pos,CurrentSection[300];
+	char*Input=NULL,*Data=NULL,*Pos,CurrentSection[300];
 	int DataLen=0,DataLeft,result,count;
 	static long Fpos=0;
-	FILE * fInput;
+	FILE*fInput;
 	fInput=fopen(lpFileName,"rb");
 	if (fInput==NULL) { goto GetPrivateProfileString_ReturnDefault; }
 	CurrentSection[0]=0;
@@ -165,7 +165,7 @@ unsigned int _GetPrivateProfileInt(
 		while (Pos!=NULL) {
 			Pos=strchr(Pos,'/');
 			if (Pos!=NULL) {
-				if (Pos[1]=='/') { Pos[0]=0; } else { Pos +=1; }
+				if (Pos[1]=='/') { Pos[0]=0; } else { Pos+=1; }
 			}
 		}
 		for (count=strlen(&Input[0])-1; count>=0; count --) {
@@ -197,7 +197,7 @@ unsigned int _GetPrivateProfileInt(
 		while (Pos!=NULL) {
 			Pos=strchr(Pos,'/');
 			if (Pos!=NULL) {
-				if (Pos[1]=='/') { Pos[0]=0; } else { Pos +=1; }
+				if (Pos[1]=='/') { Pos[0]=0; } else { Pos+=1; }
 			}
 		}
 		for (count=strlen(&Input[0])-1; count>=0; count --) {
@@ -231,18 +231,18 @@ unsigned int _GetPrivateProfileInt(
 	return nDefault;
 }
 unsigned int _GetPrivateProfileString(
-  const char * lpAppName,       // points to section name
-  const char * lpKeyName,       // points to key name
-  const char * lpDefault,       // points to default string
-  char		 * lpReturnedString,// points to destination buffer
+  const char*lpAppName,       // points to section name
+  const char*lpKeyName,       // points to key name
+  const char*lpDefault,       // points to default string
+  char		*lpReturnedString,// points to destination buffer
   unsigned int nSize,           // size of destination buffer
-  const char * lpFileName        // points to initialization filename
+  const char*lpFileName        // points to initialization filename
 )
 {
-	char *Input=NULL,*Data=NULL,* Pos,CurrentSection[300];
+	char*Input=NULL,*Data=NULL,*Pos,CurrentSection[300];
 	int DataLen=0,DataLeft,result,count;
 	static long Fpos=0;
-	FILE * fInput;
+	FILE*fInput;
 	if (lpFileName==NULL) { return (unsigned int)&Fpos; }
 	fInput=fopen(lpFileName,"rb");
 	if (fInput==NULL) { goto GetPrivateProfileString_ReturnDefault; }
@@ -255,7 +255,7 @@ unsigned int _GetPrivateProfileString(
 		while (Pos!=NULL) {
 			Pos=strchr(Pos,'/');
 			if (Pos!=NULL) {
-				if (Pos[1]=='/') { Pos[0]=0; } else { Pos +=1; }
+				if (Pos[1]=='/') { Pos[0]=0; } else { Pos+=1; }
 			}
 		}
 		for (count=strlen(&Input[0])-1; count>=0; count --) {
@@ -287,7 +287,7 @@ unsigned int _GetPrivateProfileString(
 		while (Pos!=NULL) {
 			Pos=strchr(Pos,'/');
 			if (Pos!=NULL) {
-				if (Pos[1]=='/') { Pos[0]=0; } else { Pos +=1; }
+				if (Pos[1]=='/') { Pos[0]=0; } else { Pos+=1; }
 			}
 		}
 		for (count=strlen(&Input[0])-1; count>=0; count --) {
@@ -325,17 +325,17 @@ unsigned int _GetPrivateProfileString(
 	return strlen(lpReturnedString);
 }
 unsigned int _GetPrivateProfileString2(
-  const char * lpAppName,       // points to section name
-  const char * lpKeyName,       // points to key name
-  const char * lpDefault,       // points to default string
-  char		** lpReturnedString,// points to destination buffer
-  const char * lpFileName        // points to initialization filename
+  const char*lpAppName,       // points to section name
+  const char*lpKeyName,       // points to key name
+  const char*lpDefault,       // points to default string
+  char		**lpReturnedString,// points to destination buffer
+  const char*lpFileName        // points to initialization filename
  )
 {
-	char *Input=NULL,*Data=NULL,* Pos,CurrentSection[300];
+	char*Input=NULL,*Data=NULL,*Pos,CurrentSection[300];
 	int DataLen=0,DataLeft,result,count,len;
 	static long Fpos=0;
-	FILE * fInput;
+	FILE*fInput;
 	fInput=fopen(lpFileName,"rb");
 	if (fInput==NULL) { goto GetPrivateProfileString_ReturnDefault2; }
 	CurrentSection[0]=0;
@@ -347,7 +347,7 @@ unsigned int _GetPrivateProfileString2(
 		while (Pos!=NULL) {
 			Pos=strchr(Pos,'/');
 			if (Pos!=NULL) {
-				if (Pos[1]=='/') { Pos[0]=0; } else { Pos +=1; }
+				if (Pos[1]=='/') { Pos[0]=0; } else { Pos+=1; }
 			}
 		}
 		for (count=strlen(&Input[0])-1; count>=0; count --) {
@@ -379,7 +379,7 @@ unsigned int _GetPrivateProfileString2(
 		while (Pos!=NULL) {
 			Pos=strchr(Pos,'/');
 			if (Pos!=NULL) {
-				if (Pos[1]=='/') { Pos[0]=0; } else { Pos +=1; }
+				if (Pos[1]=='/') { Pos[0]=0; } else { Pos+=1; }
 			}
 		}
 		for (count=strlen(&Input[0])-1; count>=0; count --) {
@@ -421,16 +421,16 @@ unsigned int _GetPrivateProfileString2(
 	return len;
 }
 int _DeletePrivateProfileString(
-  const char * lpAppName, // pointer to section name
-  const char * lpKeyName, // pointer to key name
-  const char * lpFileName  // pointer to initialization filename
+  const char*lpAppName, // pointer to section name
+  const char*lpKeyName, // pointer to key name
+  const char*lpFileName  // pointer to initialization filename
 )
 {
-	char *Input=NULL,*Data=NULL,* Pos,CurrentSection[300];
+	char*Input=NULL,*Data=NULL,*Pos,CurrentSection[300];
 	int DataLen=0,DataLeft,result,count;
 	static long Fpos=0;
 	long WritePos;
-	FILE * fInput;
+	FILE*fInput;
 	fInput=fopen(lpFileName,"r+b");
 	if (fInput==NULL) {
 		fInput=fopen(lpFileName,"w+b");
@@ -447,7 +447,7 @@ int _DeletePrivateProfileString(
 		while (Pos!=NULL) {
 			Pos=strchr(Pos,'/');
 			if (Pos!=NULL) {
-				if (Pos[1]=='/') { Pos[0]=0; } else { Pos +=1; }
+				if (Pos[1]=='/') { Pos[0]=0; } else { Pos+=1; }
 			}
 		}
 		for (count=strlen(&Input[0])-1; count>=0; count --) {
@@ -495,17 +495,17 @@ int _DeletePrivateProfileString(
 	return 0;
 }
 int _WritePrivateProfileString(
-  const char * lpAppName, // pointer to section name
-  const char * lpKeyName, // pointer to key name
-  const char * lpString,  // pointer to string to add
-  const char * lpFileName  // pointer to initialization filename
+  const char*lpAppName, // pointer to section name
+  const char*lpKeyName, // pointer to key name
+  const char*lpString,  // pointer to string to add
+  const char*lpFileName  // pointer to initialization filename
 )
 {
-	char *Input=NULL,*Data=NULL,* Pos,CurrentSection[300];
+	char*Input=NULL,*Data=NULL,*Pos,CurrentSection[300];
 	int DataLen=0,DataLeft,result,count;
 	static long Fpos=0;
 	long WritePos;
-	FILE * fInput;
+	FILE*fInput;
 	fInput=fopen(lpFileName,"r+b");
 	if (fInput==NULL) {
 		fInput=fopen(lpFileName,"w+b");
@@ -522,7 +522,7 @@ int _WritePrivateProfileString(
 		while (Pos!=NULL) {
 			Pos=strchr(Pos,'/');
 			if (Pos!=NULL) {
-				if (Pos[1]=='/') { Pos[0]=0; } else { Pos +=1; }
+				if (Pos[1]=='/') { Pos[0]=0; } else { Pos+=1; }
 			}
 		}
 		for (count=strlen(&Input[0])-1; count>=0; count --) {
@@ -589,21 +589,21 @@ int _WritePrivateProfileString(
 	return 0;
 }
 unsigned int _GetPrivateProfileSectionNames(									//added by Witten
-  const char * lpszReturnBuffer,	// address of return buffer
+  const char*lpszReturnBuffer,	// address of return buffer
   DWORD nSize,						// size of destination buffer
-  const char * lpFileName			// address of initialization filename
+  const char*lpFileName			// address of initialization filename
 )
 {
 	static long Fpos=0;
-	FILE * fInput;
+	FILE*fInput;
 	char String[2048],Section[256];
 	int pos=0;
-	char *buf;
-	char *seekpos;
+	char*buf;
+	char*seekpos;
 	if (lpFileName==NULL) { return (unsigned int)&Fpos; }
 	fInput=fopen(lpFileName,"rb");
 	if (fInput==NULL) { goto GetPrivateProfileSectionNames_ReturnDefault; }
-	buf=(char *)lpszReturnBuffer;
+	buf=(char*)lpszReturnBuffer;
 	memset(buf,'\n',nSize);
 	memset(String,'\0',sizeof(String));
 	memset(Section,'\0',sizeof(Section));
@@ -612,7 +612,7 @@ unsigned int _GetPrivateProfileSectionNames(									//added by Witten
 		if (String[0]=='[') {
 			if(String[strlen(String)-3]==']') {
 				strncpy(buf+pos,String+1,strlen(String)-4);
-				pos +=strlen(String)-3;
+				pos+=strlen(String)-3;
 			}
 		}
 		memset(String,'\0',sizeof(String));

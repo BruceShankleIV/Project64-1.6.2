@@ -391,11 +391,6 @@ and showing you what emulation options are enabled for the game, what emulation 
 the game, and what emulation options are forced ON or forced OFF due to another setting. This section of
 the guide shall give you a quick rundown on the default settings tab and all the ROM Settings!
 
-Note: You can fine-tune default settings for better compatibility by setting Register Caching OFF,
-and Counter Factor set to 1. However, Register Caching ON is usually good to get better framerate,
-and Counter Factor set to 1 can cause crashes or failure to boot. However, Counter Factor set to 2
-causes flickering (see Paper Mario), longer load times, and an extremely significant lag increase.
-
 Save Type: Varies by default
 The emulator usually correctly figures out the right save type but assumes 4kbit for EEPROM, not 16kbit.
 This means all games which require 16kbit EEPROM need to have the save type manually set in the Game.ini
@@ -485,6 +480,12 @@ Protect Memory only when needed.
 
 CPU RECOMPILER SETTINGS FROM HERE (DISABLED IF CPU RECOMPILER IS OFF)
 
+Note: Most settings below this point for the CPU Recompiler are purely for the sake of optimization, but
+sometimes one does need to be specifically enabled or disabled, depending on the game. TLB should be off
+for certain ROMhacks with hardware issues. CF1-->0 can be used to get a game to run at the correct speed
+like GB Tower. Register Caching forced to OFF can avoid sound issues like it would cause in Buck Bumble.
+There are more examples, that's just what I recall off my head during testing to give you an idea of it.
+
 
 CF1-->0: By default, on
 * Forced off if Counter Factor not set to 1
@@ -504,13 +505,10 @@ This is a self-modifying code method which can provide a significant performance
 and fix some crashes, but can cause worse performance, severe slowdown, or interruption! An example of a
 game which has performance benefits from this setting is Super Mario 64 or Rat Attack.
 
-Register Caching: By default, off but changeable from the advanced tab
-Having this setting ON will greatly improve performance for most games, but does not always behave right
-with plugins (causing them to fail to properly initialize) and can break sound or graphics in some cases
-which is why this setting is OFF by default and suggested to stay off. Having this setting off will also
-display potential points of a crash on real hardware instead of silently masking them. Suggest you don't
-mess with the setting unless you really need extra speed and know it won't hurt you or if you experience
-a lot of crash warning messages which can be skipped over without issue with the setting set ON instead.
+Register Caching: By default, on but changeable from the advanced tab
+Usually boosts performance without causing any negative side effects. If there is some strange behavior,
+try turning this setting off. Strange behavior includes warping textures going all over the place, wrong
+audio, scenes being loaded incorrectly. But 99% of the time this is just a pure performance enhancement.
 
 
 

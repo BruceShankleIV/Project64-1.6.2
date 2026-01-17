@@ -1,28 +1,28 @@
 /*
- * Project 64 - A Nintendo 64 emulator.
- *
- * (c) Copyright 2001 zilmar (zilmar@emulation64.com) and
- * Jabo (jabo@emulation64.com).
- *
- * pj64 homepage: www.pj64.net
- *
- * Permission to use, copy, modify and distribute Project64 in both binary and
- * source form, for non-commercial purposes, is hereby granted without fee,
- * providing that this license information and copyright notice appear with
- * all copies and any derived work.
- *
- * This software is provided 'as-is', without any express or implied
- * warranty. In no event shall the authors be held liable for any damages
- * arising from the use of this software.
- *
- * Project64 is freeware for PERSONAL USE only. Commercial users should
- * seek permission of the copyright holders first. Commercial use includes
- * charging money for Project64 or software derived from Project64.
- *
- * The copyright holders request that bug fixes and improvements to the code
- * should be forwarded to them so if they want them.
- *
- */
+*Project 64 - A Nintendo 64 emulator.
+*
+*(c) Copyright 2001 zilmar (zilmar@emulation64.com) and
+*Jabo (jabo@emulation64.com).
+*
+*pj64 homepage: www.pj64.net
+*
+*Permission to use, copy, modify and distribute Project64 in both binary and
+*source form, for non-commercial purposes, is hereby granted without fee,
+*providing that this license information and copyright notice appear with
+*all copies and any derived work.
+*
+*This software is provided 'as-is', without any express or implied
+*warranty. In no event shall the authors be held liable for any damages
+*arising from the use of this software.
+*
+*Project64 is freeware for PERSONAL USE only. Commercial users should
+*seek permission of the copyright holders first. Commercial use includes
+*charging money for Project64 or software derived from Project64.
+*
+*The copyright holders request that bug fixes and improvements to the code
+*should be forwarded to them so if they want them.
+*
+*/
 #define MaxCodeBlocks			50000
 #define MaxOrigMem				65000
 #define NotMapped				0
@@ -98,60 +98,60 @@ typedef struct {
 } REG_INFO;
 typedef struct {
 	DWORD		TargetPC;
-	BYTE *		LinkLocation;
-	BYTE *		LinkLocation2;
+	BYTE*		LinkLocation;
+	BYTE*		LinkLocation2;
 	BOOL		FallThrough;
 	BOOL		PermLoop;
 	BOOL		DoneDelaySlot;
 	REG_INFO	RegSet;
 } JUMP_INFO;
 typedef struct {
-	/* Block Connection info */
-	void **		ParentSection;
-	void *		ContinueSection;
-	void *		JumpSection;
-	BYTE *		CompiledLocation;
+	/*Block Connection info*/
+	void**		ParentSection;
+	void*		ContinueSection;
+	void*		JumpSection;
+	BYTE*		CompiledLocation;
 	DWORD		SectionID;
 	DWORD		Test;
 	DWORD		Test2;
 	BOOL		InLoop;
 	DWORD		StartPC;
 	DWORD		CompilePC;
-	/* Register Info */
+	/*Register Info*/
 	REG_INFO	RegStart;
 	REG_INFO	RegWorking;
-	/* Jump Info */
+	/*Jump Info*/
 	JUMP_INFO   Jump;
 	JUMP_INFO   Cont;
 } BLOCK_SECTION;
 typedef struct {
-	BLOCK_SECTION * Parent;
-	JUMP_INFO     * JumpInfo;
+	BLOCK_SECTION*Parent;
+	JUMP_INFO    *JumpInfo;
 } BLOCK_PARENT;
 typedef struct {
 	DWORD    TargetPC;
 	REG_INFO ExitRegSet;
 	int      reason;
 	int      NextInstruction;
-	BYTE *   JumpLoc; //32bit jump
+	BYTE*  JumpLoc; //32bit jump
 } EXIT_INFO;
 typedef struct {
 	DWORD	 	  StartVAddr;
-	BYTE *		  CompiledLocation;
+	BYTE*		  CompiledLocation;
 	int           NoOfSections;
 	BLOCK_SECTION BlockInfo;
-	EXIT_INFO  ** ExitInfo;
+	EXIT_INFO **ExitInfo;
 	int           ExitCount;
 } BLOCK_INFO;
 typedef struct {
-	void * CodeBlock;
+	void*CodeBlock;
 	QWORD  OriginalMemory;
 } TARGET_INFO;
 typedef struct {
 	DWORD PAddr;
 	DWORD VAddr;
 	DWORD OriginalValue;
-	void * CompiledLocation;
+	void*CompiledLocation;
 } ORIGINAL_MEMMARKER;
 struct {
 	DWORD NoOfRDRAMBlocks[2048];
@@ -159,18 +159,18 @@ struct {
 	DWORD NoOfIMEMBlocks;
 	DWORD NoOfPifRomBlocks;
 } N64_Blocks;
-BYTE *Compiler4300iBlock    (void);
-BYTE *CompileDelaySlot      (void);
+BYTE*Compiler4300iBlock    (void);
+BYTE*CompileDelaySlot      (void);
 void CompileExit            (DWORD TargetPC,REG_INFO ExitRegSet,int reason,int CompileNow,void (*x86Jmp)(DWORD Value));
 void CompileSystemCheck     (DWORD TimerModifier,DWORD TargetPC,REG_INFO RegSet);
 void FixRandomReg           (void);
-void FreeSection            (BLOCK_SECTION * Section,BLOCK_SECTION * Parent);
+void FreeSection            (BLOCK_SECTION*Section,BLOCK_SECTION*Parent);
 void StartRecompilerCPU     (void);
-void GenerateSectionLinkage (BLOCK_SECTION * Section);
+void GenerateSectionLinkage (BLOCK_SECTION*Section);
 void InitializeInitialCompilerVariable (void);
 extern DWORD TLBLoadAddress,TargetIndex;
-extern ORIGINAL_MEMMARKER * OrigMem;
-extern TARGET_INFO * TargetInfo;
+extern ORIGINAL_MEMMARKER*OrigMem;
+extern TARGET_INFO*TargetInfo;
 extern WORD FPU_RoundingMode;
-#define SetJump32(Loc,JumpLoc) *(DWORD *)(Loc)=(DWORD)(((DWORD)(JumpLoc))-(((DWORD)(Loc))+4));
-#define SetJump8(Loc,JumpLoc)  *(BYTE  *)(Loc)=(BYTE)(((BYTE)(JumpLoc))-(((BYTE)(Loc))+1));
+#define SetJump32(Loc,JumpLoc)*(DWORD*)(Loc)=(DWORD)(((DWORD)(JumpLoc))-(((DWORD)(Loc))+4));
+#define SetJump8(Loc,JumpLoc) *(BYTE *)(Loc)=(BYTE)(((BYTE)(JumpLoc))-(((BYTE)(Loc))+1));

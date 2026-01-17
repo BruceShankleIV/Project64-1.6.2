@@ -1,29 +1,29 @@
 /*
- * Project 64 - A Nintendo 64 emulator.
- *
- * (c) Copyright 2001 zilmar (zilmar@emulation64.com) and
- * Jabo (jabo@emulation64.com).
- *
- * pj64 homepage: www.pj64.net
- *
- * Permission to use, copy, modify and distribute Project64 in both binary and
- * source form, for non-commercial purposes, is hereby granted without fee,
- * providing that this license information and copyright notice appear with
- * all copies and any derived work.
- *
- * This software is provided 'as-is', without any express or implied
- * warranty. In no event shall the authors be held liable for any damages
- * arising from the use of this software.
- *
- * Project64 is freeware for PERSONAL USE only. Commercial users should
- * seek permission of the copyright holders first. Commercial use includes
- * charging money for Project64 or software derived from Project64.
- *
- * The copyright holders request that bug fixes and improvements to the code
- * should be forwarded to them so if they want them.
- *
- */
-/************************* OpCode functions *************************/
+*Project 64 - A Nintendo 64 emulator.
+*
+*(c) Copyright 2001 zilmar (zilmar@emulation64.com) and
+*Jabo (jabo@emulation64.com).
+*
+*pj64 homepage: www.pj64.net
+*
+*Permission to use, copy, modify and distribute Project64 in both binary and
+*source form, for non-commercial purposes, is hereby granted without fee,
+*providing that this license information and copyright notice appear with
+*all copies and any derived work.
+*
+*This software is provided 'as-is', without any express or implied
+*warranty. In no event shall the authors be held liable for any damages
+*arising from the use of this software.
+*
+*Project64 is freeware for PERSONAL USE only. Commercial users should
+*seek permission of the copyright holders first. Commercial use includes
+*charging money for Project64 or software derived from Project64.
+*
+*The copyright holders request that bug fixes and improvements to the code
+*should be forwarded to them so if they want them.
+*
+*/
+/*************************OpCode functions*************************/
 void _fastcall r4300i_J              (void);
 void _fastcall r4300i_JAL            (void);
 void _fastcall r4300i_BNE            (void);
@@ -68,7 +68,7 @@ void _fastcall r4300i_SC             (void);
 void _fastcall r4300i_SWC1           (void);
 void _fastcall r4300i_SDC1           (void);
 void _fastcall r4300i_SD             (void);
-/********************** R4300i OpCodes: Special **********************/
+/**********************R4300i OpCodes: Special**********************/
 void _fastcall r4300i_SPECIAL_SLL    (void);
 void _fastcall r4300i_SPECIAL_SRL    (void);
 void _fastcall r4300i_SPECIAL_SRA    (void);
@@ -114,35 +114,35 @@ void _fastcall r4300i_SPECIAL_DSRA   (void);
 void _fastcall r4300i_SPECIAL_DSLL32 (void);
 void _fastcall r4300i_SPECIAL_DSRL32 (void);
 void _fastcall r4300i_SPECIAL_DSRA32 (void);
-/********************** R4300i OpCodes: RegImm **********************/
+/**********************R4300i OpCodes: RegImm**********************/
 void _fastcall r4300i_REGIMM_BLTZ    (void);
 void _fastcall r4300i_REGIMM_BGEZ    (void);
 void _fastcall r4300i_REGIMM_BLTZL   (void);
 void _fastcall r4300i_REGIMM_BGEZL   (void);
 void _fastcall r4300i_REGIMM_BLTZAL  (void);
 void _fastcall r4300i_REGIMM_BGEZAL  (void);
-/************************** COP0 functions **************************/
+/**************************COP0 functions**************************/
 void _fastcall r4300i_COP0_MF        (void);
 void _fastcall r4300i_COP0_MT        (void);
-/************************** COP0 CO functions ***********************/
+/**************************COP0 CO functions***********************/
 void _fastcall r4300i_COP0_CO_TLBR   (void);
 void _fastcall r4300i_COP0_CO_TLBWI  (void);
 void _fastcall r4300i_COP0_CO_TLBWR  (void);
 void _fastcall r4300i_COP0_CO_TLBP   (void);
 void _fastcall r4300i_COP0_CO_ERET   (void);
-/************************** COP1 functions **************************/
+/**************************COP1 functions**************************/
 void _fastcall r4300i_COP1_MF        (void);
 void _fastcall r4300i_COP1_DMF       (void);
 void _fastcall r4300i_COP1_CF        (void);
 void _fastcall r4300i_COP1_MT        (void);
 void _fastcall r4300i_COP1_DMT       (void);
 void _fastcall r4300i_COP1_CT        (void);
-/************************* COP1: BC1 functions ***********************/
+/*************************COP1: BC1 functions***********************/
 void _fastcall r4300i_COP1_BC_BCF       (void);
 void _fastcall r4300i_COP1_BC_BCT       (void);
 void _fastcall r4300i_COP1_BC_BCFL      (void);
 void _fastcall r4300i_COP1_BC_BCTL      (void);
-/************************** COP1: S functions ************************/
+/**************************COP1: S functions************************/
 void _fastcall r4300i_COP1_S_ADD     (void);
 void _fastcall r4300i_COP1_S_SUB     (void);
 void _fastcall r4300i_COP1_S_MUL     (void);
@@ -162,7 +162,7 @@ void _fastcall r4300i_COP1_S_CVT_D   (void);
 void _fastcall r4300i_COP1_S_CVT_W   (void);
 void _fastcall r4300i_COP1_S_CVT_L   (void);
 void _fastcall r4300i_COP1_S_CMP     (void);
-/************************** COP1: D functions ************************/
+/**************************COP1: D functions************************/
 void _fastcall r4300i_COP1_D_ADD     (void);
 void _fastcall r4300i_COP1_D_SUB     (void);
 void _fastcall r4300i_COP1_D_MUL     (void);
@@ -182,13 +182,13 @@ void _fastcall r4300i_COP1_D_CVT_S   (void);
 void _fastcall r4300i_COP1_D_CVT_W   (void);
 void _fastcall r4300i_COP1_D_CVT_L   (void);
 void _fastcall r4300i_COP1_D_CMP     (void);
-/************************** COP1: W functions ************************/
+/**************************COP1: W functions************************/
 void _fastcall r4300i_COP1_W_CVT_S   (void);
 void _fastcall r4300i_COP1_W_CVT_D   (void);
-/************************** COP1: L functions ************************/
+/**************************COP1: L functions************************/
 void _fastcall r4300i_COP1_L_CVT_S   (void);
 void _fastcall r4300i_COP1_L_CVT_D   (void);
-/************************** Other functions **************************/
+/**************************Other functions**************************/
 extern DWORD SWL_MASK[4],SWR_MASK[4],LWL_MASK[4],LWR_MASK[4];
 extern int SWL_SHIFT[4],SWR_SHIFT[4],LWL_SHIFT[4],LWR_SHIFT[4];
 extern int RoundingModel;

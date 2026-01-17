@@ -1,28 +1,28 @@
 /*
- * Project 64 - A Nintendo 64 emulator.
- *
- * (c) Copyright 2001 zilmar (zilmar@emulation64.com) and
- * Jabo (jabo@emulation64.com).
- *
- * pj64 homepage: www.pj64.net
- *
- * Permission to use, copy, modify and distribute Project64 in both binary and
- * source form, for non-commercial purposes, is hereby granted without fee,
- * providing that this license information and copyright notice appear with
- * all copies and any derived work.
- *
- * This software is provided 'as-is', without any express or implied
- * warranty. In no event shall the authors be held liable for any damages
- * arising from the use of this software.
- *
- * Project64 is freeware for PERSONAL USE only. Commercial users should
- * seek permission of the copyright holders first. Commercial use includes
- * charging money for Project64 or software derived from Project64.
- *
- * The copyright holders request that bug fixes and improvements to the code
- * should be forwarded to them so if they want them.
- *
- */
+*Project 64 - A Nintendo 64 emulator.
+*
+*(c) Copyright 2001 zilmar (zilmar@emulation64.com) and
+*Jabo (jabo@emulation64.com).
+*
+*pj64 homepage: www.pj64.net
+*
+*Permission to use, copy, modify and distribute Project64 in both binary and
+*source form, for non-commercial purposes, is hereby granted without fee,
+*providing that this license information and copyright notice appear with
+*all copies and any derived work.
+*
+*This software is provided 'as-is', without any express or implied
+*warranty. In no event shall the authors be held liable for any damages
+*arising from the use of this software.
+*
+*Project64 is freeware for PERSONAL USE only. Commercial users should
+*seek permission of the copyright holders first. Commercial use includes
+*charging money for Project64 or software derived from Project64.
+*
+*The copyright holders request that bug fixes and improvements to the code
+*should be forwarded to them so if they want them.
+*
+*/
 #include <windows.h>
 #include <stdio.h>
 #include "Main.h"
@@ -31,14 +31,14 @@
 #include "N64 CIC-NUS-6105.h"
 #include "ROM Tools Common.h"
 #include "Real-Time Clock.h"
-void ProcessControllerCommand (int Control,BYTE * Command);
-void ReadControllerCommand (int Control,BYTE * Command);
+void ProcessControllerCommand (int Control,BYTE*Command);
+void ReadControllerCommand (int Control,BYTE*Command);
 BYTE PifRom[0x7C0],*PIF_Ram;
-int GetCicChipID (char * RomData) {
+int GetCicChipID (char*RomData) {
 	_int64 CRC=0;
 	int count;
-	for (count=0x40; count<0x1000; count +=4) {
-		CRC +=*(DWORD *)(RomData+count);
+	for (count=0x40; count<0x1000; count+=4) {
+		CRC+=*(DWORD*)(RomData+count);
 	}
 	switch (CRC) {
 	case 0x000000D0027FDF31:
@@ -63,24 +63,24 @@ void PifRamRead (void) {
 	if (PIF_Ram[0x3F]==0x2) {
 		char hold[32],resp[32]={0};
 		int i,j;
-		for (i=0,j=48; i<32; i +=2,j++)
+		for (i=0,j=48; i<32; i+=2,j++)
 		{
 			hold[i+1]=PIF_Ram[j] % 16;
 			hold[i]=PIF_Ram[j] / 16;
 		}
 		N64_CIC_NUS_6105(hold,resp,32-2);
-		for (i=48,j=0; i <=63; i++,j +=2) PIF_Ram[i]=resp[j] * 16+resp[j+1];
+		for (i=48,j=0; i <=63; i++,j+=2) PIF_Ram[i]=resp[j]*16+resp[j+1];
 		return;
 	}
 	do {
 		switch(PIF_Ram[CurPos]) {
 		case 0x00:
-			Channel +=1;
+			Channel+=1;
 			if (Channel>6) { CurPos=0x40; }
 			break;
 		case 0xFE: CurPos=0x40;
 		case 0xFF:
-		case 0xB4: case 0x56: case 0xB8: /* ??? */
+		case 0xB4: case 0x56: case 0xB8: /*???*/
 		break;
 		default:
 			if ((PIF_Ram[CurPos]&0xC0)==0) {
@@ -91,13 +91,13 @@ void PifRamRead (void) {
 						ReadControllerCommand(Channel,&PIF_Ram[CurPos]);
 					}
 				}
-				CurPos +=PIF_Ram[CurPos]+(PIF_Ram[CurPos+1]&0x3F)+1;
-				Channel +=1;
+				CurPos+=PIF_Ram[CurPos]+(PIF_Ram[CurPos+1]&0x3F)+1;
+				Channel+=1;
 			} else {
 				CurPos=0x40;
 			}
 		}
-		CurPos +=1;
+		CurPos+=1;
 	} while(CurPos<0x40);
 	if (ReadController) { ReadController(-1,NULL); }
 }
@@ -124,12 +124,12 @@ void PifRamWrite (void) {
 	for (CurPos=0; CurPos<0x40; CurPos++) {
 		switch(PIF_Ram[CurPos])	{
 		case 0x00:
-			Channel +=1;
+			Channel+=1;
 			if (Channel>6) { CurPos=0x40; }
 			break;
 		case 0xFE: CurPos=0x40;
 		case 0xFF:
-		case 0xB4: case 0x56: case 0xB8: /* ??? */
+		case 0xB4: case 0x56: case 0xB8: /*???*/
 		break;
 		default:
 			if ((PIF_Ram[CurPos]&0xC0)==0) {
@@ -142,8 +142,8 @@ void PifRamWrite (void) {
 				} else if (Channel==4) {
 					if (RTC_Command(&PIF_Ram[CurPos])==FALSE) EEPROMCommand(&PIF_Ram[CurPos]);
 				}
-				CurPos +=PIF_Ram[CurPos]+(PIF_Ram[CurPos+1]&0x3F)+1;
-				Channel +=1;
+				CurPos+=PIF_Ram[CurPos]+(PIF_Ram[CurPos+1]&0x3F)+1;
+				Channel+=1;
 			} else {
 				CurPos=0x40;
 			}
@@ -152,7 +152,7 @@ void PifRamWrite (void) {
 	PIF_Ram[0x3F]=0;
 	if (ControllerCommand) { ControllerCommand(-1,NULL); }
 }
-void ProcessControllerCommand (int Control,BYTE * Command) {
+void ProcessControllerCommand (int Control,BYTE*Command) {
 	switch (Command[2]) {
 	case 0x00: // check
 	case 0xFF: // reset&check ?
@@ -201,7 +201,7 @@ void ProcessControllerCommand (int Control,BYTE * Command) {
 			case PLUGIN_RAW: if (ControllerCommand) { ControllerCommand(Control,Command); } break;
 			case PLUGIN_RUMBLE_PAK:
 				if (RumbleCommand!=NULL) {
-					RumbleCommand(Control,*(BOOL *)(&Command[5]));
+					RumbleCommand(Control,*(BOOL*)(&Command[5]));
 					break;
 				}
 			default:
@@ -212,16 +212,16 @@ void ProcessControllerCommand (int Control,BYTE * Command) {
 		}
 	}
 }
-void ReadControllerCommand (int Control,BYTE * Command) {
+void ReadControllerCommand (int Control,BYTE*Command) {
 	switch (Command[2]) {
 	case 0x01: // read controller
 		if (Controllers[Control].Present==TRUE) {
 			if (GetKeys) {
 				BUTTONS Keys;
 				GetKeys(Control,&Keys);
-				*(DWORD *)&Command[3]=Keys.Value;
+				*(DWORD*)&Command[3]=Keys.Value;
 			} else {
-				*(DWORD *)&Command[3]=0;
+				*(DWORD*)&Command[3]=0;
 			}
 		}
 		break;

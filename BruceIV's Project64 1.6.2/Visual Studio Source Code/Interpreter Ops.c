@@ -1,28 +1,28 @@
 /*
- * Project 64 - A Nintendo 64 emulator.
- *
- * (c) Copyright 2001 zilmar (zilmar@emulation64.com) and
- * Jabo (jabo@emulation64.com).
- *
- * pj64 homepage: www.pj64.net
- *
- * Permission to use, copy, modify and distribute Project64 in both binary and
- * source form, for non-commercial purposes, is hereby granted without fee,
- * providing that this license information and copyright notice appear with
- * all copies and any derived work.
- *
- * This software is provided 'as-is', without any express or implied
- * warranty. In no event shall the authors be held liable for any damages
- * arising from the use of this software.
- *
- * Project64 is freeware for PERSONAL USE only. Commercial users should
- * seek permission of the copyright holders first. Commercial use includes
- * charging money for Project64 or software derived from Project64.
- *
- * The copyright holders request that bug fixes and improvements to the code
- * should be forwarded to them so if they want them.
- *
- */
+*Project 64 - A Nintendo 64 emulator.
+*
+*(c) Copyright 2001 zilmar (zilmar@emulation64.com) and
+*Jabo (jabo@emulation64.com).
+*
+*pj64 homepage: www.pj64.net
+*
+*Permission to use, copy, modify and distribute Project64 in both binary and
+*source form, for non-commercial purposes, is hereby granted without fee,
+*providing that this license information and copyright notice appear with
+*all copies and any derived work.
+*
+*This software is provided 'as-is', without any express or implied
+*warranty. In no event shall the authors be held liable for any damages
+*arising from the use of this software.
+*
+*Project64 is freeware for PERSONAL USE only. Commercial users should
+*seek permission of the copyright holders first. Commercial use includes
+*charging money for Project64 or software derived from Project64.
+*
+*The copyright holders request that bug fixes and improvements to the code
+*should be forwarded to them so if they want them.
+*
+*/
 #include <windows.h>
 #include <stdio.h>
 #include <math.h>
@@ -47,7 +47,7 @@ int RoundingModel=_RC_NEAR;
 	SetJump\
 	JumpToLocation=PROGRAM_COUNTER;\
 	return;
-/************************* OpCode functions *************************/
+/*************************OpCode functions*************************/
 void _fastcall r4300i_J (void) {
 	SetDelay
 	JumpToLocation=(PROGRAM_COUNTER&0xF0000000)+(Opcode.target<<2);
@@ -173,7 +173,7 @@ void _fastcall r4300i_LDL (void) {
 	Offset=Address&7;
 	if (!r4300i_LD_VAddr((Address&~7),&Value)) return;
 	GPR[Opcode.rt].DW=GPR[Opcode.rt].DW&LDL_MASK[Offset];
-	GPR[Opcode.rt].DW +=Value<<LDL_SHIFT[Offset];
+	GPR[Opcode.rt].DW+=Value<<LDL_SHIFT[Offset];
 }
 QWORD LDR_MASK[8]={ 0xFFFFFFFFFFFFFF00,0xFFFFFFFFFFFF0000,0xFFFFFFFFFF000000,0xFFFFFFFF00000000,0xFFFFFF0000000000,0xFFFF000000000000,0xFF00000000000000,0 };
 int LDR_SHIFT[8]={ 56,48,40,32,24,16,8,0 };
@@ -184,7 +184,7 @@ void _fastcall r4300i_LDR (void) {
 	Offset=Address&7;
 	if (!r4300i_LD_VAddr((Address&~7),&Value)) return;
 	GPR[Opcode.rt].DW=GPR[Opcode.rt].DW&LDR_MASK[Offset];
-	GPR[Opcode.rt].DW +=Value>>LDR_SHIFT[Offset];
+	GPR[Opcode.rt].DW+=Value>>LDR_SHIFT[Offset];
 }
 void _fastcall r4300i_LB (void) {
 	DWORD Address=GPR[Opcode.base].UW[0]+(short)Opcode.offset;
@@ -212,7 +212,7 @@ void _fastcall r4300i_LWL (void) {
 	Offset=Address&3;
 	if (!r4300i_LW_VAddr((Address&~3),&Value)) return;
 	GPR[Opcode.rt].DW=(int)(GPR[Opcode.rt].W[0]&LWL_MASK[Offset]);
-	GPR[Opcode.rt].DW +=(int)(Value<<LWL_SHIFT[Offset]);
+	GPR[Opcode.rt].DW+=(int)(Value<<LWL_SHIFT[Offset]);
 }
 void _fastcall r4300i_LW (void) {
 	DWORD Address=GPR[Opcode.base].UW[0]+(short)Opcode.offset;
@@ -245,7 +245,7 @@ void _fastcall r4300i_LWR (void) {
 	Offset=Address&3;
 	if (!r4300i_LW_VAddr((Address&~3),&Value)) return;
 	GPR[Opcode.rt].DW=(int)(GPR[Opcode.rt].W[0]&LWR_MASK[Offset]);
-	GPR[Opcode.rt].DW +=(int)(Value>>LWR_SHIFT[Offset]);
+	GPR[Opcode.rt].DW+=(int)(Value>>LWR_SHIFT[Offset]);
 }
 void _fastcall r4300i_LWU (void) {
 	DWORD Address=GPR[Opcode.base].UW[0]+(short)Opcode.offset;
@@ -274,7 +274,7 @@ void _fastcall r4300i_SWL (void) {
 	Offset=Address&3;
 	if (!r4300i_LW_VAddr((Address&~3),&Value)) return;
 	Value&=SWL_MASK[Offset];
-	Value +=GPR[Opcode.rt].UW[0]>>SWL_SHIFT[Offset];
+	Value+=GPR[Opcode.rt].UW[0]>>SWL_SHIFT[Offset];
 	r4300i_SW_VAddr((Address&~0x03),Value);
 }
 void _fastcall r4300i_SW (void) {
@@ -291,7 +291,7 @@ void _fastcall r4300i_SDL (void) {
 	Offset=Address&7;
 	if (!r4300i_LD_VAddr((Address&~7),&Value)) return;
 	Value&=SDL_MASK[Offset];
-	Value +=GPR[Opcode.rt].UDW>>SDL_SHIFT[Offset];
+	Value+=GPR[Opcode.rt].UDW>>SDL_SHIFT[Offset];
 	r4300i_SD_VAddr((Address&~7),Value);
 }
 QWORD SDR_MASK[8]={ 0x00FFFFFFFFFFFFFF,
@@ -311,7 +311,7 @@ void _fastcall r4300i_SDR (void) {
 	Offset=Address&7;
 	if (!r4300i_LD_VAddr((Address&~7),&Value)) return;
 	Value&=SDR_MASK[Offset];
-	Value +=GPR[Opcode.rt].UDW<<SDR_SHIFT[Offset];
+	Value+=GPR[Opcode.rt].UDW<<SDR_SHIFT[Offset];
 	r4300i_SD_VAddr((Address&~7),Value);
 }
 DWORD SWR_MASK[4]={ 0x00FFFFFF,0x0000FFFF,0x000000FF,0x00000000 };
@@ -322,7 +322,7 @@ void _fastcall r4300i_SWR (void) {
 	Offset=Address&3;
 	if (!r4300i_LW_VAddr((Address&~3),&Value)) return;
 	Value&=SWR_MASK[Offset];
-	Value +=GPR[Opcode.rt].UW[0]<<SWR_SHIFT[Offset];
+	Value+=GPR[Opcode.rt].UW[0]<<SWR_SHIFT[Offset];
 	r4300i_SW_VAddr((Address&~0x03),Value);
 }
 void _fastcall r4300i_LL (void) {
@@ -340,7 +340,7 @@ void _fastcall r4300i_LWC1 (void) {
 	DWORD Address=GPR[Opcode.base].UW[0]+(DWORD)((short)Opcode.offset);
 	TEST_COP1_USABLE_EXCEPTION
 	if ((Address&3)!=0) { ADDRESS_ERROR_EXCEPTION(Address,TRUE); }
-	if (!r4300i_LW_VAddr(Address,&*(DWORD *)FPRFloatLocation[Opcode.ft])) {
+	if (!r4300i_LW_VAddr(Address,&*(DWORD*)FPRFloatLocation[Opcode.ft])) {
 		TLB_READ_EXCEPTION(Address);
 	}
 }
@@ -359,26 +359,26 @@ void _fastcall r4300i_LDC1 (void) {
 	DWORD Address=GPR[Opcode.base].UW[0]+(short)Opcode.offset;
 	TEST_COP1_USABLE_EXCEPTION
 	if ((Address&7)!=0) { ADDRESS_ERROR_EXCEPTION(Address,TRUE); }
-	r4300i_LD_VAddr(Address,&*(unsigned __int64 *)FPRDoubleLocation[Opcode.ft]);
+	r4300i_LD_VAddr(Address,&*(unsigned __int64*)FPRDoubleLocation[Opcode.ft]);
 }
 void _fastcall r4300i_SWC1 (void) {
 	DWORD Address=GPR[Opcode.base].UW[0]+(short)Opcode.offset;
 	TEST_COP1_USABLE_EXCEPTION
 	if ((Address&3)!=0) { ADDRESS_ERROR_EXCEPTION(Address,FALSE); }
-	r4300i_SW_VAddr(Address,*(DWORD *)FPRFloatLocation[Opcode.ft]);
+	r4300i_SW_VAddr(Address,*(DWORD*)FPRFloatLocation[Opcode.ft]);
 }
 void _fastcall r4300i_SDC1 (void) {
 	DWORD Address=GPR[Opcode.base].UW[0]+(short)Opcode.offset;
 	TEST_COP1_USABLE_EXCEPTION
 	if ((Address&7)!=0) { ADDRESS_ERROR_EXCEPTION(Address,FALSE); }
-	r4300i_SD_VAddr(Address,*(__int64 *)FPRDoubleLocation[Opcode.ft]);
+	r4300i_SD_VAddr(Address,*(__int64*)FPRDoubleLocation[Opcode.ft]);
 }
 void _fastcall r4300i_SD (void) {
 	DWORD Address=GPR[Opcode.base].UW[0]+(short)Opcode.offset;
 	if ((Address&7)!=0) { ADDRESS_ERROR_EXCEPTION(Address,FALSE); }
 	r4300i_SD_VAddr(Address,GPR[Opcode.rt].UDW);
 }
-/********************** R4300i OpCodes: Special **********************/
+/**********************R4300i OpCodes: Special**********************/
 void _fastcall r4300i_SPECIAL_SLL (void) {
 	GPR[Opcode.rd].DW=(GPR[Opcode.rt].W[0]<<Opcode.sa);
 }
@@ -445,12 +445,12 @@ void _fastcall r4300i_SPECIAL_DSRAV (void) {
 	GPR[Opcode.rd].DW=GPR[Opcode.rt].DW>>(GPR[Opcode.rs].UW[0]&0x3F);
 }
 void _fastcall r4300i_SPECIAL_MULT (void) {
-	HI.DW=(_int64)(GPR[Opcode.rs].W[0]) * (_int64)(GPR[Opcode.rt].W[0]);
+	HI.DW=(_int64)(GPR[Opcode.rs].W[0])*(_int64)(GPR[Opcode.rt].W[0]);
 	LO.DW=HI.W[0];
 	HI.DW=HI.W[1];
 }
 void _fastcall r4300i_SPECIAL_MULTU (void) {
-	HI.DW=(unsigned _int64)(GPR[Opcode.rs].UW[0]) * (unsigned _int64)(GPR[Opcode.rt].UW[0]);
+	HI.DW=(unsigned _int64)(GPR[Opcode.rs].UW[0])*(unsigned _int64)(GPR[Opcode.rt].UW[0]);
 	LO.DW=HI.W[0];
 	HI.DW=HI.W[1];
 }
@@ -468,23 +468,23 @@ void _fastcall r4300i_SPECIAL_DIVU (void) {
 }
 void _fastcall r4300i_SPECIAL_DMULT (void) {
 	MIPS_DWORD Tmp[3];
-	LO.UDW=(QWORD)GPR[Opcode.rs].UW[0] * (QWORD)GPR[Opcode.rt].UW[0];
-	Tmp[0].UDW=(_int64)GPR[Opcode.rs].W[1] * (_int64)(QWORD)GPR[Opcode.rt].UW[0];
-	Tmp[1].UDW=(_int64)(QWORD)GPR[Opcode.rs].UW[0] * (_int64)GPR[Opcode.rt].W[1];
-	HI.UDW=(_int64)GPR[Opcode.rs].W[1] * (_int64)GPR[Opcode.rt].W[1];
+	LO.UDW=(QWORD)GPR[Opcode.rs].UW[0]*(QWORD)GPR[Opcode.rt].UW[0];
+	Tmp[0].UDW=(_int64)GPR[Opcode.rs].W[1]*(_int64)(QWORD)GPR[Opcode.rt].UW[0];
+	Tmp[1].UDW=(_int64)(QWORD)GPR[Opcode.rs].UW[0]*(_int64)GPR[Opcode.rt].W[1];
+	HI.UDW=(_int64)GPR[Opcode.rs].W[1]*(_int64)GPR[Opcode.rt].W[1];
 	Tmp[2].UDW=(QWORD)LO.UW[1]+(QWORD)Tmp[0].UW[0]+(QWORD)Tmp[1].UW[0];
-	LO.UDW +=((QWORD)Tmp[0].UW[0]+(QWORD)Tmp[1].UW[0])<<32;
-	HI.UDW +=(QWORD)Tmp[0].W[1]+(QWORD)Tmp[1].W[1]+Tmp[2].UW[1];
+	LO.UDW+=((QWORD)Tmp[0].UW[0]+(QWORD)Tmp[1].UW[0])<<32;
+	HI.UDW+=(QWORD)Tmp[0].W[1]+(QWORD)Tmp[1].W[1]+Tmp[2].UW[1];
 }
 void _fastcall r4300i_SPECIAL_DMULTU (void) {
 	MIPS_DWORD Tmp[3];
-	LO.UDW=(QWORD)GPR[Opcode.rs].UW[0] * (QWORD)GPR[Opcode.rt].UW[0];
-	Tmp[0].UDW=(QWORD)GPR[Opcode.rs].UW[1] * (QWORD)GPR[Opcode.rt].UW[0];
-	Tmp[1].UDW=(QWORD)GPR[Opcode.rs].UW[0] * (QWORD)GPR[Opcode.rt].UW[1];
-	HI.UDW=(QWORD)GPR[Opcode.rs].UW[1] * (QWORD)GPR[Opcode.rt].UW[1];
+	LO.UDW=(QWORD)GPR[Opcode.rs].UW[0]*(QWORD)GPR[Opcode.rt].UW[0];
+	Tmp[0].UDW=(QWORD)GPR[Opcode.rs].UW[1]*(QWORD)GPR[Opcode.rt].UW[0];
+	Tmp[1].UDW=(QWORD)GPR[Opcode.rs].UW[0]*(QWORD)GPR[Opcode.rt].UW[1];
+	HI.UDW=(QWORD)GPR[Opcode.rs].UW[1]*(QWORD)GPR[Opcode.rt].UW[1];
 	Tmp[2].UDW=(QWORD)LO.UW[1]+(QWORD)Tmp[0].UW[0]+(QWORD)Tmp[1].UW[0];
-	LO.UDW +=((QWORD)Tmp[0].UW[0]+(QWORD)Tmp[1].UW[0])<<32;
-	HI.UDW +=(QWORD)Tmp[0].UW[1]+(QWORD)Tmp[1].UW[1]+Tmp[2].UW[1];
+	LO.UDW+=((QWORD)Tmp[0].UW[0]+(QWORD)Tmp[1].UW[0])<<32;
+	HI.UDW+=(QWORD)Tmp[0].UW[1]+(QWORD)Tmp[1].UW[1]+Tmp[2].UW[1];
 }
 void _fastcall r4300i_SPECIAL_DDIV (void) {
 	if (GPR[Opcode.rt].UDW!=0) {
@@ -566,7 +566,7 @@ void _fastcall r4300i_SPECIAL_DSRL32 (void) {
 void _fastcall r4300i_SPECIAL_DSRA32 (void) {
 	GPR[Opcode.rd].DW=(GPR[Opcode.rt].DW>>(Opcode.sa+32));
 }
-/********************** R4300i OpCodes: RegImm **********************/
+/**********************R4300i OpCodes: RegImm**********************/
 void _fastcall r4300i_REGIMM_BLTZ (void) {
 	SetDelay
 	if (GPR[Opcode.rs].DW<0) {
@@ -625,7 +625,7 @@ void _fastcall r4300i_REGIMM_BGEZAL (void) {
 	}
 	GPR[31].DW=(long)(PROGRAM_COUNTER+8);
 }
-/************************** COP0 functions **************************/
+/**************************COP0 functions**************************/
 void _fastcall r4300i_COP0_MF (void) {
 	GPR[Opcode.rt].DW=(int)CP0[Opcode.rd];
 }
@@ -674,7 +674,7 @@ void _fastcall r4300i_COP0_MT (void) {
 		DisplayThreadExit("Interpreter Ops.c-r4300i_COP0_MT-switch (Opcode.rd)-default:");
 	}
 }
-/************************** COP0 CO functions ***********************/
+/**************************COP0 CO functions***********************/
 void _fastcall r4300i_COP0_CO_TLBR (void) {
 	TLB_Read();
 }
@@ -699,14 +699,14 @@ void _fastcall r4300i_COP0_CO_ERET (void) {
 	LLBit=0;
 	CheckInterrupts();
 }
-/************************** COP1 functions **************************/
+/**************************COP1 functions**************************/
 void _fastcall r4300i_COP1_MF (void) {
 	TEST_COP1_USABLE_EXCEPTION
-	GPR[Opcode.rt].DW=*(int *)FPRFloatLocation[Opcode.fs];
+	GPR[Opcode.rt].DW=*(int*)FPRFloatLocation[Opcode.fs];
 }
 void _fastcall r4300i_COP1_DMF (void) {
 	TEST_COP1_USABLE_EXCEPTION
-	GPR[Opcode.rt].DW=*(__int64 *)FPRDoubleLocation[Opcode.fs];
+	GPR[Opcode.rt].DW=*(__int64*)FPRDoubleLocation[Opcode.fs];
 }
 void _fastcall r4300i_COP1_CF (void) {
 	TEST_COP1_USABLE_EXCEPTION
@@ -715,11 +715,11 @@ void _fastcall r4300i_COP1_CF (void) {
 }
 void _fastcall r4300i_COP1_MT (void) {
 	TEST_COP1_USABLE_EXCEPTION
-	*(int *)FPRFloatLocation[Opcode.fs]=GPR[Opcode.rt].W[0];
+	*(int*)FPRFloatLocation[Opcode.fs]=GPR[Opcode.rt].W[0];
 }
 void _fastcall r4300i_COP1_DMT (void) {
 	TEST_COP1_USABLE_EXCEPTION
-	*(__int64 *)FPRDoubleLocation[Opcode.fs]=GPR[Opcode.rt].DW;
+	*(__int64*)FPRDoubleLocation[Opcode.fs]=GPR[Opcode.rt].DW;
 }
 void _fastcall r4300i_COP1_CT (void) {
 	TEST_COP1_USABLE_EXCEPTION
@@ -733,7 +733,7 @@ void _fastcall r4300i_COP1_CT (void) {
 		}
 	}
 }
-/************************* COP1: BC1 functions ***********************/
+/*************************COP1: BC1 functions***********************/
 void _fastcall r4300i_COP1_BC_BCF (void) {
 	TEST_COP1_USABLE_EXCEPTION
 	SetDelay
@@ -772,8 +772,8 @@ void _fastcall r4300i_COP1_BC_BCTL (void) {
 		JumpToLocation=PROGRAM_COUNTER+8;
 	}
 }
-/************************** COP1: S functions ************************/
-__inline void Float_RoundToInteger32(int * Dest,float * Source) {
+/**************************COP1: S functions************************/
+__inline void Float_RoundToInteger32(int*Dest,float*Source) {
 	_asm {
 		mov esi,[Source]
 		mov edi,[Dest]
@@ -781,7 +781,7 @@ __inline void Float_RoundToInteger32(int * Dest,float * Source) {
 		fistp dword ptr [edi]
 	}
 }
-__inline void Float_RoundToInteger64(__int64 * Dest,float * Source) {
+__inline void Float_RoundToInteger64(__int64*Dest,float*Source) {
 	_asm {
 		mov esi,[Source]
 		mov edi,[Dest]
@@ -792,99 +792,99 @@ __inline void Float_RoundToInteger64(__int64 * Dest,float * Source) {
 void _fastcall r4300i_COP1_S_ADD (void) {
 	TEST_COP1_USABLE_EXCEPTION
 	_controlfp(RoundingModel,_MCW_RC);
-	*(float *)FPRFloatLocation[Opcode.fd]=(*(float *)FPRFloatLocation[Opcode.fs]+*(float *)FPRFloatLocation[Opcode.ft]);
+	*(float*)FPRFloatLocation[Opcode.fd]=(*(float*)FPRFloatLocation[Opcode.fs]+*(float*)FPRFloatLocation[Opcode.ft]);
 }
 void _fastcall r4300i_COP1_S_SUB (void) {
 	TEST_COP1_USABLE_EXCEPTION
 	_controlfp(RoundingModel,_MCW_RC);
-	*(float *)FPRFloatLocation[Opcode.fd]=(*(float *)FPRFloatLocation[Opcode.fs]-*(float *)FPRFloatLocation[Opcode.ft]);
+	*(float*)FPRFloatLocation[Opcode.fd]=(*(float*)FPRFloatLocation[Opcode.fs]-*(float*)FPRFloatLocation[Opcode.ft]);
 }
 void _fastcall r4300i_COP1_S_MUL (void) {
 	TEST_COP1_USABLE_EXCEPTION
 	_controlfp(RoundingModel,_MCW_RC);
-	*(float *)FPRFloatLocation[Opcode.fd]=(*(float *)FPRFloatLocation[Opcode.fs] * *(float *)FPRFloatLocation[Opcode.ft]);
+	*(float*)FPRFloatLocation[Opcode.fd]=(*(float*)FPRFloatLocation[Opcode.fs]**(float*)FPRFloatLocation[Opcode.ft]);
 }
 void _fastcall r4300i_COP1_S_DIV (void) {
 	TEST_COP1_USABLE_EXCEPTION
 	_controlfp(RoundingModel,_MCW_RC);
-	*(float *)FPRFloatLocation[Opcode.fd]=(*(float *)FPRFloatLocation[Opcode.fs] / *(float *)FPRFloatLocation[Opcode.ft]);
+	*(float*)FPRFloatLocation[Opcode.fd]=(*(float*)FPRFloatLocation[Opcode.fs] / *(float*)FPRFloatLocation[Opcode.ft]);
 }
 void _fastcall r4300i_COP1_S_SQRT (void) {
 	TEST_COP1_USABLE_EXCEPTION
 	_controlfp(RoundingModel,_MCW_RC);
-	*(float *)FPRFloatLocation[Opcode.fd]=(float)sqrt(*(float *)FPRFloatLocation[Opcode.fs]);
+	*(float*)FPRFloatLocation[Opcode.fd]=(float)sqrt(*(float*)FPRFloatLocation[Opcode.fs]);
 }
 void _fastcall r4300i_COP1_S_ABS (void) {
 	TEST_COP1_USABLE_EXCEPTION
 	_controlfp(RoundingModel,_MCW_RC);
-	*(float *)FPRFloatLocation[Opcode.fd]=(float)fabs(*(float *)FPRFloatLocation[Opcode.fs]);
+	*(float*)FPRFloatLocation[Opcode.fd]=(float)fabs(*(float*)FPRFloatLocation[Opcode.fs]);
 }
 void _fastcall r4300i_COP1_S_MOV (void) {
 	TEST_COP1_USABLE_EXCEPTION
 	_controlfp(RoundingModel,_MCW_RC);
-	*(float *)FPRFloatLocation[Opcode.fd]=*(float *)FPRFloatLocation[Opcode.fs];
+	*(float*)FPRFloatLocation[Opcode.fd]=*(float*)FPRFloatLocation[Opcode.fs];
 }
 void _fastcall r4300i_COP1_S_NEG (void) {
 	TEST_COP1_USABLE_EXCEPTION
 	_controlfp(RoundingModel,_MCW_RC);
-	*(float *)FPRFloatLocation[Opcode.fd]=(*(float *)FPRFloatLocation[Opcode.fs] * -1.0f);
+	*(float*)FPRFloatLocation[Opcode.fd]=(*(float*)FPRFloatLocation[Opcode.fs]*-1.0f);
 }
 void _fastcall r4300i_COP1_S_TRUNC_L (void) {
 	TEST_COP1_USABLE_EXCEPTION
 	_controlfp(_RC_CHOP,_MCW_RC);
-	Float_RoundToInteger64(&*(__int64 *)FPRDoubleLocation[Opcode.fd],&*(float *)FPRFloatLocation[Opcode.fs]);
+	Float_RoundToInteger64(&*(__int64*)FPRDoubleLocation[Opcode.fd],&*(float*)FPRFloatLocation[Opcode.fs]);
 }
 void _fastcall r4300i_COP1_S_CEIL_L (void) {	//added by Witten
 	TEST_COP1_USABLE_EXCEPTION
 	_controlfp(_RC_UP,_MCW_RC);
-	Float_RoundToInteger64(&*(__int64 *)FPRDoubleLocation[Opcode.fd],&*(float *)FPRFloatLocation[Opcode.fs]);
+	Float_RoundToInteger64(&*(__int64*)FPRDoubleLocation[Opcode.fd],&*(float*)FPRFloatLocation[Opcode.fs]);
 }
 void _fastcall r4300i_COP1_S_FLOOR_L (void) {	//added by Witten
 	TEST_COP1_USABLE_EXCEPTION
 	_controlfp(_RC_DOWN,_MCW_RC);
-	Float_RoundToInteger64(&*(__int64 *)FPRDoubleLocation[Opcode.fd],&*(float *)FPRFloatLocation[Opcode.fs]);
+	Float_RoundToInteger64(&*(__int64*)FPRDoubleLocation[Opcode.fd],&*(float*)FPRFloatLocation[Opcode.fs]);
 }
 void _fastcall r4300i_COP1_S_ROUND_W (void) {
 	TEST_COP1_USABLE_EXCEPTION
 	_controlfp(_RC_NEAR,_MCW_RC);
-	Float_RoundToInteger32(&*(int *)FPRFloatLocation[Opcode.fd],&*(float *)FPRFloatLocation[Opcode.fs]);
+	Float_RoundToInteger32(&*(int*)FPRFloatLocation[Opcode.fd],&*(float*)FPRFloatLocation[Opcode.fs]);
 }
 void _fastcall r4300i_COP1_S_TRUNC_W (void) {
 	TEST_COP1_USABLE_EXCEPTION
 	_controlfp(_RC_CHOP,_MCW_RC);
-	Float_RoundToInteger32(&*(int *)FPRFloatLocation[Opcode.fd],&*(float *)FPRFloatLocation[Opcode.fs]);
+	Float_RoundToInteger32(&*(int*)FPRFloatLocation[Opcode.fd],&*(float*)FPRFloatLocation[Opcode.fs]);
 }
 void _fastcall r4300i_COP1_S_CEIL_W (void) {	//added by Witten
 	TEST_COP1_USABLE_EXCEPTION
 	_controlfp(_RC_UP,_MCW_RC);
-	Float_RoundToInteger32(&*(int *)FPRFloatLocation[Opcode.fd],&*(float *)FPRFloatLocation[Opcode.fs]);
+	Float_RoundToInteger32(&*(int*)FPRFloatLocation[Opcode.fd],&*(float*)FPRFloatLocation[Opcode.fs]);
 }
 void _fastcall r4300i_COP1_S_FLOOR_W (void) {
 	TEST_COP1_USABLE_EXCEPTION
 	_controlfp(_RC_DOWN,_MCW_RC);
-	Float_RoundToInteger32(&*(int *)FPRFloatLocation[Opcode.fd],&*(float *)FPRFloatLocation[Opcode.fs]);
+	Float_RoundToInteger32(&*(int*)FPRFloatLocation[Opcode.fd],&*(float*)FPRFloatLocation[Opcode.fs]);
 }
 void _fastcall r4300i_COP1_S_CVT_D (void) {
 	TEST_COP1_USABLE_EXCEPTION
 	_controlfp(RoundingModel,_MCW_RC);
-	*(double *)FPRDoubleLocation[Opcode.fd]=(double)(*(float *)FPRFloatLocation[Opcode.fs]);
+	*(double*)FPRDoubleLocation[Opcode.fd]=(double)(*(float*)FPRFloatLocation[Opcode.fs]);
 }
 void _fastcall r4300i_COP1_S_CVT_W (void) {
 	TEST_COP1_USABLE_EXCEPTION
 	_controlfp(RoundingModel,_MCW_RC);
-	Float_RoundToInteger32(&*(int *)FPRFloatLocation[Opcode.fd],&*(float *)FPRFloatLocation[Opcode.fs]);
+	Float_RoundToInteger32(&*(int*)FPRFloatLocation[Opcode.fd],&*(float*)FPRFloatLocation[Opcode.fs]);
 }
 void _fastcall r4300i_COP1_S_CVT_L (void) {
 	TEST_COP1_USABLE_EXCEPTION
 	_controlfp(RoundingModel,_MCW_RC);
-	Float_RoundToInteger64(&*(__int64 *)FPRDoubleLocation[Opcode.fd],&*(float *)FPRFloatLocation[Opcode.fs]);
+	Float_RoundToInteger64(&*(__int64*)FPRDoubleLocation[Opcode.fd],&*(float*)FPRFloatLocation[Opcode.fs]);
 }
 void _fastcall r4300i_COP1_S_CMP (void) {
 	int less,equal,unorded,condition;
 	float Temp0,Temp1;
 	TEST_COP1_USABLE_EXCEPTION
-	Temp0=*(float *)FPRFloatLocation[Opcode.fs];
-	Temp1=*(float *)FPRFloatLocation[Opcode.ft];
+	Temp0=*(float*)FPRFloatLocation[Opcode.fs];
+	Temp1=*(float*)FPRFloatLocation[Opcode.ft];
 	if (_isnan(Temp0)||_isnan(Temp1)) {
 		less=FALSE;
 		equal=FALSE;
@@ -904,8 +904,8 @@ void _fastcall r4300i_COP1_S_CMP (void) {
 		FPCR[31]&=~FPCSR_C;
 	}
 }
-/************************** COP1: D functions ************************/
-__inline void Double_RoundToInteger32(int * Dest,double * Source) {
+/**************************COP1: D functions************************/
+__inline void Double_RoundToInteger32(int*Dest,double*Source) {
 	_asm {
 		mov esi,[Source]
 		mov edi,[Dest]
@@ -913,7 +913,7 @@ __inline void Double_RoundToInteger32(int * Dest,double * Source) {
 		fistp dword ptr [edi]
 	}
 }
-__inline void Double_RoundToInteger64(__int64 * Dest,double * Source) {
+__inline void Double_RoundToInteger64(__int64*Dest,double*Source) {
 	_asm {
 		mov esi,[Source]
 		mov edi,[Dest]
@@ -923,92 +923,92 @@ __inline void Double_RoundToInteger64(__int64 * Dest,double * Source) {
 }
 void _fastcall r4300i_COP1_D_ADD (void) {
 	TEST_COP1_USABLE_EXCEPTION
-	*(double *)FPRDoubleLocation[Opcode.fd]=*(double *)FPRDoubleLocation[Opcode.fs]+*(double *)FPRDoubleLocation[Opcode.ft];
+	*(double*)FPRDoubleLocation[Opcode.fd]=*(double*)FPRDoubleLocation[Opcode.fs]+*(double*)FPRDoubleLocation[Opcode.ft];
 }
 void _fastcall r4300i_COP1_D_SUB (void) {
 	TEST_COP1_USABLE_EXCEPTION
-	*(double *)FPRDoubleLocation[Opcode.fd]=*(double *)FPRDoubleLocation[Opcode.fs]-*(double *)FPRDoubleLocation[Opcode.ft];
+	*(double*)FPRDoubleLocation[Opcode.fd]=*(double*)FPRDoubleLocation[Opcode.fs]-*(double*)FPRDoubleLocation[Opcode.ft];
 }
 void _fastcall r4300i_COP1_D_MUL (void) {
 	TEST_COP1_USABLE_EXCEPTION
-	*(double *)FPRDoubleLocation[Opcode.fd]=*(double *)FPRDoubleLocation[Opcode.fs] * *(double *)FPRDoubleLocation[Opcode.ft];
+	*(double*)FPRDoubleLocation[Opcode.fd]=*(double*)FPRDoubleLocation[Opcode.fs]**(double*)FPRDoubleLocation[Opcode.ft];
 }
 void _fastcall r4300i_COP1_D_DIV (void) {
 	TEST_COP1_USABLE_EXCEPTION
-	*(double *)FPRDoubleLocation[Opcode.fd]=*(double *)FPRDoubleLocation[Opcode.fs] / *(double *)FPRDoubleLocation[Opcode.ft];
+	*(double*)FPRDoubleLocation[Opcode.fd]=*(double*)FPRDoubleLocation[Opcode.fs] / *(double*)FPRDoubleLocation[Opcode.ft];
 }
 void _fastcall r4300i_COP1_D_SQRT (void) {
 	TEST_COP1_USABLE_EXCEPTION
-	*(double *)FPRDoubleLocation[Opcode.fd]=(double)sqrt(*(double *)FPRDoubleLocation[Opcode.fs]);
+	*(double*)FPRDoubleLocation[Opcode.fd]=(double)sqrt(*(double*)FPRDoubleLocation[Opcode.fs]);
 }
 void _fastcall r4300i_COP1_D_ABS (void) {
 	TEST_COP1_USABLE_EXCEPTION
-	*(double *)FPRDoubleLocation[Opcode.fd]=fabs(*(double *)FPRDoubleLocation[Opcode.fs]);
+	*(double*)FPRDoubleLocation[Opcode.fd]=fabs(*(double*)FPRDoubleLocation[Opcode.fs]);
 }
 void _fastcall r4300i_COP1_D_MOV (void) {
 	TEST_COP1_USABLE_EXCEPTION
-	*(__int64 *)FPRDoubleLocation[Opcode.fd]=*(__int64 *)FPRDoubleLocation[Opcode.fs];
+	*(__int64*)FPRDoubleLocation[Opcode.fd]=*(__int64*)FPRDoubleLocation[Opcode.fs];
 }
 void _fastcall r4300i_COP1_D_NEG (void) {
 	TEST_COP1_USABLE_EXCEPTION
-	*(double *)FPRDoubleLocation[Opcode.fd]=(*(double *)FPRDoubleLocation[Opcode.fs] * -1.0);
+	*(double*)FPRDoubleLocation[Opcode.fd]=(*(double*)FPRDoubleLocation[Opcode.fs]*-1.0);
 }
 void _fastcall r4300i_COP1_D_TRUNC_L (void) {	//added by Witten
 	TEST_COP1_USABLE_EXCEPTION
 	_controlfp(RC_CHOP,_MCW_RC);
-	Double_RoundToInteger64(&*(__int64 *)FPRFloatLocation[Opcode.fd],&*(double *)FPRDoubleLocation[Opcode.fs]);
+	Double_RoundToInteger64(&*(__int64*)FPRFloatLocation[Opcode.fd],&*(double*)FPRDoubleLocation[Opcode.fs]);
 }
 void _fastcall r4300i_COP1_D_CEIL_L (void) {	//added by Witten
 	TEST_COP1_USABLE_EXCEPTION
 	_controlfp(RC_UP,_MCW_RC);
-	Double_RoundToInteger64(&*(__int64 *)FPRFloatLocation[Opcode.fd],&*(double *)FPRDoubleLocation[Opcode.fs]);
+	Double_RoundToInteger64(&*(__int64*)FPRFloatLocation[Opcode.fd],&*(double*)FPRDoubleLocation[Opcode.fs]);
 }
 void _fastcall r4300i_COP1_D_FLOOR_L (void) {	//added by Witten
 	TEST_COP1_USABLE_EXCEPTION
 	_controlfp(_RC_DOWN,_MCW_RC);
-	Double_RoundToInteger64(&*(__int64 *)FPRDoubleLocation[Opcode.fd],&*(double *)FPRFloatLocation[Opcode.fs]);
+	Double_RoundToInteger64(&*(__int64*)FPRDoubleLocation[Opcode.fd],&*(double*)FPRFloatLocation[Opcode.fs]);
 }
 void _fastcall r4300i_COP1_D_ROUND_W (void) {
 	TEST_COP1_USABLE_EXCEPTION
 	_controlfp(_RC_NEAR,_MCW_RC);
-	Double_RoundToInteger32(&*(DWORD *)FPRFloatLocation[Opcode.fd],&*(double *)FPRDoubleLocation[Opcode.fs]);
+	Double_RoundToInteger32(&*(DWORD*)FPRFloatLocation[Opcode.fd],&*(double*)FPRDoubleLocation[Opcode.fs]);
 }
 void _fastcall r4300i_COP1_D_TRUNC_W (void) {
 	TEST_COP1_USABLE_EXCEPTION
 	_controlfp(RC_CHOP,_MCW_RC);
-	Double_RoundToInteger32(&*(DWORD *)FPRFloatLocation[Opcode.fd],&*(double *)FPRDoubleLocation[Opcode.fs]);
+	Double_RoundToInteger32(&*(DWORD*)FPRFloatLocation[Opcode.fd],&*(double*)FPRDoubleLocation[Opcode.fs]);
 }
 void _fastcall r4300i_COP1_D_CEIL_W (void) {	//added by Witten
 	TEST_COP1_USABLE_EXCEPTION
 	_controlfp(RC_UP,_MCW_RC);
-	Double_RoundToInteger32(&*(DWORD *)FPRFloatLocation[Opcode.fd],&*(double *)FPRDoubleLocation[Opcode.fs]);
+	Double_RoundToInteger32(&*(DWORD*)FPRFloatLocation[Opcode.fd],&*(double*)FPRDoubleLocation[Opcode.fs]);
 }
 void _fastcall r4300i_COP1_D_FLOOR_W (void) {	//added by Witten
 	TEST_COP1_USABLE_EXCEPTION
 	_controlfp(_RC_DOWN,_MCW_RC);
-	Double_RoundToInteger32(&*(DWORD *)FPRDoubleLocation[Opcode.fd],&*(double *)FPRFloatLocation[Opcode.fs]);
+	Double_RoundToInteger32(&*(DWORD*)FPRDoubleLocation[Opcode.fd],&*(double*)FPRFloatLocation[Opcode.fs]);
 }
 void _fastcall r4300i_COP1_D_CVT_S (void) {
 	TEST_COP1_USABLE_EXCEPTION
 	_controlfp(RoundingModel,_MCW_RC);
-	*(float *)FPRFloatLocation[Opcode.fd]=(float)*(double *)FPRDoubleLocation[Opcode.fs];
+	*(float*)FPRFloatLocation[Opcode.fd]=(float)*(double*)FPRDoubleLocation[Opcode.fs];
 }
 void _fastcall r4300i_COP1_D_CVT_W (void) {
 	TEST_COP1_USABLE_EXCEPTION
 	_controlfp(RoundingModel,_MCW_RC);
-	Double_RoundToInteger32(&*(DWORD *)FPRFloatLocation[Opcode.fd],&*(double *)FPRDoubleLocation[Opcode.fs]);
+	Double_RoundToInteger32(&*(DWORD*)FPRFloatLocation[Opcode.fd],&*(double*)FPRDoubleLocation[Opcode.fs]);
 }
 void _fastcall r4300i_COP1_D_CVT_L (void) {
 	TEST_COP1_USABLE_EXCEPTION
 	_controlfp(RoundingModel,_MCW_RC);
-	Double_RoundToInteger64(&*(unsigned __int64 *)FPRDoubleLocation[Opcode.fd],&*(double *)FPRDoubleLocation[Opcode.fs]);
+	Double_RoundToInteger64(&*(unsigned __int64*)FPRDoubleLocation[Opcode.fd],&*(double*)FPRDoubleLocation[Opcode.fs]);
 }
 void _fastcall r4300i_COP1_D_CMP (void) {
 	int less,equal,unorded,condition;
 	MIPS_DWORD Temp0,Temp1;
 	TEST_COP1_USABLE_EXCEPTION
-	Temp0.DW=*(__int64 *)FPRDoubleLocation[Opcode.fs];
-	Temp1.DW=*(__int64 *)FPRDoubleLocation[Opcode.ft];
+	Temp0.DW=*(__int64*)FPRDoubleLocation[Opcode.fs];
+	Temp1.DW=*(__int64*)FPRDoubleLocation[Opcode.ft];
 	if (_isnan(Temp0.D)||_isnan(Temp1.D)) {
 		less=FALSE;
 		equal=FALSE;
@@ -1028,25 +1028,25 @@ void _fastcall r4300i_COP1_D_CMP (void) {
 		FPCR[31]&=~FPCSR_C;
 	}
 }
-/************************** COP1: W functions ************************/
+/**************************COP1: W functions************************/
 void _fastcall r4300i_COP1_W_CVT_S (void) {
 	TEST_COP1_USABLE_EXCEPTION
 	_controlfp(RoundingModel,_MCW_RC);
-	*(float *)FPRFloatLocation[Opcode.fd]=(float)*(int *)FPRFloatLocation[Opcode.fs];
+	*(float*)FPRFloatLocation[Opcode.fd]=(float)*(int*)FPRFloatLocation[Opcode.fs];
 }
 void _fastcall r4300i_COP1_W_CVT_D (void) {
 	TEST_COP1_USABLE_EXCEPTION
 	_controlfp(RoundingModel,_MCW_RC);
-	*(double *)FPRDoubleLocation[Opcode.fd]=(double)*(int *)FPRFloatLocation[Opcode.fs];
+	*(double*)FPRDoubleLocation[Opcode.fd]=(double)*(int*)FPRFloatLocation[Opcode.fs];
 }
-/************************** COP1: L functions ************************/
+/**************************COP1: L functions************************/
 void _fastcall r4300i_COP1_L_CVT_S (void) {
 	TEST_COP1_USABLE_EXCEPTION
 	_controlfp(RoundingModel,_MCW_RC);
-	*(float *)FPRFloatLocation[Opcode.fd]=(float)*(__int64 *)FPRDoubleLocation[Opcode.fs];
+	*(float*)FPRFloatLocation[Opcode.fd]=(float)*(__int64*)FPRDoubleLocation[Opcode.fs];
 }
 void _fastcall r4300i_COP1_L_CVT_D (void) {
 	TEST_COP1_USABLE_EXCEPTION
 	_controlfp(RoundingModel,_MCW_RC);
-	*(double *)FPRDoubleLocation[Opcode.fd]=(double)*(__int64 *)FPRDoubleLocation[Opcode.fs];
+	*(double*)FPRDoubleLocation[Opcode.fd]=(double)*(__int64*)FPRDoubleLocation[Opcode.fs];
 }

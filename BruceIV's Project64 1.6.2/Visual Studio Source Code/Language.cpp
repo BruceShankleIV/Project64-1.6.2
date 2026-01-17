@@ -4,7 +4,7 @@
 #include "Language.h"
 #include "Resource.h"
 /*******************************************************************************
-* Definitions                                                                  *
+*Definitions                                                                 *
 *******************************************************************************/
 #define MAX_LANGUAGES	45
 #define MAX_LANNAME_LEN	100
@@ -96,7 +96,7 @@ LANG_STR DefaultString[]={
         { MENUDES_UNINSTALLAPP,"Attempts to terminate this instance and factory reset included registry configurations" },
 	{ MSG_LOADED_STATE,	"Loaded a save state" },
 /*********************************************************************************
-* ROM Browser                                                                    *
+*ROM Browser                                                                   *
 *********************************************************************************/
 //ROM Browser Fields
 	{ RB_FILENAME,    "File Name" },
@@ -113,7 +113,7 @@ LANG_STR DefaultString[]={
 	{ UNKNOWN,"Unknown" },
 	{ FIFTYNINEHERTZ_LANG,"59 Hz"},
 /*********************************************************************************
-* Options                                                                        *
+*Options                                                                       *
 *********************************************************************************/
 	{ TAB_PLUGIN,"Plugins"},
 	{ TAB_DIRECTORY,"Directories"},
@@ -196,7 +196,7 @@ LANG_STR DefaultString[]={
 	{ NOTE_CORE,          "Core Note:"},
 	{ NOTE_PLUGIN,        "Plugin Note:"},
 /*********************************************************************************
-* ROM Information                                                                *
+*ROM Information                                                               *
 *********************************************************************************/
 //ROM Info Title
 	{ INFO_TITLE,            "ROM Information"},
@@ -210,7 +210,7 @@ LANG_STR DefaultString[]={
 	{ INFO_CIC_CHIP_TEXT,    "CIC Chip:"},
 	{ ROM_ALIGN_DMA,		 "Align DMA"},
 /*********************************************************************************
-* Messages                                                                       *
+*Messages                                                                      *
 *********************************************************************************/
 	{ MSG_CPU_PAUSED,        "CPU paused"},
 	{ MSG_CPU_RESUMED,       "CPU resumed"},
@@ -247,15 +247,15 @@ LANG_STR DefaultString[]={
 };
 class CLanguage  {
 	void FindLangName  (int Index);
-	void LoadStrings   (char * FileName);
-	void SaveCurrentLang (char * String);
+	void LoadStrings   (char*FileName);
+	void SaveCurrentLang (char*String);
 public:
 	CLanguage();
 	void CreateLangList (HMENU hMenu,int uPosition,int MenuID);
-	char * GetString    (int StringID);
+	char*GetString    (int StringID);
 	void LoadLangList   (void);
-	void LoadLanguage  (char * RegLocation);
-	const char * LangName  (int index);
+	void LoadLanguage  (char*RegLocation);
+	const char*LangName  (int index);
 	int  GetNumberLang  (void);
 	void SetCurrentLang (HMENU hMenu,int MenuIndx);
 	int  SetMenuBase    (int MenuBase);
@@ -270,11 +270,11 @@ private:
 	int m_BaseMenuID;
 };
 /*******************************************************************************
-* Variable                                                                    *
+*Variable                                                                   *
 *******************************************************************************/
 CLanguage lng;
 /*******************************************************************************
-* Code                                                                         *
+*Code                                                                        *
 *******************************************************************************/
 CLanguage::CLanguage() {
 	m_NoOflangs=0;
@@ -284,11 +284,11 @@ CLanguage::CLanguage() {
 int CLanguage::GetNumberLang(void) {
 	return m_NoOflangs;
 }
-const char * CLanguage::LangName  (int index) {
+const char*CLanguage::LangName  (int index) {
 	if (index>=MAX_LANGUAGES) { return NULL; }
 	return m_LangName[index];
 }
-void CLanguage::LoadLanguage  (char * RegLocation) {
+void CLanguage::LoadLanguage  (char*RegLocation) {
 	strncpy(m_RegKey,RegLocation,sizeof(m_RegKey));
 	LoadLangList();
 	strcpy(m_CurrentLangName,"");
@@ -329,7 +329,7 @@ void CLanguage::CreateLangList (HMENU hMenu,int uPosition,int MenuID) {
 		CheckMenuItem(hSubMenu,MenuID,MF_BYCOMMAND|MFS_CHECKED);
 		EnableMenuItem(hSubMenu,MenuID,MFS_DISABLED|MF_BYCOMMAND);
 	}
-	for (int count=0; count<GetNumberLang(); count ++) {
+	for (int count=0; count<GetNumberLang(); count++) {
 		menuinfo.wID=MenuID+count;
 		strcpy(String,lng.LangName(count));
 		InsertMenuItem(hSubMenu,0,TRUE,&menuinfo);
@@ -339,8 +339,8 @@ void CLanguage::CreateLangList (HMENU hMenu,int uPosition,int MenuID) {
 	}
 	ModifyMenu(hMenu,uPosition,MF_STRING|MF_POPUP|MF_BYPOSITION,(DWORD)hSubMenu,GS(MENU_LANGUAGE));
 }
-char * CLanguage::GetString (int StringID) {
-	for (int count=0; count<m_NoOfStrings; count ++) {
+char*CLanguage::GetString (int StringID) {
+	for (int count=0; count<m_NoOfStrings; count++) {
 		if (m_Strings[count].ID==StringID) { return m_Strings[count].Str; }
 	}
 	return NULL;
@@ -363,15 +363,15 @@ void CLanguage::LoadLangList (void) {
 		do {
 			strcpy(m_filenames[m_NoOflangs],Directory);
 			strcat(m_filenames[m_NoOflangs],find_data.cFileName);
-			m_NoOflangs +=1;
+			m_NoOflangs+=1;
 		} while (FindNextFile(search_handle,&find_data)&&search_handle!=INVALID_HANDLE_VALUE);
 		FindClose(search_handle);
 	}
-	for (int count=0; count<m_NoOflangs; count ++) { FindLangName(count); }
+	for (int count=0; count<m_NoOflangs; count++) { FindLangName(count); }
 }
-void CLanguage::LoadStrings  (char * FileName) {
+void CLanguage::LoadStrings  (char*FileName) {
 	m_NoOfStrings=0;
-	FILE *file=fopen(FileName,"rb");
+	FILE*file=fopen(FileName,"rb");
 	if (file==NULL) return;
 	char  token=0;
 	while(!feof(file)) {
@@ -395,14 +395,14 @@ void CLanguage::LoadStrings  (char * FileName) {
 			if (pos==MAX_STRING_LEN-2) { token='"'; }
 		}
 		m_Strings[m_NoOfStrings].Str[pos++]=0;
-		m_NoOfStrings +=1;
+		m_NoOfStrings+=1;
 		if (m_NoOfStrings==MAX_STRINGS) { break; }
 	}
 	fclose(file);
 }
 void CLanguage::FindLangName  (int Index) {
 	strcpy(m_LangName[Index],GS(UNKNOWN));
-	FILE *file=fopen(m_filenames[Index],"rb");
+	FILE*file=fopen(m_filenames[Index],"rb");
 	if (file==NULL) return;
 	char  token=0;
 	int   StringID;
@@ -431,14 +431,14 @@ void CLanguage::FindLangName  (int Index) {
 	}
 	fclose(file);
 }
-void CLanguage::SaveCurrentLang (char * String) {
+void CLanguage::SaveCurrentLang (char*String) {
 	long lResult;
 	HKEY hKeyResults=0;
 	DWORD Disposition=0;
 	lResult=RegCreateKeyEx(HKEY_CURRENT_USER,m_RegKey,0,"",REG_OPTION_NON_VOLATILE,
 		KEY_ALL_ACCESS,NULL,&hKeyResults,&Disposition);
 	if (lResult==ERROR_SUCCESS) {
-		RegSetValueEx(hKeyResults,"Language",0,REG_SZ,(CONST BYTE *)String,strlen(String));
+		RegSetValueEx(hKeyResults,"Language",0,REG_SZ,(CONST BYTE*)String,strlen(String));
 		strcpy(m_CurrentLangName,String);
 	}
 	RegCloseKey(hKeyResults);
@@ -460,11 +460,11 @@ void CLanguage::SetCurrentLang (HMENU hMenu,int MenuIndx) {
 	GetMenuItemInfo(hMenu,MenuIndx,FALSE,&menuinfo);
 	SaveCurrentLang(String);
 }
-char * GS (int StringID) {
+char*GS (int StringID) {
 	int count;
-	char * Ret=lng.GetString(StringID);
+	char*Ret=lng.GetString(StringID);
 	if (Ret!=NULL) { return Ret; }
-	for (count=0; count<(sizeof(DefaultString) / sizeof(LANG_STR)); count ++) {
+	for (count=0; count<(sizeof(DefaultString) / sizeof(LANG_STR)); count++) {
 		if (DefaultString[count].ID==StringID) { return DefaultString[count].Str; }
 	}
 	return "";
@@ -472,7 +472,7 @@ char * GS (int StringID) {
 void CreateLangList (HMENU hMenu,int uPosition,int MenuID) {
 	lng.CreateLangList(hMenu,uPosition,MenuID);
 }
-void LoadLanguage (char * RegLocation) {
+void LoadLanguage (char*RegLocation) {
 	lng.LoadLanguage(RegLocation);
 }
 void SelectLangMenuItem (HMENU hMenu,int LangMenuID) {

@@ -1,28 +1,28 @@
 /*
- * Project 64 - A Nintendo 64 emulator.
- *
- * (c) Copyright 2001 zilmar (zilmar@emulation64.com) and
- * Jabo (jabo@emulation64.com).
- *
- * pj64 homepage: www.pj64.net
- *
- * Permission to use, copy, modify and distribute Project64 in both binary and
- * source form, for non-commercial purposes, is hereby granted without fee,
- * providing that this license information and copyright notice appear with
- * all copies and any derived work.
- *
- * This software is provided 'as-is', without any express or implied
- * warranty. In no event shall the authors be held liable for any damages
- * arising from the use of this software.
- *
- * Project64 is freeware for PERSONAL USE only. Commercial users should
- * seek permission of the copyright holders first. Commercial use includes
- * charging money for Project64 or software derived from Project64.
- *
- * The copyright holders request that bug fixes and improvements to the code
- * should be forwarded to them so if they want them.
- *
- */
+*Project 64 - A Nintendo 64 emulator.
+*
+*(c) Copyright 2001 zilmar (zilmar@emulation64.com) and
+*Jabo (jabo@emulation64.com).
+*
+*pj64 homepage: www.pj64.net
+*
+*Permission to use, copy, modify and distribute Project64 in both binary and
+*source form, for non-commercial purposes, is hereby granted without fee,
+*providing that this license information and copyright notice appear with
+*all copies and any derived work.
+*
+*This software is provided 'as-is', without any express or implied
+*warranty. In no event shall the authors be held liable for any damages
+*arising from the use of this software.
+*
+*Project64 is freeware for PERSONAL USE only. Commercial users should
+*seek permission of the copyright holders first. Commercial use includes
+*charging money for Project64 or software derived from Project64.
+*
+*The copyright holders request that bug fixes and improvements to the code
+*should be forwarded to them so if they want them.
+*
+*/
 #include <windows.h>
 #include <stdio.h>
 #include "Main.h"
@@ -35,7 +35,7 @@ void CloseEEPROM (void) {
 		hEEPROMFile=NULL;
 	}
 }
-void EEPROMCommand (BYTE * Command) {
+void EEPROMCommand (BYTE*Command) {
 	if (SaveUsing==Auto) {
 		if (ForceAuto16kbit) SaveUsing=EEPROM_16K;
 		else SaveUsing=EEPROM_4K;
@@ -93,12 +93,12 @@ void LoadEEPROM (void) {
 	SetFilePointer(hEEPROMFile,0,NULL,FILE_BEGIN);
 	ReadFile(hEEPROMFile,EEPROM,sizeof(EEPROM),&dwRead,NULL);
 }
-void ReadFromEEPROM(BYTE * Buffer,int line) {
+void ReadFromEEPROM(BYTE*Buffer,int line) {
 	int i;
 	if (hEEPROMFile==NULL) LoadEEPROM();
 	for(i=0;i<8;i++) { Buffer[i]=EEPROM[line*8+i]; }
 }
-void WriteToEEPROM(BYTE * Buffer,int line) {
+void WriteToEEPROM(BYTE*Buffer,int line) {
 	DWORD dwWritten;
 	int i;
 	if (hEEPROMFile==NULL) LoadEEPROM();

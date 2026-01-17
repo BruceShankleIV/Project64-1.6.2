@@ -13,9 +13,9 @@ BYTE INTtoBCD (int val) {
 }
 BYTE BCDtoBYTE (BYTE val) {
 	val %=0x99;	// The maximum a BCD can store in 1 byte (8 bits).
-	return val-((val&240)>>3) * 3;
+	return val-((val&240)>>3)*3;
 }
-int RTC_Command (BYTE *Command) {
+int RTC_Command (BYTE*Command) {
 	switch(Command[2]) {
 	case 6:	// Real-Time Clock status
 		Command[3]=0;
@@ -32,7 +32,7 @@ int RTC_Command (BYTE *Command) {
 		case 2:
 			{
 				__time64_t rawtime;
-				struct tm *timeinfo;
+				struct tm*timeinfo;
 				if (first_load==TRUE) {
 					ReadFromRTC();
 					first_load=FALSE;
@@ -54,7 +54,7 @@ int RTC_Command (BYTE *Command) {
 	case 8:	// Real-Time Clock write
 		if (Command[3]==2) {
 			__time64_t rawtime=time(NULL);
-			struct tm *timeinfo;
+			struct tm*timeinfo;
 			timeinfo=localtime(&rawtime);
 			timeinfo->tm_sec=BCDtoBYTE(Command[4]);
 			timeinfo->tm_min=BCDtoBYTE(Command[5]);
@@ -62,7 +62,7 @@ int RTC_Command (BYTE *Command) {
 			timeinfo->tm_mday=BCDtoBYTE(Command[7]);
 			timeinfo->tm_wday=BCDtoBYTE(Command[8]);
 			timeinfo->tm_mon=BCDtoBYTE(Command[9])-1;
-			timeinfo->tm_year=BCDtoBYTE(Command[10])+BCDtoBYTE(Command[11]) * 100;
+			timeinfo->tm_year=BCDtoBYTE(Command[10])+BCDtoBYTE(Command[11])*100;
 			seconds_offset=time(NULL)-_mktime64(timeinfo);
 			WriteToRTC();
 			Command[12]=0;
@@ -74,7 +74,7 @@ int RTC_Command (BYTE *Command) {
 	return TRUE;
 }
 void ReadFromRTC() {
-	FILE *fp;
+	FILE*fp;
 	char File[255],Directory[255],String[100];
 	GetAutoSaveDir(Directory);
 	sprintf(File,"%s%s.rtc",Directory,RomName);
@@ -88,7 +88,7 @@ void ReadFromRTC() {
 	}
 }
 void WriteToRTC() {
-	FILE *fp;
+	FILE*fp;
 	char File[255],Directory[255],String[100];
 	GetAutoSaveDir(Directory);
 	sprintf(File,"%s%s.rtc",Directory,RomName);

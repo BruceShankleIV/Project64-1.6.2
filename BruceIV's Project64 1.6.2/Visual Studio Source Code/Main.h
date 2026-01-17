@@ -1,28 +1,28 @@
 /*
- * Project 64 - A Nintendo 64 emulator.
- *
- * (c) Copyright 2001 zilmar (zilmar@emulation64.com) and
- * Jabo (jabo@emulation64.com).
- *
- * pj64 homepage: www.pj64.net
- *
- * Permission to use, copy, modify and distribute Project64 in both binary and
- * source form, for non-commercial purposes, is hereby granted without fee,
- * providing that this license information and copyright notice appear with
- * all copies and any derived work.
- *
- * This software is provided 'as-is', without any express or implied
- * warranty. In no event shall the authors be held liable for any damages
- * arising from the use of this software.
- *
- * Project64 is freeware for PERSONAL USE only. Commercial users should
- * seek permission of the copyright holders first. Commercial use includes
- * charging money for Project64 or software derived from Project64.
- *
- * The copyright holders request that bug fixes and improvements to the code
- * should be forwarded to them so if they want them.
- *
- */
+*Project 64 - A Nintendo 64 emulator.
+*
+*(c) Copyright 2001 zilmar (zilmar@emulation64.com) and
+*Jabo (jabo@emulation64.com).
+*
+*pj64 homepage: www.pj64.net
+*
+*Permission to use, copy, modify and distribute Project64 in both binary and
+*source form, for non-commercial purposes, is hereby granted without fee,
+*providing that this license information and copyright notice appear with
+*all copies and any derived work.
+*
+*This software is provided 'as-is', without any express or implied
+*warranty. In no event shall the authors be held liable for any damages
+*arising from the use of this software.
+*
+*Project64 is freeware for PERSONAL USE only. Commercial users should
+*seek permission of the copyright holders first. Commercial use includes
+*charging money for Project64 or software derived from Project64.
+*
+*The copyright holders request that bug fixes and improvements to the code
+*should be forwarded to them so if they want them.
+*
+*/
 #define __main_h
 #ifdef __cplusplus
 extern "C" {
@@ -34,8 +34,8 @@ extern "C" {
 #include "Settings API.h"
 #include "ROM Browser.h"
 #include "Language.h"
-/********* Source Version 22 *********/
-/********* General Defaults **********/
+/*********Source Version 22 WIP 2*********/
+/*********General Defaults**********/
 #define AppName						"BruceIV's Project64 1.6.2"
 #define IniName						"Game.ini"
 #define CheatIniName				"Cheat.ini"
@@ -48,24 +48,24 @@ extern "C" {
 #define Default_BasicMode			TRUE
 #define Default_RomsToRemember		10
 #define Default_RomsDirsToRemember	10
-#define Default_CountPerOp		2
+#define Default_CountPerOp		2 // Also debatable due to how higher or lower CF can be stable game-dependently. Higher for now since most hacks these days are safer when it is higher.
 #define Default_ForceDisableTLB		FALSE
 #define Default_ForceEnableDMA		FALSE
 #define Default_ForceDisableCaching	FALSE
 #define Default_ForceAuto16kbit		FALSE
-/*********** Menu Stuff **************/
+/***********Menu Stuff**************/
 #define ID_FILE_RECENT_FILE		1000
 #define ID_FILE_RECENT_DIR		1100
 #define ID_LANG_SELECT			2000
-/********* Register Caching **********/
+/*********Register Caching**********/
 #define UseCache_Default	-1
 #define REG_CACHE_ON		0
 #define REG_CACHE_OFF		1
-#define Default_UseCache REG_CACHE_OFF
-/********** Rom Browser **************/
+#define Default_UseCache REG_CACHE_ON // Whether this should be on or off is debatable. ON for now to get games usually running at full speed and to be better on low-end PC's.
+/**********Rom Browser**************/
 #define Default_UseRB				TRUE
 #define Default_Recursion			TRUE
-/********* Global Variables **********/
+/*********Global Variables**********/
 extern LARGE_INTEGER Frequency,Frames[9],LastFrame;
 extern BOOL AutoSleep,AutoHide,Recursion,LimitFPS,SpeedCap,AutoFullScreen,SystemCF,UsuallyonTop,BasicMode,BootupSettings,SetupPluginsAfterSaveRomOpt,SPECIAL_BREAK_Trigger,BF_Trigger,SPECIAL_BREAK_Yes;
 extern DWORD CurrentFrame,SystemUseCache,RomsToRemember,RomDirsToRemember;
@@ -73,19 +73,19 @@ extern HWND hMainWindow,hHiddenWin,hStatusWnd;
 extern char CurrentSave[256];
 extern HMENU hMainMenu;
 extern HINSTANCE hInst;
-/******** Function Prototype *********/
-DWORD AsciiToHex          (char * HexValue);
+/********Function Prototype*********/
+DWORD AsciiToHex          (char*HexValue);
 int CALLBACK SelectRomDirCallBack (HWND hwnd,DWORD uMsg,DWORD lp,DWORD lpData);
 void UsuallyonTopWindow    (HWND hWnd);
 void HandleModal1 (HWND hWnd);
 void HandleModal2(HWND hWnd);
-void  __cdecl DisplayError       (char * Message,...);
+void  __cdecl DisplayError       (char*Message,...);
 void  ChangeWinSize        (HWND hWnd,long width,long height,HWND hStatusBar);
 void  DisplayFPS          (void);
-char* GetIniFileName      (void);
-char* GetLangFileName     (void);
+char*GetIniFileName      (void);
+char*GetLangFileName     (void);
 void  LoadSettings        (void);
-void  MenuSetText         (HMENU hMenu,int MenuPos,char * Title,char * Shortcut);
+void  MenuSetText         (HMENU hMenu,int MenuPos,char*Title,char*Shortcut);
 void  SetCurrentSaveState (HWND hWnd,int State);
 void  FixupMenubar		  (HWND hWnd);
 void  SetupMenu           (HWND hWnd);

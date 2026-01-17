@@ -1,28 +1,28 @@
 /*
- * Project 64 - A Nintendo 64 emulator.
- *
- * (c) Copyright 2001 zilmar (zilmar@emulation64.com) and
- * Jabo (jabo@emulation64.com).
- *
- * pj64 homepage: www.pj64.net
- *
- * Permission to use, copy, modify and distribute Project64 in both binary and
- * source form, for non-commercial purposes, is hereby granted without fee,
- * providing that this license information and copyright notice appear with
- * all copies and any derived work.
- *
- * This software is provided 'as-is', without any express or implied
- * warranty. In no event shall the authors be held liable for any damages
- * arising from the use of this software.
- *
- * Project64 is freeware for PERSONAL USE only. Commercial users should
- * seek permission of the copyright holders first. Commercial use includes
- * charging money for Project64 or software derived from Project64.
- *
- * The copyright holders request that bug fixes and improvements to the code
- * should be forwarded to them so if they want them.
- *
- */
+*Project 64 - A Nintendo 64 emulator.
+*
+*(c) Copyright 2001 zilmar (zilmar@emulation64.com) and
+*Jabo (jabo@emulation64.com).
+*
+*pj64 homepage: www.pj64.net
+*
+*Permission to use, copy, modify and distribute Project64 in both binary and
+*source form, for non-commercial purposes, is hereby granted without fee,
+*providing that this license information and copyright notice appear with
+*all copies and any derived work.
+*
+*This software is provided 'as-is', without any express or implied
+*warranty. In no event shall the authors be held liable for any damages
+*arising from the use of this software.
+*
+*Project64 is freeware for PERSONAL USE only. Commercial users should
+*seek permission of the copyright holders first. Commercial use includes
+*charging money for Project64 or software derived from Project64.
+*
+*The copyright holders request that bug fixes and improvements to the code
+*should be forwarded to them so if they want them.
+*
+*/
 #include <windows.h>
 #include <stdio.h>
 #include <math.h>
@@ -30,52 +30,52 @@
 #include "Main.h"
 #include "CPU.h"
 #include "Plugin.h"
-void * R4300i_Opcode[64];
-void * R4300i_Special[64];
-void * R4300i_Regimm[32];
-void * R4300i_CoP0[32];
-void * R4300i_CoP0_Function[64];
-void * R4300i_CoP1[32];
-void * R4300i_CoP1_BC[32];
-void * R4300i_CoP1_S[64];
-void * R4300i_CoP1_D[64];
-void * R4300i_CoP1_W[64];
-void * R4300i_CoP1_L[64];
-void * R4300i_CoP2[32];
+void*R4300i_Opcode[64];
+void*R4300i_Special[64];
+void*R4300i_Regimm[32];
+void*R4300i_CoP0[32];
+void*R4300i_CoP0_Function[64];
+void*R4300i_CoP1[32];
+void*R4300i_CoP1_BC[32];
+void*R4300i_CoP1_S[64];
+void*R4300i_CoP1_D[64];
+void*R4300i_CoP1_W[64];
+void*R4300i_CoP1_L[64];
+void*R4300i_CoP2[32];
 void _fastcall r4300i_SPECIAL (void) {
-	((void (_fastcall *)()) R4300i_Special[ Opcode.funct ])();
+	((void (_fastcall*)()) R4300i_Special[ Opcode.funct ])();
 }
 void _fastcall r4300i_REGIMM (void) {
-	((void (_fastcall *)()) R4300i_Regimm[ Opcode.rt ])();
+	((void (_fastcall*)()) R4300i_Regimm[ Opcode.rt ])();
 }
 void _fastcall r4300i_COP0 (void) {
-	((void (_fastcall *)()) R4300i_CoP0[ Opcode.rs ])();
+	((void (_fastcall*)()) R4300i_CoP0[ Opcode.rs ])();
 }
 void _fastcall r4300i_COP0_CO (void) {
-	((void (_fastcall *)()) R4300i_CoP0_Function[ Opcode.funct ])();
+	((void (_fastcall*)()) R4300i_CoP0_Function[ Opcode.funct ])();
 }
 void _fastcall r4300i_COP1 (void) {
-	((void (_fastcall *)()) R4300i_CoP1[ Opcode.fmt ])();
+	((void (_fastcall*)()) R4300i_CoP1[ Opcode.fmt ])();
 }
 void _fastcall r4300i_COP1_BC (void) {
-	((void (_fastcall *)()) R4300i_CoP1_BC[ Opcode.ft ])();
+	((void (_fastcall*)()) R4300i_CoP1_BC[ Opcode.ft ])();
 }
 void _fastcall r4300i_COP1_S (void) {
 	_controlfp(RoundingModel,_MCW_RC);
-	((void (_fastcall *)()) R4300i_CoP1_S[ Opcode.funct ])();
+	((void (_fastcall*)()) R4300i_CoP1_S[ Opcode.funct ])();
 }
 void _fastcall r4300i_COP1_D (void) {
 	_controlfp(RoundingModel,_MCW_RC);
-	((void (_fastcall *)()) R4300i_CoP1_D[ Opcode.funct ])();
+	((void (_fastcall*)()) R4300i_CoP1_D[ Opcode.funct ])();
 }
 void _fastcall r4300i_COP1_W (void) {
-	((void (_fastcall *)()) R4300i_CoP1_W[ Opcode.funct ])();
+	((void (_fastcall*)()) R4300i_CoP1_W[ Opcode.funct ])();
 }
 void _fastcall r4300i_COP1_L (void) {
-	((void (_fastcall *)()) R4300i_CoP1_L[ Opcode.funct ])();
+	((void (_fastcall*)()) R4300i_CoP1_L[ Opcode.funct ])();
 }
 void _fastcall r4300i_COP2 (void) {
-	((void (_fastcall *)()) R4300i_CoP2[ Opcode.rs ])();
+	((void (_fastcall*)()) R4300i_CoP2[ Opcode.rs ])();
 }
 void _fastcall DTE_RESERVED() {
 	DisplayThreadExit("BuildInterpreter-i=0; i<64; i++\n\nThe emulator has crashed on a reserved Opcode at this location");
@@ -376,23 +376,23 @@ void ExecuteInterpreterOpCode (void) {
 		SetNormal
 		return;
 	}
-	COUNT_REGISTER +=CountPerOp;
+	COUNT_REGISTER+=CountPerOp;
 	Timers.Timer -=CountPerOp;
 	RANDOM_REGISTER -=1;
 	if ((int)RANDOM_REGISTER<(int)WIRED_REGISTER) {
 		RANDOM_REGISTER=31;
 	}
-	((void (_fastcall *)()) R4300i_Opcode[ Opcode.op ])();
+	((void (_fastcall*)()) R4300i_Opcode[ Opcode.op ])();
 	if (GPR[0].DW!=0) {
 		GPR[0].DW=0;
 	}
 	switch (NextInstruction) {
 	case NORMAL:
-		PROGRAM_COUNTER +=4;
+		PROGRAM_COUNTER+=4;
 		break;
 	case DELAY_SLOT:
 		SetJump
-		PROGRAM_COUNTER +=4;
+		PROGRAM_COUNTER+=4;
 		break;
 	case JUMP:
 		PROGRAM_COUNTER=JumpToLocation;

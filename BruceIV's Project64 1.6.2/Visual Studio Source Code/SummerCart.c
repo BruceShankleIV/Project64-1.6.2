@@ -2,7 +2,7 @@
 #include <Windows.h>
 #include <Shlobj.h>
 #include <shlwapi.h>
-extern BYTE* N64MEM,* RDRAM,* DMEM,* IMEM,* ROM;
+extern BYTE*N64MEM,*RDRAM,*DMEM,*IMEM,*ROM;
 #include <fcntl.h>
 #include <stdlib.h>
 #include <string.h>
@@ -10,7 +10,7 @@ extern BYTE* N64MEM,* RDRAM,* DMEM,* IMEM,* ROM;
 #include <io.h>
 #define S8 3
 struct summercart SummerCart;
-static uint8_t* summercart_sd_addr(size_t size) {
+static uint8_t*summercart_sd_addr(size_t size) {
     uint32_t addr=SummerCart.data0&0x1fffffff;
     if (addr>=0x1ffe0000&&addr+size<0x1ffe0000+8192)
     {
@@ -24,7 +24,7 @@ static uint8_t* summercart_sd_addr(size_t size) {
 }
 static uint32_t summercart_sd_init()
 {
-    FILE* fp;
+    FILE*fp;
     if (!SummerCart.sd_path||!(fp=fopen(SummerCart.sd_path,"rb"))) return 0x40000000;
     fseek(fp,0,SEEK_END);
     SummerCart.sd_size=ftell(fp);
@@ -34,13 +34,13 @@ static uint32_t summercart_sd_init()
 static uint32_t summercart_sd_read()
 {
     size_t i;
-    FILE* fp;
-    uint8_t* ptr;
-    long offset=512 * SummerCart.sd_sector;
-    size_t size=512 * SummerCart.data1;
+    FILE*fp;
+    uint8_t*ptr;
+    long offset=512*SummerCart.sd_sector;
+    size_t size=512*SummerCart.data1;
     if ((unsigned long)(offset+size)>(unsigned long)SummerCart.sd_size||!(ptr=summercart_sd_addr(size))||!(fp=fopen(SummerCart.sd_path,"rb"))) return 0x40000000;
     fseek(fp,offset,SEEK_SET);
-    for (i=0; i<size; ++i)
+    for (i=0; i<size;++i)
     {
         int c=fgetc(fp);
         if (c<0)
@@ -56,13 +56,13 @@ static uint32_t summercart_sd_read()
 static uint32_t summercart_sd_write()
 {
     size_t i;
-    FILE* fp;
-    uint8_t* ptr;
-    long offset=512 * SummerCart.sd_sector;
-    size_t size=512 * SummerCart.data1;
+    FILE*fp;
+    uint8_t*ptr;
+    long offset=512*SummerCart.sd_sector;
+    size_t size=512*SummerCart.data1;
     if ((unsigned long)(offset+size)>(unsigned long)SummerCart.sd_size||!(ptr=summercart_sd_addr(size))||!(fp=fopen(SummerCart.sd_path,"r+b"))) return 0x40000000;
     fseek(fp,offset,SEEK_SET);
-    for (i=0; i<size; ++i)
+    for (i=0; i<size;++i)
     {
         int c=fputc(ptr[i ^ S8],fp);
         if (c<0)
@@ -74,7 +74,7 @@ static uint32_t summercart_sd_write()
     fclose(fp);
     return 0;
 }
-static void write_fat16_initial_image(const char* path)
+static void write_fat16_initial_image(const char*path)
 {
     BYTE pt0[]={ 0xEB,0x3C,0x90,0x6D,0x6B,0x64,0x6F,0x73,0x66,0x73,0x00,0x00,0x02,0x08,0x01,0x00
                 ,0x02,0x00,0x02,0x00,0x00,0xF8,0xFF,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00
@@ -103,7 +103,7 @@ static void write_fat16_initial_image(const char* path)
     SetEndOfFile((HANDLE)_get_osfhandle(fd));
     _close(fd);
 }
-void init_summercart(struct summercart* summercart)
+void init_summercart(struct summercart*summercart)
 {
     static char _strPath[1024];
     SHGetFolderPath(NULL,
@@ -135,7 +135,7 @@ void init_summercart(struct summercart* summercart)
     };
     summercart->sd_path=_strPath;
 }
-void poweron_summercart(struct summercart* summercart)
+void poweron_summercart(struct summercart*summercart)
 {
     memset(summercart->buffer,0,8192);
     summercart->sd_size=-1;
@@ -148,23 +148,23 @@ void poweron_summercart(struct summercart* summercart)
     summercart->unlock=0;
     summercart->lock_seq=0;
 }
-int read_summercart_regs(void* opaque,uint32_t address,uint32_t* Value)
+int read_summercart_regs(void*opaque,uint32_t address,uint32_t*Value)
 {
-    struct pi_controller* pi=(struct pi_controller*)opaque;
+    struct pi_controller*pi=(struct pi_controller*)opaque;
     uint32_t addr=address&0xFFFF;
-    * Value=0;
+   *Value=0;
     if (SummerCart.unlock) {
         switch (address&0xFFFF)
         {
-        case 0x00:  * Value=SummerCart.status; break;
-        case 0x04:  * Value=SummerCart.data0;  break;
-        case 0x08:  * Value=SummerCart.data1;  break;
-        case 0x0C:  * Value=0x53437632;        break;
+        case 0x00: *Value=SummerCart.status; break;
+        case 0x04: *Value=SummerCart.data0;  break;
+        case 0x08: *Value=SummerCart.data1;  break;
+        case 0x0C: *Value=0x53437632;        break;
         }
     }
     return 0;
 }
-int write_summercart_regs(void* opaque,uint32_t address,uint32_t value,uint32_t mask)
+int write_summercart_regs(void*opaque,uint32_t address,uint32_t value,uint32_t mask)
 {
     uint32_t addr=address&0xFFFF;
     if (addr==0x10)

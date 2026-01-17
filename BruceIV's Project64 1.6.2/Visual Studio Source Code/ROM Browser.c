@@ -1,28 +1,28 @@
 /*
- * Project 64 - A Nintendo 64 emulator.
- *
- * (c) Copyright 2001 zilmar (zilmar@emulation64.com) and
- * Jabo (jabo@emulation64.com).
- *
- * pj64 homepage: www.pj64.net
- *
- * Permission to use, copy, modify and distribute Project64 in both binary and
- * source form, for non-commercial purposes, is hereby granted without fee,
- * providing that this license information and copyright notice appear with
- * all copies and any derived work.
- *
- * This software is provided 'as-is', without any express or implied
- * warranty. In no event shall the authors be held liable for any damages
- * arising from the use of this software.
- *
- * Project64 is freeware for PERSONAL USE only. Commercial users should
- * seek permission of the copyright holders first. Commercial use includes
- * charging money for Project64 or software derived from Project64.
- *
- * The copyright holders request that bug fixes and improvements to the code
- * should be forwarded to them so if they want them.
- *
- */
+*Project 64 - A Nintendo 64 emulator.
+*
+*(c) Copyright 2001 zilmar (zilmar@emulation64.com) and
+*Jabo (jabo@emulation64.com).
+*
+*pj64 homepage: www.pj64.net
+*
+*Permission to use, copy, modify and distribute Project64 in both binary and
+*source form, for non-commercial purposes, is hereby granted without fee,
+*providing that this license information and copyright notice appear with
+*all copies and any derived work.
+*
+*This software is provided 'as-is', without any express or implied
+*warranty. In no event shall the authors be held liable for any damages
+*arising from the use of this software.
+*
+*Project64 is freeware for PERSONAL USE only. Commercial users should
+*seek permission of the copyright holders first. Commercial use includes
+*charging money for Project64 or software derived from Project64.
+*
+*The copyright holders request that bug fixes and improvements to the code
+*should be forwarded to them so if they want them.
+*
+*/
 #include <Windows.h>
 #include <commctrl.h>
 #include <shlwapi.h>
@@ -61,25 +61,25 @@ typedef struct {
 typedef struct {
 	int    ListCount;
 	int    ListAlloc;
-	ROM_INFO * List;
+	ROM_INFO*List;
 } ITEM_LIST;
 typedef struct {
 	int    ListCount;
 	int    ListAlloc;
-	ROM_LIST_INFO * List;
+	ROM_LIST_INFO*List;
 } ROM_LIST;
 typedef struct {
 	int    Key[NoOfSortKeys];
 	BOOL   KeyAscend[NoOfSortKeys];
 } SORT_FIELDS;
 typedef struct {
-	char *status_name;
+	char*status_name;
 	COLORREF HighLight;
 	COLORREF Text;
 	COLORREF SelectedText;
 } COLOR_ENTRY;
 typedef struct {
-	COLOR_ENTRY *List;
+	COLOR_ENTRY*List;
 	int count;
 	int max_allocated;
 } COLOR_CACHE;
@@ -94,15 +94,15 @@ typedef struct {
 #define RB_CICChip			8
 void LoadRomList             (void);
 void RomList_SortList        (void);
-void FillRomExtensionInfo    (ROM_INFO * pRomInfo);
-BOOL FillRomInfo             (ROM_INFO * pRomInfo);
+void FillRomExtensionInfo    (ROM_INFO*pRomInfo);
+BOOL FillRomInfo             (ROM_INFO*pRomInfo);
 #define COLOR_TEXT 0
 #define COLOR_SELECTED_TEXT 1
 #define COLOR_HIGHLIGHTED 2
 void AddToColorCache(COLOR_ENTRY color);
-COLORREF GetColor(char *status,int selection);
-int ColorIndex(char *status);
-void SetColors(char *status);
+COLORREF GetColor(char*status,int selection);
+int ColorIndex(char*status);
+void SetColors(char*status);
 int CALLBACK RomList_CompareItems(LPARAM lParam1,LPARAM lParam2,LPARAM lParamSort);
 int CALLBACK RomList_CompareItems2(LPARAM lParam1,LPARAM lParam2,LPARAM lParamSort);
 char CurrentRBFileName[MAX_PATH+1]={""};
@@ -112,16 +112,16 @@ int NoOfFields=sizeof(RomBrowserFields) / sizeof(RomBrowserFields[0]),
  FieldType[(sizeof(RomBrowserFields) / sizeof(RomBrowserFields[0]))+1];
 ITEM_LIST ItemList={0,0,NULL};
 COLOR_CACHE ColorCache;
-void AddRomToList (char * RomLocation) {
+void AddRomToList (char*RomLocation) {
 	LV_ITEM  lvItem;
-	ROM_INFO * pRomInfo;
+	ROM_INFO*pRomInfo;
 	int index;
 	if (ItemList.ListAlloc==0) {
-		ItemList.List=(ROM_INFO *)malloc(100 * sizeof(ROM_INFO));
+		ItemList.List=(ROM_INFO*)malloc(100*sizeof(ROM_INFO));
 		ItemList.ListAlloc=100;
 	} else if (ItemList.ListAlloc==ItemList.ListCount) {
-		ItemList.ListAlloc +=100;
-		ItemList.List=(ROM_INFO *)realloc(ItemList.List,ItemList.ListAlloc * sizeof(ROM_INFO));
+		ItemList.ListAlloc+=100;
+		ItemList.List=(ROM_INFO*)realloc(ItemList.List,ItemList.ListAlloc*sizeof(ROM_INFO));
 	}
 	if (ItemList.List==NULL) {
 		DisplayError(GS(MSG_MEM_ALLOC_ERROR));
@@ -137,7 +137,7 @@ void AddRomToList (char * RomLocation) {
 	lvItem.iItem=ListView_GetItemCount(hRomList);
 	lvItem.lParam=(LPARAM)ItemList.ListCount;
 	lvItem.pszText=LPSTR_TEXTCALLBACK;
-	ItemList.ListCount +=1;
+	ItemList.ListCount+=1;
 	index=ListView_InsertItem(hRomList,&lvItem);
 	if (_stricmp(pRomInfo->szFullFileName,LastRoms[0])==0) {
 		ListView_SetItemState(hRomList,index,LVIS_SELECTED|LVIS_FOCUSED,LVIS_SELECTED|LVIS_FOCUSED);
@@ -151,11 +151,11 @@ void CreateRomListControl (HWND hParent) {
 }
 void LoadRomList (void) {
 	int count,index;
-	ROM_INFO * pRomInfo;
+	ROM_INFO*pRomInfo;
 	LV_ITEM  lvItem;
 	FreeRomBrowser();
 	ListView_DeleteAllItems(hRomList);
-	for (count=0; count<ItemList.ListCount; count ++) {
+	for (count=0; count<ItemList.ListCount; count++) {
 		pRomInfo=&ItemList.List[count];
 		memset(&lvItem,0,sizeof(lvItem));
 		lvItem.mask=LVIF_TEXT|LVIF_PARAM;
@@ -171,7 +171,7 @@ void LoadRomList (void) {
 	}
 	RomList_SortList();
 }
-void FillRomExtensionInfo(ROM_INFO * pRomInfo) {
+void FillRomExtensionInfo(ROM_INFO*pRomInfo) {
 	LPSTR IniFileName;
 	char Identifier[100];
 	IniFileName=GetIniFileName();
@@ -182,7 +182,7 @@ void FillRomExtensionInfo(ROM_INFO * pRomInfo) {
 		SetColors(pRomInfo->Status);
 	}
 }
-BOOL FillRomInfo(ROM_INFO * pRomInfo) {
+BOOL FillRomInfo(ROM_INFO*pRomInfo) {
 	char drive[_MAX_DRIVE],dir[_MAX_DIR],ext[_MAX_EXT];
 	BYTE RomData[0x1000];
 	int count;
@@ -194,8 +194,8 @@ BOOL FillRomInfo(ROM_INFO * pRomInfo) {
 	_splitpath(pRomInfo->szFullFileName,drive,dir,pRomInfo->FileName,ext);
 	strcat(pRomInfo->FileName,ext);
 	if (RomBrowserFields[RB_InternalName].Pos>=0) {
-		memcpy(pRomInfo->InternalName,(void *)(RomData+0x20),20);
-		for(count=0 ; count<20; count +=4) {
+		memcpy(pRomInfo->InternalName,(void*)(RomData+0x20),20);
+		for(count=0 ; count<20; count+=4) {
 			pRomInfo->InternalName[count] ^=pRomInfo->InternalName[count+3];
 			pRomInfo->InternalName[count+3] ^=pRomInfo->InternalName[count];
 			pRomInfo->InternalName[count] ^=pRomInfo->InternalName[count+3];
@@ -210,8 +210,8 @@ BOOL FillRomInfo(ROM_INFO * pRomInfo) {
 	pRomInfo->CartID[2]='\0';
 	pRomInfo->Manufacturer=*(RomData+0x38);
 	pRomInfo->Country=*(RomData+0x3D);
-	pRomInfo->CRC1=*(DWORD *)(RomData+0x10);
-	pRomInfo->CRC2=*(DWORD *)(RomData+0x14);
+	pRomInfo->CRC1=*(DWORD*)(RomData+0x10);
+	pRomInfo->CRC2=*(DWORD*)(RomData+0x14);
 	if (RomBrowserFields[RB_CICChip].Pos>=0) pRomInfo->CicChip=GetCicChipID(RomData);
 	FillRomExtensionInfo(pRomInfo);
 	return TRUE;
@@ -238,8 +238,8 @@ void ResetRomBrowserColomuns (void) {
 	lvColumn.mask=LVCF_FMT|LVCF_WIDTH|LVCF_TEXT|LVCF_SUBITEM;
 	lvColumn.fmt=LVCFMT_LEFT;
 	lvColumn.pszText=szString;
-	for (Coloumn=0; Coloumn<NoOfFields; Coloumn ++) {
-		for (index=0; index<NoOfFields; index ++) {
+	for (Coloumn=0; Coloumn<NoOfFields; Coloumn++) {
+		for (index=0; index<NoOfFields; index++) {
 			if (RomBrowserFields[index].Pos==Coloumn) { break; }
 		}
 		if (index==NoOfFields||RomBrowserFields[index].Pos!=Coloumn) {
@@ -271,10 +271,10 @@ void RomList_ColoumnSortList(LPNMLISTVIEW pnmv) {
 	RomList_SortList();
 }
 int CALLBACK RomList_CompareItems2(LPARAM lParam1,LPARAM lParam2,LPARAM lParamSort) {
-	SORT_FIELDS * SortFields=(SORT_FIELDS *)lParamSort;
-	ROM_INFO * pRomInfo1,* pRomInfo2;
+	SORT_FIELDS*SortFields=(SORT_FIELDS*)lParamSort;
+	ROM_INFO*pRomInfo1,*pRomInfo2;
 	int count,result;
-	for (count=0; count<3; count ++) {
+	for (count=0; count<3; count++) {
 		pRomInfo1=&ItemList.List[SortFields->KeyAscend[count]?lParam1:lParam2];
 		pRomInfo2=&ItemList.List[SortFields->KeyAscend[count]?lParam2:lParam1];
 		switch (SortFields->Key[count]) {
@@ -294,8 +294,8 @@ int CALLBACK RomList_CompareItems2(LPARAM lParam1,LPARAM lParam2,LPARAM lParamSo
 	return 0;
 }
 void RomList_GetDispInfo(LPNMHDR pnmh) {
-	LV_DISPINFO * lpdi=(LV_DISPINFO *)pnmh;
-	ROM_INFO * pRomInfo=&ItemList.List[lpdi->item.lParam];
+	LV_DISPINFO*lpdi=(LV_DISPINFO*)pnmh;
+	ROM_INFO*pRomInfo=&ItemList.List[lpdi->item.lParam];
 	switch(FieldType[lpdi->item.iSubItem]) {
 	case RB_FileName: strncpy(lpdi->item.pszText,pRomInfo->FileName,lpdi->item.cchTextMax); break;
 	case RB_InternalName: strncpy(lpdi->item.pszText,pRomInfo->InternalName,lpdi->item.cchTextMax); break;
@@ -321,10 +321,10 @@ void RomList_GetDispInfo(LPNMHDR pnmh) {
 	if (strlen(lpdi->item.pszText)==0) { strcpy(lpdi->item.pszText,""); }
 }
 void RomList_PopupMenu(LPNMHDR pnmh) {
-	LV_DISPINFO * lpdi=(LV_DISPINFO *)pnmh;
+	LV_DISPINFO*lpdi=(LV_DISPINFO*)pnmh;
 	HMENU hMenu=LoadMenu(hInst,MAKEINTRESOURCE(IDR_POPUP));
 	HMENU hPopupMenu=GetSubMenu(hMenu,0);
-	ROM_INFO * pRomInfo;
+	ROM_INFO*pRomInfo;
 	LV_ITEM lvItem;
 	POINT Mouse;
 	LONG iItem;
@@ -360,7 +360,7 @@ void RomList_PopupMenu(LPNMHDR pnmh) {
 	DestroyMenu(hMenu);
 }
 void RomList_OpenRom(LPNMHDR pnmh) {
-	ROM_INFO * pRomInfo;
+	ROM_INFO*pRomInfo;
 	LV_ITEM lvItem;
 	LONG iItem;
 	iItem=ListView_GetNextItem(hRomList,-1,LVNI_SELECTED);
@@ -380,7 +380,7 @@ void RomList_SortList (void) {
 }
 void RomListDrawItem (LPDRAWITEMSTRUCT ditem) {
 	RECT rcItem,rcDraw;
-	ROM_INFO * pRomInfo;
+	ROM_INFO*pRomInfo;
 	char String[300];
 	LV_ITEM lvItem;
 	BOOL bSelected;
@@ -410,9 +410,9 @@ void RomListDrawItem (LPDRAWITEMSTRUCT ditem) {
 	DrawText(ditem->hDC,String,strlen(String),&rcDraw,DT_LEFT|DT_SINGLELINE|DT_NOPREFIX|DT_VCENTER);
 	memset(&lvc,0,sizeof(lvc));
 	lvc.mask=LVCF_FMT|LVCF_WIDTH;
-	for (nColumn=1; ListView_GetColumn(hRomList,nColumn,&lvc); nColumn +=1) {
+	for (nColumn=1; ListView_GetColumn(hRomList,nColumn,&lvc); nColumn+=1) {
 		rcItem.left=rcItem.right;
-		rcItem.right +=lvc.cx;
+		rcItem.right+=lvc.cx;
 		ListView_GetItemText(hRomList,ditem->itemID,nColumn,String,sizeof(String));
 		memcpy(&rcDraw,&rcItem,sizeof(RECT));
 		rcDraw.right -=3;
@@ -452,7 +452,7 @@ void SelectRomDir (void) {
 		}
 	}
 }
-void FillRomList (char * Directory) {
+void FillRomList (char*Directory) {
 	char FullPath[MAX_PATH+1],FileName[MAX_PATH+1],SearchSpec[MAX_PATH+1];
 	WIN32_FIND_DATA fd;
 	HANDLE hFind;
@@ -473,7 +473,7 @@ void FillRomList (char * Directory) {
 			continue;
 		}
 		_splitpath(FullPath,drive,dir,FileName,ext);
-		//if (_stricmp(ext,".zip")==0&&fd.nFileSizeLow <=(30.1 * 1024 * 1024)) { AddRomToList(FullPath); continue; }
+		//if (_stricmp(ext,".zip")==0&&fd.nFileSizeLow <=(30.1*1024*1024)) { AddRomToList(FullPath); continue; }
 		if (_stricmp(ext,".v64")==0) { AddRomToList(FullPath); continue; }
 		if (_stricmp(ext,".z64")==0) { AddRomToList(FullPath); continue; }
 		if (_stricmp(ext,".n64")==0) { AddRomToList(FullPath); continue; }
@@ -532,9 +532,9 @@ void FreeRomBrowser (void) {
 void AddToColorCache(COLOR_ENTRY color) {
 	// Allocate more memory if there is not enough to store the new entry.
 	if (ColorCache.count==ColorCache.max_allocated) {
-		COLOR_ENTRY *temp;
+		COLOR_ENTRY*temp;
 		const int increase=ColorCache.max_allocated+5;
-		temp=(COLOR_ENTRY *)realloc(ColorCache.List,sizeof(COLOR_ENTRY) * increase);
+		temp=(COLOR_ENTRY*)realloc(ColorCache.List,sizeof(COLOR_ENTRY)*increase);
 		if (temp==NULL) return;
 		ColorCache.List=temp;
 		ColorCache.max_allocated=increase;
@@ -542,7 +542,7 @@ void AddToColorCache(COLOR_ENTRY color) {
 	ColorCache.List[ColorCache.count]=color;
 	ColorCache.count++;
 }
-COLORREF GetColor(char *status,int selection) {
+COLORREF GetColor(char*status,int selection) {
 	int i=ColorIndex(status);
 	switch(selection) {
 	case COLOR_SELECTED_TEXT:
@@ -556,13 +556,13 @@ COLORREF GetColor(char *status,int selection) {
 		return ColorCache.List[i].Text;
 	}
 }
-int ColorIndex(char *status) {
+int ColorIndex(char*status) {
 	int i;
 	for (i=0; i<ColorCache.count; i++)
 		if (strcmp(status,ColorCache.List[i].status_name)==0) return i;
 	return -1;
 }
-void SetColors(char *status) {
+void SetColors(char*status) {
 	int count;
 	COLOR_ENTRY colors;
 	char String[100];
@@ -583,7 +583,7 @@ void SetColors(char *status) {
 			colors.HighLight=count;
 		}
 		colors.SelectedText=0xFFFFFF;
-		colors.status_name=(char *)malloc(strlen(status)+1);
+		colors.status_name=(char*)malloc(strlen(status)+1);
 		strcpy(colors.status_name,status);
 		AddToColorCache(colors);
 	}
@@ -607,7 +607,7 @@ void SaveRomBrowserColoumnInfo (void) {
 			}
 			RomBrowserFields[index].ColWidth=lvColumn.cx;
 			sprintf(String,"%s.Width",RomBrowserFields[index].Name);
-			RegSetValueEx(hKeyResults,String,0,REG_DWORD,(BYTE *)&lvColumn.cx,sizeof(DWORD));
+			RegSetValueEx(hKeyResults,String,0,REG_DWORD,(BYTE*)&lvColumn.cx,sizeof(DWORD));
 		}
 		RegCloseKey(hKeyResults);
 	}
@@ -622,7 +622,7 @@ void SaveRomBrowserColoumnPosition (int index,int Position) {
 		KEY_ALL_ACCESS,NULL,&hKeyResults,&Disposition);
 	if (lResult==ERROR_SUCCESS) {
 		sprintf(szPos,"%d",Position);
-		RegSetValueEx(hKeyResults,RomBrowserFields[index].Name,0,REG_SZ,(CONST BYTE *)szPos,strlen(szPos));
+		RegSetValueEx(hKeyResults,RomBrowserFields[index].Name,0,REG_SZ,(CONST BYTE*)szPos,strlen(szPos));
 		RegCloseKey(hKeyResults);
 	}
 }
@@ -636,7 +636,7 @@ void LoadRomBrowserColoumnInfo (void) {
 	lResult=RegOpenKeyEx(HKEY_CURRENT_USER,String,0,KEY_ALL_ACCESS,&hKeyResults);
 	if (lResult==ERROR_SUCCESS) {
 		DWORD Type,Value,count,Bytes=4;
-		for (count=0; count<(DWORD)NoOfFields; count ++) {
+		for (count=0; count<(DWORD)NoOfFields; count++) {
 			Bytes=sizeof(szPos);
 			// Coloumn Position
 			lResult=RegQueryValueEx(hKeyResults,RomBrowserFields[count].Name,0,&Type,(LPBYTE)szPos,&Bytes);

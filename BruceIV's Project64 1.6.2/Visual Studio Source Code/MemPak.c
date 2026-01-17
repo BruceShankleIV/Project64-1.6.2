@@ -1,28 +1,28 @@
 /*
- * Project 64 - A Nintendo 64 emulator.
- *
- * (c) Copyright 2001 zilmar (zilmar@emulation64.com) and
- * Jabo (jabo@emulation64.com).
- *
- * pj64 homepage: www.pj64.net
- *
- * Permission to use, copy, modify and distribute Project64 in both binary and
- * source form, for non-commercial purposes, is hereby granted without fee,
- * providing that this license information and copyright notice appear with
- * all copies and any derived work.
- *
- * This software is provided 'as-is', without any express or implied
- * warranty. In no event shall the authors be held liable for any damages
- * arising from the use of this software.
- *
- * Project64 is freeware for PERSONAL USE only. Commercial users should
- * seek permission of the copyright holders first. Commercial use includes
- * charging money for Project64 or software derived from Project64.
- *
- * The copyright holders request that bug fixes and improvements to the code
- * should be forwarded to them so if they want them.
- *
- */
+*Project 64 - A Nintendo 64 emulator.
+*
+*(c) Copyright 2001 zilmar (zilmar@emulation64.com) and
+*Jabo (jabo@emulation64.com).
+*
+*pj64 homepage: www.pj64.net
+*
+*Permission to use, copy, modify and distribute Project64 in both binary and
+*source form, for non-commercial purposes, is hereby granted without fee,
+*providing that this license information and copyright notice appear with
+*all copies and any derived work.
+*
+*This software is provided 'as-is', without any express or implied
+*warranty. In no event shall the authors be held liable for any damages
+*arising from the use of this software.
+*
+*Project64 is freeware for PERSONAL USE only. Commercial users should
+*seek permission of the copyright holders first. Commercial use includes
+*charging money for Project64 or software derived from Project64.
+*
+*The copyright holders request that bug fixes and improvements to the code
+*should be forwarded to them so if they want them.
+*
+*/
 #include <windows.h>
 #include <stdio.h>
 #include "Main.h"
@@ -57,8 +57,8 @@ void LoadMempak (void) {
 		0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
 		0x00,0x71,0x00,0x03,0x00,0x03,0x00,0x03,0x00,0x03,0x00,0x03,0x00,0x03,0x00,0x03,
 	};
-	for (count=0; count<4; count ++) {
-		for (count2=0; count2<0x8000; count2 +=2) {
+	for (count=0; count<4; count++) {
+		for (count2=0; count2<0x8000; count2+=2) {
 			Mempak[count][count2]=0x00;
 			Mempak[count][count2+1]=0x03;
 		}
@@ -83,7 +83,7 @@ void LoadMempak (void) {
 	ReadFile(hMempakFile,Mempak,sizeof(Mempak),&dwRead,NULL);
 	WriteFile(hMempakFile,Mempak,sizeof(Mempak),&dwRead,NULL);
 }
-BYTE Mempacks_CalulateCrc(BYTE * DataToCrc) {
+BYTE Mempacks_CalulateCrc(BYTE*DataToCrc) {
 	DWORD Count;
 	DWORD XorTap;
 	int Length;
@@ -105,7 +105,7 @@ BYTE Mempacks_CalulateCrc(BYTE * DataToCrc) {
 	}
 	return CRC;
 }
-void ReadFromMempak(int Control,int Address,BYTE * Buffer) {
+void ReadFromMempak(int Control,int Address,BYTE*Buffer) {
 	if (Address==0x8001) {
 		memset(Buffer,0,0x20);
 		Buffer[0x20]=Mempacks_CalulateCrc(Buffer);
@@ -119,11 +119,11 @@ void ReadFromMempak(int Control,int Address,BYTE * Buffer) {
 		memcpy(Buffer,&Mempak[Control][Address],0x20);
 	} else {
 		memset(Buffer,0,0x20);
-		/* Rumble pack area */
+		/*Rumble pack area*/
 	}
 	Buffer[0x20]=Mempacks_CalulateCrc(Buffer);
 }
-void WriteToMempak(int Control,int Address,BYTE * Buffer) {
+void WriteToMempak(int Control,int Address,BYTE*Buffer) {
 	DWORD dwWritten;
 	if (Address==0x8001) { Buffer[0x20]=Mempacks_CalulateCrc(Buffer); return; }
 	Address&=0xFFE0;
@@ -135,7 +135,7 @@ void WriteToMempak(int Control,int Address,BYTE * Buffer) {
 		SetFilePointer(hMempakFile,Control*0x8000,NULL,FILE_BEGIN);
 		WriteFile(hMempakFile,&Mempak[Control][0],0x8000,&dwWritten,NULL);
 	} else {
-		/* Rumble pack area */
+		/*Rumble pack area*/
 	}
 	Buffer[0x20]=Mempacks_CalulateCrc(Buffer);
 }

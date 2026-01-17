@@ -1,28 +1,28 @@
 /*
- * Project 64 - A Nintendo 64 emulator.
- *
- * (c) Copyright 2001 zilmar (zilmar@emulation64.com) and
- * Jabo (jabo@emulation64.com).
- *
- * pj64 homepage: www.pj64.net
- *
- * Permission to use, copy, modify and distribute Project64 in both binary and
- * source form, for non-commercial purposes, is hereby granted without fee,
- * providing that this license information and copyright notice appear with
- * all copies and any derived work.
- *
- * This software is provided 'as-is', without any express or implied
- * warranty. In no event shall the authors be held liable for any damages
- * arising from the use of this software.
- *
- * Project64 is freeware for PERSONAL USE only. Commercial users should
- * seek permission of the copyright holders first. Commercial use includes
- * charging money for Project64 or software derived from Project64.
- *
- * The copyright holders request that bug fixes and improvements to the code
- * should be forwarded to them so if they want them.
- *
- */
+*Project 64 - A Nintendo 64 emulator.
+*
+*(c) Copyright 2001 zilmar (zilmar@emulation64.com) and
+*Jabo (jabo@emulation64.com).
+*
+*pj64 homepage: www.pj64.net
+*
+*Permission to use, copy, modify and distribute Project64 in both binary and
+*source form, for non-commercial purposes, is hereby granted without fee,
+*providing that this license information and copyright notice appear with
+*all copies and any derived work.
+*
+*This software is provided 'as-is', without any express or implied
+*warranty. In no event shall the authors be held liable for any damages
+*arising from the use of this software.
+*
+*Project64 is freeware for PERSONAL USE only. Commercial users should
+*seek permission of the copyright holders first. Commercial use includes
+*charging money for Project64 or software derived from Project64.
+*
+*The copyright holders request that bug fixes and improvements to the code
+*should be forwarded to them so if they want them.
+*
+*/
 #include <windows.h>
 #include <stdio.h>
 #include "Main.h"
@@ -37,9 +37,9 @@ enum TFlashRAM_Modes {
 BOOL LoadFlashRAM (void);
 DWORD FlashRAM_Offset,FlashFlag=FlashRAM_MODE_NOPES;
 static HANDLE hFlashRAMFile=NULL;
-BYTE * FlashRAMPointer;
+BYTE*FlashRAMPointer;
 QWORD FlashStatus=0;
-void DMAfromFlashRAM(BYTE * dest,int StartOffset,int len) {
+void DMAfromFlashRAM(BYTE*dest,int StartOffset,int len) {
 	BYTE FlipBuffer[0x10000];
 	DWORD dwRead,count;
 	switch (FlashFlag) {
@@ -57,7 +57,7 @@ void DMAfromFlashRAM(BYTE * dest,int StartOffset,int len) {
 		StartOffset=StartOffset<<1;
 		SetFilePointer(hFlashRAMFile,StartOffset,NULL,FILE_BEGIN);
 		ReadFile(hFlashRAMFile,FlipBuffer,len,&dwRead,NULL);
-		for (count=dwRead; (int)count<len; count ++) {
+		for (count=dwRead; (int)count<len; count++) {
 			FlipBuffer[count]=0xFF;
 		}
 		_asm {
@@ -77,12 +77,12 @@ void DMAfromFlashRAM(BYTE * dest,int StartOffset,int len) {
 	case FlashRAM_MODE_STATUS:
 		if (StartOffset!=0&&len!=8) {
 		}
-		*((DWORD *)(dest))=(DWORD)(FlashStatus>>32);
-		*((DWORD *)(dest)+1)=(DWORD)(FlashStatus);
+		*((DWORD*)(dest))=(DWORD)(FlashStatus>>32);
+		*((DWORD*)(dest)+1)=(DWORD)(FlashStatus);
 		break;
 	}
 }
-void DMAtoFlashRAM(BYTE * Source,int StartOffset,int len) {
+void DMAtoFlashRAM(BYTE*Source,int StartOffset,int len) {
 	switch (FlashFlag) {
 	case FlashRAM_MODE_WRITE:
 		FlashRAMPointer=Source;
@@ -162,7 +162,7 @@ void WriteToFlashCommand(DWORD FlashRAM_Command) {
 		FlashStatus=0x11118004F0000000;
 		break;
 	case 0x4B000000:
-		FlashRAM_Offset=(FlashRAM_Command&0xffff) * 128;
+		FlashRAM_Offset=(FlashRAM_Command&0xffff)*128;
 		break;
 	case 0x78000000:
 		FlashFlag=FlashRAM_MODE_ERASE;
@@ -172,7 +172,7 @@ void WriteToFlashCommand(DWORD FlashRAM_Command) {
 		FlashFlag=FlashRAM_MODE_WRITE;
 		break;
 	case 0xA5000000:
-		FlashRAM_Offset=(FlashRAM_Command&0xffff) * 128;
+		FlashRAM_Offset=(FlashRAM_Command&0xffff)*128;
 		FlashStatus=0x1111800400C20000;
 		break;
 	}
