@@ -224,6 +224,7 @@ void RefreshRomBrowser (void) {
 	GetRomDirectory(RomDir);
 	FillRomList (RomDir);
 	RomList_SortList();
+	SetFocus(hRomList);
 }
 void ResetRomBrowserColomuns (void) {
 	int Coloumn,index;
@@ -516,6 +517,7 @@ void HandleShutdown (HWND hParent) {
 	DrawMenuBar(hMainWindow);
 	ShowWindow(hMainWindow,SW_SHOW);
 	if (__argc!=0) RefreshRomBrowser();
+	else SetFocus(hRomList);
 	if (__argc!=1) __argc=1;
 	ListView_SetExtendedListViewStyleEx(hRomList,LVS_EX_DOUBLEBUFFER,LVS_EX_DOUBLEBUFFER);
 	UsuallyonTopWindow(hMainWindow);

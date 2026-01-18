@@ -1,3 +1,7 @@
+Note - You do not need to run exception.bat to set a Win Defender exception
+if your Windows PC ISN'T using Windows Defender, skip the next two sections
+if this is the case for you.
+
 HOW TO INSTALL: Run Exception.bat with admin priviledge if you have windows
 defender (some PC's don't in which case the file will not have any effect).
 
@@ -10,7 +14,7 @@ here, it means you have an exception set and Windows Defender will avoid
 scanning it so it can function properly. If you have any other apps which
 malfunction from the defender, set exceptions for those.
 
-You can extract Project64.exe from Project64.zip once an exception is set.
+You can extract Project64.exe from Project64.zip now and play an N64 game.
 Then launch the Project64.exe and finish your setup by loading a game, and
 selecting plugins based on provided Plugin Notes and reviewing how plugins
 work with your hardware. Jabo's Direct3D8 works best for my PC for Ocarina

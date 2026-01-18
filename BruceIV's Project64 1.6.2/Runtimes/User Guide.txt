@@ -43,6 +43,7 @@ Section#6 Emulator Advanced Settings Overview
 Section#7 Known Issues
 Section#8 Credits
 Section#9 Special Thanks & Shoutouts
+Section#10 Linux Usage
 
 (just ctrl-f the name to navigate to your desired section)
 ********************************************************************************************************
@@ -830,4 +831,11 @@ Zilmar - You programmed the core in Project64 1.6 from what I can understand. Th
 	 cannot trust you anymore after you back-stabbed them.
 
 Jabo - Thanks for making such an outstanding video plugin with very little drawbacks compared to others.
+--------------------------------------------------------------------------------------------------------
+
+Section#10 Linux Usage
+--------------------------------------------------------------------------------------------------------
+This app can be used on Linux with, "Add as an exe to Lutris" & "Set the runtime to proton" according to
+Linux user darkmariomodder. The user states some plugins won't work but this can be resolved by changing
+to a different Video/Sound/Input including GLideN64 and Azi Audio. Jabo's Direct3D8 and Rice DON'T work!
 --------------------------------------------------------------------------------------------------------
