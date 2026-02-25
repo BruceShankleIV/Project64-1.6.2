@@ -1,6 +1,7 @@
 #1# "Nederlands/Dutch"
-#2# "Lily x BruceIV"
-#3# "22"
+#2# "DeepL x Lily x BruceIV"
+#3# "23 WIP 0.2"
+#4# "Feb 2026"
 #5# "Taal Database (.txt)"
 #6# "Auteur"
 #7# "Versie"
@@ -113,11 +114,10 @@
 #126# "Toevoegen ->"
 #127# "<- Verwijderen"
 #128# "Synchroniseer spel met audio"
-#129# "Nintendo 64-hardware zou waarschijnlijk crashen bij het volgende frame op deze locatie:"
+#129# "Laat je de notities van de ROM lezen (plugin/core/status)"
 #131# "Standaard"
 #132# "Altijd Autodetecteren met 16kbit EEPROM"
-#134# "Het spel kan crashen bij de aankomende r4300i_SPECIAL_BREAK. Wil je deze mogelijke crash emuleren?"
-#135# "This is supposed to be quoteJumper Pakquote"
+#134# "Het spel kan crashen bij de komende r4300i_SPECIAL_BREAK. Wilt u deze mogelijke crash emuleren?"
 #136# "Deze actie zal proberen 254 MB SD ruimte op je harde schijf toe te wijzen in een SDCARD0 partitie na het decompileren van AUTO0.
 
 Je zult geen gegevens kunnen opslaan op of laden van je virtuele SD-kaart totdat je de virtuele SD-kaartruimte opnieuw in AUTO0 compileert door deze optie opnieuw te gebruiken"
@@ -129,7 +129,7 @@ Je zult geen gegevens kunnen opslaan op of laden van je virtuele SD-kaart totdat
 #147# "Vertraging RDP"
 #148# "Vertraging RSP"
 #149# "Altijd op de Voorgrond aan"
-#150# "Mogelijke aankomende crash"
+#150# "Mogelijke aanstaande crash"
 #152# "Beheer SD Ruimte"
 #153# "Pogingen om 254 MB ruimte toe te wijzen of te compileren voor virtuele SD kaartemulatie"
 #154# "Project64 Is al gestart.
@@ -187,7 +187,6 @@ Controleer of de checksum van je ROM geldig is"
 #198# "Deze actie zal proberen de virtuele SD kaartruimte opnieuw te compileren in AUTO0.
 
 Als deze actie succesvol is, kun je weer gegevens opslaan op en laden van je virtuele SD kaart"
-#199# "ExitThread(0); wordt vervolgens aangeroepen omdat de app denkt dat er iets mis is gegaan. Als alles in orde is, gebruik dan Win+Shift+S/Print Screen op de plek waar u deze foutmelding kreeg en leg uit hoe dit is gebeurd, zodat het kan worden opgelost"
 #200# "Emulatie gestart"
 #201# "Save state laden mislukt"
 #202# "Emulatie gestopt"
@@ -197,4 +196,3 @@ Als deze actie succesvol is, kun je weer gegevens opslaan op en laden van je vir
 #205# "GS-knop ingedrukt"
 #206# "Frames Per Seconde"
 #207# "Altijd DMA Uitlijnen Inschakelen"
-#211# "Laat je de notities van de ROM lezen (plugin/core/status)"

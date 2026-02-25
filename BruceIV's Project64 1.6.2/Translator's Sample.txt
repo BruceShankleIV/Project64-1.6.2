@@ -128,7 +128,7 @@
 #126# "Add ->"
 #127# "<- Remove"
 #128# "Sync Game to Audio"
-#129# "Nintendo 64 hardware would probably crash on the next frame at this location:"
+#129# "Lets you read the ROM's notes (plugin/core/status)"
 #130# "ON"
 #131# "Default"
 #132# "Always Autodetect With 16kbit EEPROM"
@@ -217,7 +217,7 @@ Verify that your ROM's checksum is valid"
 #198# "This action will attempt to compile virtual SD card space back into AUTO0.
 
 You will be able to save to or load from your virtual SD card again if this action is successful"
-#199# "ExitThread(0); will be called next because the app thinks something has gone wrong. So if things are okay, use Win+Shift+S/Print Screen of where you encountered this error and explain how it happened so it can be debugged"
+#199# "OFF"
 #200# "Emulation started"
 #201# "Unable to load save state"
 #202# "Emulation ended"
@@ -226,5 +226,3 @@ You will be able to save to or load from your virtual SD card again if this acti
 #205# "GS button pressed"
 #206# "Frames Per Second"
 #207# "Always Enable Align DMA"
-#210# "OFF"
-#211# "Lets you read the ROM's notes (plugin/core/status)"

@@ -34,7 +34,7 @@ extern "C" {
 #include "Settings API.h"
 #include "ROM Browser.h"
 #include "Language.h"
-/*********Source Version 22*********/
+/*********Source Version 23*********/
 /*********General Defaults**********/
 #define AppName						"BruceIV's Project64 1.6.2"
 #define IniName						"Game.ini"
@@ -67,7 +67,7 @@ extern "C" {
 #define Default_Recursion			TRUE
 /*********Global Variables**********/
 extern LARGE_INTEGER Frequency,Frames[9],LastFrame;
-extern BOOL AutoSleep,AutoHide,Recursion,LimitFPS,SpeedCap,AutoFullScreen,SystemCF,UsuallyonTop,BasicMode,BootupSettings,SetupPluginsAfterSaveRomOpt,SPECIAL_BREAK_Trigger,BF_Trigger,SPECIAL_BREAK_Yes;
+extern BOOL AutoSleep,AutoHide,Recursion,LimitFPS,SpeedCap,AutoFullScreen,SystemCF,UsuallyonTop,BasicMode,BootupSettings,SetupPluginsAfterSaveRomOpt,SPECIAL_BREAK_Trigger,SPECIAL_BREAK_Yes;
 extern DWORD CurrentFrame,SystemUseCache,RomsToRemember,RomDirsToRemember;
 extern HWND hMainWindow,hHiddenWin,hStatusWnd;
 extern char CurrentSave[256];

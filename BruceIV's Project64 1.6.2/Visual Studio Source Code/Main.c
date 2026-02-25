@@ -41,7 +41,7 @@
 #include "Resource.h"
 #include "SummerCart.h"
 LARGE_INTEGER Frequency,Frames[9],LastFrame;
-BOOL AutoSleep,AutoHide,Recursion,LimitFPS,SpeedCap,AutoFullScreen,SystemCF,UsuallyonTop,BasicMode,BootupSettings=FALSE,SetupPluginsAfterSaveRomOpt=FALSE,SPECIAL_BREAK_Trigger=FALSE,BF_Trigger=FALSE,SPECIAL_BREAK_Yes=FALSE;
+BOOL AutoSleep,AutoHide,Recursion,LimitFPS,SpeedCap,AutoFullScreen,SystemCF,UsuallyonTop,BasicMode,BootupSettings=FALSE,SetupPluginsAfterSaveRomOpt=FALSE,SPECIAL_BREAK_Trigger=FALSE,SPECIAL_BREAK_Yes=FALSE;
 DWORD CurrentFrame,SystemUseCache,RomsToRemember,RomDirsToRemember;
 HWND hMainWindow,hHiddenWin,hStatusWnd;
 char CurrentSave[256];
@@ -954,9 +954,9 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 		if (CPURunning&&strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) SetWindowLong(hWnd,GWL_EXSTYLE,GetWindowLong(hWnd,GWL_EXSTYLE)|WS_EX_COMPOSITED);
 		break;
 		case ID_OPTIONS_CHEATS:
-			if (CPURunning) ManageCheats(NULL);
-			else ChangeRomCheats(hWnd);
-			break;
+		if (CPURunning) ManageCheats(NULL);
+		else ChangeRomCheats(hWnd);
+		break;
 		case ID_HELP_GUIDE:
 			{
 				char path_buffer[_MAX_PATH],drive[_MAX_DRIVE],dir[_MAX_DIR],Runtimesdir[_MAX_DIR],fname[_MAX_FNAME],ext[_MAX_EXT],HelpFileName[_MAX_PATH];

@@ -56,7 +56,7 @@ void OpcodeSwitch (BLOCK_SECTION*Section) {
 	case R4300i_SPECIAL:
 		switch (Opcode.funct) {
 		case R4300i_SPECIAL_BREAK:
-		if (UseCache==REG_CACHE_OFF&&!SPECIAL_BREAK_Yes) {
+		if (strcmp(RomName,"THE LEGEND OF ZELDA")==0&&!SPECIAL_BREAK_Yes) {
 			if (SPECIAL_BREAK_Trigger) break;
 			HandleModal1(hMainWindow);
 			if (MessageBox(NULL,GS(SPECIAL_BREAK),GS(OPTIONAL_CRASH),MB_YESNO|MB_ICONERROR|MB_SETFOREGROUND)==IDYES) SPECIAL_BREAK_Yes=TRUE;

@@ -1058,14 +1058,7 @@ int r4300i_CPU_MemoryFilter (DWORD dwExptCode,LPEXCEPTION_POINTERS lpEP) {
 			lpEP->ContextRecord->Eip=(DWORD)ReadPos;
 			return EXCEPTION_CONTINUE_EXECUTION;
 		case 0xBF:
-			if (UseCache==REG_CACHE_OFF) {
-				if (!BF_Trigger) {
-					HandleModal1(hMainWindow);
-					DisplayError("%s\n\nr4300i_CPU_MemoryFilter-switch(*TypePos)-case 0x0F-switch(*(TypePos+1))-case 0xBF:"),GS(N64_CRASH);
-					HandleModal2(hMainWindow);
-					BF_Trigger=TRUE;
-				}
-			}
+			if (AlignDMA) DisplayThreadExit("r4300i_CPU_MemoryFilter-switch(*TypePos)-case 0x0F-switch(*(TypePos+1))-case 0xBF:-AlignDMA\n\nTry 'Align DMA=OFF'?\n\nNote: This is not actually part of DMA alignment, but acts as an extra accuracy check based on Interpreter behavior");
 			r4300i_LH_NonMemory(MemAddress,Reg,TRUE);
 			lpEP->ContextRecord->Eip=(DWORD)ReadPos;
 			return EXCEPTION_CONTINUE_EXECUTION;

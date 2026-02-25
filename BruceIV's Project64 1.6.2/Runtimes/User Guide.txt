@@ -745,21 +745,11 @@ Adult Link Fist Pointer and MQ Debug LOD Fix - Phantom Natsu:
 https://www.youtube.com/watch?v=i7jjsZKoM3A
 https://www.youtube.com/watch?v=hNb3cYtNDC8
 
-Cheat.ini (Cheat Database) - Original by Gent, further modified/tweaked by Bruce IV.
+Cheat.ini (Cheat Database) - Original by Gent, further modified/tweaked by Bruce IV with some from Miro.
 
-Dutch by lilycatx, Russian by SatanNintendo, French by Andzura, Brazilian Portugese by TrulyNaN.
+Dutch by lilycatx, Russian by SatanNintendo, French by Andzura, Brazilian Portugese by TrulyNaN. + DeepL
 
 gamecontrollerdb - https://github.com/mdqinc/SDL_GameControllerDB
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////
-APP ICON CREDITS
-\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-Stanley Sy (starvingartist)
-stan@stanleysy.com
-http://stanleysy.deviantart.com
-http://www.stanleysy.com
-(From the Antiseptic suite)
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -772,9 +762,8 @@ Resource hacker
 HxD
 Notepad++
 ChatGPT
-GitHub Copilot
+DeepL
 GitHub Desktop
-redketchup.io
 listdiff.com
 LGCY, renamed from d3d8.dll - https://github.com/crosire/d3d8to9/releases/tag/v1.9.2
 --------------------------------------------------------------------------------------------------------

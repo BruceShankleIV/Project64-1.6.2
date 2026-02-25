@@ -144,8 +144,6 @@ void ResetFunction (void) {
 	}
 }
 void DisplayThreadExit (char*ExitPoint) {
-	DisplayError(GS(THREAD_EXIT));
-	if (UsuallyonTop) SetWindowPos(hMainWindow,HWND_NOTOPMOST,0,0,0,0,SWP_NOMOVE|SWP_NOREPOSITION|SWP_NOSIZE);
 	DisplayError("Exit Point: %s",ExitPoint);
 	ExitThread(0);
 }
@@ -204,7 +202,6 @@ void EndEmulation (void) {
 	DWORD ExitCode,count,OldProtect;
 	if (SPECIAL_BREAK_Yes) SPECIAL_BREAK_Yes=FALSE;
 	if (SPECIAL_BREAK_Trigger) SPECIAL_BREAK_Trigger=FALSE;
-	if (BF_Trigger) BF_Trigger=FALSE;
 	SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)"");
 	ManualPaused=FALSE;
 	CPU_Action.CloseCPU=TRUE;
@@ -735,8 +732,7 @@ BOOL Machine_LoadState(void) {
 	sprintf(String,"%s: %s",GS(MSG_LOADED_STATE),FileName);
 	SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)String);
 	if (SPECIAL_BREAK_Yes) SPECIAL_BREAK_Yes=FALSE;
-	if (SPECIAL_BREAK_Trigger) SPECIAL_BREAK_Trigger=FALSE;
-	if (BF_Trigger) BF_Trigger=FALSE;
+	if (SPECIAL_BREAK_Trigger) SPECIAL_BREAK_Trigger=FALSE;;
 	return TRUE;
 }
 BOOL Machine_SaveState(void) {

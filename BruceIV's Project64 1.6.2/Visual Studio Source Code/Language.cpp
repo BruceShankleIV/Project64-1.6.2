@@ -16,8 +16,8 @@ typedef struct {
 } LANG_STR;
 LANG_STR DefaultString[]={
     { LANGUAGE_AUTHOR,    "BruceIV"			  },
-    { LANGUAGE_VERSION,   "22"				  },
-    { LANGUAGE_DATE,      "2026 January"		  },
+    { LANGUAGE_VERSION,   "23"				  },
+    { LANGUAGE_DATE,      "2026 February"	  },
 	{ INI_CURRENT_LANG,   "Language Database (.txt)" },
 	{ INI_AUTHOR,         "Author"                   },
 	{ INI_VERSION,        "Version"                  },
@@ -152,7 +152,7 @@ LANG_STR DefaultString[]={
 	{ RB_ADD,             "Add ->"},
 	{ RB_REMOVE,          "<- Remove"},
 	{ SyncGametoAudio_LANG,"Sync Game to Audio" },
-	{ N64_CRASH,		  "Nintendo 64 hardware would probably crash on the next frame at this location:" },
+	{ MENUDES_GAME_SETTINGS,"Lets you read the ROM's notes (plugin/core/status)"},
 	{ ON,		  "ON" },
 	{ DEFAULT_TEXT,   "Default"},
 	{ FORCE_AUTO4kbit,	       "Always Autodetect With 16kbit EEPROM" },
@@ -231,7 +231,7 @@ LANG_STR DefaultString[]={
         { MSG_FAIL_OPEN_MEMPAK,  "Failed to open mempak"},
 	{ MSG_ERROR_TITLE,      "App Error"},
 	{ Compile_SD_Info,	  "This action will attempt to compile virtual SD card space back into AUTO0.\n\nYou will be able to save to or load from your virtual SD card again if this action is successful" },
-	{ THREAD_EXIT,		  "ExitThread(0); will be called next because the app thinks something has gone wrong. So if things are okay,use Win+Shift+S/Print Screen of where you encountered this error and explain how it happened so it can be debugged" },
+	{ OFF,			  "OFF" },
 	{ MSG_EMULATION_STARTED, "Emulation started"},
         { MSG_UNABLE_LOAD_STATE,"Unable to load save state"},
         { MSG_EMULATION_ENDED,   "Emulation ended"},
@@ -242,8 +242,6 @@ LANG_STR DefaultString[]={
 	{ FORCE_ENABLE_DMA,	  "Always Enable Align DMA"},
 	{ NUMBER_2,		  "2"},
 	{ NUMBER_3,		  "3"},
-	{ OFF,	  "OFF" },
-	{ MENUDES_GAME_SETTINGS, "Lets you read the ROM's notes (plugin/core/status)"},
 };
 class CLanguage  {
 	void FindLangName  (int Index);

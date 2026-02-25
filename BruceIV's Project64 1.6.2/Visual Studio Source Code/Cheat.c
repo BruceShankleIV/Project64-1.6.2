@@ -1380,8 +1380,8 @@ void LoadCheats (void) {
 }
 void ManageCheats (HWND hParent) {
 	DWORD X,Y,WindowWidth,WindowHeight, Style;
-	if (hManageWindow!=NULL) {
-		if (!UsuallyonTop) SetForegroundWindow(hManageWindow);
+	if (hManageWindow) {
+		SetForegroundWindow(hManageWindow);
 		return;
 	}
 	WindowWidth=315;
