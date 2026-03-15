@@ -251,7 +251,11 @@ void SetupPlugins (HWND hWnd) {
 	if (CPURunning) {
 		ReadRomOptions();
 		NewRAMsize=0x800000;
-		if (RomJumperPak) NewRAMsize=0x400000;
+		JumperPak=FALSE;
+		if (RomJumperPak) {
+			NewRAMsize=0x400000;
+			JumperPak=TRUE;
+		}
 		if (VirtualAlloc(RecompCode,LargeCompileBufferSize,MEM_COMMIT,PAGE_EXECUTE_READWRITE)==NULL) {
 			DisplayError(GS(MSG_MEM_ALLOC_ERROR));
 			DisplayThreadExit("SetupPlugins-VirtualAlloc(RecompCode,LargeCompileBufferSize,MEM_COMMIT,PAGE_EXECUTE_READWRITE)==NULL");
@@ -305,7 +309,6 @@ void SetupPlugins (HWND hWnd) {
 		if (strcmp(AudioDLL,"No Audio.dll")==0||RomJAI||RomShankleAziAI) EmulateAI=TRUE;
 		LoadCheats();
 		HandleWindowTitle();
-		if (!LimitFPS) SyncGametoAudio=FALSE;
 	} else GetCurrentDlls();
 	PluginsInitialized=TRUE;
 	if (!inFullScreen) {

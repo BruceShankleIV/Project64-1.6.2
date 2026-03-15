@@ -161,7 +161,10 @@
 #define ID_FILE_ROM_INFO                40002
 #define ID_FILE_EXIT                    40005
 #define ID_OPTIONS_CONFIG_GFX           40073
-#define ID_OPTIONS_CONFIG_CONTROL       40076
+#define ID_OPTIONS_CONFIG_CONTROL       40074
+#define ID_OPTIONS_LOW					40075
+#define ID_OPTIONS_MEDIUM				40076
+#define ID_OPTIONS_CUSTOM				40077
 #define ID_CPU_RESET                    40079
 #define ID_OPTIONS_CONFIG_AUDIO         40090
 #define ID_FILE_STARTEMULATION          40101

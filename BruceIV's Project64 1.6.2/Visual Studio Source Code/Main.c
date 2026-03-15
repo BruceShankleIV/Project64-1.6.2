@@ -255,8 +255,14 @@ void FixMenuLang (HMENU hMenu) {
 	MenuSetText(hSubMenu,5,GS(MENU_CONFIG_GFX),"Ctrl+V");
 	MenuSetText(hSubMenu,6,GS(MENU_CONFIG_AUDIO),"Ctrl+B");
 	MenuSetText(hSubMenu,7,GS(MENU_CONFIG_CTRL),"Ctrl+D");
-	MenuSetText(hSubMenu,9,GS(MENU_UNINSTALL),"Ctrl+F");
-	MenuSetText(hSubMenu,11,GS(MENU_SETTINGS),"Ctrl+T");
+	MenuSetText(hSubMenu,9,GS(GAME_CAPTURE),NULL);
+	MenuSetText(hSubMenu,11,GS(MENU_UNINSTALL),"Ctrl+F");
+	MenuSetText(hSubMenu,13,GS(MENU_SETTINGS),"Ctrl+T");
+	//ffmpeg
+	hSubMenu=GetSubMenu(hSubMenu,9);
+	MenuSetText(hSubMenu,0,GS(LOW_PRESET),"Shift+L");
+	MenuSetText(hSubMenu,1,GS(MEDIUM_PRESET),"Shift+M");
+	MenuSetText(hSubMenu,2,GS(CUSTOM_QUALITY),"Shift+C");
 	//Help Menu
 	hSubMenu=GetSubMenu(hMenu,3);
 	MenuSetText(hSubMenu,0,GS(MENU_USER_GUIDE),NULL);
@@ -511,6 +517,9 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 		case ID_OPTIONS_CONFIG_GFX: SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MENUDES_CONFIG_GFX)); break;
 		case ID_OPTIONS_CONFIG_AUDIO: SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MENUDES_CONFIG_AUDIO)); break;
 		case ID_OPTIONS_CONFIG_CONTROL: SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MENUDES_CONFIG_CTRL)); break;
+		case ID_OPTIONS_LOW: SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MENUDES_LOW)); break;
+		case ID_OPTIONS_MEDIUM: SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MENUDES_MEDIUM)); break;
+		case ID_OPTIONS_CUSTOM: SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MENUDES_CUSTOM)); break;
 		case ID_OPTIONS_SETTINGS: SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MENUDES_SETTINGS)); break;
 		case ID_HELP_GUIDE: SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MENUDES_USER_GUIDE)); break;
 		case ID_HELP_ABOUTSETTINGFILES: SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MENUDES_ABOUT_INI)); break;
@@ -940,6 +949,98 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 		} else ContConfig(hWnd);
 		if (CPURunning&&strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) SetWindowLong(hWnd,GWL_EXSTYLE,GetWindowLong(hWnd,GWL_EXSTYLE)|WS_EX_COMPOSITED);
 		break;
+		case ID_OPTIONS_LOW:
+		if (!inFullScreen) {
+			char path_buffer[_MAX_PATH],drive[_MAX_DRIVE],dir[_MAX_DIR],Runtimesdir[_MAX_DIR],videosDir[_MAX_PATH],ffmpegPath[_MAX_PATH],ffmpegShortPath[_MAX_PATH],outputFile[_MAX_PATH],cmd[4096],WinTitle[512];
+			int fileIndex=1;
+			GetWindowText(hMainWindow,WinTitle,sizeof(WinTitle));
+			ShowWindow(hMainWindow,SW_RESTORE);
+			GetModuleFileName(NULL,path_buffer,sizeof(path_buffer));
+			_splitpath(path_buffer,drive,dir,NULL,NULL);
+			sprintf(Runtimesdir,"%sRuntimes\\",dir);
+			_makepath(ffmpegPath,drive,Runtimesdir,"ffmpeg","exe");
+			if (!GetShortPathName(ffmpegPath,ffmpegShortPath,_MAX_PATH)) {
+				DisplayError(GS(FFMPEG_NOFIND));
+				break;
+			}
+			sprintf(videosDir,"%sVideos",dir);
+			CreateDirectory(videosDir,NULL);
+			do {
+				sprintf(outputFile,"%s\\Project64_Low%d.mp4",videosDir,fileIndex);
+				fileIndex++;
+			} while (GetFileAttributes(outputFile)!=INVALID_FILE_ATTRIBUTES);
+			sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-23:0:0\" -c:v libx264 -crf 19 -pix_fmt yuv420p -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
+			STARTUPINFO si;
+			PROCESS_INFORMATION pi;
+			ZeroMemory(&si,sizeof(si));
+			si.cb=sizeof(si);
+			si.dwFlags=STARTF_USESHOWWINDOW;
+			si.wShowWindow=SW_SHOW;
+			ZeroMemory(&pi,sizeof(pi));
+			if (!CreateProcess(NULL,cmd,NULL,NULL,FALSE,CREATE_NEW_CONSOLE,NULL,NULL,&si,&pi)) DisplayError(GS(FFMPEG_NOSTART));
+			CloseHandle(pi.hProcess);
+			CloseHandle(pi.hThread);
+		}
+		break;
+		case ID_OPTIONS_MEDIUM:
+		if (!inFullScreen) {
+			char path_buffer[_MAX_PATH],drive[_MAX_DRIVE],dir[_MAX_DIR],Runtimesdir[_MAX_DIR],videosDir[_MAX_PATH],ffmpegPath[_MAX_PATH],outputFile[_MAX_PATH],ffmpegShortPath[_MAX_PATH],cmd[4096],WinTitle[512];
+			int fileIndex=1;
+			GetWindowText(hMainWindow,WinTitle,sizeof(WinTitle));
+			ShowWindow(hMainWindow,SW_RESTORE);
+			GetModuleFileName(NULL,path_buffer,sizeof(path_buffer));
+			_splitpath(path_buffer,drive,dir,NULL,NULL);
+			sprintf(Runtimesdir,"%sRuntimes\\",dir);
+			_makepath(ffmpegPath,drive,Runtimesdir,"ffmpeg","exe");
+			if (!GetShortPathName(ffmpegPath,ffmpegShortPath,_MAX_PATH)) {
+				DisplayError(GS(FFMPEG_NOFIND));
+				break;
+			}
+			sprintf(videosDir,"%sVideos",dir);
+			CreateDirectory(videosDir,NULL);
+			do {
+				sprintf(outputFile,"%s\\Project64_Medium%d.mp4",videosDir,fileIndex);
+				fileIndex++;
+			} while (GetFileAttributes(outputFile)!=INVALID_FILE_ATTRIBUTES);
+			sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-23:0:0\" -c:v libx264rgb -crf 22 -pix_fmt rgb24 -preset medium ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
+			STARTUPINFO si;
+			PROCESS_INFORMATION pi;
+			ZeroMemory(&si,sizeof(si));
+			si.cb=sizeof(si);
+			si.dwFlags=STARTF_USESHOWWINDOW;
+			si.wShowWindow=SW_SHOW;
+			ZeroMemory(&pi,sizeof(pi));
+			if (!CreateProcess(NULL,cmd,NULL,NULL,FALSE,CREATE_NEW_CONSOLE,NULL,NULL,&si,&pi)) DisplayError(GS(FFMPEG_NOSTART));
+			CloseHandle(pi.hProcess);
+			CloseHandle(pi.hThread);
+		}
+		break;
+		case ID_OPTIONS_CUSTOM:
+		if (!inFullScreen) {
+			char path_buffer[_MAX_PATH],drive[_MAX_DRIVE],dir[_MAX_DIR],Runtimesdir[_MAX_DIR],ffmpegPath[_MAX_PATH],ffmpegShortPath[_MAX_PATH],cmd[4096],WinTitle[512];
+			GetWindowText(hMainWindow,WinTitle,sizeof(WinTitle));
+			ShowWindow(hMainWindow,SW_RESTORE);
+			GetModuleFileName(NULL,path_buffer,sizeof(path_buffer));
+			_splitpath(path_buffer,drive,dir,NULL,NULL);
+			sprintf(Runtimesdir,"%sRuntimes\\",dir);
+			_makepath(ffmpegPath,drive,Runtimesdir,"ffmpeg","exe");
+			if (!GetShortPathName(ffmpegPath,ffmpegShortPath,_MAX_PATH)) {
+				DisplayError(GS(FFMPEG_NOFIND));
+				break;
+			}
+			sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -version",drive,Runtimesdir);
+			STARTUPINFO si;
+			PROCESS_INFORMATION pi;
+			ZeroMemory(&si,sizeof(si));
+			si.cb=sizeof(si);
+			si.dwFlags=STARTF_USESHOWWINDOW;
+			si.wShowWindow=SW_SHOW;
+			ZeroMemory(&pi,sizeof(pi));
+			if (!CreateProcess(NULL,cmd,NULL,NULL,FALSE,CREATE_NEW_CONSOLE,NULL,NULL,&si,&pi)) DisplayError(GS(FFMPEG_NOSTART));
+			CloseHandle(pi.hProcess);
+			CloseHandle(pi.hThread);
+		}
+		break;
 		case ID_OPTIONS_SETTINGS:
 		if (CPURunning&&strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) SetWindowLong(hWnd,GWL_EXSTYLE,GetWindowLong(hWnd,GWL_EXSTYLE)&~WS_EX_COMPOSITED);
 		if (UsuallyonTop) SetWindowPos(hWnd,HWND_NOTOPMOST,0,0,0,0,SWP_NOMOVE|SWP_NOREPOSITION|SWP_NOSIZE);
@@ -1152,9 +1253,6 @@ void SetupMenu (HWND hWnd) {
 	CreateRecentDirList(hMenu);
 	CreateRecentFileList(hMenu);
 	CheckMenuItem(hMenu,CurrentSaveSlot,MF_BYCOMMAND|MFS_CHECKED);
-	if (SyncGametoAudio&&CPURunning) {
-		EnableMenuItem(hMenu,ID_SYSTEM_LIMITFPS,MFS_DISABLED|MF_BYCOMMAND);
-	}
 	if (LimitFPS) {
 		CheckMenuItem(hMenu,ID_SYSTEM_LIMITFPS,MF_BYCOMMAND|MFS_CHECKED);
 	}
@@ -1183,13 +1281,18 @@ void SetupMenu (HWND hWnd) {
 	if (CaptureScreen!=NULL&&!ClearFrame) EnableMenuItem(hMenu,ID_SYSTEM_GENERATEBITMAP,State|MF_BYCOMMAND);
 	if (ChangeWindow!=NULL&&strcmp(GfxDLL,"RiceVideo.dll")!=0) EnableMenuItem(hMenu,ID_OPTIONS_FULLSCREEN,State|MF_BYCOMMAND);
 	else EnableMenuItem(hMenu,ID_OPTIONS_FULLSCREEN,MFS_DISABLED|MF_BYCOMMAND);
-	hSubMenu=GetSubMenu(hMenu,1); 	//System
-	EnableMenuItem(hSubMenu,13,State|MF_BYPOSITION);  //Save State
+	hSubMenu=GetSubMenu(hMenu,1); //System
+	EnableMenuItem(hSubMenu,13,State|MF_BYPOSITION); //Current Save State
+	hSubMenu = GetSubMenu(hMenu,2); //Options
+	EnableMenuItem(hSubMenu,9,State|MF_BYPOSITION); //ffmpeg
 	//Disable if cpu is running
 	State=CPURunning?MFS_DISABLED:MFS_ENABLED;
 	EnableMenuItem(hMenu,ID_FILE_REFRESHROMLIST,State|MF_BYCOMMAND);
 	EnableMenuItem(hMenu,ID_FILE_STARTEMULATION,State|MF_BYCOMMAND);
-	if (SyncGametoAudio) EnableMenuItem(hMenu,ID_SYSTEM_SPEEDCAP,State|MF_BYCOMMAND);
+	if (SyncGametoAudio) {
+		EnableMenuItem(hMenu,ID_SYSTEM_LIMITFPS,State|MF_BYCOMMAND);
+		EnableMenuItem(hMenu,ID_SYSTEM_SPEEDCAP,State|MF_BYCOMMAND);
+	}
 	hSubMenu=GetSubMenu(hMenu,0); //File
 	SetMenu(hWnd,hMenu);
 	hMainMenu=hMenu;

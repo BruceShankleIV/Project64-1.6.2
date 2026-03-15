@@ -243,3 +243,12 @@ char*GS               (int StringID);
 #define FORCE_ENABLE_DMA		207
 #define NUMBER_2		        208
 #define NUMBER_3		        209
+#define MENUDES_LOW				210
+#define MENUDES_MEDIUM			211
+#define MENUDES_CUSTOM			212
+#define LOW_PRESET				213
+#define MEDIUM_PRESET			214
+#define CUSTOM_QUALITY			215
+#define GAME_CAPTURE			216
+#define FFMPEG_NOFIND			217
+#define FFMPEG_NOSTART			218

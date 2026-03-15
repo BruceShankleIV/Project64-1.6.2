@@ -62,8 +62,8 @@ void OpcodeSwitch (BLOCK_SECTION*Section) {
 			if (MessageBox(NULL,GS(SPECIAL_BREAK),GS(OPTIONAL_CRASH),MB_YESNO|MB_ICONERROR|MB_SETFOREGROUND)==IDYES) SPECIAL_BREAK_Yes=TRUE;
 			HandleModal2(hMainWindow);
 			SPECIAL_BREAK_Trigger=TRUE;
+			if (!SPECIAL_BREAK_Yes) break;
 		}
-		if (!SPECIAL_BREAK_Yes) break;
 		case R4300i_SPECIAL_SYSCALL: Compile_R4300i_SPECIAL_SYSCALL(Section);
 		case R4300i_SPECIAL_SYNC:
 		case R4300i_SPECIAL_TGE:
@@ -2225,9 +2225,9 @@ void StartRecompilerCPU (void) {
 						continue;
 					} else {
 						if (UseTLB) {
-							if (ProtectMemory) DisplayThreadExit("StartRecompilerCPU-Addr>0x10000000-PROGRAM_COUNTER>=0xB0000000&&PROGRAM_COUNTER<(RomFileSize|0xB0000000)-else\n\nTry 'CPU Recompiler=OFF'?");
-							else DisplayThreadExit("StartRecompilerCPU-Addr>0x10000000-PROGRAM_COUNTER>=0xB0000000&&PROGRAM_COUNTER<(RomFileSize|0xB0000000)-else\n\nTry 'Protect Memory=ON'?");
-						} else DisplayThreadExit("StartRecompilerCPU-Addr>0x10000000-PROGRAM_COUNTER>=0xB0000000&&PROGRAM_COUNTER<(RomFileSize|0xB0000000)-else\n\nNeeds 'TLB=ON'?");
+							if (ProtectMemory) DisplayThreadExit("StartRecompilerCPU-Addr>0x10000000-PROGRAM_COUNTER>=0xB0000000&&PROGRAM_COUNTER<(RomFileSize|0xB0000000)-else-UseTLB-ProtectMemory\n\nTry 'CPU Recompiler=OFF'?");
+							else DisplayThreadExit("StartRecompilerCPU-Addr>0x10000000-PROGRAM_COUNTER>=0xB0000000&&PROGRAM_COUNTER<(RomFileSize|0xB0000000)-else-UseTLB-ProtectMemory-else\n\nTry 'Protect Memory=ON'?");
+						} else DisplayThreadExit("StartRecompilerCPU-Addr>0x10000000-PROGRAM_COUNTER>=0xB0000000&&PROGRAM_COUNTER<(RomFileSize|0xB0000000)-else-UseTLB-else\n\nNeeds 'TLB=ON'?");
 					}
 				}
 				Block=*(JumpTable+(Addr>>2));
@@ -2239,8 +2239,13 @@ void StartRecompilerCPU (void) {
 					continue;
 				}
 				else {
-					if (RDRAMsize==0x400000) DisplayThreadExit("StartRecompilerCPU-EXCEPTION_EXECUTE_HANDLER-PROGRAM_COUNTER>=0xB0000000&&PROGRAM_COUNTER<(RomFileSize|0xB0000000)-else\n\nNeeds 'Jumper Pak=ON' removed?");
-					else DisplayThreadExit("StartRecompilerCPU-EXCEPTION_EXECUTE_HANDLER-PROGRAM_COUNTER>=0xB0000000&&PROGRAM_COUNTER<(RomFileSize|0xB0000000)-else\n\nNeeds RA SCM?");
+					if (JumperPak) {
+						if (RDRAMsize==0x400000) DisplayThreadExit("StartRecompilerCPU-EXCEPTION_EXECUTE_HANDLER-PROGRAM_COUNTER>=0xB0000000&&PROGRAM_COUNTER<(RomFileSize|0xB0000000)-else-JumperPak-RDRAMsize==0x400000\n\nNeeds 'Jumper Pak=ON' removed?");
+						else DisplayThreadExit("StartRecompilerCPU-EXCEPTION_EXECUTE_HANDLER-PROGRAM_COUNTER>=0xB0000000&&PROGRAM_COUNTER<(RomFileSize|0xB0000000)-else-JumperPak-RDRAMsize==0x400000-else\n\nWarning: crashed with Jumper Pak OFF memory from savestate");
+					} else {
+						if (RDRAMsize==0x800000) DisplayThreadExit("StartRecompilerCPU-EXCEPTION_EXECUTE_HANDLER-PROGRAM_COUNTER>=0xB0000000&&PROGRAM_COUNTER<(RomFileSize|0xB0000000)-else-JumperPak-else-RDRAMsize==0x800000\n\nNeeds Rat Attack SCM?");
+						else DisplayThreadExit("StartRecompilerCPU-EXCEPTION_EXECUTE_HANDLER-PROGRAM_COUNTER>=0xB0000000&&PROGRAM_COUNTER<(RomFileSize|0xB0000000)-else-JumperPak-else-RDRAMsize==0x800000-else\n\nWarning: crashed with Jumper Pak ON memory from savestate");
+					}
 				}
 			}
 			if (!ProtectMemory&&Block!=NULL&&strcmp(RomName,"RAT ATTACK")!=0) {

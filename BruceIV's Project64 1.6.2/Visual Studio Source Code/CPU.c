@@ -729,7 +729,9 @@ BOOL Machine_LoadState(void) {
 	DMAUsed=TRUE;
 	strcpy(SaveAsFileName,"");
 	strcpy(LoadFileName,"");
-	sprintf(String,"%s: %s",GS(MSG_LOADED_STATE),FileName);
+	if (RDRAMsize==0x400000&&!JumperPak) sprintf(String, "%s: %s (%s %s)",GS(MSG_LOADED_STATE),FileName,GS(JUMPER_PAK),GS(ON));
+	else if (RDRAMsize==0x800000&&JumperPak) sprintf(String, "%s: %s (%s %s)",GS(MSG_LOADED_STATE),FileName,GS(JUMPER_PAK),GS(OFF));
+	else sprintf(String,"%s: %s",GS(MSG_LOADED_STATE),FileName);
 	SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)String);
 	if (SPECIAL_BREAK_Yes) SPECIAL_BREAK_Yes=FALSE;
 	if (SPECIAL_BREAK_Trigger) SPECIAL_BREAK_Trigger=FALSE;;
@@ -810,7 +812,9 @@ BOOL Machine_SaveState(void) {
 	strcpy(SaveAsFileName,"");
 	strcpy(LoadFileName,"");
 	static BOOL toggle=FALSE;
-	sprintf(String,"%s: %s %s",GS(MSG_SAVED_STATE),FileName,toggle?"<<":">>");
+	if (RDRAMsize==0x400000&&!JumperPak) sprintf(String,"%s: %s (%s %s) %s",GS(MSG_SAVED_STATE),FileName,GS(JUMPER_PAK),GS(ON),toggle?"<<":">>");
+	else if (RDRAMsize==0x800000&&JumperPak) sprintf(String,"%s: %s (%s %s) %s",GS(MSG_SAVED_STATE),FileName,GS(JUMPER_PAK),GS(OFF),toggle?"<<":">>");
+	else sprintf(String,"%s: %s %s",GS(MSG_SAVED_STATE),FileName,toggle?"<<":">>");
 	SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)String);
 	toggle=!toggle;
 	return TRUE;
