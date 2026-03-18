@@ -170,7 +170,7 @@ BOOL CALLBACK GeneralOptionsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lPara
 				AutoSleep=SendMessage(GetDlgItem(hDlg,IDC_AUTOSLEEP),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
 				RegSetValueEx(hKeyResults,"Pause CPU Upon Focus Loss",0,REG_DWORD,(BYTE*)&AutoSleep,sizeof(DWORD));
 				AutoHide=SendMessage(GetDlgItem(hDlg,IDC_HIDE),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
-				RegSetValueEx(hKeyResults,"Always Hide Cursor in Fullscreen",0,REG_DWORD,(BYTE*)&AutoHide,sizeof(DWORD));
+				RegSetValueEx(hKeyResults,"Always Hide Cursor in Fullscreen and ffmpeg",0,REG_DWORD,(BYTE*)&AutoHide,sizeof(DWORD));
 			}
 			RegCloseKey(hKeyResults);
 		}
@@ -257,7 +257,7 @@ BOOL CALLBACK DirSelectProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 				lResult=RegQueryValueEx(hKeyResults,"AppPath Save Data",0,&Type,(LPBYTE)(&Value),&Bytes);
 				if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) { Value=TRUE; }
 				SendMessage(GetDlgItem(hDlg,Value?IDC_AUTO_DEFAULT:IDC_AUTO_OTHER),BM_SETCHECK,BST_CHECKED,0);
-				lResult=RegQueryValueEx(hKeyResults,"AppPath Screenshots",0,&Type,(LPBYTE)(&Value),&Bytes);
+				lResult=RegQueryValueEx(hKeyResults,"AppPath Screenshots and Videos",0,&Type,(LPBYTE)(&Value),&Bytes);
 				if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) { Value=TRUE; }
 				SendMessage(GetDlgItem(hDlg,Value?IDC_SNAP_DEFAULT:IDC_SNAP_OTHER),BM_SETCHECK,BST_CHECKED,0);
 				lResult=RegQueryValueEx(hKeyResults,"AppPath Savestates",0,&Type,(LPBYTE)(&Value),&Bytes);
@@ -272,8 +272,8 @@ BOOL CALLBACK DirSelectProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 				if (lResult!=ERROR_SUCCESS) { GetAutoSaveDir(Directory); }
 				SetDlgItemText(hDlg,IDC_AUTO_DIR,Directory);
 				Bytes=sizeof(Directory);
-				lResult=RegQueryValueEx(hKeyResults,"CustomPath Screenshots",0,&Type,(LPBYTE)Directory,&Bytes);
-				if (lResult!=ERROR_SUCCESS) { GetSnapShotDir(Directory); }
+				lResult=RegQueryValueEx(hKeyResults,"CustomPath Screenshots and Videos",0,&Type,(LPBYTE)Directory,&Bytes);
+				if (lResult!=ERROR_SUCCESS) { FetchScreenAndVideoDir(Directory); }
 				SetDlgItemText(hDlg,IDC_SNAP_DIR,Directory);
 			} else {
 				SendMessage(GetDlgItem(hDlg,IDC_ROM_DEFAULT),BM_SETCHECK,BST_CHECKED,0);
@@ -284,7 +284,7 @@ BOOL CALLBACK DirSelectProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 				SetDlgItemText(hDlg,IDC_INSTANT_DIR,Directory);
 				GetAutoSaveDir(Directory);
 				SetDlgItemText(hDlg,IDC_AUTO_DIR,Directory);
-				GetSnapShotDir(Directory);
+				FetchScreenAndVideoDir(Directory);
 				SetDlgItemText(hDlg,IDC_SNAP_DIR,Directory);
 			}
 			GetRomDirectory(Directory);
@@ -320,7 +320,7 @@ BOOL CALLBACK DirSelectProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 					strcpy(Title,GS(DIR_SELECT_INSTANT));
 					break;
 				case IDC_SELECT_SNAP_DIR:
-					GetSnapShotDir(Directory);
+					FetchScreenAndVideoDir(Directory);
 					strcpy(Title,GS(DIR_SELECT_SCREEN));
 				}
 				bi.hwndOwner=hDlg;
@@ -391,10 +391,10 @@ BOOL CALLBACK DirSelectProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 					RegSetValueEx(hKeyResults,"CustomPath Savestates",0,REG_SZ,(CONST BYTE*)String,strlen(String));
 				}
 				Value=SendMessage(GetDlgItem(hDlg,IDC_SNAP_DEFAULT),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
-				RegSetValueEx(hKeyResults,"AppPath Screenshots",0,REG_DWORD,(BYTE*)&Value,sizeof(DWORD));
+				RegSetValueEx(hKeyResults,"AppPath Screenshots and Videos",0,REG_DWORD,(BYTE*)&Value,sizeof(DWORD));
 				if (Value==FALSE) {
 					GetDlgItemText(hDlg,IDC_SNAP_DIR,String,sizeof(String));
-					RegSetValueEx(hKeyResults,"CustomPath Screenshots",0,REG_SZ,(CONST BYTE*)String,strlen(String));
+					RegSetValueEx(hKeyResults,"CustomPath Screenshots and Videos",0,REG_SZ,(CONST BYTE*)String,strlen(String));
 				}
 			}
 			RegCloseKey(hKeyResults);

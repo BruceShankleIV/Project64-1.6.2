@@ -248,7 +248,7 @@ char*GS               (int StringID);
 #define MENUDES_CUSTOM			212
 #define LOW_PRESET				213
 #define MEDIUM_PRESET			214
-#define CUSTOM_QUALITY			215
+#define RGBA_PNG_SCREENSHOT			215
 #define GAME_CAPTURE			216
 #define FFMPEG_NOFIND			217
 #define FFMPEG_NOSTART			218

@@ -256,7 +256,7 @@ void (__cdecl*WM_KeyUp)         (WPARAM wParam,LPARAM lParam);
 void (__cdecl*RumbleCommand)	 (int Control,BOOL bRumble);
 /**********Plugin Functions*********************/
 void GetPluginDir        (char*Directory);
-void GetSnapShotDir      (char*Directory);
+void FetchScreenAndVideoDir      (char*Directory);
 void PluginConfiguration (HWND hWnd);
 void SetupPlugins        (HWND hWnd);
 void SetupPluginScreen   (HWND hDlg);

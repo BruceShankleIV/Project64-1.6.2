@@ -268,12 +268,22 @@ gamecontrollerdb - https://github.com/mdqinc/SDL_GameControllerDB
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
+ICON CREDITS
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+N64 Icon by MazeNL77 from NX10 Icon Set.
+License: CC Attribution 3.0 Unported
+Commercial usage: Allowed
+Posted: November 30, 2010
+https://creativecommons.org/licenses/by/3.0/
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
 TOOLS USED
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 MSYS2 + MINGW32 + GCC + SDL 2.0.12
 v120_xp Toolset in VS 2022
 v141_xp Toolset in VS 2019
-Resource hacker
+redketchup
 HxD
 Notepad++
 ChatGPT

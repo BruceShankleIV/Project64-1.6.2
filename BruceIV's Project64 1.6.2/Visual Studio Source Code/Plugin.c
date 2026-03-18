@@ -69,7 +69,7 @@ void GetCurrentDlls (void) {
 		sprintf(AudioDLL,"%s",DefaultAudioDll);
 		sprintf(ControllerDLL,"%s",DefaultControllerDll);
 	}
-	if ((strcmp(GfxDLL,"Glide64.dll")==0||strcmp(GfxDLL,"Jabo_Direct3D8.dll")==0||strcmp(GfxDLL,"Jabo_Direct3DL.dll")==0||strcmp(GfxDLL,"RiceVideo.dll")==0)&&strcmp(RSPDLL,"Icepir8sLegacyRSP.dll")==0) strcpy(RSPDLL,"RSP.dll");
+	if ((strcmp(GfxDLL,"Glide64.dll")==0||strcmp(GfxDLL,"Jabo_Direct3D8.dll")==0||strcmp(GfxDLL,"Jabo_Direct3DL.dll")==0)&&strcmp(RSPDLL,"Icepir8sLegacyRSP.dll")==0) strcpy(RSPDLL,"RSP.dll");
 }
 void GetPluginDir(char*Directory) {
 	char path_buffer[_MAX_PATH],drive[_MAX_DRIVE],dir[_MAX_DIR],fname[_MAX_FNAME],ext[_MAX_EXT];
@@ -79,27 +79,28 @@ void GetPluginDir(char*Directory) {
 	strcat(Directory,dir);
 	strcat(Directory,"Plugin\\");
 }
-void GetSnapShotDir(char*Directory) {
+void FetchScreenAndVideoDir(char*Directory) {
 	char path_buffer[_MAX_PATH],drive[_MAX_DRIVE],dir[_MAX_DIR],fname[_MAX_FNAME],ext[_MAX_EXT],Dir[255],Group[200];
 	long lResult;
 	HKEY hKeyResults=0;
 	GetModuleFileName(NULL,path_buffer,sizeof(path_buffer));
 	_splitpath(path_buffer,drive,dir,fname,ext);
-	sprintf(Directory,"%s%sScreenshots\\",drive,dir);
+	sprintf(Directory,"%s%sScreenshots and Videos\\",drive,dir);
 	sprintf(Group,"PJ64 V 1.6.2\\Configuration");
 	lResult=RegOpenKeyEx(HKEY_CURRENT_USER,Group,0,KEY_ALL_ACCESS,
 		&hKeyResults);
 	if (lResult==ERROR_SUCCESS) {
 		DWORD Type,Value,Bytes;
 		Bytes=4;
-		lResult=RegQueryValueEx(hKeyResults,"AppPath Screenshots",0,&Type,(LPBYTE)(&Value),&Bytes);
+		lResult=RegQueryValueEx(hKeyResults,"AppPath Screenshots and Videos",0,&Type,(LPBYTE)(&Value),&Bytes);
 		if (lResult==ERROR_SUCCESS&&Value==FALSE) {
 			Bytes=sizeof(Dir);
-			lResult=RegQueryValueEx(hKeyResults,"CustomPath Screenshots",0,&Type,(LPBYTE)Dir,&Bytes);
+			lResult=RegQueryValueEx(hKeyResults,"CustomPath Screenshots and Videos",0,&Type,(LPBYTE)Dir,&Bytes);
 			if (lResult==ERROR_SUCCESS) { strcpy(Directory,Dir); }
 		}
 	}
 	RegCloseKey(hKeyResults);
+	CreateDirectory(Directory,NULL);
 }
 BOOL LoadAudioDll(char*AudioDll) {
 	PLUGIN_INFO PluginInfo;

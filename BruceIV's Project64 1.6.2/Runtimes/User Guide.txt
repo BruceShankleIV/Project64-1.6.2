@@ -68,10 +68,6 @@ IMPORTANT: If a texture pack doesn't seem to be loading with GLideN64, try
 	   ^ Found under the Texture enhancement tab. ON is applicable for
 	   .hts texture packs, OFF is applicable for .htc texture packs.
 
-Rice - Put the Rice format folder in Plugin\hires_texture. Uncheck Hide
-       Advanced Options, then enable "Load hi-res textures if available"
-       under the Texture Filters tab.
-
 If a rice texture pack format folder does not work with a plugin, try the
 use .dat format for Glide64 and .htc format for GLideN64 for good results
 but remember to turn on Use file storage instead of memory cache for .hts
@@ -189,8 +185,8 @@ the default input plugin if you want a fast setup.
 Video (graphics) plugin:
 
 Glide64 'Final' Date: Dec 29 2011 - AKA International Emulation Project, this plugin uses OpenGL so it's
-				    not as well supported as Direct3D and Rice's video plugins but works
-				    for PC's which support OpenGL. It suffers from a slow initialization
+				    not as well supported as Jabo's Direct3D video plugins but works for
+				    PC's which support OpenGL 2.0. It suffers from a slow initialization
 				    time and broken lighting in some games like Zelda. Filtering changes
 				    at random and I'm not really sure why, it's a very annoying bug that
 				    messes up all the textures. The only reason to use this plugin is to
@@ -256,17 +252,6 @@ Project64 Legacy Icepir8's LLE - This plugin is very buggy but I decided to incl
 				 of bugs, even if it doesn't suffer from the constant stuttering or tear
 				 artifacts it still has performance problems and even worse hack support
 				 in-part due to LLE and from an incomplete framebuffer implementation.
-
-Rice's Video Plugin 6.1.1 beta 10 - Undoubtedly the WORST video plugin here (4th place)! Although it was
-				    the first ever video plugin supporting high resolution texture packs
-				    but sadly was discontinued by Rice. It suffers from numerous issues,
-				    thus there is very little reason to use it:
-				    * You want to perform GIM but your PC doesn't work with Glide/GLideN
-				    * You want texture packs but your PC doesn't work with Glide/GLideN
-				    This video plugin also supports newer hacks like Ultimate Trial with
-				    the Basic Render-to-texture N64 Frame Buffer Effect Emulation Option
-				    (you need to uncheck Hide Advanced Options and enable for per-game).
-				    An ini has been provided with basic configs for Majora and Mario 64.
 
 
 Audio (sound) plugin:
@@ -537,7 +522,7 @@ Jabo's DirectInput7 1.6.2
 Project64 Legacy Icepir8's RSP
 RSP Emulation Plugin
 
-Glide64 and Rice are open source but I cannot get them to compile.
+Glide64 is open source but I cannot get it to compile.
 
 IMPORTANT: Plugin-hardware-specific issues - Some issues you see with a plugin may be specific to YOUR
 device only! For example, in Majora's Mask on a 4 years old GTX 1660 TI, TrulyNaN reports the GI model
@@ -694,7 +679,6 @@ GLideN64 - See the about. Some improvements to the default ini from Bruce IV/me.
 Jabo's Direct3D8 1.6.2 - Jabo for D3D8 1.6.1, 1.6.2 updated app-synced build by Bruce Shankle IV/me.
 Jabo's Legacy Direct3D - Same as above, but with d3d8 to d3d9 by crosire.
 Project64 Legacy Icepir8's LLE - Icepir8 for improvements to ata4's multithreaded fork of Angrylion RDP.
-Rice's Video - By Rice x StrmnNrmn (Rice's video based on StrmnNrmn's code).
 Jabo's DirectSound 1.6.2 - Jabo for 1.6.1, 1.6.2 updated app-synced build by Bruce Shankle IV/me.
 No Audio plugin - Former Project64 Team.
 Shankle's LINK's AziAudio [SEP2023] (1.0) - Azimer, aglab2, and Bruce Shankle IV/me.
@@ -753,12 +737,22 @@ gamecontrollerdb - https://github.com/mdqinc/SDL_GameControllerDB
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
+ICON CREDITS
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+N64 Icon by MazeNL77 from NX10 Icon Set.
+License: CC Attribution 3.0 Unported
+Commercial usage: Allowed
+Posted: November 30, 2010
+https://creativecommons.org/licenses/by/3.0/
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
 TOOLS USED
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 MSYS2 + MINGW32 + GCC + SDL 2.0.12
 v120_xp Toolset in VS 2022
 v141_xp Toolset in VS 2019
-Resource hacker
+redketchup
 HxD
 Notepad++
 ChatGPT
@@ -826,5 +820,5 @@ Section#10 Linux Usage
 --------------------------------------------------------------------------------------------------------
 This app can be used on Linux with, "Add as an exe to Lutris" & "Set the runtime to proton" according to
 Linux user BrusciaMau#3101. The user states some plugins won't work but this can be resolved by changing
-to a different Video/Sound/Input including GLideN64 and Azi Audio. Jabo's Direct3D8 and Rice DON'T work!
+to a different Video/Sound/Input including GLideN64 and Azi Audio. Jabo's Direct3D8 WON'T work on Linux!
 --------------------------------------------------------------------------------------------------------
