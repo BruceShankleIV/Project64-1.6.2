@@ -34,10 +34,10 @@ extern "C" {
 #include "Settings API.h"
 #include "ROM Browser.h"
 #include "Language.h"
-/*********Source Version 23 WIP 0.4*********/
+/*********Source Version 23 WIP 0.5*********/
 /*********General Defaults**********/
-#define AppName						"BruceIV's Project64 1.6.2"
-#define IniName						"Game.ini"
+#define AppName					"BruceIV's Project64 1.6.2"
+#define IniName					"Game.ini"
 #define CheatIniName				"Cheat.ini"
 #define LangFileName				"English.txt"
 #define Default_AutoSleep			FALSE
