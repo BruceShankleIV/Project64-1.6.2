@@ -1,6 +1,6 @@
 #1# "Nederlands/Dutch"
 #2# "DeepL x Lily x BruceIV"
-#3# "23 WIP 0.4"
+#3# "23 WIP 0.5"
 #4# "March 2026"
 #5# "Taal Database (.txt)"
 #6# "Auteur"
@@ -205,4 +205,3 @@ Als deze actie succesvol is, kun je weer gegevens opslaan op en laden van je vir
 #215# "RGBA PNG-screenshot zonder kwaliteitsverlies"
 #216# "ffmpeg-game-opname"
 #217# "ffmpeg kan niet worden gevonden"
-#218# "ffmpeg kan niet worden opgestart"

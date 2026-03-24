@@ -484,7 +484,7 @@ void FillRomList (char*Directory) {
 void HideRomBrowser(void) {
 	if (!inFullScreen) {
 		long Style;
-		ShowWindow(hMainWindow,SW_HIDE);
+		ShowWindow(hMainWindow,SW_RESTORE);
 		Style=GetWindowLong(hMainWindow,GWL_STYLE);
 		if (strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) ChangeWinSize(hMainWindow,640,480,NULL);
 		else {

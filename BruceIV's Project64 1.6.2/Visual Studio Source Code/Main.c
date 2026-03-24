@@ -146,7 +146,6 @@ LRESULT CALLBACK AboutIniBoxProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lPara
 	return TRUE;
 }
 void UsuallyonTopWindow(HWND hWnd) {
-	SetWindowPos(hManageWindow,(UsuallyonTop?HWND_TOPMOST:HWND_NOTOPMOST),0,0,0,0,SWP_NOMOVE|SWP_NOREPOSITION|SWP_NOSIZE);
 	SetWindowPos(hWnd,(UsuallyonTop?HWND_TOPMOST:HWND_NOTOPMOST),0,0,0,0,SWP_NOMOVE|SWP_NOREPOSITION|SWP_NOSIZE);
 }
 DWORD AsciiToHex (char*HexValue) {
@@ -978,8 +977,8 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 					fileIndex++;
 				} while (GetFileAttributes(outputFile)!=INVALID_FILE_ATTRIBUTES);
 			}
-			if (AutoHide) sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -draw_mouse 0 -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-23:0:0\" -c:v libx264 -crf 19 -pix_fmt yuv420p -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
-			else sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-23:0:0\" -c:v libx264 -crf 19 -pix_fmt yuv420p -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
+			if (AutoHide) sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -draw_mouse 0 -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-23:0:0\" -level 4.1 -crf 19 -pix_fmt yuv420p -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
+			else sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-23:0:0\" -level 4.1 -crf 19 -pix_fmt yuv420p -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
 			STARTUPINFO si;
 			PROCESS_INFORMATION pi;
 			ZeroMemory(&si,sizeof(si));
@@ -987,7 +986,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 			si.dwFlags=STARTF_USESHOWWINDOW;
 			si.wShowWindow=SW_SHOW;
 			ZeroMemory(&pi,sizeof(pi));
-			if (!CreateProcess(NULL,cmd,NULL,NULL,FALSE,CREATE_NEW_CONSOLE,NULL,NULL,&si,&pi)) DisplayError(GS(FFMPEG_NOSTART));
+			if (!CreateProcess(NULL,cmd,NULL,NULL,FALSE,CREATE_NEW_CONSOLE,NULL,NULL,&si,&pi)) DisplayError("(ffmpeg didn't start)");
 			CloseHandle(pi.hProcess);
 			CloseHandle(pi.hThread);
 		}
@@ -1030,7 +1029,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 			si.dwFlags=STARTF_USESHOWWINDOW;
 			si.wShowWindow=SW_SHOW;
 			ZeroMemory(&pi,sizeof(pi));
-			if (!CreateProcess(NULL,cmd,NULL,NULL,FALSE,CREATE_NEW_CONSOLE,NULL,NULL,&si,&pi)) DisplayError(GS(FFMPEG_NOSTART));
+			if (!CreateProcess(NULL,cmd,NULL,NULL,FALSE,CREATE_NEW_CONSOLE,NULL,NULL,&si,&pi)) DisplayError("(ffmpeg didn't start)");
 			CloseHandle(pi.hProcess);
 			CloseHandle(pi.hThread);
 		}
@@ -1073,7 +1072,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 			si.dwFlags=STARTF_USESHOWWINDOW;
 			si.wShowWindow=SW_SHOW;
 			ZeroMemory(&pi,sizeof(pi));
-			if (!CreateProcess(NULL,cmd,NULL,NULL,FALSE,CREATE_NEW_CONSOLE,NULL,NULL,&si,&pi)) DisplayError(GS(FFMPEG_NOSTART));
+			if (!CreateProcess(NULL,cmd,NULL,NULL,FALSE,CREATE_NEW_CONSOLE,NULL,NULL,&si,&pi)) DisplayError("(ffmpeg didn't start)");
 			CloseHandle(pi.hProcess);
 			CloseHandle(pi.hThread);
 		}
@@ -1515,13 +1514,9 @@ void TerminatePreviousInstance() {
 		} while (Process32Next(s,&e));
 	CloseHandle(s);
 	if (matchCount==1) { // USUALLY ON TOP ISSUE
-#ifdef MIN_SIZE
-		if (MessageBox(NULL,GS(EXTRA_PROJECT64),AppName,MB_YESNO|MB_ICONQUESTION|MB_SETFOREGROUND)==IDNO) return;
-#else
 		int result=MessageBox(NULL,GS(EXTRA_PROJECT64),AppName,MB_YESNOCANCEL|MB_ICONQUESTION|MB_SETFOREGROUND);
 		if (result==IDCANCEL) ExitProcess(0);
 		if (result==IDNO) return;
-#endif
 		HANDLE p=OpenProcess(PROCESS_TERMINATE,FALSE,foundPID);
 		if (p) { TerminateProcess(p,0); CloseHandle(p); }
 	}
@@ -1633,7 +1628,7 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpszArgs,in
 	}
 	if (__argc>1) {
 		CreateRomListControl(hMainWindow);
-		ShowWindow(hMainWindow,SW_SHOW);
+		ShowWindow(hMainWindow,nWinMode);
 		SetupMenu(hMainWindow);
 		strcpy(CurrentFileName,__argv[1]);
 		CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)OpenChosenFile,NULL,0,NULL);

@@ -16,8 +16,8 @@ typedef struct {
 } LANG_STR;
 LANG_STR DefaultString[]={
     { LANGUAGE_AUTHOR,    "BruceIV"			  },
-    { LANGUAGE_VERSION,   "23 WIP 0.4"			  },
-    { LANGUAGE_DATE,      "2026 March"			  },
+    { LANGUAGE_VERSION,   "23 WIP 0.5"			  },
+    { LANGUAGE_DATE,      "March 2026"			  },
 	{ INI_CURRENT_LANG,   "Language Database (.txt)"  },
 	{ INI_AUTHOR,         "Author"			  },
 	{ INI_VERSION,        "Version"			  },
@@ -250,7 +250,6 @@ LANG_STR DefaultString[]={
 	{ RGBA_PNG_SCREENSHOT,	  "RGBA PNG Lossless Screenshot"},
 	{ GAME_CAPTURE,		  "ffmpeg Game Capture"},
 	{ FFMPEG_NOFIND,	  "Unable to locate ffmpeg"},
-	{ FFMPEG_NOSTART,	  "Unable to boot ffmpeg"},
 };
 class CLanguage  {
 	void FindLangName  (int Index);

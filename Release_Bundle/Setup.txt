@@ -1,0 +1,61 @@
+HOW TO INSTALL - START
+
+
+Step 1: Extract from the ZIP's, password is the password!
+The ZIP's include the main release (BruceIV-Project64-1.6.2_VERSIONNUMBER-WIPSTATE-WIPVERSION_DATE).zip
+The Applications bundle Apps.zip
+And the executables bundle that come in main release exes.zip. *See Step 3.
+
+Step 2:
+Run Exception.bat with admin priviledge if you have windows
+defender (some PC's don't in which case the file will not have any effect).
+^
+To confirm you have an exception set for the emulator directory, press your
+Win key and type "virus" and press Enter to reach the Virus & threat
+protection settings. Click on Manage Settings, scroll down, click on Add or
+remove exclusions. Now it will show all locations on your PC which have
+exceptions from defender scanning. If you see the path to the emulator
+here, it means you have an exception set and Windows Defender will avoid
+scanning it so it can function properly. If you have any other apps which
+malfunction from the defender, set exceptions for those. Windows Defender
+will turn itself back on if you turn it off, so all you can do about this
+when it's interefering with safe processes is to set exceptions. It's good
+to have it on anyway as it will effectively stop malicious software like
+some of the previous installers Zilmar made for his 2.0 Project64 builds.
+
+Step 3:
+After setting an exception if necessary, extract the contents of exes.zip
+to its existing location (right click->extract here) to fully install it.
+Then find the ROM you want to play and right click on it->Open with->Always
+open with->Select the Project64.exe application and then just double click
+on an N64 ROM (.z64 .n64 .v64 extensions) like that and voila. Make sure to
+select plugins from Options->Settings based on the ROM Notes settings tab
+or based on your own experience and based on what works with your hardware.
+If your GPU supports OpenGL 3.3 or higher, GLideN64 video plugin might work
+and if it doesn't support that but does support OpenGL 2.0, Glide64 will
+technically work although with some drawbacks compared to other options.
+Icepir8's LLE is a modification of Angrylion's RDP Plus so it will be the
+most resource expensive video plugin to use and isn't suggested for general
+use unless it works particularly good on your machine. I personally prefer
+Jabo's Direct3D8 for the games it works with since it has minimum drawbacks.
+Refer to the user guide for more detailed information.
+
+
+HOW TO INSTALL - END
+
+
+
+Links:
+
+GitHub Repository:
+https://github.com/BruceShankleIV/Project64-1.6.2
+
+ROMhacks Ready to Play in This Emulator:
+https://github.com/BruceShankleIV/Project64-1.6.2-ROMhacks-Collection
+
+Zelda64 texture packs:
+https://mega.nz/folder/hLB2jI5R#t71whplzD7iMbb3m_YfFSA
+
+If you encounter a bug with the emulator, send me a message on gmail at
+bruceiv.shankle@gmail.com or open an issue on GitHub or send me a message
+on Discord: discord.gg\cHDxa9vzQM

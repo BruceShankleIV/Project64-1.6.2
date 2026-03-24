@@ -1,6 +1,6 @@
 #1# "Español/Spanish"
 #2# "DeepL x TrulyNaN x BruceIV"
-#3# "23 WIP 0.4"
+#3# "23 WIP 0.5"
 #4# "March 2026"
 #5# "Base de datos de idiomas (.txt)"
 #6# "Autor"
@@ -220,4 +220,3 @@ Vas poder guardar o cargar de tu tarjeta SD virtual de nuevo si esta acción func
 #215# "Captura de pantalla RGBA PNG sin pérdida"
 #216# "Captura de juego con ffmpeg"
 #217# "No se puede localizar ffmpeg"
-#218# "No se puede iniciar ffmpeg"

@@ -1491,7 +1491,7 @@ BOOL r4300i_SH_VAddr (DWORD VAddr,WORD Value) {
 	return TRUE;
 }
 int r4300i_SW_NonMemory (DWORD PAddr,DWORD Value) {
-// This function is missing memory registers for ifndef MIN_SIZE! For now let's just use Min Size profile until it's revealed we need the extra memory registers for anything
+// Missing registers for #ifndef MIN_SIZE?
 	if (PAddr>=0x10000000&&PAddr<0x16000000) {
 		if ((PAddr-0x10000000)<RomFileSize) {
 			WrittenToRom=TRUE;
