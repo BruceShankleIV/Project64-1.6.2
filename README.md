@@ -208,11 +208,10 @@ Direct64 - By Orkin. Thanks to Clements, Rice, Gonetz, Malcolm, Dave2001, cryhlo
 Azimer, StrmnNrmn, Kreed, and Maxim Stepin
 Glide64 - See the about. Some improvements to the default ini and hack support from Bruce IV/me.
 GLideN64 - See the about. Some improvements to the default ini from Bruce IV/me. Based on glN64 RC2.
-Jabo's Direct3D8 1.6.2 - Jabo for D3D8 1.6.1, 1.6.2 updated app-synced build by Bruce Shankle IV/me.
+Jabo's Direct3D8 1.6/1.6.1 - Jabo, with changes to suit this project from Bruce Shankle IV/me.
 Jabo's Legacy Direct3D - Same as above, but with d3d8 to d3d9 by crosire.
 Project64 Legacy Icepir8's LLE - Icepir8 for improvements to ata4's multithreaded fork of Angrylion RDP.
-Rice's Video - By Rice x StrmnNrmn (Rice's video based on StrmnNrmn's code).
-Jabo's DirectSound 1.6.2 - Jabo for 1.6.1, 1.6.2 updated app-synced build by Bruce Shankle IV/me.
+Jabo's DirectSound 1.6.1 - Jabo, with changes to suit this project from Bruce Shankle IV/me.
 No Audio plugin - Former Project64 Team.
 Shankle's LINK's AziAudio [SEP2023] (1.0) - Azimer, aglab2, and Bruce Shankle IV/me.
 Jabo's DirectInput7 1.6.2 - Jabo & Gent, 1.6.2 updated app-synced build by Bruce Shankle IV/me.
@@ -278,6 +277,8 @@ License: CC Attribution 3.0 Unported
 Commercial usage: Allowed
 Posted: November 30, 2010
 https://creativecommons.org/licenses/by/3.0/
+Windows PC icon added. This application isn't endorsed or sponsored by the Microsoft company in any way.
+The icon is meant to communicate that the app allows a Windows computer to play Nintendo 64 video games.
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////

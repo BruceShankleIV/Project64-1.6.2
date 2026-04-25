@@ -50,7 +50,7 @@ Section#10 Linux Usage
 
 Limit FPS quick note - If you want to be able to always toggle Limit FPS, change your sound plugin! It's
 not able to be toggled while using Jabo's DirectSound with most games from emulating Sync Game to Audio.
-Also don't use Glide64 or Jabo's Legacy Direct3D for your video plugin as these seem to limit the speed.
+Also don't use Glide64 or Jabo's Legacy Direct3D or Direct64 for your video plugin as these limit speed.
 
 
 TEXTURE PACK SETUP INSTRUCTIONS:
@@ -145,41 +145,17 @@ Majora's Mask. Suggested ROMhacks are Star Road (Super Mario 64) and The Missing
 
 Section#3 Plugin Details
 --------------------------------------------------------------------------------------------------------
-DISCLAIMER: Please DO NOT add any plugins to the plugin folder or it could results in all kinds of bugs.
+DISCLAIMER: Please DO NOT add any plugins to the plugin folder or it could result in a sudden app crash.
 
-Game compatibility: If you're looking for what set of plugins will work with the most games, here it is:
-
-Video (graphics plugin: GLideN64 rev.xxxxxxx - May still need Jabo's Direct3D8 sometimes.
-
-Audio (sound) plugin: Shankle's LINK's AziAudio [SEP2023] (1.0) - Good unless your PC can't support it.
-
-Input (controller) plugin: Shankle's N-Rage's DirectInput8 1.6.2 - Good unless your PC can't support it.
-
-RSP (reality signal processor) plugin: Project64 Legacy Icepir8's RSP - Usually subpar. May still need
-				       static interpreter RSP for some cases like Stadium GB Tower.
-
-***********************NOTE***********************
-You are usually better off using the RSP Emulation
-Plugin as the RSP instead of Icepir8's RSP for its
-much higher performance, and better looking video.
-
-The N-Rage Input plugin will need controller 2 and
-N64 Mouse enabled for some niche ROMhacks to work,
-but can breaks other games so it's off by default.
-
-N-Rage may not work on some computers.
-
-N-Rage uses F/G keys to allow precision aiming for
-keyboard users, this is extremely handy!
-
-N-Rage is typically sub-optimal for XInput devices
-and another Input plugin should be used for those.
-
-N-Rage does not have a setup mode like the default
-input does so if you want something which is quick
-to configure for your device, you should stay with
-the default input plugin if you want a fast setup.
-***********************NOTE***********************
+Suggested plugins: Although Jabo's Direct3D8 does not render some graphics properly, it's generally your
+best option if it's working for a game due to lighting issues with Glide64, performance issues on GLide,
+and poor image quality with LLE graphics. If you experience severe graphics issues with Jabo's Direct3D8
+for a game, you'll want to use GLideN64 if it works for your PC. If that video plugin does not work, try
+Glide64, if that still doesn't work at all on your PC then try Direct64 as a last resort. Keep the sound
+plugin as what it is unless you want muted sound or to turn off Limit FPS. If using an XInput controller
+then you may want to change the input to SDL2 if your game does not require pak support. If playing with
+Keyboard, use N-Rage if it works on your PC (benefits from keyboard binding for precision aiming). Stick
+with the default RSP unless it's not working for a game.
 
 
 Video (graphics) plugin:
@@ -187,10 +163,10 @@ Video (graphics) plugin:
 Direct64 v0.5.03.25 - One of the oldest video plugins included in this project. It was only included for
 		      machines with GPU's that do not support OpenGL and in the case that the user needs
 		      to play a game with graphics emulation requirements not supported by Jabo's Direct
-		      video plugin, such as Pumkin Tower. However, this video plugin is missing numerous
-		      graphical effects especially Fog being a very noticeable one. There's also texture
+		      video (Pumkin Tower/Ultimate Trial). However, the video plugin is missing numerous
+		      graphics effects, especially fog being a very noticeable one. There's also texture
 		      issues, issues with pause screen on MQ Debug roms, and other things. It isn't near
-		      as bad as Rice's Video plugin but it's not up to par with Jabo's Direct3D8 either.
+		      as bad as Rice's video plugin but it's not up to par with Jabo's Direct3D8 either.
 		      Try the video plugin if none of the included Jabo video plugins work with the game
 		      if it happens to be that other plugins don't work at all with any game on your PC.
 
@@ -203,7 +179,7 @@ Glide64 'Final' Date: Dec 29 2011 - AKA International Emulation Project, this pl
 				    perform GIM in Zelda by disabling "Enable frame buffer emulation" or
 				    because a ROMhack benefits most from it (3rd Quest Patch 0.5 - using
 				    "Enable frame buffer emulation" turned OFF, or a ROMhack has alpha
-				    blending or framebuffer issues and your PC doesn't support GLiden64,
+				    blending or framebuffer issues and your PC doesn't support GLideN64,
 				    or you don't want to deal with the bugs in GLideN64). If you develop
 				    ROMhacks, please do not do it while using this as your video plugin,
 				    because it's so buggy and poorly supported. Also causes input delay.
@@ -223,7 +199,63 @@ GLideN64 rev.xxxxxxx - This is probably the 3rd best video plugin included, only
 		       this one a try and cross your fingers for good luck.
 		       Note: This plugin supports GIM by turning off "Emulate framebuffer" like Glide64.
 
-Jabo's Direct3D8 1.6.2 - This is the best video plugin here as it's the only one capable of all of this:
+Jabo's Direct3D8 1.6 - An older version of the video plugin directly below, this version has less alias,
+		       some graphical bugs which were fixed in the 1.6.1 update, and an inverted Lens of
+		       truth effect for Majora's Mask which gets Stone Mask to be visible from Shiro but
+		       gets the Snowhead Temple overhead stray fairy invisible. There's little reason to
+		       use this version over the 1.6.1 version unless the alias effect is particularly
+		       noticeable, especially in a ROMhack like 3rd Quest Patch 0.5, or if the missing
+		       effects for Lens of Truth in most areas bothers you and you know how to get that
+		       one stray fairy in snowhead temple.
+			Entering fullscreen after PC unlocking or after a window pops up fixes freezing.
+
+
+
+			Jabo's list of changes between Direct3D8 1.6 and 1.6.1:
+
+	bugfix: fixed a problem where the plugin could crash if it ran out of video memory
+
+	bugfix: fixed microcodes for Blast Corps, Body Harvest, O.D.T. (Or Die Trying), and Asteroids
+
+	1080 Snowboarding: fixed europe region effects
+
+	40 Winks: fixed strange texturing issue
+
+	Bakuretsu Muteki Bangaioh: sprite edges should look correct
+
+	Banjo-Tooie: fixed puzzle rendering and other regions
+
+	Cruisin USA: brake lights work
+
+	Dragon Sword: menu text drawing and scaling fixed
+
+	Dr. Mario: fixed background in versus mode
+
+	F-Zero X: fixed potential triangle overflow issue
+
+	GoldenEye 007: fixed calculations of sky triangles
+
+	Lego Racers: fixed players going out of sight
+
+	Mario Kart: fixed whomps in bowser castle
+
+	Mario Kart: racetrack frame buffer support
+
+	Legend of Zelda Ocarina of Time: end of game subscreen issues
+
+	Paperboy: fixed map drawing in game
+
+	Perfect Dark: fixed scanners
+
+	Disney's Tarzan: fixed butterfly and health meter
+
+	Vigilante 8: fixed some textures
+
+	Legend of Zelda Majora's Mask: fixed day transition borders and lens of truth in snow areas
+
+
+
+Jabo's Direct3D8 1.6.1 - This is the best video plugin here as it's the only one capable of all of this:
 			* No screen tearing in fullscreen
 			* No input delay
 			* Works with all older ROMhacks
@@ -237,10 +269,7 @@ Jabo's Direct3D8 1.6.2 - This is the best video plugin here as it's the only one
 			 these cases you should use another video plugin. Otherwise, just use this if it
 			 is effective for the game you're trying to run. To setup the widescreen, enable
 			 the, "Adjust game aspect ratio to match yours", from the plugin's advanced tab.
-			Note: This is a Hex edit of Jabo's 1.6.1 from jabosoft.com/blog/project64-update
 			Entering fullscreen after PC unlocking or after a window pops up fixes freezing.
-			Note: Use Direct3D transformation pipeline seems to work good for Majora's Mask,
-			but due to a bug in the plugin it doesn't save this setting.
 
 Jabo's Legacy Direct3D - If you have an old (legacy) PC which doesn't even work properly with Direct3D8,
 			 use this. This uses the Legacy pixel pipeline and renders with Direct3D9. Other
@@ -248,9 +277,9 @@ Jabo's Legacy Direct3D - If you have an old (legacy) PC which doesn't even work 
 			 this unless graphics don't show up with Jabo's Direct3D8 on your PC since there
 			 are wrong colors and sometimes missing graphical effects like Zelda monochrome.
 			 Sometimes it's better than Direct3D8 on a game-specific basis, working slightly
-			 better for Ocarina of Time, but worse in Majora's Mask case for example.
+			 better for Ocarina of Time, but worse in Majora's Mask's case for example.
 			 Notably gets SM64 shadows and sun mat to render on Intel GPU's.
-			 Rank: Tied with Glide64 for 2nd place, as it is usually worse than D3D8 1.6.2,
+			 Rank: Tied with Glide64 for 2nd place, as it is usually worse than D3D8 1.6.1,
 			 but still not as many issues as GLideN64.
 
 Project64 Legacy Icepir8's LLE - This plugin is very buggy but I decided to include it since it's pretty
@@ -266,7 +295,7 @@ Project64 Legacy Icepir8's LLE - This plugin is very buggy but I decided to incl
 
 Audio (sound) plugin:
 
-Jabo's DirectSound 1.6.2 - The most PC compatible sound plugin. If a game won't boot using this plugin,
+Jabo's DirectSound 1.6.1 - The most PC compatible sound plugin. If a game won't boot using this plugin,
 			   but the same game is able to boot whilst using No Audio or Shankle Azi, there
 			   are two settings in the ROM Settings tab, which either of them can be toggled
 			   to fix a ROM boot issue: "Sync Game to Audio" and "Jabo AI". Turning the Sync
@@ -371,6 +400,12 @@ Green - Compatible
 Yellow - Semicompatible
 
 Red - Illegit
+
+PLEASE NOTE - Games marked as Compatible were only tested with a few of the video plugins included (more
+video plugins were added to the project over time to account for users with weaker hardware and specific
+ROMhacks which needed an older video plugin to be playable depending on the user's GPU and the ROMhack).
+Games marked as Compatible are only tested between GLideN64, Jabo's Direct3D8, and Legacy Icepir8's LLE.
+These 3 video plugins are the best general-use options available.
 
 The user should refer to the plugin note for Semicompatible games if given to see what plugin(s) to use.
 The user should refer to the plugin note for Compatible games if given to see viable plugin suggestions.
@@ -688,10 +723,10 @@ Direct64 - By Orkin. Thanks to Clements, Rice, Gonetz, Malcolm, Dave2001, cryhlo
 Azimer, StrmnNrmn, Kreed, and Maxim Stepin
 Glide64 - See the about. Some improvements to the default ini and hack support from Bruce IV/me.
 GLideN64 - See the about. Some improvements to the default ini from Bruce IV/me. Based on glN64 RC2.
-Jabo's Direct3D8 1.6.2 - Jabo for D3D8 1.6.1, 1.6.2 updated app-synced build by Bruce Shankle IV/me.
+Jabo's Direct3D8 1.6.1 - Jabo, with changes to suit this project from Bruce Shankle IV/me.
 Jabo's Legacy Direct3D - Same as above, but with d3d8 to d3d9 by crosire.
 Project64 Legacy Icepir8's LLE - Icepir8 for improvements to ata4's multithreaded fork of Angrylion RDP.
-Jabo's DirectSound 1.6.2 - Jabo for 1.6.1, 1.6.2 updated app-synced build by Bruce Shankle IV/me.
+Jabo's DirectSound 1.6/1.6.1 - Jabo, with changes to suit this project from Bruce Shankle IV/me.
 No Audio plugin - Former Project64 Team.
 Shankle's LINK's AziAudio [SEP2023] (1.0) - Azimer, aglab2, and Bruce Shankle IV/me.
 Jabo's DirectInput7 1.6.2 - Jabo & Gent, 1.6.2 updated app-synced build by Bruce Shankle IV/me.
@@ -757,6 +792,8 @@ License: CC Attribution 3.0 Unported
 Commercial usage: Allowed
 Posted: November 30, 2010
 https://creativecommons.org/licenses/by/3.0/
+Windows PC icon added. This application isn't endorsed or sponsored by the Microsoft company in any way.
+The icon is meant to communicate that the app allows a Windows computer to play Nintendo 64 video games.
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////

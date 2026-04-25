@@ -734,7 +734,7 @@ BOOL Machine_LoadState(void) {
 	else sprintf(String,"%s: %s",GS(MSG_LOADED_STATE),FileName);
 	SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)String);
 	if (SPECIAL_BREAK_Yes) SPECIAL_BREAK_Yes=FALSE;
-	if (SPECIAL_BREAK_Trigger) SPECIAL_BREAK_Trigger=FALSE;;
+	if (SPECIAL_BREAK_Trigger) SPECIAL_BREAK_Trigger=FALSE;
 	return TRUE;
 }
 BOOL Machine_SaveState(void) {

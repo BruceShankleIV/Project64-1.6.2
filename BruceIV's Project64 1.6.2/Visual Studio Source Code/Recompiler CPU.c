@@ -1671,7 +1671,7 @@ void GenerateSectionLinkage (BLOCK_SECTION*Section) {
 	for (count=0; count<2; count++) {
 		if (JumpInfo[count]->FallThrough) {
 			if (JumpInfo[count]->TargetPC<Section->CompilePC) {
-				DWORD CycleCount=JumpInfo[count]->RegSet.CycleCount;;
+				DWORD CycleCount=JumpInfo[count]->RegSet.CycleCount;
 				if (JumpInfo[count]->RegSet.RandomModifier!=0) {
 					SubConstFromVariable(JumpInfo[count]->RegSet.RandomModifier,&CP0[1]);
 					JumpInfo[count]->RegSet.RandomModifier=0;
@@ -2165,7 +2165,7 @@ void StartRecompilerCPU (void) {
 	DWORD Addr;
 	BYTE*Block;
 	CoInitialize(NULL);
-	if (TargetInfo==NULL) {
+	if (TargetInfo==NULL&&!ProtectMemory) {
 		TargetInfo=VirtualAlloc(NULL,MaxCodeBlocks*sizeof(TARGET_INFO),MEM_COMMIT|MEM_RESERVE,PAGE_READWRITE);
 		if (TargetInfo==NULL) {
 			DisplayError(GS(MSG_MEM_ALLOC_ERROR));
@@ -2273,17 +2273,18 @@ void StartRecompilerCPU (void) {
 					ResetRecompCode();
 					Block=Compiler4300iBlock();
 				}
-				TargetInfo[TargetIndex].CodeBlock=Block;
-				TargetInfo[TargetIndex].OriginalMemory=*(QWORD*)(N64MEM+Addr);
-				*(JumpTable+(Addr>>2))=&TargetInfo[TargetIndex];
-				TargetIndex+=1;
-				if (TargetIndex==MaxCodeBlocks) {
-					ResetRecompCode();
-					continue;
-				}
 				if (ProtectMemory||strcmp(RomName,"RAT ATTACK")==0) {
 					*(JumpTable+(Addr>>2))=Block;
 					if (strcmp(RomName,"RAT ATTACK")!=0) VirtualProtect(N64MEM+Addr,4,PAGE_READONLY,&OldProtect);
+				} else {
+					TargetInfo[TargetIndex].CodeBlock=Block;
+					TargetInfo[TargetIndex].OriginalMemory=*(QWORD*)(N64MEM+Addr);
+					*(JumpTable+(Addr>>2))=&TargetInfo[TargetIndex];
+					TargetIndex+=1;
+					if (TargetIndex==MaxCodeBlocks) {
+						ResetRecompCode();
+						continue;
+					}
 				}
 				SetNormal
 			}
