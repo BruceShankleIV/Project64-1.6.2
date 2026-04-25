@@ -184,6 +184,16 @@ the default input plugin if you want a fast setup.
 
 Video (graphics) plugin:
 
+Direct64 v0.5.03.25 - One of the oldest video plugins included in this project. It was only included for
+		      machines with GPU's that do not support OpenGL and in the case that the user needs
+		      to play a game with graphics emulation requirements not supported by Jabo's Direct
+		      video plugin, such as Pumkin Tower. However, this video plugin is missing numerous
+		      graphical effects especially Fog being a very noticeable one. There's also texture
+		      issues, issues with pause screen on MQ Debug roms, and other things. It isn't near
+		      as bad as Rice's Video plugin but it's not up to par with Jabo's Direct3D8 either.
+		      Try the video plugin if none of the included Jabo video plugins work with the game
+		      if it happens to be that other plugins don't work at all with any game on your PC.
+
 Glide64 'Final' Date: Dec 29 2011 - AKA International Emulation Project, this plugin uses OpenGL so it's
 				    not as well supported as Jabo's Direct3D video plugins but works for
 				    PC's which support OpenGL 2.0. It suffers from a slow initialization
@@ -674,6 +684,8 @@ Miroku - Intel GPU test, CF0 and OoT v1.1/v1.2 and PAL v1.0 LOD fixes, OoT v1.2 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 PLUGIN CREDITS
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+Direct64 - By Orkin. Thanks to Clements, Rice, Gonetz, Malcolm, Dave2001, cryhlove, icepir8, zilmar,
+Azimer, StrmnNrmn, Kreed, and Maxim Stepin
 Glide64 - See the about. Some improvements to the default ini and hack support from Bruce IV/me.
 GLideN64 - See the about. Some improvements to the default ini from Bruce IV/me. Based on glN64 RC2.
 Jabo's Direct3D8 1.6.2 - Jabo for D3D8 1.6.1, 1.6.2 updated app-synced build by Bruce Shankle IV/me.

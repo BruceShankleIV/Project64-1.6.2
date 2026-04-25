@@ -1315,7 +1315,7 @@ void SetupMenu (HWND hWnd) {
 	EnableMenuItem(hMenu,ID_CPU_LOAD,State|MF_BYCOMMAND);
 	EnableMenuItem(hMenu,ID_SYSTEM_GSBUTTON,State|MF_BYCOMMAND);
 	if (CaptureScreen!=NULL&&!ClearFrame) EnableMenuItem(hMenu,ID_SYSTEM_GENERATEBITMAP,State|MF_BYCOMMAND);
-	if (ChangeWindow!=NULL) EnableMenuItem(hMenu,ID_OPTIONS_FULLSCREEN,State|MF_BYCOMMAND);
+	if (ChangeWindow!=NULL&&strcmp(GfxDLL,"Direct64-1.6.2.dll")!=0) EnableMenuItem(hMenu,ID_OPTIONS_FULLSCREEN,State|MF_BYCOMMAND);
 	else EnableMenuItem(hMenu,ID_OPTIONS_FULLSCREEN,MFS_DISABLED|MF_BYCOMMAND);
 	hSubMenu=GetSubMenu(hMenu,1); //System
 	EnableMenuItem(hSubMenu,13,State|MF_BYPOSITION); //Current Save State
