@@ -260,7 +260,8 @@ Adult Link Fist Pointer and MQ Debug LOD Fix - Phantom Natsu:
 https://www.youtube.com/watch?v=i7jjsZKoM3A
 https://www.youtube.com/watch?v=hNb3cYtNDC8
 
-Cheat.ini (Cheat Database) - Original by Gent, further modified/tweaked by Bruce IV with some from Miro.
+Cheat.ini (Cheat Database) - Original by Gent, further modified/improved by Bruce IV with added/modified
+code from Miro as well as MTA.
 
 Dutch by lilycatx, Russian by SatanNintendo, French by Andzura, Brazilian Portugese by TrulyNaN. + DeepL
 
