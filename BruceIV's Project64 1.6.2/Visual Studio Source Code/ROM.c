@@ -474,7 +474,7 @@ void ReadRomOptions(void) {
 		else if (strcmp(String,"FlashRAM")==0) { RomSaveUsing=FlashRAM; }
 		else { RomSaveUsing=Auto; }
 		_GetPrivateProfileString(Identifier,"Clear Frame","",String,sizeof(String),IniFileName);
-		if ((strcmp(GfxDLL,"Jabo_Direct3D8.dll")==0||strcmp(GfxDLL,"Jabo_Direct3DL.dll")==0)&&(strcmp(String,"1")==0||strcmp(String,"2")==0)) RomClearFrame=TRUE;
+		if ((strcmp(GfxDLL,"Jabo_Direct3D8.dll")==0||strcmp(GfxDLL,"Jabo_Direct3D8_old.dll")==0||strcmp(GfxDLL,"Jabo_Direct3DL.dll")==0)&&(strcmp(String,"1")==0||strcmp(String,"2")==0)) RomClearFrame=TRUE;
 		_GetPrivateProfileString(Identifier,"TLB","",String,sizeof(String),IniFileName);
 		if (strcmp(String,"OFF")==0) RomUseTLB=FALSE;
 		_GetPrivateProfileString(Identifier,"Azi AI","",String,sizeof(String),IniFileName);

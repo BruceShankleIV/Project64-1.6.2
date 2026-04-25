@@ -1592,7 +1592,8 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpszArgs,in
   		int screenHeight=GetSystemMetrics(SM_CYSCREEN);
   		int screenWidth=GetSystemMetrics(SM_CXSCREEN);
 		const char*regPaths[]={
-			"PJ64 V 1.6.2\\Jabo Ver1.6.2 Regs\\Direct3D8 1.6.2",
+			"PJ64 V 1.6.2\\Jabo Ver1.6.2 Regs\\Direct3D8 1.6",
+			"PJ64 V 1.6.2\\Jabo Ver1.6.2 Regs\\Direct3D8 1.6.1",
 			"PJ64 V 1.6.2\\Jabo Ver1.6.2 Regs\\Legacy Direct3D",
 			"PJ64 V 1.6.2\\Jabo Ver1.6.2 Regs\\DirectInput7 1.6.2   ",
 		};

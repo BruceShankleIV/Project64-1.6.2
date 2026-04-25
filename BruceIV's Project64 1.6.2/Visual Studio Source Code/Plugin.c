@@ -69,7 +69,7 @@ void GetCurrentDlls (void) {
 		sprintf(AudioDLL,"%s",DefaultAudioDll);
 		sprintf(ControllerDLL,"%s",DefaultControllerDll);
 	}
-	if ((strcmp(GfxDLL,"Direct64-1.6.2.dll")==0||strcmp(GfxDLL,"Glide64.dll")==0||strcmp(GfxDLL,"Jabo_Direct3D8.dll")==0||strcmp(GfxDLL,"Jabo_Direct3DL.dll")==0)&&strcmp(RSPDLL,"Icepir8sLegacyRSP.dll")==0) strcpy(RSPDLL,"RSP.dll");
+	if ((strcmp(GfxDLL,"Direct64-1.6.2.dll")==0||strcmp(GfxDLL,"Glide64.dll")==0||strcmp(GfxDLL,"Jabo_Direct3D8.dll")==0||strcmp(GfxDLL,"Jabo_Direct3D8_old.dll")==0||strcmp(GfxDLL,"Jabo_Direct3DL.dll")==0)&&strcmp(RSPDLL,"Icepir8sLegacyRSP.dll")==0) strcpy(RSPDLL,"RSP.dll");
 }
 void GetPluginDir(char*Directory) {
 	char path_buffer[_MAX_PATH],drive[_MAX_DRIVE],dir[_MAX_DIR],fname[_MAX_FNAME],ext[_MAX_EXT];
