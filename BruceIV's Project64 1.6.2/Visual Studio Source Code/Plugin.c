@@ -246,7 +246,6 @@ BOOL LoadRSPDLL(char*RSPDLL) {
 	return TRUE;
 }
 void SetupPlugins (HWND hWnd) {
-	// ISSUE: shankle-sdl2-input.dll config not working after opening a rom with File/Open ROM or Windows' Open with
 	static DWORD AI_DUMMY=0;
 	DWORD NewRAMsize;
 	ShutdownPlugins();
