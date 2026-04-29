@@ -332,14 +332,15 @@ Shankle's N-Rage's DirectInput8 1.6.2 - Enable XInput if your device uses XInput
 					so long as the game is compatible with the Octomino SDL2 plugin.
 					Use F and G keys to modify range for keyboard precision aimings.
 
-Shankle's Octomino SDL2 Input 0.1.1 (1.0) - Plug and play plugin, no configuration needed. It's config'd
+Shankle's Octomino SDL2 Input 0.1.1 (1.2) - Plug and play plugin, no configuration needed. It's config'd
 					    through configuring controller plugin after a ROM is opened.
 					    It has many options, some not even seen in N-Rage, and auto-
 					    configures your controller using the gamecontroller database
 					    so you will not have to map out all of your button mappings.
 					    Some games require you to use N-Rage's input plugin however.
-			    Note: also, this won't work for any games that depend entirely on N64 Mouse,
+			    Note: Also, this won't work for any games that depend entirely on N64 Mouse,
 			    or which depend on a Pak type not supported by this input plugin.
+			    Note: C-Left and C-Right binded to Y/B and config loads fixed in 1.2 update.
 
 
 RSP (reality signal processor) plugin:
@@ -751,7 +752,7 @@ LuigiBlood for N64 Mouse support.
 Shankle's N-Rage's DirectInput8 1.6.2 Changes from Legacy N-Rage Credits:
 Bruce for several small changes including improvements for XInput mode and default plugin configuration.
 
-Shankle's Octomino SDL2 Input 0.1.1 (1.0) -
+Shankle's Octomino SDL2 Input 0.1.1 -
 Octomino/clickdevin for original plugin.
 wermipls for configuration gui.
 Bruce for stripping the logging which was causing a lot of annoying issues and for better configuration.

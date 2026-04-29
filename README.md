@@ -236,7 +236,7 @@ LuigiBlood for N64 Mouse support.
 Shankle's N-Rage's DirectInput8 1.6.2 Changes from Legacy N-Rage Credits:
 Bruce for several small changes including improvements for XInput mode and default plugin configuration.
 
-Shankle's Octomino SDL2 Input 0.1.1 (1.0) -
+Shankle's Octomino SDL2 Input 0.1.1 -
 Octomino/clickdevin for original plugin.
 wermipls for configuration gui.
 Bruce for stripping the logging which was causing a lot of annoying issues and for better configuration.
