@@ -399,8 +399,8 @@ void ExecuteInterpreterOpCode (void) {
 		SetNormal
 		if ((int)Timers.Timer<0) { TimerDone(); }
 		if (CPU_Action.DoSomething) { DoSomething(); }
-		}
 	}
+}
 void StartInterpreterCPU (void) {
 	CoInitialize(NULL);
 	SetNormal

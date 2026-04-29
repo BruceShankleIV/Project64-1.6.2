@@ -551,6 +551,8 @@ Just do not go to ROM Settings tab and disactivate these force-enable/disable se
 
 Section#7 Known Issues
 --------------------------------------------------------------------------------------------------------
+SDL2 config not working if opening a ROM with File\Open ROM or if opening a ROM from Windows' Open with.
+
 Plugin-specific issues - This app relies on a lot of different plugins to work, many of them are closed-
 source but have specific bugs in them which means issues specific to many of the plugins in the emulator
 will likely never get resolved. All of the following plugins included in the emulator are closed-source:
