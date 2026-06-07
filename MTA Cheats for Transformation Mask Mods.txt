@@ -1,0 +1,477 @@
+transformation mask mod cheats to test
+810FFFB4 00D0
+810FFFB6 8E80
+810FFFB8 00D0
+810FFFBA B9E0
+810FFFBC 8080
+810FFFBE 0C20
+810FFFC0 8080
+810FFFC2 3780
+810FFFC4 0000
+810FFFC6 0000
+810FFFC8 8080
+810FFFCA 1CD4
+title screen map select
+
+$Change Forms\Load into New Form
+Note=Controls: L = Child Link, R = Adult Link, D-Pad Up = Deku Link, D-Pad Left = Goron Link, D-Pad Right = Zora Link, D-Pad Down = Fierce Deity Link. You must enter a loading zone or void out to load into the assigned form
+D0207034 0004
+80218F68 0002
+D0207034 0002
+80218F68 0003
+D0207034 0001
+80218F68 0004
+D0207034 0008
+80218F68 0005
+D0207035 0020
+80218F68 0001
+D0207035 0010
+80218F68 0000
+
+below one can be repurposed for rba
+$Equip\B-Button\Child/Adult Link
+8013F2B1 00??
+00 Deku Stick
+01 Deku Nuts
+02 Bombs
+03 Fairy Bow
+04 Fire Arrow
+05 Dins Fire
+06 Fairy Slingshot
+07 Fairy Ocarina
+08 Ocarina of Time
+09 Bombchu
+0A Hookshot
+0B Longshot
+0C Ice Arrow
+0D Farore's Wind
+0E Boomerang
+0F Lens of Truth
+10 Magic Beans
+11 Megaton Hammer
+12 Light Arrow
+13 Nayru's Love
+14 Empty Bottle
+15 Red Potion
+16 Green Potion
+17 Blue Potion
+18 Bottled Fairy
+19 Fish
+1A Lon Lon Milk
+1B Letter
+1C Blue Fire
+1D Bug
+1E Big Poe
+1F Lon Lon Milk (Half)
+20 Poe
+21 Weird Egg
+22 Chicken
+23 Zelda's Letter
+24 Keaton Mask
+25 Skull Mask
+26 Spooky Mask
+27 Bunny Hood
+28 Goron Mask
+29 Zora Mask
+2A Gerudo Mask
+2B Mask of Truth
+2C SOLD OUT
+2D Pocket Egg
+2E Pocket Cucco
+2F Cojiro
+30 Odd Mushroom
+31 Odd Potion
+32 Poacher's Saw
+33 Goron's Sword (Broken)
+34 Prescription
+35 Eyeball Frog
+36 Eye Drops
+37 Claim Check
+38 Fairy Bow + Fire Arrow
+39 Fairy Bow + Ice Arrow
+3A Fairy Bow + Light Arrow
+3B Kokiri Sword
+3C Master Sword
+3D Biggorons Sword/Giant's Knife
+3E Double Helix Sword
+3F Fierce Deity's Mask
+40 Deku Mask
+5C Fishing Rod
+FF Nothing
+
+$Equip\D-Pads/L/R to Change Boots
+D0207034 0004
+802198DB 0006
+D0207034 0002
+802198DB 000C
+D0207034 0001
+802198DB 0001
+D0207034 0008
+802198DB 0009
+D0207035 0020
+802198DB 0002
+D0207035 0010
+802198DB 0000
+
+$Equip\Equip C Items in Any Form
+Note=For the Adult/Child Trade Item Slots, it only works depending on the timeline you're in, so if you're in the Child Timeline, you can equip items from the Child Trade Item Slot but not the Adult Trade Item Slot, if you're in the Adult Timeline, you can equip Items from the Adult Trade Item Slot, but not the Child Trade Items Slot, this effect includes if you're a Child or an Adult.
+80106014 003F
+80106015 003F
+80106016 003F
+80106017 003F
+80106018 003F
+80106019 003F
+8010601A 003F
+8010601B 003F
+8010601C 003F
+8010601D 003F
+8010601E 003F
+8010601F 003F
+80106020 003F
+80106021 003F
+80106022 003F
+80106023 003F
+80106024 003F
+80106025 003F
+80106026 003F
+80106027 003F
+80106028 003F
+80106029 003F
+8010602A 003F
+8010602B 003F
+
+$Have\100 Golden Skulltula's
+8013E001 0064
+
+$Have\All Carpenters Saved
+Note=This cheat will allow you to have access to Gerudo's Fortress, no Gerudo will capture you with or without the Gerudo Card.
+8013EE17 000F
+
+$Have\All Equipment
+8113DFCC 7777
+8013DF6E 0001
+
+$Have\All Quest Items
+8113DFD4 00FF
+8113DFD6 FFFF
+
+$Have\All Swords in Item Inventory
+Note=Do not have the Have Bottles Cheat Checked for this, Bottles overwite this code because the Swords will be in the Bottles Slots
+8013DFB6 003B
+8013DFB7 003C
+8013DFB8 003D
+8013DFB9 003E
+
+$Have\All Upgrades
+8013DFD1 0036
+8013DFD2 00E4
+8013DFD3 00DB
+
+$Have\Bombchus
+8013DFAC 0009
+
+$Have\Bombs
+8013DFA6 0002
+
+$Have\Boomerang
+8013DFB0 000E
+
+$Have\Bottles\Slot 1
+8013DFB6 00??
+14 Empty Bottle
+15 Red Potion
+16 Green Potion
+17 Blue Potion
+18 Bottled Fairy
+19 Fish
+1A Lon Lon Milk
+1B Letter
+1C Blue Fire
+1D Bug
+1E Big Poe
+1F Lon Lon Milk (Half)
+20 Poe
+
+$Have\Bottles\Slot 2
+8013DFB7 00??
+14 Empty Bottle
+15 Red Potion
+16 Green Potion
+17 Blue Potion
+18 Bottled Fairy
+19 Fish
+1A Lon Lon Milk
+1B Letter
+1C Blue Fire
+1D Bug
+1E Big Poe
+1F Lon Lon Milk (Half)
+20 Poe
+
+$Have\Bottles\Slot 3
+8013DFB8 00??
+14 Empty Bottle
+15 Red Potion
+16 Green Potion
+17 Blue Potion
+18 Bottled Fairy
+19 Fish
+1A Lon Lon Milk
+1B Letter
+1C Blue Fire
+1D Bug
+1E Big Poe
+1F Lon Lon Milk (Half)
+20 Poe
+
+$Have\Bottles\Slot 4
+8013DFB9 00??
+14 Empty Bottle
+15 Red Potion
+16 Green Potion
+17 Blue Potion
+18 Bottled Fairy
+19 Fish
+1A Lon Lon Milk
+1B Letter
+1C Blue Fire
+1D Bug
+1E Big Poe
+1F Lon Lon Milk (Half)
+20 Poe
+
+$Have\Deku Nuts
+8013DFA5 0001
+
+$Have\Deku Sticks
+8013DFA4 0000
+
+$Have\Din's Fire
+8013DFA9 0005
+
+$Have\Double Defense
+8013DFFF 0014
+
+$Have\Fairy Bow
+8013DFA7 0003
+
+$Have\Farore's Wind
+8013DFAF 000D
+
+$Have\Hookshot
+8013DFAD 00??
+0A Hookshot
+0B Longshot
+
+$Have\Lens of Truth
+8013DFB1 000F
+
+$Have\Magic
+8013DF6A 0001
+8013DF6C 00??
+00 Magic
+01 Double Magic
+02 Triple Magic
+
+$Have\Magic Arrows\Fire Arrows
+8013DFA8 00??
+04 Fire Arrow
+38 Fairy Bow + Fire Arrow
+
+$Have\Magic Arrows\Ice Arrows
+8013DFAE 00??
+0C Ice Arrow
+39 Fairy Bow + Ice Arrow
+
+$Have\Magic Arrows\Light Arrows
+8013DFB4 00??
+12 Light Arrow
+3A Fairy Bow + Light Arrow
+
+$Have\Magic Beans
+8013DFB2 0010
+
+$Have\Max Health
+8113DF5E 0140
+
+$Have\Megaton Hammer
+8013DFB3 0011
+
+$Have\Nayru's Love
+8013DFB5 0013
+
+$Have\Ocarina
+8013DFAB 00??
+07 Fairy Ocarina
+08 Ocarina of Time
+
+$Have\Slingshot
+8013DFAA 0006
+
+$Have\Trade Items\Adult
+8013DFBA 00??
+2D Pocket Egg
+2E Pocket Cucco
+2F Cojiro
+30 Odd Mushroom
+31 Odd Potion
+32 Poacher's Saw
+33 Goron's Sword (Broken)
+34 Prescription
+35 Eyeball Frog
+36 Eye Drops
+37 Claim Check
+3B Kokiri Sword
+3C Master Sword
+3D Biggorons Sword/Giant's Knife
+3E Double Helix Sword
+5C Fishing Rod
+
+$Have\Trade Items\Child
+8013DFBB 00??
+21 Weird Egg
+22 Chicken
+23 Zelda's Letter
+24 Keaton Mask
+25 Skull Mask
+26 Spooky Mask
+27 Bunny Hood
+28 Goron Mask
+29 Zora Mask
+2A Gerudo Mask
+2B Mask of Truth
+2C SOLD OUT
+3B Kokiri Sword
+3C Master Sword
+3D Biggorons Sword/Giant's Knife
+3E Double Helix Sword
+3F Fierce Deity's Mask
+40 Deku Mask
+5C Fishing Rod
+
+$Infinite\Arrows
+8013DFBF 0063
+
+$Infinite\Bomb Throwing
+80208C63 0000
+
+$Infinite\Bombchu Bowling Alley Bombchus
+D02070C5 004B
+80218FE1 0063
+
+$Infinite\Bombchus
+8013DFC4 0063
+
+$Infinite\Bombs
+8013DFBE 0063
+
+$Infinite\Deku Nuts
+8013DFBD 0063
+
+$Infinite\Deku Seeds
+8013DFC2 0063
+
+$Infinite\Deku Sticks\Amount
+8013DFBC 0063
+
+$Infinite\Deku Sticks\Broken
+80219FF5 0000
+
+$Infinite\Deku Sticks\On Fire
+D02198DE 0000
+81219FF8 00E0
+
+$Infinite\Gerudo Archery Arrows
+D02070C5 005D
+80217747 0063
+
+$Infinite\Giant's Knife Hits
+8013DF67 00FF
+
+$Infinite\Health
+8113DF60 0140
+
+$Infinite\Heat/Water/Gamer Timer
+8013F34D 00FF
+
+$Infinite\Hover Boots
+8121A02A 000D
+802198BF 0002
+
+$Infinite\Magic
+8013DF63 00??
+30 For Magic
+60 For Double Magic
+7F For Triple Magic
+
+$Infinite\Magic Beans
+8013DFCA 0063
+
+$Infinite\Magic Consumption
+Note=You can use more than one items that require magic at a time, but be cautious certain combo's can cause the game to crash.
+8013F36D 0000
+
+$Infinite\Nayru's Love
+8013F344 FFFF
+
+$Infinite\Rupees
+8013DF65 00F4
+
+$Infinite\Shooting Gallery Ammo
+D02070C5 0042
+80218FE0 0064
+
+$Infinite\Small Keys/Dungeon Items
+8013DFD8 0006
+8013DFD9 0006
+8013DFDA 0006
+8013DFDB 0007
+8013DFDC 0007
+8013DFDD 0007
+8013DFDE 0007
+8013DFDF 0007
+8013DFE0 0006
+8013DFE1 0006
+8013DFE2 0001
+8013DFEF 0063
+8013DFF0 0063
+8013DFF1 0063
+8013DFF2 0063
+8013DFF3 0063
+8013DFF9 0063
+8013DFFC 0063
+8013DFF7 0063
+8013DFF4 0063
+8013DFF8 0063
+
+$Infinite\Sword Slashing (ISG)
+Note=Hold L to temporarily release ISG.
+80219FDB 0001
+D0207035 0020
+80219FDB 0000
+
+$Infinite\Trade Item/Ganon's Collapse Timer
+8013F350 0017
+
+$Infinite\Water Hopping as Deku
+D021A360 0000
+8021A360 0005
+
+$Miscellaneous\Cutscenes\Press L to end Cutscenes
+D0207035 0020
+81208D8C 7901
+
+$Miscellaneous\Cutscenes\Press R to restart Cutscenes
+D0207035 0010
+80208D84 0000
+
+$Miscellaneous\Hold L to Levitate
+D0207035 0020
+812197E0 40CB
+
+$Miscellaneous\Unrestricted Items
+Note=This Allows you to use any item in any form anywhere!
+8013F35E 0000
+8013F35F 0000
+8013F360 0000
+8013F361 0000
