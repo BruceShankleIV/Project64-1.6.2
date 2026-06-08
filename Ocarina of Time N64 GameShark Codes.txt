@@ -1,0 +1,152 @@
+==================================
+|       Ocarina of Time          |
+|     N64 GameShark Codes        |
+|       Codes by @Faschz         |
+==================================
+
+HOW TO USE:
+=================================
+
+To use these codes you will need a cart of the Japanese Ocarina of Time (either Version 1.0 or Version 1.1), Super Mario 64 (for resetting the GameShark) and a GameShark Version 3.3 - no lower version number of GameShark will work, only 3.3 will work with these codes.
+
+If you have a GameShark already, put it in your N64, put Super Mario 64 ontop of it and turn it on and go to the Game Codes section towards the bottom of the options. Scroll through these codes until you find the one for Zelda and select it. You'll be prompted to turn off your console if you confirm you own the game and switch Mario with Ocarina of Time.
+
+Doing so should boot the GameShark up like normal but with Ocarina of Time added ontop instead of Mario. 
+
+From here, you can add codes to the Games listing (You will need to add Ocarina of Time J to the listing yourself, Japanese Ocarina of Time is not listed here by default. Any reference to Ocarina of Time is to the American versions of the game and the codes will not work for the Japanese version unless you switch the master codes. It's recommended you make a new game listing.)
+
+After you've added the codes and selected them (turned them on) you can boot the game with the codes on.
+
+KNOWN ISSUES:
+===================================
+
+* Golden Skulltulas don't respawn
+* Nabooru Knuckle doesn't respawn (You Get Stuck)
+* Saving sometimes deletes a file (We're not sure what exactly causes it. If someone can reproduce it consistently please inform @Faschz on twitter.)
+* Unique Entrance Cutscene (e.g: Deku tree opening) will only play once.
+* Inventory, once set, e.g, getting Slingshot, is now in your menu even after reload area/dungeon.
+* Game crashes if you press L without being paused (due to Inventory Editor)
+* Required to hold L to browse the Inventory Editor or you activate other codes.
+
+FAQ:
+===================================
+
+----------------------------------------------
+
+Q: I pressed reset with OoT on the GameShark now my GameShark won't turn on again. How do I fix this?
+
+A: When you turn this off or press the reset button often times the GameShark will not come back on again normally. To resolve this you need to press the reset button on the GameShark cartridge and put Mario back ontop of the unit and re-power on the system. This will cause the GameShark to go back to it's factory status. Simply repeat the standard process for loading OoT from here to get OoT to work again.
+
+----------------------------------------------
+
+Q: I have a code request or an issue with a code, who can I contact about this?
+
+A: @Faschz (on Twitter) made most of these GameShark codes. You can ask him about queries.
+
+Q: I have a question about the step process of this guide, who can I contact about this?
+
+A: This pastebin was written by @Volvagia224 on twitter. You can contact me there.
+
+-----------------------------------------------
+
+Q: What do all the values mean in the Inventory Editor.
+
+A: Please read this very detailed page: https://tcrf.net/Proto:The_Legend_of_Zelda:_Ocarina_of_Time_Master_Quest/Inventory_Editor
+
+-----------------------------------------------
+
+Q: The GameShark crashes when I press reset. How am I supposed to practice sections with save warping?
+
+A: Press D-PAD up to go to the file select screen when you save. This is the alternative.
+
+----------------------------------------------
+
+Q: I have a 1.0 code that I need to work on 1.1 that currently doesn't, how do I work this out?
+
+A: In hex: 1.0_address + 1C0 = 1.1_address
+
+----------------------------------------------
+
+OCARINA OF TIME (J) V1.0 CODES
+===================================
+
+Master Code
+F10004E4 2400
+EE000000 0000
+ 
+Reload Last Loading Zone with D-Pad Down
+D11C84B4 0400
+801DA2B5 0014 <-- Reload
+ 
+Title Screen with D-Pad Up
+D01C84B4 0008
+8011B92F 0002 <-- Title
+D01C84B4 0008
+801DA2B5 0014 <-- Reload
+D01C84B4 0008
+801DA2B4 0000 <-- Deku Default
+ 
+D-Pad Left to set at Health to 3 Hearts
+D01C84B4 0002
+8111A600 0030
+ 
+Destroy all Dungeon Flags
+50004802 0000
+8111A6A4 0000
+8011A734 0040 <-- Water Temple Water level
+50004F01 0000
+8011A735 0000
+ 
+Destroy all Dungeon (boss room) Flags
+50007002 0000
+8111A880 0000
+
+Inventory Editor
+D01C84B5 0020
+801D8DD7 0002
+
+A list of generic gameshark codes for Version 1.0 can be found here, for infinite ammo and such in specific equipment or other "useful" codes. The codes above are custom ones for practice purposes made by @Faschz:
+
+http://www.hotcheats.com/legendofzeldaocarinaoftimegamesharkcheatsnintendo64.html
+
+OCARINA OF TIME (J) V1.1 CODES
+===================================
+
+Master Code
+F10004E4 2400
+EE000000 0000
+
+Reload Last Loading Zone with D-Pad Down
+D11C8674 0400
+801DA475 0014 <-- Reload
+ 
+Title Screen with D-Pad Up
+D01C8674 0008
+8011BAEF 0002 <-- Title
+D01C8674 0008
+801DA475 0014 <-- Reload
+D01C8674 0008
+801DA474 0000 <-- Deku Default
+ 
+D-Pad Left to set at 3 Hearts
+D01C8674 0002
+8111A7C0 0030
+ 
+Destroy all Dungeon Flags
+50004802 0000
+8111A864 0000
+8011A8F4 0040 <-- Water Temple Water level
+50004F01 0000
+8011A8F5 0000
+ 
+Destroy all Dungeon (boss room) Flags
+50007002 0000
+8111AA40 0000
+
+Inventory Editor
+D01C8675 0020
+801D8F97 0002
+
+A list of generic gameshark codes for Version 1.1 can be found here, for infinite ammo and such in specific equipment or other "useful" codes. The codes above are custom ones for practice purposes made by @Faschz:
+
+http://www.hotcheats.com/legendofzeldaocarinaoftimegamesharkcheatsv11nintendo64.html
