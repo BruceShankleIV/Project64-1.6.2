@@ -97,7 +97,7 @@
 #95# "ROM Selection"
 #96# "Advanced"
 #97# "ROM Settings"
-#98# "Reset,end, or start emulation again to apply any changes"
+#98# "Reset, end, or start emulation again to apply any changes"
 #99# "ROM Notes"
 #100# "About"
 #101# " RSP (reality signal processor) plugin: "

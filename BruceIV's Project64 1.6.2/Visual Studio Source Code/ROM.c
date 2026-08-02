@@ -749,32 +749,32 @@ void RecalculateCRC (void) {
 			HandleModal2(hMainWindow);
 		}
 		/*
-		*Star Road by SKELUX,Hijack "Retooled" Edit by Pyro Jay
+		*Star Road by SKELUX, Hijack "Retooled" Edit by Pyro Jay
 		*
 		*Comment from the developer found below.
 		*
 		*
-		*"When you put a lot of work into something,other people love to come along and put
+		*"When you put a lot of work into something, other people love to come along and put
 		*in a fraction of the work modifying it just so they can slap their name over yours."
 		*/
 		if (crc1==0xCAC63712&&crc2==0xE2372AF3) {
 			HandleModal1(hMainWindow);
-			if (MessageBox(NULL,"On christmas of 2021,Super Mario Star Road Retooled would release on YouTube (https://www.youtube.com/watch?v=HdMHkK1MPO0). In the video,it appears to be a rerelease of a ROMhack called Star Road originally created by a user who goes by the alias 'Pyro Jay'. The video opens with 'Pyro Jay Presents' 'Rebuilt from the ground up 10 years later...' 'Star Road Retooled' And the video showcases lots of levels in this ROMhack rerelease before cutting to 'Revisit a timeless classic...' '... with improved visuals,bug fixes,gameplay features,and more!' 'New areas to visit and redesigned stars to collect!' 'Star Road Retooled' and the video fades to black,then says 'Hack by Pyro Jay' 'Trailer by SpK' 'Available Now!' 'Link in the description'.\n\nBut this hack wasn't solely made by Pyro Jay and it doesn't belong to them. This is actually an infringing hackjob of the original made to undermine the true author's official release (https://www.youtube.com/watch?v=_JBdxcnyxeQ).\n\n\nKnowing that is an infringing hackjob of somebody else's game that was was made in bad faith to undermine the original work,do you still want to play this game?","Illegit Game Disclaimer",MB_YESNO|MB_ICONEXCLAMATION|MB_SETFOREGROUND)==IDNO) SendMessage(hMainWindow,WM_COMMAND,ID_FILE_EXIT,0);
+			if (MessageBox(NULL,"On christmas of 2021, Super Mario Star Road Retooled would release on YouTube (https://www.youtube.com/watch?v=HdMHkK1MPO0). In the video, it appears to be a rerelease of a ROMhack called Star Road originally created by a user who goes by the alias 'Pyro Jay'. The video opens with 'Pyro Jay Presents' 'Rebuilt from the ground up 10 years later...' 'Star Road Retooled' And the video showcases lots of levels in this ROMhack rerelease before cutting to 'Revisit a timeless classic...' '... with improved visuals, bug fixes, gameplay features, and more!' 'New areas to visit and redesigned stars to collect!' 'Star Road Retooled' and the video fades to black, then says 'Hack by Pyro Jay' 'Trailer by SpK' 'Available Now!' 'Link in the description'.\n\nBut this hack wasn't solely made by Pyro Jay and it doesn't belong to them. This is actually an infringing hackjob of the original made to undermine the true author's official release (https://www.youtube.com/watch?v=_JBdxcnyxeQ).\n\n\nKnowing that is an infringing hackjob of somebody else's game that was was made in bad faith to undermine the original work, do you still want to play this game?","Illegit Game Disclaimer",MB_YESNO|MB_ICONEXCLAMATION|MB_SETFOREGROUND)==IDNO) SendMessage(hMainWindow,WM_COMMAND,ID_FILE_EXIT,0);
 			HandleModal2(hMainWindow);
 		}
 		/*
-		*B3313 by Chrisrlillo,Hijack "Unabandoned" Edit by Thegreatestroman&Chlorobyte/Benedani
+		*B3313 by Chrisrlillo, Hijack "Unabandoned" Edit by Thegreatestroman & Chlorobyte/Benedani
 		*
 		*Comment from the developer found below.
 		*
 		*
 		*"B3313 unabandoned is an edited rom of an unfinished version of my hack B3313 from 2023,
 		*made without my consent and stealing as much content from my friends and I as possible.
-		*If you value ROMhacking ethics,ignore this ROM."
+		*If you value ROMhacking ethics, ignore this ROM."
 		*/
 		if (crc1==0xC39F397B&&crc2==0x9C2D6AFF) {
 			HandleModal1(hMainWindow);
-			if (MessageBox(NULL,"Author of B3313-'At one point I worked with benedani,also known as chlorobyte and thegreatest roman. These 2 users ended up organizing a raid to my discord server to take control,hijacked the ROMhacking.com pages,tried to hijack my music distributors as I'm a musician,while spreading misinformation about and harassming me. I suggest staying away from these people.'\n\n\nKnowing that this infringing game was made by these same sick and heartless jerks to undermine the original work,do you still want to play this game?","Illegit Game Disclaimer",MB_YESNO|MB_ICONEXCLAMATION|MB_SETFOREGROUND)==IDNO) SendMessage(hMainWindow,WM_COMMAND,ID_FILE_EXIT,0);
+			if (MessageBox(NULL,"Author of B3313-'At one point I worked with benedani, also known as chlorobyte and thegreatest roman. These 2 users ended up organizing a raid to my discord server to take control, hijacked the ROMhacking.com pages, tried to hijack my music distributors as I'm a musician, while spreading misinformation about and harassming me. I suggest staying away from these people.'\n\n\nKnowing that this infringing game was made by these same sick and heartless jerks to undermine the original work, do you still want to play this game?","Illegit Game Disclaimer",MB_YESNO|MB_ICONEXCLAMATION|MB_SETFOREGROUND)==IDNO) SendMessage(hMainWindow,WM_COMMAND,ID_FILE_EXIT,0);
 			HandleModal2(hMainWindow);
 		}
 	}
