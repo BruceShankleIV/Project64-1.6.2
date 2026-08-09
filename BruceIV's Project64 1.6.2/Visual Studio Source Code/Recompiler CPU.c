@@ -171,7 +171,8 @@ void OpcodeSwitch (BLOCK_SECTION*Section) {
 				if ((Opcode.funct)==R4300i_COP0_CO_TLBP) { Compile_R4300i_COP0_CO_TLBP(Section); break; }
 				if ((Opcode.funct)==R4300i_COP0_CO_ERET) { Compile_R4300i_COP0_CO_ERET(Section); break; }
 			}
-			DisplayThreadExit("OpcodeSwitch-switch (Opcode.op)-case R4300i_CP0:-switch (Opcode.rs)-default:\nThe emulator has crashed on an unknown Opcode at this location");
+			//DisplayThreadExit("OpcodeSwitch-switch (Opcode.op)-case R4300i_CP0:-switch (Opcode.rs)-default:\nThe emulator has crashed on an unknown Opcode at this location");
+			DisplayError("(from v24 WIP) If app and game doesn't crash at this point, this line and the //'d one above can be safetly removed for v24. Otherwise, remove this line, remove the // above, and disable CF0 conversion for Zelda in Game.ini with CF1-->0=OFF in Game.ini (for v24).");
 		}
 	break;
 	case R4300i_CP1:

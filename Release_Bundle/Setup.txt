@@ -4,7 +4,7 @@ HOW TO INSTALL - START
 Step 1: Extract from the ZIP's, password is the password!
 The ZIP's include the main release (BruceIV-Project64-1.6.2_VERSIONNUMBER-WIPSTATE-WIPVERSION_DATE).zip
 The Applications bundle Apps.zip
-And the executables bundle that come in main release exes.zip. *See Step 3.
+And the Project64.exe comes in each release's Project64.zip. ** See Step 3.
 
 Step 2:
 Run Exception.bat with admin priviledge if you have windows
@@ -24,7 +24,7 @@ to have it on anyway as it will effectively stop malicious software like
 some of the previous installers Zilmar made for his 2.0 Project64 builds.
 
 Step 3:
-After setting an exception if necessary, extract the contents of exes.zip
+After setting an exception if needed, extract the exes from Project64.zip
 to its existing location (right click->extract here) to fully install it.
 Then find the ROM you want to play and right click on it->Open with->Always
 open with->Select the Project64.exe application and then just double click
@@ -55,6 +55,9 @@ https://github.com/BruceShankleIV/Project64-1.6.2-ROMhacks-Collection
 
 Zelda64 texture packs:
 https://mega.nz/folder/hLB2jI5R#t71whplzD7iMbb3m_YfFSA
+
+Mario 64 texture packs:
+https://mega.nz/folder/xL5BwaaQ#2yLK6SfwElrnJQtphdqXKw
 
 If you encounter a bug with the emulator, send me a message on gmail at
 bruceiv.shankle@gmail.com or open an issue on GitHub or send me a message

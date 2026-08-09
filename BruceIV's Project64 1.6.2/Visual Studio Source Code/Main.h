@@ -34,7 +34,7 @@ extern "C" {
 #include "Settings API.h"
 #include "ROM Browser.h"
 #include "Language.h"
-/*********Source Version 23+*********/
+/*********Source Version 24 WIP*********/
 /*********General Defaults**********/
 #define AppName					"BruceIV's Project64 1.6.2"
 #define IniName					"Game.ini"
@@ -44,11 +44,11 @@ extern "C" {
 #define Default_AutoHide			TRUE
 #define Default_LimitFPS			TRUE
 #define Default_SpeedCap			FALSE
-#define Default_UsuallyonTop		FALSE
+#define Default_UsuallyonTop			FALSE
 #define Default_BasicMode			TRUE
 #define Default_RomsToRemember		10
 #define Default_RomsDirsToRemember	10
-#define Default_CountPerOp		2 // Also debatable due to how higher or lower CF can be stable game-dependently. Higher for now since most hacks these days are safer when it is higher.
+#define Default_CountPerOp		2
 #define Default_ForceDisableTLB		FALSE
 #define Default_ForceEnableDMA		FALSE
 #define Default_ForceDisableCaching	FALSE
