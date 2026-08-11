@@ -192,11 +192,6 @@ typedef struct {
 #define	R4300i_COP0_DMF				 1
 #define	R4300i_COP0_MT				 4
 #define	R4300i_COP0_DMT				 5
-#define R4300i_COP0_CO_TLBR			1
-#define R4300i_COP0_CO_TLBWI		2
-#define R4300i_COP0_CO_TLBWR		6
-#define R4300i_COP0_CO_TLBP			8
-#define R4300i_COP0_CO_ERET			24
 #define R4300i_COP0_CO_16			16
 #define R4300i_COP0_CO_17			17
 #define R4300i_COP0_CO_18			18
@@ -212,7 +207,12 @@ typedef struct {
 #define R4300i_COP0_CO_28			28
 #define R4300i_COP0_CO_29			29
 #define R4300i_COP0_CO_30			30
-#define R4300i_COP0_CO_31			31				
+#define R4300i_COP0_CO_31			31
+#define R4300i_COP0_CO_TLBR			1
+#define R4300i_COP0_CO_TLBWI		2
+#define R4300i_COP0_CO_TLBWR		6
+#define R4300i_COP0_CO_TLBP			8
+#define R4300i_COP0_CO_ERET			24				
 #define	R4300i_COP1_MF				0
 #define	R4300i_COP1_DMF				1
 #define	R4300i_COP1_CF				2
