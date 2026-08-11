@@ -162,6 +162,7 @@ void OpcodeMapRecompiler (BLOCK_SECTION*Section) {
 		case R4300i_COP0_MT: Compile_R4300i_COP0_MT(Section);
 		case R4300i_COP0_DMF:
 		case R4300i_COP0_DMT:
+		break;
 		case R4300i_COP0_CO_16:
 		case R4300i_COP0_CO_17:
 		case R4300i_COP0_CO_18:
@@ -177,17 +178,8 @@ void OpcodeMapRecompiler (BLOCK_SECTION*Section) {
 		case R4300i_COP0_CO_28:
 		case R4300i_COP0_CO_29:
 		case R4300i_COP0_CO_30:
-		case R4300i_COP0_CO_31:
-		// 16-31 should fall through into a shared function based on void _fastcall r4300i_COP0_CO with a break; added after DMT.
-		break;
+		case R4300i_COP0_CO_31: Compile_R4300i_COP0_CO(Section); break;
 		default:
-			if ((Opcode.rs&0x10)!=0) {
-				if ((Opcode.funct)==R4300i_COP0_CO_TLBR) { Compile_R4300i_COP0_CO_TLBR(Section); break; }
-				if ((Opcode.funct)==R4300i_COP0_CO_TLBWI) { Compile_R4300i_COP0_CO_TLBWI(Section); break; }
-				if ((Opcode.funct)==R4300i_COP0_CO_TLBWR) { Compile_R4300i_COP0_CO_TLBWR(Section); break; }
-				if ((Opcode.funct)==R4300i_COP0_CO_TLBP) { Compile_R4300i_COP0_CO_TLBP(Section); break; }
-				if ((Opcode.funct)==R4300i_COP0_CO_ERET) { Compile_R4300i_COP0_CO_ERET(Section); break; }
-			}
 			DisplayThreadExit("OpcodeMapRecompiler-switch (Opcode.op)-case R4300i_COP0:-switch (Opcode.rs)-default:\nThe emulator has crashed on an unknown Opcode at this location");
 		}
 	break;

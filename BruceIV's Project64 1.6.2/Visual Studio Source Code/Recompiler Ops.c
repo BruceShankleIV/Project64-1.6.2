@@ -4036,3 +4036,14 @@ void Compile_R4300i_COP0_CO_ERET(BLOCK_SECTION*Section) {
 	CompileExit((DWORD)-1,Section->RegWorking,Normal,TRUE,NULL);
 	SetEnd
 }
+void Compile_R4300i_COP0_CO(BLOCK_SECTION*Section) {
+	switch (Opcode.funct) {
+	case R4300i_COP0_CO_TLBR: Compile_R4300i_COP0_CO_TLBR(Section); break;
+	case R4300i_COP0_CO_TLBWI: Compile_R4300i_COP0_CO_TLBWI(Section); break;
+	case R4300i_COP0_CO_TLBWR: Compile_R4300i_COP0_CO_TLBWR(Section); break;
+	case R4300i_COP0_CO_TLBP: Compile_R4300i_COP0_CO_TLBP(Section); break;
+	case R4300i_COP0_CO_ERET: Compile_R4300i_COP0_CO_ERET(Section); break;
+	default:
+		DisplayThreadExit("Compile_R4300i_COP0_CO-switch (Opcode.funct)-default:\nThe emulator has crashed on an unknown Opcode at this location");
+	}
+}

@@ -121,12 +121,7 @@ void Compile_R4300i_SPECIAL_DSRA32 (BLOCK_SECTION*Section);
 /**************************COP0 functions**************************/
 void Compile_R4300i_COP0_MF        (BLOCK_SECTION*Section);
 void Compile_R4300i_COP0_MT        (BLOCK_SECTION*Section);
-/**************************COP0 CO functions***********************/
-void Compile_R4300i_COP0_CO_TLBR   (BLOCK_SECTION*Section);
-void Compile_R4300i_COP0_CO_TLBWI  (BLOCK_SECTION*Section);
-void Compile_R4300i_COP0_CO_TLBWR  (BLOCK_SECTION*Section);
-void Compile_R4300i_COP0_CO_TLBP   (BLOCK_SECTION*Section);
-void Compile_R4300i_COP0_CO_ERET   (BLOCK_SECTION*Section);
+void Compile_R4300i_COP0_CO	   (BLOCK_SECTION*Section);
 /**************************COP1 functions**************************/
 void Compile_R4300i_COP1_MF        (BLOCK_SECTION*Section);
 void Compile_R4300i_COP1_DMF       (BLOCK_SECTION*Section);
