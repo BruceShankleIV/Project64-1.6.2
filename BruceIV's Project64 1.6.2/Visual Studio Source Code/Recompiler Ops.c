@@ -55,7 +55,7 @@ void Compile_R4300i_Branch (BLOCK_SECTION*Section,void (*CompareFunc)(BLOCK_SECT
 					OPCODE Command;
 					if (!r4300i_LW_VAddr(Section->CompilePC+4,&Command.Hex)) DisplayThreadExit("Compile_R4300i_Branch-!r4300i_LW_VAddr(Section->CompilePC+4,&Command.Hex)");
 					EffectDelaySlot=FALSE;
-					if (Command.op==R4300i_CP1) {
+					if (Command.op==R4300i_COP1) {
 						if (Command.fmt==R4300i_COP1_S&&(Command.funct&0x30)==0x30) {
 							EffectDelaySlot=TRUE;
 						}

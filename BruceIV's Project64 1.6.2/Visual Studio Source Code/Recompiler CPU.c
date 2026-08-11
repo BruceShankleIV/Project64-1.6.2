@@ -51,7 +51,7 @@ DWORD TLBLoadAddress,TargetIndex;
 TARGET_INFO*TargetInfo=NULL;
 BLOCK_INFO BlockInfo;
 ORIGINAL_MEMMARKER*OrigMem=NULL;
-void OpcodeSwitch (BLOCK_SECTION*Section) {
+void OpcodeMapRecompiler (BLOCK_SECTION*Section) {
 	switch (Opcode.op) {
 	case R4300i_SPECIAL:
 		switch (Opcode.funct) {
@@ -117,8 +117,8 @@ void OpcodeSwitch (BLOCK_SECTION*Section) {
 		case R4300i_SPECIAL_DSRL32: Compile_R4300i_SPECIAL_DSRL32(Section); break;
 		case R4300i_SPECIAL_DSRA32: Compile_R4300i_SPECIAL_DSRA32(Section); break;
 		default:
-			if (ProtectMemory) DisplayThreadExit("OpcodeSwitch-switch (Opcode.op)-case R4300i_SPECIAL:-switch (Opcode.funct)-default:\nThe emulator has crashed on a reserved Opcode at this location\n\nTry 'CPU Recompiler=OFF'?");
-			else DisplayThreadExit("OpcodeSwitch-switch (Opcode.op)-case R4300i_SPECIAL:-switch (Opcode.funct)-default:\nThe emulator has crashed on a reserved Opcode at this location\n\nTry 'Protect Memory=ON'?");
+			if (ProtectMemory) DisplayThreadExit("OpcodeMapRecompiler-switch (Opcode.op)-case R4300i_SPECIAL:-switch (Opcode.funct)-default:\nThe emulator has crashed on a reserved Opcode at this location\n\nTry 'CPU Recompiler=OFF'?");
+			else DisplayThreadExit("OpcodeMapRecompiler-switch (Opcode.op)-case R4300i_SPECIAL:-switch (Opcode.funct)-default:\nThe emulator has crashed on a reserved Opcode at this location\n\nTry 'Protect Memory=ON'?");
 	}
 	break;
 	case R4300i_REGIMM:
@@ -126,7 +126,9 @@ void OpcodeSwitch (BLOCK_SECTION*Section) {
 		case R4300i_REGIMM_BLTZ: Compile_R4300i_Branch(Section,BLTZ_Compare,BranchTypeRs,FALSE); break;
 		case R4300i_REGIMM_BGEZ: Compile_R4300i_Branch(Section,BGEZ_Compare,BranchTypeRs,FALSE); break;
 		case R4300i_REGIMM_BLTZL: Compile_R4300i_BranchLikely(Section,BLTZ_Compare,FALSE); break;
-		case R4300i_REGIMM_BGEZL: Compile_R4300i_BranchLikely(Section,BGEZ_Compare,FALSE);
+		case R4300i_REGIMM_BGEZL: Compile_R4300i_BranchLikely(Section,BGEZ_Compare,FALSE); break;
+		case R4300i_REGIMM_BLTZAL: Compile_R4300i_Branch(Section,BLTZ_Compare,BranchTypeRs,TRUE); break;
+		case R4300i_REGIMM_BGEZAL: Compile_R4300i_Branch(Section,BGEZ_Compare,BranchTypeRs,TRUE);
 		case R4300i_REGIMM_TGEI:
 		case R4300i_REGIMM_TGEIU:
 		case R4300i_REGIMM_TLTI:
@@ -136,10 +138,8 @@ void OpcodeSwitch (BLOCK_SECTION*Section) {
 		case R4300i_REGIMM_BLTZALL:
 		case R4300i_REGIMM_BGEZALL:
 		break;
-		case R4300i_REGIMM_BLTZAL: Compile_R4300i_Branch(Section,BLTZ_Compare,BranchTypeRs,TRUE); break;
-		case R4300i_REGIMM_BGEZAL: Compile_R4300i_Branch(Section,BGEZ_Compare,BranchTypeRs,TRUE); break;
 		default:
-			DisplayThreadExit("OpcodeSwitch-switch (Opcode.op)-case R4300i_REGIMM:-switch (Opcode.rt)-default:\nThe emulator has crashed on a reserved Opcode at this location");
+			DisplayThreadExit("OpcodeMapRecompiler-switch (Opcode.op)-case R4300i_REGIMM:-switch (Opcode.rt)-default:\nThe emulator has crashed on a reserved Opcode at this location");
 		}
 	break;
 	case R4300i_J: Compile_R4300i_J(Section); break;
@@ -156,12 +156,29 @@ void OpcodeSwitch (BLOCK_SECTION*Section) {
 	case R4300i_ORI: Compile_R4300i_ORI(Section); break;
 	case R4300i_XORI: Compile_R4300i_XORI(Section); break;
 	case R4300i_LUI: Compile_R4300i_LUI(Section); break;
-	case R4300i_CP0:
+	case R4300i_COP0:
 		switch (Opcode.rs) {
 		case R4300i_COP0_MF: Compile_R4300i_COP0_MF(Section); break;
 		case R4300i_COP0_MT: Compile_R4300i_COP0_MT(Section);
 		case R4300i_COP0_DMF:
 		case R4300i_COP0_DMT:
+		case R4300i_COP0_CO_16:
+		case R4300i_COP0_CO_17:
+		case R4300i_COP0_CO_18:
+		case R4300i_COP0_CO_19:
+		case R4300i_COP0_CO_20:
+		case R4300i_COP0_CO_21:
+		case R4300i_COP0_CO_22:
+		case R4300i_COP0_CO_23:
+		case R4300i_COP0_CO_24:
+		case R4300i_COP0_CO_25:
+		case R4300i_COP0_CO_26:
+		case R4300i_COP0_CO_27:
+		case R4300i_COP0_CO_28:
+		case R4300i_COP0_CO_29:
+		case R4300i_COP0_CO_30:
+		case R4300i_COP0_CO_31:
+		// 16-31 should fall through into a shared function based on void _fastcall r4300i_COP0_CO with a break; added after DMT.
 		break;
 		default:
 			if ((Opcode.rs&0x10)!=0) {
@@ -171,11 +188,10 @@ void OpcodeSwitch (BLOCK_SECTION*Section) {
 				if ((Opcode.funct)==R4300i_COP0_CO_TLBP) { Compile_R4300i_COP0_CO_TLBP(Section); break; }
 				if ((Opcode.funct)==R4300i_COP0_CO_ERET) { Compile_R4300i_COP0_CO_ERET(Section); break; }
 			}
-			//DisplayThreadExit("OpcodeSwitch-switch (Opcode.op)-case R4300i_CP0:-switch (Opcode.rs)-default:\nThe emulator has crashed on an unknown Opcode at this location");
-			DisplayError("(from v24 WIP) If app and game doesn't crash at this point, this line and the //'d one above can be safetly removed for v24. Otherwise, remove this line, remove the // above, and disable CF0 conversion for Zelda in Game.ini with CF1-->0=OFF in Game.ini (for v24).");
+			DisplayThreadExit("OpcodeMapRecompiler-switch (Opcode.op)-case R4300i_COP0:-switch (Opcode.rs)-default:\nThe emulator has crashed on an unknown Opcode at this location");
 		}
 	break;
-	case R4300i_CP1:
+	case R4300i_COP1:
 		switch (Opcode.rs) {
 		case R4300i_COP1_MF: Compile_R4300i_COP1_MF(Section); break;
 		case R4300i_COP1_DMF: Compile_R4300i_COP1_DMF(Section); break;
@@ -193,7 +209,7 @@ void OpcodeSwitch (BLOCK_SECTION*Section) {
 			case R4300i_COP1_BC_BCFL: Compile_R4300i_BranchLikely(Section,COP1_BCF_Compare,FALSE); break;
 			case R4300i_COP1_BC_BCTL: Compile_R4300i_BranchLikely(Section,COP1_BCT_Compare,FALSE); break;
 			default:
-				DisplayThreadExit("OpcodeSwitch-switch (Opcode.op)-case R4300i_CP1:-switch (Opcode.rs)-case R4300i_COP1_BC:-switch (Opcode.ft)-default:\nThe emulator has crashed on an unknown Opcode at this location");
+				DisplayThreadExit("OpcodeMapRecompiler-switch (Opcode.op)-case R4300i_COP1:-switch (Opcode.rs)-case R4300i_COP1_BC:-switch (Opcode.ft)-default:\nThe emulator has crashed on an unknown Opcode at this location");
 			}
 		break;
 		case R4300i_COP1_S:
@@ -212,24 +228,32 @@ void OpcodeSwitch (BLOCK_SECTION*Section) {
 			case R4300i_COP1_FUNCT_ROUND_W: Compile_R4300i_COP1_S_ROUND_W(Section); break;
 			case R4300i_COP1_FUNCT_TRUNC_W: Compile_R4300i_COP1_S_TRUNC_W(Section); break;
 			case R4300i_COP1_FUNCT_CEIL_W: Compile_R4300i_COP1_S_CEIL_W(Section); break;
-			case R4300i_COP1_FUNCT_FLOOR_W: Compile_R4300i_COP1_S_FLOOR_W(Section); break;
-			case R4300i_COP1_FUNCT_CVT_D: Compile_R4300i_COP1_S_CVT_D(Section); break;
-			case R4300i_COP1_FUNCT_CVT_W: Compile_R4300i_COP1_S_CVT_W(Section); break;
-			case R4300i_COP1_FUNCT_CVT_L: Compile_R4300i_COP1_S_CVT_L(Section); break;
-			case R4300i_COP1_FUNCT_C_F:   case R4300i_COP1_FUNCT_C_UN:
-			case R4300i_COP1_FUNCT_C_EQ:  case R4300i_COP1_FUNCT_C_UEQ:
-			case R4300i_COP1_FUNCT_C_OLT: case R4300i_COP1_FUNCT_C_ULT:
-			case R4300i_COP1_FUNCT_C_OLE: case R4300i_COP1_FUNCT_C_ULE:
-			case R4300i_COP1_FUNCT_C_SF:  case R4300i_COP1_FUNCT_C_NGLE:
-			case R4300i_COP1_FUNCT_C_SEQ: case R4300i_COP1_FUNCT_C_NGL:
-			case R4300i_COP1_FUNCT_C_LT:  case R4300i_COP1_FUNCT_C_NGE:
-			case R4300i_COP1_FUNCT_C_LE:  case R4300i_COP1_FUNCT_C_NGT:
-			Compile_R4300i_COP1_S_CMP(Section);
+			case R4300i_COP1_FUNCT_FLOOR_W: Compile_R4300i_COP1_S_FLOOR_W(Section);
 			case R4300i_COP1_FUNCT_ROUND_L:
 			case R4300i_COP1_FUNCT_CVT_S:
 			break;
+			case R4300i_COP1_FUNCT_CVT_D: Compile_R4300i_COP1_S_CVT_D(Section); break;
+			case R4300i_COP1_FUNCT_CVT_W: Compile_R4300i_COP1_S_CVT_W(Section); break;
+			case R4300i_COP1_FUNCT_CVT_L: Compile_R4300i_COP1_S_CVT_L(Section); break;
+			case R4300i_COP1_FUNCT_C_F:
+			case R4300i_COP1_FUNCT_C_UN:
+			case R4300i_COP1_FUNCT_C_EQ:
+			case R4300i_COP1_FUNCT_C_UEQ:
+			case R4300i_COP1_FUNCT_C_OLT:
+			case R4300i_COP1_FUNCT_C_ULT:
+			case R4300i_COP1_FUNCT_C_OLE:
+			case R4300i_COP1_FUNCT_C_ULE:
+			case R4300i_COP1_FUNCT_C_SF:
+			case R4300i_COP1_FUNCT_C_NGLE:
+			case R4300i_COP1_FUNCT_C_SEQ:
+			case R4300i_COP1_FUNCT_C_NGL:
+			case R4300i_COP1_FUNCT_C_LT:
+			case R4300i_COP1_FUNCT_C_NGE:
+			case R4300i_COP1_FUNCT_C_LE:
+			case R4300i_COP1_FUNCT_C_NGT:
+			Compile_R4300i_COP1_S_CMP(Section); break;
 			default:
-				DisplayThreadExit("OpcodeSwitch-switch (Opcode.op)-case R4300i_CP1:-switch (Opcode.rs)-case R4300i_COP1_S:-switch (Opcode.funct)-default:\nThe emulator has crashed on an unknown Opcode at this location");
+				DisplayThreadExit("OpcodeMapRecompiler-switch (Opcode.op)-case R4300i_COP1:-switch (Opcode.rs)-case R4300i_COP1_S:-switch (Opcode.funct)-default:\nThe emulator has crashed on an unknown Opcode at this location");
 			}
 		break;
 		case R4300i_COP1_D:
@@ -249,65 +273,94 @@ void OpcodeSwitch (BLOCK_SECTION*Section) {
 			case R4300i_COP1_FUNCT_TRUNC_W: Compile_R4300i_COP1_D_TRUNC_W(Section); break;
 			case R4300i_COP1_FUNCT_CEIL_W: Compile_R4300i_COP1_D_CEIL_W(Section); break;
 			case R4300i_COP1_FUNCT_FLOOR_W: Compile_R4300i_COP1_D_FLOOR_W(Section); break;
-			case R4300i_COP1_FUNCT_CVT_S: Compile_R4300i_COP1_D_CVT_S(Section); break;
-			case R4300i_COP1_FUNCT_CVT_W: Compile_R4300i_COP1_D_CVT_W(Section); break;
-			case R4300i_COP1_FUNCT_CVT_L: Compile_R4300i_COP1_D_CVT_L(Section); break;
-			case R4300i_COP1_FUNCT_C_F:   case R4300i_COP1_FUNCT_C_UN:
-			case R4300i_COP1_FUNCT_C_EQ:  case R4300i_COP1_FUNCT_C_UEQ:
-			case R4300i_COP1_FUNCT_C_OLT: case R4300i_COP1_FUNCT_C_ULT:
-			case R4300i_COP1_FUNCT_C_OLE: case R4300i_COP1_FUNCT_C_ULE:
-			case R4300i_COP1_FUNCT_C_SF:  case R4300i_COP1_FUNCT_C_NGLE:
-			case R4300i_COP1_FUNCT_C_SEQ: case R4300i_COP1_FUNCT_C_NGL:
-			case R4300i_COP1_FUNCT_C_LT:  case R4300i_COP1_FUNCT_C_NGE:
-			case R4300i_COP1_FUNCT_C_LE:  case R4300i_COP1_FUNCT_C_NGT:
-			Compile_R4300i_COP1_D_CMP(Section);
+			case R4300i_COP1_FUNCT_CVT_S: Compile_R4300i_COP1_D_CVT_S(Section);
 			case R4300i_COP1_FUNCT_ROUND_L:
 			case R4300i_COP1_FUNCT_CVT_D:
 			break;
+			case R4300i_COP1_FUNCT_CVT_W: Compile_R4300i_COP1_D_CVT_W(Section); break;
+			case R4300i_COP1_FUNCT_CVT_L: Compile_R4300i_COP1_D_CVT_L(Section); break;
+			case R4300i_COP1_FUNCT_C_F:
+			case R4300i_COP1_FUNCT_C_UN:
+			case R4300i_COP1_FUNCT_C_EQ:
+			case R4300i_COP1_FUNCT_C_UEQ:
+			case R4300i_COP1_FUNCT_C_OLT:
+			case R4300i_COP1_FUNCT_C_ULT:
+			case R4300i_COP1_FUNCT_C_OLE:
+			case R4300i_COP1_FUNCT_C_ULE:
+			case R4300i_COP1_FUNCT_C_SF:
+			case R4300i_COP1_FUNCT_C_NGLE:
+			case R4300i_COP1_FUNCT_C_SEQ:
+			case R4300i_COP1_FUNCT_C_NGL:
+			case R4300i_COP1_FUNCT_C_LT:
+			case R4300i_COP1_FUNCT_C_NGE:
+			case R4300i_COP1_FUNCT_C_LE:
+			case R4300i_COP1_FUNCT_C_NGT:
+			Compile_R4300i_COP1_D_CMP(Section); break;
 			default:
-				DisplayThreadExit("OpcodeSwitch-switch (Opcode.op)-case R4300i_CP1:-switch (Opcode.rs)-case R4300i_COP1_D:-switch (Opcode.funct)-default:\nThe emulator has crashed on an unknown Opcode at this location");
+				DisplayThreadExit("OpcodeMapRecompiler-switch (Opcode.op)-case R4300i_COP1:-switch (Opcode.rs)-case R4300i_COP1_D:-switch (Opcode.funct)-default:\nThe emulator has crashed on an unknown Opcode at this location");
 			}
 		break;
 		case R4300i_COP1_W:
 			switch (Opcode.funct) {
 			case R4300i_COP1_FUNCT_CVT_S: Compile_R4300i_COP1_W_CVT_S(Section); break;
-			case R4300i_COP1_FUNCT_CVT_D: Compile_R4300i_COP1_W_CVT_D(Section); break;
+			case R4300i_COP1_FUNCT_CVT_D: Compile_R4300i_COP1_W_CVT_D(Section);
+			case R4300i_COP1_FUNCT_ROUND_L:
+			case R4300i_COP1_FUNCT_TRUNC_L:
+			case R4300i_COP1_FUNCT_CEIL_L:
+			case R4300i_COP1_FUNCT_FLOOR_L:
+			case R4300i_COP1_FUNCT_ROUND_W:
+			case R4300i_COP1_FUNCT_TRUNC_W:
+			case R4300i_COP1_FUNCT_CEIL_W:
+			case R4300i_COP1_FUNCT_FLOOR_W:
+			case R4300i_COP1_FUNCT_CVT_W:
+			case R4300i_COP1_FUNCT_CVT_L:
+			break;
 			default:
-				DisplayThreadExit("OpcodeSwitch-switch (Opcode.op)-case R4300i_CP1:-switch (Opcode.rs)-case R4300i_COP1_W:-switch (Opcode.funct)-default:\nThe emulator has crashed on an unknown Opcode at this location");
+				DisplayThreadExit("OpcodeMapRecompiler-switch (Opcode.op)-case R4300i_COP1:-switch (Opcode.rs)-case R4300i_COP1_W:-switch (Opcode.funct)-default:\nThe emulator has crashed on an unknown Opcode at this location");
 			}
 		break;
 		case R4300i_COP1_L:
 			switch (Opcode.funct) {
 			case R4300i_COP1_FUNCT_CVT_S: Compile_R4300i_COP1_L_CVT_S(Section); break;
-			case R4300i_COP1_FUNCT_CVT_D: Compile_R4300i_COP1_L_CVT_D(Section); break;
+			case R4300i_COP1_FUNCT_CVT_D: Compile_R4300i_COP1_L_CVT_D(Section);
+			case R4300i_COP1_FUNCT_ROUND_L:
+			case R4300i_COP1_FUNCT_TRUNC_L:
+			case R4300i_COP1_FUNCT_CEIL_L:
+			case R4300i_COP1_FUNCT_FLOOR_L:
+			case R4300i_COP1_FUNCT_ROUND_W:
+			case R4300i_COP1_FUNCT_TRUNC_W:
+			case R4300i_COP1_FUNCT_CEIL_W:
+			case R4300i_COP1_FUNCT_FLOOR_W:
+			case R4300i_COP1_FUNCT_CVT_W:
+			case R4300i_COP1_FUNCT_CVT_L:
+			break;
 			default:
-				DisplayThreadExit("OpcodeSwitch-switch (Opcode.op)-case R4300i_CP1:-switch (Opcode.rs)-case R4300i_COP1_L:-switch (Opcode.funct)-default:\nThe emulator has crashed on an unknown Opcode at this location");
+				DisplayThreadExit("OpcodeMapRecompiler-switch (Opcode.op)-case R4300i_COP1:-switch (Opcode.rs)-case R4300i_COP1_L:-switch (Opcode.funct)-default:\nThe emulator has crashed on an unknown Opcode at this location");
 			}
 		break;
 		default:
-			DisplayThreadExit("OpcodeSwitch-switch (Opcode.op)-case R4300i_CP1:-default:\nThe emulator has crashed on an unknown Opcode at this location");
+			DisplayThreadExit("OpcodeMapRecompiler-switch (Opcode.op)-case R4300i_COP1:-default:\nThe emulator has crashed on an unknown Opcode at this location");
 		}
 	break;
-	case R4300i_CP2:
+	case R4300i_COP2:
 		switch (Opcode.rs) {
 		case R4300i_COP2_MF:
 		case R4300i_COP2_DMF:
 		case R4300i_COP2_CF:
+		case R4300i_COP2_DCF:
 		case R4300i_COP2_MT:
 		case R4300i_COP2_DMT:
 		case R4300i_COP2_CT:
-		case R4300i_COP2_DCF:
 		case R4300i_COP2_DCT:
 		break;
 		default:
-			DisplayThreadExit("OpcodeSwitch-switch (Opcode.op)-case R4300i_CP2:-default:\nThe emulator has crashed on an unknown Opcode at this location");
+			DisplayThreadExit("OpcodeMapRecompiler-switch (Opcode.op)-case R4300i_COP2:-default:\nThe emulator has crashed on an unknown Opcode at this location");
 		}
 	break;
 	case R4300i_BEQL: Compile_R4300i_BranchLikely(Section,BEQ_Compare,FALSE); break;
 	case R4300i_BNEL: Compile_R4300i_BranchLikely(Section,BNE_Compare,FALSE); break;
 	case R4300i_BLEZL: Compile_R4300i_BranchLikely(Section,BLEZ_Compare,FALSE); break;
 	case R4300i_BGTZL: Compile_R4300i_BranchLikely(Section,BGTZ_Compare,FALSE); break;
-	case R4300i_DADDI:
 	case R4300i_DADDIU: Compile_R4300i_DADDIU(Section); break;
 	case R4300i_LDL: Compile_R4300i_LDL(Section); break;
 	case R4300i_LDR: Compile_R4300i_LDR(Section); break;
@@ -328,24 +381,25 @@ void OpcodeSwitch (BLOCK_SECTION*Section) {
 	case R4300i_SWR: Compile_R4300i_SWR(Section); break;
 	case R4300i_CACHE: Compile_R4300i_CACHE(Section); break;
 	case R4300i_LL: Compile_R4300i_LL(Section); break;
-	case R4300i_LWC1: Compile_R4300i_LWC1(Section);
-	case R4300i_CP3:
+	case R4300i_LWC1: Compile_R4300i_LWC1(Section); break;
+	case R4300i_LDC1: Compile_R4300i_LDC1(Section); break;
+	case R4300i_LD: Compile_R4300i_LD(Section); break;
+	case R4300i_SC: Compile_R4300i_SC(Section); break;
+	case R4300i_SWC1: Compile_R4300i_SWC1(Section); break;
+	case R4300i_SDC1: Compile_R4300i_SDC1(Section);
+	case R4300i_COP3:
+	case R4300i_DADDI:
 	case R4300i_LWC2:
 	case R4300i_LLD:
 	case R4300i_LDC2:
 	case R4300i_SWC2:
 	case R4300i_SCD:
-	case R4300i_SDC2:
-	break;
-	case R4300i_LDC1: Compile_R4300i_LDC1(Section); break;
-	case R4300i_LD: Compile_R4300i_LD(Section); break;
-	case R4300i_SC: Compile_R4300i_SC(Section); break;
-	case R4300i_SWC1: Compile_R4300i_SWC1(Section); break;
-	case R4300i_SDC1: Compile_R4300i_SDC1(Section); break;
+	case R4300i_SDC2: break;
 	case R4300i_SD: Compile_R4300i_SD(Section); break;
+	break;
 	default:
-		if (ProtectMemory) DisplayThreadExit("OpcodeSwitch-switch (Opcode.op)-default:\n\nThe emulator has crashed on a reserved Opcode at this location\n\nTry 'CPU Recompiler=OFF'?");
-		else DisplayThreadExit("OpcodeSwitch-switch (Opcode.op)-default:\n\nThe emulator has crashed on a reserved Opcode at this location.\n\n\nPotential fault point: ClearRecompilerCache-memset(JumpTable+(Block<<10),0,SetMem);\n\nTry 'Protect Memory=ON'?");
+		if (ProtectMemory) DisplayThreadExit("OpcodeMapRecompiler-switch (Opcode.op)-default:\n\nThe emulator has crashed on a reserved Opcode at this location\n\nTry 'CPU Recompiler=OFF'?");
+		else DisplayThreadExit("OpcodeMapRecompiler-switch (Opcode.op)-default:\n\nThe emulator has crashed on a reserved Opcode at this location.\n\n\nPotential fault point: ClearRecompilerCache-memset(JumpTable+(Block<<10),0,SetMem);\n\nTry 'Protect Memory=ON'?");
 	}
 }
 void InitializeInitialCompilerVariable (void)
@@ -459,7 +513,7 @@ BYTE*CompileDelaySlot (void) {
 	memcpy(&Section->RegWorking,&Section->RegStart,sizeof(REG_INFO));
 	BlockCycleCount+=CountPerOp;
 	BlockRandomModifier+=1;
-	OpcodeSwitch(Section);
+	OpcodeMapRecompiler(Section);
 	for (count=1; count<10; count++) { x86Protected(count)=FALSE; }
 	WriteBackRegisters(Section);
 	if (BlockCycleCount!=0) {
@@ -1249,7 +1303,7 @@ void _fastcall FillSectionInfo(BLOCK_SECTION*Section) {
 				MipsRegState(Command.rt)=STATE_UNKNOWN;
 			}
 			break;
-		case R4300i_CP0:
+		case R4300i_COP0:
 			switch (Command.rs) {
 			case R4300i_COP0_MF:
 				if (Command.rt==0) { break; }
@@ -1267,7 +1321,7 @@ void _fastcall FillSectionInfo(BLOCK_SECTION*Section) {
 				SectionCPC4
 			}
 			break;
-		case R4300i_CP1:
+		case R4300i_COP1:
 			switch (Command.fmt) {
 			case R4300i_COP1_CF:
 			case R4300i_COP1_MF:
@@ -1289,7 +1343,7 @@ void _fastcall FillSectionInfo(BLOCK_SECTION*Section) {
 						OPCODE NewCommand;
 						if (!r4300i_LW_VAddr(Section->CompilePC+4,&NewCommand.Hex)) DisplayThreadExit("FillSectionInfo-!r4300i_LW_VAddr(Section->CompilePC+4,&NewCommand.Hex)");
 						EffectDelaySlot=FALSE;
-						if (NewCommand.op==R4300i_CP1) {
+						if (NewCommand.op==R4300i_COP1) {
 							if (NewCommand.fmt==R4300i_COP1_S&&(NewCommand.funct&0x30)==0x30) {
 								EffectDelaySlot=TRUE;
 							}
@@ -1779,7 +1833,7 @@ BOOL GenerateX86Code (BLOCK_SECTION*Section,DWORD Test) {
 		BlockCycleCount+=CountPerOp;
 		BlockRandomModifier+=1;
 		for (count=1; count<10; count++) { x86Protected(count)=FALSE; }
-		OpcodeSwitch(Section);
+		OpcodeMapRecompiler(Section);
 		if (UseCache==REG_CACHE_OFF) { WriteBackRegisters(Section); }
 		for (count=1; count<10; count++) { x86Protected(count)=FALSE; }
 		UnMap_AllFPRs(Section);

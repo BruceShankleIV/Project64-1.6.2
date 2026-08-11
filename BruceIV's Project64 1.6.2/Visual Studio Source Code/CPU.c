@@ -287,7 +287,7 @@ int DelaySlotEffectsCompare (DWORD PC,DWORD Reg1,DWORD Reg2) {
 		default: return TRUE;
 		}
 		break;
-	case R4300i_CP0:
+	case R4300i_COP0:
 		switch (Command.rs) {
 		case R4300i_COP0_MF:
 			if (Command.rt==0) return FALSE;
@@ -298,7 +298,7 @@ int DelaySlotEffectsCompare (DWORD PC,DWORD Reg1,DWORD Reg2) {
 			return TRUE;
 		}
 		break;
-	case R4300i_CP1:
+	case R4300i_COP1:
 		switch (Command.fmt) {
 		case R4300i_COP1_MF:
 			if (Command.rt==0) return FALSE;
@@ -381,7 +381,7 @@ int DelaySlotEffectsJump (DWORD JumpPC) {
 	case R4300i_BLEZ:
 	case R4300i_BGTZ:
 		return DelaySlotEffectsCompare(JumpPC,Command.rs,Command.rt);
-	case R4300i_CP1:
+	case R4300i_COP1:
 		switch (Command.fmt) {
 		case R4300i_COP1_BC:
 			switch (Command.ft) {
@@ -394,7 +394,7 @@ int DelaySlotEffectsJump (DWORD JumpPC) {
 					OPCODE NewCommand;
 					if (!r4300i_LW_VAddr(JumpPC+4,&NewCommand.Hex)) return TRUE;
 					EffectDelaySlot=FALSE;
-					if (NewCommand.op==R4300i_CP1) {
+					if (NewCommand.op==R4300i_COP1) {
 						if (NewCommand.fmt==R4300i_COP1_S&&(NewCommand.funct&0x30)==0x30) {
 							EffectDelaySlot=TRUE;
 						}

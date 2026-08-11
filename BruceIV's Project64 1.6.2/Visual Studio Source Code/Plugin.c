@@ -546,7 +546,7 @@ void SetupPlugins (HWND hWnd) {
 		memset(N64MEM,0,RDRAMsize);
 		InitializeTLB();
 		InitializeR4300iRegisters(LoadPifRom(*(ROM+0x3D)),*(ROM+0x3D),GetCicChipID(ROM));
-		BuildInterpreter();
+		OpcodeMapInterpreter();
 		RecompPos=RecompCode;
 		Timers.CurrentTimerType=-1;
 		Timers.Timer=0;

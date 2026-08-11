@@ -23,7 +23,7 @@
 *should be forwarded to them so if they want them.
 *
 */
-void BuildInterpreter         (void);
+void OpcodeMapInterpreter         (void);
 void ExecuteInterpreterOpCode (void);
 void StartInterpreterCPU      (void);
 void TestInterpreterJump      (DWORD PC,DWORD TargetPC,int Reg1,int Reg2);

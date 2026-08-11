@@ -63,7 +63,7 @@ typedef struct {
 		};
 	};
 } OPCODE;
-//R4300i OpCodes
+//R4300i Opcodes
 #define	R4300i_SPECIAL				 0
 #define	R4300i_REGIMM				 1
 #define R4300i_J					 2
@@ -80,10 +80,10 @@ typedef struct {
 #define R4300i_ORI					13
 #define R4300i_XORI					14
 #define R4300i_LUI					15
-#define	R4300i_CP0					16
-#define	R4300i_CP1					17
-#define R4300i_CP2					18
-#define R4300i_CP3					19
+#define	R4300i_COP0					16
+#define	R4300i_COP1					17
+#define R4300i_COP2					18
+#define R4300i_COP3					19
 #define R4300i_BEQL					20
 #define R4300i_BNEL					21
 #define R4300i_BLEZL				22
@@ -197,6 +197,22 @@ typedef struct {
 #define R4300i_COP0_CO_TLBWR		6
 #define R4300i_COP0_CO_TLBP			8
 #define R4300i_COP0_CO_ERET			24
+#define R4300i_COP0_CO_16			16
+#define R4300i_COP0_CO_17			17
+#define R4300i_COP0_CO_18			18
+#define R4300i_COP0_CO_19			19
+#define R4300i_COP0_CO_20			20
+#define R4300i_COP0_CO_21			21
+#define R4300i_COP0_CO_22			22
+#define R4300i_COP0_CO_23			23
+#define R4300i_COP0_CO_24			24
+#define R4300i_COP0_CO_25			25
+#define R4300i_COP0_CO_26			26
+#define R4300i_COP0_CO_27			27
+#define R4300i_COP0_CO_28			28
+#define R4300i_COP0_CO_29			29
+#define R4300i_COP0_CO_30			30
+#define R4300i_COP0_CO_31			31				
 #define	R4300i_COP1_MF				0
 #define	R4300i_COP1_DMF				1
 #define	R4300i_COP1_CF				2

@@ -78,27 +78,27 @@ void _fastcall r4300i_COP2 (void) {
 	((void (_fastcall*)()) R4300i_CoP2[ Opcode.rs ])();
 }
 void _fastcall DTE_RESERVED() {
-	DisplayThreadExit("BuildInterpreter-i=0; i<64; i++\n\nThe emulator has crashed on a reserved Opcode at this location");
+	DisplayThreadExit("OpcodeMapInterpreter-i=0; i<64; i++\n\nThe emulator has crashed on a reserved Opcode at this location");
 }
-void _fastcall DTE_DUMMY() {
-	DisplayThreadExit("BuildInterpreter-i=0; i<64; i++\n\nThe emulator has crashed on an unknown Opcode at this location");
+void _fastcall DTE_UNKNOWN() {
+	DisplayThreadExit("OpcodeMapInterpreter-i=0; i<64; i++\n\nThe emulator has crashed on an unknown Opcode at this location");
 }
 void _fastcall DUMMY() {}
-void BuildInterpreter (void) {
+void OpcodeMapInterpreter (void) {
 	int i;
 	for (i=0; i<64; i++) {
 		R4300i_Opcode[i]	=DTE_RESERVED;
 		R4300i_Special[i]	=DTE_RESERVED;
 		R4300i_Regimm[i]	=DTE_RESERVED;
-		R4300i_CoP0[i]		=DTE_DUMMY;
-		R4300i_CoP0_Function[i]	=DTE_DUMMY;
-		R4300i_CoP1[i]		=DTE_DUMMY;
-		R4300i_CoP1_BC[i]	=DTE_DUMMY;
-		R4300i_CoP1_S[i]	=DTE_DUMMY;
-		R4300i_CoP1_D[i]	=DTE_DUMMY;
-		R4300i_CoP1_W[i]	=DTE_DUMMY;
-		R4300i_CoP1_L[i]	=DTE_DUMMY;
-		R4300i_CoP2[i]		=DTE_DUMMY;
+		R4300i_CoP0[i]		=DTE_UNKNOWN;
+		R4300i_CoP0_Function[i]	=DTE_UNKNOWN;
+		R4300i_CoP1[i]		=DTE_UNKNOWN;
+		R4300i_CoP1_BC[i]	=DTE_UNKNOWN;
+		R4300i_CoP1_S[i]	=DTE_UNKNOWN;
+		R4300i_CoP1_D[i]	=DTE_UNKNOWN;
+		R4300i_CoP1_W[i]	=DTE_UNKNOWN;
+		R4300i_CoP1_L[i]	=DTE_UNKNOWN;
+		R4300i_CoP2[i]		=DTE_UNKNOWN;
 	}
 	R4300i_Opcode[ 0]=r4300i_SPECIAL;
 	R4300i_Opcode[ 1]=r4300i_REGIMM;
@@ -256,6 +256,7 @@ void BuildInterpreter (void) {
 	R4300i_CoP1[ 4]=r4300i_COP1_MT;
 	R4300i_CoP1[ 5]=r4300i_COP1_DMT;
 	R4300i_CoP1[ 6]=r4300i_COP1_CT;
+	R4300i_CoP1[ 7]=DUMMY; // COP1_DCT
 	R4300i_CoP1[ 8]=r4300i_COP1_BC;
 	R4300i_CoP1[16]=r4300i_COP1_S;
 	R4300i_CoP1[17]=r4300i_COP1_D;
