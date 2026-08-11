@@ -2204,9 +2204,7 @@ void StartRecompilerCPU (void) {
 					DWORD OldProtect;
 					Block=CompileDelaySlot();
 					*(DelaySlotTable+(Addr>>12))=Block;
-					if (ProtectMemory) {
-						VirtualProtect(N64MEM+Addr,4,PAGE_READONLY,&OldProtect);
-					}
+					VirtualProtect(N64MEM+Addr,4,PAGE_READONLY,&OldProtect); // Previously exclusive to Protect Memory, now always active for maximum performance and stability.
 					SetNormal
 				}
 				_asm {
