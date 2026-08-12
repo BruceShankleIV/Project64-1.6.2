@@ -181,35 +181,16 @@ void Compile_LW (int Reg,DWORD Addr) {
 			break;
 		}
 		switch (Addr) {
-#ifndef MIN_SIZE
-		case 0x04040000: MoveVariableToX86reg(&SP_MEM_ADDR_REG,Reg); break;
-		case 0x04040004: MoveVariableToX86reg(&SP_DRAM_ADDR_REG,Reg); break;
-		case 0x04040008: MoveVariableToX86reg(&SP_RD_LEN_REG,Reg); break;
-		case 0x0404000C: MoveVariableToX86reg(&SP_WR_LEN_REG,Reg); break;
-#endif
 		case 0x04040010: MoveVariableToX86reg(&SP_STATUS_REG,Reg); break;
 		case 0x04040014: MoveVariableToX86reg(&SP_DMA_FULL_REG,Reg); break;
 		case 0x04040018: MoveVariableToX86reg(&SP_DMA_BUSY_REG,Reg); break;
-#ifndef MIN_SIZE
-		case 0x0404001C: MoveVariableToX86reg(&SP_SEMAPHORE_REG,Reg); break;
-#endif
 		case 0x04080000: MoveVariableToX86reg(&SP_PC_REG,Reg); break;
 		default:
 			Const86
 		}
 		break;
 	case 0x04100000:
-		switch (Addr) {
-#ifndef MIN_SIZE
-		case 0x0410000C: MoveVariableToX86reg(&DPC_STATUS_REG,Reg); break;
-		case 0x04100010: MoveVariableToX86reg(&DPC_CLOCK_REG,Reg); break;
-		case 0x04100014: MoveVariableToX86reg(&DPC_BUFBUSY_REG,Reg); break;
-		case 0x04100018: MoveVariableToX86reg(&DPC_PIPEBUSY_REG,Reg); break;
-		case 0x0410001C: MoveVariableToX86reg(&DPC_TMEM_REG,Reg); break;
-#endif
-		default:
-			Var86
-		}
+		Var86
 		break;
 	case 0x04300000:
 		switch (Addr) {
@@ -223,38 +204,18 @@ void Compile_LW (int Reg,DWORD Addr) {
 		break;
 	case 0x04400000:
 		switch (Addr) {
-#ifndef MIN_SIZE
-		case 0x04400000: MoveVariableToX86reg(&VI_STATUS_REG,Reg); break;
-		case 0x04400004: MoveVariableToX86reg(&VI_ORIGIN_REG,Reg); break;
-		case 0x04400008: MoveVariableToX86reg(&VI_WIDTH_REG,Reg); break;
-		case 0x0440000C: MoveVariableToX86reg(&VI_INTR_REG,Reg); break;
-#endif
 		case 0x04400010:
 			Pushad();
 			Call_Direct(&UpdateCurrentHalfLine);
 			Popad();
 			MoveVariableToX86reg(&HalfLine,Reg);
 			break;
-#ifndef MIN_SIZE
-		case 0x04400014: MoveVariableToX86reg(&VI_BURST_REG,Reg); break;
-		case 0x04400018: MoveVariableToX86reg(&VI_V_SYNC_REG,Reg); break;
-		case 0x0440001C: MoveVariableToX86reg(&VI_H_SYNC_REG,Reg); break;
-		case 0x04400020: MoveVariableToX86reg(&VI_LEAP_REG,Reg); break;
-		case 0x04400024: MoveVariableToX86reg(&VI_H_START_REG,Reg); break;
-		case 0x04400028: MoveVariableToX86reg(&VI_V_START_REG,Reg); break;
-		case 0x0440002C: MoveVariableToX86reg(&VI_V_BURST_REG,Reg); break;
-		case 0x04400030: MoveVariableToX86reg(&VI_X_SCALE_REG,Reg); break;
-		case 0x04400034: MoveVariableToX86reg(&VI_Y_SCALE_REG,Reg); break;
-#endif
 		default:
 			Const86
 		}
 		break;
 	case 0x04500000: /*AI registers*/
 		switch (Addr) {
-#ifndef MIN_SIZE
-		case 0x04500000: MoveVariableToX86reg(&AI_DRAM_ADDR_REG,Reg); break;
-#endif
 		case 0x04500004:
 			if (AiReadLength!=NULL) {
 				Pushad();
@@ -267,21 +228,12 @@ void Compile_LW (int Reg,DWORD Addr) {
 			}
 			break;
 		case 0x0450000C: MoveVariableToX86reg(&AI_STATUS_REG,Reg); break;
-#ifndef MIN_SIZE
-		case 0x04500014: MoveVariableToX86reg(&AI_BITRATE_REG,Reg); break;
-#endif
 		default:
 			Const86
 		}
 		break;
 	case 0x04600000:
 		switch (Addr) {
-#ifndef MIN_SIZE
-		case 0x04600000: MoveVariableToX86reg(&PI_DRAM_ADDR_REG,Reg); break;
-		case 0x04600004: MoveVariableToX86reg(&PI_CART_ADDR_REG,Reg); break;
-		case 0x04600008: MoveVariableToX86reg(&PI_RD_LEN_REG,Reg); break;
-		case 0x0460000C: MoveVariableToX86reg(&PI_WR_LEN_REG,Reg); break;
-#endif
 		case 0x04600010: MoveVariableToX86reg(&PI_STATUS_REG,Reg); break;
 		case 0x04600014: MoveVariableToX86reg(&PI_DOMAIN1_REG,Reg); break;
 		case 0x04600018: MoveVariableToX86reg(&PI_BSD_DOM1_PWD_REG,Reg); break;
@@ -297,39 +249,19 @@ void Compile_LW (int Reg,DWORD Addr) {
 		break;
 	case 0x04700000:
 		switch (Addr) {
-#ifndef MIN_SIZE
-		case 0x04700000: MoveVariableToX86reg(&RI_MODE_REG,Reg); break;
-		case 0x04700004: MoveVariableToX86reg(&RI_CONFIG_REG,Reg); break;
-		case 0x04700008: MoveVariableToX86reg(&RI_CURRENT_LOAD_REG,Reg); break;
-#endif
 		case 0x0470000C: MoveVariableToX86reg(&RI_SELECT_REG,Reg); break;
 		case 0x04700010: MoveVariableToX86reg(&RI_REFRESH_REG,Reg); break;
-#ifndef MIN_SIZE
-		case 0x04700014: MoveVariableToX86reg(&RI_LATENCY_REG,Reg); break;
-		case 0x04700018: MoveVariableToX86reg(&RI_RERROR_REG,Reg); break;
-		case 0x0470001C: MoveVariableToX86reg(&RI_WERROR_REG,Reg); break;
-#endif
 		default:
 			Const86
 		}
 		break;
 	case 0x04800000:
 		switch (Addr) {
-#ifndef MIN_SIZE
-		case 0x04800000: MoveVariableToX86reg(&SI_DRAM_ADDR_REG,Reg); break;
-		case 0x04800004: MoveVariableToX86reg(&SI_PIF_ADDR_RD64B_REG,Reg); break;
-		case 0x04800010: MoveVariableToX86reg(&SI_PIF_ADDR_WR64B_REG,Reg); break;
-#endif
 		case 0x04800018: MoveVariableToX86reg(&SI_STATUS_REG,Reg); break;
 		default:
 			Const86
 		}
 		break;
-#ifndef MIN_SIZE
-	case 0x05000000:
-		Const86
-		break;
-#endif
 	case 0x1FC00000:
 		Var86
 		break;
@@ -435,14 +367,6 @@ void Compile_SW_Const (DWORD Value,DWORD Addr) {
 			Call_Direct(&SP_DMA_READ);
 			Popad();
 			break;
-#ifndef MIN_SIZE
-		case 0x0404000C:
-			MoveConstToVariable(Value,&SP_WR_LEN_REG);
-			Pushad();
-			Call_Direct(&SP_DMA_WRITE);
-			Popad();
-			break;
-#endif
 		case 0x04040010:
 			{
 				DWORD ModValue;
@@ -633,12 +557,6 @@ void Compile_SW_Const (DWORD Value,DWORD Addr) {
 		case 0x04600018: MoveConstToVariable((Value&0xFF),&PI_BSD_DOM1_PWD_REG); break;
 		case 0x0460001C: MoveConstToVariable((Value&0xFF),&PI_BSD_DOM1_PGS_REG); break;
 		case 0x04600020: MoveConstToVariable((Value&0xFF),&PI_BSD_DOM1_RLS_REG); break;
-#ifndef MIN_SIZE
-		case 0x04600024: MoveConstToVariable((Value&0xFF),&PI_DOMAIN2_REG); break;
-		case 0x04600028: MoveConstToVariable((Value&0xFF),&PI_BSD_DOM2_PWD_REG); break;
-		case 0x0460002C: MoveConstToVariable((Value&0xFF),&PI_BSD_DOM2_PGS_REG); break;
-		case 0x04600030: MoveConstToVariable((Value&0xFF),&PI_BSD_DOM2_RLS_REG);
-#endif
 		}
 		break;
 	case 0x04700000:
@@ -647,12 +565,6 @@ void Compile_SW_Const (DWORD Value,DWORD Addr) {
 		case 0x04700004: MoveConstToVariable(Value,&RI_CONFIG_REG); break;
 		case 0x04700008: MoveConstToVariable(Value,&RI_CURRENT_LOAD_REG); break;
 		case 0x0470000C: MoveConstToVariable(Value,&RI_SELECT_REG); break;
-#ifndef MIN_SIZE
-		case 0x04700010: MoveConstToVariable(Value,&RI_REFRESH_REG); break;
-		case 0x04700014: MoveConstToVariable(Value,&RI_LATENCY_REG); break;
-		case 0x04700018: MoveConstToVariable(Value,&RI_RERROR_REG); break;
-		case 0x0470001C: MoveConstToVariable(Value,&RI_WERROR_REG);
-#endif
 		}
 		break;
 	case 0x04800000:
@@ -726,26 +638,11 @@ void Compile_SW_Register (int x86Reg,DWORD Addr) {
 		}
 		break;
 	case 0x04100000:
-#ifndef MIN_SIZE
-		if (Addr==0x0410000C) {
-			MoveX86regToVariable(x86Reg,&RegModValue);
-			Pushad();
-			Call_Direct(ChangeDpcStatus);
-			Popad();
-		} else
-#endif
 		Variable86
 		break;
 	case 0x04300000:
 		switch (Addr) {
 		case 0x04300000:
-#ifndef MIN_SIZE
-			MoveX86regToVariable(x86Reg,&RegModValue);
-			Pushad();
-			Call_Direct(ChangeMiModeReg);
-			Popad();
-			break;
-#endif
 		case 0x0430000C:
 			MoveX86regToVariable(x86Reg,&RegModValue);
 			Pushad();
@@ -865,23 +762,6 @@ void Compile_SW_Register (int x86Reg,DWORD Addr) {
 			MoveX86regToVariable(x86Reg,&PI_BSD_DOM1_RLS_REG);
 			AndConstToVariable(0xFF,&PI_BSD_DOM1_RLS_REG);
 			break;
-#ifndef MIN_SIZE
-		case 0x04600024:
-			MoveX86regToVariable(x86Reg,&PI_DOMAIN2_REG);
-			AndConstToVariable(0xFF,&PI_DOMAIN2_REG);
-			break;
-		case 0x04600028:
-			MoveX86regToVariable(x86Reg,&PI_BSD_DOM2_PWD_REG);
-			AndConstToVariable(0xFF,&PI_BSD_DOM2_PWD_REG);
-			break;
-		case 0x0460002C:
-			MoveX86regToVariable(x86Reg,&PI_BSD_DOM2_PGS_REG);
-			AndConstToVariable(0xFF,&PI_BSD_DOM2_PGS_REG);
-			break;
-		case 0x04600030:
-			MoveX86regToVariable(x86Reg,&PI_BSD_DOM2_RLS_REG);
-			AndConstToVariable(0xFF,&PI_BSD_DOM2_RLS_REG);
-#endif
 		}
 		break;
 	case 0x04700000:
@@ -1212,18 +1092,9 @@ int r4300i_LW_NonMemory (DWORD PAddr,DWORD*Value) {
 		break;
 	case 0x04000000:
 		switch (PAddr) {
-#ifndef MIN_SIZE
-		case 0x04040000:*Value=SP_MEM_ADDR_REG; break;
-		case 0x04040004:*Value=SP_DRAM_ADDR_REG; break;
-		case 0x04040008:*Value=SP_RD_LEN_REG; break;
-		case 0x0404000C:*Value=SP_WR_LEN_REG; break;
-#endif
 		case 0x04040010:*Value=SP_STATUS_REG; break;
 		case 0x04040014:*Value=SP_DMA_FULL_REG; break;
 		case 0x04040018:*Value=SP_DMA_BUSY_REG; break;
-#ifndef MIN_SIZE
-		case 0x0404001C:*Value=SP_SEMAPHORE_REG; break;
-#endif
 		case 0x04080000:*Value=SP_PC_REG; break;
 		default:
 			*Value=0;
@@ -1279,9 +1150,6 @@ int r4300i_LW_NonMemory (DWORD PAddr,DWORD*Value) {
 		break;
 	case 0x04500000:
 		switch (PAddr) {
-#ifndef MIN_SIZE
-		case 0x04500000:*Value=AI_DRAM_ADDR_REG; break;
-#endif
 		case 0x04500004:
 			if (AiReadLength!=NULL) {
 				*Value=AiReadLength();
@@ -1289,14 +1157,7 @@ int r4300i_LW_NonMemory (DWORD PAddr,DWORD*Value) {
 				*Value=0;
 			}
 			break;
-#ifndef MIN_SIZE
-		case 0x04500008:*Value=AI_CONTROL_REG; break;
-#endif
 		case 0x0450000C:*Value=AI_STATUS_REG; break;
-#ifndef MIN_SIZE
-		case 0x04500010:*Value=AI_DACRATE_REG; break;
-		case 0x04500014:*Value=AI_BITRATE_REG; break;
-#endif
 		default:
 			*Value=0;
 			return FALSE;
@@ -1304,12 +1165,6 @@ int r4300i_LW_NonMemory (DWORD PAddr,DWORD*Value) {
 		break;
 	case 0x04600000:
 		switch (PAddr) {
-#ifndef MIN_SIZE
-		case 0x04600000:*Value=PI_DRAM_ADDR_REG; break;
-		case 0x04600004:*Value=PI_CART_ADDR_REG; break;
-		case 0x04600008:*Value=PI_RD_LEN_REG; break;
-		case 0x0460000C:*Value=PI_WR_LEN_REG; break;
-#endif
 		case 0x04600010:*Value=PI_STATUS_REG; break;
 		case 0x04600014:*Value=PI_DOMAIN1_REG; break;
 		case 0x04600018:*Value=PI_BSD_DOM1_PWD_REG; break;
@@ -1341,11 +1196,6 @@ int r4300i_LW_NonMemory (DWORD PAddr,DWORD*Value) {
 		break;
 	case 0x04800000:
 		switch (PAddr) {
-#ifndef MIN_SIZE
-		case 0x04800000:*Value=SI_DRAM_ADDR_REG; break;
-		case 0x04800004:*Value=SI_PIF_ADDR_RD64B_REG; break;
-		case 0x04800010:*Value=SI_PIF_ADDR_WR64B_REG; break;
-#endif
 		case 0x04800018:*Value=SI_STATUS_REG; break;
 		default:
 			*Value=0;
@@ -1480,7 +1330,6 @@ BOOL r4300i_SH_VAddr (DWORD VAddr,WORD Value) {
 	return TRUE;
 }
 int r4300i_SW_NonMemory (DWORD PAddr,DWORD Value) {
-// Missing registers for #ifndef MIN_SIZE?
 	if (PAddr>=0x10000000&&PAddr<0x16000000) {
 		if ((PAddr-0x10000000)<RomFileSize) {
 			WrittenToRom=TRUE;
@@ -1749,12 +1598,6 @@ int r4300i_SW_NonMemory (DWORD PAddr,DWORD Value) {
 		case 0x04600018: PI_BSD_DOM1_PWD_REG=(Value&0xFF); break;
 		case 0x0460001C: PI_BSD_DOM1_PGS_REG=(Value&0xFF); break;
 		case 0x04600020: PI_BSD_DOM1_RLS_REG=(Value&0xFF); break;
-#ifndef MIN_SIZE
-		case 0x04600024: PI_DOMAIN2_REG=(Value&0xFF); break;
-		case 0x04600028: PI_BSD_DOM2_PWD_REG=(Value&0xFF); break;
-		case 0x0460002C: PI_BSD_DOM2_PGS_REG=(Value&0xFF); break;
-		case 0x04600030: PI_BSD_DOM2_RLS_REG=(Value&0xFF); break;
-#endif
 		default:
 			return FALSE;
 		}

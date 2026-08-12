@@ -329,10 +329,6 @@ enum FPU_RoundingModel {
 };
 void ChangeFPURegFormat       (BLOCK_SECTION*Section,int Reg,int OldFormat,int NewFormat,int RoundingModel);
 void ChangeMiIntrMask         (void);
-#ifndef MIN_SIZE
-void ChangeMiModeReg          (void);
-void ChangeDpcStatus          (void);
-#endif
 void ChangeSpStatus           (void);
 void InitializeR4300iRegisters (int UsePif,int Country,int CIC_Chip);
 BOOL Is8BitReg                (int x86Reg);

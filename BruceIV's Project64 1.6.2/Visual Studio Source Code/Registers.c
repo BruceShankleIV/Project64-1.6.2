@@ -68,37 +68,6 @@ void ChangeMiIntrMask (void) {
 	if ((RegModValue&MI_INTR_MASK_CLR_DP)!=0) { MI_INTR_MASK_REG&=~MI_INTR_MASK_DP; }
 	if ((RegModValue&MI_INTR_MASK_SET_DP)!=0) { MI_INTR_MASK_REG|=MI_INTR_MASK_DP; }
 }
-#ifndef MIN_SIZE
-void ChangeMiModeReg(void) {
-	MI_MODE_REG&=~0x7F;
-	MI_MODE_REG|=(RegModValue&0x7F);
-	if ((RegModValue&MI_CLR_INIT)!=0) { MI_MODE_REG&=~MI_MODE_INIT; }
-	if ((RegModValue&MI_SET_INIT)!=0) { MI_MODE_REG|=MI_MODE_INIT; }
-	if ((RegModValue&MI_CLR_EBUS)!=0) { MI_MODE_REG&=~MI_MODE_EBUS; }
-	if ((RegModValue&MI_SET_EBUS)!=0) { MI_MODE_REG|=MI_MODE_EBUS; }
-	if ((RegModValue&MI_CLR_DP_INTR)!=0) { MI_INTR_REG&=~MI_INTR_DP; }
-	if ((RegModValue&MI_CLR_RDRAM)!=0) { MI_MODE_REG&=~MI_MODE_RDRAM; }
-	if ((RegModValue&MI_SET_RDRAM)!=0) { MI_MODE_REG|=MI_MODE_RDRAM; }
-}
-void ChangeDpcStatus(void) {
-	if ((RegModValue&DPC_CLR_XBUS_DMEM_DMA)!=0) { DPC_STATUS_REG&=~DPC_STATUS_XBUS_DMEM_DMA; }
-	if ((RegModValue&DPC_SET_XBUS_DMEM_DMA)!=0) { DPC_STATUS_REG|=DPC_STATUS_XBUS_DMEM_DMA;  }
-	if ((RegModValue&DPC_CLR_FREEZE)!=0) { DPC_STATUS_REG&=~DPC_STATUS_FREEZE; }
-	if ((RegModValue&DPC_SET_FREEZE)!=0) { DPC_STATUS_REG|=DPC_STATUS_FREEZE;  }
-	if ((RegModValue&DPC_CLR_FLUSH)!=0) { DPC_STATUS_REG&=~DPC_STATUS_FLUSH; }
-	if ((RegModValue&DPC_SET_FLUSH)!=0) { DPC_STATUS_REG|=DPC_STATUS_FLUSH;  }
-	if ((RegModValue&DPC_CLR_FREEZE)!=0)
-	{
-		if ((SP_STATUS_REG&SP_STATUS_HALT)==0)
-		{
-			if ((SP_STATUS_REG&SP_STATUS_BROKE)==0)
-			{
-				RunRsp();
-			}
-		}
-	}
-}
-#endif
 void ChangeSpStatus (void) {
 	if ((RegModValue&SP_CLR_HALT)!=0) { SP_STATUS_REG&=~SP_STATUS_HALT; }
 	if ((RegModValue&SP_SET_HALT)!=0) { SP_STATUS_REG|=SP_STATUS_HALT;  }

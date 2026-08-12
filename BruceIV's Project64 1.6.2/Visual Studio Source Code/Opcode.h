@@ -212,7 +212,7 @@ typedef struct {
 #define R4300i_COP0_CO_TLBWI		2
 #define R4300i_COP0_CO_TLBWR		6
 #define R4300i_COP0_CO_TLBP			8
-#define R4300i_COP0_CO_ERET			24				
+#define R4300i_COP0_CO_ERET			24
 #define	R4300i_COP1_MF				0
 #define	R4300i_COP1_DMF				1
 #define	R4300i_COP1_CF				2

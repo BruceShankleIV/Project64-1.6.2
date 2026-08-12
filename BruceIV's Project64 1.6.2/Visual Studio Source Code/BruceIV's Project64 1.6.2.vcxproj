@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="10.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="Release External|Win32">
-      <Configuration>Release External</Configuration>
+    <ProjectConfiguration Include="Modern|Win32">
+      <Configuration>Modern</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Min Size|Win32">
-      <Configuration>Min Size</Configuration>
+    <ProjectConfiguration Include="Classic|Win32">
+      <Configuration>Classic</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
@@ -17,17 +17,17 @@
     <SccAuxPath>Svn</SccAuxPath>
     <SccProvider>SubversionScc</SccProvider>
     <ProjectGuid>{F2748759-CFD6-D022-5168-3834C2DDB613}</ProjectGuid>
-    <WindowsTargetPlatformVersion>7.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release External|Win32'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Modern|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>false</WholeProgramOptimization>
     <PlatformToolset>v120_xp</PlatformToolset>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Min Size|Win32'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Classic|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
@@ -37,42 +37,42 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release External|Win32'" Label="PropertySheets">
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Modern|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Min Size|Win32'" Label="PropertySheets">
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Classic|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release External|Win32'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Modern|Win32'">
     <OutDir>..\</OutDir>
-    <IntDir>.\Release_External\</IntDir>
+    <IntDir>.\Modern\</IntDir>
     <LinkIncremental>false</LinkIncremental>
-    <TargetName>$(ProjectName)</TargetName>
+    <TargetName>Project64_Modern</TargetName>
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Min Size|Win32'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Classic|Win32'">
     <OutDir>..\</OutDir>
-    <IntDir>.\Min_Size\</IntDir>
+    <IntDir>.\Classic\</IntDir>
     <LinkIncremental>false</LinkIncremental>
-    <TargetName>$(ProjectName)</TargetName>
+    <TargetName>Project64</TargetName>
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release External|Win32'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Modern|Win32'">
     <ClCompile>
       <Optimization>MinSpace</Optimization>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>EXTERNAL_RELEASE;WIN32;_WINDOWS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AssemblerListingLocation>.\Release_External\</AssemblerListingLocation>
+      <PreprocessorDefinitions>MODERN_PLUGINS;WIN32;_WINDOWS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AssemblerListingLocation>.\Modern\</AssemblerListingLocation>
       <BrowseInformation>true</BrowseInformation>
-      <PrecompiledHeaderOutputFile>.\Release_External\Project64.pch</PrecompiledHeaderOutputFile>
-      <ObjectFileName>.\Release_External\</ObjectFileName>
-      <ProgramDataBaseFileName>.\Release_External\</ProgramDataBaseFileName>
+      <PrecompiledHeaderOutputFile>.\Modern\Project64.pch</PrecompiledHeaderOutputFile>
+      <ObjectFileName>.\Modern\</ObjectFileName>
+      <ProgramDataBaseFileName>.\Modern\</ProgramDataBaseFileName>
       <CallingConvention>FastCall</CallingConvention>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
       <EnablePREfast>false</EnablePREfast>
@@ -90,23 +90,23 @@
     </ClCompile>
     <Midl>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <TypeLibraryName>.\Release_External\Project64.tlb</TypeLibraryName>
+      <TypeLibraryName>.\Modern\Project64.tlb</TypeLibraryName>
       <MkTypLibCompatible>true</MkTypLibCompatible>
       <TargetEnvironment>Win32</TargetEnvironment>
     </Midl>
     <ResourceCompile>
       <Culture>0x0c09</Culture>
-      <PreprocessorDefinitions>EXTERNAL_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>MODERN_PLUGINS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>.\Release_External\Project64.bsc</OutputFile>
+      <OutputFile>.\Modern\Project64.bsc</OutputFile>
     </Bscmake>
     <Link>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <SubSystem>Windows</SubSystem>
       <IgnoreSpecificDefaultLibraries>LIBC;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <OutputFile>..\Project64.exe</OutputFile>
+      <OutputFile>..\Project64_Modern.exe</OutputFile>
       <AdditionalDependencies>zlib113.lib;htmlhelp.lib;winmm.lib;comctl32.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions> /NXCOMPAT:NO %(AdditionalOptions)</AdditionalOptions>
       <DataExecutionPrevention>false</DataExecutionPrevention>
@@ -122,17 +122,17 @@
       <EnableDPIAwareness>true</EnableDPIAwareness>
     </Manifest>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Min Size|Win32'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Classic|Win32'">
     <ClCompile>
       <Optimization>MinSpace</Optimization>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>MIN_SIZE;EXTERNAL_RELEASE;WIN32;_WINDOWS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AssemblerListingLocation>.\Min_Size\</AssemblerListingLocation>
+      <PreprocessorDefinitions>CLASSIC_PLUGINS;MODERN_PLUGINS;WIN32;_WINDOWS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AssemblerListingLocation>.\Classic\</AssemblerListingLocation>
       <BrowseInformation>true</BrowseInformation>
       <PrecompiledHeaderOutputFile>.\Min_Size\Project64.pch</PrecompiledHeaderOutputFile>
       <ObjectFileName>.\Min_Size\</ObjectFileName>
-      <ProgramDataBaseFileName>.\Min_Size\</ProgramDataBaseFileName>
+      <ProgramDataBaseFileName>.\Classic\</ProgramDataBaseFileName>
       <CallingConvention>FastCall</CallingConvention>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
       <EnablePREfast>false</EnablePREfast>
@@ -150,17 +150,17 @@
     </ClCompile>
     <Midl>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <TypeLibraryName>.\Min_Size\Project64.tlb</TypeLibraryName>
+      <TypeLibraryName>.\Classic\Project64.tlb</TypeLibraryName>
       <MkTypLibCompatible>true</MkTypLibCompatible>
       <TargetEnvironment>Win32</TargetEnvironment>
     </Midl>
     <ResourceCompile>
       <Culture>0x0c09</Culture>
-      <PreprocessorDefinitions>MIN_SIZE;EXTERNAL_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>CLASSIC_PLUGINS;MODERN_PLUGINS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>.\Min_Size\Project64.bsc</OutputFile>
+      <OutputFile>.\Classic\Project64.bsc</OutputFile>
     </Bscmake>
     <Link>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -194,7 +194,7 @@
     <ClCompile Include="Settings.c" />
     <ClCompile Include="Win32Timer.c" />
     <ClCompile Include="UnZIP.c">
-      <CallingConvention Condition="'$(Configuration)|$(Platform)'=='Release External|Win32'">Cdecl</CallingConvention>
+      <CallingConvention Condition="'$(Configuration)|$(Platform)'=='Modern|Win32'">Cdecl</CallingConvention>
     </ClCompile>
     <ClCompile Include="ZIP.c" />
     <ClCompile Include="EEPROM.c" />
@@ -270,12 +270,12 @@
   </ItemGroup>
   <ItemGroup>
     <Library Include="zlib.lib">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release External|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Min Size|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Modern|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Classic|Win32'">true</ExcludedFromBuild>
     </Library>
     <Library Include="zlib113.LIB">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release External|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Min Size|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Modern|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Classic|Win32'">true</ExcludedFromBuild>
     </Library>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
