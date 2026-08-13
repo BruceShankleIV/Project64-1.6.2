@@ -13,21 +13,14 @@
   <PropertyGroup Label="Globals">
     <SccProjectName>Svn</SccProjectName>
     <SccLocalPath>Svn</SccLocalPath>
-    <ProjectName>Project64</ProjectName>
+    <ProjectName>BruceIV's Project64 1.6.2</ProjectName>
     <SccAuxPath>Svn</SccAuxPath>
     <SccProvider>SubversionScc</SccProvider>
     <ProjectGuid>{F2748759-CFD6-D022-5168-3834C2DDB613}</ProjectGuid>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Modern|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseOfMfc>false</UseOfMfc>
-    <CharacterSet>MultiByte</CharacterSet>
-    <WholeProgramOptimization>false</WholeProgramOptimization>
-    <PlatformToolset>v120_xp</PlatformToolset>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Classic|Win32'" Label="Configuration">
+  <PropertyGroup>
     <ConfigurationType>Application</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
@@ -37,30 +30,27 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Modern|Win32'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Classic|Win32'" Label="PropertySheets">
+  <ImportGroup>
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Classic|Win32'">
+    <IntDir>.\Classic\</IntDir>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Modern|Win32'">
-    <OutDir>..\</OutDir>
     <IntDir>.\Modern\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OutDir>..\</OutDir>
     <LinkIncremental>false</LinkIncremental>
-    <TargetName>Project64_Modern</TargetName>
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Classic|Win32'">
-    <OutDir>..\</OutDir>
-    <IntDir>.\Classic\</IntDir>
-    <LinkIncremental>false</LinkIncremental>
     <TargetName>Project64</TargetName>
-    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <RunCodeAnalysis>false</RunCodeAnalysis>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Modern|Win32'">
+    <TargetName>Project64_Modern</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Modern|Win32'">
     <ClCompile>
@@ -81,7 +71,6 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
       <OmitFramePointers>true</OmitFramePointers>
-      <CompileAs>Default</CompileAs>
       <SDLCheck>false</SDLCheck>
       <TreatWarningAsError>true</TreatWarningAsError>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -127,11 +116,11 @@
       <Optimization>MinSpace</Optimization>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>CLASSIC_PLUGINS;MODERN_PLUGINS;WIN32;_WINDOWS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>CLASSIC_PLUGINS;WIN32;_WINDOWS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AssemblerListingLocation>.\Classic\</AssemblerListingLocation>
       <BrowseInformation>true</BrowseInformation>
-      <PrecompiledHeaderOutputFile>.\Min_Size\Project64.pch</PrecompiledHeaderOutputFile>
-      <ObjectFileName>.\Min_Size\</ObjectFileName>
+      <PrecompiledHeaderOutputFile>.\Classic\Project64.pch</PrecompiledHeaderOutputFile>
+      <ObjectFileName>.\Classic\</ObjectFileName>
       <ProgramDataBaseFileName>.\Classic\</ProgramDataBaseFileName>
       <CallingConvention>FastCall</CallingConvention>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
@@ -141,7 +130,6 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
       <OmitFramePointers>true</OmitFramePointers>
-      <CompileAs>Default</CompileAs>
       <SDLCheck>false</SDLCheck>
       <TreatWarningAsError>true</TreatWarningAsError>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -156,7 +144,7 @@
     </Midl>
     <ResourceCompile>
       <Culture>0x0c09</Culture>
-      <PreprocessorDefinitions>CLASSIC_PLUGINS;MODERN_PLUGINS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>CLASSIC_PLUGINS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -193,9 +181,7 @@
     <ClCompile Include="SummerCart.c" />
     <ClCompile Include="Settings.c" />
     <ClCompile Include="Win32Timer.c" />
-    <ClCompile Include="UnZIP.c">
-      <CallingConvention Condition="'$(Configuration)|$(Platform)'=='Modern|Win32'">Cdecl</CallingConvention>
-    </ClCompile>
+    <ClCompile Include="UnZIP.c" />
     <ClCompile Include="ZIP.c" />
     <ClCompile Include="EEPROM.c" />
     <ClCompile Include="FlashRAM.c" />
@@ -270,12 +256,10 @@
   </ItemGroup>
   <ItemGroup>
     <Library Include="zlib.lib">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Modern|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Classic|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild>true</ExcludedFromBuild>
     </Library>
     <Library Include="zlib113.LIB">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Modern|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Classic|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild>true</ExcludedFromBuild>
     </Library>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
