@@ -34,17 +34,17 @@ extern "C" {
 #include "Settings API.h"
 #include "ROM Browser.h"
 #include "Language.h"
-/*********Source Version 24 WIP 2*********/
+/*********Source Version 24*********/
 /*********General Defaults**********/
-#define AppName					"BruceIV's Project64 1.6.2"
-#define IniName					"Game.ini"
+#define AppName						"BruceIV's Project64 1.6.2"
+#define IniName						"Game.ini"
 #define CheatIniName				"Cheat.ini"
 #define LangFileName				"English.txt"
 #define Default_AutoSleep			FALSE
 #define Default_AutoHide			TRUE
 #define Default_LimitFPS			TRUE
 #define Default_SpeedCap			FALSE
-#define Default_UsuallyonTop			FALSE
+#define Default_UsuallyonTop		FALSE
 #define Default_BasicMode			TRUE
 #define Default_RomsToRemember		10
 #define Default_RomsDirsToRemember	10

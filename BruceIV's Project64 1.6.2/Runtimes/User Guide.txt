@@ -1,34 +1,3 @@
-START OF HEADER
-
-
-
-ROMhacks hosted at...
-
-github.com/BruceShankleIV/Project64-1.6.2-ROMhacks-Collection
-
-should work in the latest release of this emulator, hosted at...
-
-github.com/BruceShankleIV/Project64-1.6.2/releases
-
-
-Zelda64 texture packs hosted at...
-
-https://mega.nz/folder/hLB2jI5R#t71whplzD7iMbb3m_YfFSA
-
-and Super Mario 64 texture packs hosted at...
-
-https://mega.nz/folder/xL5BwaaQ#2yLK6SfwElrnJQtphdqXKw
-
-should also work in the latest release of this emulator. See further for texture pack setup instructions. Remember that texture packs can also be used with some ROMhacks!
-
-WIP Zelda64 hacks wiki - https://bruceivshankle.wixsite.com/centralocarina/home
-
-
-
-END OF HEADER
-
-
-
 ********************************************************************************************************
 ---------------------------
 |||||Table of Contents|||||
@@ -684,7 +653,7 @@ to determine the author of a change.
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
-aglab2 (Better load times and fixed flickering with CF0, SD space, slowdown boot fix, TLB safety checks)
+aglab2 (Better load times and fixed flickering with CF0, SD space, TLB safety checks)
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 https://github.com/aglab2/Project64-Legacy/commits/main/
 https://github.com/pj64team/Project64-1.6-Plus/pull/23

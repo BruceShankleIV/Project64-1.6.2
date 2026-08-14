@@ -19,15 +19,16 @@ This way, you always have access to these resources with every copy of the emula
 
 ## Project Status
 
-I keep saying I'm done with it. I keep saying, that's it, it's perfect to me. Then I improve it more somehow anyway. So the status is: always ongoing no matter what I keep telling myself.
+Paused for now due to being too busy to actively work on it anymore. But at this point it's worked with all retail games and hacks I've tried in it so far, that's pretty good for a project I'll probably never get around to finishing.
 
-## What This Project Is About
+## About
 
-Quick About:
-The Project64 1.6 you know and love, but better 💖 (spiritual successor to 1.6/1.6.1) Developed by Edwin Bruce Shankle IV. If you enjoy this Windows N64 emulator update of mine, consider subscribing to me on my YouTube channel to show support! 😄 https://www.youtube.com/@BruceShankle/?sub_confirmation=1 My Bug Reports Server - discord.gg/cHDxa9vzQM
+This is an improved build of Project64 1.6 for casual gaming with classic titles and ROMhacks with performance and PC support in mind. You can adjust the plugin settings for each game, with documentation for many of them under the ROM Notes tab. For help, see the User Guide under the help tab if I'm not available to assist you.
 
-Descriptive About:
-This is not a complete rewrite of the original Project64 code (which would introduce regressions), but a small evolution with improved ROMhack support, additional plugins for users with high-end devices which can suport these plugins, more settings, removing dead code and useless settings or features, and overall making it better based on my own personal usage. It has been crafted from a custom build called Version 1.6.1, hence this name. Each change has been carefully tested to make sure no issues are introduced. Other developers have been reckless about their changes and compromised game compatibility and app stability in doing so, hence why this exists. If you want to load a retail game or supported hack with a high chance of success and you don't care about hardware limitations, this is the build for you.
+
+Contact Info - My email is bruceiv.shankle@gmail.com and a server to report issues/errors is discord.gg/cHDxa9vzQM.
+
+However, I do not maintain this as often anymore due to real-life work and resting taking up a lot of my time, so if I am slow to respond, don't hesitate to try something else or solve it yourself while you wait for a response from me or someone.
 
 ## Suggested Games to Play (not including ROMhacks)
 
@@ -53,7 +54,7 @@ Note: It's ill-advised to add any dll's into the Plugin folder. Doing so will re
 
 ## What's Next?
 
-A friend of mine is working on cheat codes for Ocarina of Time 1.0 (U) version. Next build will have these if he's done with them by then.
+No further plans for future updates other than continuing to fish for bugs and further optimizations by testing the application with games.
 
 
 ## Aknowledgements, Credits, & Special Thanks (credits/thanks taken from the User Guide)
@@ -169,7 +170,7 @@ to determine the author of a change.
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
-aglab2 (Better load times and fixed flickering with CF0, SD space, slowdown boot fix, TLB safety checks)
+aglab2 (Better load times and fixed flickering with CF0, SD space, TLB safety checks)
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 https://github.com/aglab2/Project64-Legacy/commits/main/
 https://github.com/pj64team/Project64-1.6-Plus/pull/23
@@ -356,3 +357,6 @@ Jabo - Thanks for making such an outstanding video plugin with very little drawb
 To spare you the read, I'll just tell you shortly: ROMhackers are some of the most scummy people I have
 ever seen on the internet. While it is great and all having fun from awesome fanmade games, most people
 behind or involved in them are very malicious and dangerous. I suggest avoiding ROMhackers at all cost.
+If you want to play ROMhacks, I strongly advise obtaining them from the ROMhacks repository.
+DO NOT RESPOND TO ANY DIRECT MESSAGES FROM STRANGERS WHO CLAIM TO BE INVOLVED WITH ROMHACKS, ESPECIALLY
+IF THEY ARE ACTING IN UNPROFESSIONAL INAPPROPRIATE WAYS! Avoid any "servers" about ROMhacks in any way.

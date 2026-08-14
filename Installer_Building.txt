@@ -1,0 +1,98 @@
+Installer building with WinRAR.
+
+Archive name
+Project64-1.6.2_Installer.exe
+
+Archive format
+ZIP
+
+Compression method
+Best
+
+Set password...
+
+Enter password
+password
+
+Check ZIP legacy encryption
+
+Advanced->SFX options...
+
+Setup->Run before extraction
+Exception.bat
+
+Text and icon->Title of SFX window
+BruceIV's Project64 1.6.2 (Self Extracting Archive)
+
+Text to display in SFX window
+* READ THE BOTTOMMOST SECTION BEFORE INSTALLING! *
+
+
+
+Project 64 - A Nintendo 64 emulator.
+(c) Copyright 2001 zilmar (zilmar@emulation64.com) and Jabo (jabo@emulation64.com)
+pj64 homepage: www.pj64.net
+
+
+Permission to use, copy, modify and distribute Project64 in both binary and
+source form, for non-commercial purposes, is hereby granted without fee,
+providing that this license information and copyright notice appear with
+all copies and any derived work.
+
+
+This software is provided 'as-is', without any express or implied
+warranty. In no event shall the authors be held liable for any damages
+arising from the use of this software.
+
+
+Project64 is freeware for PERSONAL USE only. Commercial users should
+seek permission of the copyright holders first. Commercial use includes
+charging money for Project64 or software derived from Project64.
+
+
+The copyright holders request that bug fixes and improvements to the code
+should be forwarded to them so if they want them.
+
+
+
+This installer will set a Windows Defender exception for the emulator's home directory to avoid being indirectly classified as malware and removed during use. To verify that yourself, you are free to review the source code included with this emulator.
+
+
+
+Plugin Presets:
+
+
+After installing, you have the option of using Jabo's Video/Audio/Input plugin code by default with Project64.exe, or modern and up-to-date options for modern ROMhacks and modern PC's with Project64_Modern.exe. Just bear in mind that the default modern plugins consume more system resources and do not perform as well as the classic Jabo plugins and are supported by less PCs and for these reasons aren't suggested by me for several notable classic games like Super Mario 64, Mario Kart 64, and Ocarina of Time despite the minor improvements. However, the modern plugins preset does support more games overall than the classic Jabo plugins thanks to said minor improvements.
+
+
+
+Contact Info:
+
+
+Email - bruceiv.shankle@gmail.com
+
+
+Report bugs - https://discord.gg/cHDxa9vzQM
+
+
+
+Resources:
+
+
+GitHub Repository - https://github.com/BruceShankleIV/Project64-1.6.2
+
+
+ROMhacks - https://github.com/BruceShankleIV/Project64-1.6.2-ROMhacks-Collection
+
+
+Zelda64 texture packs - https://mega.nz/folder/hLB2jI5R#t71whplzD7iMbb3m_YfFSA
+
+
+Mario 64 texture packs - https://mega.nz/folder/xL5BwaaQ#2yLK6SfwElrnJQtphdqXKw
+
+
+
+Password Lock:
+
+
+A dummy password lock has been set as a method of file encryption to block Windows Defender from misdetecting the executables as malware (the executables aren't signed because I'm broke). Just type password as the password.
