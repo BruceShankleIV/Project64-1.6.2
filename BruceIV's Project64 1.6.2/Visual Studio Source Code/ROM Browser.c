@@ -486,8 +486,7 @@ void HideRomBrowser(void) {
 		long Style;
 		ShowWindow(hMainWindow,SW_RESTORE);
 		Style=GetWindowLong(hMainWindow,GWL_STYLE);
-		if (strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) ChangeWinSize(hMainWindow,640,480,NULL);
-		else {
+		if (!(strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0)) {
 			Style=Style&~(WS_SIZEBOX|WS_MAXIMIZEBOX);
 			SetWindowLong(hMainWindow,GWL_EXSTYLE,GetWindowLong(hMainWindow,GWL_EXSTYLE)&~WS_EX_COMPOSITED);
 		}
@@ -498,12 +497,13 @@ void HideRomBrowser(void) {
 		ShowWindow(hMainWindow,SW_SHOW);
 		FixupMenubar(hMainWindow);
 		UsuallyonTopWindow(hMainWindow);
-	}
-	if (strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0&&!GLideN64HasBeenSetupFirst&&!inFullScreen) {
-		GLideN64NeedsToBeSetupFirst=TRUE;
-		strcpy(GfxDLL,"GLideN64.dll");
+		if (strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0&&!GLideN64HasBeenSetupFirst) {
+			GLideN64NeedsToBeSetupFirst=TRUE;
+			strcpy(GfxDLL,"GLideN64.dll");
+		}
 	}
 	SetupPlugins(hMainWindow);
+	if (strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0&&!inFullScreen) ChangeWinSize(hMainWindow,640,480,NULL);
 }
 void HandleShutdown (HWND hParent) {
 	CPURunning=FALSE;
