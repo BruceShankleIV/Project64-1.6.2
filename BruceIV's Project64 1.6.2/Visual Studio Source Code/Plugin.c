@@ -414,9 +414,7 @@ void SetupPlugins (HWND hWnd) {
 				if (MessageBox(NULL,GS(MSG_FAIL_INIT_AUDIO),AppName,MB_OKCANCEL|MB_ICONEXCLAMATION|MB_SETFOREGROUND)==IDCANCEL) PluginsInitialized=TRUE;
 				HandleModal2(hMainWindow);
 			}
-			if (AiUpdate) {
-				hAudioThread=CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)AudioThread,(LPVOID)NULL,0,NULL);
-			}
+			if (AiUpdate) hAudioThread=CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)AudioThread,(LPVOID)NULL,0,NULL);
 		}
 		if (!LoadControllerDll(ControllerDLL)) {
 			PluginsInitialized=FALSE;
@@ -524,8 +522,8 @@ void SetupPlugins (HWND hWnd) {
 			RspInfo11.DPC__PIPEBUSY_REG=&DPC_PIPEBUSY_REG;
 			RspInfo10.DPC__TMEM_REG=&DPC_TMEM_REG;
 			RspInfo11.DPC__TMEM_REG=&DPC_TMEM_REG;
-			if (RSPVersion==0x0100) { InitiateRSP_1_0(RspInfo10,&RspTaskValue); }
-			if (RSPVersion==0x0101) { InitiateRSP_1_1(RspInfo11,&RspTaskValue); }
+			if (RSPVersion==0x0100) InitiateRSP_1_0(RspInfo10,&RspTaskValue);
+			if (RSPVersion==0x0101) InitiateRSP_1_1(RspInfo11,&RspTaskValue);
 		}
 	}
 	if (!PluginsInitialized) {
@@ -577,6 +575,7 @@ void SetupPlugins (HWND hWnd) {
 		} else HandleTimers();
 		if (strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) SetWindowLong(hMainWindow,GWL_EXSTYLE,GetWindowLong(hMainWindow,GWL_EXSTYLE)|WS_EX_COMPOSITED);
 	}
+	UsuallyonTopWindow(hMainWindow);
 }
 void SetupPluginScreen (HWND hDlg) {
 	WIN32_FIND_DATA FindData;

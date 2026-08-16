@@ -47,13 +47,8 @@ HWND hMainWindow,hHiddenWin,hStatusWnd;
 char CurrentSave[256];
 HMENU hMainMenu;
 HINSTANCE hInst;
-void MenuSetText (HMENU hMenu,int MenuPos,char*Title,char*Shortcut);
 void RomInfo     (void);
 void ShutdownApplication (void);
-void FixupMenuBar(HWND hWnd);
-void SetupMenu   (HWND hWnd);
-void HandleModal1(HWND hWnd);
-void HandleModal2(HWND hWnd);
 LRESULT CALLBACK AboutIniBoxProc (HWND,UINT,WPARAM,LPARAM);
 LRESULT CALLBACK Main_Proc       (HWND,UINT,WPARAM,LPARAM);
 LRESULT CALLBACK RomInfoProc     (HWND,UINT,WPARAM,LPARAM);
@@ -895,8 +890,8 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 				if (AutoHide) ShowCursor(FALSE);
 				else if (strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) ShowCursor(TRUE);
 			}
-			if (!CPU_Paused&&(LimitFPS&&!SyncGametoAudio||!LimitFPS&&SpeedCap)) Timer_Start();
-			SetupMenu(hWnd);
+			if (strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) SetupMenu(hWnd);
+			else if (!CPU_Paused&&(LimitFPS&&!SyncGametoAudio||!LimitFPS&&SpeedCap)) Timer_Start();
 			break;
 		case ID_SYSTEM_ALTERNATEPAUSE:
 			if (ClearFrame) break;
@@ -1281,7 +1276,6 @@ void SetupMenu (HWND hWnd) {
 	HMENU hMenu=GetMenu(hWnd),hSubMenu;
 	int State;
 	if (inFullScreen) return;
-	if (CPURunning&&strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) SetWindowLong(hMainWindow,GWL_EXSTYLE,GetWindowLong(hMainWindow,GWL_EXSTYLE)&~WS_EX_COMPOSITED);
 	DestroyMenu(hMenu);
 	hMenu=LoadMenu(hInst,MAKEINTRESOURCE(MAIN_MENU));
 	FixMenuLang(hMenu);
@@ -1333,7 +1327,6 @@ void SetupMenu (HWND hWnd) {
 	SetMenu(hWnd,hMenu);
 	hMainMenu=hMenu;
 	if (strlen(LastRoms[0])==0) EnableMenuItem(hMenu,ID_FILE_STARTEMULATION,MFS_DISABLED|MF_BYCOMMAND);
-	if (CPURunning&&strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) SetWindowLong(hMainWindow,GWL_EXSTYLE,GetWindowLong(hMainWindow,GWL_EXSTYLE)|WS_EX_COMPOSITED);
 	if (strlen(RomName)!=0) EnableMenuItem(hMenu,ID_OPTIONS_CHEATS,MFS_ENABLED|MF_BYCOMMAND);
 }
 void SetCurrentSaveState (HWND hWnd,int State) {
