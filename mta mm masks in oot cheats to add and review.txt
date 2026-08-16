@@ -1,0 +1,3692 @@
+mm masks in oot cheats to add:
+
+instant equip
+D0217965 0007
+D0217969 0003
+80217965 0000
+
+80206883 00??
+80206896 00??
+00 Off
+01 On
+collision viewer
+
+$Beta\In-Game Time HUD
+80206268 00??
+00 Off
+01 On
+
+title screen map select
+810FFFB4 00D0
+810FFFB6 8E80
+810FFFB8 00D0
+810FFFBA B9E0
+810FFFBC 8080
+810FFFBE 0C20
+810FFFC0 8080
+810FFFC2 3780
+810FFFC4 0000
+810FFFC6 0000
+810FFFC8 8080
+810FFFCA 1CD4
+
+$Beta\Load Scene Modifier
+Note=This will load a specific layout of the map once you enter it (some of the Beta Worlds may crash, Be Cautious!)
+8013F2DF 00??
+00 Child Timeline (Day)
+01 Child Timeline (Night)
+02 Adult Timeline (Day)
+03 Adult Timeline (Night)
+
+$Beta\Map Textures
+80206790 00??
+00 Off
+01 On
+
+$Beta\Reveal Secrets and Other Debug Stuff
+80206CE4 00??
+00 - Off
+01 On
+
+$Beta\Unused Transition
+8120627A ????
+0000 - Off
+FFFF - On
+
+$Beta\View Hitboxes
+81206883 ????
+0000 - Off
+0001 - On
+
+$Change Forms\Press L to Transform into
+Note=Thanks to Aegiker for providing me this code.
+D0207035 0020
+D213DF37 ????
+80219700 ????
+0000 Adult
+0001 Child
+0002 Deity
+0003 Goron
+0004 Zora
+0005 Deku
+
+$Control Commands\Hold A to Run
+D0207034 0080
+80219FD0 0042
+
+$Control Commands\Hold R to go to
+Note=While Entering a Loading Zone or Warping, you'll hold R to go to a specific place.
+D0207035 0010
+81218F9E ????
+0000 Inside the Deku Tree
+0004 Dodongo's Cavern
+0008 Gerudo Training Grounds
+000C Phantom Ganon
+0010 Water Temple
+0018 Inside Jabu Jabu's Belly
+001E Royal Family's Tomb
+0024 Market (Coming from Center Market)
+0027 Shadow Temple
+002B Kakariko Shooting Gallery
+002F Grotto
+0033 Lakeside Laboratory
+0037 Graveyard Fairy's Fountain Grave
+003B Lon Lon Ranch House
+003F Temple of Time
+004F Treasure Box Shop
+0055 Back Alley Right Side from House Entrance
+0057 Chamber of Sages (Forest Medallion Cutscene)
+005E Kakariko Potion Shop
+0062 Castle Courtyard
+0066 Market Guard Shack
+006A Spirit Temple
+0070 Ice Cavern
+0076 Spirit Temple Nabooru Iron Knuckle Fight
+007C Bottom of the Well
+0080 House of Twins
+0085 Cutscene Map
+0091 Back Alley Right Side
+0095 Center Market
+009A Kakariko Village Bazaar
+009E Link's House
+00A4 Kokiri Shop
+00A8 Dodongo's Cavern (From Boss Room)
+00AD House of Know-it-All Brothers
+00B0 Hyrule Field (From Ocarina of Time Cutscene)
+00BD Kakariko Village
+00C8 Graveyard
+00CD Zora's River
+00D2 Kokiri Forest (Unused Spawn)
+00DF Sacred Forest Meadow)
+00E6 Lake Hylia
+00EB Zora's Domain
+00F2 Zora's Fountain (After Zora's Sapphire Cutscene)
+00FA Gerudo Valley
+0102 Lost Woods
+0106 Desert Collosus
+010C Gerudo's Fortress
+0114 Haunted Wasteland
+0118 Tower Collapse Interior Top Floor from Closed Gate
+011B Hyrule Castle
+011F Ganon's Castle
+0122 Death Mountain Trail
+012A Death Mountain Crater (From Trail)
+0130 Goron City (From Trail)
+0136 Zora's Domain (After Timer Expires)
+013A Lon Lon Ranch
+0149 Fire Temple
+014F Forest Temple
+0150 Market Shooting Gallery
+0156 Future Temple of Time Yard
+015A Fire Temple from Boss Room
+015D Tower Collapse Interior Top Floor
+0160 Hyrule Field from Kakariko Village
+0164 Hyrule Field from Zora's River
+0167 Hyrule Field from Lost Woods Bridge
+016B Hyrule Field from Lake Hylia
+016F Hyrule Field from Gerudo Valley
+0174 Kakariko Village from Trail
+0178 Kakariko Village from Graveyard
+017D Zora's River (Top of River Unused Spawn)
+0180 Zora's River from Zora's Domain
+0184 Zora's Domain from Zora's Fountain
+0188 Gerudo Valley After being caught by Gerudo's without Hookshot Past Timeline
+018D Lost Woods from Sacred Forest Meadow
+0190 Lost Woods after Timer Expires Past Timeline
+0194 Lost Woods Unused Spawn
+0198 Tower Collapse Interior 3rd Floor
+019D Death Mountain Trail from Goron City
+01A0 Death Mountain Trail from Death Mountain Crater
+01A4 Goron City Unused Spawn (Starts Darunia Dancing Cutscene)
+01A8 Lakeside Laboratory After Timer Expires
+01AD Tower Collapse Exterior Bottom Floor
+01B0 Market Shooting Gallery Entrance
+01B4 Market Happy Mask Shop Entrance
+01B8 Market Treasure Box Shop Entrance
+01BB Future Market Treasure Box Shop Entrance
+01BF Zora's River from Hyrule Field Water Entrance
+01C2 Zora's River from Lost Woods
+01C5 Desert Colossus from Spirit Temple
+01C8 Desert Colossus Silver Gauntlets
+01CD Desert Colossus Mirror Shield
+01D0 Desert Colossus After Requiem of Spirit Cutscene
+01D4 Desert Colossus Warp Pad
+01D8 Desert Colossus After Nabooru Cutscene
+01DD Hyrule Field from Lon Lon Ranch
+01E0 Hyrule Field from Market
+01E4 Kakariko Village from Bazaar
+01E8 Graveyard from Shadow Temple
+01ED Kokiri Forest from Inside the Deku Tree
+01F0 Kokiri Forest from Lost Woods Bridge
+01F4 Kokiri Forest from Link's House
+01F8 Sacred Forest Meadow from Forest Temple
+01FD Lake Hylia from Gerudo Valley
+0200 Lake Hylia from Water Temple Past Timeline
+0204 Zora's Fountain from Inside Jabu-Jabu's Belly
+0208 Zora's Fountain from Zora's Domain
+020D Gerudo Valley on Gerudo's Fortress Loading Spot (Unused???)
+0210 Gerudo Valley from Gerudo's Fortress
+0214 Gerudo's Fortress from Thieves' Hideout Left Side
+0218 Gerudo's Fortress from Thieves' Hideout Behind Crates
+021D Gerudo's Fortress from Thieves' Hideout Bottom Center
+0220 Hyrule Castle from Castle Courtyard
+0225 Death Mountain Trail from Dodongo's Cavern
+022A Death Mountain Crater from Goron City
+022D Death Mountain Crater from Fire Temple
+0232 Forest Temple from Boss Room
+0236 Inside the Deku Tree from Boss Room
+023A Tower Collapse Interior 2nd Floor Opposite Side
+023D Market from Hyrule Castle
+0240 Future Market from Ganon's Castle
+0244 Future Market from Temple of Time Yard
+0248 Future Market from Back Alley Right Side
+024A Kokiri Forest from Kokiri Shop
+024D Kokiri Forest from House of Know-It-All Brothers
+0252 Night Market from Guard Shack
+0256 Link's House from Kokiri Forest
+025A Night Market from Hyrule Field
+0264 Hyrule Field (Unused Spawn)
+0268 Kokiri Forest from Lost Woods
+026D Hyrule Field after Jumping Lon Lon Ranch Fence Facing Towards Lake Hylia
+0270 Hyrule Field after Jumping Lon Lon Ranch Fence Facing Towards Gerudo Valley
+0274 Hyrule Field after Jumping Lon Lon Ranch Fence Facing Towards Lost Woods Bridge
+0278 Castle Courtyard from Zelda's Courtyard
+027D Back Alley Left Side Day
+0280 Back Alley Left Side Night
+0284 Future Market from Back Alley Left Side
+0288 Future Market from Bombchu Bowling Alley
+028B Kakariko Village from Bottom of the Well
+028F Gerudo's Fortress from Theives' Hideout 2nd Floor Right Side
+0293 Lon Lon Ranch after Learning Epona's Song
+0296 Shadow Temple from Boss Room
+029D Gerudo's Fortress from Theives' Hideout next to Gerudo Training Grounds Entrance
+02A2 Gerudo's Fortress from Theives' Hideout 2nd Floor Left Side
+02A5 Gerudo's Fortress from Theives' Hideout Above Gerudo Training Grounds Entrance
+02A9 Gerudo's Fortress from Theives' Hideout 3rd Floor Right Side from Battle Area
+02AD Temple of Time after Pulling Master Sword
+02B5 Gerudo's Fortress from Theives' Hideout 3rd Floor Center
+02B9 Gerudo's Fortress from Theives' Hideout 3rd Floor Left Side
+02BD Gerudo's Fortress from Theives' Hideout Path to Platform above Jail
+02C2 Gerudo's Fortress from Theives' Hideout Platform Above Jail
+02C5 Lon Lon Ranch Gate North (Unused?)
+02C9 Lon Lon Ranch Gate East (Unused?)
+02D2 Cutscene Map
+02D9 Spirit Temple from Boss Room
+02DD Stable
+02E0 Kakariko Village House
+02E4 Barinade
+02E8 Volvagia
+02EC Lake Hylia from Fishing Pond
+02F0 Gravekeeper's Hut
+02F4 Hyrule Field from Zora's River Water Entrance
+02F8 Great Fairy's Fountain (Magic)
+02FF Graveyard Grave Redead Heart Piece
+0303 Temple of Time In front of Stones (Unused)
+0308 Temple of Time In front of Master Sword After first Sheik encounter
+030B Zora's Domain from Lake Hylia
+030F Tower Collapse Exterior Jumping Platform
+0313 Tower Collapse Exterior 3rd Floor Gate Entrance
+0317 Tower Collapse Exterior 2nd Floor
+031B Kokiri Forest On Top of Link's House (Unused)
+031F Kokiri Forest from Twins House
+0324 Hyrule Castle from Great Fairy's Fountain
+0328 Kakariko Village from 2 Entrance House
+032D Kakariko Village from House
+0330 Kakariko Village from Potion Shop
+0334 Kakariko Village from Windmill
+033B Graveyard from Gravekeeper's Hut
+033F Graveyard from Dampe's Grave
+0343 Graveyard from Fairy's Fountain Grave
+0346 Graveyard from Redead Heart Piece Grave
+034B Haunted Wasteland from Desert Colossus
+0352 Fairy's Fountain
+0356 Great Fairy's Fountain (Farore's Wind)
+035B Lon Lon Ranch from House
+035F Goron Shop
+0363 Zora Shop
+0368 Kakariko Potion Shop
+036B Market Potion Shop
+0370 Back Alley Night from Dog Lady's House
+0378 Zora's Fountain from Great Fairy's Fountain
+037F 2 Entrance House from Kakariko Village
+0384 Gerudo's Tent
+0388 Gerudo's Fortress from Thieves' Hideout between 2nd and 3rd Floor from Battle Area
+038B Gerudo's Fortress from Thieves' Hideout from Gerudo Training Grounds
+038F Gerudo's Fortress from Haunted Wasteland
+0394 Gerudo's Fortress after Archery Mini Game
+0398 Gerudo's Fortress Jail
+039B Past Market from Bazaar
+039F Past Market from Bombchu Bowling Alley
+03A4 Back Alley Night from Bombchu Shop
+03A8 Zora's Domain from Zora Shop
+03AF Lake Hylia from Lakeside Laboratory
+03B4 Gerudo Valley from Gerudo Tent
+03B8 Zora's Fountain from Ice Cavern
+03BB Zora's Fountain (Unused Spawn?)
+03BF Tower Collapse Interior Battle with Stalfos
+03C4 Tower Collapse Interior Battle with Stalfos Opposite Side
+03C8 Tower Collapse Interior Room before Stairs
+03CB Potion Shop from Kakariko Village
+03CF Potion Shop from Kakariko Village from Back Entrance
+03D4 Spirit Temple from Silver Gauntlets
+03D8 Spirit Temple from Mirror Shield
+03DF Goron City from Goron Shop
+03E4 Zelda's Courtyard
+03EA Inside Jabu-Jabu's Belly from Boss Room
+03EE King Dodongo
+03F3 Queen Gohma
+03F6 Bongo Bongo
+03FA Morpha
+03FE Ganon's Tower
+0403 Ganondorf
+0406 Water Temple
+040A Ganon's Tower from Ganondorf
+040E Ganon's Tower from Below Ganondorf
+0413 Lon Lon Ranch from Stable
+0416 Mido's House
+041A Saria's House
+041E Back Alley House
+0424 Tower Collapse Exterior after Ganondorf
+0428 Kokiri Forest from Mido's House
+042B Kokiri Forest from Saria's House
+042F Kakariko Village from Potion Shop
+0434 Dampe's Grave
+0438 Windmill
+043B Kokiri Forest after Gohma
+043F Death Mountain Trail from Great Fairy's Fountain
+0444 Fishing Pond
+0448 Kakariko Village from Shooting Gallery
+044B Inside Ganon's Castle
+0456 Temple of Time Yard from Temple of Time at Night
+045A Hyrule Field from Owl Drop Off
+045E Death Mountain Trail after King Dodongo
+0465 Death Mountain Crater from Great Fairy's Fountain
+0469 Thieves' Hideout 1st Floor Left Side
+046D Thieves' Hideout 1st Floor Behind Crates Entrance
+0472 Thieves' Hideout 1st Floor Center Entrance
+0475 Thieves' Hideout 2nd Floor Right Side
+0479 Thieves' Hideout 1st Floor next to Gerudo Training Grounds Entrance
+047D Thieves' Hideout 2nd Floor Left Side
+0482 Thieves' Hideout Above Gerudo Training Grounds
+0485 Thieves' Hideout 3rd Floor Right Side
+0489 Thieves' Hideout 3rd Floor Center
+048D Thieves' Hideout 3rd Floor Left Side
+0492 Thieves' Hideout Path to Platform above Jail
+0495 Thieves' Hideout Path to Platform above Jail Top Floor
+049A Tower Collapse Interior Room before Bridge
+049E Tower Collapse Exterior Top Floor Gate Entrance
+04A2 Great Fairy's Fountain (Double Magic)
+04A5 Great Fairy's Fountain (Din's Fire
+04A9 Lost Woods Entrance to Skull Kid Ocarina Mini Game (Unused)
+04B6 Lost Woods Area before Last to Sacred Forest Meadow (Unused)
+04B9 Lost Woods from Goron City
+04BD Lost Woods from Zora's River
+04C3 Lost Woods Bridge from Hyrule Field (Plays Lost Woods Music)
+04C6 Goron City from Lost Woods
+04C9 Lake Hylia Warp Pad
+04D3 Kakariko Village from House of Skulltula
+04D6 Great Fairy's Fountain but Exiting takes you to Kakariko Village from the Potion Shop Entrance
+04DA Death Mountain Crater Warp Pad
+04DF Ganon's Castle
+04E4 Kakariko Village from Potion Shop Back Side
+04E8 Windmill after Cutscene
+04EB Bombchu Bowling Alley
+04EF Graveyard from Royal Family's Tomb
+04F4 Hyrule Field after Learning Song of Time
+04F8 Kakariko Village after Sheik Cutscene
+04FB Ganon
+0502 Tower Collapse Exterior after Stalfos Battle
+050A Bombchu Shop
+050B Market Bazaar
+050F Happy Mask Shop
+0513 Ganon's Tower Entrance
+0517 Ganon's Castle Forest Trial Entrance
+051B Ganon's Castle Water Trial Entrance
+051F Ganon's Castle Shadow Trial Entrance
+0524 Ganon's Castle Fire Trial Entrance
+0528 Ganon's Castle Light Trial Entrance
+052C Ganon's Castle Spirit Trial Entrance
+0530 House of Skulltula
+0534 Kakariko Village Rooftop Owl Drop Off
+0537 Lon Lon Ranch Horse Race Child Timeline Exit (outside of a wall)
+053F Lake Hylia Zora's Domain Entrance
+0543 Death Mountain Crater Fire Temple Child Timeline Exit (unloaded area)
+0547 Graveyard Warp Pad
+054B Tower Collapse Interior (Room before Last)
+054F Thieves' Hideout (with Gerudo Guard and Crate at Entrance)
+0554 Royal Family's Tomb After Learning Sun's Song Entrance
+0557 Great Fairy's Fountain (Din's Fire)
+055B Desert Colossus Nayru's Love Entrance
+0564 Forest Temple Falling Ceiling Room
+0567 Great Fairy's Fountain (Nayru's Love)
+056B Temple of Time (After Light Arrow Cutscene)
+0573 Hyrule Field (After Impa Cutscene)
+0576 Hyrule Field Kakariko Side Grotto
+057B Hyrule Field Lake Hylia Side Grotto
+057F Kakariko Village Grotto
+0583 Lake Hylia/Death Mountain Crater Grotto
+0588 Hyrule Field Grotto Near Gerudo Valley
+058B Gerudo Valley Grotto
+058F Lost Woods Grotto
+0594 Sacred Forest Meadow Grotto
+0598 Hyrule Castle Grotto
+059B Desert Colossus Grotto
+059F Hyrule Field Grotto Water Heart Piece
+05A4 Mask Scrubs Grotto in Lost Woods
+05A8 Kakariko Village 2 Entrance House Heart Piece Entrance
+05AF Lon Lon Ranch Silo
+05B4 Lon Lon Ranch from Silo
+05B8 Ice Cavern Pushable Block Room Unloaded
+05BB Kakariko Village from 2 Entrance House Heart Piece Side
+05BF Lost Woods Bridge from Kokiri Forest
+05C4 Lon Lon Ranch House after Cucco Mini Game
+05CB Spirit Temple Twinrova Room
+05CF Zelda's Courtyard after Triforce Cutscene, starts Cutscene with Zelda
+05D4 Temple of Time Warp Pad
+05DB Death Mountain Trail Grotto
+05DF Sacred Forest Meadow Warp Pad
+05E4 Lake Hylia Warp Pad
+05E8 Sacred Forest Meadow
+05F4 Termina Field from West Clock Town
+0604 Dodongo's Cavern with Lizalfos Room Loaded
+061F Inside Jabu-Jabu's Belly with Room with Falling Floors Loaded
+
+$Control Commands\Hold R+B for Zora Barrier in any Form
+D1207034 4010
+8021A491 00FF
+
+$Control Commands\Press A+B for Instant Goron Spike Rolling
+Note=Hold A+B for awesome rolling effect and you don't need Magic to be able to use the Instant Goron Spike Rolling Code, and to exit out of the Rolling, you must press B.
+D0207034 00C0
+8021A2A7 0004
+D0207034 0040
+8021A2A7 0000
+
+$Control Commands\Press L/R to Swap Timelines
+Note=L = Child Timeline, R = Adult Timeline, you must reload the area or load a new area to take in effect.
+D0207035 0020
+8013F2B0 0001
+D0207035 0010
+8013F2B0 0000
+
+$Control Commands\Z+R+B to Swim on Land
+D1207034 6010
+804CD2A8 0011
+
+$Equip\B-Button\Child/Adult Link
+8013F2B1 00??
+
+$Equip\D-Pads/L/R to Change Boots
+D0207034 0004
+802198DB 0006
+D0207034 0002
+802198DB 000C
+D0207034 0001
+802198DB 0001
+D0207034 0008
+802198DB 0009
+D0207035 0020
+802198DB 0002
+D0207035 0010
+802198DB 0000
+
+$Equip\Equip Swords/Shields/Tunics/Boots in any Form
+Note=Thanks to Aegiker for providing me this code.
+D14BE6A8 90A4
+814BE6A8 3404
+D14BE6AA 0000
+814BE6AA 0009
+
+$Equip\Equip C Items in Any Form
+Note=For the Adult/Child Trade Item Slots, it only works depending on the timeline you're in, so if you're in the Child Timeline, you can equip items from the Child Trade Item Slot but not the Adult Trade Item Slot, if you're in the Adult Timeline, you can equip Items from the Adult Trade Item Slot, but not the Child Trade Items Slot, this effect includes if you're a Child or an Adult.
+80106014 003F
+80106015 003F
+80106016 003F
+80106017 003F
+80106018 003F
+80106019 003F
+8010601A 003F
+8010601B 003F
+8010601C 003F
+8010601D 003F
+8010601E 003F
+8010601F 003F
+80106020 003F
+80106021 003F
+80106022 003F
+80106023 003F
+80106024 003F
+80106025 003F
+80106026 003F
+80106027 003F
+80106028 003F
+80106029 003F
+8010602A 003F
+8010602B 003F
+
+$Equip\Equip Swords as Fierce Deity Link
+Note=This will allow Fierce Deity Link to use whatever B-Button is assigned to Child/Adult to be used on his B-Button! Thanks to Aegiker for providing me this code.
+814DA024 1000
+D0111C16 0000
+D01B0F02 0000
+814D8644 1000
+D0111C16 0000
+D01B0F02 0000
+D14CBB54 5062
+814CBB54 2400
+D0111C16 0000
+D01B0F02 0000
+814BFD88 1000
+
+$Fixes\Credits Crash Fix
+Note=In this mod after the Gorons, Zora's, Ingo, and Talon are dancing in the cutscene, the next cutscene usually crashes, this fixes it!
+D02070C5 0051
+D1218F9E 00FA
+D00FD077 0003
+D0207341 0001
+D02074AC 0000
+D02074AD 0007
+D02077B4 0080
+D02077B5 0020
+D02077B6 0073
+D02077B7 006C
+D02077C1 0001
+D02077C3 0001
+D013F2DF 000B
+8013F2B0 0001
+D02070C5 0055
+D1218F9E 00B0
+D013F2DF 000B
+D00FD077 0003
+D0207341 0001
+D02074AC 0000
+D02074AD 0007
+D02077B4 0080
+D02077B5 0020
+D02077B6 0073
+D02077B7 006C
+D02077C1 0001
+D02077C3 0001
+8013F2B0 0000
+D02070C5 0051
+D1218F9E 013A
+D013F2DF 0009
+D00FD077 0003
+D0207341 0001
+D02074AC 0000
+D02074AD 0007
+D02077B4 0080
+D02077B5 0020
+D02077B6 0073
+D02077B7 006C
+D02077C1 0001
+D02077C3 0001
+8013F2B0 0001
+D02070C5 0063
+D1218F9E 013A
+D013F2DF 0008
+D0218F99 00EC
+8013F2B0 0001
+D02070C5 0063
+D1218F9E 013A
+D013F2DF 0008
+D00FD077 0003
+D0207341 0001
+D02074AC 0000
+D02074AD 0007
+D02077B4 0080
+D02077B5 0020
+D02077B6 0073
+D02077B7 006C
+D02077C1 0001
+D02077C3 0001
+D0218F99 0014
+8013F2B0 0000
+D02070C5 0063
+D1218F9E 013A
+D013F2DF 0009
+D00FD077 0003
+D0207341 0001
+D02074AC 0000
+D02074AD 0007
+D02077B4 0080
+D02077B5 0020
+D02077B6 0073
+D02077B7 006C
+D02077C1 0001
+D02077C3 0001
+8013F2B0 0001
+
+$Fixes\Loading Zones and Music in Termina Field
+Note=Majority of the Loading Zones you would enter Termina Field would crash the game this fixes it! also adds music while in Termina Field.
+D02070C5 0065
+81491900 00E6
+D02070C5 0065
+81491906 013A
+D02070C5 0065
+814918FE 00DF
+D02070C5 0065
+81491902 0070
+D02070C5 0065
+8149190E 0033
+D02070C5 0065
+81491904 0120
+D02070C5 0065
+814918FC 0281
+D02070C5 0065
+8149190C 023D
+D02070C5 0065
+81491908 0095
+D02070C5 0065
+8149190A 0241
+D02070C5 0065
+802077C4 006E
+D02070C5 0065
+802077C5 000C
+D02070C5 0065
+8013F2DF 0000
+D02070C5 0065
+D0219E0F 0000
+D0218F99 0000
+D0151C73 006E
+8013F3A2 0001
+D02070C5 0065
+D0219E0F 0001
+D0218F99 0014
+8013F3A2 0000
+
+$Fixes\Medallions Cutscene in Child Timeline\Fire Medallion\V1
+Note=After Obtaining the Fire Medallion in the Child Timeline, this code will fix your Spawning Point when you spawn in Death Mountain Crater instead of spawning you in an unloaded area.
+D013F2B0 0001
+D1218F9E 0543
+8013F2DF 0003
+
+$Fixes\Medallions Cutscene in Child Timeline\Forest Medallion\V1
+Note=Talking to the Deku Tree Sprout in the second cutscene will not crash in the Child Timeline with this code checked!
+D013F2B0 0001
+D1218F9E 05C7
+8013F2DF 0003
+
+$Fixes\Medallions Cutscene in Child Timeline\Shadow Medallion\V1
+Note=Spawning in the Graveyard after Obtaining the Shadow Medallion in the Child Timeline will not crash!
+D013F2B0 0001
+D1218F9E 055F
+8013F2DF 0003
+
+$Fixes\Medallions Cutscene in Child Timeline\Spirit Medallion\V1
+Note=Spawning in Desert Colossus after Obtaining the Spirit Medallion in the Child Timeline will not crash!
+D013F2B0 0001
+D1218F9E 05EF
+8013F2DF 0003
+
+$Fixes\Restore Ganon's Tower Crumbling Cutscene
+D1218F9E 04FA
+D02070C5 004F
+8113DF3A FFFD
+D1218F9E 04FA
+D02070C5 004F
+8013F2DF 0004
+D1218F9E 04FA
+D02070C5 004F
+D113B380 977D
+81218F9E 04FB
+D1218F9E 04FB
+D02070C5 004F
+D113B380 977D
+8013F2DF 0003
+D02070C5 004F
+D1218F9E 04FB
+81218F9E 04FB
+D02070C5 004F
+D1208D8C 7901
+81218F9E 04FB
+
+$Fixes\Shields for Masked Forms
+Note=Normally whenever a Shield is not equipped, Fierce Deity Link can't "use" a shield, and Zora Link can use Mirror Shield to reflect Light and Twinrova's Powers when it's equipped, Goron Link can reflect objects with Deku and Hylian Shield even though he's not suppose to, this fixes it to where Fierce Deity Link will always have a Shield regardless if one is equipped or not, this will also assign Zora Link a Shield without having Mirror Shield Powers whether or not if it's equipped, and Goron Link can't reflect objects as intended!
+D013DF37 0004
+802198DA 0001
+D013DF37 0002
+802198DA 0002
+D013DF37 0003
+802198DA 0003
+
+$Fixes\Start Nabooru Iron Knuckle Fight Immediately in Child Timeline
+Note=This fixes it to where if you enter the Spirit Temple Boss Room for the very first time while in the Child Timeline, it'll start the Nabooru Iron Knuckle Fight immediately while also leaving the Twinrova Cutscene untouched while in the Adult Timeline.
+D013F2B0 0001
+D013EE0A 0000
+8013EE0A 0008
+D013EE1D 0000
+D013F2B0 0000
+8013EE0A 0000
+
+$Colors\HUD\N64 Colors
+802064D1 005A
+802064D3 005A
+802064D5 00FF
+802061FB 0000
+802061FD 0096
+802061FF 0000
+802061F3 00FF
+802061F5 00A0
+802061F7 0000
+8007BB2C 0031
+8107BB2A C800
+8007BB2E 0000
+80155979 0050
+8015597B 00FF
+8015597D 0096
+80155985 00FF
+80155987 0032
+80155989 00FF
+8112DD60 0000
+8112DD62 0050
+8112DD64 00C8
+8112DD66 0032
+8112DD68 0082
+8112DD6A 00FF
+
+$Colors\HUD\GCN Colors
+802064D1 0000
+802064D3 00C8
+802064D5 0032
+802061FB 00FF
+802061FD 001E
+802061FF 001E
+802061F3 00FF
+802061F5 00A0
+802061F7 0000
+8007BB2C 0035
+8107BB2A 7878
+8007BB2E 0078
+80155979 0050
+8015597B 0096
+8015597D 00FF
+80155985 00FF
+80155987 0032
+80155989 00FF
+8112DD60 0000
+8112DD62 00C8
+8112DD64 0050
+8112DD66 0032
+8112DD68 00FF
+8112DD6A 0082
+D12173F2 0000
+D02173F4 0000
+D112DD5C 0000
+8112DD5C 0004
+D12173F2 0000
+D02173F4 0000
+D112DD6C 000C
+8112DD6C 000B
+D12173F2 0000
+D02173F4 0000
+D112DD6E 0050
+8112DD6E 00CC
+D12173F2 0000
+D02173F4 0000
+D112DD70 00C8
+8112DD70 0054
+
+$Glitches\Walking While Talking
+Note=While interacting with a Sign, Navi, NPC, or while on Epona, you can use a Deku Nut to gain control over Link.
+804DAF61 0000
+
+$Infinite\Invincibility Frames
+Note=You can still take knock back damage from some enemies but you won't actually lose any health even from voiding out, the only way you can die is from heat and underwater timers unless you have the infinite health cheat, having both cheats on will make you truly invincible.
+8121A210 ????
+0000 No I-Frames
+7FFF Infinite I-Frames
+
+$Infinite\Rupees
+8113DF64 03E7
+
+$Infinite\Zora Barrier
+8021A491 00FF
+
+$Main Quests\Temple of Time\Door of Time/Master Sword
+8013EE0C 00??
+00 Closed
+08 Opened
+80 Watched Master Sword Cutscene
+88 Opened and Watched Master Sword Cutscene
+
+$Main Quests\Temple of Time\Light Arrow/Fairy Ocarina Cutscene
+8013EE1D 00??
+00 Not Triggered
+02 Fairy Ocarina Cutscene Watched
+10 Light Arrow Cutscene Watched
+12 Light Arrow/Fairy Ocarina Cutscene Watched
+
+$Main Quests\Temple of Time\Sheik Blocking Pedestal
+8013EE0F 00??
+00 Blocking
+70 Not Blocking
+
+$Masks\Fierce Deity Mask Anywhere
+Note=This Code will make Fierce Deity Mask Unrestricted outside of Boss Rooms (Thanks to Aegiker for providing me this code)
+81077430 1000
+81077432 002F
+
+$Masks\Fierce Deity Mask Changes your Age
+Note=While on the Pause Menu, have your selector on the Fierce Deity Mask and toggle with C-Up to either turn you into Fierce Deity Link or to change your Age.
+D0217999 0015
+D0111C16 0001
+D02179BD 003F
+D0207035 0008
+D078001D 0000
+8078001C 0001
+D0217999 0015
+D0111C16 0001
+D02179BD 003A
+D0207035 0000
+D078001C 0001
+8078001D 0001
+D0217999 0015
+D0111C16 0001
+D02179BD 003A
+D0207035 0008
+D078001D 0001
+8078001C 0000
+D0217999 0015
+D0111C16 0001
+D02179BD 003F
+D0207035 0000
+D078001C 0000
+8078001D 0000
+D078001C 0001
+D1219E04 804B
+D1219E06 E2D4
+D013DF37 0000
+D021A22F 0002
+8021A22F 0001
+D078001C 0001
+D1219E04 804B
+D1219E06 E2D4
+D013DF37 0001
+D021A22F 0002
+8021A22F 0000
+D0217999 0015
+D078001C 0001
+D02179BF 003F
+802179BF 003A
+D1219E04 804B
+D1219E06 E2D4
+D078001C 0001
+D013DF37 0002
+D013F2B0 0000
+8021A22F 0001
+D1219E04 804B
+D1219E06 E2D4
+D021A22F 0002
+D078001C 0001
+D013DF37 0003
+D013F2B0 0000
+8021A22F 0001
+D1219E04 804B
+D1219E06 E2D4
+D021A22F 0002
+D078001C 0001
+D013DF37 0004
+D013F2B0 0000
+8021A22F 0001
+D1219E04 804B
+D1219E06 E2D4
+D021A22F 0002
+D078001C 0001
+D013DF37 0005
+D013F2B0 0000
+8021A22F 0001
+D1219E04 804B
+D1219E06 E2D4
+D078001C 0001
+D013DF37 0002
+D013F2B0 0001
+8021A22F 0000
+D1219E04 804B
+D1219E06 E2D4
+D021A22F 0002
+D078001C 0001
+D013DF37 0003
+D013F2B0 0001
+8021A22F 0000
+D1219E04 804B
+D1219E06 E2D4
+D021A22F 0002
+D078001C 0001
+D013DF37 0004
+D013F2B0 0001
+8021A22F 0000
+D1219E04 804B
+D1219E06 E2D4
+D021A22F 0002
+D078001C 0001
+D013DF37 0005
+D013F2B0 0001
+8021A22F 0000
+D078001C 0001
+81077430 1000
+D078001C 0000
+81077430 5462
+
+$Miscellaneous\All Forms can do Goron Rolling
+Note=Thanks to Aegiker for providing me this code.
+D14CB1E8 1462
+814CB1E8 2400
+D14CBAD4 1462
+814CBAD4 2400
+D14CA4A6 36B0
+814CA4A6 3240
+D14DC218 5462
+814DC218 1000
+D14DB2D0 5440
+814DB2D0 2400
+
+$Miscellaneous\All Forms can do Zora Swimming
+Note=Thanks to Aegiker for providing me this code.
+D14CCB04 8E63
+814CCB04 3403
+D14DF5BC 5040
+814DF5BC 1000
+D14CA8C0 1062
+814CA8C0 1000
+D10822A4 5040
+810822A4 1000
+
+$Have\Chateau Romani
+802061A5 0000
+802061A7 0000
+802061A9 00C8
+D013F371 0000
+8013DF63 0030
+D013F371 0030
+8013DF63 0030
+D013F371 0060
+8013DF63 0060
+
+$Miscellaneous\Goron Link can go in Water
+Note=Goron Link will NOT drown or void out when going in/underwater (Thanks to Aegiker for providing me this code)
+D14CD2B4 1464
+814CD2B4 1000
+
+$Maps\Non-Strength Upgrade Liftable Silver Rocks
+Note=The Silver Boulders that block the Fire Temple entrance in the Child Timeline, Goron City in Boulder Maze, Kakariko Village, Hyrule Field, Gerudo Valley covering Grotto, and Desert Collosus covering Grotto can be lifted in any form (except Deku Link).
+D02070C5 0061
+D013F2B0 0001
+D013F2DF 0000
+8133ED86 FF2D
+D02070C5 0061
+D013F2B0 0001
+D013F2DF 0001
+8133ED86 FF2D
+D02070C5 0061
+D013F2B0 0001
+D013F2DF 0000
+8133ED96 FF2D
+D02070C5 0061
+D013F2B0 0001
+D013F2DF 0001
+8133ED96 FF2D
+D02070C5 0061
+D013F2B0 0001
+D013F2DF 0000
+8133EDA6 FF2D
+D02070C5 0061
+D013F2B0 0001
+D013F2DF 0001
+8133EDA6 FF2D
+D013F2B0 0001
+D013F2DF 0000
+D1218F9E 022D
+81345606 FF2D
+D013F2B0 0001
+D013F2DF 0001
+D1218F9E 022D
+81345606 FF2D
+D013F2B0 0001
+D013F2DF 0000
+D1218F9E 022D
+81345616 FF2D
+D013F2B0 0001
+D013F2DF 0001
+D1218F9E 022D
+81345616 FF2D
+D013F2B0 0001
+D013F2DF 0000
+D1218F9E 022D
+81345626 FF2D
+D013F2B0 0001
+D013F2DF 0001
+D1218F9E 022D
+81345626 FF2D
+D02070C5 0062
+D0218E38 0000
+81366E9A FF2D
+D02070C5 0062
+D0218E38 0000
+81366EAA FF2D
+D02070C5 0062
+D0218E38 0000
+81366EBA FF2D
+D02070C5 0062
+D0218E38 0000
+81366ECA FF2D
+D02070C5 0062
+D0218E38 0000
+81366EDA FF2D
+D02070C5 0062
+D0218E38 0000
+81366EEA FF2D
+D02070C5 0062
+D0218E38 0000
+81366EFA FF2D
+D02070C5 0062
+D0218E38 0000
+81366F0A FF2D
+D02070C5 0062
+D0218E38 0000
+81366F1A FF2D
+D02070C5 0062
+D0218E38 0000
+81366F2A FF2D
+D02070C5 0062
+D0218E38 0000
+81366F3A FF2D
+D02070C5 0062
+D0218E38 0000
+81366F4A FF2D
+D02070C5 0062
+D0218E38 0000
+81366F5A FF2D
+D02070C5 0062
+D0218E38 0000
+81366F6A FF2D
+D02070C5 0062
+D0218E38 0000
+81366F7A FF2D
+D02070C5 0062
+D0218E38 0000
+81366F8A FF2D
+D02070C5 0062
+D0218E38 0000
+81366F9A FF2D
+D02070C5 0062
+D0218E38 0000
+81366FAA FF2D
+D02070C5 0062
+D0218E38 0000
+81366FBA FF2D
+D02070C5 0062
+D0218E38 0000
+81366FCA FF2D
+D02070C5 0062
+D0218E38 0000
+81366FDA FF2D
+D02070C5 0062
+D0218E38 0000
+81366FEA FF2D
+D02070C5 0062
+D0218E38 0000
+81366FFA FF2D
+D02070C5 0062
+D0218E38 0000
+8136700A FF2D
+D02070C5 0062
+D0218E38 0000
+8136701A FF2D
+D02070C5 0062
+D0218E38 0000
+8136702A FF2D
+D02070C5 0062
+D0218E38 0000
+8136703A FF2D
+D02070C5 0062
+D0218E38 0000
+8136704A FF2D
+D02070C5 0062
+D0218E38 0000
+8136715A FF2D
+D02070C5 0062
+D0218E38 0000
+8136729A FF2D
+D02070C5 0062
+D0218E38 0000
+813672AA FF2D
+D02070C5 0062
+D0218E38 0000
+813672BA FF2D
+D02070C5 0062
+D0218E38 0000
+813672CA FF2D
+D02070C5 0062
+D0218E38 0000
+813672DA FF2D
+D02070C5 0062
+D0218E38 0000
+813672EA FF2D
+D02070C5 0062
+D0218E38 0000
+813672FA FF2D
+D02070C5 0062
+D0218E38 0000
+8136730A FF2D
+D02070C5 0062
+D0218E38 0000
+8136731A FF2D
+D02070C5 0062
+D0218E38 0000
+8136732A FF2D
+D02070C5 0062
+D0218E38 0000
+8136733A FF2D
+D02070C5 0062
+D0218E38 0000
+8136734A FF2D
+D02070C5 0062
+D0218E38 0000
+8136735A FF2D
+D02070C5 0062
+D0218E38 0000
+8136736A FF2D
+D02070C5 0062
+D0218E38 0000
+8136737A FF2D
+D02070C5 0062
+D0218E38 0000
+8136738A FF2D
+D02070C5 0062
+D0218E38 0000
+8136739A FF2D
+D02070C5 0062
+D0218E38 0000
+813673AA FF2D
+D02070C5 0062
+D0218E38 0000
+813673BA FF2D
+D02070C5 0062
+D0218E38 0000
+813673CA FF2D
+D02070C5 0062
+D0218E38 0000
+813673DA FF2D
+D02070C5 0062
+D0218E38 0000
+813673EA FF2D
+D02070C5 0062
+D0218E38 0000
+813673FA FF2D
+D02070C5 0062
+D0218E38 0000
+8136740A FF2D
+D02070C5 0062
+D0218E38 0000
+8136741A FF2D
+D02070C5 0062
+D0218E38 0000
+8136742A FF2D
+D02070C5 0062
+D0218E38 0000
+8136743A FF2D
+D02070C5 0062
+D0218E38 0000
+8136744A FF2D
+D02070C5 0062
+D0218E38 0000
+8136745A FF2D
+D013F2DF 0002
+D02070C5 0052
+D013F2B0 0000
+81341E7A FF2D
+D02070C5 0052
+8134203A FF2D
+D02070C5 0051
+8123ADEC FF2D
+D02070C5 0051
+81328BE2 FF2D
+D02070C5 005A
+8123684C FF2D
+D02070C5 005A
+8134E07A FF2D
+D02070C5 005C
+8123F1AC FF2D
+D02070C5 005C
+81341B0E FF2D
+D02070C5 0064
+812353AC FF2D
+D02070C5 0064
+8123558C FF2D
+D02070C5 0064
+8123576C FF2D
+D02070C5 0064
+8123594C FF2D
+
+$Ocarina Songs\Quest Menu\Hold D-Pad Down to Play Song of Healing on Quest Menu
+D04D3523 0040
+D0217969 0002
+D0207034 0004
+802179E5 000C
+D04D3523 0040
+D0217969 0002
+D0207034 0004
+81112E96 2CB4
+D02179E5 000C
+D1112E96 2CB4
+802179C3 005C
+
+$Ocarina Songs\Saria's Song\Majora's Mask Effect
+Note=In Majora's Mask, playing Saria's Song plays the Final Hours Music and doesn't make you talk to Tatl like it would when you would talk to Navi, and the Ocarina Song Text Box turns into a Normal Textbox when it displays "You have Played Saria's Song" this code makes it do the same thing!
+8012DE19 006E
+8112DDEC 01CB
+D12173E8 3563
+801253B5 00FF
+D02173F4 0014
+D12173E8 086F
+D02174DD 0006
+802174DD 000F
+D02173F4 0015
+D12173E8 3563
+802174F3 0000
+D02173F4 0015
+D12173E8 3563
+802174F1 0000
+D02173F4 0015
+D12173E8 3563
+802174F7 00AA
+D02173F4 0015
+D12173E8 3563
+802173F4 0010
+D02174DD 0006
+800144FF 0000
+D12173E8 3563
+D00144FF 0050
+802173F4 0016
+D12173E8 3563
+D02173F6 001A
+812173F6 2020
+D12173E8 3563
+D02173F6 001A
+D02173F8 002D
+812173F8 2020
+
+$Ocarina Songs\Song of Time\Song of Time to Change Ages and Swap Timelines
+Note=When Swapping Timelines, if you're Child and going into the Adult Timeline, you will turn into Adult. If you're Adult and going into the Child Timeline, you will turn into a Child
+D12173E8 089D
+D0218E3B 0002
+80218E3B 0000
+D0218E3B 0000
+D013F2B0 0000
+D12173E8 089D
+D0148D4B 0080
+8013F2B0 0001
+D0218E3B 0000
+D013F2B0 0000
+D0148D4B 0048
+80148D4B 0080
+D0218E3B 0000
+D013F2B0 0001
+D12173E8 089D
+D0148D4B 0082
+8013F2B0 0000
+D0218E3B 0000
+D013F2B0 0001
+D0148D4B 0048
+80148D4B 0082
+D0218E3B 0000
+D12173E8 089D
+81218F98 00FF
+D02070C5 0043
+D02173ED 0003
+D12173E8 086E
+80218E3B 0003
+D02070C5 0043
+D01CBFE6 0000
+D12173E8 0000
+80218E3B 0000
+D0218E3B 0001
+D12173E8 089D
+81218F98 0000
+D02070C5 0048
+D12173E8 089D
+D1218F9E 0432
+D1218F98 00FF
+81218F9E 0436
+D02070C5 0048
+D12173E8 089D
+D1218F9E 0432
+80218E3B 0000
+D12173E8 089D
+D1218F9E 027D
+D013F2B0 0000
+81218F9E 0281
+D12173E8 089D
+D1218F9E 036F
+D013F2B0 0000
+81218F9E 0281
+D12173E8 089D
+D1218F9E 03A3
+D013F2B0 0000
+81218F9E 0281
+D12173E8 089D
+D1218F9E 037B
+D013F2B0 0000
+81218F9E 0281
+D12173E8 089D
+D1218F9E 0507
+D013F2B0 0000
+81218F9E 0281
+D12173E8 089D
+D1218F9E 0091
+D013F2B0 0000
+81218F9E 0245
+D12173E8 089D
+D1218F9E 0053
+D013F2B0 0000
+81218F9E 0245
+D12173E8 089D
+D1218F9E 041E
+D013F2B0 0000
+81218F9E 0245
+D12173E8 089D
+D1218F9E 002B
+81218F9E 0446
+D12173E8 089D
+D1218F9E 005E
+81218F9E 0330
+D12173E8 089D
+D1218F9E 050F
+81218F9E 01B4
+D12173E8 089D
+D1218F9E 036B
+81218F9E 0285
+D12173E8 089D
+D1218F9E 050B
+81218F9E 039B
+D12173E8 089D
+D1218F9E 0150
+81218F9E 01B0
+D12173E8 089D
+D1218F9E 04EA
+81218F9E 039F
+D12173E8 089D
+D1218F9E 009A
+81218F9E 01E4
+D12173E8 089D
+D1218F9E 004F
+81218F9E 01B8
+D12173E8 089D
+D1218F9E 0383
+81218F9E 03B3
+D013F2B0 0000
+D12173E8 089D
+D1218F9E 030B
+81218F9E 053F
+D013F2B0 0001
+D12173E8 089D
+D1218F9E 03B7
+81218F9E 0208
+D12173E8 089D
+D1218F9E 0363
+81218F9E 03A7
+D02070C5 000D
+D12173E8 089D
+80218E3B 0000
+D12173E8 089D
+D02070C5 000D
+8113DF3C 5000
+D12173E8 089D
+D02070C5 000A
+8113DF3C 5000
+D12173E8 089D
+D1218F9E 051B
+81218F9E 0062
+D12173E8 089D
+D1218F9E 0517
+81218F9E 0062
+D12173E8 089D
+D1218F9E 052B
+81218F9E 0062
+D12173E8 089D
+D1218F9E 0527
+81218F9E 0062
+D12173E8 089D
+D1218F9E 051F
+81218F9E 0062
+D12173E8 089D
+D1218F9E 0523
+81218F9E 0062
+D0780000 0000
+D12173E8 089D
+D1218F9E 044A
+81218F9E 0062
+D02070C5 000D
+D12173E8 089D
+80780000 0000
+D12173E8 089D
+D02070C5 0045
+80780000 0001
+D12173E8 089D
+D02070C5 0046
+80780000 0001
+D0780000 0001
+D12173E8 089D
+D1218F9E 0062
+81218F9E 044A
+D0780001 0000
+D12173E8 089D
+D1218F9E 0513
+81218F9E 0279
+D02070C5 000D
+D12173E8 089D
+80780001 0000
+D12173E8 089D
+D02070C5 0045
+80780001 0001
+D12173E8 089D
+D02070C5 0046
+80780001 0001
+D0780001 0001
+D12173E8 089D
+D1218F9E 0279
+81218F9E 0513
+D02070C5 000A
+D12173E8 089D
+80218E3B 0000
+D0780002 0000
+D12173E8 089D
+D1218F9E 03FE
+81218F9E 03E3
+D02070C5 000A
+D12173E8 089D
+80780002 0000
+D12173E8 089D
+D02070C5 004A
+80780002 0001
+D0780002 0001
+D12173E8 089D
+D1218F9E 03E3
+81218F9E 03FE
+D0780002 0000
+D12173E8 089D
+D1218F9E 040A
+81218F9E 05CF
+D0780002 0001
+D12173E8 089D
+D1218F9E 05CF
+81218F9E 040A
+D12173E8 089D
+D1218F9E 035F
+81218F9E 03DF
+D12173E8 089D
+D1218F9E 01A4
+81218F9E 0130
+D02070C5 000A
+D1218F9E ABAB
+81218F9E 03FE
+D02070C5 000D
+D1218F9E ABAB
+81218F9E 044A
+D02070C5 0043
+D1218F9E ABAB
+81218F9E 05D3
+D02070C5 0034
+D1218F9E ABAB
+81218F9E 009E
+D12173E8 086E
+D12197A4 4477
+D02070C5 0054
+D013F2B0 0001
+80218E3B 0003
+D02070C5 0054
+D12197A4 4477
+D013F2B0 0001
+D12173E8 0000
+80218E3B 0000
+D12173E8 089D
+D1218F9E 0461
+81218F9E 011B
+D12173E8 089D
+D0218F99 00FF
+8106D106 0000
+D0218F99 00EC
+8106D106 FFFF
+D12173E8 089D
+D0218F99 00FF
+8120627A FFFF
+D0218F99 0000
+8120627A 0000
+D02070C5 005E
+D12173E8 089D
+D0218F99 00FF
+8120627A 0000
+D013DF37 0001
+D013F2B0 0000
+D12173E8 089D
+D0218F99 00FF
+80219700 0000
+D013DF37 0000
+D013F2B0 0001
+D12173E8 089D
+D0218F99 00FF
+80219700 0001
+D02070C5 001A
+80218E3B 0001
+D02070C5 004F
+80218E3B 0001
+
+$Ocarina Songs\Song of Time\Song of Time to Swap Timelines
+Note=This won't work inside of Dungeons except Ganon's Castle. You can still open the Door of Time and play Song of Time to the frogs in Zora's River without the Timeline swapping.
+D12173E8 089D
+D0218E3B 0002
+80218E3B 0000
+D0218E3B 0000
+D013F2B0 0000
+D12173E8 089D
+D0148D4B 0080
+8013F2B0 0001
+D0218E3B 0000
+D013F2B0 0000
+D0148D4B 0048
+80148D4B 0080
+D0218E3B 0000
+D013F2B0 0001
+D12173E8 089D
+D0148D4B 0082
+8013F2B0 0000
+D0218E3B 0000
+D013F2B0 0001
+D0148D4B 0048
+80148D4B 0082
+D0218E3B 0000
+D12173E8 089D
+81218F98 00FF
+D02070C5 0043
+D02173ED 0003
+D12173E8 086E
+80218E3B 0003
+D02070C5 0043
+D01CBFE6 0000
+D12173E8 0000
+80218E3B 0000
+D0218E3B 0001
+D12173E8 089D
+81218F98 0000
+D02070C5 0048
+D12173E8 089D
+D1218F9E 0432
+D1218F98 00FF
+81218F9E 0436
+D02070C5 0048
+D12173E8 089D
+D1218F9E 0432
+80218E3B 0000
+D12173E8 089D
+D1218F9E 027D
+D013F2B0 0000
+81218F9E 0281
+D12173E8 089D
+D1218F9E 036F
+D013F2B0 0000
+81218F9E 0281
+D12173E8 089D
+D1218F9E 03A3
+D013F2B0 0000
+81218F9E 0281
+D12173E8 089D
+D1218F9E 037B
+D013F2B0 0000
+81218F9E 0281
+D12173E8 089D
+D1218F9E 0507
+D013F2B0 0000
+81218F9E 0281
+D12173E8 089D
+D1218F9E 0091
+D013F2B0 0000
+81218F9E 0245
+D12173E8 089D
+D1218F9E 0053
+D013F2B0 0000
+81218F9E 0245
+D12173E8 089D
+D1218F9E 041E
+D013F2B0 0000
+81218F9E 0245
+D12173E8 089D
+D1218F9E 002B
+81218F9E 0446
+D12173E8 089D
+D1218F9E 005E
+81218F9E 0330
+D12173E8 089D
+D1218F9E 050F
+81218F9E 01B4
+D12173E8 089D
+D1218F9E 036B
+81218F9E 0285
+D12173E8 089D
+D1218F9E 050B
+81218F9E 039B
+D12173E8 089D
+D1218F9E 0150
+81218F9E 01B0
+D12173E8 089D
+D1218F9E 04EA
+81218F9E 039F
+D12173E8 089D
+D1218F9E 009A
+81218F9E 01E4
+D12173E8 089D
+D1218F9E 004F
+81218F9E 01B8
+D12173E8 089D
+D1218F9E 0383
+81218F9E 03B3
+D013F2B0 0000
+D12173E8 089D
+D1218F9E 030B
+81218F9E 053F
+D013F2B0 0001
+D12173E8 089D
+D1218F9E 03B7
+81218F9E 0208
+D12173E8 089D
+D1218F9E 0363
+81218F9E 03A7
+D02070C5 000D
+D12173E8 089D
+80218E3B 0000
+D12173E8 089D
+D02070C5 000D
+8113DF3C 5000
+D12173E8 089D
+D02070C5 000A
+8113DF3C 5000
+D12173E8 089D
+D1218F9E 051B
+81218F9E 0062
+D12173E8 089D
+D1218F9E 0517
+81218F9E 0062
+D12173E8 089D
+D1218F9E 052B
+81218F9E 0062
+D12173E8 089D
+D1218F9E 0527
+81218F9E 0062
+D12173E8 089D
+D1218F9E 051F
+81218F9E 0062
+D12173E8 089D
+D1218F9E 0523
+81218F9E 0062
+D0780000 0000
+D12173E8 089D
+D1218F9E 044A
+81218F9E 0062
+D02070C5 000D
+D12173E8 089D
+80780000 0000
+D12173E8 089D
+D02070C5 0045
+80780000 0001
+D12173E8 089D
+D02070C5 0046
+80780000 0001
+D0780000 0001
+D12173E8 089D
+D1218F9E 0062
+81218F9E 044A
+D0780001 0000
+D12173E8 089D
+D1218F9E 0513
+81218F9E 0279
+D02070C5 000D
+D12173E8 089D
+80780001 0000
+D12173E8 089D
+D02070C5 0045
+80780001 0001
+D12173E8 089D
+D02070C5 0046
+80780001 0001
+D0780001 0001
+D12173E8 089D
+D1218F9E 0279
+81218F9E 0513
+D02070C5 000A
+D12173E8 089D
+80218E3B 0000
+D0780002 0000
+D12173E8 089D
+D1218F9E 03FE
+81218F9E 03E3
+D02070C5 000A
+D12173E8 089D
+80780002 0000
+D12173E8 089D
+D02070C5 004A
+80780002 0001
+D0780002 0001
+D12173E8 089D
+D1218F9E 03E3
+81218F9E 03FE
+D0780002 0000
+D12173E8 089D
+D1218F9E 040A
+81218F9E 05CF
+D0780002 0001
+D12173E8 089D
+D1218F9E 05CF
+81218F9E 040A
+D12173E8 089D
+D1218F9E 035F
+81218F9E 03DF
+D12173E8 089D
+D1218F9E 01A4
+81218F9E 0130
+D02070C5 000A
+D1218F9E ABAB
+81218F9E 03FE
+D02070C5 000D
+D1218F9E ABAB
+81218F9E 044A
+D02070C5 0043
+D1218F9E ABAB
+81218F9E 05D3
+D02070C5 0034
+D1218F9E ABAB
+81218F9E 009E
+D12173E8 086E
+D12197A4 4477
+D02070C5 0054
+D013F2B0 0001
+80218E3B 0003
+D02070C5 0054
+D12197A4 4477
+D013F2B0 0001
+D12173E8 0000
+80218E3B 0000
+D12173E8 089D
+D1218F9E 0461
+81218F9E 011B
+D12173E8 089D
+D0218F99 00FF
+8106D106 0000
+D0218F99 00EC
+8106D106 FFFF
+D12173E8 089D
+D0218F99 00FF
+8120627A FFFF
+D0218F99 0000
+8120627A 0000
+D02070C5 005E
+D12173E8 089D
+D0218F99 00FF
+8120627A 0000
+D02070C5 001A
+80218E3B 0001
+D02070C5 004F
+80218E3B 0001
+
+$Ocarina Songs\Sun's Song\Majora's Mask Effect
+Note=In Majora's Mask, playing Sun's Song will make the Ocarina Song Textbox turn into a normal Textbox when it displays "You have played Sun's Song", this code does the same thing!
+D12173E8 3563
+801253B5 00FF
+D02173F4 0014
+D12173E8 086F
+D02174DD 0009
+802174DD 000F
+D02173F4 0015
+D12173E8 3563
+802174F3 0000
+D02173F4 0015
+D12173E8 3563
+802174F1 0000
+D02173F4 0015
+D12173E8 3563
+802174F7 00AA
+D02173F4 0015
+D12173E8 3563
+802173F4 0010
+D02174DD 0009
+800144FF 0000
+D12173E8 3563
+D00144FF 0050
+802173F4 0016
+D12173E8 3563
+D02173F6 001A
+812173F6 2020
+D12173E8 3563
+D02173F6 001A
+D02173F8 002D
+812173F8 2020
+
+$Fixes\Release Z-Targetting in Mid-air as Deku will no longer target
+Note=Normally Z-Targetting in mid-air will keep it locked until you land on the ground, but in Majora's Mask, Z-Targetting as Deku and letting go will not lock it, but in this mod it doesn't do that, this fixes it!
+D0207034 0000
+D0219E0D 0006
+D013DF37 0005
+80219E0D 0004
+
+$Fixes\Deku Link Spawn after captured by Gerudo in Child Timeline
+Note=After getting caught by a Gerudo in the Child Timeline when you don't have the Hookshot yet, you will be thrown
+D013F2B0 0001
+D1218F9E 0188
+D013DF37 0005
+D0218F99 00EC
+8021979C 0007
+D013F2B0 0001
+D1218F9E 0188
+D013DF37 0005
+D0218F99 00EC
+8113F2E4 C3F0
+D013F2B0 0001
+D1218F9E 0188
+D013DF37 0005
+D0218F99 00EC
+8113F2E6 CDB9
+D013F2B0 0001
+D1218F9E 0188
+D013DF37 0005
+D0218F99 00EC
+8113F2E8 C507
+D013F2B0 0001
+D1218F9E 0188
+D013DF37 0005
+D0218F99 00EC
+8113F2EA B76E
+D013F2B0 0001
+D1218F9E 0188
+D013DF37 0005
+D0218F99 00EC
+8113F2EC C47E
+D013F2B0 0001
+D1218F9E 0188
+D013DF37 0005
+D0218F99 00EC
+8113F2EE BD52
+D013F2B0 0001
+D1218F9E 0188
+D013DF37 0005
+D0218F99 00EC
+8113F2F0 3CBD
+
+$Fixes\Masked Forms Can Grab Ledges from Backflips/Sidehops
+Note=In Majora's Mask, the masked forms (except Goron Link) can grab ledges from Backflips/Sidehops (and gainers) in Majora's Mask, this code restores it
+D013DF37 0002
+D1219950 4160
+D1219E10 0028
+81219E10 0020
+D013DF37 0004
+D1219950 4160
+D1219E10 0028
+81219E10 0020
+D013DF37 0005
+D1219950 4160
+D1219E10 0028
+81219E10 0020
+D013DF37 0002
+D1219950 4160
+D1219E10 0038
+81219E10 0030
+D013DF37 0004
+D1219950 4160
+D1219E10 0038
+81219E10 0030
+D013DF37 0005
+D1219950 4160
+D1219E10 0038
+81219E10 0030
+D013DF37 0002
+D1219950 4160
+D1219E10 0038
+81219E10 0030
+D013DF37 0004
+D1219950 4160
+D1219E10 0038
+81219E10 0030
+D013DF37 0005
+D1219950 4160
+D1219E10 0038
+81219E10 0030
+D013DF37 0002
+D1219950 4160
+D1219E10 0018
+81219E10 0010
+D013DF37 0004
+D1219950 4160
+D1219E10 0018
+81219E10 0010
+D013DF37 0005
+D1219950 4160
+D1219E10 0018
+81219E10 0010
+D013DF37 0002
+D1219950 4160
+D1219E10 0018
+81219E10 0010
+D013DF37 0004
+D1219950 4160
+D1219E10 0018
+81219E10 0010
+D013DF37 0005
+D1219950 4160
+D1219E10 0018
+81219E10 0010
+D013DF37 0002
+D1219950 40C0
+D1219E10 0028
+81219E10 0020
+D013DF37 0004
+D1219950 40C0
+D1219E10 0028
+81219E10 0020
+D013DF37 0005
+D1219950 40C0
+D1219E10 0028
+81219E10 0020
+D013DF37 0002
+D1219950 40C0
+D1219E10 0038
+81219E10 0030
+D013DF37 0004
+D1219950 40C0
+D1219E10 0038
+81219E10 0030
+D013DF37 0005
+D1219950 40C0
+D1219E10 0038
+81219E10 0030
+D013DF37 0002
+D1219950 40C0
+D1219E10 0018
+81219E10 0010
+D013DF37 0004
+D1219950 40C0
+D1219E10 0018
+81219E10 0010
+D013DF37 0005
+D1219950 40C0
+D1219E10 0018
+81219E10 0010
+D013DF37 0002
+D1219950 4160
+D1219E10 0008
+81219E10 0000
+D013DF37 0004
+D1219950 4160
+D1219E10 0008
+81219E10 0000
+D013DF37 0005
+D1219950 4160
+D1219E10 0008
+81219E10 0000
+D013DF37 0002
+D1219950 40C0
+D1219E10 0008
+81219E10 0000
+D013DF37 0004
+D1219950 40C0
+D1219E10 0008
+81219E10 0000
+D013DF37 0005
+D1219950 40C0
+D1219E10 0008
+81219E10 0000
+
+$Fixes\Talking to Mido as Fierce Deity Link will not Softlock
+Note=In this Mod, there is a softlock where if you talk to Mido in Kokiri Forest as Fierce Deity Link, Mido will have the text the Shooting Gallery will have which is "It doesn't look like you can use a Slingshot, Sorry" and ending the text will keep you in an endless softlock, this fixes it!
+D02070C5 0055
+D12173E8 71B6
+D02173F4 0003
+802173F4 0036
+
+$Fixes\Shield + Transformation Softlock Fix
+Note=Normally when you shield and while still holding Shield, you put on the Transformation Mask, the game will softlock and you will be stuck in the Transformation Cutscene/Animation with no way of stopping it, this fixes it.
+D1219E04 804B
+D1219E06 E2D4
+802198E0 0000
+
+$Loading Zones\Lost Woods has other Entrances
+Note=The "Lost" Loading Zones in Lost Woods will have different entrance values. The area with the skull kid ocarina mini game will take you to the beta graveyard, the entrance next to the Goron City entrance will take you to Termina Field, the loading zone in the area with the Zora's River Entrance will take you to the beta Ganon's Castle, and the area straight across from the Deku Scrubs Grotto area will take you to the Triforce Cutscene Map (Void Out to return to Lost Woods).
+D02070C5 005B
+D0218E38 0000
+D013F2B0 0001
+D02197AC 0043
+814A816C 0269
+D02070C5 005B
+D0218E38 0000
+D013F2B0 0000
+D02197AC 0043
+814B3E5C 0269
+D02070C5 005B
+D0218E38 0000
+D013F2B0 0001
+D02197AC 00C3
+814A816C 012B
+D02070C5 005B
+D013F2B0 0001
+D0218E38 0008
+D02197A4 0044
+814A816C 01F5
+D02070C5 005B
+D0218E38 0008
+D013F2B0 0000
+D02197A4 0044
+814B3E5C 01F5
+D1218F9E 01F5
+D021979C 0008
+8013F2DF 000B
+D1218F9E 01F5
+8021979C 0008
+D02070C5 005B
+D013F2B0 0001
+D0218E38 0008
+D02197A4 0043
+814A816C 0131
+D02070C5 005B
+D0218E38 0008
+D013F2B0 0000
+D02197A4 0043
+814B3E5C 0131
+D1218F9E 0131
+8013F2DF 0004
+D02070C5 005B
+D0218E38 0000
+D013F2B0 0000
+D02197AC 00C3
+814B3E5C 012B
+D1218F9E 012B
+8013F2DF 0004
+D02070C5 005B
+D0218E38 0002
+D013F2B0 0001
+814A816C 05F3
+D02070C5 005B
+D0218E38 0002
+D013F2B0 0000
+814B3E5C 05F3
+D02070C5 005B
+D0218E38 0001
+D013F2B0 0001
+814A816C 00C8
+D1218F9E 00C8
+8013F2DF 0004
+D02070C5 005B
+D0218E38 0001
+D013F2B0 0000
+814B3E5C 00C8
+D02070C5 005B
+D0218E38 0003
+D013F2B0 0001
+814A816C 011D
+D02070C5 005B
+D0218E38 0003
+D013F2B0 0000
+814B3E5C 011C
+D02070C5 005B
+D0218E38 0004
+D013F2B0 0001
+814A816C 0085
+D02070C5 005B
+D0218E38 0004
+D013F2B0 0000
+814B3E5C 0085
+D02070C5 005B
+D0218E38 0007
+D013F2B0 0001
+814A816C 0000
+D02070C5 005B
+D0218E38 0007
+D013F2B0 0000
+814B3E5C 0000
+D02070C5 005B
+D1218F9E 0000
+D0218E38 0007
+D013F2B0 0001
+D1219836 8000
+81218F9E 0019
+D02070C5 005B
+D1218F9E 0000
+D0218E38 0007
+D013F2B0 0000
+D1219836 8000
+81218F9E 0019
+D02070C5 005B
+D1218F9E 0000
+D0218E38 0007
+D013F2B0 0001
+D1219836 4000
+81218F9E 013B
+D02070C5 005B
+D1218F9E 0000
+D0218E38 0007
+D013F2B0 0000
+D1219836 4000
+81218F9E 013B
+D02070C5 005B
+D0218F99 0014
+D1218F9E 0000
+D14A816C 0019
+D14B3E5C 0019
+81218F9E 0019
+D02070C5 005B
+D0218F99 0014
+D1218F9E 0000
+D14A816C 013B
+D14B3E5C 013B
+81218F9E 013B
+D1218F9E 013B
+8013F2DF 0008
+D013F2DF 0008
+D1218F9E 013B
+8021979C 0008
+D1218F9E 0019
+8013F2DF 0004
+D013F2B0 0001
+D1218F9E 011D
+8013F2DF 0004
+D013F2B0 0000
+D1218F9E 011C
+8013F2DF 0004
+D1218F9E 0085
+8021979C 0009
+D1218F9E 0085
+802077C4 004D
+D1218F9E 011C
+D0218F99 00EC
+D02195A3 0003
+80219FD0 0041
+D1218F9E 011D
+D0218F99 00EC
+D02195A3 0003
+80219FD0 0041
+D1218F9E 011C
+D0218F99 00EC
+D02195A3 0003
+80219FD1 003B
+D1218F9E 011D
+D0218F99 00EC
+D02195A3 0003
+80219FD1 003B
+D021979C 0009
+D02070C5 0047
+D1218F9E 0085
+D0218F99 0014
+81218F9E 00B1
+D1218F9E 00B1
+D0218F99 0014
+8113F2E4 444B
+D1218F9E 00B1
+D0218F99 0014
+8113F2E6 E36A
+D1218F9E 00B1
+D0218F99 0014
+8113F2E8 4450
+D1218F9E 00B1
+D0218F99 0014
+8113F2EA 12DD
+D1218F9E 00B1
+D0218F99 0014
+8113F2EC 45A0
+D1218F9E 00B1
+D0218F99 0014
+8113F2EE 0FAB
+D02070C5 0047
+D1218F9E 00B1
+D0218F99 0014
+8113DF60 0000
+D02070C5 0051
+D1218F9E 00B1
+D0218F99 0000
+8113F2E4 4320
+D02070C5 0051
+D1218F9E 00B1
+D0218F99 0000
+8113F2E6 0000
+D02070C5 0051
+D1218F9E 00B1
+D0218F99 0000
+8113F2E8 0000
+D02070C5 0051
+D1218F9E 00B1
+D0218F99 0000
+8113F2EA 0000
+D02070C5 0051
+D1218F9E 00B1
+D0218F99 0000
+8113F2EC 44B0
+D02070C5 0051
+D1218F9E 00B1
+D0218F99 0000
+8013F2EE 00E0
+
+$Fixes\Unequip Mask when Transforming
+Note=Any Non-Transformational Masks you wear will be taken off when putting on a Transformational Mask
+D1219E04 804B
+D1219E06 E2D4
+802198EB 0000
+
+$Fixes\Zora Link Voids Out after being frozen.
+Note=This restores the void out after being frozen as Zora Link from Majora's Mask
+D013DF37 0004
+D0219E05 004E
+D1219E06 26C8
+D0219E08 0080
+D0219FE9 0030
+814E86E4 0000
+D013DF37 0004
+D0219E05 004E
+D1219E06 26C8
+D0219E08 0080
+D0219FE9 0031
+814E86E4 0000
+D013DF37 0004
+D0219E05 004E
+D1219E06 26C8
+D0219E08 0080
+D0219FE9 0032
+814E86E4 0000
+D013DF37 0004
+D0219E05 004E
+D1219E06 26C8
+D0219E08 0080
+D0219FE9 0033
+814E86E4 0000
+D013DF37 0004
+D0219E05 004E
+D1219E06 26C8
+D0219E08 0080
+D0219FE9 0034
+814E86E4 0000
+D013DF37 0004
+D0219E05 004E
+D1219E06 26C8
+D0219E08 0080
+D0219FE9 0035
+814E86E4 0000
+D013DF37 0004
+D0219E05 004E
+D1219E06 26C8
+D0219E08 0080
+D0219FE9 0036
+814E86E4 0000
+D013DF37 0004
+D0219E05 004E
+D1219E06 26C8
+D0219E08 0080
+D0219FE9 0037
+814E86E4 0000
+D013DF37 0004
+D0219E05 004E
+D1219E06 26C8
+D0219E08 0080
+D0219FE9 0038
+814E86E4 0000
+D013DF37 0004
+D0219E05 004E
+D1219E06 26C8
+D0219E08 0080
+D0219FE9 0039
+814E86E4 0000
+D013DF37 0004
+D0219E05 004E
+D1219E06 26C8
+D0219E08 0080
+D0219FE9 003A
+814E86E4 0000
+D013DF37 0004
+D0219E05 004E
+D1219E06 26C8
+D0219E08 0080
+D0219FE9 003B
+814E86E4 0000
+D013DF37 0004
+D0219E05 004E
+D1219E06 26C8
+D0219E08 0080
+D0219FE9 003C
+814E86E4 0000
+D013DF37 0004
+D0219E05 004E
+D1219E06 26C8
+D0219E08 0080
+D0219FE9 003D
+814E86E4 0000
+D013DF37 0004
+D0219E05 004E
+D1219E06 26C8
+D0219E08 0080
+D0219FE9 003E
+814E86E4 0000
+D013DF37 0004
+D0219E05 004E
+D1219E06 26C8
+D0219E08 0080
+D0219FE9 003F
+814E86E4 0000
+D013DF37 0004
+D0219E05 004E
+D1219E06 26C8
+D0219E08 0080
+D0219FE9 0040
+814E86E4 0000
+D013DF37 0004
+D0219E05 004E
+D1219E06 26C8
+D0219E08 0080
+8113F2E2 0000
+D013DF37 0004
+D0219E05 004E
+D1219E06 26C8
+D0219E08 0080
+8078DA08 0001
+D0218F99 0000
+8078DA08 0000
+D078DA08 0001
+8021979C 000D
+
+$Fixes\Putting on Transformation Mask in Shallow Water as Zora Softlock
+Note=When in Shallow Water as Zora Link and you push B to Dive and immediately try to put on a Transformation Mask, the game will softlock, this fixes it!
+D1219E04 804D
+D1219E06 F4E4
+D0219E0C 0008
+D14E63C4 3F00
+D14E63C8 4000
+D0219E26 0001
+80219E26 0000
+
+$Fixes\No Gerudo Tent Loading Zone in Child Timeline
+D02070C5 005A
+D013F2B0 0001
+804A76C2 0000
+D02070C5 005A
+D013F2B0 0000
+804A76C2 0005
+
+$Control Commands\Z+L+A to Void Out
+D1207034 A020
+814E86E4 0000
+D1207034 A020
+80219808 0001
+
+$Control Commands\Z+R+C-Up to Reload Area
+D1207034 2018
+802195A3 0003
+
+$HUD\Final Hours Timer on Screen
+Note=The Timer doesn't actually start and there is no way of starting the timer in this mod, just to have it up as a fun easter egg, and adding it to where the Final Hours Music starts along with it.
+8013F3A2 00??
+00 - Off
+01 - On
+
+$Colors\Pause Menu\Majora's Mask Style
+D0111C16 0001
+D01B0F02 0001
+814C6B3E 978B
+D0111C16 0001
+D01B0F02 0001
+814C6C1A 978B
+D0111C16 0001
+D01B0F02 0001
+814C6C1E 61FF
+D0111C16 0001
+D01B0F02 0001
+814CD044 B4B4
+D0111C16 0001
+D01B0F02 0001
+814CD046 B4B4
+D0111C16 0001
+D01B0F02 0001
+814CD048 B4B4
+D0111C16 0001
+D01B0F02 0001
+814CD04A B4B4
+D0111C16 0001
+D01B0F02 0001
+814CD04C B4B4
+D0111C16 0001
+D01B0F02 0001
+814CD04E B4B4
+D0111C16 0001
+D01B0F02 0001
+814CD050 B4B4
+D0111C16 0001
+D01B0F02 0001
+814CD052 B4B4
+D0111C16 0001
+D01B0F02 0001
+814CD054 B4B4
+D0111C16 0001
+D01B0F02 0001
+814CD056 B4B4
+D0111C16 0001
+D01B0F02 0001
+814CD058 B4B4
+D0111C16 0001
+D01B0F02 0001
+814CD05A B4B4
+D0111C16 0001
+D01B0F02 0001
+814CD05C B4B4
+D0111C16 0001
+D01B0F02 0001
+814CD05E B4B4
+D0111C16 0001
+D01B0F02 0001
+814CD060 B4B4
+D0111C16 0001
+D01B0F02 0001
+814CD062 B4B4
+D0111C16 0001
+D01B0F02 0001
+814CD064 B4B4
+D0111C16 0001
+D01B0F02 0001
+814CD066 B4B4
+D0111C16 0001
+D01B0F02 0001
+814CD068 B4B4
+D0111C16 0001
+D01B0F02 0001
+814CD06A B4B4
+D0111C16 0001
+D01B0F02 0001
+814CD06C B4B4
+D0111C16 0001
+D01B0F02 0001
+814CD06E B4B4
+D0111C16 0001
+D01B0F02 0001
+814CD070 B4B4
+D0111C16 0001
+D01B0F02 0001
+814CD072 B4B4
+
+$Use Map on Pause Menu to Warp
+Note=On the Pause Menu, go to the Map Menu, select an area and Hold A then press start to warp to that area.
+D04D3523 0040
+D0217969 0001
+D02179A1 0000
+D1207034 9000
+D0218E3B 0000
+80218F99 00FF
+D04D3523 0040
+D0217969 0001
+D02179A1 0000
+D1207034 9000
+D0218E3B 0000
+81218F9E 0106
+D04D3523 0040
+D0217969 0001
+D02179A1 0001
+D1207034 9000
+D0218E3B 0000
+80218F99 00FF
+D04D3523 0040
+D0217969 0001
+D02179A1 0001
+D1207034 9000
+D0218E3B 0000
+81218F9E 010C
+D04D3523 0040
+D0217969 0001
+D02179A1 0002
+D1207034 9000
+D0218E3B 0000
+80218F99 00FF
+D04D3523 0040
+D0217969 0001
+D02179A1 0002
+D1207034 9000
+D0218E3B 0000
+81218F9E 00FA
+D04D3523 0040
+D0217969 0001
+D02179A1 0003
+D1207034 9000
+D0218E3B 0000
+80218F99 00FF
+D04D3523 0040
+D0217969 0001
+D02179A1 0003
+D1207034 9000
+D0218E3B 0000
+81218F9E 00E5
+D04D3523 0040
+D0217969 0001
+D02179A1 0004
+D1207034 9000
+D0218E3B 0000
+80218F99 00FF
+D04D3523 0040
+D0217969 0001
+D02179A1 0004
+D1207034 9000
+D0218E3B 0000
+81218F9E 013A
+D04D3523 0040
+D0217969 0001
+D02179A1 0005
+D1207034 9000
+D0218E3B 0000
+80218F99 00FF
+D04D3523 0040
+D0217969 0001
+D02179A1 0005
+D1207034 9000
+D0218E3B 0000
+81218F9E 0095
+D04D3523 0040
+D0217969 0001
+D02179A1 0006
+D1207034 9000
+D0218E3B 0000
+80218F99 00FF
+D04D3523 0040
+D0217969 0001
+D02179A1 0006
+D1207034 9000
+D0218E3B 0000
+81218F9E 00AF
+D04D3523 0040
+D0217969 0001
+D02179A1 0007
+D1207034 9000
+D0218E3B 0000
+80218F99 00FF
+D04D3523 0040
+D0217969 0001
+D02179A1 0007
+D1207034 9000
+D0218E3B 0000
+81218F9E 012A
+D04D3523 0040
+D0217969 0001
+D02179A1 0008
+D1207034 9000
+D0218E3B 0000
+80218F99 00FF
+D04D3523 0040
+D0217969 0001
+D02179A1 0008
+D1207034 9000
+D0218E3B 0000
+81218F9E 00BE
+D04D3523 0040
+D0217969 0001
+D02179A1 0009
+D1207034 9000
+D0218E3B 0000
+80218F99 00FF
+D04D3523 0040
+D0217969 0001
+D02179A1 0009
+D1207034 9000
+D0218E3B 0000
+81218F9E 0101
+D04D3523 0040
+D0217969 0001
+D02179A1 000A
+D1207034 9000
+D0218E3B 0000
+80218F99 00FF
+D04D3523 0040
+D0217969 0001
+D02179A1 000A
+D1207034 9000
+D0218E3B 0000
+81218F9E 00D2
+D04D3523 0040
+D0217969 0001
+D02179A1 000B
+D1207034 9000
+D0218E3B 0000
+80218F99 00FF
+D04D3523 0040
+D0217969 0001
+D02179A1 000B
+D1207034 9000
+D0218E3B 0000
+81218F9E 00EB
+D04D3523 0040
+D0217969 0001
+D02179A1 0025
+D1207034 9000
+D0218E3B 0000
+80218F99 00FF
+D04D3523 0040
+D0217969 0001
+D02179A1 0025
+D1207034 9000
+D0218E3B 0000
+81218F9E 05F3
+D0217969 0001
+D04D3523 0040
+D0218E3B 0000
+D0207035 0020
+802179A1 0025
+D04D3523 0040
+D0217969 0001
+D1207034 9000
+D0218E3B 0001
+D02070C5 0003
+81218F9E 014C
+D04D3523 0040
+D0217969 0001
+D1207034 9000
+D0218E3B 0001
+D02070C5 0003
+80218F99 00FF
+D04D3523 0040
+D0217969 0001
+D1207034 9000
+D0218E3B 0001
+D02070C5 0004
+81218F9E 0148
+D04D3523 0040
+D0217969 0001
+D1207034 9000
+D0218E3B 0001
+D02070C5 0004
+80218F99 00FF
+D04D3523 0040
+D0217969 0001
+D1207034 9000
+D0218E3B 0001
+D02070C5 0005
+81218F9E 0010
+D04D3523 0040
+D0217969 0001
+D1207034 9000
+D0218E3B 0001
+D02070C5 0005
+80218F99 00FF
+D04D3523 0040
+D0217969 0001
+D1207034 9000
+D0218E3B 0001
+D02070C5 0006
+81218F9E 006A
+D04D3523 0040
+D0217969 0001
+D1207034 9000
+D0218E3B 0001
+D02070C5 0006
+80218F99 00FF
+D04D3523 0040
+D0217969 0001
+D1207034 9000
+D0218E3B 0001
+D02070C5 0007
+81218F9E 0027
+D04D3523 0040
+D0217969 0001
+D1207034 9000
+D0218E3B 0001
+D02070C5 0007
+80218F99 00FF
+D04D3523 0040
+D0217969 0001
+D1207034 9000
+D0218E3B 0001
+D02070C5 000D
+81218F9E 044A
+D04D3523 0040
+D0217969 0001
+D1207034 9000
+D0218E3B 0001
+D02070C5 000D
+80218F99 00FF
+D04D3523 0040
+D0217969 0001
+D1207034 9000
+D0218E3B 0001
+D02070C5 000A
+81218F9E 03FE
+D04D3523 0040
+D0217969 0001
+D1207034 9000
+D0218E3B 0001
+D02070C5 000A
+80218F99 00FF
+D04D3523 0040
+D0217969 0001
+D1207034 9000
+D0218E3B 0001
+D02070C5 0000
+81218F9E 0000
+D04D3523 0040
+D0217969 0001
+D1207034 9000
+D0218E3B 0001
+D02070C5 0000
+80218F99 00FF
+D04D3523 0040
+D0217969 0001
+D1207034 9000
+D0218E3B 0001
+D02070C5 0001
+81218F9E 0004
+D04D3523 0040
+D0217969 0001
+D1207034 9000
+D0218E3B 0001
+D02070C5 0001
+80218F99 00FF
+D04D3523 0040
+D0217969 0001
+D1207034 9000
+D0218E3B 0001
+D02070C5 0002
+81218F9E 0018
+D04D3523 0040
+D0217969 0001
+D1207034 9000
+D0218E3B 0001
+D02070C5 0002
+80218F99 00FF
+D04D3523 0040
+D0217969 0001
+D1207034 9000
+D0218E3B 0001
+D02070C5 0009
+81218F9E 0070
+D04D3523 0040
+D0217969 0001
+D1207034 9000
+D0218E3B 0001
+D02070C5 0009
+80218F99 00FF
+D04D3523 0040
+D0217969 0001
+D1207034 9000
+D0218E3B 0001
+D02070C5 0008
+81218F9E 007C
+D04D3523 0040
+D0217969 0001
+D1207034 9000
+D0218E3B 0001
+D02070C5 0008
+80218F99 00FF
+D04D3523 0040
+D0217969 0001
+D1207034 9000
+D0218E3B 0001
+D02070C5 000B
+81218F9E 0008
+D04D3523 0040
+D0217969 0001
+D1207034 9000
+D0218E3B 0001
+D02070C5 000B
+80218F99 00FF
+D02070C5 001A
+80218E3B 0001
+D02070C5 004F
+80218E3B 0001
+D04D3523 0040
+D0217969 0001
+D02179A1 0021
+D1207034 9000
+D0218E3B 0000
+81218F9E 0085
+D04D3523 0040
+D0217969 0001
+D02179A1 0021
+D1207034 9000
+D0218E3B 0000
+80218F99 00FF
+D04D3523 0040
+D1207034 9000
+D0217969 0001
+807D0434 0001
+D04D3523 0040
+D1207034 9000
+D0217969 0001
+80208D8D 0000
+D07D0434 0001
+8021979C 0005
+D07D0434 0001
+8013F313 0006
+D0208D8D 005F
+807D0434 0000
+D07D0434 0001
+D013F313 0006
+D021979C 0005
+D02195A3 0005
+80152690 0080
+D07D0434 0001
+D013F313 0006
+D02195A3 0005
+D021979C 0005
+80152950 0080
+D07D0434 0001
+D013F313 0006
+D02195A3 0005
+D021979C 0005
+80111C16 0000
+D07D0434 0001
+D013F313 0006
+D02195A3 0005
+D021979C 0005
+801527F0 0044
+D04D3523 0040
+D07D0434 0001
+802195A3 0005
+D07D0434 0001
+D013F313 0006
+D02195A3 0005
+D021979C 0005
+80152AB0 0044
+D07D0434 0001
+8120627A FFFF
+D07D0434 0000
+8120627A 0000
+
+$Miscellaneous\Swim Upstreams!
+Note=Moving Water like in Hyrule Field, Gerudo Valley, Lake Hylia, and Zora's River will not move Link and can freely swim in it.
+8121A044 0000
+8121A046 0000
+
+$Weapons\Goron Link's Punches are more powerful
+Note=Goron Link's Punches will be just as strong as the Biggorons Sword and you can also kill Volvagia too.
+D013DF37 0003
+D0219FDB 0001
+80219D08 0004
+D013DF37 0003
+D0219FDB 0001
+80219D0D 0001
+D013DF37 0003
+D0219FDB 0001
+80219D0B 0040
+
+$Equip\Quick Equip
+Note=Equipping Swords/Shields/Tunics/Boots will be Tremendously Faster!
+D0217965 0007
+D0217969 0003
+80217965 0000
+
+$Weapons\Master Sword can shoot out Beams at Full Health
+Note=Equip Master Sword to shoot out Fierce Deity Beams while at Full Health.
+81084A60 10A3
+D02198DE 003C
+D02198DD 0003
+D113DF5E 0030
+D113DF60 0030
+81084A60 1000
+D02198DE 003C
+D02198DD 0003
+D113DF5E 0040
+D113DF60 0040
+81084A60 1000
+D02198DE 003C
+D02198DD 0003
+D113DF5E 0050
+D113DF60 0050
+81084A60 1000
+D02198DE 003C
+D02198DD 0003
+D113DF5E 0060
+D113DF60 0060
+81084A60 1000
+D02198DE 003C
+D02198DD 0003
+D113DF5E 0070
+D113DF60 0070
+81084A60 1000
+D02198DE 003C
+D02198DD 0003
+D113DF5E 0080
+D113DF60 0080
+81084A60 1000
+D02198DE 003C
+D02198DD 0003
+D113DF5E 0090
+D113DF60 0090
+81084A60 1000
+D02198DE 003C
+D02198DD 0003
+D113DF5E 00A0
+D113DF60 00A0
+81084A60 1000
+D02198DE 003C
+D02198DD 0003
+D113DF5E 00B0
+D113DF60 00B0
+81084A60 1000
+D02198DE 003C
+D02198DD 0003
+D113DF5E 00C0
+D113DF60 00C0
+81084A60 1000
+D02198DE 003C
+D02198DD 0003
+D113DF5E 00D0
+D113DF60 00D0
+81084A60 1000
+D02198DE 003C
+D02198DD 0003
+D113DF5E 00E0
+D113DF60 00E0
+81084A60 1000
+D02198DE 003C
+D02198DD 0003
+D113DF5E 00F0
+D113DF60 00F0
+81084A60 1000
+D02198DE 003C
+D02198DD 0003
+D113DF5E 0100
+D113DF60 0100
+81084A60 1000
+D02198DE 003C
+D02198DD 0003
+D113DF5E 0110
+D113DF60 0110
+81084A60 1000
+D02198DE 003C
+D02198DD 0003
+D113DF5E 0120
+D113DF60 0120
+81084A60 1000
+D02198DE 003C
+D02198DD 0003
+D113DF5E 0130
+D113DF60 0130
+81084A60 1000
+D02198DE 003C
+D02198DD 0003
+D113DF5E 0140
+D113DF60 0140
+81084A60 1000
+D02198DE 003C
+D02198DD 0003
+D113DF5E 0150
+D113DF60 0150
+81084A60 1000
+D02198DE 003C
+D02198DD 0003
+D113DF5E 0160
+D113DF60 0160
+81084A60 1000
+D02198DE 003C
+D02198DD 0003
+D113DF5E 0170
+D113DF60 0170
+81084A60 1000
+D02198DE 003C
+D02198DD 0003
+D113DF5E 0180
+D113DF60 0180
+81084A60 1000
+D02198DE 003C
+D02198DD 0003
+D113DF5E 0190
+D113DF60 0190
+81084A60 1000
+D02198DE 003C
+D02198DD 0003
+D113DF5E 01A0
+D113DF60 01A0
+81084A60 1000
+D02198DE 003C
+D02198DD 0003
+D113DF5E 01B0
+D113DF60 01B0
+81084A60 1000
+D02198DE 003C
+D02198DD 0003
+D113DF5E 01C0
+D113DF60 01C0
+81084A60 1000
+D02198DE 003C
+D02198DD 0003
+D113DF5E 01D0
+D113DF60 01D0
+81084A60 1000
+D02198DE 003C
+D02198DD 0003
+D113DF5E 01E0
+D113DF60 01E0
+81084A60 1000
+D02198DE 003C
+D02198DD 0003
+D113DF5E 01F0
+D113DF60 01F0
+81084A60 1000
+D02198DE 003C
+D02198DD 0003
+D113DF5E 0200
+D113DF60 0200
+81084A60 1000
+D02198DE 003C
+D02198DD 0003
+D113DF5E 0210
+D113DF60 0210
+81084A60 1000
+D02198DE 003C
+D02198DD 0003
+D113DF5E 0220
+D113DF60 0220
+81084A60 1000
+D02198DE 003C
+D02198DD 0003
+D113DF5E 0230
+D113DF60 0230
+81084A60 1000
+D02198DE 003C
+D02198DD 0003
+D113DF5E 0240
+D113DF60 0240
+81084A60 1000
+D02198DE 003C
+D02198DD 0003
+D113DF5E 0250
+D113DF60 0250
+81084A60 1000
+D02198DE 003C
+D02198DD 0003
+D113DF5E 0260
+D113DF60 0260
+81084A60 1000
+D02198DE 003C
+D02198DD 0003
+D113DF5E 0270
+D113DF60 0270
+81084A60 1000
+D02198DE 003C
+D02198DD 0003
+D113DF5E 0280
+D113DF60 0280
+81084A60 1000
+D02198DE 003C
+D02198DD 0003
+D113DF5E 0290
+D113DF60 0290
+81084A60 1000
+D02198DE 003C
+D02198DD 0003
+D113DF5E 02A0
+D113DF60 02A0
+81084A60 1000
+D02198DE 003C
+D02198DD 0003
+D113DF5E 02B0
+D113DF60 02B0
+81084A60 1000
+D02198DE 003C
+D02198DD 0003
+D113DF5E 02C0
+D113DF60 02C0
+81084A60 1000
+D02198DE 003C
+D02198DD 0003
+D113DF5E 02D0
+D113DF60 02D0
+81084A60 1000
+D02198DE 003C
+D02198DD 0003
+D113DF5E 02E0
+D113DF60 02E0
+81084A60 1000
+D02198DE 003C
+D02198DD 0003
+D113DF5E 02F0
+D113DF60 02F0
+81084A60 1000
+D02198DE 003C
+D02198DD 0003
+D113DF5E 0300
+D113DF60 0300
+81084A60 1000
+D02198DE 003C
+D02198DD 0003
+D113DF5E 0310
+D113DF60 0310
+81084A60 1000
+D02198DE 003C
+D02198DD 0003
+D113DF5E 0320
+D113DF60 0320
+81084A60 1000
+
+$Weapons\Shoot Beams in any form
+Note=This implements Fierce Deity Link's Mechanic of being able to shoot beams into any form you're in! (Thanks to Aegiker for providing me this code)
+81084A60 1000
+81084A62 0004
+
+$Weapons\Use Hookshot in any Form
+Note=If you're using any Item/Song Modifiers to spawn Dark Link, those codes won't work with this code because this code replaces Dark Link's Object Value to be able to use the Hookshot in any form except for Adult Link, also some emulators might crash using the Hookshot in other forms, but some won't, Deku Link using Hookshot will crash unless you're using a specific plugin like Rice Video.
+8021881D 0020
+D013DF37 0001
+8021881D 0014
+D013DF37 0002
+8021881D 0014
+D013DF37 0003
+8021881D 0014
+D013DF37 0004
+8021881D 0014
+D013DF37 0005
+8021881D 0014
+
+$Weapons\Usuable Arrows in Any Form
+Note=Except Zora Link.
+D0780201 0000
+D010F1D0 0001
+D02198DE 0003
+D021A22E 0003
+804C00D4 0054
+D010F1D0 0001
+D02198DE 0004
+D021A22E 0004
+804C00D4 0054
+D010F1D0 0001
+D02198DE 000C
+D021A22E 000C
+804C00D4 0054
+D010F1D0 0001
+D02198DE 0012
+D021A22E 0012
+804C00D4 0054
+D010F1D0 0001
+D02198DE 0038
+D021A22E 0038
+804C00D4 0054
+D010F1D0 0001
+D02198DE 0039
+D021A22E 0039
+804C00D4 0054
+D010F1D0 0001
+D02198DE 003A
+D021A22E 003A
+804C00D4 0054
+D010F1D0 0001
+D02198DE 0006
+D021A22E 0006
+804C00D4 0055
+D010F1D0 0001
+D02198DE 0006
+D021A22E 0006
+804C00D3 0009
+D010F1D0 0001
+D02198DE 0003
+D021A22E 0003
+D010F1D0 0001
+804E6CE7 000C
+D010F1D0 0001
+D02198DE 0004
+D021A22E 0004
+D010F1D0 0001
+804E6CE7 000C
+D010F1D0 0001
+D02198DE 0006
+D021A22E 0006
+D010F1D0 0001
+804E6CE7 000C
+D010F1D0 0001
+D02198DE 000C
+D021A22E 000C
+D010F1D0 0001
+804E6CE7 000C
+D010F1D0 0001
+D02198DE 0012
+D021A22E 0012
+D010F1D0 0001
+804E6CE7 000C
+D010F1D0 0001
+D02198DE 0038
+D021A22E 0038
+D010F1D0 0001
+804E6CE7 000C
+D010F1D0 0001
+D02198DE 0039
+D021A22E 0039
+D010F1D0 0001
+804E6CE7 000C
+D010F1D0 0001
+D02198DE 003A
+D021A22E 003A
+D010F1D0 0001
+804E6CE7 000C
+D010F1D0 0001
+D02198DE 005B
+D021A22E 005B
+D010F1D0 0001
+804E6CE7 000C
+D010F1D0 0001
+D02198DE 0000
+D021A22E 0000
+D010F1D0 0001
+804E6CE7 00F4
+D010F1D0 0001
+D02198DE 0011
+D021A22E 0011
+D010F1D0 0001
+804E6CE7 00F4
+D010F1D0 0001
+D02198DE 003D
+D021A22E 003D
+D010F1D0 0001
+804E6CE7 00F4
+D010F1D0 0001
+D02198DE 003E
+D021A22E 003E
+D010F1D0 0001
+804E6CE7 00F4
+D010F1D0 0001
+D02198DE 0058
+D021A22E 0058
+D010F1D0 0001
+804E6CE7 00F4
+D010F1D0 0001
+D02198DE 0003
+D021A22E 0003
+D010F1D0 0001
+804C00D0 0024
+D010F1D0 0001
+D02198DE 0004
+D021A22E 0004
+D010F1D0 0001
+804C00D0 0024
+D010F1D0 0001
+D02198DE 0006
+D021A22E 0006
+D010F1D0 0001
+804C00D0 0024
+D010F1D0 0001
+D02198DE 000C
+D021A22E 000C
+D010F1D0 0001
+804C00D0 0024
+D010F1D0 0001
+D02198DE 0012
+D021A22E 0012
+D010F1D0 0001
+804C00D0 0024
+D010F1D0 0001
+D02198DE 0038
+D021A22E 0038
+D010F1D0 0001
+804C00D0 0024
+D010F1D0 0001
+D02198DE 0039
+D021A22E 0039
+D010F1D0 0001
+804C00D0 0024
+D010F1D0 0001
+D02198DE 003A
+D021A22E 003A
+D010F1D0 0001
+804C00D0 0024
+D010F1D0 0001
+D02198DE 005B
+D021A22E 005B
+D010F1D0 0001
+804C00D0 0024
+D010F1D0 0001
+D02198DE 005B
+D021A22E 005B
+804C00D0 0025
+D010F1D0 0001
+D02198DE 005B
+D021A22E 005B
+804C00D4 0055
+D010F1D0 0001
+D02198DE 005B
+D021A22E 005B
+804C00D3 0009
+D010F1D0 0001
+D02198DE 0003
+D021A22E 0003
+804C00D3 0009
+D010F1D0 0001
+D02198DE 0004
+D021A22E 0004
+804C00D3 0009
+D010F1D0 0001
+D02198DE 000C
+D021A22E 000C
+804C00D3 0009
+D010F1D0 0001
+D02198DE 0012
+D021A22E 0012
+804C00D3 0009
+D010F1D0 0001
+D02198DE 0038
+D021A22E 0038
+804C00D3 0009
+D010F1D0 0001
+D02198DE 0039
+D021A22E 0039
+804C00D3 0009
+D010F1D0 0001
+D02198DE 003A
+D021A22E 003A
+804C00D3 0009
+D010F1D0 0001
+D02198DE 0038
+D021A22E 0038
+804C00AF 0009
+D010F1D0 0001
+D02198DE 0038
+D021A22E 0038
+804C00D3 0009
+D010F1D0 0001
+D02198DE 0038
+D021A22E 0038
+804C00F3 0002
+D010F1D0 0001
+D02198DE 0038
+D021A22E 0038
+814C00F4 2442
+D010F1D0 0001
+D02198DE 0039
+D021A22E 0039
+804C00AF 0009
+D010F1D0 0001
+D02198DE 0039
+D021A22E 0039
+804C00D3 0009
+D010F1D0 0001
+D02198DE 0039
+D021A22E 0039
+804C00F3 0002
+D010F1D0 0001
+D02198DE 0039
+D021A22E 0039
+814C00F4 2442
+D010F1D0 0001
+D02198DE 003A
+D021A22E 003A
+804C00AF 0009
+D010F1D0 0001
+D02198DE 003A
+D021A22E 003A
+804C00D3 0009
+D010F1D0 0001
+D02198DE 003A
+D021A22E 003A
+804C00F3 0002
+D010F1D0 0001
+D02198DE 003A
+D021A22E 003A
+814C00F4 2442
+D010F1D0 0001
+D02198DE 0003
+D021A22E 0003
+804C00AF 0009
+D010F1D0 0001
+D02198DE 0003
+D021A22E 0003
+804C00D3 0009
+D010F1D0 0001
+D02198DE 0003
+D021A22E 0003
+804C00F3 0002
+D010F1D0 0001
+D02198DE 0003
+D021A22E 0003
+814C00F4 2442
+D010F1D0 0001
+D02198DE 0004
+D021A22E 0004
+804C00AF 0009
+D010F1D0 0001
+D02198DE 0004
+D021A22E 0004
+804C00D3 0009
+D010F1D0 0001
+D02198DE 0004
+D021A22E 0004
+804C00F3 0002
+D010F1D0 0001
+D02198DE 0004
+D021A22E 0004
+814C00F4 2442
+D010F1D0 0001
+D02198DE 000C
+D021A22E 000C
+804C00AF 0009
+D010F1D0 0001
+D02198DE 000C
+D021A22E 000C
+804C00D3 0009
+D010F1D0 0001
+D02198DE 000C
+D021A22E 000C
+804C00F3 0002
+D010F1D0 0001
+D02198DE 000C
+D021A22E 000C
+814C00F4 2442
+D010F1D0 0001
+D02198DE 0012
+D021A22E 0012
+804C00AF 0009
+D010F1D0 0001
+D02198DE 0012
+D021A22E 0012
+804C00D3 0009
+D010F1D0 0001
+D02198DE 0012
+D021A22E 0012
+804C00F3 0002
+D010F1D0 0001
+D02198DE 0012
+D021A22E 0012
+814C00F4 2442
+D010F1D0 0001
+D02198DE 0006
+D021A22E 0006
+804C00AF 0009
+D010F1D0 0001
+D02198DE 0006
+D021A22E 0006
+804C00D3 0009
+D010F1D0 0001
+D02198DE 0006
+D021A22E 0006
+804C00F3 0002
+D010F1D0 0001
+D02198DE 0006
+D021A22E 0006
+814C00F4 2442
+D010F1D0 0001
+D02198DE 005B
+D021A22E 005B
+804C00AF 0009
+D010F1D0 0001
+D02198DE 005B
+D021A22E 005B
+804C00D3 0009
+D010F1D0 0001
+D02198DE 005B
+D021A22E 005B
+804C00F3 0002
+D010F1D0 0001
+D02198DE 005B
+D021A22E 005B
+814C00F4 2442
+D010F1D0 0001
+D02198DE 0000
+D021A22E 0000
+804E6CE7 00F4
+D010F1D0 0001
+D02198DE 0011
+D021A22E 0011
+804E6CE7 00F4
+D010F1D0 0001
+D02198DE 003D
+D021A22E 003D
+804E6CE7 00F4
+D010F1D0 0001
+D02198DE 003E
+D021A22E 003E
+804E6CE7 00F4
+D010F1D0 0001
+D02198DE 0058
+D021A22E 0058
+804E6CE7 00F4
+D010F1D0 0001
+D02198DE 0006
+D021A22E 0006
+804C00DF 0006
+D010F1D0 0001
+D02198DE 0003
+D021A22E 0003
+804C00DF 0003
+D010F1D0 0001
+D02198DE 0004
+D021A22E 0004
+804C00DF 0003
+D010F1D0 0001
+D02198DE 000C
+D021A22E 000C
+804C00DF 0003
+D010F1D0 0001
+D02198DE 0012
+D021A22E 0012
+804C00DF 0003
+D010F1D0 0001
+D02198DE 0038
+D021A22E 0038
+804C00DF 0003
+D010F1D0 0001
+D02198DE 0039
+D021A22E 0039
+804C00DF 0003
+D010F1D0 0001
+D02198DE 003A
+D021A22E 003A
+804C00DF 0003
+D010F1D0 0001
+D02198DE 005B
+D021A22E 005B
+804C00DF 0012
+D010F1D0 0001
+D02198DE 005B
+D021A22E 005B
+804C00F7 00FE
+D010F1D0 0001
+D02198DE 0006
+D021A22E 0006
+804C00F7 00FA
+D010F1D0 0001
+D02198DE 0003
+D021A22E 0003
+804C00F7 00FA
+D010F1D0 0001
+D02198DE 0004
+D021A22E 0004
+804C00F7 00FA
+D010F1D0 0001
+D02198DE 000C
+D021A22E 000C
+804C00F7 00FA
+D010F1D0 0001
+D02198DE 0012
+D021A22E 0012
+804C00F7 00FA
+D010F1D0 0001
+D02198DE 0038
+D021A22E 0038
+804C00F7 00FA
+D010F1D0 0001
+D02198DE 0039
+D021A22E 0039
+804C00F7 00FA
+D010F1D0 0001
+D02198DE 003A
+D021A22E 003A
+804C00F7 00FA
+D010F1D0 0001
+D02198DE 005B
+D021A22E 005B
+804C00DB 0012
+D010F1D0 0001
+D02198DE 0006
+D021A22E 0006
+804C00DB 0006
+D010F1D0 0001
+D02198DE 0003
+D021A22E 0003
+804C00DB 0006
+D010F1D0 0001
+D02198DE 0004
+D021A22E 0004
+804C00DB 0006
+D010F1D0 0001
+D02198DE 000C
+D021A22E 000C
+804C00DB 0006
+D010F1D0 0001
+D02198DE 0012
+D021A22E 0012
+804C00DB 0006
+D010F1D0 0001
+D02198DE 0038
+D021A22E 0038
+804C00DB 0006
+D010F1D0 0001
+D02198DE 0039
+D021A22E 0039
+804C00DB 0006
+D010F1D0 0001
+D02198DE 003A
+D021A22E 003A
+804C00DB 0006
+D010F1D0 0001
+D02198DE 005B
+D021A22E 005B
+D013DF63 0000
+804C00F3 001A
+D010F1D0 0001
+D02198DE 005B
+D021A22E 005B
+D013DF63 0001
+804C00F3 001A
+D010F1D0 0001
+D02198DE 005B
+D021A22E 005B
+D013F36D 000A
+804C00F3 0002
+D013DF37 0003
+D021A22E 0001
+802198DE 0001
+D013DF37 0003
+D021A22E 0003
+802198DE 0003
+D013DF37 0003
+D021A22E 0004
+802198DE 0004
+D013DF37 0003
+D021A22E 0006
+802198DE 0006
+D013DF37 0003
+D021A22E 000C
+802198DE 000C
+D013DF37 0003
+D021A22E 0012
+802198DE 0012
+D013DF37 0003
+D021A22E 0038
+802198DE 0038
+D013DF37 0003
+D021A22E 0039
+802198DE 0039
+D013DF37 0003
+D021A22E 003A
+802198DE 003A
+D013DF37 0003
+D021A22E 005B
+802198DE 005B
+D010F1D0 0001
+D02198DE 005B
+D021A22E 005B
+D013DF63 0001
+804C00D3 0008
+D010F1D0 0001
+D02198DE 005B
+D021A22E 005B
+D013DF63 0000
+804C00D3 0008
+D010F1D0 0001
+D02198DE 005B
+D021A22E 005B
+D013DF63 0001
+804C00D4 0054
+D010F1D0 0001
+D02198DE 005B
+D021A22E 005B
+D013DF63 0000
+804C00D4 0054
+D010F1D0 0001
+D02198DE 005B
+D021A22E 005B
+D013F36D 000A
+804C00D3 0009
+D02198DE 005B
+D021A22E 005B
+D013F36D 000A
+804C00D4 0055
+D010F1D0 0001
+D02198DE 0000
+D021A22E 0000
+814E6CE6 07F4
+D010F1D0 0001
+D02198DE 0000
+D021A22E 0000
+814E773E 0F64
+D010F1D0 0001
+D02198DE 0011
+D021A22E 0011
+814E6CE6 07F4
+D010F1D0 0001
+D02198DE 0011
+D021A22E 0011
+814E773E 0F64
+D010F1D0 0001
+D02198DE 003D
+D021A22E 003D
+814E6CE6 07F4
+D010F1D0 0001
+D02198DE 003D
+D021A22E 003D
+814E773E 0F64
+D010F1D0 0001
+D02198DE 003E
+D021A22E 003E
+814E6CE6 07F4
+D010F1D0 0001
+D02198DE 003E
+D021A22E 003E
+814E773E 0F64
+D010F1D0 0001
+D02198DE 0058
+D021A22E 0058
+814E6CE6 07F4
+D010F1D0 0001
+D02198DE 0058
+D021A22E 0058
+814E773E 0F64
+D010F1D0 0001
+D02198DE 0000
+D021A22E 0000
+804E6CE5 004C
+D010F1D0 0001
+D02198DE 0011
+D021A22E 0011
+804E6CE5 004C
+D010F1D0 0001
+D02198DE 003D
+D021A22E 003D
+804E6CE5 004C
+D010F1D0 0001
+D02198DE 003E
+D021A22E 003E
+804E6CE5 004C
+D010F1D0 0001
+D02198DE 0058
+D021A22E 0058
+804E6CE5 004C
