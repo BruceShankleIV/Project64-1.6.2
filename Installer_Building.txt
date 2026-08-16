@@ -1,7 +1,7 @@
 Installer building with WinRAR.
 
 Archive name
-Project64-1.6.2_Installer.exe
+BruceIV-Project64-1.6.2-SRCv25_Installer.exe
 
 Archive format
 ZIP
@@ -22,7 +22,7 @@ Setup->Run before extraction
 Exception.bat
 
 Text and icon->Title of SFX window
-BruceIV's Project64 1.6.2 (Self Extracting Archive)
+BruceIV's Project64 1.6.2 Source Code v25 SFX
 
 Text to display in SFX window
 * READ THE BOTTOMMOST SECTION BEFORE INSTALLING! *
@@ -95,4 +95,4 @@ Mario 64 texture packs - https://mega.nz/folder/xL5BwaaQ#2yLK6SfwElrnJQtphdqXKw
 Password Lock:
 
 
-A dummy password lock has been set as a method of file encryption to block Windows Defender from misdetecting the executables as malware (the executables aren't signed because I'm broke). Just type password as the password.
+A dummy password lock has been set as a method of file encryption to block Windows Defender from misdetecting the executables as malware (the executables aren't signed because I can't afford to spend the money for one). Just type password as the password.

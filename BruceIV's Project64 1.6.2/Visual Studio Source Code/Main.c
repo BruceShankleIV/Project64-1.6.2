@@ -981,7 +981,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 			si.dwFlags=STARTF_USESHOWWINDOW;
 			si.wShowWindow=SW_SHOW;
 			ZeroMemory(&pi,sizeof(pi));
-			if (!CreateProcess(NULL,cmd,NULL,NULL,FALSE,CREATE_NEW_CONSOLE,NULL,NULL,&si,&pi)) DisplayError("(ffmpeg didn't start)");
+			if (!CreateProcess(NULL,cmd,NULL,NULL,FALSE,CREATE_NEW_CONSOLE,NULL,NULL,&si,&pi)) DisplayError(GS(FFMPEG_NOBOOT));
 			CloseHandle(pi.hProcess);
 			CloseHandle(pi.hThread);
 		}
@@ -1024,7 +1024,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 			si.dwFlags=STARTF_USESHOWWINDOW;
 			si.wShowWindow=SW_SHOW;
 			ZeroMemory(&pi,sizeof(pi));
-			if (!CreateProcess(NULL,cmd,NULL,NULL,FALSE,CREATE_NEW_CONSOLE,NULL,NULL,&si,&pi)) DisplayError("(ffmpeg didn't start)");
+			if (!CreateProcess(NULL,cmd,NULL,NULL,FALSE,CREATE_NEW_CONSOLE,NULL,NULL,&si,&pi)) DisplayError(GS(FFMPEG_NOBOOT));
 			CloseHandle(pi.hProcess);
 			CloseHandle(pi.hThread);
 		}
@@ -1067,7 +1067,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 			si.dwFlags=STARTF_USESHOWWINDOW;
 			si.wShowWindow=SW_SHOW;
 			ZeroMemory(&pi,sizeof(pi));
-			if (!CreateProcess(NULL,cmd,NULL,NULL,FALSE,CREATE_NEW_CONSOLE,NULL,NULL,&si,&pi)) DisplayError("(ffmpeg didn't start)");
+			if (!CreateProcess(NULL,cmd,NULL,NULL,FALSE,CREATE_NEW_CONSOLE,NULL,NULL,&si,&pi)) DisplayError(GS(FFMPEG_NOBOOT));
 			CloseHandle(pi.hProcess);
 			CloseHandle(pi.hThread);
 		}
@@ -1620,7 +1620,7 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpszArgs,in
 					MessageBox(NULL,"About - This is an improved build of Project64 1.6 for casual gaming with classic titles and ROMhacks with performance and PC support in mind. You can adjust the plugin settings for each game, with documentation for many of them under the ROM Notes tab. For help, see the User Guide under the help tab if I'm not available to assist you.\n\n\nContact Info - My email is bruceiv.shankle@gmail.com and a server to report issues/errors is discord.gg/cHDxa9vzQM.\n\nHowever, I do not maintain this as often anymore due to real-life work and resting taking up a lot of my time, so if I am slow to respond, don't hesitate to try something else or solve it yourself while you wait for a response from me or someone.\n\n\n\n                                                                - Edwin Bruce Shankle IV",AppName,MB_OK|MB_ICONINFORMATION|MB_SETFOREGROUND);
 #else
 #ifdef MODERN_PLUGINS
-					MessageBox(NULL,"About - This is an improved build of Project64 1.6 for casual gaming with classic titles and ROMhacks with performance and PC support in mind. You can adjust the plugin settings for each game, with documentation for many of them under the ROM Notes tab. For help, see the User Guide under the help tab if I'm not available to assist you.\n\n\nModern Default Plugins Preset - This preset uses GLideN64 Video, Azi Audio, and N-Rage's Input as the default plugins for use on modern PC's with modern ROMhacks, with a greater focus on accuracy while disregarding performance, support for classic ROMhacks, and support on low-end PCs.\n\n\nContact Info - My email is bruceiv.shankle@gmail.com and a server to report issues/errors is discord.gg/cHDxa9vzQM.\n\nHowever, I do not maintain this as often anymore due to real-life work and resting taking up a lot of my time, so if I am slow to respond, don't hesitate to try something else or solve it yourself while you wait for a response from me or someone.\n\n\n\n                                                                - Edwin Bruce Shankle IV",AppName,MB_OK|MB_ICONINFORMATION|MB_SETFOREGROUND);
+					MessageBox(NULL,"About - This is an improved build of Project64 1.6 for casual gaming with classic titles and ROMhacks with performance and PC support in mind. You can adjust the plugin settings for each game, with documentation for many of them under the ROM Notes tab. For help, see the User Guide under the help tab if I'm not available to assist you.\n\n\nModern Preset - This preset uses GLideN64 Video, Azi Audio, and N-Rage's Input as the default plugins for modern PC's and modern ROMhacks, with a focus on accuracy that disregards performance, classic ROMhacks, and low-end PCs.\n\n\nContact Info - My email is bruceiv.shankle@gmail.com and a server to report issues/errors is discord.gg/cHDxa9vzQM.\n\nHowever, I do not maintain this as often anymore due to real-life work and resting taking up a lot of my time, so if I am slow to respond, don't hesitate to try something else or solve it yourself while you wait for a response from me or someone.\n\n\n\n                                                                - Edwin Bruce Shankle IV",AppName,MB_OK|MB_ICONINFORMATION|MB_SETFOREGROUND);
 #endif
 #endif
 				}

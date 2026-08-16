@@ -1,7 +1,5 @@
 #1# "Português brasileiro/Brazilian Portuguese"
 #2# "DeepL x TrulyNaN x BruceIV"
-#3# "23 WIP 0.5"
-#4# "March 2026"
 #5# "Banco de dados de língua (.txt)"
 #6# "Autor"
 #7# "Versão"
@@ -220,3 +218,4 @@ Você será capaz salvar ou carregar do seu cartão SD virtual se essa ação for bem
 #215# "Captura de tela RGBA PNG sem perdas"
 #216# "Captura de jogo com ffmpeg"
 #217# "Não foi possível localizar o ffmpeg"
+#218# "Não é possível iniciar o ffmpeg"

@@ -234,3 +234,4 @@ You will be able to save to or load from your virtual SD card again if this acti
 #215# "RGBA PNG Lossless Screenshot"
 #216# "ffmpeg Game Capture"
 #217# "Unable to locate ffmpeg"
+#218# "Unable to boot ffmpeg"

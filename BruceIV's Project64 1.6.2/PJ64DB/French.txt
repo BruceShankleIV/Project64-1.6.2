@@ -1,7 +1,5 @@
 #1# "Français/French"
 #2# "DeepL x TrulyNaN x Andzura x BruceIV"
-#3# "23 WIP 0.5"
-#4# "March 2026"
 #5# "Base de données des langues (.txt)"
 #6# "Auteur"
 #9# "Limite de FPS activée"
@@ -208,3 +206,4 @@ Vous pourrez sauvegarder ou charger vers ou depuis la carte SD virtuelle si cett
 #215# "Capture d'écran RGBA PNG sans perte"
 #216# "Capture de jeu avec ffmpeg"
 #217# "Impossible de localiser ffmpeg"
+#218# "Impossible de lancer ffmpeg"

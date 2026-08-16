@@ -251,3 +251,4 @@ char*GS               (int StringID);
 #define RGBA_PNG_SCREENSHOT			215
 #define GAME_CAPTURE			216
 #define FFMPEG_NOFIND			217
+#define FFMPEG_NOBOOT			218
