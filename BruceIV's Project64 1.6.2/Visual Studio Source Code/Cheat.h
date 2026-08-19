@@ -23,7 +23,7 @@
 *should be forwarded to them so if they want them.
 *
 */
-#define MaxGSEntries	100
+#define MaxGSEntries	536588
 typedef struct {
 	DWORD Command;
 	WORD  Value;
