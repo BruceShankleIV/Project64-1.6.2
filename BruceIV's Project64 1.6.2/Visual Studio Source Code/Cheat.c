@@ -1379,13 +1379,19 @@ void LoadCheats (void) {
 	if (String) { free(String); }
 }
 void ManageCheats (HWND hParent) {
-	DWORD X,Y,WindowWidth,WindowHeight, Style;
+	DWORD X,Y,WindowWidth,WindowHeight,Style;
+	int screenHeight=GetSystemMetrics(SM_CYSCREEN),screenWidth=GetSystemMetrics(SM_CXSCREEN);
 	if (hManageWindow) {
 		SetForegroundWindow(hManageWindow);
 		return;
 	}
-	WindowWidth=315;
-	WindowHeight=415;
+	if (screenHeight>=2160&&screenWidth>=3840) {
+		WindowWidth=630;
+		WindowHeight=830;
+	} else {
+		WindowWidth=315;
+		WindowHeight=415;
+	}
   	X=(GetSystemMetrics(SM_CXSCREEN)-WindowWidth) / 2;
 	Y=(GetSystemMetrics(SM_CYSCREEN)-WindowHeight) / 2;
 	if (hParent) { Style=WS_SIZEBOX|WS_SYSMENU; }

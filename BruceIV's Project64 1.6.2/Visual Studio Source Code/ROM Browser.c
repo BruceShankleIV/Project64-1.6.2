@@ -106,6 +106,7 @@ void SetColors(char*status);
 int CALLBACK RomList_CompareItems(LPARAM lParam1,LPARAM lParam2,LPARAM lParamSort);
 int CALLBACK RomList_CompareItems2(LPARAM lParam1,LPARAM lParam2,LPARAM lParamSort);
 char CurrentRBFileName[MAX_PATH+1]={""};
+// ROMBROWSER_FIELDS needs updated double widths for 960p default on UHD TV
 ROMBROWSER_FIELDS RomBrowserFields[]={ "Game Name",0,RB_GameName,260,RB_GAMENAME,"Internal Name",1,RB_InternalName,133,RB_INTERNALNAME,"File Name",2,RB_FileName,101,RB_FILENAME,"1st CRC",3,RB_Crc1,71,RB_CRC1,"Size",4,RB_RomSize,58,RB_ROMSIZE,"Status",-1,RB_Status,93,RB_STATUS,"2nd CRC",-1,RB_Crc2,71,RB_CRC2,"ID",-1,RB_CartridgeID,23,RB_CART_ID,"CIC Chip",-1,RB_CICChip,79,RB_CICCHIP,};
 HWND hRomList=NULL;
 int NoOfFields=sizeof(RomBrowserFields) / sizeof(RomBrowserFields[0]),
@@ -507,13 +508,15 @@ void HideRomBrowser(void) {
 	}
 }
 void HandleShutdown (HWND hParent) {
+	int screenHeight=GetSystemMetrics(SM_CYSCREEN),screenWidth=GetSystemMetrics(SM_CXSCREEN);
 	CPURunning=FALSE;
 	SetupPlugins(hHiddenWin);
 	if (strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) SetWindowLong(hMainWindow,GWL_EXSTYLE,GetWindowLong(hMainWindow,GWL_EXSTYLE)&~WS_EX_COMPOSITED);
 	else SetWindowLong(hMainWindow,GWL_STYLE,GetWindowLong(hMainWindow,GWL_STYLE)|WS_SIZEBOX|WS_MAXIMIZEBOX);
 	if (hRomList==NULL) CreateRomListControl(hParent);
 	else EnableWindow(hRomList,TRUE);
-	ChangeWinSize(hMainWindow,640,480,NULL);
+	if (screenHeight>=2160&&screenWidth>=3840) ChangeWinSize(hMainWindow,1280,960,NULL);
+	else ChangeWinSize(hMainWindow,640,480,NULL);
 	ShowWindow(hRomList,SW_SHOW);
 	DrawMenuBar(hMainWindow);
 	ShowWindow(hMainWindow,SW_SHOW);

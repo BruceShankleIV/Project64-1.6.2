@@ -1515,8 +1515,7 @@ void TerminatePreviousInstance() {
 	}
 }
 int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpszArgs,int nWinMode) {
-#define WindowWidth  640
-#define WindowHeight 480
+	int screenHeight=GetSystemMetrics(SM_CYSCREEN),screenWidth=GetSystemMetrics(SM_CXSCREEN);
 	TerminatePreviousInstance();
 	HANDLE hJob=CreateJobObject(NULL,NULL);
 	JOBOBJECT_BASIC_UI_RESTRICTIONS jbur={ 0 };
@@ -1557,15 +1556,17 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpszArgs,in
 	MSG msg;
 	if (!InitializeApplication (hInstance)) return FALSE;
 	if (!RegisterWinClass()) return FALSE;
-  	X=(GetSystemMetrics(SM_CXSCREEN)-WindowWidth) / 2;
-	Y=(GetSystemMetrics(SM_CYSCREEN)-WindowHeight) / 2;
-	AccelWinMode  =LoadAccelerators(hInst,MAKEINTRESOURCE(IDR_WINDOWMODE));
+	if (screenHeight>=2160&&screenWidth>=3840) {
+  		X=(GetSystemMetrics(SM_CXSCREEN)-1280)/2;
+		Y=(GetSystemMetrics(SM_CYSCREEN)-960)/2;
+	} else {
+		X=(GetSystemMetrics(SM_CXSCREEN)-640)/2;
+		Y=(GetSystemMetrics(SM_CYSCREEN)-480)/2;
+	}
+	AccelWinMode   =LoadAccelerators(hInst,MAKEINTRESOURCE(IDR_WINDOWMODE));
 	AccelCPURunning=LoadAccelerators(hInst,MAKEINTRESOURCE(IDR_CPURUNNING));
 	AccelRomBrowser=LoadAccelerators(hInst,MAKEINTRESOURCE(IDR_ROMBROWSER));
-	hHiddenWin=CreateWindow(AppName,AppName,WS_OVERLAPPED|WS_CLIPCHILDREN|
-		WS_CLIPSIBLINGS|WS_SYSMENU|WS_MINIMIZEBOX,X,Y,WindowWidth,WindowHeight,
-		NULL,NULL,hInst,NULL
-	);
+	hHiddenWin=CreateWindow(AppName,AppName,WS_OVERLAPPED|WS_CLIPCHILDREN|WS_CLIPSIBLINGS|WS_SYSMENU|WS_MINIMIZEBOX,X,Y,4,3,NULL,NULL,hInst,NULL);
 	if (!hHiddenWin) return FALSE;
 	char*IniFile,String[256],String2[256],title[256];
 	IniFile=GetIniFileName();
@@ -1574,16 +1575,11 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpszArgs,in
 	if (strlen(String)==0) strcpy(String,"UNKNOWN VERSION");
 	if (strlen(String2)==0) strcpy(String2,"UNKNOWN DATE");
 	sprintf(title,"%s %s %s",AppName,String,String2);
-	hMainWindow=CreateWindow(AppName,title,WS_OVERLAPPED|WS_CLIPCHILDREN|
-		WS_CLIPSIBLINGS|WS_SYSMENU|WS_MINIMIZEBOX,X,Y,WindowWidth,WindowHeight,
-		NULL,NULL,hInst,NULL
-	);
+	hMainWindow=CreateWindow(AppName,title,WS_OVERLAPPED|WS_CLIPCHILDREN|WS_CLIPSIBLINGS|WS_SYSMENU|WS_MINIMIZEBOX,X,Y,4,3,NULL,NULL,hInst,NULL);
 	DragAcceptFiles(hMainWindow,TRUE);
 	if (!hMainWindow) return FALSE;
 	{
 		DWORD dwDataFSF=0x00000016,dwDataFSH=0x000003c0,dwDataFSW=0x00000500,dwDataOPT960Def=0x00000807,dwDataOPT480D3D9=0x08000803,dwDataOPT960D3D9=0x08000807,dwDataRange=0x0000003f,dwDisposition,FirstBoot=TRUE;
-  		int screenHeight=GetSystemMetrics(SM_CYSCREEN);
-  		int screenWidth=GetSystemMetrics(SM_CXSCREEN);
 		const char*regPaths[]={
 			"PJ64 V 1.6.2\\Jabo Ver1.6.2 Regs\\Direct3D8 1.6",
 			"PJ64 V 1.6.2\\Jabo Ver1.6.2 Regs\\Direct3D8 1.6.1",
