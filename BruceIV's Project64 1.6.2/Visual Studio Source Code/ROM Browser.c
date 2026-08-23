@@ -106,7 +106,6 @@ void SetColors(char*status);
 int CALLBACK RomList_CompareItems(LPARAM lParam1,LPARAM lParam2,LPARAM lParamSort);
 int CALLBACK RomList_CompareItems2(LPARAM lParam1,LPARAM lParam2,LPARAM lParamSort);
 char CurrentRBFileName[MAX_PATH+1]={""};
-// ROMBROWSER_FIELDS needs updated double widths for 960p default on UHD TV
 ROMBROWSER_FIELDS RomBrowserFields[]={ "Game Name",0,RB_GameName,260,RB_GAMENAME,"Internal Name",1,RB_InternalName,133,RB_INTERNALNAME,"File Name",2,RB_FileName,101,RB_FILENAME,"1st CRC",3,RB_Crc1,71,RB_CRC1,"Size",4,RB_RomSize,58,RB_ROMSIZE,"Status",-1,RB_Status,93,RB_STATUS,"2nd CRC",-1,RB_Crc2,71,RB_CRC2,"ID",-1,RB_CartridgeID,23,RB_CART_ID,"CIC Chip",-1,RB_CICChip,79,RB_CICCHIP,};
 HWND hRomList=NULL;
 int NoOfFields=sizeof(RomBrowserFields) / sizeof(RomBrowserFields[0]),
@@ -147,7 +146,7 @@ void AddRomToList (char*RomLocation) {
 }
 void CreateRomListControl (HWND hParent) {
 	hRomList=CreateWindow(WC_LISTVIEW,NULL,WS_TABSTOP|WS_VISIBLE|WS_CHILD|LVS_OWNERDRAWFIXED|LVS_SINGLESEL|LVS_REPORT,0,0,0,0,hParent,(HMENU)IDC_ROMLIST,hInst,NULL);
-	ResetRomBrowserColomuns();
+	ResetRomBrowserColumns();
 	LoadRomList();
 }
 void LoadRomList (void) {
@@ -227,10 +226,30 @@ void RefreshRomBrowser (void) {
 	RomList_SortList();
 	SetFocus(hRomList);
 }
-void ResetRomBrowserColomuns (void) {
-	int Coloumn,index;
+void ResetRomBrowserColumns (void) {
+	int Column,index,screenHeight=GetSystemMetrics(SM_CYSCREEN),screenWidth=GetSystemMetrics(SM_CXSCREEN),i;
 	LV_COLUMN lvColumn;
 	char szString[300];
+	if (screenHeight>=2160&&screenWidth>=3840&&FirstBoot) {
+		for (i=0;i<NoOfFields;++i) switch (RomBrowserFields[i].ID) {
+			case RB_GameName:
+				RomBrowserFields[i].ColWidth=520;
+				break;
+			case RB_InternalName:
+				RomBrowserFields[i].ColWidth=266;
+				break;
+			case RB_FileName:
+				RomBrowserFields[i].ColWidth=202;
+				break;
+			case RB_Crc1:
+				RomBrowserFields[i].ColWidth=142;
+				break;
+			case RB_RomSize:
+				RomBrowserFields[i].ColWidth=116;
+				break;
+			}
+		FirstBoot=FALSE;
+	}
 	memset(&lvColumn,0,sizeof(lvColumn));
 	lvColumn.mask=LVCF_FMT;
 	while (ListView_GetColumn(hRomList,0,&lvColumn)) {
@@ -240,18 +259,18 @@ void ResetRomBrowserColomuns (void) {
 	lvColumn.mask=LVCF_FMT|LVCF_WIDTH|LVCF_TEXT|LVCF_SUBITEM;
 	lvColumn.fmt=LVCFMT_LEFT;
 	lvColumn.pszText=szString;
-	for (Coloumn=0; Coloumn<NoOfFields; Coloumn++) {
+	for (Column=0; Column<NoOfFields; Column++) {
 		for (index=0; index<NoOfFields; index++) {
-			if (RomBrowserFields[index].Pos==Coloumn) { break; }
+			if (RomBrowserFields[index].Pos==Column) { break; }
 		}
-		if (index==NoOfFields||RomBrowserFields[index].Pos!=Coloumn) {
-			FieldType[Coloumn]=-1;
+		if (index==NoOfFields||RomBrowserFields[index].Pos!=Column) {
+			FieldType[Column]=-1;
 			break;
 		}
-		FieldType[Coloumn]=RomBrowserFields[index].ID;
+		FieldType[Column]=RomBrowserFields[index].ID;
 		lvColumn.cx=RomBrowserFields[index].ColWidth;
 		strncpy(szString,GS(RomBrowserFields[index].LangID),sizeof(szString));
-		ListView_InsertColumn(hRomList,Coloumn,&lvColumn);
+		ListView_InsertColumn(hRomList,Column,&lvColumn);
 	}
 }
 void ResizeRomListControl (WORD nWidth,WORD nHeight) {
@@ -264,7 +283,7 @@ void ResizeRomListControl (WORD nWidth,WORD nHeight) {
 		MoveWindow(hRomList,0,0,nWidth,nHeight,TRUE);
 	}
 }
-void RomList_ColoumnSortList(LPNMLISTVIEW pnmv) {
+void RomList_ColumnSortList(LPNMLISTVIEW pnmv) {
 	int index;
 	for (index=0; index<NoOfFields; index++) {
 		if (RomBrowserFields[index].Pos==pnmv->iSubItem) { break; }
@@ -425,7 +444,7 @@ void RomListDrawItem (LPDRAWITEMSTRUCT ditem) {
 void RomListNotify(LPNMHDR pnmh) {
 	switch (pnmh->code) {
 	case LVN_GETDISPINFO: RomList_GetDispInfo(pnmh); break;
-	case LVN_COLUMNCLICK: RomList_ColoumnSortList((LPNMLISTVIEW)pnmh); break;
+	case LVN_COLUMNCLICK: RomList_ColumnSortList((LPNMLISTVIEW)pnmh); break;
 	case NM_RETURN:       RomList_OpenRom(pnmh); break;
 	case NM_DBLCLK:       RomList_OpenRom(pnmh); break;
 	case NM_RCLICK:       RomList_PopupMenu(pnmh); break;
@@ -593,7 +612,7 @@ void SetColors(char*status) {
 		AddToColorCache(colors);
 	}
 }
-void SaveRomBrowserColoumnInfo (void) {
+void SaveRomBrowserColumnInfo (void) {
 	DWORD Disposition=0;
 	HKEY  hKeyResults=0;
 	char  String[256];
@@ -602,13 +621,13 @@ void SaveRomBrowserColoumnInfo (void) {
 	lResult=RegCreateKeyEx(HKEY_CURRENT_USER,String,0,"",REG_OPTION_NON_VOLATILE,
 		KEY_ALL_ACCESS,NULL,&hKeyResults,&Disposition);
 	if (lResult==ERROR_SUCCESS) {
-		int Coloumn,index;
+		int Column,index;
 		LV_COLUMN lvColumn;
 		memset(&lvColumn,0,sizeof(lvColumn));
 		lvColumn.mask=LVCF_WIDTH;
-		for (Coloumn=0;ListView_GetColumn(hRomList,Coloumn,&lvColumn); Coloumn++) {
+		for (Column=0;ListView_GetColumn(hRomList,Column,&lvColumn); Column++) {
 			for (index=0; index<NoOfFields; index++) {
-				if (RomBrowserFields[index].Pos==Coloumn) { break; }
+				if (RomBrowserFields[index].Pos==Column) { break; }
 			}
 			RomBrowserFields[index].ColWidth=lvColumn.cx;
 			sprintf(String,"%s.Width",RomBrowserFields[index].Name);
@@ -617,7 +636,7 @@ void SaveRomBrowserColoumnInfo (void) {
 		RegCloseKey(hKeyResults);
 	}
 }
-void SaveRomBrowserColoumnPosition (int index,int Position) {
+void SaveRomBrowserColumnPosition (int index,int Position) {
 	char  String[256],szPos[10];
 	DWORD Disposition=0;
 	HKEY  hKeyResults=0;
@@ -631,7 +650,7 @@ void SaveRomBrowserColoumnPosition (int index,int Position) {
 		RegCloseKey(hKeyResults);
 	}
 }
-void LoadRomBrowserColoumnInfo (void) {
+void LoadRomBrowserColumnInfo (void) {
 	char  String[256],szPos[10];
 	DWORD Disposition=0;
 	HKEY  hKeyResults=0;
@@ -643,10 +662,10 @@ void LoadRomBrowserColoumnInfo (void) {
 		DWORD Type,Value,count,Bytes=4;
 		for (count=0; count<(DWORD)NoOfFields; count++) {
 			Bytes=sizeof(szPos);
-			// Coloumn Position
+			// Column Position
 			lResult=RegQueryValueEx(hKeyResults,RomBrowserFields[count].Name,0,&Type,(LPBYTE)szPos,&Bytes);
 			if (lResult==ERROR_SUCCESS) { RomBrowserFields[count].Pos=atoi(szPos); }
-			//Coloumn Width
+			//Column Width
 			Bytes=sizeof(Value);
 			sprintf(String,"%s.Width",RomBrowserFields[count].Name);
 			lResult=RegQueryValueEx(hKeyResults,String,0,&Type,(LPBYTE)(&Value),&Bytes);
@@ -654,5 +673,5 @@ void LoadRomBrowserColoumnInfo (void) {
 		}
 		RegCloseKey(hKeyResults);
 	}
-	ResetRomBrowserColomuns();
+	ResetRomBrowserColumns();
 }

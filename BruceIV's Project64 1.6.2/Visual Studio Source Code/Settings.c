@@ -634,20 +634,20 @@ BOOL CALLBACK RomBrowserProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 			sprintf(String,"PJ64 V 1.6.2\\Configuration\\Settings\\ROM Selection");
 			lResult=RegCreateKeyEx(HKEY_CURRENT_USER,String,0,"",REG_OPTION_NON_VOLATILE,KEY_ALL_ACCESS,NULL,&hKeyResults,&Disposition);
 			if (lResult==ERROR_SUCCESS) RegSetValueEx(hKeyResults,"Directory Recursion",0,REG_DWORD,(BYTE*)&Recursion,sizeof(DWORD));
-			SaveRomBrowserColoumnInfo();
+			SaveRomBrowserColumnInfo();
 			listCount=SendDlgItemMessage(hDlg,IDC_USING,LB_GETCOUNT,0,0);
 			for (Pos=0; Pos<listCount; Pos++) {
 				index=SendMessage(GetDlgItem(hDlg,IDC_USING),LB_GETITEMDATA,Pos,0);
-				SaveRomBrowserColoumnPosition(index,Pos);
+				SaveRomBrowserColumnPosition(index,Pos);
 			}
 			listCount=SendDlgItemMessage(hDlg,IDC_AVAILABLE,LB_GETCOUNT,0,0);
 			strcpy(szIndex,"-1");
 			for (Pos=0; Pos<listCount; Pos++) {
 				index=SendMessage(GetDlgItem(hDlg,IDC_AVAILABLE),LB_GETITEMDATA,Pos,0);
-				SaveRomBrowserColoumnPosition(index,-1);
+				SaveRomBrowserColumnPosition(index,-1);
 			}
-			LoadRomBrowserColoumnInfo();
-			ResetRomBrowserColomuns();
+			LoadRomBrowserColumnInfo();
+			ResetRomBrowserColumns();
 			RomsToRemember=GetDlgItemInt(hDlg,IDC_REMEMBER,NULL,FALSE);
 			if (RomsToRemember<0) { RomsToRemember=0; }
 			if (RomsToRemember>10) { RomsToRemember=10; }

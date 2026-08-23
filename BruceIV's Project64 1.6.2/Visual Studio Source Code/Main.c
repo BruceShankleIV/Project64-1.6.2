@@ -41,7 +41,7 @@
 #include "Resource.h"
 #include "SummerCart.h"
 LARGE_INTEGER Frequency,Frames[9],LastFrame;
-BOOL AutoSleep,AutoHide,Recursion,LimitFPS,SpeedCap,AutoFullScreen,SystemCF,UsuallyonTop,BasicMode,BootupSettings=FALSE,SetupPluginsAfterSaveRomOpt=FALSE,SPECIAL_BREAK_Trigger=FALSE,SPECIAL_BREAK_Yes=FALSE;
+BOOL AutoSleep,AutoHide,Recursion,LimitFPS,SpeedCap,AutoFullScreen,SystemCF,UsuallyonTop,BasicMode,BootupSettings=FALSE,SetupPluginsAfterSaveRomOpt=FALSE,SPECIAL_BREAK_Trigger=FALSE,SPECIAL_BREAK_Yes=FALSE,FirstBoot=FALSE;
 DWORD CurrentFrame,SystemUseCache,RomsToRemember,RomDirsToRemember;
 HWND hMainWindow,hHiddenWin,hStatusWnd;
 char CurrentSave[256];
@@ -380,7 +380,7 @@ int InitializeApplication (HINSTANCE hInstance) {
 	LoadSettings();
 	SetupRegisters(&Registers);
 	QueryPerformanceFrequency(&Frequency);
-	LoadRomBrowserColoumnInfo();
+	LoadRomBrowserColumnInfo();
 	InitializeInitialCompilerVariable();
 	return TRUE;
 }
@@ -1140,7 +1140,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 				SetRecentRomDir(LOWORD(wParam));
 			} else if (LOWORD(wParam)>=ID_LANG_SELECT&&LOWORD(wParam) <=(ID_LANG_SELECT+100)) {
 				SelectLangMenuItem(GetMenu(hWnd),LOWORD(wParam));
-				ResetRomBrowserColomuns();
+				ResetRomBrowserColumns();
 				SetupMenu(hWnd);
 			}
 		}
@@ -1477,7 +1477,7 @@ void HandleModal2(HWND hWnd) {
 void ShutdownApplication (void) {
 	CloseCheatWindow();
 	if (TargetInfo!=NULL) VirtualFree(TargetInfo,0,MEM_RELEASE);
-	SaveRomBrowserColoumnInfo();
+	SaveRomBrowserColumnInfo();
 	FreeRomBrowser();
 	ShutdownPlugins();
 	SaveRecentFiles();
@@ -1579,7 +1579,7 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpszArgs,in
 	DragAcceptFiles(hMainWindow,TRUE);
 	if (!hMainWindow) return FALSE;
 	{
-		DWORD dwDataFSF=0x00000016,dwDataFSH=0x000003c0,dwDataFSW=0x00000500,dwDataOPT960Def=0x00000807,dwDataOPT480D3D9=0x08000803,dwDataOPT960D3D9=0x08000807,dwDataRange=0x0000003f,dwDisposition,FirstBoot=TRUE;
+		DWORD dwDataFSF=0x00000016,dwDataFSH=0x000003c0,dwDataFSW=0x00000500,dwDataOPT960Def=0x00000807,dwDataOPT480D3D9=0x08000803,dwDataOPT960D3D9=0x08000807,dwDataRange=0x0000003f,dwDisposition;
 		const char*regPaths[]={
 			"PJ64 V 1.6.2\\Jabo Ver1.6.2 Regs\\Direct3D8 1.6",
 			"PJ64 V 1.6.2\\Jabo Ver1.6.2 Regs\\Direct3D8 1.6.1",
@@ -1610,19 +1610,19 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpszArgs,in
 						RegSetValueEx(hKey,"Range(3)",0,REG_DWORD,(const BYTE*)&dwDataRange,sizeof(dwDataRange));
 					}
 					RegCloseKey(hKey);
+					FirstBoot=TRUE;
 				}
-				if (FirstBoot) {
-#ifdef CLASSIC_PLUGINS
-					MessageBox(NULL,"About - This is an improved build of Project64 1.6 for casual gaming with classic titles and ROMhacks with performance and PC support in mind. You can adjust the plugin settings for each game, with documentation for many of them under the ROM Notes tab. For help, see the User Guide under the help tab if I'm not available to assist you.\n\n\nContact Info - My email is bruceiv.shankle@gmail.com and a server to report issues/errors is discord.gg/cHDxa9vzQM.\n\nHowever, I do not maintain this as often anymore due to real-life work and resting taking up a lot of my time, so if I am slow to respond, don't hesitate to try something else or solve it yourself while you wait for a response from me or someone.\n\n\n\n                                                                - Edwin Bruce Shankle IV",AppName,MB_OK|MB_ICONINFORMATION|MB_SETFOREGROUND);
-#else
-#ifdef MODERN_PLUGINS
-					MessageBox(NULL,"About - This is an improved build of Project64 1.6 for casual gaming with classic titles and ROMhacks with performance and PC support in mind. You can adjust the plugin settings for each game, with documentation for many of them under the ROM Notes tab. For help, see the User Guide under the help tab if I'm not available to assist you.\n\n\nModern Usage - PJ64_Modern uses GLideN64 Video, Azi Audio, and N-Rage's Input as default plugins.\n\n\nContact Info - My email is bruceiv.shankle@gmail.com and a server to report issues/errors is discord.gg/cHDxa9vzQM.\n\nHowever, I do not maintain this as often anymore due to real-life work and resting taking up a lot of my time, so if I am slow to respond, don't hesitate to try something else or solve it yourself while you wait for a response from me or someone.\n\n\n\n                                                                - Edwin Bruce Shankle IV",AppName,MB_OK|MB_ICONINFORMATION|MB_SETFOREGROUND);
-#endif
-#endif
-				}
-				FirstBoot=FALSE;
 			}
 		}
+	}
+	if (FirstBoot) {
+#ifdef CLASSIC_PLUGINS
+		MessageBox(NULL,"About - This is an updated Project64 V-1.6.1 that's semi-maintained for casual play of retro and ROMhack games with minimal system requirements. See User Guide or contact me for info or troubleshooting.\n\n\nContact Info -\nMy email: bruceiv.shankle@gmail.com\nReport bugs: discord.gg/cHDxa9vzQM.\n\nI'm usually busy so be patient or try to resolve an issue yourself and post any solutions you find.\n\n\n\n                                                                - Edwin Bruce Shankle IV",AppName,MB_OK|MB_ICONINFORMATION|MB_SETFOREGROUND);
+#else
+#ifdef MODERN_PLUGINS
+		MessageBox(NULL,"About - This is an updated Project64 V-1.6.1 that's semi-maintained for casual play of retro and ROMhack games with minimal system requirements. See User Guide or contact me for info or troubleshooting.\n\n\nModern Use - Project64_Modern uses GLideN64 Video, Azi Audio, and N-Rage's Input as default plugins for modern PC's and modern ROMhacks.\n\n\nContact Info -\nMy email: bruceiv.shankle@gmail.com\nReport bugs: discord.gg/cHDxa9vzQM.\n\nI'm usually busy so be patient or try to resolve an issue yourself and post any solutions you find.\n\n\n\n                                                                - Edwin Bruce Shankle IV",AppName,MB_OK|MB_ICONINFORMATION|MB_SETFOREGROUND);
+#endif
+#endif
 	}
 	if (__argc>1) {
 		CreateRomListControl(hMainWindow);

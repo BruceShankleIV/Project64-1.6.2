@@ -19,18 +19,20 @@ This way, you always have access to these resources with every copy of the emula
 
 ## Project Status
 
-Paused for now due to being too busy to actively work on it anymore. But at this point it's worked with all retail games and hacks I've tried in it so far, that's pretty good for a project I'll probably never get around to finishing.
+Not active but I try to maintain it in small ways whenever I can and in the mood to.
 
 ## About
 
-This is an improved build of Project64 1.6 for casual gaming with classic titles and ROMhacks with performance and PC support in mind. You can adjust the plugin settings for each game, with documentation for many of them under the ROM Notes tab. For help, see the User Guide under the help tab if I'm not available to assist you.
+This is an updated Project64 V-1.6.1 that's semi-maintained for casual play of retro and ROMhack games with minimal system requirements. See User Guide or contact me for info or troubleshooting.
 
 
-Contact Info - My email is bruceiv.shankle@gmail.com and a server to report issues/errors is discord.gg/cHDxa9vzQM.
+Contact Info -
+My email: bruceiv.shankle@gmail.com
+Report bugs: discord.gg/cHDxa9vzQM.
 
-However, I do not maintain this as often anymore due to real-life work and resting taking up a lot of my time, so if I am slow to respond, don't hesitate to try something else or solve it yourself while you wait for a response from me or someone.
+I'm usually busy so be patient or try to resolve an issue yourself and post any solutions you find.
 
-## Suggested Games to Play (not including ROMhacks)
+## Suggested Retro Games
 
 The games listed below are expected to work decently with the default settings so you won't have to worry about updating your plugin settings.
 
@@ -51,11 +53,6 @@ To effectively make use of Project64 1.6.2 with all games, you will need to make
 The success of each plugin is highly PC and game dependent.
 
 Note: It's ill-advised to add any dll's into the Plugin folder. Doing so will result in unknown consequences.
-
-## What's Next?
-
-No further plans for future updates other than continuing to fish for bugs and further optimizations by testing the application with games.
-
 
 ## Aknowledgements, Credits, & Special Thanks (credits/thanks taken from the User Guide)
 

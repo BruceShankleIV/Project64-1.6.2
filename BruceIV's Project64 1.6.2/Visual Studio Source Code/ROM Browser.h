@@ -33,16 +33,16 @@ typedef struct {
 void FillRomList               (char*Directory);
 void HideRomBrowser            (void);
 void RefreshRomBrowser         (void);
-void ResetRomBrowserColomuns   (void);
+void ResetRomBrowserColumns   (void);
 void ResizeRomListControl      (WORD nWidth,WORD nHeight);
 void RomListDrawItem           (LPDRAWITEMSTRUCT ditem);
 void RomListNotify             (LPNMHDR pnmh);
 void SelectRomDir              (void);
 void HandleShutdown   (HWND hParent);
 void FreeRomBrowser            (void);
-void LoadRomBrowserColoumnInfo (void);
-void SaveRomBrowserColoumnPosition (int index,int Position);
-void SaveRomBrowserColoumnInfo (void);
+void LoadRomBrowserColumnInfo (void);
+void SaveRomBrowserColumnPosition (int index,int Position);
+void SaveRomBrowserColumnInfo (void);
 #define IDC_ROMLIST		                 223
 extern char CurrentRBFileName[MAX_PATH+1];
 extern ROMBROWSER_FIELDS RomBrowserFields[];
