@@ -1579,8 +1579,9 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpszArgs,in
 	DragAcceptFiles(hMainWindow,TRUE);
 	if (!hMainWindow) return FALSE;
 	{
-		DWORD dwDataFSF=0x00000016,dwDataFSH=0x000003c0,dwDataFSW=0x00000500,dwDataOPT960Def=0x00000807,dwDataOPT480D3D9=0x08000803,dwDataOPT960D3D9=0x08000807,dwDataRange=0x0000003f,dwDisposition;
+		DWORD dwDataFSF=0x00000016,dwData960pHeight=0x000003c0,dwData960pWidth=0x00000500,dwDataOPT960Def=0x00000807,dwDataOPT480D3D9=0x08000803,dwDataOPT960D3D9=0x08000807,dwDataRange=0x0000003f,dwDisposition;
 		const char*regPaths[]={
+			"PJ64 V 1.6.2\\Configuration\\Direct64",
 			"PJ64 V 1.6.2\\Jabo Ver1.6.2 Regs\\Direct3D8 1.6",
 			"PJ64 V 1.6.2\\Jabo Ver1.6.2 Regs\\Direct3D8 1.6.1",
 			"PJ64 V 1.6.2\\Jabo Ver1.6.2 Regs\\Legacy Direct3D",
@@ -1595,11 +1596,15 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpszArgs,in
 					if (strstr(regPaths[i],"3")) {
 						RegSetValueEx(hKey,"Full Screen Format",0,REG_DWORD,(const BYTE*)&dwDataFSF,sizeof(dwDataFSF));
 						if (screenHeight>=960&&screenWidth>=1280) {
-							RegSetValueEx(hKey,"Full Screen Height",0,REG_DWORD,(const BYTE*)&dwDataFSH,sizeof(dwDataFSH));
-							RegSetValueEx(hKey,"Full Screen Width",0,REG_DWORD,(const BYTE*)&dwDataFSW,sizeof(dwDataFSW));
+							RegSetValueEx(hKey,"Full Screen Height",0,REG_DWORD,(const BYTE*)&dwData960pHeight,sizeof(dwData960pHeight));
+							RegSetValueEx(hKey,"Full Screen Width",0,REG_DWORD,(const BYTE*)&dwData960pWidth,sizeof(dwData960pWidth));
 						}
 					}
 					if (screenHeight>=2160&&screenWidth>=3840) {
+						if (strstr(regPaths[i],"64")) {
+							RegSetValueEx(hKey,"Windowed Height",0,REG_DWORD,(const BYTE*)&dwData960pHeight,sizeof(dwData960pHeight));
+							RegSetValueEx(hKey,"Windowed Width",0,REG_DWORD,(const BYTE*)&dwData960pWidth,sizeof(dwData960pWidth));
+						}
 						if (strstr(regPaths[i],"8")) RegSetValueEx(hKey,"Options",0,REG_DWORD,(const BYTE*)&dwDataOPT960Def,sizeof(dwDataOPT960Def));
 						if (strstr(regPaths[i],"L")) RegSetValueEx(hKey,"Options",0,REG_DWORD,(const BYTE*)&dwDataOPT960D3D9,sizeof(dwDataOPT960D3D9));
 					} else if (strstr(regPaths[i],"L")) RegSetValueEx(hKey,"Options",0,REG_DWORD,(const BYTE*)&dwDataOPT480D3D9,sizeof(dwDataOPT480D3D9));
@@ -1617,10 +1622,10 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpszArgs,in
 	}
 	if (FirstBoot) {
 #ifdef CLASSIC_PLUGINS
-		MessageBox(NULL,"About - This is an updated Project64 V-1.6.1 that's semi-maintained for casual play of retro and ROMhack games with minimal system requirements. See User Guide or contact me for info or troubleshooting.\n\n\nContact Info -\nMy email: bruceiv.shankle@gmail.com\nReport bugs: discord.gg/cHDxa9vzQM.\n\nI'm usually busy so be patient or try to resolve an issue yourself and post any solutions you find.\n\n\n\n                                                                - Edwin Bruce Shankle IV",AppName,MB_OK|MB_ICONINFORMATION|MB_SETFOREGROUND);
+		MessageBox(NULL,"Video/Audio/Input Jabo (D3D8 1.6.1, no crackle)",AppName,MB_OK|MB_ICONINFORMATION|MB_SETFOREGROUND);
 #else
 #ifdef MODERN_PLUGINS
-		MessageBox(NULL,"About - This is an updated Project64 V-1.6.1 that's semi-maintained for casual play of retro and ROMhack games with minimal system requirements. See User Guide or contact me for info or troubleshooting.\n\n\nModern Use - Project64_Modern uses GLideN64 Video, Azi Audio, and N-Rage's Input as default plugins for modern PC's and modern ROMhacks.\n\n\nContact Info -\nMy email: bruceiv.shankle@gmail.com\nReport bugs: discord.gg/cHDxa9vzQM.\n\nI'm usually busy so be patient or try to resolve an issue yourself and post any solutions you find.\n\n\n\n                                                                - Edwin Bruce Shankle IV",AppName,MB_OK|MB_ICONINFORMATION|MB_SETFOREGROUND);
+		MessageBox(NULL,"Video GLideN64\n\nAudio Azi\n\nInput N-Rage",AppName,MB_OK|MB_ICONINFORMATION|MB_SETFOREGROUND);
 #endif
 #endif
 	}
