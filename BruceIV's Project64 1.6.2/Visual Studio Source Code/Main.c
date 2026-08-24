@@ -1601,7 +1601,7 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpszArgs,in
 						}
 					}
 					if (screenHeight>=2160&&screenWidth>=3840) {
-						if (strstr(regPaths[i],"64")) {
+						if (strstr(regPaths[i],"f")) {
 							RegSetValueEx(hKey,"Windowed Height",0,REG_DWORD,(const BYTE*)&dwData960pHeight,sizeof(dwData960pHeight));
 							RegSetValueEx(hKey,"Windowed Width",0,REG_DWORD,(const BYTE*)&dwData960pWidth,sizeof(dwData960pWidth));
 						}
