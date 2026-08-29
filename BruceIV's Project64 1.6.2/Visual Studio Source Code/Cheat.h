@@ -23,7 +23,7 @@
 *should be forwarded to them so if they want them.
 *
 */
-#define MaxGSEntries	9999 // The higher this is, the bigger a cheat can be, but consumes slightly more system memory. Raising from 100 to 9999 for large size cheat0's in the Game.ini. Anything that doesn't get loaded past that point can be part of a seperate cheat.
+#define MaxGSEntries	999 // Limits how many xxxxxxxx xxxx lines can be modified in a single gamehsark. If set too high, app misbehaves, if set too low a large enough cheat will not be loaded.
 typedef struct {
 	DWORD Command;
 	WORD  Value;
