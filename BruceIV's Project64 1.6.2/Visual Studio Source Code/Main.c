@@ -946,7 +946,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 		case ID_OPTIONS_YUV:
 		if (!inFullScreen) {
 			char path_buffer[_MAX_PATH],drive[_MAX_DRIVE],dir[_MAX_DIR],Runtimesdir[_MAX_DIR],ffmpegPath[_MAX_PATH],outputFile[_MAX_PATH],ffmpegShortPath[_MAX_PATH],Directory[_MAX_PATH],*IniFile,Identifier[256],cmd[4096],WinTitle[512],GameName[256];
-			int fileIndex=1;
+			int fileIndex=1,screenHeight=GetSystemMetrics(SM_CYSCREEN),screenWidth=GetSystemMetrics(SM_CXSCREEN);
 			GetWindowText(hMainWindow,WinTitle,sizeof(WinTitle));
 			ShowWindow(hMainWindow,SW_RESTORE);
 			GetModuleFileName(NULL,path_buffer,sizeof(path_buffer));
@@ -972,8 +972,13 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 					fileIndex++;
 				} while (GetFileAttributes(outputFile)!=INVALID_FILE_ATTRIBUTES);
 			}
-			if (AutoHide) sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -draw_mouse 0 -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-23:0:0\" -level 4.1 -crf 19 -pix_fmt yuv420p -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
-			else sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-23:0:0\" -level 4.1 -crf 19 -pix_fmt yuv420p -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
+			if (screenHeight>=2160&&screenWidth>=3840) {
+				if (AutoHide) sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -draw_mouse 0 -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-44:0:0\" -level 4.1 -crf 19 -pix_fmt yuv420p -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
+				else sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-44:0:0\" -level 4.1 -crf 19 -pix_fmt yuv420p -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
+			} else {
+				if (AutoHide) sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -draw_mouse 0 -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-28:0:0\" -level 4.1 -crf 19 -pix_fmt yuv420p -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
+				else sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-28:0:0\" -level 4.1 -crf 19 -pix_fmt yuv420p -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
+			}
 			STARTUPINFO si;
 			PROCESS_INFORMATION pi;
 			ZeroMemory(&si,sizeof(si));
@@ -989,7 +994,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 		case ID_OPTIONS_RGB:
 		if (!inFullScreen) {
 			char path_buffer[_MAX_PATH],drive[_MAX_DRIVE],dir[_MAX_DIR],Runtimesdir[_MAX_DIR],ffmpegPath[_MAX_PATH],outputFile[_MAX_PATH],ffmpegShortPath[_MAX_PATH],Directory[_MAX_PATH],*IniFile,Identifier[256],cmd[4096],WinTitle[512],GameName[256];
-			int fileIndex=1;
+			int fileIndex=1,screenHeight=GetSystemMetrics(SM_CYSCREEN),screenWidth=GetSystemMetrics(SM_CXSCREEN);
 			GetWindowText(hMainWindow,WinTitle,sizeof(WinTitle));
 			ShowWindow(hMainWindow,SW_RESTORE);
 			GetModuleFileName(NULL,path_buffer,sizeof(path_buffer));
@@ -1015,8 +1020,13 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 					fileIndex++;
 				} while (GetFileAttributes(outputFile)!=INVALID_FILE_ATTRIBUTES);
 			}
-			if (AutoHide) sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -draw_mouse 0 -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-23:0:0\" -c:v libx264rgb -crf 22 -pix_fmt rgb24 ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
-			else sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-23:0:0\" -c:v libx264rgb -crf 22 -pix_fmt rgb24 ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
+			if (screenHeight>=2160&&screenWidth>=3840) {
+				if (AutoHide) sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -draw_mouse 0 -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-44:0:0\" -c:v libx264rgb -crf 22 -pix_fmt rgb24 ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
+				else sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-44:0:0\" -c:v libx264rgb -crf 22 -pix_fmt rgb24 ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
+			} else {
+				if (AutoHide) sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -draw_mouse 0 -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-28:0:0\" -c:v libx264rgb -crf 22 -pix_fmt rgb24 ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
+				else sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-28:0:0\" -c:v libx264rgb -crf 22 -pix_fmt rgb24 ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
+			}
 			STARTUPINFO si;
 			PROCESS_INFORMATION pi;
 			ZeroMemory(&si,sizeof(si));
@@ -1032,7 +1042,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 		case ID_OPTIONS_RGBA_PNG_SCREENSHOT:
 		if (!inFullScreen) {
 			char path_buffer[_MAX_PATH],drive[_MAX_DRIVE],dir[_MAX_DIR],Runtimesdir[_MAX_DIR],ffmpegPath[_MAX_PATH],outputFile[_MAX_PATH],ffmpegShortPath[_MAX_PATH],Directory[_MAX_PATH],*IniFile,Identifier[256],cmd[4096],WinTitle[512],GameName[256];
-			int fileIndex=1;
+			int fileIndex=1,screenHeight=GetSystemMetrics(SM_CYSCREEN),screenWidth=GetSystemMetrics(SM_CXSCREEN);
 			GetWindowText(hMainWindow,WinTitle,sizeof(WinTitle));
 			ShowWindow(hMainWindow,SW_RESTORE);
 			GetModuleFileName(NULL,path_buffer,sizeof(path_buffer));
@@ -1058,8 +1068,13 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 					fileIndex++;
 				} while (GetFileAttributes(outputFile)!=INVALID_FILE_ATTRIBUTES);
 			}
-			if (AutoHide) sprintf(cmd,"cmd /C cd /d \"%s%s\" && ffmpeg -y -f gdigrab -draw_mouse 0 -i title=\"%s\" -frames:v 1 -vf \"crop=iw:ih-23:0:0\" \"%s\"",drive,Runtimesdir,WinTitle,outputFile);
-			else sprintf(cmd,"cmd /C cd /d \"%s%s\" && ffmpeg -y -f gdigrab -i title=\"%s\" -frames:v 1 -vf \"crop=iw:ih-23:0:0\" \"%s\"",drive,Runtimesdir,WinTitle,outputFile);
+			if (screenHeight>=2160&&screenWidth>=3840) {
+				if (AutoHide) sprintf(cmd,"cmd /C cd /d \"%s%s\" && ffmpeg -y -f gdigrab -draw_mouse 0 -i title=\"%s\" -frames:v 1 -vf \"crop=iw:ih-44:0:0\" \"%s\"",drive,Runtimesdir,WinTitle,outputFile);
+				else sprintf(cmd,"cmd /C cd /d \"%s%s\" && ffmpeg -y -f gdigrab -i title=\"%s\" -frames:v 1 -vf \"crop=iw:ih-44:0:0\" \"%s\"",drive,Runtimesdir,WinTitle,outputFile);
+			} else {
+				if (AutoHide) sprintf(cmd,"cmd /C cd /d \"%s%s\" && ffmpeg -y -f gdigrab -draw_mouse 0 -i title=\"%s\" -frames:v 1 -vf \"crop=iw:ih-28:0:0\" \"%s\"",drive,Runtimesdir,WinTitle,outputFile);
+				else sprintf(cmd,"cmd /C cd /d \"%s%s\" && ffmpeg -y -f gdigrab -i title=\"%s\" -frames:v 1 -vf \"crop=iw:ih-28:0:0\" \"%s\"",drive,Runtimesdir,WinTitle,outputFile);
+			}
 			STARTUPINFO si;
 			PROCESS_INFORMATION pi;
 			ZeroMemory(&si,sizeof(si));
@@ -1622,12 +1637,13 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpszArgs,in
 	}
 	if (FirstBoot) {
 #ifdef CLASSIC_PLUGINS
-		MessageBox(NULL,"Video/Audio/Input Jabo (D3D8 1.6.1, no crackle)",AppName,MB_OK|MB_ICONINFORMATION|MB_SETFOREGROUND);
+		MessageBox(NULL,"About - This is an updated Project64 v1.6.1 that's semi-maintained for casual play of retro and ROMhack games with minimal system requirements. See User Guide or contact me for info or troubleshooting.\n\n\nClassic Plugins - Project64.exe uses Jabo Video/Audio/Input as default plugins for old PC's and classic ROMhacks (mostly hacks up to year 2020).\n\n\nContact Info -\nMy email: bruceiv.shankle@gmail.com\nReport bugs: discord.gg/cHDxa9vzQM.\n\nI'm usually busy so be patient or try to resolve an issue yourself and post any solutions you find.\n\n\n\n                                                                - Edwin Bruce Shankle IV",AppName,MB_OK|MB_ICONINFORMATION|MB_SETFOREGROUND);
 #else
 #ifdef MODERN_PLUGINS
-		MessageBox(NULL,"Video GLideN64\n\nAudio Azi\n\nInput N-Rage",AppName,MB_OK|MB_ICONINFORMATION|MB_SETFOREGROUND);
+		MessageBox(NULL,"About - This is an updated Project64 v1.6.1 that's semi-maintained for casual play of retro and ROMhack games with minimal system requirements. See User Guide or contact me for info or troubleshooting.\n\n\nModern Plugins - Project64_Modern.exe uses GLideN64 Video, Azi Audio, and N-Rage's Input as default plugins for modern PC's and modern ROMhacks.\n\n\nContact Info -\nMy email: bruceiv.shankle@gmail.com\nReport bugs: discord.gg/cHDxa9vzQM.\n\nI'm usually busy so be patient or try to resolve an issue yourself and post any solutions you find.\n\n\n\n                                                                - Edwin Bruce Shankle IV",AppName,MB_OK|MB_ICONINFORMATION|MB_SETFOREGROUND);
 #endif
 #endif
+		if (screenHeight>=2160&&screenWidth>=3840) MessageBox(NULL,"Make sure your scale is set to 200% (Settings->System->Display), otherwise the app won't display properly!",AppName,MB_OK|MB_ICONINFORMATION|MB_SETFOREGROUND);
 	}
 	if (__argc>1) {
 		CreateRomListControl(hMainWindow);
