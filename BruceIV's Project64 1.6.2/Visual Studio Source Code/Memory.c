@@ -801,7 +801,6 @@ void Compile_SW_Register (int x86Reg,DWORD Addr) {
 		break;
 	case 0x1FC00000:
 		Variable86
-		break;
 	}
 }
 int r4300i_Command_MemoryFilter(DWORD dwExptCode,LPEXCEPTION_POINTERS lpEP) {
@@ -819,9 +818,6 @@ int r4300i_Command_MemoryFilter(DWORD dwExptCode,LPEXCEPTION_POINTERS lpEP) {
 	case 0x8B:
 		switch(*(unsigned char*)(lpEP->ContextRecord->Eip+1)) {
 		case 0x04:
-			lpEP->ContextRecord->Eip+=3;
-			r4300i_LW_NonMemory((char*)exRec.ExceptionInformation[1]-(char*)N64MEM,&lpEP->ContextRecord->Eax);
-			return EXCEPTION_CONTINUE_EXECUTION;
 		case 0x0C:
 			lpEP->ContextRecord->Eip+=3;
 			r4300i_LW_NonMemory((char*)exRec.ExceptionInformation[1]-(char*)N64MEM,&lpEP->ContextRecord->Ecx);
@@ -1235,7 +1231,8 @@ int r4300i_LW_NonMemory (DWORD PAddr,DWORD*Value) {
 			return FALSE;
 		}
 		break;
-	case 0x1FF00000:
+	case 0x1FF00000: // This behavior is conflicting with "Akumajou Dracula Mokushiroku - Real Action Adventure" and needs to be updated or conditionalized in v25 to resolve that
+			// *** Larger compile buffer should be togglable? I think it causes an issue with that game as well when not using protect memory? More testing is needed
 		read_summercart_regs(NULL,PAddr,Value);
 		break;
 	default:

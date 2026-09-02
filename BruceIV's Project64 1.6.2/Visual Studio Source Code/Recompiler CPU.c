@@ -2218,8 +2218,8 @@ void StartRecompilerCPU (void) {
 			DisplayError(GS(MSG_MEM_ALLOC_ERROR));
 			DisplayThreadExit("StartRecompilerCPU-TargetInfo==NULL");
 		}
+		TargetIndex=0;
 	}
-	TargetIndex=0;
 	if (OrigMem!=NULL) {
 		VirtualFree(OrigMem,0,MEM_RELEASE);
 		OrigMem=NULL;
