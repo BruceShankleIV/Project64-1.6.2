@@ -36,7 +36,7 @@
 #include "ROM Tools Common.h"
 #define MenuLocOfUsedFiles	11
 #define MenuLocOfUsedDirs	(MenuLocOfUsedFiles+1)
-DWORD ClearFrame,RomClearFrame,RomFileSize,SaveUsing,RomSaveUsing,CPUType,UseTLB,RomUseTLB,FiftyNineHertz,RomFiftyNineHertz,RomJAI,AudioSignal,RomAudioSignal,RomCF,UseCache,RomUseCache,RomShankleAziAI,RomAltEmulateAI,SyncGametoAudio,RomSyncGametoAudio,CF1CF0,RomCF1CF0,DelayRDP,RomDelayRDP,DelayRSP,RomDelayRSP,AlignDMA,RomAlignDMA,DelayRDP,RomDelayRDP,DelayRSP,RomDelayRSP,DelaySI,RomDelaySI,RomRspRecompiler,CpuRecompiler,RomCpuRecompiler,ProtectMemory,RomProtectMemory,JumperPak,RomJumperPak,ForceAuto16kbit,ForceDisableTLB,ForceDisableCaching,ForceEnableDMA,EmulateAI;
+DWORD ClearFrame,RomClearFrame,RomFileSize,VirtualSD,RomVirtualSD,SaveUsing,RomSaveUsing,CPUType,UseTLB,RomUseTLB,FiftyNineHertz,RomFiftyNineHertz,RomJAI,AudioSignal,RomAudioSignal,RomCF,UseCache,RomUseCache,RomShankleAziAI,RomAltEmulateAI,SyncGametoAudio,RomSyncGametoAudio,CF1CF0,RomCF1CF0,DelayRDP,RomDelayRDP,DelayRSP,RomDelayRSP,AlignDMA,RomAlignDMA,DelayRDP,RomDelayRDP,DelayRSP,RomDelayRSP,DelaySI,RomDelaySI,RomRspRecompiler,CpuRecompiler,RomCpuRecompiler,ProtectMemory,RomProtectMemory,JumperPak,RomJumperPak,ForceAuto16kbit,ForceDisableTLB,ForceDisableCaching,ForceEnableDMA,EmulateAI;
 char CurrentFileName[MAX_PATH+1]={ "" },RomName[MAX_PATH+1]={ "" },RomHeader[0x1000],LastRoms[10][MAX_PATH+1],LastDirs[10][MAX_PATH+1];
 BOOL IsValidRomImage (BYTE Test[4]);
 void AddRecentDir(HWND hWnd,char*addition) {
@@ -446,6 +446,7 @@ void ReadRomOptions(void) {
 	if (strcmp(RSPDLL,"RSP.dll")==0&&(strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")!=0||strcmp(RomName,"THE LEGEND OF ZELDA")==0||strcmp(RomName,"THE MASK OF MUJURA")==0||strcmp(RomName,"ZELDA MAJORA'S MASK")==0||strcmp(RomName,"BANJO KAZOOIE 2")==0||strcmp(RomName,"BANJO TOOIE")==0||strcmp(RomName,"CONKER BFD")==0||strcmp(RomName,"DONKEY KONG 64")==0||strcmp(RomName,"JET FORCE GEMINI")==0||strcmp(RomName,"STAR TWINS")==0||strcmp(RomName,"Perfect Dark")==0)) RomRspRecompiler=TRUE;
 	else RomRspRecompiler=FALSE;
 	RomCpuRecompiler=TRUE;
+	RomVirtualSD=FALSE;
 	RomProtectMemory=FALSE;
 	RomJumperPak=FALSE;
 	RomCF1CF0=TRUE;
@@ -499,6 +500,8 @@ void ReadRomOptions(void) {
 		if (strcmp(String,"ON")==0) RomRspRecompiler=TRUE;
 		_GetPrivateProfileString(Identifier,"CPU Recompiler","",String,sizeof(String),IniFileName);
 		if (strcmp(String,"OFF")==0) RomCpuRecompiler=FALSE;
+		_GetPrivateProfileString(Identifier,"Virtual SD Card","",String,sizeof(String),IniFileName);
+		if (strcmp(String,"ON")==0) RomVirtualSD=TRUE;
 		_GetPrivateProfileString(Identifier,"Jumper Pak","",String,sizeof(String),IniFileName);
 		if (strcmp(String,"ON")==0) RomJumperPak=TRUE;
 		_GetPrivateProfileString(Identifier,"Jabo AI","",String,sizeof(String),IniFileName);
@@ -921,6 +924,7 @@ void SaveRomOptions (void) {
 	_WritePrivateProfileString(Identifier,"59 Hz",RomFiftyNineHertz?"ON":"Default",GetIniFileName());
 	_WritePrivateProfileString(Identifier,"Delay SI",RomDelaySI?"ON":"Default",GetIniFileName());
 	_WritePrivateProfileString(Identifier,"CPU Recompiler",RomCpuRecompiler?"Default":"OFF",GetIniFileName());
+	_WritePrivateProfileString(Identifier,"Virtual SD Card",RomVirtualSD?"ON":"Default",GetIniFileName());
 	if (!RomCpuRecompiler||RomCF!=-1&&RomCF!=1) _WritePrivateProfileString(Identifier,"CF1-->0","Default",GetIniFileName());
 	else _WritePrivateProfileString(Identifier,"CF1-->0",RomCF1CF0?"Default":"OFF",GetIniFileName());
 	if (RomCpuRecompiler) {

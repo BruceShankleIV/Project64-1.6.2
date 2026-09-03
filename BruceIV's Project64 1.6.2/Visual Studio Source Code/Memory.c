@@ -60,7 +60,8 @@ int Allocate_Memory (void) {
 		return FALSE;
 	}
 	/*Recomp code*/
-	RecompCode=(BYTE*) VirtualAlloc(NULL,LargeCompileBufferSize+4,MEM_RESERVE|MEM_TOP_DOWN,PAGE_EXECUTE_READWRITE);
+	RecompCode=(BYTE*) VirtualAlloc(NULL,0x03200004,MEM_RESERVE|MEM_TOP_DOWN,PAGE_EXECUTE_READWRITE);
+	RecompCode=(BYTE*) VirtualAlloc(RecompCode,0x01400000,MEM_COMMIT,PAGE_EXECUTE_READWRITE);
 	if(RecompCode==NULL) {
 		DisplayError(GS(MSG_MEM_ALLOC_ERROR));
 		return FALSE;
@@ -1231,10 +1232,11 @@ int r4300i_LW_NonMemory (DWORD PAddr,DWORD*Value) {
 			return FALSE;
 		}
 		break;
-	case 0x1FF00000: // This behavior is conflicting with "Akumajou Dracula Mokushiroku - Real Action Adventure" and needs to be updated or conditionalized in v25 to resolve that
-			// *** Larger compile buffer should be togglable? I think it causes an issue with that game as well when not using protect memory? More testing is needed
-		read_summercart_regs(NULL,PAddr,Value);
-		break;
+	case 0x1FF00000:
+		if (VirtualSD) {
+			read_summercart_regs(NULL,PAddr,Value);
+			break;
+		}
 	default:
 		*Value=PAddr&0xFFFF;
 		*Value=(*Value<<16)|*Value;
@@ -1656,8 +1658,10 @@ int r4300i_SW_NonMemory (DWORD PAddr,DWORD Value) {
 		}
 		return FALSE;
 	case 0x1FF00000:
-		write_summercart_regs(NULL,PAddr,Value,~0);
-		break;
+		if (VirtualSD) {
+			write_summercart_regs(NULL,PAddr,Value,~0);
+			break;
+		}
 	default:
 		return FALSE;
 	}

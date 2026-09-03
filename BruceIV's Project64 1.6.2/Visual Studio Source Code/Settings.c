@@ -760,6 +760,7 @@ BOOL CALLBACK RomSettingsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) 
 		SetFlagControl(hDlg,&RomDelaySI,IDC_DELAY_SI,ROM_DELAY_SI);
 		SetFlagControl(hDlg,&RomRspRecompiler,IDC_RSP_RECOMPILER,FORCE_RSP_RECOMPILER);
 		SetFlagControl(hDlg,&RomCpuRecompiler,IDC_CPU_RECOMPILER,CORE_RECOMPILER);
+		SetFlagControl(hDlg,&RomVirtualSD,IDC_VirtualSD,VIRTUALSD_LANG);
 		SetFlagControl(hDlg,&RomProtectMemory,IDC_PROTECT_MEMORY,SMCM_PROTECTED);
 		SetFlagControl(hDlg,&RomJumperPak,IDC_JUMPER_PAK,JUMPER_PAK);
 		SetFlagControl(hDlg,&RomDelayRDP,IDC_DELAY_RDP,ROM_DELAY_RDP);
@@ -778,6 +779,7 @@ BOOL CALLBACK RomSettingsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) 
 			EnableWindow(GetDlgItem(hDlg,IDC_CF),FALSE);
 			EnableWindow(GetDlgItem(hDlg,IDC_FiftyNineHertz),FALSE);
 			EnableWindow(GetDlgItem(hDlg,IDC_CPU_RECOMPILER),FALSE);
+			EnableWindow(GetDlgItem(hDlg,IDC_VirtualSD),FALSE);
 			EnableWindow(GetDlgItem(hDlg,IDC_JUMPER_PAK),FALSE);
 		}
 		if (strlen(RomName)==0||ForceDisableCaching||!RomCpuRecompiler) {
@@ -809,6 +811,7 @@ BOOL CALLBACK RomSettingsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) 
 				RomDelaySI=SendMessage(GetDlgItem(hDlg,IDC_DELAY_SI),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
 				RomRspRecompiler=SendMessage(GetDlgItem(hDlg,IDC_RSP_RECOMPILER),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
 				RomCpuRecompiler=SendMessage(GetDlgItem(hDlg,IDC_CPU_RECOMPILER),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
+				RomVirtualSD=SendMessage(GetDlgItem(hDlg,IDC_VirtualSD),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
 				RomProtectMemory=SendMessage(GetDlgItem(hDlg,IDC_PROTECT_MEMORY),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
 				RomJumperPak=SendMessage(GetDlgItem(hDlg,IDC_JUMPER_PAK),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
 				RomDelayRDP=SendMessage(GetDlgItem(hDlg,IDC_DELAY_RDP),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;

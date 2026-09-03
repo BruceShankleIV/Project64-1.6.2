@@ -257,31 +257,6 @@ void SetupPlugins (HWND hWnd) {
 			NewRAMsize=0x400000;
 			JumperPak=TRUE;
 		}
-		if (VirtualAlloc(RecompCode,LargeCompileBufferSize,MEM_COMMIT,PAGE_EXECUTE_READWRITE)==NULL) {
-			DisplayError(GS(MSG_MEM_ALLOC_ERROR));
-			DisplayThreadExit("SetupPlugins-VirtualAlloc(RecompCode,LargeCompileBufferSize,MEM_COMMIT,PAGE_EXECUTE_READWRITE)==NULL");
-		}
-		if (NewRAMsize!=RDRAMsize) {
-			if (RDRAMsize==0x400000) {
-				if (VirtualAlloc(N64MEM+0x400000,0x400000,MEM_COMMIT,PAGE_READWRITE)==NULL) {
-					DisplayError(GS(MSG_MEM_ALLOC_ERROR));
-					DisplayThreadExit("SetupPlugins-VirtualAlloc(N64MEM+0x400000,0x400000,MEM_COMMIT,PAGE_READWRITE)==NULL");
-				}
-				if (VirtualAlloc((BYTE*)JumpTable+0x400000,0x400000,MEM_COMMIT,PAGE_READWRITE)==NULL) {
-					DisplayError(GS(MSG_MEM_ALLOC_ERROR));
-					DisplayThreadExit("SetupPlugins-VirtualAlloc((BYTE*)JumpTable+0x400000,0x400000,MEM_COMMIT,PAGE_READWRITE)==NULL");
-				}
-				if (VirtualAlloc((BYTE*)DelaySlotTable+(0x400000>>0xA),(0x400000>>0xA),MEM_COMMIT,PAGE_READWRITE)==NULL) {
-					DisplayError(GS(MSG_MEM_ALLOC_ERROR));
-					DisplayThreadExit("SetupPlugins-VirtualAlloc((BYTE*)DelaySlotTable+(0x400000>>0xA),(0x400000>>0xA),MEM_COMMIT,PAGE_READWRITE)==NULL");
-				}
-			} else {
-				VirtualFree(N64MEM+0x400000,0x400000,MEM_DECOMMIT);
-				VirtualFree((BYTE*)JumpTable+0x400000,0x400000,MEM_DECOMMIT);
-				VirtualFree((BYTE*)DelaySlotTable+(0x400000>>0xA),(0x400000>>0xA),MEM_DECOMMIT);
-			}
-		}
-		RDRAMsize=NewRAMsize;
 		CpuRecompiler=RomCpuRecompiler;
 		CountPerOp=SystemCF;
 		if (RomCF!=-1) CountPerOp=RomCF;
@@ -292,9 +267,10 @@ void SetupPlugins (HWND hWnd) {
 			if (strcmp(RomName,"CONKER BFD")==0||strcmp(RomName,"DRACULA MOKUSHIROKU")==0||strcmp(RomName,"DRACULA MOKUSHIROKU2")==0||strcmp(RomName,"BANJO KAZOOIE 2")==0||strcmp(RomName,"BANJO TOOIE")==0||strcmp(RomName,"CRUIS'N WORLD")==0||strcmp(RomName,"CUSTOMROBOV2")==0||strcmp(RomName,"DONKEY KONG 64")==0||strcmp(RomName,"ÄÞ×´ÓÝ2 Ë¶ØÉ¼ÝÃÞÝ")==0||strcmp(RomName,"ÄÞ×´ÓÝ3 ÉËÞÀÉÏÁSOS!")==0||strcmp(RomName,"EXCITEBIKE64")==0||strcmp(RomName,"²ÃÞÖ³½¹ÉÏ°¼Þ¬Ý¼Þ­¸")==0||strcmp(RomName,"NBA COURTSIDE")==0||strcmp(RomName,"Madden NFL 2002")==0||strcmp(RomName,"MarioParty3")==0||strcmp(RomName,"MarioTennis")==0||strcmp(RomName,"MarioTennis64")==0||strcmp(RomName,"EVANGELION")==0||strcmp(RomName,"Parlor PRO 64")==0||strcmp(RomName,"Ultraman Battle JAPA")==0||strcmp(RomName,"Perfect Dark")==0||strcmp(RomName,"RIDGE RACER 64")==0||strcmp(RomName,"Robopon 64")==0||strcmp(RomName,"STAR WARS EP1 RACER")==0||strcmp(RomName,"YOSHI STORY")==0) SaveUsing=EEPROM_16K;
 			if (strcmp(RomName,"THE LEGEND OF ZELDA")==0) SaveUsing=SRAM;
 			if (strcmp(RomName,"NBA Courtside 2")==0||strcmp(RomName,"POKEMON STADIUM")==0) SaveUsing=FlashRAM;
-			// This masks most auto save type issues to extend compatibility for ROMhacks. The reason why it is stil set manually per Game.ini is for hacks with custom internal name and shared CRC.
+			// This masks most auto save type issues to extend compatibility for ROMhacks. The reason why it is still set manually per Game.ini is for hacks with custom internal name and shared CRC.
 		}
 		ClearFrame=RomClearFrame;
+		VirtualSD=RomVirtualSD;
 		AudioSignal=RomAudioSignal;
 		UseTLB=RomUseTLB;
 		DelaySI=RomDelaySI;
@@ -308,6 +284,39 @@ void SetupPlugins (HWND hWnd) {
 		if (SyncGametoAudio) LimitFPS=TRUE;
 		EmulateAI=FALSE;
 		if (strcmp(AudioDLL,"No Audio.dll")==0||RomJAI||RomShankleAziAI) EmulateAI=TRUE;
+		if (ProtectMemory) {
+			if (VirtualAlloc(RecompCode,0x03200000,MEM_COMMIT,PAGE_EXECUTE_READWRITE)==NULL) { // Performance
+				DisplayError(GS(MSG_MEM_ALLOC_ERROR));
+				DisplayThreadExit("SetupPlugins-ProtectMemory-VirtualAlloc(RecompCode,0x03200000,MEM_COMMIT,PAGE_EXECUTE_READWRITE)==NULL\n\nFailed on boot using enlarged compile buffer");
+			}
+		} else {
+			VirtualFree(RecompCode,0x03200000,MEM_DECOMMIT);
+			if (VirtualAlloc(RecompCode,0x01400000,MEM_COMMIT,PAGE_EXECUTE_READWRITE)==NULL) {
+				DisplayError(GS(MSG_MEM_ALLOC_ERROR));
+				DisplayThreadExit("SetupPlugins-ProtectMemory-else-VirtualAlloc(RecompCode,0x01400000,MEM_COMMIT,PAGE_EXECUTE_READWRITE)==NULL\n\nFailed on boot");
+			}
+		}
+		if (NewRAMsize!=RDRAMsize) {
+			if (RDRAMsize==0x400000) {
+				if (VirtualAlloc(N64MEM+0x400000,0x400000,MEM_COMMIT,PAGE_READWRITE)==NULL) {
+					DisplayError(GS(MSG_MEM_ALLOC_ERROR));
+					DisplayThreadExit("SetupPlugins-VirtualAlloc(N64MEM+0x400000,0x400000,MEM_COMMIT,PAGE_READWRITE)==NULL\n\nFailed on boot");
+				}
+				if (VirtualAlloc((BYTE*)JumpTable+0x400000,0x400000,MEM_COMMIT,PAGE_READWRITE)==NULL) {
+					DisplayError(GS(MSG_MEM_ALLOC_ERROR));
+					DisplayThreadExit("SetupPlugins-VirtualAlloc((BYTE*)JumpTable+0x400000,0x400000,MEM_COMMIT,PAGE_READWRITE)==NULL\n\nFailed on boot");
+				}
+				if (VirtualAlloc((BYTE*)DelaySlotTable+(0x400000>>0xA),(0x400000>>0xA),MEM_COMMIT,PAGE_READWRITE)==NULL) {
+					DisplayError(GS(MSG_MEM_ALLOC_ERROR));
+					DisplayThreadExit("SetupPlugins-VirtualAlloc((BYTE*)DelaySlotTable+(0x400000>>0xA),(0x400000>>0xA),MEM_COMMIT,PAGE_READWRITE)==NULL\n\nFailed on boot");
+				}
+			} else {
+				VirtualFree(N64MEM+0x400000,0x400000,MEM_DECOMMIT);
+				VirtualFree((BYTE*)JumpTable+0x400000,0x400000,MEM_DECOMMIT);
+				VirtualFree((BYTE*)DelaySlotTable+(0x400000>>0xA),(0x400000>>0xA),MEM_DECOMMIT);
+			}
+		}
+		RDRAMsize=NewRAMsize;
 		LoadCheats();
 		HandleWindowTitle();
 	} else GetCurrentDlls();

@@ -23,7 +23,6 @@
 *should be forwarded to them so if they want them.
 *
 */
-#define LargeCompileBufferSize	0x03200000
 extern DWORD*TLB_ReadMap,*TLB_WriteMap,RDRAMsize;
 extern BYTE*N64MEM,*RDRAM,*DMEM,*IMEM,*ROM;
 extern void**JumpTable,**DelaySlotTable;

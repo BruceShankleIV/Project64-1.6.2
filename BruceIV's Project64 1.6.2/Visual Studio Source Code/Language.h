@@ -252,3 +252,4 @@ char*GS               (int StringID);
 #define GAME_CAPTURE			216
 #define FFMPEG_NOFIND			217
 #define FFMPEG_NOBOOT			218
+#define VIRTUALSD_LANG			219

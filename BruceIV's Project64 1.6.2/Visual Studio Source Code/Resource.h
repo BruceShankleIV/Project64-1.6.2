@@ -57,6 +57,7 @@
 #define IDC_SAVE_TYPE                   1089
 #define IDC_CF                          1094
 #define IDC_FiftyNineHertz				1123
+#define IDC_VirtualSD					1124
 #define IDC_SAVE_TYPE_TEXT              10912
 #define IDC_REMEMBER                    1095
 #define IDC_CF_TEXT              1095

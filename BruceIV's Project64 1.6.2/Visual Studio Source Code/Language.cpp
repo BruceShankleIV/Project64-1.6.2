@@ -251,6 +251,7 @@ LANG_STR DefaultString[]={
 	{ GAME_CAPTURE,		  "ffmpeg Game Capture"},
 	{ FFMPEG_NOFIND,	  "Unable to locate ffmpeg"},
 	{ FFMPEG_NOBOOT,	  "Unable to boot ffmpeg"},
+	{ VIRTUALSD_LANG,	  "Virtual SD Card"},
 };
 class CLanguage  {
 	void FindLangName  (int Index);
