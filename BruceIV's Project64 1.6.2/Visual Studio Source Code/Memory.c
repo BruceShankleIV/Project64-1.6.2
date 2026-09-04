@@ -1232,14 +1232,12 @@ int r4300i_LW_NonMemory (DWORD PAddr,DWORD*Value) {
 			return FALSE;
 		}
 		break;
-	case 0x1FF00000:
-		if (VirtualSD) {
-			read_summercart_regs(NULL,PAddr,Value);
-			break;
-		}
 	default:
-		*Value=PAddr&0xFFFF;
-		*Value=(*Value<<16)|*Value;
+		if (VirtualSD) read_summercart_regs(NULL,PAddr,Value);
+		else {
+			*Value=PAddr&0xFFFF;
+			*Value=(*Value<<16)|*Value;
+		}
 		return FALSE;
 	}
 	return TRUE;
@@ -1642,9 +1640,7 @@ int r4300i_SW_NonMemory (DWORD PAddr,DWORD Value) {
 		WriteToFlashCommand(Value);
 		break;
 	case 0x1FC00000:
-		if (PAddr<0x1FC007C0) {
-			return FALSE;
-		} else if (PAddr<0x1FC00800) {
+		if (PAddr>=0x1FC007C0&&PAddr<0x1FC00800) {
 			_asm {
 				mov eax,Value
 				bswap eax
@@ -1656,13 +1652,8 @@ int r4300i_SW_NonMemory (DWORD PAddr,DWORD Value) {
 			}
 			return TRUE;
 		}
-		return FALSE;
-	case 0x1FF00000:
-		if (VirtualSD) {
-			write_summercart_regs(NULL,PAddr,Value,~0);
-			break;
-		}
 	default:
+		if (VirtualSD) write_summercart_regs(NULL,PAddr,Value,~0);
 		return FALSE;
 	}
 	return TRUE;
