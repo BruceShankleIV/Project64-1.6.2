@@ -204,3 +204,4 @@ Als deze actie succesvol is, kun je weer gegevens opslaan op en laden van je vir
 #216# "ffmpeg-game-opname"
 #217# "ffmpeg kan niet worden gevonden"
 #218# "ffmpeg kan niet worden opgestart"
+#219# "Virtuele SD-kaart"

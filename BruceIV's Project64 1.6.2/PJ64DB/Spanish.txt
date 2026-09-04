@@ -219,3 +219,4 @@ Vas poder guardar o cargar de tu tarjeta SD virtual de nuevo si esta acción func
 #216# "Captura de juego con ffmpeg"
 #217# "No se puede localizar ffmpeg"
 #218# "No se puede iniciar ffmpeg"
+#219# "Tarjeta SD virtual"

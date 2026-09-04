@@ -478,6 +478,11 @@ using CPU Recompiler, it's important to use Register Caching for a boost in perf
 any negative side effects from doing so, to disable TLB sparingly on a per-game basis, and to always use
 Protect Memory only when needed.
 
+Virtual SD Card: By default, off
+This setting is specific to ROMhacks which save data to an SD Card for some reason. Said data is managed
+via the Options menu and the files on the newly created partition (decompression of the virtual SD card).
+Currently only Mario Builder (v1.1 release) uses this setting in the Game.ini so this one is super niche.
+
 
 CPU RECOMPILER SETTINGS FROM HERE (DISABLED IF CPU RECOMPILER IS OFF)
 
@@ -502,9 +507,12 @@ to leave it on. Generally, just leave this on unless you know a game works bette
 Turning it off notably improves performance and can get ROMhacks working.
 
 Protect Memory: By default, off
-This is a self-modifying code method which can provide a significant performance boost for certain games
-and fix some crashes, but can cause worse performance, severe slowdown, or interruption! An example of a
-game which has performance benefits from this setting is Super Mario 64 or Rat Attack.
+This is a self-modifying code emulation setting needed to get some games running right on the Recompiler
+but consumes more system resources, doesn't perform consistently, and has some game-specific issues when
+using Icepir8's LLE while this option is enabled. It should only be used when absolutely needed as such.
+Additionally, this setting will use the Larger Compile Buffer memory option simultaneously in an attempt
+to improve performance for systems struggling with this setting. That's linked with Protect Memory since
+an enlarged compile buffer causes misbehavior when not using Protect Memory so that's another handy fix.
 
 Register Caching: By default, on but changeable from the advanced tab
 Usually boosts performance without causing any negative side effects. If there is some strange behavior,

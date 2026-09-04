@@ -207,3 +207,4 @@ Vous pourrez sauvegarder ou charger vers ou depuis la carte SD virtuelle si cett
 #216# "Capture de jeu avec ffmpeg"
 #217# "Impossible de localiser ffmpeg"
 #218# "Impossible de lancer ffmpeg"
+#219# "Carte SD virtuelle"
