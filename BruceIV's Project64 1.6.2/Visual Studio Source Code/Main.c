@@ -1657,31 +1657,31 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpszArgs,in
 				lRet=RegCreateKeyEx(HKEY_CURRENT_USER,regPaths[i],0,NULL,REG_OPTION_NON_VOLATILE,KEY_WRITE,NULL,&hKey,&dwDisposition);
 				if (lRet==ERROR_SUCCESS) {
 					if (strstr(regPaths[i],"f")) RegSetValueEx(hKey,"Texture Filter",0,REG_DWORD,(const BYTE*)&dwDataTF,sizeof(dwDataTF));
-					if (strstr(regPaths[i],"8")) RegSetValueEx(hKey,"Full Screen Format",0,REG_DWORD,(const BYTE*)&dwDataFSF,sizeof(dwDataFSF));
+					if (strstr(regPaths[i],"3D")) RegSetValueEx(hKey,"Full Screen Format",0,REG_DWORD,(const BYTE*)&dwDataFSF,sizeof(dwDataFSF));
 					if (screenHeight>=1440&&screenWidth>=1920) {
 						if (strstr(regPaths[i],"f")) {
 							RegSetValueEx(hKey,"Windowed Height",0,REG_DWORD,(const BYTE*)&dwData960pHeight,sizeof(dwData960pHeight));
 							RegSetValueEx(hKey,"Windowed Width",0,REG_DWORD,(const BYTE*)&dwData960pWidth,sizeof(dwData960pWidth));
 						}
-						if (strstr(regPaths[i],"8")) {
+						if (strstr(regPaths[i],"3")) {
 							RegSetValueEx(hKey,"Full Screen Height",0,REG_DWORD,(const BYTE*)&dwDataFSW1080pFSH25K,sizeof(dwDataFSW1080pFSH25K));
 							RegSetValueEx(hKey,"Full Screen Width",0,REG_DWORD,(const BYTE*)&dwDataFSW25K,sizeof(dwDataFSW25K));
-							RegSetValueEx(hKey,"Options",0,REG_DWORD,(const BYTE*)&dwDataOPT960p,sizeof(dwDataOPT960p));
 						}
+						if (strstr(regPaths[i],"8")) RegSetValueEx(hKey,"Options",0,REG_DWORD,(const BYTE*)&dwDataOPT960p,sizeof(dwDataOPT960p));
 						if (strstr(regPaths[i],"L")) RegSetValueEx(hKey,"Options",0,REG_DWORD,(const BYTE*)&dwDataOPT960pD3D9,sizeof(dwDataOPT960pD3D9));
 					} else if (screenHeight>=1080&&screenWidth>=1440) {
 						if (strstr(regPaths[i],"f")) {
 							RegSetValueEx(hKey,"Windowed Height",0,REG_DWORD,(const BYTE*)&dwDataWH600p,sizeof(dwDataWH600p));
 							RegSetValueEx(hKey,"Windowed Width",0,REG_DWORD,(const BYTE*)&dwDataWW600p,sizeof(dwDataWW600p));
 						}
-						if (strstr(regPaths[i],"8")) {
+						if (strstr(regPaths[i],"3")) {
 							RegSetValueEx(hKey,"Full Screen Height",0,REG_DWORD,(const BYTE*)&dwDataFSH1080p,sizeof(dwDataFSH1080p));
 							RegSetValueEx(hKey,"Full Screen Width",0,REG_DWORD,(const BYTE*)&dwDataFSW1080pFSH25K,sizeof(dwDataFSW1080pFSH25K));
-							RegSetValueEx(hKey,"Options",0,REG_DWORD,(const BYTE*)&dwDataOPT1080p,sizeof(dwDataOPT1080p));
 						}
+						if (strstr(regPaths[i],"8")) RegSetValueEx(hKey,"Options",0,REG_DWORD,(const BYTE*)&dwDataOPT1080p,sizeof(dwDataOPT1080p));
 						if (strstr(regPaths[i],"L")) RegSetValueEx(hKey,"Options",0,REG_DWORD,(const BYTE*)&dwDataOPT1080pD3D9,sizeof(dwDataOPT1080pD3D9));
 					} else if (screenHeight>=960&&screenWidth>=1280) {
-						if (strstr(regPaths[i],"8")) {
+						if (strstr(regPaths[i],"3")) {
 							RegSetValueEx(hKey,"Full Screen Height",0,REG_DWORD,(const BYTE*)&dwData960pHeight,sizeof(dwData960pHeight));
 							RegSetValueEx(hKey,"Full Screen Width",0,REG_DWORD,(const BYTE*)&dwData960pWidth,sizeof(dwData960pWidth));
 						}
