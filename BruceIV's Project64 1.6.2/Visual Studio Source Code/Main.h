@@ -35,6 +35,7 @@ extern "C" {
 #include "ROM Browser.h"
 #include "Language.h"
 /*********Source Version 25*********/
+/*Last edited at 5:24PM on 9/5/2026*/
 /*********General Defaults**********/
 #define AppName						"BruceIV's Project64 1.6.2"
 #define IniName						"Game.ini"
@@ -48,7 +49,7 @@ extern "C" {
 #define Default_BasicMode			TRUE
 #define Default_RomsToRemember		10
 #define Default_RomsDirsToRemember	10
-#define Default_CountPerOp		2
+#define Default_CountPerOp			2
 #define Default_ForceDisableTLB		FALSE
 #define Default_ForceEnableDMA		FALSE
 #define Default_ForceDisableCaching	FALSE

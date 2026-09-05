@@ -972,9 +972,12 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 					fileIndex++;
 				} while (GetFileAttributes(outputFile)!=INVALID_FILE_ATTRIBUTES);
 			}
-			if (screenHeight>=2160&&screenWidth>=3840) {
+			if (screenHeight>=2160&&screenWidth>=2880) {
 				if (AutoHide) sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -draw_mouse 0 -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-44:0:0\" -level 4.1 -crf 19 -pix_fmt yuv420p -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
 				else sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-44:0:0\" -level 4.1 -crf 19 -pix_fmt yuv420p -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
+			} else if (screenHeight>=1440&&screenWidth>=1920) {
+				if (AutoHide) sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -draw_mouse 0 -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-29:0:0\" -level 4.1 -crf 19 -pix_fmt yuv420p -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
+				else sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-29:0:0\" -level 4.1 -crf 19 -pix_fmt yuv420p -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
 			} else {
 				if (AutoHide) sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -draw_mouse 0 -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-28:0:0\" -level 4.1 -crf 19 -pix_fmt yuv420p -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
 				else sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-28:0:0\" -level 4.1 -crf 19 -pix_fmt yuv420p -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
@@ -1020,9 +1023,12 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 					fileIndex++;
 				} while (GetFileAttributes(outputFile)!=INVALID_FILE_ATTRIBUTES);
 			}
-			if (screenHeight>=2160&&screenWidth>=3840) {
+			if (screenHeight>=2160&&screenWidth>=2880) {
 				if (AutoHide) sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -draw_mouse 0 -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-44:0:0\" -c:v libx264rgb -crf 22 -pix_fmt rgb24 ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
 				else sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-44:0:0\" -c:v libx264rgb -crf 22 -pix_fmt rgb24 ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
+			} else if (screenHeight>=1440&&screenWidth>=1920) {
+				if (AutoHide) sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -draw_mouse 0 -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-29:0:0\" -c:v libx264rgb -crf 22 -pix_fmt rgb24 ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
+				else sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-29:0:0\" -c:v libx264rgb -crf 22 -pix_fmt rgb24 ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
 			} else {
 				if (AutoHide) sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -draw_mouse 0 -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-28:0:0\" -c:v libx264rgb -crf 22 -pix_fmt rgb24 ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
 				else sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-28:0:0\" -c:v libx264rgb -crf 22 -pix_fmt rgb24 ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
@@ -1068,9 +1074,12 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 					fileIndex++;
 				} while (GetFileAttributes(outputFile)!=INVALID_FILE_ATTRIBUTES);
 			}
-			if (screenHeight>=2160&&screenWidth>=3840) {
+			if (screenHeight>=2160&&screenWidth>=2880) {
 				if (AutoHide) sprintf(cmd,"cmd /C cd /d \"%s%s\" && ffmpeg -y -f gdigrab -draw_mouse 0 -i title=\"%s\" -frames:v 1 -vf \"crop=iw:ih-44:0:0\" \"%s\"",drive,Runtimesdir,WinTitle,outputFile);
 				else sprintf(cmd,"cmd /C cd /d \"%s%s\" && ffmpeg -y -f gdigrab -i title=\"%s\" -frames:v 1 -vf \"crop=iw:ih-44:0:0\" \"%s\"",drive,Runtimesdir,WinTitle,outputFile);
+			} else if (screenHeight>=1440&&screenWidth>=1920) {
+				if (AutoHide) sprintf(cmd,"cmd /C cd /d \"%s%s\" && ffmpeg -y -f gdigrab -draw_mouse 0 -i title=\"%s\" -frames:v 1 -vf \"crop=iw:ih-29:0:0\" \"%s\"",drive,Runtimesdir,WinTitle,outputFile);
+				else sprintf(cmd,"cmd /C cd /d \"%s%s\" && ffmpeg -y -f gdigrab -i title=\"%s\" -frames:v 1 -vf \"crop=iw:ih-29:0:0\" \"%s\"",drive,Runtimesdir,WinTitle,outputFile);
 			} else {
 				if (AutoHide) sprintf(cmd,"cmd /C cd /d \"%s%s\" && ffmpeg -y -f gdigrab -draw_mouse 0 -i title=\"%s\" -frames:v 1 -vf \"crop=iw:ih-28:0:0\" \"%s\"",drive,Runtimesdir,WinTitle,outputFile);
 				else sprintf(cmd,"cmd /C cd /d \"%s%s\" && ffmpeg -y -f gdigrab -i title=\"%s\" -frames:v 1 -vf \"crop=iw:ih-28:0:0\" \"%s\"",drive,Runtimesdir,WinTitle,outputFile);
@@ -1157,6 +1166,42 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 				SelectLangMenuItem(GetMenu(hWnd),LOWORD(wParam));
 				ResetRomBrowserColumns();
 				SetupMenu(hWnd);
+			}
+		}
+		break;
+#define MinHeight 480
+#define MinWidth 640
+	case WM_SIZING:
+		{
+			LPRECT lprc=(LPRECT) lParam;
+			int fwSide=wParam;
+			if ((lprc->bottom-lprc->top)<=MinHeight) {
+				switch (fwSide) {
+				case WMSZ_TOPLEFT:
+				case WMSZ_TOP:
+				case WMSZ_TOPRIGHT:
+					lprc->top=lprc->bottom-MinHeight;
+					break;
+				case WMSZ_BOTTOMLEFT:
+				case WMSZ_BOTTOM:
+				case WMSZ_BOTTOMRIGHT:
+					lprc->bottom=lprc->top+MinHeight;
+					break;
+				}
+			}
+			if ((lprc->right-lprc->left) <=MinWidth) {
+				switch (fwSide) {
+				case WMSZ_TOPLEFT:
+				case WMSZ_LEFT:
+				case WMSZ_BOTTOMLEFT:
+					lprc->left=lprc->right-MinWidth;
+					break;
+				case WMSZ_TOPRIGHT:
+				case WMSZ_RIGHT:
+				case WMSZ_BOTTOMRIGHT:
+					lprc->right=lprc->left+MinWidth;
+					break;
+				}
 			}
 		}
 		break;
@@ -1571,9 +1616,12 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpszArgs,in
 	MSG msg;
 	if (!InitializeApplication (hInstance)) return FALSE;
 	if (!RegisterWinClass()) return FALSE;
-	if (screenHeight>=2160&&screenWidth>=3840) {
+	if (screenHeight>=1440&&screenWidth>=1920) {
   		X=(GetSystemMetrics(SM_CXSCREEN)-1280)/2;
 		Y=(GetSystemMetrics(SM_CYSCREEN)-960)/2;
+	} else if (screenHeight>=1080&&screenWidth>=1440) {
+		X=(GetSystemMetrics(SM_CXSCREEN)-800)/2;
+		Y=(GetSystemMetrics(SM_CYSCREEN)-600)/2;
 	} else {
 		X=(GetSystemMetrics(SM_CXSCREEN)-640)/2;
 		Y=(GetSystemMetrics(SM_CYSCREEN)-480)/2;
@@ -1594,7 +1642,7 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpszArgs,in
 	DragAcceptFiles(hMainWindow,TRUE);
 	if (!hMainWindow) return FALSE;
 	{
-		DWORD dwDataFSF=0x00000016,dwData960pHeight=0x000003c0,dwData960pWidth=0x00000500,dwDataOPT960Def=0x00000807,dwDataOPT480D3D9=0x08000803,dwDataOPT960D3D9=0x08000807,dwDataRange=0x0000003f,dwDisposition;
+		DWORD dwDataTF=0x00000000,dwDataWH600p=0x00000258,dwDataWW600p=0x00000320,dwDataFSH1080p=0x00000438,dwDataFSW1080pFSH25K=0x000005a0,dwDataFSW25K=0X00000780,dwDataOPT1080p=0x00000804,dwDataOPT1080pD3D9=0x08000804,dwDataFSF=0x00000016,dwData960pHeight=0x000003c0,dwData960pWidth=0x00000500,dwDataOPT960p=0x00000807,dwDataOPT480pD3D9=0x08000803,dwDataOPT960pD3D9=0x08000807,dwDataRange=0x0000003f,dwDisposition;
 		const char*regPaths[]={
 			"PJ64 V 1.6.2\\Configuration\\Direct64",
 			"PJ64 V 1.6.2\\Jabo Ver1.6.2 Regs\\Direct3D8 1.6",
@@ -1608,21 +1656,37 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpszArgs,in
 			if (lRet!=ERROR_SUCCESS) {
 				lRet=RegCreateKeyEx(HKEY_CURRENT_USER,regPaths[i],0,NULL,REG_OPTION_NON_VOLATILE,KEY_WRITE,NULL,&hKey,&dwDisposition);
 				if (lRet==ERROR_SUCCESS) {
-					if (strstr(regPaths[i],"3")) {
-						RegSetValueEx(hKey,"Full Screen Format",0,REG_DWORD,(const BYTE*)&dwDataFSF,sizeof(dwDataFSF));
-						if (screenHeight>=960&&screenWidth>=1280) {
-							RegSetValueEx(hKey,"Full Screen Height",0,REG_DWORD,(const BYTE*)&dwData960pHeight,sizeof(dwData960pHeight));
-							RegSetValueEx(hKey,"Full Screen Width",0,REG_DWORD,(const BYTE*)&dwData960pWidth,sizeof(dwData960pWidth));
-						}
-					}
-					if (screenHeight>=2160&&screenWidth>=3840) {
+					if (strstr(regPaths[i],"f")) RegSetValueEx(hKey,"Texture Filter",0,REG_DWORD,(const BYTE*)&dwDataTF,sizeof(dwDataTF));
+					if (strstr(regPaths[i],"8")) RegSetValueEx(hKey,"Full Screen Format",0,REG_DWORD,(const BYTE*)&dwDataFSF,sizeof(dwDataFSF));
+					if (screenHeight>=1440&&screenWidth>=1920) {
 						if (strstr(regPaths[i],"f")) {
 							RegSetValueEx(hKey,"Windowed Height",0,REG_DWORD,(const BYTE*)&dwData960pHeight,sizeof(dwData960pHeight));
 							RegSetValueEx(hKey,"Windowed Width",0,REG_DWORD,(const BYTE*)&dwData960pWidth,sizeof(dwData960pWidth));
 						}
-						if (strstr(regPaths[i],"8")) RegSetValueEx(hKey,"Options",0,REG_DWORD,(const BYTE*)&dwDataOPT960Def,sizeof(dwDataOPT960Def));
-						if (strstr(regPaths[i],"L")) RegSetValueEx(hKey,"Options",0,REG_DWORD,(const BYTE*)&dwDataOPT960D3D9,sizeof(dwDataOPT960D3D9));
-					} else if (strstr(regPaths[i],"L")) RegSetValueEx(hKey,"Options",0,REG_DWORD,(const BYTE*)&dwDataOPT480D3D9,sizeof(dwDataOPT480D3D9));
+						if (strstr(regPaths[i],"8")) {
+							RegSetValueEx(hKey,"Full Screen Height",0,REG_DWORD,(const BYTE*)&dwDataFSW1080pFSH25K,sizeof(dwDataFSW1080pFSH25K));
+							RegSetValueEx(hKey,"Full Screen Width",0,REG_DWORD,(const BYTE*)&dwDataFSW25K,sizeof(dwDataFSW25K));
+							RegSetValueEx(hKey,"Options",0,REG_DWORD,(const BYTE*)&dwDataOPT960p,sizeof(dwDataOPT960p));
+						}
+						if (strstr(regPaths[i],"L")) RegSetValueEx(hKey,"Options",0,REG_DWORD,(const BYTE*)&dwDataOPT960pD3D9,sizeof(dwDataOPT960pD3D9));
+					} else if (screenHeight>=1080&&screenWidth>=1440) {
+						if (strstr(regPaths[i],"f")) {
+							RegSetValueEx(hKey,"Windowed Height",0,REG_DWORD,(const BYTE*)&dwDataWH600p,sizeof(dwDataWH600p));
+							RegSetValueEx(hKey,"Windowed Width",0,REG_DWORD,(const BYTE*)&dwDataWW600p,sizeof(dwDataWW600p));
+						}
+						if (strstr(regPaths[i],"8")) {
+							RegSetValueEx(hKey,"Full Screen Height",0,REG_DWORD,(const BYTE*)&dwDataFSH1080p,sizeof(dwDataFSH1080p));
+							RegSetValueEx(hKey,"Full Screen Width",0,REG_DWORD,(const BYTE*)&dwDataFSW1080pFSH25K,sizeof(dwDataFSW1080pFSH25K));
+							RegSetValueEx(hKey,"Options",0,REG_DWORD,(const BYTE*)&dwDataOPT1080p,sizeof(dwDataOPT1080p));
+						}
+						if (strstr(regPaths[i],"L")) RegSetValueEx(hKey,"Options",0,REG_DWORD,(const BYTE*)&dwDataOPT1080pD3D9,sizeof(dwDataOPT1080pD3D9));
+					} else if (screenHeight>=960&&screenWidth>=1280) {
+						if (strstr(regPaths[i],"8")) {
+							RegSetValueEx(hKey,"Full Screen Height",0,REG_DWORD,(const BYTE*)&dwData960pHeight,sizeof(dwData960pHeight));
+							RegSetValueEx(hKey,"Full Screen Width",0,REG_DWORD,(const BYTE*)&dwData960pWidth,sizeof(dwData960pWidth));
+						}
+						if (strstr(regPaths[i],"L")) RegSetValueEx(hKey,"Options",0,REG_DWORD,(const BYTE*)&dwDataOPT960pD3D9,sizeof(dwDataOPT960pD3D9));
+					} else if (strstr(regPaths[i],"L")) RegSetValueEx(hKey,"Options",0,REG_DWORD,(const BYTE*)&dwDataOPT480pD3D9,sizeof(dwDataOPT480pD3D9));
 					if (strstr(regPaths[i],"7")) {
 						RegSetValueEx(hKey,"Range(0)",0,REG_DWORD,(const BYTE*)&dwDataRange,sizeof(dwDataRange));
 						RegSetValueEx(hKey,"Range(1)",0,REG_DWORD,(const BYTE*)&dwDataRange,sizeof(dwDataRange));
@@ -1636,14 +1700,20 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpszArgs,in
 		}
 	}
 	if (FirstBoot) {
+		char IntroMessage[999],ResWarning[99];
+		const char*ResScale;
 #ifdef CLASSIC_PLUGINS
-		MessageBox(NULL,"About - This is an updated Project64 v1.6.1 that's semi-maintained for casual play of retro and ROMhack games with minimal system requirements. See User Guide or contact me for info or troubleshooting.\n\n\nClassic Plugins - Project64.exe uses Jabo Video/Audio/Input as default plugins for old PC's and classic ROMhacks (mostly hacks up to year 2020). Switching to GLideN64 is necessary for all modern-day ROMhacks.\n\n\nContact Info -\nMy email: bruceiv.shankle@gmail.com\nReport bugs: discord.gg/cHDxa9vzQM.\n\nI'm usually busy so be patient or try to resolve an issue yourself and post any solutions you find.\n\n\n\n                                                                - Edwin Bruce Shankle IV",AppName,MB_OK|MB_ICONINFORMATION|MB_SETFOREGROUND);
-#else
-#ifdef MODERN_PLUGINS
-		MessageBox(NULL,"About - This is an updated Project64 v1.6.1 that's semi-maintained for casual play of retro and ROMhack games with minimal system requirements. See User Guide or contact me for info or troubleshooting.\n\n\nModern Plugins - Project64_Modern.exe uses GLideN64 Video, Azi Audio, and N-Rage's Input as default plugins for modern PC's and modern ROMhacks. Switching to Jabo's D3D8 is necessary for most legacy ROMhacks.\n\n\nContact Info -\nMy email: bruceiv.shankle@gmail.com\nReport bugs: discord.gg/cHDxa9vzQM.\n\nI'm usually busy so be patient or try to resolve an issue yourself and post any solutions you find.\n\n\n\n                                                                - Edwin Bruce Shankle IV",AppName,MB_OK|MB_ICONINFORMATION|MB_SETFOREGROUND);
+#define PLUGINS "Classic Plugins - Project64.exe uses Jabo Video/Audio/Input as default plugins for old PC's and classic ROMhacks (mostly hacks up to year 2020). Switching to GLideN64 is necessary for all modern-day ROMhacks."
+#elif MODERN_PLUGINS
+#define PLUGINS "Modern Plugins - Project64_Modern.exe uses GLideN64 Video, Azi Audio, and N-Rage's Input as default plugins for modern PC's and modern ROMhacks. Switching to Jabo's D3D8 is necessary for most legacy ROMhacks."
 #endif
-#endif
-		if (screenHeight>=2160&&screenWidth>=3840) MessageBox(NULL,"Make sure your scale is set to 200% (Settings->System->Display), otherwise the app won't display properly!",AppName,MB_OK|MB_ICONINFORMATION|MB_SETFOREGROUND);
+		sprintf(IntroMessage,"About - This is an updated Project64 v1.6.1 that's semi-maintained for casual play of retro and ROMhack games with minimal system requirements. See User Guide or contact me for info and troubleshooting.\n\n\n%s\n\n\nContact Info -\nMy email: bruceiv.shankle@gmail.com\nReport bugs: discord.gg/cHDxa9vzQM.\n\nI'm usually busy so be patient or try to resolve an issue yourself and post any solutions you find.\n\n\n\n                                                                - Edwin Bruce Shankle IV",PLUGINS);
+		MessageBox(NULL,IntroMessage,AppName,MB_OK|MB_ICONINFORMATION|MB_SETFOREGROUND);
+		if (screenHeight>=2160&&screenWidth>=2880) ResScale="200%";
+		else if (screenHeight>=1440&&screenWidth>=1920) ResScale="125%";
+		else ResScale="100%";
+		sprintf(ResWarning,"The app won't behave properly with your current display resolution if your scale isn't set to %s.\n\nYou can review and update your scale setting from Settings->System->Display.",ResScale);
+		MessageBox(NULL,ResWarning,AppName,MB_OK|MB_ICONWARNING|MB_SETFOREGROUND);
 	}
 	if (__argc>1) {
 		CreateRomListControl(hMainWindow);

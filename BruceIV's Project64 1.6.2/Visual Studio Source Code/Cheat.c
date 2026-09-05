@@ -1381,23 +1381,21 @@ void LoadCheats (void) {
 void ManageCheats (HWND hParent) {
 	DWORD X,Y,WindowWidth,WindowHeight,Style;
 	int screenHeight=GetSystemMetrics(SM_CYSCREEN),screenWidth=GetSystemMetrics(SM_CXSCREEN);
+	double n;
 	if (hManageWindow) {
 		SetForegroundWindow(hManageWindow);
 		return;
 	}
-	if (screenHeight>=2160&&screenWidth>=3840) {
-		WindowWidth=630;
-		WindowHeight=830;
-	} else {
-		WindowWidth=315;
-		WindowHeight=415;
-	}
+	if (screenHeight>=1440&&screenWidth>=1920) n=2;
+	else if (screenHeight>=1080&&screenWidth>=1440) n=1.5;
+	else n=1;
+	WindowWidth=(int)(315*n);
+	WindowHeight=(int)(415*n);
   	X=(GetSystemMetrics(SM_CXSCREEN)-WindowWidth) / 2;
 	Y=(GetSystemMetrics(SM_CYSCREEN)-WindowHeight) / 2;
 	if (hParent) { Style=WS_SIZEBOX|WS_SYSMENU; }
 	if (!hParent) { Style=WS_SIZEBOX|WS_SYSMENU|WS_MINIMIZEBOX; }
-	hManageWindow=CreateWindow("PJ64.Cheats","Cheats",Style,
-		X,Y,WindowWidth,WindowHeight,hParent,NULL,hInst,NULL);
+	hManageWindow=CreateWindow("PJ64.Cheats","Cheats",Style,X,Y,WindowWidth,WindowHeight,hParent,NULL,hInst,NULL);
 	if (UsuallyonTop) SetWindowPos(hManageWindow,HWND_TOPMOST,0,0,0,0,SWP_NOMOVE|SWP_NOSIZE);
 	RefreshCheatManager();
 	ShowWindow(hManageWindow,SW_SHOW);
@@ -1420,8 +1418,11 @@ void ManageCheats (HWND hParent) {
 	}
 }
 LRESULT CALLBACK Cheat_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
-#define MinHeight 260
-#define MinWidth  190
+	int screenHeight=GetSystemMetrics(SM_CYSCREEN),screenWidth=GetSystemMetrics(SM_CXSCREEN),MinWidth;
+#define MinHeight 263
+	if (screenHeight>=2160&&screenWidth>=2880) MinWidth=427;
+	else if (screenHeight>=1440&&screenWidth>=1920) MinWidth=274;
+	else MinWidth=220;
 	switch (uMsg) {
 	case WM_CREATE:
 		hSelectCheat=CreateDialog(hInst,MAKEINTRESOURCE(IDD_Cheats_List),hWnd,(DLGPROC)CheatListProc);
@@ -1438,7 +1439,7 @@ LRESULT CALLBACK Cheat_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 		{
 			LPRECT lprc=(LPRECT) lParam;
 			int fwSide=wParam;
-			if ((lprc->bottom-lprc->top) <=MinHeight) {
+			if ((lprc->bottom-lprc->top)<=MinHeight) {
 				switch (fwSide) {
 				case WMSZ_TOPLEFT:
 				case WMSZ_TOP:

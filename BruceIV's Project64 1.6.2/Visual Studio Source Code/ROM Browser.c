@@ -104,7 +104,6 @@ COLORREF GetColor(char*status,int selection);
 int ColorIndex(char*status);
 void SetColors(char*status);
 int CALLBACK RomList_CompareItems(LPARAM lParam1,LPARAM lParam2,LPARAM lParamSort);
-int CALLBACK RomList_CompareItems2(LPARAM lParam1,LPARAM lParam2,LPARAM lParamSort);
 char CurrentRBFileName[MAX_PATH+1]={""};
 ROMBROWSER_FIELDS RomBrowserFields[]={ "Game Name",0,RB_GameName,260,RB_GAMENAME,"Internal Name",1,RB_InternalName,133,RB_INTERNALNAME,"File Name",2,RB_FileName,101,RB_FILENAME,"1st CRC",3,RB_Crc1,71,RB_CRC1,"Size",4,RB_RomSize,58,RB_ROMSIZE,"Status",-1,RB_Status,93,RB_STATUS,"2nd CRC",-1,RB_Crc2,71,RB_CRC2,"ID",-1,RB_CartridgeID,23,RB_CART_ID,"CIC Chip",-1,RB_CICChip,79,RB_CICCHIP,};
 HWND hRomList=NULL;
@@ -230,24 +229,28 @@ void ResetRomBrowserColumns (void) {
 	int Column,index,screenHeight=GetSystemMetrics(SM_CYSCREEN),screenWidth=GetSystemMetrics(SM_CXSCREEN),i;
 	LV_COLUMN lvColumn;
 	char szString[300];
-	if (screenHeight>=2160&&screenWidth>=3840&&FirstBoot) {
+	double n;
+	if (FirstBoot) {
+		if (screenHeight>=1440&&screenWidth>=1920) n=2;
+		else if (screenHeight>=1080&&screenWidth>=1440) n=1.26;
+		else n=1;
 		for (i=0;i<NoOfFields;++i) switch (RomBrowserFields[i].ID) {
 			case RB_GameName:
-				RomBrowserFields[i].ColWidth=520;
+				RomBrowserFields[i].ColWidth=(int)(260*n);
 				break;
 			case RB_InternalName:
-				RomBrowserFields[i].ColWidth=266;
+				RomBrowserFields[i].ColWidth=(int)(133*n);
 				break;
 			case RB_FileName:
-				RomBrowserFields[i].ColWidth=202;
+				RomBrowserFields[i].ColWidth=(int)(101*n);
 				break;
 			case RB_Crc1:
-				RomBrowserFields[i].ColWidth=142;
+				RomBrowserFields[i].ColWidth=(int)(71*n);
 				break;
 			case RB_RomSize:
-				RomBrowserFields[i].ColWidth=116;
+				RomBrowserFields[i].ColWidth=(int)(58*n);
 				break;
-			}
+		}
 		FirstBoot=FALSE;
 	}
 	memset(&lvColumn,0,sizeof(lvColumn));
@@ -291,7 +294,7 @@ void RomList_ColumnSortList(LPNMLISTVIEW pnmv) {
 	if (NoOfFields==index) return;
 	RomList_SortList();
 }
-int CALLBACK RomList_CompareItems2(LPARAM lParam1,LPARAM lParam2,LPARAM lParamSort) {
+int CALLBACK RomList_CompareItems(LPARAM lParam1,LPARAM lParam2,LPARAM lParamSort) {
 	SORT_FIELDS*SortFields=(SORT_FIELDS*)lParamSort;
 	ROM_INFO*pRomInfo1,*pRomInfo2;
 	int count,result;
@@ -397,7 +400,7 @@ void RomList_OpenRom(LPNMHDR pnmh) {
 }
 void RomList_SortList (void) {
 	SORT_FIELDS SortFields;
-	ListView_SortItems(hRomList,RomList_CompareItems2,&SortFields);
+	ListView_SortItems(hRomList,RomList_CompareItems,&SortFields);
 }
 void RomListDrawItem (LPDRAWITEMSTRUCT ditem) {
 	RECT rcItem,rcDraw;
@@ -534,7 +537,8 @@ void HandleShutdown (HWND hParent) {
 	else SetWindowLong(hMainWindow,GWL_STYLE,GetWindowLong(hMainWindow,GWL_STYLE)|WS_SIZEBOX|WS_MAXIMIZEBOX);
 	if (hRomList==NULL) CreateRomListControl(hParent);
 	else EnableWindow(hRomList,TRUE);
-	if (screenHeight>=2160&&screenWidth>=3840) ChangeWinSize(hMainWindow,1280,960,NULL);
+	if (screenHeight>=1440&&screenWidth>=1920) ChangeWinSize(hMainWindow,1280,960,NULL);
+	else if (screenHeight>=1080&&screenWidth>=1440) ChangeWinSize(hMainWindow,800,600,NULL);
 	else ChangeWinSize(hMainWindow,640,480,NULL);
 	ShowWindow(hRomList,SW_SHOW);
 	DrawMenuBar(hMainWindow);

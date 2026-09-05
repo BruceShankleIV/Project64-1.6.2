@@ -29,12 +29,10 @@
 #define DefaultGFXDll				"Jabo_Direct3D8.dll"
 #define DefaultAudioDll				"Jabo_Dsound.dll"
 #define DefaultControllerDll		"Jabo_DInput.dll"
-#else
-#ifdef MODERN_PLUGINS
+#elif MODERN_PLUGINS
 #define DefaultGFXDll				"GLideN64.dll"
 #define DefaultAudioDll				"Shankle_Audio.dll"
 #define DefaultControllerDll		"Shankle_Input.dll"
-#endif
 #endif
 #define DefaultRSPDLL				"RSP.dll"
 #define PLUGIN_TYPE_RSP				1
