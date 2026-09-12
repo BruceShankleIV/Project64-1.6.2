@@ -196,12 +196,15 @@ BOOL CALLBACK DefaultOptionsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lPara
 		SetDlgItemText(hDlg,IDC_CORE_DEFAULTS,GS(DEFAULT_TEXT));
 		SetDlgItemText(hDlg,IDC_TEXT5,GS(ROM_COUNTER_FACTOR));
 		SetDlgItemText(hDlg,IDC_TEXT6,GS(REG_CACHE));
+		SetDlgItemText(hDlg,IDC_TEXT7,GS(SMCM_PROTECTED));
 		SetFlagControl(hDlg,&ForceDisableTLB,IDC_ForceDisableTLB,FORCE_DISABLE_TLB);
 		SetFlagControl(hDlg,&ForceEnableDMA,IDC_ForceEnableDMA,FORCE_ENABLE_DMA);
 		SetFlagControl(hDlg,&ForceDisableCaching,IDC_ForceDisableCaching,FORCE_DISABLE_REGISTERCACHING);
 		SetFlagControl(hDlg,&ForceAuto16kbit,IDC_ForceAuto16kbit,FORCE_AUTO4kbit);
 		AddDropDownItem(hDlg,IDC_REGCACHE,ON,REG_CACHE_ON,&SystemUseCache);
 		AddDropDownItem(hDlg,IDC_REGCACHE,OFF,REG_CACHE_OFF,&SystemUseCache);
+		AddDropDownItem(hDlg,IDC_PROTECT_MEMORY_ENLARGE_BUFFER,ON,PROTECT_MEMORY_ENLARGE_BUFFER_ON,&SystemProtectMemoryEnlargeBuffer);
+		AddDropDownItem(hDlg,IDC_PROTECT_MEMORY_ENLARGE_BUFFER,OFF,PROTECT_MEMORY_ENLARGE_BUFFER_OFF,&SystemProtectMemoryEnlargeBuffer);
 		AddDropDownItem(hDlg,IDC_CF,NUMBER_1,1,&SystemCF);
 		AddDropDownItem(hDlg,IDC_CF,NUMBER_2,2,&SystemCF);
 		AddDropDownItem(hDlg,IDC_CF,NUMBER_3,3,&SystemCF);
@@ -227,6 +230,9 @@ BOOL CALLBACK DefaultOptionsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lPara
 				indx=SendMessage(GetDlgItem(hDlg,IDC_REGCACHE),CB_GETCURSEL,0,0);
 				SystemUseCache=SendMessage(GetDlgItem(hDlg,IDC_REGCACHE),CB_GETITEMDATA,indx,0);
 				RegSetValueEx(hKeyResults,"Register Caching",0,REG_DWORD,(BYTE*)&SystemUseCache,sizeof(DWORD));
+				indx=SendMessage(GetDlgItem(hDlg,IDC_PROTECT_MEMORY_ENLARGE_BUFFER),CB_GETCURSEL,0,0);
+				SystemProtectMemoryEnlargeBuffer=SendMessage(GetDlgItem(hDlg,IDC_PROTECT_MEMORY_ENLARGE_BUFFER),CB_GETITEMDATA,indx,0);
+				RegSetValueEx(hKeyResults,"Protect Memory / Enlarge Buffer",0,REG_DWORD,(BYTE*)&SystemProtectMemoryEnlargeBuffer,sizeof(DWORD));
 				indx=SendMessage(GetDlgItem(hDlg,IDC_CF),CB_GETCURSEL,0,0);
 				SystemCF=SendMessage(GetDlgItem(hDlg,IDC_CF),CB_GETITEMDATA,indx,0);
 				RegSetValueEx(hKeyResults,"Counter Factor",0,REG_DWORD,(BYTE*)&SystemCF,sizeof(DWORD));
@@ -735,12 +741,16 @@ BOOL CALLBACK RomSettingsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) 
 		ReadRomOptions();
 		if (CPURunning) SetDlgItemText(hDlg,IDC_ROMSETTWARN,GS(ROMSETTWARN));
 		SetDlgItemText(hDlg,IDC_REGCACHE_TEXT,GS(REG_CACHE));
+		SetDlgItemText(hDlg,IDC_PROTECT_MEMORY_ENLARGE_BUFFER_TEXT,GS(SMCM_PROTECTED));
 		SetDlgItemText(hDlg,IDC_SAVE_TYPE_TEXT,GS(ROM_SAVE_TYPE));
 		SetDlgItemText(hDlg,IDC_CF_TEXT,GS(ROM_COUNTER_FACTOR));
-		SetDlgItemText(hDlg,IDC_RECOMPILER_SETTINGS,GS(CORE_RECOMPILER));
+		SetDlgItemText(hDlg,IDC_RECOMPILER_SETTINGS,GS(RECOMPILER_SETTINGS));
 		AddDropDownItem(hDlg,IDC_REGCACHE,DEFAULT_TEXT,UseCache_Default,&RomUseCache);
 		AddDropDownItem(hDlg,IDC_REGCACHE,ON,REG_CACHE_ON,&RomUseCache);
 		AddDropDownItem(hDlg,IDC_REGCACHE,OFF,REG_CACHE_OFF,&RomUseCache);
+		AddDropDownItem(hDlg,IDC_PROTECT_MEMORY_ENLARGE_BUFFER,DEFAULT_TEXT,ProtectMemoryEnlargeBuffer_Default,&RomProtectMemoryEnlargeBuffer);
+		AddDropDownItem(hDlg,IDC_PROTECT_MEMORY_ENLARGE_BUFFER,ON,PROTECT_MEMORY_ENLARGE_BUFFER_ON,&RomProtectMemoryEnlargeBuffer);
+		AddDropDownItem(hDlg,IDC_PROTECT_MEMORY_ENLARGE_BUFFER,OFF,PROTECT_MEMORY_ENLARGE_BUFFER_OFF,&RomProtectMemoryEnlargeBuffer);
 		AddDropDownItem(hDlg,IDC_SAVE_TYPE,DEFAULT_TEXT,Auto,&RomSaveUsing);
 		AddDropDownItem(hDlg,IDC_SAVE_TYPE,SAVE_4K_EEPROM,EEPROM_4K,&RomSaveUsing);
 		AddDropDownItem(hDlg,IDC_SAVE_TYPE,SAVE_16K_EEPROM,EEPROM_16K,&RomSaveUsing);
@@ -761,12 +771,11 @@ BOOL CALLBACK RomSettingsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) 
 		SetFlagControl(hDlg,&RomRspRecompiler,IDC_RSP_RECOMPILER,FORCE_RSP_RECOMPILER);
 		SetFlagControl(hDlg,&RomCpuRecompiler,IDC_CPU_RECOMPILER,CORE_RECOMPILER);
 		SetFlagControl(hDlg,&RomVirtualSD,IDC_VirtualSD,VIRTUALSD_LANG);
-		SetFlagControl(hDlg,&RomProtectMemory,IDC_PROTECT_MEMORY,SMCM_PROTECTED);
 		SetFlagControl(hDlg,&RomJumperPak,IDC_JUMPER_PAK,JUMPER_PAK);
 		SetFlagControl(hDlg,&RomDelayRDP,IDC_DELAY_RDP,ROM_DELAY_RDP);
 		SetFlagControl(hDlg,&RomDelayRSP,IDC_DELAY_RSP,ROM_DELAY_RSP);
 		SetFlagControl(hDlg,&RomAlignDMA,IDC_ALIGN_DMA,ROM_ALIGN_DMA);
-		SetFlagControl(hDlg,&RomCF1CF0,IDC_CF1_CF0,CF1_CF0);
+		SetFlagControl(hDlg,&RomLag,IDC_CF1_CF0,CF1_CF0);
 		if (strlen(RomName)==0) {
 			EnableWindow(GetDlgItem(hDlg,IDC_SAVE_TYPE_TEXT),FALSE);
 			EnableWindow(GetDlgItem(hDlg,IDC_SAVE_TYPE),FALSE);
@@ -789,7 +798,10 @@ BOOL CALLBACK RomSettingsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) 
 		if (strlen(RomName)==0||!RomCpuRecompiler) EnableWindow(GetDlgItem(hDlg,IDC_RECOMPILER_SETTINGS),FALSE);
 		if (strlen(RomName)==0||!RomCpuRecompiler||ForceDisableTLB) EnableWindow(GetDlgItem(hDlg,IDC_USE_TLB),FALSE);
 		if (strlen(RomName)==0||ForceEnableDMA) EnableWindow(GetDlgItem(hDlg,IDC_ALIGN_DMA),FALSE);
-		if (strlen(RomName)==0||!RomCpuRecompiler) EnableWindow(GetDlgItem(hDlg,IDC_PROTECT_MEMORY),FALSE);
+		if (strlen(RomName)==0||!RomCpuRecompiler) {
+			EnableWindow(GetDlgItem(hDlg,IDC_PROTECT_MEMORY_ENLARGE_BUFFER),FALSE);
+			EnableWindow(GetDlgItem(hDlg,IDC_PROTECT_MEMORY_ENLARGE_BUFFER_TEXT),FALSE);
+		}
 		if (strlen(RomName)==0||!RomCpuRecompiler||RomCF!=-1&&RomCF!=1) EnableWindow(GetDlgItem(hDlg,IDC_CF1_CF0),FALSE);
 		if (strlen(RomName)==0||strcmp(RSPDLL,"RSP.dll")!=0||strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")!=0||strcmp(RomName,"THE LEGEND OF ZELDA")==0||strcmp(RomName,"THE MASK OF MUJURA")==0||strcmp(RomName,"ZELDA MAJORA'S MASK")==0||strcmp(RomName,"BANJO KAZOOIE 2")==0||strcmp(RomName,"BANJO TOOIE")==0||strcmp(RomName,"CONKER BFD")==0||strcmp(RomName,"DONKEY KONG 64")==0||strcmp(RomName,"JET FORCE GEMINI")==0||strcmp(RomName,"STAR TWINS")==0||strcmp(RomName,"Perfect Dark")==0) EnableWindow(GetDlgItem(hDlg,IDC_RSP_RECOMPILER),FALSE);
 		if (strlen(RomName)==0||!RomJAI&&!RomShankleAziAI) EnableWindow(GetDlgItem(hDlg,ALTERNATE_EMUAI),FALSE);
@@ -807,17 +819,18 @@ BOOL CALLBACK RomSettingsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) 
 				RomCF=SendMessage(GetDlgItem(hDlg,IDC_CF),CB_GETITEMDATA,indx,0);
 				indx=SendMessage(GetDlgItem(hDlg,IDC_REGCACHE),CB_GETCURSEL,0,0);
 				RomUseCache=SendMessage(GetDlgItem(hDlg,IDC_REGCACHE),CB_GETITEMDATA,indx,0);
+				indx=SendMessage(GetDlgItem(hDlg,IDC_PROTECT_MEMORY_ENLARGE_BUFFER),CB_GETCURSEL,0,0);
+				RomProtectMemoryEnlargeBuffer=SendMessage(GetDlgItem(hDlg,IDC_PROTECT_MEMORY_ENLARGE_BUFFER),CB_GETITEMDATA,indx,0);
 				RomAudioSignal=SendMessage(GetDlgItem(hDlg,IDC_AUDIO_SIGNAL),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
 				RomDelaySI=SendMessage(GetDlgItem(hDlg,IDC_DELAY_SI),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
 				RomRspRecompiler=SendMessage(GetDlgItem(hDlg,IDC_RSP_RECOMPILER),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
 				RomCpuRecompiler=SendMessage(GetDlgItem(hDlg,IDC_CPU_RECOMPILER),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
 				RomVirtualSD=SendMessage(GetDlgItem(hDlg,IDC_VirtualSD),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
-				RomProtectMemory=SendMessage(GetDlgItem(hDlg,IDC_PROTECT_MEMORY),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
 				RomJumperPak=SendMessage(GetDlgItem(hDlg,IDC_JUMPER_PAK),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
 				RomDelayRDP=SendMessage(GetDlgItem(hDlg,IDC_DELAY_RDP),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
 				RomDelayRSP=SendMessage(GetDlgItem(hDlg,IDC_DELAY_RSP),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
 				RomAlignDMA=SendMessage(GetDlgItem(hDlg,IDC_ALIGN_DMA),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
-				RomCF1CF0=SendMessage(GetDlgItem(hDlg,IDC_CF1_CF0),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
+				RomLag=SendMessage(GetDlgItem(hDlg,IDC_CF1_CF0),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
 				RomUseTLB=SendMessage(GetDlgItem(hDlg,IDC_USE_TLB),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
 				RomFiftyNineHertz=SendMessage(GetDlgItem(hDlg,IDC_FiftyNineHertz),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
 				RomShankleAziAI=SendMessage(GetDlgItem(hDlg,SHANKLE_AZI_AI),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;

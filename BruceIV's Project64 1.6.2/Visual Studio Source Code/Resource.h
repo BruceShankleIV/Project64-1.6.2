@@ -96,6 +96,7 @@
 #define IDC_TEXT6						1136
 #define IDC_REMOVE                      1137
 #define IDC_RECURSION                   1138
+#define IDC_TEXT7						1139
 #define IDC_V64                         1141
 #define IDC_Z64                         1142
 #define IDC_LOAD_FULLSCREEN             1142
@@ -156,8 +157,9 @@
 #define IDC_ALIGN_DMA					1240
 #define IDC_SyncGametoAudio				1241
 #define IDC_JUMPER_PAK					1242
-#define IDC_PROTECT_MEMORY				1243
+#define IDC_PROTECT_MEMORY_ENLARGE_BUFFER				1243
 #define IDC_RECOMPILER_SETTINGS			1244
+#define IDC_PROTECT_MEMORY_ENLARGE_BUFFER_TEXT			1245
 #define ID_FILE_OPEN_ROM                40001
 #define ID_FILE_ROM_INFO                40002
 #define ID_FILE_EXIT                    40005

@@ -35,7 +35,7 @@ extern "C" {
 #include "ROM Browser.h"
 #include "Language.h"
 /*********Source Version 25*********/
-/*Last edited at 6:32PM on 9/5/2026*/
+/*Last edited at 8:20PM on 9/11/2026*/
 /*********General Defaults**********/
 #define AppName						"BruceIV's Project64 1.6.2"
 #define IniName						"Game.ini"
@@ -63,13 +63,18 @@ extern "C" {
 #define REG_CACHE_ON		0
 #define REG_CACHE_OFF		1
 #define Default_UseCache REG_CACHE_ON // Whether this should be on or off is debatable. ON for now to get games usually running at full speed and to be better on low-end PC's.
+/*********Protect Memory / Enlarge Buffer**********/
+#define ProtectMemoryEnlargeBuffer_Default	-1
+#define PROTECT_MEMORY_ENLARGE_BUFFER_ON		0
+#define PROTECT_MEMORY_ENLARGE_BUFFER_OFF		1
+#define Default_UseProtectMemoryEnlargeBuffer PROTECT_MEMORY_ENLARGE_BUFFER_OFF // Whether this should be on or off is debatable. OFF for now to get games usually running at higher speeds and prevent stuttering on low-end PC's.
 /**********Rom Browser**************/
 #define Default_UseRB				TRUE
 #define Default_Recursion			TRUE
 /*********Global Variables**********/
 extern LARGE_INTEGER Frequency,Frames[9],LastFrame;
 extern BOOL AutoSleep,AutoHide,Recursion,LimitFPS,SpeedCap,AutoFullScreen,SystemCF,UsuallyonTop,BasicMode,BootupSettings,SetupPluginsAfterSaveRomOpt,SPECIAL_BREAK_Trigger,SPECIAL_BREAK_Yes,FirstBoot;
-extern DWORD CurrentFrame,SystemUseCache,RomsToRemember,RomDirsToRemember;
+extern DWORD CurrentFrame,SystemUseCache,SystemProtectMemoryEnlargeBuffer,RomsToRemember,RomDirsToRemember;
 extern HWND hMainWindow,hHiddenWin,hStatusWnd;
 extern char CurrentSave[256];
 extern HMENU hMainMenu;

@@ -117,8 +117,8 @@ void OpcodeMapRecompiler (BLOCK_SECTION*Section) {
 		case R4300i_SPECIAL_DSRL32: Compile_R4300i_SPECIAL_DSRL32(Section); break;
 		case R4300i_SPECIAL_DSRA32: Compile_R4300i_SPECIAL_DSRA32(Section); break;
 		default:
-			if (ProtectMemory) DisplayThreadExit("OpcodeMapRecompiler-switch (Opcode.op)-case R4300i_SPECIAL:-switch (Opcode.funct)-default:\nThe emulator has crashed on a reserved Opcode at this location\n\nTry 'CPU Recompiler=OFF'?");
-			else DisplayThreadExit("OpcodeMapRecompiler-switch (Opcode.op)-case R4300i_SPECIAL:-switch (Opcode.funct)-default:\nThe emulator has crashed on a reserved Opcode at this location\n\nTry 'Protect Memory=ON'?");
+			if (ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON) DisplayThreadExit("OpcodeMapRecompiler-switch (Opcode.op)-case R4300i_SPECIAL:-switch (Opcode.funct)-default:-ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON\nThe emulator has crashed on a reserved Opcode at this location\n\nTry 'CPU Recompiler=OFF'?");
+			else DisplayThreadExit("OpcodeMapRecompiler-switch (Opcode.op)-case R4300i_SPECIAL:-switch (Opcode.funct)-default:-ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON-else\nThe emulator has crashed on a reserved Opcode at this location\n\nTry 'Protect Memory=ON'?");
 	}
 	break;
 	case R4300i_REGIMM:
@@ -138,8 +138,7 @@ void OpcodeMapRecompiler (BLOCK_SECTION*Section) {
 		case R4300i_REGIMM_BLTZALL:
 		case R4300i_REGIMM_BGEZALL:
 		break;
-		default:
-			DisplayThreadExit("OpcodeMapRecompiler-switch (Opcode.op)-case R4300i_REGIMM:-switch (Opcode.rt)-default:\nThe emulator has crashed on a reserved Opcode at this location");
+		DisplayThreadExit("OpcodeMapRecompiler-switch (Opcode.op)-case R4300i_REGIMM:-switch (Opcode.rt)-default:\nThe emulator has crashed on a reserved Opcode at this location");
 		}
 	break;
 	case R4300i_J: Compile_R4300i_J(Section); break;
@@ -390,8 +389,8 @@ void OpcodeMapRecompiler (BLOCK_SECTION*Section) {
 	case R4300i_SD: Compile_R4300i_SD(Section); break;
 	break;
 	default:
-		if (ProtectMemory) DisplayThreadExit("OpcodeMapRecompiler-switch (Opcode.op)-default:\n\nThe emulator has crashed on a reserved Opcode at this location\n\nTry 'CPU Recompiler=OFF'?");
-		else DisplayThreadExit("OpcodeMapRecompiler-switch (Opcode.op)-default:\n\nThe emulator has crashed on a reserved Opcode at this location.\n\n\nPotential fault point: ClearRecompilerCache-memset(JumpTable+(Block<<10),0,SetMem);\n\nTry 'Protect Memory=ON'?");
+		if (ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON) DisplayThreadExit("OpcodeMapRecompiler-switch (Opcode.op)-default:-ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON\n\nThe emulator has crashed on a reserved Opcode at this location\n\nTry 'CPU Recompiler=OFF'?");
+		else DisplayThreadExit("OpcodeMapRecompiler-switch (Opcode.op)-default:-ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON-else\n\nThe emulator has crashed on a reserved Opcode at this location.\n\n\nPotential fault point: ClearRecompilerCache-memset(JumpTable+(Block<<10),0,SetMem);\n\nTry 'Protect Memory=ON'?");
 	}
 }
 void InitializeInitialCompilerVariable (void)
@@ -553,7 +552,7 @@ void CompileExit (DWORD TargetPC,REG_INFO ExitRegSet,int reason,int CompileNow,v
 		Section.RegWorking.RandomModifier=0;
 		Section.RegWorking.CycleCount=0;
 		if (reason==Normal) { CompileSystemCheck(0,(DWORD)-1,Section.RegWorking); }
-		if (ProtectMemory) { // Performance
+		if (ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON) { // Performance
 			BYTE*Jump,*Jump2;
 			if (TargetPC>=0x80000000&&TargetPC<0x90000000) {
 				DWORD pAddr=TargetPC&0x1FFFFFFF;
@@ -1812,12 +1811,12 @@ BOOL GenerateX86Code (BLOCK_SECTION*Section,DWORD Test) {
 	SetNormal
 	do {
 		__try {
-			if (BlockCycleCount>1&&CF1CF0) BlockCycleCount=1;
+			if (BlockCycleCount>1&&!Lag) BlockCycleCount=1;
 			if (!r4300i_LW_VAddr(Section->CompilePC,&Opcode.Hex)) {
 				if (UseTLB) {
-					if (ProtectMemory) DisplayThreadExit("GenerateX86Code-!r4300i_LW_VAddr(Section->CompilePC,&Opcode.Hex)\n\nTry 'CPU Recompiler=OFF'?");
-					else DisplayThreadExit("GenerateX86Code-!r4300i_LW_VAddr(Section->CompilePC,&Opcode.Hex)\n\nTry 'Protect Memory=ON'?");
-				} else DisplayThreadExit("GenerateX86Code-!r4300i_LW_VAddr(Section->CompilePC,&Opcode.Hex)\n\nNeeds 'TLB=ON'?");
+					if (ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON) DisplayThreadExit("GenerateX86Code-!r4300i_LW_VAddr(Section->CompilePC,&Opcode.Hex)-UseTLB-ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON\n\nTry 'CPU Recompiler=OFF'?");
+					else DisplayThreadExit("GenerateX86Code-!r4300i_LW_VAddr(Section->CompilePC,&Opcode.Hex)-UseTLB-ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON-else\n\nTry 'Protect Memory=ON'?");
+				} else DisplayThreadExit("GenerateX86Code-!r4300i_LW_VAddr(Section->CompilePC,&Opcode.Hex)-UseTLB-else\n\nNeeds 'TLB=ON'?");
 			}
 		} __except(r4300i_CPU_MemoryFilter(GetExceptionCode(),GetExceptionInformation())) {
 			DisplayThreadExit("GenerateX86Code-r4300i_CPU_MemoryFilter(GetExceptionCode(),GetExceptionInformation()");
@@ -2212,11 +2211,11 @@ void StartRecompilerCPU (void) {
 	DWORD Addr;
 	BYTE*Block;
 	CoInitialize(NULL);
-	if (TargetInfo==NULL&&!ProtectMemory) {
+	if (TargetInfo==NULL&&ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_OFF) {
 		TargetInfo=VirtualAlloc(NULL,MaxCodeBlocks*sizeof(TARGET_INFO),MEM_COMMIT|MEM_RESERVE,PAGE_READWRITE);
 		if (TargetInfo==NULL) {
 			DisplayError(GS(MSG_MEM_ALLOC_ERROR));
-			DisplayThreadExit("StartRecompilerCPU-TargetInfo==NULL");
+			DisplayThreadExit("StartRecompilerCPU-TargetInfo==NULL&&ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_OFF-TargetInfo==NUL");
 		}
 		TargetIndex=0;
 	}
@@ -2250,7 +2249,7 @@ void StartRecompilerCPU (void) {
 					DWORD OldProtect;
 					Block=CompileDelaySlot();
 					*(DelaySlotTable+(Addr>>12))=Block;
-					VirtualProtect(N64MEM+Addr,4,PAGE_READONLY,&OldProtect); // Previously exclusive to Protect Memory, now always active for maximum performance and stability.
+					VirtualProtect(N64MEM+Addr,4,PAGE_READONLY,&OldProtect); // If this causes any performance issue, make exclusive to protect memory and enable protect memory for MM PAL Debug
 					SetNormal
 				}
 				_asm {
@@ -2270,8 +2269,8 @@ void StartRecompilerCPU (void) {
 						continue;
 					} else {
 						if (UseTLB) {
-							if (ProtectMemory) DisplayThreadExit("StartRecompilerCPU-Addr>0x10000000-PROGRAM_COUNTER>=0xB0000000&&PROGRAM_COUNTER<(RomFileSize|0xB0000000)-else-UseTLB-ProtectMemory\n\nTry 'CPU Recompiler=OFF'?");
-							else DisplayThreadExit("StartRecompilerCPU-Addr>0x10000000-PROGRAM_COUNTER>=0xB0000000&&PROGRAM_COUNTER<(RomFileSize|0xB0000000)-else-UseTLB-ProtectMemory-else\n\nTry 'Protect Memory=ON'?");
+							if (ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON) DisplayThreadExit("StartRecompilerCPU-Addr>0x10000000-PROGRAM_COUNTER>=0xB0000000&&PROGRAM_COUNTER<(RomFileSize|0xB0000000)-else-UseTLB-ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON\n\nTry 'CPU Recompiler=OFF'?");
+							else DisplayThreadExit("StartRecompilerCPU-Addr>0x10000000-PROGRAM_COUNTER>=0xB0000000&&PROGRAM_COUNTER<(RomFileSize|0xB0000000)-else-UseTLB-ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON-else\n\nTry 'Protect Memory=ON'?");
 						} else DisplayThreadExit("StartRecompilerCPU-Addr>0x10000000-PROGRAM_COUNTER>=0xB0000000&&PROGRAM_COUNTER<(RomFileSize|0xB0000000)-else-UseTLB-else\n\nNeeds 'TLB=ON'?");
 					}
 				}
@@ -2293,7 +2292,7 @@ void StartRecompilerCPU (void) {
 					}
 				}
 			}
-			if (!ProtectMemory&&Block!=NULL&&strcmp(RomName,"RAT ATTACK")!=0) {
+			if (ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_OFF&&Block!=NULL&&strcmp(RomName,"RAT ATTACK")!=0) {
 				TARGET_INFO*Target=(TARGET_INFO*)Block;
 				if (*(QWORD*)(N64MEM+Addr)!=Target->OriginalMemory) {
 					DWORD Start=(Addr&~0xFFF)-0x10000,End=Start+0x20000,count;
@@ -2318,7 +2317,7 @@ void StartRecompilerCPU (void) {
 					ResetRecompCode();
 					Block=Compiler4300iBlock();
 				}
-				if (ProtectMemory||strcmp(RomName,"RAT ATTACK")==0) {
+				if (ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON||strcmp(RomName,"RAT ATTACK")==0) {
 					*(JumpTable+(Addr>>2))=Block;
 					if (strcmp(RomName,"RAT ATTACK")!=0) VirtualProtect(N64MEM+Addr,4,PAGE_READONLY,&OldProtect);
 				} else {

@@ -253,3 +253,4 @@ char*GS               (int StringID);
 #define FFMPEG_NOFIND			217
 #define FFMPEG_NOBOOT			218
 #define VIRTUALSD_LANG			219
+#define RECOMPILER_SETTINGS		220

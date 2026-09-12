@@ -36,7 +36,7 @@
 #include "ROM Tools Common.h"
 #define MenuLocOfUsedFiles	11
 #define MenuLocOfUsedDirs	(MenuLocOfUsedFiles+1)
-DWORD ClearFrame,RomClearFrame,RomFileSize,VirtualSD,RomVirtualSD,SaveUsing,RomSaveUsing,CPUType,UseTLB,RomUseTLB,FiftyNineHertz,RomFiftyNineHertz,RomJAI,AudioSignal,RomAudioSignal,RomCF,UseCache,RomUseCache,RomShankleAziAI,RomAltEmulateAI,SyncGametoAudio,RomSyncGametoAudio,CF1CF0,RomCF1CF0,DelayRDP,RomDelayRDP,DelayRSP,RomDelayRSP,AlignDMA,RomAlignDMA,DelayRDP,RomDelayRDP,DelayRSP,RomDelayRSP,DelaySI,RomDelaySI,RomRspRecompiler,CpuRecompiler,RomCpuRecompiler,ProtectMemory,RomProtectMemory,JumperPak,RomJumperPak,ForceAuto16kbit,ForceDisableTLB,ForceDisableCaching,ForceEnableDMA,EmulateAI;
+DWORD ClearFrame,RomClearFrame,RomFileSize,VirtualSD,RomVirtualSD,SaveUsing,RomSaveUsing,CPUType,UseTLB,RomUseTLB,FiftyNineHertz,RomFiftyNineHertz,RomJAI,AudioSignal,RomAudioSignal,RomCF,UseCache,RomUseCache,RomShankleAziAI,RomAltEmulateAI,SyncGametoAudio,RomSyncGametoAudio,Lag,RomLag,DelayRDP,RomDelayRDP,DelayRSP,RomDelayRSP,AlignDMA,RomAlignDMA,DelayRDP,RomDelayRDP,DelayRSP,RomDelayRSP,DelaySI,RomDelaySI,RomRspRecompiler,CpuRecompiler,RomCpuRecompiler,ProtectMemoryEnlargeBuffer,RomProtectMemoryEnlargeBuffer,JumperPak,RomJumperPak,ForceAuto16kbit,ForceDisableTLB,ForceDisableCaching,ForceEnableDMA,EmulateAI;
 char CurrentFileName[MAX_PATH+1]={ "" },RomName[MAX_PATH+1]={ "" },RomHeader[0x1000],LastRoms[10][MAX_PATH+1],LastDirs[10][MAX_PATH+1];
 BOOL IsValidRomImage (BYTE Test[4]);
 void AddRecentDir(HWND hWnd,char*addition) {
@@ -447,9 +447,9 @@ void ReadRomOptions(void) {
 	else RomRspRecompiler=FALSE;
 	RomCpuRecompiler=TRUE;
 	RomVirtualSD=FALSE;
-	RomProtectMemory=FALSE;
+	RomProtectMemoryEnlargeBuffer=ProtectMemoryEnlargeBuffer_Default;
 	RomJumperPak=FALSE;
-	RomCF1CF0=TRUE;
+	RomLag=FALSE;
 	RomDelayRDP=FALSE;
 	RomDelayRSP=FALSE;
 	RomShankleAziAI=FALSE;
@@ -476,7 +476,7 @@ void ReadRomOptions(void) {
 		else { RomSaveUsing=Auto; }
 		_GetPrivateProfileString(Identifier,"Clear Frame","",String,sizeof(String),IniFileName);
 		if ((strcmp(GfxDLL,"Jabo_Direct3D8.dll")==0||strcmp(GfxDLL,"Jabo_Direct3D8_old.dll")==0||strcmp(GfxDLL,"Jabo_Direct3DL.dll")==0)&&(strcmp(String,"1")==0||strcmp(String,"2")==0)) RomClearFrame=TRUE;
-		_GetPrivateProfileString(Identifier,"TLB","",String,sizeof(String),IniFileName);
+		_GetPrivateProfileString(Identifier,"Translation Lookaside Buffer","",String,sizeof(String),IniFileName);
 		if (strcmp(String,"OFF")==0) RomUseTLB=FALSE;
 		_GetPrivateProfileString(Identifier,"Azi AI","",String,sizeof(String),IniFileName);
 		if (strcmp(String,"ON")==0&&strcmp(AudioDLL,"Shankle_Audio.dll")==0) RomShankleAziAI=TRUE;
@@ -484,8 +484,8 @@ void ReadRomOptions(void) {
 		if (strcmp(String,"OFF")==0) RomSyncGametoAudio=FALSE;
 		_GetPrivateProfileString(Identifier,"Delay SI","",String,sizeof(String),IniFileName);
 		if (strcmp(String,"ON")==0) RomDelaySI=TRUE;
-		_GetPrivateProfileString(Identifier,"CF1-->0","",String,sizeof(String),IniFileName);
-		if (strcmp(String,"OFF")==0) RomCF1CF0=FALSE;
+		_GetPrivateProfileString(Identifier,"Lag","",String,sizeof(String),IniFileName);
+		if (strcmp(String,"ON")==0) RomLag=TRUE;
 		_GetPrivateProfileString(Identifier,"Signal","",String,sizeof(String),IniFileName);
 		if (strcmp(String,"ON")==0) RomAudioSignal=TRUE;
 		_GetPrivateProfileString(Identifier,"Delay RSP","",String,sizeof(String),IniFileName);
@@ -496,9 +496,9 @@ void ReadRomOptions(void) {
 		if (strcmp(String,"ON")==0) RomAlignDMA=TRUE;
 		_GetPrivateProfileString(Identifier,"59 Hz","",String,sizeof(String),IniFileName);
 		if (strcmp(String,"ON")==0) RomFiftyNineHertz=TRUE;
-		_GetPrivateProfileString(Identifier,"RSP Recompiler","",String,sizeof(String),IniFileName);
+		_GetPrivateProfileString(Identifier,"Recompile RCP RSP","",String,sizeof(String),IniFileName);
 		if (strcmp(String,"ON")==0) RomRspRecompiler=TRUE;
-		_GetPrivateProfileString(Identifier,"CPU Recompiler","",String,sizeof(String),IniFileName);
+		_GetPrivateProfileString(Identifier,"Recompile VR4300i CPU","",String,sizeof(String),IniFileName);
 		if (strcmp(String,"OFF")==0) RomCpuRecompiler=FALSE;
 		_GetPrivateProfileString(Identifier,"Virtual SD Card","",String,sizeof(String),IniFileName);
 		if (strcmp(String,"ON")==0) RomVirtualSD=TRUE;
@@ -509,16 +509,18 @@ void ReadRomOptions(void) {
 		_GetPrivateProfileString(Identifier,"Legacy AiLenChanged","",String,sizeof(String),IniFileName);
 		if (strcmp(String,"ON")==0&&(RomJAI||RomShankleAziAI)) RomAltEmulateAI=TRUE;
 		if (RomCpuRecompiler) {
-			_GetPrivateProfileString(Identifier,"Protect Memory","",String,sizeof(String),IniFileName);
-			if (strcmp(String,"ON")==0) RomProtectMemory=TRUE;
+			_GetPrivateProfileString(Identifier,"Protect Memory / Enlarge Buffer","",String,sizeof(String),IniFileName);
+			if (strcmp(String,"ON")==0) RomProtectMemoryEnlargeBuffer=PROTECT_MEMORY_ENLARGE_BUFFER_ON;
+			else if (strcmp(String,"OFF")==0) { RomProtectMemoryEnlargeBuffer=PROTECT_MEMORY_ENLARGE_BUFFER_OFF; }
+			else RomProtectMemoryEnlargeBuffer=ProtectMemoryEnlargeBuffer_Default;
 			if (!ForceDisableCaching) {
 				_GetPrivateProfileString(Identifier,"Register Caching","",String,sizeof(String),IniFileName);
 				if (strcmp(String,"ON")==0) { RomUseCache=REG_CACHE_ON; }
 				else if (strcmp(String,"OFF")==0) { RomUseCache=REG_CACHE_OFF; }
 				else RomUseCache=UseCache_Default;
 			}
-		} else RomUseTLB = FALSE;
-		if (!RomCpuRecompiler||RomCF!=-1&&RomCF!=1) RomCF1CF0=FALSE;
+		} else RomUseTLB=FALSE;
+		if (!RomCpuRecompiler||RomCF!=-1&&RomCF!=1) RomLag=TRUE;
 	}
 }
 void SetNewFileDirectory (void) {
@@ -908,8 +910,8 @@ void SaveRomOptions (void) {
 	}
 	_WritePrivateProfileString(Identifier,"Counter Factor",String,GetIniFileName());
 	if (strcmp(AudioDLL,"Jabo_Dsound.dll")==0) {
-		if (RomJAI) _WritePrivateProfileString(Identifier,"Sync Game to Audio","Default",GetIniFileName());
-		else _WritePrivateProfileString(Identifier,"Sync Game to Audio",RomSyncGametoAudio?"Default":"OFF",GetIniFileName());
+		if (RomJAI||RomSyncGametoAudio) _WritePrivateProfileString(Identifier,"Sync Game to Audio","Default",GetIniFileName());
+		else _WritePrivateProfileString(Identifier,"Sync Game to Audio","OFF",GetIniFileName());
 		_WritePrivateProfileString(Identifier,"Jabo AI",RomJAI?"ON":"Default",GetIniFileName());
 	}
 	if (!ForceEnableDMA) _WritePrivateProfileString(Identifier,"Align DMA",RomAlignDMA?"ON":"Default",GetIniFileName());
@@ -920,16 +922,15 @@ void SaveRomOptions (void) {
 	_WritePrivateProfileString(Identifier,"Jumper Pak",RomJumperPak?"ON":"Default",GetIniFileName());
 	_WritePrivateProfileString(Identifier,"Signal",RomAudioSignal?"ON":"Default",GetIniFileName());
 	_WritePrivateProfileString(Identifier,"Delay RSP",RomDelayRSP?"ON":"Default",GetIniFileName());
-	if (strcmp(RSPDLL, "RSP.dll")==0&&(strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0||strcmp(RomName,"THE LEGEND OF ZELDA")==0||strcmp(RomName,"THE MASK OF MUJURA")==0||strcmp(RomName,"ZELDA MAJORA'S MASK")==0||strcmp(RomName,"BANJO KAZOOIE 2")==0||strcmp(RomName,"BANJO TOOIE")==0||strcmp(RomName,"CONKER BFD")==0||strcmp(RomName,"DONKEY KONG 64")==0||strcmp(RomName,"JET FORCE GEMINI")==0||strcmp(RomName,"STAR TWINS")==0||strcmp(RomName,"Perfect Dark")==0)) _WritePrivateProfileString(Identifier,"RSP Recompiler",RomRspRecompiler?"ON":"Default",GetIniFileName());
+	if (strcmp(RSPDLL,"RSP.dll")==0&&(strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0||strcmp(RomName,"THE LEGEND OF ZELDA")==0||strcmp(RomName,"THE MASK OF MUJURA")==0||strcmp(RomName,"ZELDA MAJORA'S MASK")==0||strcmp(RomName,"BANJO KAZOOIE 2")==0||strcmp(RomName,"BANJO TOOIE")==0||strcmp(RomName,"CONKER BFD")==0||strcmp(RomName,"DONKEY KONG 64")==0||strcmp(RomName,"JET FORCE GEMINI")==0||strcmp(RomName,"STAR TWINS")==0||strcmp(RomName,"Perfect Dark")==0)) _WritePrivateProfileString(Identifier,"Recompile RCP RSP",RomRspRecompiler?"ON":"Default",GetIniFileName());
 	_WritePrivateProfileString(Identifier,"59 Hz",RomFiftyNineHertz?"ON":"Default",GetIniFileName());
 	_WritePrivateProfileString(Identifier,"Delay SI",RomDelaySI?"ON":"Default",GetIniFileName());
-	_WritePrivateProfileString(Identifier,"CPU Recompiler",RomCpuRecompiler?"Default":"OFF",GetIniFileName());
+	_WritePrivateProfileString(Identifier,"Recompile VR4300i CPU",RomCpuRecompiler?"Default":"OFF",GetIniFileName());
 	_WritePrivateProfileString(Identifier,"Virtual SD Card",RomVirtualSD?"ON":"Default",GetIniFileName());
-	if (!RomCpuRecompiler||RomCF!=-1&&RomCF!=1) _WritePrivateProfileString(Identifier,"CF1-->0","Default",GetIniFileName());
-	else _WritePrivateProfileString(Identifier,"CF1-->0",RomCF1CF0?"Default":"OFF",GetIniFileName());
+	if (!RomCpuRecompiler||RomCF!=-1&&RomCF!=1) _WritePrivateProfileString(Identifier,"Lag","Default",GetIniFileName());
+	else _WritePrivateProfileString(Identifier,"Lag",RomLag?"ON":"Default",GetIniFileName());
 	if (RomCpuRecompiler) {
-		if (!ForceDisableTLB) _WritePrivateProfileString(Identifier, "TLB", RomUseTLB ? "Default" : "OFF", GetIniFileName());
-		_WritePrivateProfileString(Identifier,"Protect Memory",RomProtectMemory?"ON":"Default",GetIniFileName());
+		if (!ForceDisableTLB) _WritePrivateProfileString(Identifier, "Translation Lookaside Buffer", RomUseTLB ? "Default" : "OFF", GetIniFileName());
 		if (!ForceDisableCaching) {
 			switch (RomUseCache) {
 			case REG_CACHE_ON: sprintf(String,"ON"); break;
@@ -938,12 +939,18 @@ void SaveRomOptions (void) {
 			}
 			_WritePrivateProfileString(Identifier,"Register Caching",String,GetIniFileName());
 		}
+		switch (RomProtectMemoryEnlargeBuffer) {
+		case PROTECT_MEMORY_ENLARGE_BUFFER_ON: sprintf(String,"ON"); break;
+		case PROTECT_MEMORY_ENLARGE_BUFFER_OFF: sprintf(String,"OFF"); break;
+		default: sprintf(String,"Default");
+		}
+		_WritePrivateProfileString(Identifier,"Protect Memory / Enlarge Buffer",String,GetIniFileName());
 	} else {
-		_WritePrivateProfileString(Identifier,"TLB","Default",GetIniFileName());
-		_WritePrivateProfileString(Identifier,"Protect Memory","Default",GetIniFileName());
+		_WritePrivateProfileString(Identifier,"Translation Lookaside Buffer","Default",GetIniFileName());
 		_WritePrivateProfileString(Identifier,"Register Caching","Default",GetIniFileName());
+		_WritePrivateProfileString(Identifier,"Protect Memory / Enlarge Buffer","Default",GetIniFileName());
 	}
-	if (!CPURunning) HandleWindowTitle();
+	HandleWindowTitle();
 }
 void SetRecentRomDir (DWORD Index) {
 	Index -=ID_FILE_RECENT_DIR;
