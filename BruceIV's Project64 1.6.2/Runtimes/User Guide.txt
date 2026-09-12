@@ -146,8 +146,8 @@ Glide64 'Final' Date: Dec 29 2011 - AKA International Emulation Project, this pl
 				    at random and I'm not really sure why, it's a very annoying bug that
 				    messes up all the textures. The only reason to use this plugin is to
 				    perform GIM in Zelda by disabling "Enable frame buffer emulation" or
-				    because a ROMhack benefits most from it (3rd Quest Patch 0.5 - using
-				    "Enable frame buffer emulation" turned OFF, or a ROMhack has alpha
+				    because a ROMhack benefits most from it (3rd Quest Patch 0.5, having
+				    "Enable frame buffer emulation" turned OFF, or if there's some alpha
 				    blending or framebuffer issues and your PC doesn't support GLideN64,
 				    or you don't want to deal with the bugs in GLideN64). If you develop
 				    ROMhacks, please do not do it while using this as your video plugin,
@@ -454,12 +454,18 @@ Delay RSP: By default, off
 It's either needed or it's not. The setting is needed for some games to boot. Known to break sound in
 some games when used incorrectly.
 
-RSP Recompiler: By default, variable
+Recompile RCP RSP: By default, variable
 * Forced on if the video plugin is not Icepir8's LLE or if the ROM is known to require it (internal name)
-The Project64 1.6 RSP has a Recompiler and an Interpreter just like the Project64 internal core. In many,
-but not all cases, the Interpreter style works better with Icepir8's LLE and prevents strange crashes. To
-solve this, Interpreter is always used with Icepir8's LLE and Recompiler style will be used for the cases
-where Interpreter does not work well with Icepir8's LLE.
+This should usually be on for performance, most of the time it will be forced on, you should only need to
+toggle it per-game when using Icepir8's LLE video plugin due to incompatibility between the two. If this
+isn't enabled, the RCP RSP will be interpreted instead (exclusively for select cases with Icepir8's LLE).
+-
+More technical explanation from n64brew.dev:
+The Reality Coprocessor, or RCP, is one of the two main processors on the Nintendo 64 board. Split into
+two components, the Reality Signal Processor and Reality Display Processor, it cooperates with the other
+main processor, the VR4300 CPU to draw 3D graphics, perform matrix calculations, and produce audio. The
+Reality Signal Processor, or RSP, is the portion of the RCP responsible for matrix math, lighting
+calculations, clipping, shading, and other highly parallel graphics tasks, as well as audio processing.
 
 59Hz: By default, off
 This setting fixes a game running at the wrong speed (misdetected as 50Hz) but this is very very rare...
@@ -469,14 +475,12 @@ Delay SI: By default, off
 It's either needed or it's not. Notably fixes GB Tower not working with the Static Interpreter RSP while
 using N-Rage. The setting is needed for some games to boot.
 
-CPU Recompiler: By default, on
-* Forces TLB on if off
-If off, Register Caching/TLB/Protect Memory will have no effect, as this app uses a CPU Interpreter core
-style emulation when not using Recompiler style. You should always use the CPU Recompiler unless there's
-no way to emulate the game properly with it such as in the case of Cosmic Goddess (try it and see). When
-using CPU Recompiler, it's important to use Register Caching for a boost in performance if there are not
-any negative side effects from doing so, to disable TLB sparingly on a per-game basis, and to always use
-Protect Memory only when needed.
+Recompile VR4300i CPU: By default, on
+This should almost always be on unless it's not possible to get a game working with recomp optimizations
+in which case disabling this is mandatory. When enabled, you should take advantage of all optimizations.
+Those optimizations are: Lag unchecked, Translation Lookaside Buffer unchecked, Register Caching ON, and
+Protect Memory / Enlarged Buffer OFF. If experiencing issues with that combination, try until you arrive
+at whatever combination works best for the current game.
 
 Virtual SD Card: By default, off
 This setting is specific to ROMhacks which save data to an SD Card for some reason. Said data is managed
@@ -484,40 +488,32 @@ via the Options menu and the files on the newly created partition (decompression
 Currently only Mario Builder (v1.1 release) uses this setting in the Game.ini so this one is super niche.
 
 
-CPU RECOMPILER SETTINGS FROM HERE (DISABLED IF CPU RECOMPILER IS OFF)
+VR4300i CPU Recompilation Optimizations
 
-Note: Most settings below this point for the CPU Recompiler are purely for the sake of optimization, but
-sometimes one does need to be specifically enabled or disabled, depending on the game. TLB should be off
-for certain ROMhacks with hardware issues. CF1-->0 can be used to get a game to run at the correct speed
-like GB Tower. Register Caching forced to OFF can avoid sound issues like it would cause in Buck Bumble.
-There are more examples, that's just what I recall off my head during testing to give you an idea of it.
+Lag: By default, off
+* Forced on if Counter Factor is not set to 1
+Lag reduction is helpful to reduce load times and achieve higher framerates and overall create a more
+satisfying gaming experience, but this remains a game specific setting since some games aren't stable
+without lag. To know when you can get by with this requires in-game testing. A very handy setting.
 
-
-CF1-->0: By default, on
-* Forced off if Counter Factor not set to 1
-Counter Factor 1 is converted to Counter Factor 0, making it truly lagless, but also less stable, as the
-more you lower the counter factor, the more likely you generally are to run into a game-dependent crash!
-However, having it turned on can be necessary to emulate some games properly or to get rid of lagging or
-delay like the equipment subscreen equip delay in Ocarina of Time on HLE video if not using a Cheat fix.
-
-TLB: By default, on
+Translation Lookaside Buffer: By default, on
 This Translation Lookaside Buffer is either required for a game or not. If the game does not require it,
 it's best to turn it off to avoid issues that this setting can cause, although with most games it's fine
 to leave it on. Generally, just leave this on unless you know a game works better with, or needs it off.
 Turning it off notably improves performance and can get ROMhacks working.
 
-Protect Memory: By default, off
-This is a self-modifying code emulation setting needed to get some games running right on the Recompiler
-but consumes more system resources, doesn't perform consistently, and has some game-specific issues when
-using Icepir8's LLE while this option is enabled. It should only be used when absolutely needed as such.
-Additionally, this setting will use the Larger Compile Buffer memory option simultaneously in an attempt
-to improve performance for systems struggling with this setting. That's linked with Protect Memory since
-an enlarged compile buffer causes misbehavior when not using Protect Memory so that's another handy fix.
+Protect Memory / Enlarged Buffer: By default, off but changeable from the advanced tab
+This is a self-modifying code emulation setting and the "Larger Compile Buffer" option added in v1.4 put
+into one unified setting since they work best in tandem with each other. This should off as much as you
+can since enabling it can introduce stutter and performance problems, but sometimes it's needed. You'll
+need to test on a game specific basis to see when you do and don't need this enabled. But if you desire
+stability, I suggest checking this as ON by default from the advanced tab.
 
 Register Caching: By default, on but changeable from the advanced tab
 Usually boosts performance without causing any negative side effects. If there is some strange behavior,
 try turning this setting off. Strange behavior includes warping textures going all over the place, wrong
 audio, scenes being loaded incorrectly. But 99% of the time this is just a pure performance enhancement.
+But if you desire stability, I suggest checking this OFF by default from the advanced tab.
 
 
 

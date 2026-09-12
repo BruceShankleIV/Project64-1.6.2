@@ -220,7 +220,7 @@ BOOL CALLBACK DefaultOptionsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lPara
 				KEY_ALL_ACCESS,NULL,&hKeyResults,&Disposition);
 			if (lResult==ERROR_SUCCESS) {
 				ForceDisableTLB=SendMessage(GetDlgItem(hDlg,IDC_ForceDisableTLB),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
-				RegSetValueEx(hKeyResults,"Always Disable TLB",0,REG_DWORD,(BYTE*)&ForceDisableTLB,sizeof(DWORD));
+				RegSetValueEx(hKeyResults,"Always Disable Translation Lookaside Buffer",0,REG_DWORD,(BYTE*)&ForceDisableTLB,sizeof(DWORD));
 				ForceEnableDMA=SendMessage(GetDlgItem(hDlg,IDC_ForceEnableDMA),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
 				RegSetValueEx(hKeyResults,"Always Enable Align DMA",0,REG_DWORD,(BYTE*)&ForceEnableDMA,sizeof(DWORD));
 				ForceDisableCaching=SendMessage(GetDlgItem(hDlg,IDC_ForceDisableCaching),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;

@@ -117,8 +117,8 @@ void OpcodeMapRecompiler (BLOCK_SECTION*Section) {
 		case R4300i_SPECIAL_DSRL32: Compile_R4300i_SPECIAL_DSRL32(Section); break;
 		case R4300i_SPECIAL_DSRA32: Compile_R4300i_SPECIAL_DSRA32(Section); break;
 		default:
-			if (ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON) DisplayThreadExit("OpcodeMapRecompiler-switch (Opcode.op)-case R4300i_SPECIAL:-switch (Opcode.funct)-default:-ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON\nThe emulator has crashed on a reserved Opcode at this location\n\nTry 'CPU Recompiler=OFF'?");
-			else DisplayThreadExit("OpcodeMapRecompiler-switch (Opcode.op)-case R4300i_SPECIAL:-switch (Opcode.funct)-default:-ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON-else\nThe emulator has crashed on a reserved Opcode at this location\n\nTry 'Protect Memory=ON'?");
+			if (ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON) DisplayThreadExit("OpcodeMapRecompiler-switch (Opcode.op)-case R4300i_SPECIAL:-switch (Opcode.funct)-default:-ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON\nThe emulator has crashed on a reserved Opcode at this location\n\nTry 'Recompile VR4300i CPU=OFF'?");
+			else DisplayThreadExit("OpcodeMapRecompiler-switch (Opcode.op)-case R4300i_SPECIAL:-switch (Opcode.funct)-default:-ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON-else\nThe emulator has crashed on a reserved Opcode at this location\n\nTry 'Protect Memory / Enlarge Buffer=ON'?");
 	}
 	break;
 	case R4300i_REGIMM:
@@ -389,8 +389,8 @@ void OpcodeMapRecompiler (BLOCK_SECTION*Section) {
 	case R4300i_SD: Compile_R4300i_SD(Section); break;
 	break;
 	default:
-		if (ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON) DisplayThreadExit("OpcodeMapRecompiler-switch (Opcode.op)-default:-ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON\n\nThe emulator has crashed on a reserved Opcode at this location\n\nTry 'CPU Recompiler=OFF'?");
-		else DisplayThreadExit("OpcodeMapRecompiler-switch (Opcode.op)-default:-ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON-else\n\nThe emulator has crashed on a reserved Opcode at this location.\n\n\nPotential fault point: ClearRecompilerCache-memset(JumpTable+(Block<<10),0,SetMem);\n\nTry 'Protect Memory=ON'?");
+		if (ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON) DisplayThreadExit("OpcodeMapRecompiler-switch (Opcode.op)-default:-ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON\n\nThe emulator has crashed on a reserved Opcode at this location\n\nTry 'Recompile VR4300i CPU=OFF'?");
+		else DisplayThreadExit("OpcodeMapRecompiler-switch (Opcode.op)-default:-ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON-else\n\nThe emulator has crashed on a reserved Opcode at this location.\n\n\nPotential fault point: ClearRecompilerCache-memset(JumpTable+(Block<<10),0,SetMem);\n\nTry 'Protect Memory / Enlarge Buffer=ON'?");
 	}
 }
 void InitializeInitialCompilerVariable (void)
@@ -1814,9 +1814,9 @@ BOOL GenerateX86Code (BLOCK_SECTION*Section,DWORD Test) {
 			if (BlockCycleCount>1&&!Lag) BlockCycleCount=1;
 			if (!r4300i_LW_VAddr(Section->CompilePC,&Opcode.Hex)) {
 				if (UseTLB) {
-					if (ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON) DisplayThreadExit("GenerateX86Code-!r4300i_LW_VAddr(Section->CompilePC,&Opcode.Hex)-UseTLB-ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON\n\nTry 'CPU Recompiler=OFF'?");
-					else DisplayThreadExit("GenerateX86Code-!r4300i_LW_VAddr(Section->CompilePC,&Opcode.Hex)-UseTLB-ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON-else\n\nTry 'Protect Memory=ON'?");
-				} else DisplayThreadExit("GenerateX86Code-!r4300i_LW_VAddr(Section->CompilePC,&Opcode.Hex)-UseTLB-else\n\nNeeds 'TLB=ON'?");
+					if (ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON) DisplayThreadExit("GenerateX86Code-!r4300i_LW_VAddr(Section->CompilePC,&Opcode.Hex)-UseTLB-ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON\n\nTry 'Recompile VR4300i CPU=OFF'?");
+					else DisplayThreadExit("GenerateX86Code-!r4300i_LW_VAddr(Section->CompilePC,&Opcode.Hex)-UseTLB-ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON-else\n\nTry 'Protect Memory / Enlarge Buffer=ON'?");
+				} else DisplayThreadExit("GenerateX86Code-!r4300i_LW_VAddr(Section->CompilePC,&Opcode.Hex)-UseTLB-else\n\nNeeds 'Translation Lookaside Buffer=OFF' removed?");
 			}
 		} __except(r4300i_CPU_MemoryFilter(GetExceptionCode(),GetExceptionInformation())) {
 			DisplayThreadExit("GenerateX86Code-r4300i_CPU_MemoryFilter(GetExceptionCode(),GetExceptionInformation()");
@@ -2269,9 +2269,9 @@ void StartRecompilerCPU (void) {
 						continue;
 					} else {
 						if (UseTLB) {
-							if (ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON) DisplayThreadExit("StartRecompilerCPU-Addr>0x10000000-PROGRAM_COUNTER>=0xB0000000&&PROGRAM_COUNTER<(RomFileSize|0xB0000000)-else-UseTLB-ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON\n\nTry 'CPU Recompiler=OFF'?");
-							else DisplayThreadExit("StartRecompilerCPU-Addr>0x10000000-PROGRAM_COUNTER>=0xB0000000&&PROGRAM_COUNTER<(RomFileSize|0xB0000000)-else-UseTLB-ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON-else\n\nTry 'Protect Memory=ON'?");
-						} else DisplayThreadExit("StartRecompilerCPU-Addr>0x10000000-PROGRAM_COUNTER>=0xB0000000&&PROGRAM_COUNTER<(RomFileSize|0xB0000000)-else-UseTLB-else\n\nNeeds 'TLB=ON'?");
+							if (ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON) DisplayThreadExit("StartRecompilerCPU-Addr>0x10000000-PROGRAM_COUNTER>=0xB0000000&&PROGRAM_COUNTER<(RomFileSize|0xB0000000)-else-UseTLB-ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON\n\nTry 'Recompile VR4300i CPU=OFF'?");
+							else DisplayThreadExit("StartRecompilerCPU-Addr>0x10000000-PROGRAM_COUNTER>=0xB0000000&&PROGRAM_COUNTER<(RomFileSize|0xB0000000)-else-UseTLB-ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON-else\n\nTry 'Protect Memory / Enlarge Buffer=ON'?");
+						} else DisplayThreadExit("StartRecompilerCPU-Addr>0x10000000-PROGRAM_COUNTER>=0xB0000000&&PROGRAM_COUNTER<(RomFileSize|0xB0000000)-else-UseTLB-else\n\nNeeds 'Translation Lookaside Buffer=OFF' removed?");
 					}
 				}
 				Block=*(JumpTable+(Addr>>2));

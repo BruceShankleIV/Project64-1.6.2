@@ -329,7 +329,7 @@ void LoadSettings (void) {
 	sprintf(String,"PJ64 V 1.6.2\\Configuration\\Settings\\Advanced");
 	lResult=RegOpenKeyEx(HKEY_CURRENT_USER,String,0,KEY_ALL_ACCESS,&hKeyResults);
 	if (lResult==ERROR_SUCCESS) {
-		lResult=RegQueryValueEx(hKeyResults,"Always Disable TLB",0,&Type,(BYTE*)(&ForceDisableTLB),&Bytes);
+		lResult=RegQueryValueEx(hKeyResults,"Always Disable Translation Lookaside Buffer",0,&Type,(BYTE*)(&ForceDisableTLB),&Bytes);
 		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) { ForceDisableTLB=Default_ForceDisableTLB; }
 		lResult=RegQueryValueEx(hKeyResults,"Always Enable Align DMA",0,&Type,(BYTE*)(&ForceEnableDMA),&Bytes);
 		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) { ForceEnableDMA=Default_ForceEnableDMA; }
