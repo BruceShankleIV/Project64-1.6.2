@@ -35,7 +35,7 @@ extern "C" {
 #include "ROM Browser.h"
 #include "Language.h"
 /*********Source Version 25*********/
-/*Last edited at 3:57AM, 09/13/2026*/
+/*Last updated on 09/13/2026 03:21PM*/
 /*********General Defaults**********/
 #define AppName						"BruceIV's Project64 1.6.2"
 #define IniName						"Game.ini"

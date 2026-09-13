@@ -948,15 +948,14 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 		break;
 		case ID_OPTIONS_YUV:
 		{
-			char path_buffer[_MAX_PATH],drive[_MAX_DRIVE],dir[_MAX_DIR],Runtimesdir[_MAX_DIR],ffmpegPath[_MAX_PATH],outputFile[_MAX_PATH],ffmpegShortPath[_MAX_PATH],Directory[_MAX_PATH],*IniFile,Identifier[256],cmd[4096],WinTitle[512],GameName[256];
-			int fileIndex=1,screenHeight=GetSystemMetrics(SM_CYSCREEN),screenWidth=GetSystemMetrics(SM_CXSCREEN);
+			char path_buffer[_MAX_PATH],drive[_MAX_DRIVE],dir[_MAX_DIR],Runtimesdir[_MAX_DIR],ffmpegPath[_MAX_PATH],outputFile[_MAX_PATH],Directory[_MAX_PATH],*IniFile,Identifier[256],cmd[4096],WinTitle[512],GameName[256];
+			int fileIndex=0,screenHeight=GetSystemMetrics(SM_CYSCREEN),screenWidth=GetSystemMetrics(SM_CXSCREEN);
 			GetWindowText(hMainWindow,WinTitle,sizeof(WinTitle));
-			ShowWindow(hMainWindow,SW_RESTORE);
 			GetModuleFileName(NULL,path_buffer,sizeof(path_buffer));
 			_splitpath(path_buffer,drive,dir,NULL,NULL);
 			sprintf(Runtimesdir,"%s\\Runtimes\\",dir);
 			_makepath(ffmpegPath,drive,Runtimesdir,"ffmpeg","exe");
-			if (!GetShortPathName(ffmpegPath,ffmpegShortPath,_MAX_PATH)) {
+			if (GetFileAttributes(ffmpegPath)==INVALID_FILE_ATTRIBUTES) {
 				DisplayError(GS(FFMPEG_NOFIND));
 				break;
 			}
@@ -964,9 +963,9 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 			IniFile=GetIniFileName();
 			sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD*)(&RomHeader[0x10]),*(DWORD*)(&RomHeader[0x14]),RomHeader[0x3D]);
 			_GetPrivateProfileString(Identifier,"Game Name","",GameName,sizeof(GameName),IniFile);
-			if (strcmp(GameName,"UNREGISTERED GAME ENTRY")==0) {
+			if (strcmp(GameName,"(UNREGISTERED GAME ENTRY")==0) {
 				do {
-					sprintf(outputFile,"%s\\ YUV%04d.mp4",Directory,fileIndex);
+					sprintf(outputFile,"%s\\YUV%04d.mp4",Directory,fileIndex);
 					fileIndex++;
 				} while (GetFileAttributes(outputFile)!=INVALID_FILE_ATTRIBUTES);
 			} else {
@@ -999,15 +998,14 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 		break;
 		case ID_OPTIONS_RGB:
 		{
-			char path_buffer[_MAX_PATH],drive[_MAX_DRIVE],dir[_MAX_DIR],Runtimesdir[_MAX_DIR],ffmpegPath[_MAX_PATH],outputFile[_MAX_PATH],ffmpegShortPath[_MAX_PATH],Directory[_MAX_PATH],*IniFile,Identifier[256],cmd[4096],WinTitle[512],GameName[256];
-			int fileIndex=1,screenHeight=GetSystemMetrics(SM_CYSCREEN),screenWidth=GetSystemMetrics(SM_CXSCREEN);
+			char path_buffer[_MAX_PATH],drive[_MAX_DRIVE],dir[_MAX_DIR],Runtimesdir[_MAX_DIR],ffmpegPath[_MAX_PATH],outputFile[_MAX_PATH],Directory[_MAX_PATH],*IniFile,Identifier[256],cmd[4096],WinTitle[512],GameName[256];
+			int fileIndex=0,screenHeight=GetSystemMetrics(SM_CYSCREEN),screenWidth=GetSystemMetrics(SM_CXSCREEN);
 			GetWindowText(hMainWindow,WinTitle,sizeof(WinTitle));
-			ShowWindow(hMainWindow,SW_RESTORE);
 			GetModuleFileName(NULL,path_buffer,sizeof(path_buffer));
 			_splitpath(path_buffer,drive,dir,NULL,NULL);
 			sprintf(Runtimesdir,"%s\\Runtimes\\",dir);
 			_makepath(ffmpegPath,drive,Runtimesdir,"ffmpeg","exe");
-			if (!GetShortPathName(ffmpegPath,ffmpegShortPath,_MAX_PATH)) {
+			if (GetFileAttributes(ffmpegPath)==INVALID_FILE_ATTRIBUTES) {
 				DisplayError(GS(FFMPEG_NOFIND));
 				break;
 			}
@@ -1015,9 +1013,9 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 			IniFile=GetIniFileName();
 			sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD*)(&RomHeader[0x10]),*(DWORD*)(&RomHeader[0x14]),RomHeader[0x3D]);
 			_GetPrivateProfileString(Identifier,"Game Name","",GameName,sizeof(GameName),IniFile);
-			if (strcmp(GameName,"UNREGISTERED GAME ENTRY")==0) {
+			if (strcmp(GameName,"(UNREGISTERED GAME ENTRY")==0) {
 				do {
-					sprintf(outputFile,"%s\\ RGB%04d.mp4",Directory,fileIndex);
+					sprintf(outputFile,"%s\\RGB%04d.mp4",Directory,fileIndex);
 					fileIndex++;
 				} while (GetFileAttributes(outputFile)!=INVALID_FILE_ATTRIBUTES);
 			} else {
@@ -1050,53 +1048,120 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 		break;
 		case ID_OPTIONS_RGBA_PNG_SCREENSHOT:
 		{
-			char path_buffer[_MAX_PATH],drive[_MAX_DRIVE],dir[_MAX_DIR],Runtimesdir[_MAX_DIR],ffmpegPath[_MAX_PATH],outputFile[_MAX_PATH],ffmpegShortPath[_MAX_PATH],Directory[_MAX_PATH],*IniFile,Identifier[256],cmd[4096],WinTitle[512],GameName[256];
-			int fileIndex=1,screenHeight=GetSystemMetrics(SM_CYSCREEN),screenWidth=GetSystemMetrics(SM_CXSCREEN);
-			GetWindowText(hMainWindow,WinTitle,sizeof(WinTitle));
-			ShowWindow(hMainWindow,SW_RESTORE);
-			GetModuleFileName(NULL,path_buffer,sizeof(path_buffer));
-			_splitpath(path_buffer,drive,dir,NULL,NULL);
-			sprintf(Runtimesdir,"%s\\Runtimes\\",dir);
-			_makepath(ffmpegPath,drive,Runtimesdir,"ffmpeg","exe");
-			if (!GetShortPathName(ffmpegPath,ffmpegShortPath,_MAX_PATH)) {
-				DisplayError(GS(FFMPEG_NOFIND));
-				break;
+			char path_buffer[_MAX_PATH],drive[_MAX_DRIVE],dir[_MAX_DIR],Runtimesdir[_MAX_DIR],ffmpegPath[_MAX_PATH],outputFile[_MAX_PATH],Directory[_MAX_PATH],*IniFile,Identifier[256],cmd[4096],WinTitle[512],GameName[256];
+			int fileIndex=0,screenHeight=GetSystemMetrics(SM_CYSCREEN),screenWidth=GetSystemMetrics(SM_CXSCREEN);
+			if (!inFullScreen) {
+				GetWindowText(hMainWindow,WinTitle,sizeof(WinTitle));
+				GetModuleFileName(NULL,path_buffer,sizeof(path_buffer));
+				_splitpath(path_buffer,drive,dir,NULL,NULL);
+				sprintf(Runtimesdir,"%s\\Runtimes\\",dir);
+				_makepath(ffmpegPath,drive,Runtimesdir,"ffmpeg","exe");
+				if (GetFileAttributes(ffmpegPath)==INVALID_FILE_ATTRIBUTES) {
+					DisplayError(GS(FFMPEG_NOFIND));
+					break;
+				}
 			}
 			FetchScreenAndVideoDir(Directory);
 			IniFile=GetIniFileName();
 			sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD*)(&RomHeader[0x10]),*(DWORD*)(&RomHeader[0x14]),RomHeader[0x3D]);
 			_GetPrivateProfileString(Identifier,"Game Name","",GameName,sizeof(GameName),IniFile);
-			if (strcmp(GameName,"UNREGISTERED GAME ENTRY")==0) {
+			if (strcmp(GameName,"(UNREGISTERED GAME ENTRY")==0) {
 				do {
-					sprintf(outputFile,"%s\\ snap%04d.png",Directory,fileIndex);
+					if (inFullScreen) sprintf(outputFile,"%s\\snap%04d.bmp",Directory,fileIndex);
+					else sprintf(outputFile,"%s\\snap%04d.png",Directory,fileIndex);
 					fileIndex++;
-				} while (GetFileAttributes(outputFile) != INVALID_FILE_ATTRIBUTES);
+				} while (GetFileAttributes(outputFile)!=INVALID_FILE_ATTRIBUTES);
 			} else {
 				do {
-					sprintf(outputFile,"%s\\%s snap%01d.png",Directory,GameName,fileIndex);
+					if (inFullScreen) sprintf(outputFile,"%s\\%s snap%04d.bmp",Directory,GameName,fileIndex);
+					else sprintf(outputFile,"%s\\%s snap%04d.png",Directory,GameName,fileIndex);
 					fileIndex++;
 				} while (GetFileAttributes(outputFile)!=INVALID_FILE_ATTRIBUTES);
 			}
-			if (screenHeight>=2160&&screenWidth>=2880) {
-				if (AutoHide) sprintf(cmd,"cmd /C cd /d \"%s%s\" && ffmpeg -y -f gdigrab -draw_mouse 0 -i title=\"%s\" -frames:v 1 -vf \"crop=iw:ih-44:0:0\" \"%s\"",drive,Runtimesdir,WinTitle,outputFile);
-				else sprintf(cmd,"cmd /C cd /d \"%s%s\" && ffmpeg -y -f gdigrab -i title=\"%s\" -frames:v 1 -vf \"crop=iw:ih-44:0:0\" \"%s\"",drive,Runtimesdir,WinTitle,outputFile);
-			} else if (screenHeight>=1440&&screenWidth>=1920) {
-				if (AutoHide) sprintf(cmd,"cmd /C cd /d \"%s%s\" && ffmpeg -y -f gdigrab -draw_mouse 0 -i title=\"%s\" -frames:v 1 -vf \"crop=iw:ih-29:0:0\" \"%s\"",drive,Runtimesdir,WinTitle,outputFile);
-				else sprintf(cmd,"cmd /C cd /d \"%s%s\" && ffmpeg -y -f gdigrab -i title=\"%s\" -frames:v 1 -vf \"crop=iw:ih-29:0:0\" \"%s\"",drive,Runtimesdir,WinTitle,outputFile);
+			if (inFullScreen) {
+				HDC hScreenDC,hMemoryDC;
+				HBITMAP hBitmap,hOldBitmap;
+				BITMAPINFO bi;
+				BITMAPFILEHEADER bfh;
+				BYTE *pixels;
+				HANDLE hFile;
+				DWORD bytesWritten,imageSize;
+				int rowSize;
+				hScreenDC=GetDC(NULL);
+				hMemoryDC=CreateCompatibleDC(hScreenDC);
+				hBitmap=CreateCompatibleBitmap(hScreenDC,screenWidth,screenHeight);
+				if (hBitmap==NULL) {
+					DeleteDC(hMemoryDC);
+					ReleaseDC(NULL,hScreenDC);
+					break;
+				}
+				hOldBitmap=(HBITMAP)SelectObject(hMemoryDC,hBitmap);
+				BitBlt(hMemoryDC,0,0,screenWidth,screenHeight,hScreenDC,0,0,SRCCOPY);
+				if (!AutoHide) {
+					CURSORINFO ci;
+					ICONINFO ii;
+					ZeroMemory(&ci,sizeof(ci));
+					ci.cbSize=sizeof(ci);
+					if (GetCursorInfo(&ci)&(ci.flags&CURSOR_SHOWING)) {
+						if (GetIconInfo(ci.hCursor,&ii)) {
+							DrawIconEx(hMemoryDC,ci.ptScreenPos.x-(int)ii.xHotspot,ci.ptScreenPos.y-(int)ii.yHotspot,ci.hCursor,0,0,0,NULL,DI_NORMAL);
+							if (ii.hbmMask) DeleteObject(ii.hbmMask);
+							if (ii.hbmColor) DeleteObject(ii.hbmColor);
+						}
+					}
+				}
+				SelectObject(hMemoryDC,hOldBitmap);
+				ZeroMemory(&bi,sizeof(bi));
+				bi.bmiHeader.biSize=sizeof(BITMAPINFOHEADER);
+				bi.bmiHeader.biWidth=screenWidth;
+				bi.bmiHeader.biHeight=screenHeight;
+				bi.bmiHeader.biPlanes=1;
+				bi.bmiHeader.biBitCount=24;
+				bi.bmiHeader.biCompression=BI_RGB;
+				rowSize=((screenWidth*3+3)&~3);
+				imageSize=rowSize*screenHeight;
+				pixels=(BYTE *)malloc(imageSize);
+				if (pixels!=NULL) {
+					if (GetDIBits(hScreenDC,hBitmap,0,screenHeight,pixels,&bi,DIB_RGB_COLORS)) {
+						ZeroMemory(&bfh,sizeof(bfh));
+						bfh.bfType=0x4D42;
+						bfh.bfOffBits=sizeof(BITMAPFILEHEADER)+sizeof(BITMAPINFOHEADER);
+						bfh.bfSize=bfh.bfOffBits+imageSize;
+						hFile=CreateFile(outputFile,GENERIC_WRITE,0,NULL,CREATE_ALWAYS,FILE_ATTRIBUTE_NORMAL,NULL);
+						if (hFile!=INVALID_HANDLE_VALUE) {
+							WriteFile(hFile,&bfh,sizeof(bfh),&bytesWritten,NULL);
+							WriteFile(hFile,&bi.bmiHeader,sizeof(bi.bmiHeader),&bytesWritten,NULL);
+							WriteFile(hFile,pixels,imageSize,&bytesWritten,NULL);
+							CloseHandle(hFile);
+						}
+					}
+					free(pixels);
+				}
+				DeleteObject(hBitmap);
+				DeleteDC(hMemoryDC);
+				ReleaseDC(NULL,hScreenDC);
 			} else {
-				if (AutoHide) sprintf(cmd,"cmd /C cd /d \"%s%s\" && ffmpeg -y -f gdigrab -draw_mouse 0 -i title=\"%s\" -frames:v 1 -vf \"crop=iw:ih-28:0:0\" \"%s\"",drive,Runtimesdir,WinTitle,outputFile);
-				else sprintf(cmd,"cmd /C cd /d \"%s%s\" && ffmpeg -y -f gdigrab -i title=\"%s\" -frames:v 1 -vf \"crop=iw:ih-28:0:0\" \"%s\"",drive,Runtimesdir,WinTitle,outputFile);
+				if (screenHeight>=2160&&screenWidth>=2880) {
+					if (AutoHide) sprintf(cmd,"cmd /C cd /d \"%s%s\" && ffmpeg -y -f gdigrab -draw_mouse 0 -i title=\"%s\" -frames:v 1 -vf \"crop=iw:ih-44:0:0\" \"%s\"",drive,Runtimesdir,WinTitle,outputFile);
+					else sprintf(cmd,"cmd /C cd /d \"%s%s\" && ffmpeg -y -f gdigrab -i title=\"%s\" -frames:v 1 -vf \"crop=iw:ih-44:0:0\" \"%s\"",drive,Runtimesdir,WinTitle,outputFile);
+				} else if (screenHeight>=1440&&screenWidth>=1920) {
+					if (AutoHide) sprintf(cmd,"cmd /C cd /d \"%s%s\" && ffmpeg -y -f gdigrab -draw_mouse 0 -i title=\"%s\" -frames:v 1 -vf \"crop=iw:ih-29:0:0\" \"%s\"",drive,Runtimesdir,WinTitle,outputFile);
+					else sprintf(cmd,"cmd /C cd /d \"%s%s\" && ffmpeg -y -f gdigrab -i title=\"%s\" -frames:v 1 -vf \"crop=iw:ih-29:0:0\" \"%s\"",drive,Runtimesdir,WinTitle,outputFile);
+				} else {
+					if (AutoHide) sprintf(cmd,"cmd /C cd /d \"%s%s\" && ffmpeg -y -f gdigrab -draw_mouse 0 -i title=\"%s\" -frames:v 1 -vf \"crop=iw:ih-28:0:0\" \"%s\"",drive,Runtimesdir,WinTitle,outputFile);
+					else sprintf(cmd,"cmd /C cd /d \"%s%s\" && ffmpeg -y -f gdigrab -i title=\"%s\" -frames:v 1 -vf \"crop=iw:ih-28:0:0\" \"%s\"",drive,Runtimesdir,WinTitle,outputFile);
+				}
+				STARTUPINFO si;
+				PROCESS_INFORMATION pi;
+				ZeroMemory(&si,sizeof(si));
+				si.cb=sizeof(si);
+				si.dwFlags=STARTF_USESHOWWINDOW;
+				si.wShowWindow=SW_SHOW;
+				ZeroMemory(&pi,sizeof(pi));
+				if (!CreateProcess(NULL,cmd,NULL,NULL,FALSE,CREATE_NEW_CONSOLE,NULL,NULL,&si,&pi)) DisplayError(GS(FFMPEG_NOBOOT));
+				CloseHandle(pi.hProcess);
+				CloseHandle(pi.hThread);
 			}
-			STARTUPINFO si;
-			PROCESS_INFORMATION pi;
-			ZeroMemory(&si,sizeof(si));
-			si.cb=sizeof(si);
-			si.dwFlags=STARTF_USESHOWWINDOW;
-			si.wShowWindow=SW_SHOW;
-			ZeroMemory(&pi,sizeof(pi));
-			if (!CreateProcess(NULL,cmd,NULL,NULL,FALSE,CREATE_NEW_CONSOLE,NULL,NULL,&si,&pi)) DisplayError(GS(FFMPEG_NOBOOT));
-			CloseHandle(pi.hProcess);
-			CloseHandle(pi.hThread);
 		}
 		break;
 		case ID_OPTIONS_SETTINGS:
