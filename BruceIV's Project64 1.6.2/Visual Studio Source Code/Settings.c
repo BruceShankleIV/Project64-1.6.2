@@ -707,11 +707,8 @@ BOOL CALLBACK RomNotesProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 			}
 		}
 		if (strlen(RomName)==0) {
-			EnableWindow(GetDlgItem(hDlg,IDC_STATUS_TEXT),FALSE);
 			EnableWindow(GetDlgItem(hDlg,IDC_STATUS),FALSE);
-			EnableWindow(GetDlgItem(hDlg,IDC_CORE),FALSE);
 			EnableWindow(GetDlgItem(hDlg,IDC_CORE_NOTES),FALSE);
-			EnableWindow(GetDlgItem(hDlg,IDC_PLUGIN),FALSE);
 			EnableWindow(GetDlgItem(hDlg,IDC_PLUGIN_NOTE),FALSE);
 		}
 		break;
@@ -777,31 +774,21 @@ BOOL CALLBACK RomSettingsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) 
 		SetFlagControl(hDlg,&RomAlignDMA,IDC_ALIGN_DMA,ROM_ALIGN_DMA);
 		SetFlagControl(hDlg,&RomLag,IDC_CF1_CF0,CF1_CF0);
 		if (strlen(RomName)==0) {
-			EnableWindow(GetDlgItem(hDlg,IDC_SAVE_TYPE_TEXT),FALSE);
 			EnableWindow(GetDlgItem(hDlg,IDC_SAVE_TYPE),FALSE);
 			EnableWindow(GetDlgItem(hDlg,IDC_DELAY_SI),FALSE);
 			EnableWindow(GetDlgItem(hDlg,IDC_DELAY_RDP),FALSE);
 			EnableWindow(GetDlgItem(hDlg,IDC_DELAY_RSP),FALSE);
 			EnableWindow(GetDlgItem(hDlg,IDC_AUDIO_SIGNAL),FALSE);
-			EnableWindow(GetDlgItem(hDlg,IDC_NOTES),FALSE);
-			EnableWindow(GetDlgItem(hDlg,IDC_CF_TEXT),FALSE);
 			EnableWindow(GetDlgItem(hDlg,IDC_CF),FALSE);
 			EnableWindow(GetDlgItem(hDlg,IDC_FiftyNineHertz),FALSE);
 			EnableWindow(GetDlgItem(hDlg,IDC_CPU_RECOMPILER),FALSE);
 			EnableWindow(GetDlgItem(hDlg,IDC_VirtualSD),FALSE);
 			EnableWindow(GetDlgItem(hDlg,IDC_JUMPER_PAK),FALSE);
 		}
-		if (strlen(RomName)==0||ForceDisableCaching||!RomCpuRecompiler) {
-			EnableWindow(GetDlgItem(hDlg,IDC_REGCACHE),FALSE);
-			EnableWindow(GetDlgItem(hDlg,IDC_REGCACHE_TEXT),FALSE);
-		}
-		if (strlen(RomName)==0||!RomCpuRecompiler) EnableWindow(GetDlgItem(hDlg,IDC_RECOMPILER_SETTINGS),FALSE);
+		if (strlen(RomName)==0||ForceDisableCaching||!RomCpuRecompiler) EnableWindow(GetDlgItem(hDlg,IDC_REGCACHE),FALSE);
 		if (strlen(RomName)==0||!RomCpuRecompiler||ForceDisableTLB) EnableWindow(GetDlgItem(hDlg,IDC_USE_TLB),FALSE);
 		if (strlen(RomName)==0||ForceEnableDMA) EnableWindow(GetDlgItem(hDlg,IDC_ALIGN_DMA),FALSE);
-		if (strlen(RomName)==0||!RomCpuRecompiler) {
-			EnableWindow(GetDlgItem(hDlg,IDC_PROTECT_MEMORY_ENLARGE_BUFFER),FALSE);
-			EnableWindow(GetDlgItem(hDlg,IDC_PROTECT_MEMORY_ENLARGE_BUFFER_TEXT),FALSE);
-		}
+		if (strlen(RomName)==0||!RomCpuRecompiler) EnableWindow(GetDlgItem(hDlg,IDC_PROTECT_MEMORY_ENLARGE_BUFFER),FALSE);
 		if (strlen(RomName)==0||!RomCpuRecompiler||RomCF!=-1&&RomCF!=1) EnableWindow(GetDlgItem(hDlg,IDC_CF1_CF0),FALSE);
 		if (strlen(RomName)==0||strcmp(RSPDLL,"RSP.dll")!=0||strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")!=0||strcmp(RomName,"THE LEGEND OF ZELDA")==0||strcmp(RomName,"THE MASK OF MUJURA")==0||strcmp(RomName,"ZELDA MAJORA'S MASK")==0||strcmp(RomName,"BANJO KAZOOIE 2")==0||strcmp(RomName,"BANJO TOOIE")==0||strcmp(RomName,"CONKER BFD")==0||strcmp(RomName,"DONKEY KONG 64")==0||strcmp(RomName,"JET FORCE GEMINI")==0||strcmp(RomName,"STAR TWINS")==0||strcmp(RomName,"Perfect Dark")==0) EnableWindow(GetDlgItem(hDlg,IDC_RSP_RECOMPILER),FALSE);
 		if (strlen(RomName)==0||!RomJAI&&!RomShankleAziAI) EnableWindow(GetDlgItem(hDlg,ALTERNATE_EMUAI),FALSE);
