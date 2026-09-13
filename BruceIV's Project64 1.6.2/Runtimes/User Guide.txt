@@ -530,11 +530,13 @@ Plugin-specific issues - This app relies on a lot of different plugins to work, 
 source but have specific bugs in them which means issues specific to many of the plugins in the emulator
 will likely never get resolved. All of the following plugins included in the emulator are closed-source:
 
-Jabo's Direct3D8 1.6.2
+Direct64 v0.5.03.25
+Jabo's Direct3D8 1.6
+Jabo's Direct3D8 1.6.1
 Jabo's Legacy Direct3D
 Project64 Legacy Icepir8's LLE
 
-Jabo's DirectSound 1.6.2
+Jabo's DirectSound 1.6.1
 No Audio plugin
 
 Jabo's DirectInput7 1.6.2
