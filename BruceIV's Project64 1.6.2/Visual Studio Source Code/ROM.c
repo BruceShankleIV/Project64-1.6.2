@@ -520,7 +520,7 @@ void ReadRomOptions(void) {
 				else RomUseCache=UseCache_Default;
 			}
 		} else RomUseTLB=FALSE;
-		if (!RomCpuRecompiler||RomCF!=-1&&RomCF!=1) RomLag=TRUE;
+		if (RomCpuRecompiler&&RomCF!=-1&&RomCF!=1) RomLag=TRUE;
 	}
 }
 void SetNewFileDirectory (void) {
@@ -882,8 +882,8 @@ void HandleWindowTitle (void) {
 	if (strlen(String2)==0) strcpy(String2,"UNKNOWN DATE");
 	sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD*)(&RomHeader[0x10]),*(DWORD*)(&RomHeader[0x14]),RomHeader[0x3D]);
 	_GetPrivateProfileString(Identifier,"Game Name","",GameName,sizeof(GameName),IniFile);
-	if (strlen(RomName)==0) strcpy(RomName,"INTERNAL NAME UNAVAILABLE");
-	if (strlen(GameName)==0) strcpy(GameName,"UNREGISTERED GAME ENTRY");
+	if (strlen(RomName)==0) strcpy(RomName,"INTERNAL NAME UNAVAILABLE)");
+	if (strlen(GameName)==0) strcpy(GameName,"(UNREGISTERED GAME ENTRY");
 	sprintf(WinTitle,"PJ64BIV%s %s - %s, %s",String,String2,RomName,GameName);
 	SetWindowText(hMainWindow,WinTitle);
 }
@@ -927,8 +927,8 @@ void SaveRomOptions (void) {
 	_WritePrivateProfileString(Identifier,"Delay SI",RomDelaySI?"ON":"Default",GetIniFileName());
 	_WritePrivateProfileString(Identifier,"Recompile VR4300i CPU",RomCpuRecompiler?"Default":"OFF",GetIniFileName());
 	_WritePrivateProfileString(Identifier,"Virtual SD Card",RomVirtualSD?"ON":"Default",GetIniFileName());
-	if (!RomCpuRecompiler||RomCF!=-1&&RomCF!=1) _WritePrivateProfileString(Identifier,"Lag","Default",GetIniFileName());
-	else _WritePrivateProfileString(Identifier,"Lag",RomLag?"ON":"Default",GetIniFileName());
+	if (RomCF!=-1&&RomCF!=1) RomLag=FALSE;
+	_WritePrivateProfileString(Identifier,"Lag",RomLag?"ON":"Default",GetIniFileName());
 	if (RomCpuRecompiler) {
 		if (!ForceDisableTLB) _WritePrivateProfileString(Identifier, "Translation Lookaside Buffer", RomUseTLB ? "Default" : "OFF", GetIniFileName());
 		if (!ForceDisableCaching) {

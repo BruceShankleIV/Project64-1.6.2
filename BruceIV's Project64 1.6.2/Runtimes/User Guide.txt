@@ -507,13 +507,14 @@ This is a self-modifying code emulation setting and the "Larger Compile Buffer" 
 into one unified setting since they work best in tandem with each other. This should off as much as you
 can since enabling it can introduce stutter and performance problems, but sometimes it's needed. You'll
 need to test on a game specific basis to see when you do and don't need this enabled. But if you desire
-stability, I suggest checking this as ON by default from the advanced tab.
+stability, I suggest checking this as ON by default from the advanced tab. This option also causes some
+sudden crashes when enabled with Icepir8's LLE selected as the video plugin.
 
-Register Caching: By default, on but changeable from the advanced tab
-Usually boosts performance without causing any negative side effects. If there is some strange behavior,
-try turning this setting off. Strange behavior includes warping textures going all over the place, wrong
-audio, scenes being loaded incorrectly. But 99% of the time this is just a pure performance enhancement.
-But if you desire stability, I suggest checking this OFF by default from the advanced tab.
+Register Caching: By default, off but changeable from the advanced tab
+Usually boosts performance without causing some negative side effects. But those side effects do include
+causing a game to crash suddenly and without warning, and can include distortion of graphics or audio so
+this option is left off by default but can be enabled by default if the performance benefit is important
+for your system since it will usually not have any negative side effects.
 
 
 

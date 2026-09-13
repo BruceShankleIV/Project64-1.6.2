@@ -35,7 +35,7 @@ extern "C" {
 #include "ROM Browser.h"
 #include "Language.h"
 /*********Source Version 25*********/
-/*Last edited at 1:15AM on 9/12/2026*/
+/*Last edited at 12:10AM, 9/13/2026*/
 /*********General Defaults**********/
 #define AppName						"BruceIV's Project64 1.6.2"
 #define IniName						"Game.ini"
@@ -62,12 +62,12 @@ extern "C" {
 #define UseCache_Default	-1
 #define REG_CACHE_ON		0
 #define REG_CACHE_OFF		1
-#define Default_UseCache REG_CACHE_ON // Whether this should be on or off is debatable. ON for now to get games usually running at full speed and to be better on low-end PC's.
+#define Default_UseCache REG_CACHE_OFF // Based on my own testing, register caching ON is not consistent enough to warrant the slight performance/speed boost, although in a majority of cases it can be ON so this is still a good default option to be able to toggle.
 /*********Protect Memory / Enlarge Buffer**********/
 #define ProtectMemoryEnlargeBuffer_Default	-1
 #define PROTECT_MEMORY_ENLARGE_BUFFER_ON		0
 #define PROTECT_MEMORY_ENLARGE_BUFFER_OFF		1
-#define Default_UseProtectMemoryEnlargeBuffer PROTECT_MEMORY_ENLARGE_BUFFER_OFF // Whether this should be on or off is debatable. OFF for now to get games usually running at higher speeds and prevent stuttering on low-end PC's.
+#define Default_UseProtectMemoryEnlargeBuffer PROTECT_MEMORY_ENLARGE_BUFFER_OFF // OFF due to issues with Icepir8's LLE.
 /**********Rom Browser**************/
 #define Default_UseRB				TRUE
 #define Default_Recursion			TRUE
