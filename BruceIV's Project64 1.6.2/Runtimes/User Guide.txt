@@ -2,7 +2,6 @@
 ---------------------------
 |||||Table of Contents|||||
 ---------------------------
-Section#0 Legality & Legitimacy Notice
 Section#1 Accuracy and What This Emulator Is Good For
 Section#2 Hardware Compatibility
 Section#3 Plugin Details
@@ -11,78 +10,10 @@ Section#5 How to Use The ROM Browser/ROM Notes System
 Section#6 Emulator Advanced Settings Overview
 Section#7 Known Issues
 Section#8 Credits
-Section#9 Special Thanks & Shoutouts
-Section#10 Linux Usage
+Section#9 Shoutouts
 
 (just ctrl-f the name to navigate to your desired section)
 ********************************************************************************************************
-
-Limit FPS quick note - If you want to be able to always toggle Limit FPS, change your sound plugin! It's
-not able to be toggled while using Jabo's DirectSound with most games from emulating Sync Game to Audio.
-Also don't use Glide64 or Jabo's Legacy Direct3D or Direct64 for your video plugin as these limit speed.
-
-
-TEXTURE PACK SETUP INSTRUCTIONS:
-
-Glide64 - Put the .dat files in the Plugin\cache folder (fast) or put the
-	  Rice format folder in Plugin\hires_texture (slow on first run).
-
-GLideN64 - Put the .htc file in the cache folder and make sure it is named
-	   with nothing before the internal name. For OoT it starts with
-	   "THE LEGEND OF ZELDA". Or put the Rice format folder in
-	   Plugin\hires_texture (slow on first run).
-
-IMPORTANT: If a texture pack doesn't seem to be loading with GLideN64, try
-	   enabling or disabling Use file storage instead of memory cache.
-	   ^ Found under the Texture enhancement tab. ON is applicable for
-	   .hts texture packs, OFF is applicable for .htc texture packs.
-
-If a rice texture pack format folder does not work with a plugin, try the
-use .dat format for Glide64 and .htc format for GLideN64 for good results
-but remember to turn on Use file storage instead of memory cache for .hts
-format for GLideN64. Remember dat/htc/hts files go into the cache folder!
-
-
-Section#0 Legality & Legitimacy Notice
---------------------------------------------------------------------------------------------------------
-Dev & usage of this software is bound by the license information provided in Project64 1.6's source code
-which reads as follows:
-
-/*
- * Project 64 - A Nintendo 64 emulator.
- *
- * (c) Copyright 2001 zilmar (zilmar@emulation64.com) and
- * Jabo (jabo@emulation64.com).
- *
- * pj64 homepage: www.pj64.net
- *
- * Permission to use, copy, modify and distribute Project64 in both binary and
- * source form, for non-commercial purposes, is hereby granted without fee,
- * providing that this license information and copyright notice appear with
- * all copies and any derived work.
- *
- * This software is provided 'as-is', without any express or implied
- * warranty. In no event shall the authors be held liable for any damages
- * arising from the use of this software.
- *
- * Project64 is freeware for PERSONAL USE only. Commercial users should
- * seek permission of the copyright holders first. Commercial use includes
- * charging money for Project64 or software derived from Project64.
- *
- * The copyright holders request that bug fixes and improvements to the code
- * should be forwarded to them so if they want them.
- *
- */
-
-All releases of this 1.6.2 build from and approved by the primary developer Edwin Bruce Shankle IV, will
-not ever ship with non-Public Domain ROMs, especially but not only of notable Intellectual Property like
-Zelda, Mario, Donkey Kong, or Pokémon. Essentially, this derivative is not to infringe on the copyrights
-of anyone or any company in any way possible. This is a legitimate project not intended to disregard the
-rights of anyone, whether that be copyright or right to credit for code contributions and documentation.
-This is in sharp contrast to other projects like Project64 Legacy, which disregard others rights granted
-by Project64 1.6/1.7's licensing. We know and exercise our rights "to use, copy, modify and distribute".
---------------------------------------------------------------------------------------------------------
-
 Section#1 Accuracy and What This Emulator Is Good For
 --------------------------------------------------------------------------------------------------------
 Accuracy is a double-edged sword so I have tried to avoid making the program more accurate in some ways,
@@ -95,36 +26,25 @@ with retail games assuming they have been tested and have optimized emulation se
 
 See Section#4 Running ROMhacks if you are running ROMhacks not hosted above, and remember to check your
 ROM Notes tab after loading a game to see what plugin(s) should be used with the game or hack.
-
-Note: ROMhacks at https://github.com/BruceShankleIV/Project64-1.6.2-ROMhacks-Collection may be sometimes
-updated so be sure to revisit it once a year or so to check the commit history for updates to the hacks.
 --------------------------------------------------------------------------------------------------------
 
 Section#2 Hardware Compatibility
 --------------------------------------------------------------------------------------------------------
 This program was originally designed on very old versions of Windows which Version 1.6.2 doesn't support
-anymore. Version 1.6.2 was developed with a Windows 10 Gaming PC and isn't expected to function properly
+anymore. PJ64 v1.6.2 was developed using a Windows 10 Desktop PC and isn't expected to function properly
 on older versions of Windows like Windows 2000 and Windows 95. Theoretically, this program may work on a
-Windows XP machine but will necessitate removing plugins which do not work on XP from the plugin folder.
+Windows XP machine, but may necessitate removing plugins which do not work on XP from the plugin folder.
+This would mean removing: GLideN64 and Icepir8's plugins.
 
-However, even if you have an older or lower-end Computer, the app should function with it for some games
+However, even if you have an older or lower-end computer, the app should function with it for some games
 assuming you are using the default Jabo plugins. Some good games to try are Mario 64, Ocarina of Time, &
 Majora's Mask. Suggested ROMhacks are Star Road (Super Mario 64) and The Missing Link (Ocarina of Time).
+If some graphics don't display with the default Jabo video plugin, then try Glide64 Final to substitute.
 --------------------------------------------------------------------------------------------------------
 
 Section#3 Plugin Details
 --------------------------------------------------------------------------------------------------------
-DISCLAIMER: Please DO NOT add any plugins to the plugin folder or it could result in a sudden app crash.
-
-Suggested plugins: Although Jabo's Direct3D8 does not render some graphics properly, it's generally your
-best option if it's working for a game due to lighting issues with Glide64, performance issues on GLide,
-and poor image quality with LLE graphics. If you experience severe graphics issues with Jabo's Direct3D8
-for a game, you'll want to use GLideN64 if it works for your PC. If that video plugin does not work, try
-Glide64, if that still doesn't work at all on your PC then try Direct64 as a last resort. Keep the sound
-plugin as what it is unless you want muted sound or to turn off Limit FPS. If using an XInput controller
-then you may want to change the input to SDL2 if your game does not require pak support. If playing with
-Keyboard, use N-Rage if it works on your PC (benefits from keyboard binding for precision aiming). Stick
-with the default RSP unless it's not working for a game.
+DISCLAIMER: DON'T add any plugin to the plugin folder. You DON'T NEED TO! ADDING DLLS CAN CAUSE A CRASH!
 
 
 Video (graphics) plugin:
@@ -134,140 +54,53 @@ Direct64 v0.5.03.25 - One of the oldest video plugins included in this project. 
 		      to play a game with graphics emulation requirements not supported by Jabo's Direct
 		      video (Pumkin Tower/Ultimate Trial). However, the video plugin is missing numerous
 		      graphics effects, especially fog being a very noticeable one. There's also texture
-		      issues, issues with pause screen on MQ Debug roms, and other things. It isn't near
-		      as bad as Rice's video plugin but it's not up to par with Jabo's Direct3D8 either.
+		      issues, issues with pause/unpause on MQ Debug roms, and many other issues with it.
 		      Try the video plugin if none of the included Jabo video plugins work with the game
 		      if it happens to be that other plugins don't work at all with any game on your PC.
+		      My 5th (least) favorite video plugin because it's not very useful.
 
-Glide64 'Final' Date: Dec 29 2011 - AKA International Emulation Project, this plugin uses OpenGL so it's
-				    not as well supported as Jabo's Direct3D video plugins but works for
-				    PC's which support OpenGL 2.0. It suffers from a slow initialization
-				    time and broken lighting in some games like Zelda. Filtering changes
-				    at random and I'm not really sure why, it's a very annoying bug that
-				    messes up all the textures. The only reason to use this plugin is to
-				    perform GIM in Zelda by disabling "Enable frame buffer emulation" or
-				    because a ROMhack benefits most from it (3rd Quest Patch 0.5, having
-				    "Enable frame buffer emulation" turned OFF, or if there's some alpha
-				    blending or framebuffer issues and your PC doesn't support GLideN64,
-				    or you don't want to deal with the bugs in GLideN64). If you develop
-				    ROMhacks, please do not do it while using this as your video plugin,
-				    because it's so buggy and poorly supported. Also causes input delay.
-				    This is the 2nd best video plugin here.
+Glide64 'Final' Date: Dec 29 2011 - If you need a video plugin for modern hacks that supports alpha
+				    blending and a (low res) framebuffer, and your PC doesn't support
+				    GLideN64, this is your best bet. Easily my 3rd favorite video plugin
+				    and a very good pick all-around if it works on your PC.
 
-GLideN64 rev.xxxxxxx - This is probably the 3rd best video plugin included, only ranking 3rd place since
-		       GLideN64 has even worse PC support than Glide64, Glide64 has bad support already.
-		       Some games are still better off using the LLE video plugin, it is game-dependent!
-		       There's also a lot of fullscreen tearing and input delay with the plugin whenever
-		       framebuffer is emulated, and framebuffer is needed for a lot of games. Just stick
-		       to Jabo's Direct3D8 or Glide64 unless a hack needs GLideN64. This plugin supports
-		       less ROMhacks than Glide64 as well and has numerous regressions from his Glide64.
-		       This plugin is also named similarly to Glide64, but it's not related. It's a hack
-		       of another video plugin named glN64 which is one of the worst video plugins ever.
-		       Despite all these drawbacks, the video plugin looks great. So if your PC supports
-		       it and you don't mind the screen tearing, input delay, and bad hack support, give
-		       this one a try and cross your fingers for good luck.
-		       Note: This plugin supports GIM by turning off "Emulate framebuffer" like Glide64.
+GLideN64 rev.xxxxxxx - This would be my favorite video plugin if it used Direct3D8 instead of OpenGL for
+		       better PC support and didn't experience tearing during fullscreen or input delay.
+		       If you use a modern PC or you want to play modern hacks though, you'll want this.
+		       My 2nd favorite video plugin.
+		       Note: This plugin supports GIM by turning off “Emulate framebuffer” like Glide64.
 
-Jabo's Direct3D8 1.6 - An older version of the video plugin directly below, this version has less alias,
-		       some graphical bugs which were fixed in the 1.6.1 update, and an inverted Lens of
-		       truth effect for Majora's Mask which gets Stone Mask to be visible from Shiro but
-		       gets the Snowhead Temple overhead stray fairy invisible. There's little reason to
-		       use this version over the 1.6.1 version unless the alias effect is particularly
-		       noticeable, especially in a ROMhack like 3rd Quest Patch 0.5, or if the missing
-		       effects for Lens of Truth in most areas bothers you and you know how to get that
-		       one stray fairy in snowhead temple.
-			Entering fullscreen after PC unlocking or after a window pops up fixes freezing.
+Project64 Legacy Icepir8's LLE - This plugin is faithful to the graphics of an original N64, in terms of
+				 its blurry low resolution low level style. However, it does not support
+				 F3DEX3 like GLideN64 does and also has a compatibility issue with Pmem.
+				 My 4th favorite video plugin, I'll use this if I want to feel like I am
+				 living in the 1990s/early 2000s.
 
-
-
-			Jabo's list of changes between Direct3D8 1.6 and 1.6.1:
-
-	bugfix: fixed a problem where the plugin could crash if it ran out of video memory
-
-	bugfix: fixed microcodes for Blast Corps, Body Harvest, O.D.T. (Or Die Trying), and Asteroids
-
-	1080 Snowboarding: fixed europe region effects
-
-	40 Winks: fixed strange texturing issue
-
-	Bakuretsu Muteki Bangaioh: sprite edges should look correct
-
-	Banjo-Tooie: fixed puzzle rendering and other regions
-
-	Cruisin USA: brake lights work
-
-	Dragon Sword: menu text drawing and scaling fixed
-
-	Dr. Mario: fixed background in versus mode
-
-	F-Zero X: fixed potential triangle overflow issue
-
-	GoldenEye 007: fixed calculations of sky triangles
-
-	Lego Racers: fixed players going out of sight
-
-	Mario Kart: fixed whomps in bowser castle
-
-	Mario Kart: racetrack frame buffer support
-
-	Legend of Zelda Ocarina of Time: end of game subscreen issues
-
-	Paperboy: fixed map drawing in game
-
-	Perfect Dark: fixed scanners
-
-	Disney's Tarzan: fixed butterfly and health meter
-
-	Vigilante 8: fixed some textures
-
-	Legend of Zelda Majora's Mask: fixed day transition borders and lens of truth in snow areas
-
-
-
-Jabo's Direct3D8 1.6.1 - This is the best video plugin here as it's the only one capable of all of this:
+Jabo's Direct3D8 1.6.2 - This is my personal favorite video plugin for these reasons:
 			* No screen tearing in fullscreen
 			* No input delay
 			* Works with all older ROMhacks
 			* Works on all Windows PC's
-			* Framebuffer support for Ocarina/Majora, Mario Kart 64, Kazooie/Tooie, etc.
+			* Basic framebuffer support for Zelda, Mario Kart, and Banjo.
+			(Or at least, mostly. The Majora's Mask grandma's stories images don't display!)
+			(And an issue with Lens of Truth framebuffer emulation with Shiro / Stone Mask.)
 			* Supports native widescreen with adjusted aspect (effectiveness varies by game)
-			* Supports super sampling anti-aliasing with FSAA (effectiveness varies by game)
 			 Unfortunately, this video plugin doesn't perform well with newer ROMhacks which
 			 were made with tools that import textures which won't get proper alpha blending
 			 in this plugin or uses a microcode not supported by this plugin like F3DEX3. In
 			 these cases you should use another video plugin. Otherwise, just use this if it
 			 is effective for the game you're trying to run. To setup the widescreen, enable
-			 the, "Adjust game aspect ratio to match yours", from the plugin's advanced tab.
-			Entering fullscreen after PC unlocking or after a window pops up fixes freezing.
-
-Jabo's Legacy Direct3D - If you have an old (legacy) PC which doesn't even work properly with Direct3D8,
-			 use this. This uses the Legacy pixel pipeline and renders with Direct3D9. Other
-			 than that, it's the same as Jabo's Direct3D8. Generally there's no reason using
-			 this unless graphics don't show up with Jabo's Direct3D8 on your PC since there
-			 are wrong colors and sometimes missing graphical effects like Zelda monochrome.
-			 Sometimes it's better than Direct3D8 on a game-specific basis, working slightly
-			 better for Ocarina of Time, but worse in Majora's Mask's case for example.
-			 Notably gets SM64 shadows and sun mat to render on Intel GPU's.
-			 Rank: Tied with Glide64 for 2nd place, as it is usually worse than D3D8 1.6.1,
-			 but still not as many issues as GLideN64.
-
-Project64 Legacy Icepir8's LLE - This plugin is very buggy but I decided to include it since it's pretty
-				 faithful to original N64 graphics due to its use of low level emulation
-				 and it being a fork of Angrylion's RDP, the most accurate video plugin.
-				 Note: some games will need Icepir8's RSP in order to boot whenever this
-				 video plugin is used, or some which need Ice's RSP regardless of video.
-				 Rank: Tied with GLideN64 for 3rd place, as it has about the same number
-				 of bugs, even if it doesn't suffer from the constant stuttering or tear
-				 artifacts it still has performance problems and even worse hack support
-				 in-part due to LLE and from an incomplete framebuffer implementation.
+			 the, “Adjust game aspect ratio to match yours”, from the plugin's advanced tab.
+			 Note that there may be some cases where graphics don't show up when using this,
+			 in that case it's GPU related and you should try a different video plugin.
 
 
 Audio (sound) plugin:
 
-Jabo's DirectSound 1.6.1 - The most PC compatible sound plugin. If a game won't boot using this plugin,
+Jabo's DirectSound 1.6.2 - The most PC compatible sound plugin. If a game won't boot using this plugin,
 			   but the same game is able to boot whilst using No Audio or Shankle Azi, there
 			   are two settings in the ROM Settings tab, which either of them can be toggled
-			   to fix a ROM boot issue: "Sync Game to Audio" and "Jabo AI". Turning the Sync
+			   to fix a ROM boot issue: “Sync Game to Audio” and “Jabo AI”. Turning the Sync
 			   setting off should be tried first, if the results aren't good then you should
 			   turn Jabo AI on and see if the ROM sounds or performs better (no stuttering).
 			   Either option will also be used to fix a game running at the wrong speed with
@@ -276,7 +109,7 @@ Jabo's DirectSound 1.6.1 - The most PC compatible sound plugin. If a game won't 
 		Note: The emulator can slowdown dramatically if your sound device is unplugged with this
 		due to Sync Game to Audio. If this happens, all you have to do is plug back in and wait.
 
-No Audio plugin - Use this plugin when you want to hear nothing. It is better than having the volume all
+No Audio Plugin - Use this plugin when you want to hear nothing. It is better than having the volume all
 		  the way down in Azi because in Azi it is not always mute making this your best choice.
 
 Shankle's LINK's AziAudio [SEP2023] (1.0) - Great general-use option and sound plugin used for GLideN64.
@@ -289,11 +122,8 @@ Input (controller) plugin:
 Jabo's DirectInput7 1.6.2 - Unless this is your preferred input plugin for its ease of setup, you should
 			    use a different input plugin if your PC supports a different input plugin...
 			    It's bad for keyboard because there is no binding to allow precision aiming.
-			    It's bad for controllers because of its high outer range. And to top it off,
-			    it's not even backwards compatible with older Joy Stick Save files from 1.6.
+			    And you can't map the controller's buttons to the N64 buttons: it's reverse.
 			    Despite all the negatives, this is the default since it works for everybody.
-			    Note: also, this won't work for any games that depend entirely on N64 Mouse,
-			    or which depend on a Pak type not supported by this input plugin.
 
 Shankle's N-Rage's DirectInput8 1.6.2 - Enable XInput if your device uses XInput (Xbox 360 Controllers).
 					This is a very solid plugin, a few games need it to work at all.
@@ -307,9 +137,6 @@ Shankle's Octomino SDL2 Input 0.1.1 (1.2) - Plug and play plugin, no configurati
 					    configures your controller using the gamecontroller database
 					    so you will not have to map out all of your button mappings.
 					    Some games require you to use N-Rage's input plugin however.
-			    Note: Also, this won't work for any games that depend entirely on N64 Mouse,
-			    or which depend on a Pak type not supported by this input plugin.
-			    Note: C-Left and C-Right binded to Y/B and config loads fixed in 1.2 update.
 
 
 RSP (reality signal processor) plugin:
@@ -333,14 +160,13 @@ ROMhacks are essentially new games created from existing game ROMs, usually comm
 Ocarina of Time, or Majora's Mask. They are released in a patch format like .ppf, .bps, or .xdelta. This
 emulator loads ROM files only, so you must first apply the patch to the correct N64 ROM. If this ROMhack
 patch is not obtained from the Project64 1.6.2 ROMhacks Collection repository outside of an unregistered
-folder, then this hack won't have an entry in the Game.ini game configuration file. If this happens, you
+folder, then this hack likely needs a Game config entry registered in the Game.ini. If this happens, you
 won't get information from the emulator about what plugins are required or suggested for this ROMhack!!!
 The hack may also be prone to crashing or other kinds of unexpected behavior if you aren't using certain
 ROM Settings with it, depending on what was hacked into the ROM, and the properties of the original ROM.
 A good idea to start with is using the same ROM Settings and fixes used for the original ROM. This would
-resolve most issues you would have just using the defaults but there can be some cases where turning the
-CPU Recompiler off would be needed and require a specific video plugin, such as the Cosmic Goddess demo.
-Further information about setting up ROMhacks found below.
+resolve most issues you would have just using the defaults, but there can be some edge cases. Generally,
+not enabling the Jumper Pak is a good tip since that would emulate with the N64's base 4MB RAM capacity.
 
 
 For Zelda ROMHACKS, Majora's Mask hacks should always use the same internal name as their baserom, which
@@ -348,12 +174,8 @@ is either ZELDA MAJORA'S MASK or THE MASK OF MUJURA. THE LEGEND OF ZELDA should 
 of Time ROMhacks that are based off of all release ROMs like Version 1.0, 1.1, and 1.2 and for all hacks
 which use monochrome, like during a flashback cutscene, or the sepia filter at the very end of the game.
 
-Then you would setup a ROM Database entry which can vary drastically from the original game depending on
+Then you would setup a Game config entry, which can vary drastically from the original game depending on
 how much the hack differs from the original game with a Cheat0 added to fix any emulation/plugin issues.
-If you need help using the ROM Database, contact an advanced/experienced user or N64 developer to debug.
-
-Flickering Note: a few games may have flickering with Jabo's Direct3D8. This bug can be fixed by setting
-Counter Factor to 1 and in some cases, also making sure that CF1-->0 is ON/enabled in your ROM Settings.
 --------------------------------------------------------------------------------------------------------
 
 Section#5 How to Use The ROM Browser/ROM Notes System
@@ -363,7 +185,7 @@ The ROM browser system, controlled by Game.ini, is supposed to work like this:
 You select your ROM directory and then all those ROMs will be loaded in the ROM browser. They get marked
 with colors based on compatibility. Green would indicate that it works with any of the included plugins.
 Yellow would indicate that at least one video, audio, input, or RSP plugin is needed for you to play it.
-Red indicates the game is illegit somehow and I ask you not to play these, do not want to be associated.
+Red indicates the game is illegit somehow and I suggest not to play them, especially with this emulator.
 
 Green - Compatible
 
@@ -381,7 +203,7 @@ The user should refer to the plugin note for Semicompatible games if given to se
 The user should refer to the plugin note for Compatible games if given to see viable plugin suggestions.
 The plugin note will be found from the settings window after opening the ROM in the ROM Notes section or
 from the ROM Notes window which appears from right clicking the ROM after it gets loaded in the browser.
-And the core notes are there to make the user aware of noticeable core (emulation) issues ahead of time.
+And the core notes are for developers and testers, not casual users.
 --------------------------------------------------------------------------------------------------------
 
 Section#6 Emulator Advanced Settings Overview
@@ -399,13 +221,12 @@ from the ROM Settings, or type it. You may also need to specify FlashRAM or 256k
 You can however autodetect to 16kbit EEPROM from the advanced tab if this suits your usage of Project64.
 
 Counter Factor: By default, 2 but changeable from the advanced tab
-* Forces CF1-->0 off if not set to 1
+* Forces Lag on if not set to 1
 Another very game-dependent setting, this essentially just adds lag. This is needed for some games to be
 stable, for others it breaks them completely or causes extreme flickering (video plugin dependent). 2 is
 a safe default so it's not suggested you go any lower (or higher) from this unless you are playing games
 that you are confident require 3 or will work with 1. Setting to 1 will notably get rid of some flickers
-and cause faster loading times and you will never have any lag in a game.
-WARNING: Having this too low or too high can cause Limit FPS off to crash (game and plugin-dependent)!!!
+and cause faster loading times and you will never have any lag in a game (if Lag is turned off with it).
 
 Sync Game to Audio: By default, on
 * Forced off if sound plugin isn't Jabo's DirectSound
@@ -454,6 +275,19 @@ Delay RSP: By default, off
 It's either needed or it's not. The setting is needed for some games to boot. Known to break sound in
 some games when used incorrectly.
 
+Virtual SD Card: By default, off
+This setting is specific to ROMhacks which save data to an SD Card for some reason. Said data is managed
+via the Options menu and the files on the newly created partition (decompression of the virtual SD card).
+Currently only Mario Builder (v1.1 release) uses this setting in the Game.ini so this one is super niche.
+
+59 FPS: By default, off
+This setting fixes a game running at the wrong speed (misdetected as 50FPS) but it is very very rare...
+There is currently only one game which needs this setting, but there could be more in the future.
+
+Delay SI: By default, off
+It's either needed or it's not. Notably fixes GB Tower not working with the Static Interpreter RSP while
+using N-Rage. The setting is needed for some games to boot.
+
 Recompile RCP RSP: By default, variable
 * Forced on if the video plugin is not Icepir8's LLE or if the ROM is known to require it (internal name)
 This should usually be on for performance, most of the time it will be forced on, you should only need to
@@ -466,14 +300,7 @@ two components, the Reality Signal Processor and Reality Display Processor, it c
 main processor, the VR4300 CPU to draw 3D graphics, perform matrix calculations, and produce audio. The
 Reality Signal Processor, or RSP, is the portion of the RCP responsible for matrix math, lighting
 calculations, clipping, shading, and other highly parallel graphics tasks, as well as audio processing.
-
-59Hz: By default, off
-This setting fixes a game running at the wrong speed (misdetected as 50Hz) but this is very very rare...
-There is currently only one game which needs this setting, but there could be more in the future.
-
-Delay SI: By default, off
-It's either needed or it's not. Notably fixes GB Tower not working with the Static Interpreter RSP while
-using N-Rage. The setting is needed for some games to boot.
+-
 
 Recompile VR4300i CPU: By default, on
 This should almost always be on unless it's not possible to get a game working with recomp optimizations
@@ -482,62 +309,76 @@ Those optimizations are: Lag unchecked, Translation Lookaside Buffer unchecked, 
 Protect Memory / Enlarged Buffer OFF. If experiencing issues with that combination, try until you arrive
 at whatever combination works best for the current game.
 
-Virtual SD Card: By default, off
-This setting is specific to ROMhacks which save data to an SD Card for some reason. Said data is managed
-via the Options menu and the files on the newly created partition (decompression of the virtual SD card).
-Currently only Mario Builder (v1.1 release) uses this setting in the Game.ini so this one is super niche.
 
 
 VR4300i CPU Recompilation Optimizations
 
-Lag: By default, off
-* Forced on if Counter Factor is not set to 1
-Lag reduction is helpful to reduce load times and achieve higher framerates and overall create a more
-satisfying gaming experience, but this remains a game specific setting since some games aren't stable
-without lag. To know when you can get by with this requires in-game testing. A very handy setting.
 
-Translation Lookaside Buffer: By default, on
+* This is one of the more complex settings to understand so I wrote lots of tips to fully understand it!
+
+Lag: By default, off
+* Forced off if Recompile VR4300i CPU is off (interpretation goes through a different code path)
+* Forced on if emulating with a specified Counter Factor >1 in the ROM Settings tab (ignore default CF).
+* E.g, you set Counter Factor 1 by default and you're using the default Counter Factor, the setting goes
+out of effect for you to test if a game works ok with it, otherwise it has no effect but can be toggled.
+* This is for the sake of convenience testing regarding optimal timing settings. If a game works without
+any issues with Counter Factor 1 default, the setting can be left off.
+* Essentially, when configuring ROM Settings, you should have Counter Factor 1 by default and review for
+any abnormal behavior, then if you see something caused by it off, try turning this setting on, if it is
+not working still, then you need to increase Counter Factor in the ROM Settings tab (force-enables Lag).
+Lag reduction is helpful to reduce load times and achieve consistent framerates and create a more
+satisfying gaming experience, but this remains a game specific setting since some games aren't stable
+without lag. To know when you can get by with this requires in-game testing. Disabling lag can reduce
+performance and increase boot times, so this setting should be used carefully and with caution!
+
+Translation Lookaside Buffer: By default, on, but can be force disabled from the advanced tab
+* Forced off if Recompile VR4300i CPU is off (interpretation goes through a different code path)
+* Forced off if force disabled from the advanced tab
 This Translation Lookaside Buffer is either required for a game or not. If the game does not require it,
 it's best to turn it off to avoid issues that this setting can cause, although with most games it's fine
 to leave it on. Generally, just leave this on unless you know a game works better with, or needs it off.
 Turning it off notably improves performance and can get ROMhacks working.
 
 Protect Memory / Enlarged Buffer: By default, off but changeable from the advanced tab
-This is a self-modifying code emulation setting and the "Larger Compile Buffer" option added in v1.4 put
-into one unified setting since they work best in tandem with each other. This should off as much as you
+This is a self-modifying code emulation setting and the “Larger Compile Buffer” option added in v1.4 put
+into one unified setting since they work best together. This should be kept off as much as you possibly
 can since enabling it can introduce stutter and performance problems, but sometimes it's needed. You'll
 need to test on a game specific basis to see when you do and don't need this enabled. But if you desire
 stability, I suggest checking this as ON by default from the advanced tab. This option also causes some
-sudden crashes when enabled with Icepir8's LLE selected as the video plugin.
+sudden crashes when enabled with Icepir8's LLE selected as the video plugin so I advise against having
+this setting ON by default while using Icepir8's LLE as your default video plugin!
 
-Register Caching: By default, off but changeable from the advanced tab
+Register Caching: By default, on but changeable from the advanced tab
 Usually boosts performance without causing some negative side effects. But those side effects do include
-causing a game to crash suddenly and without warning, and can include distortion of graphics or audio so
-this option is left off by default but can be enabled by default if the performance benefit is important
-for your system since it will usually not have any negative side effects.
+causing a game to crash suddenly without warning, and can include distorted graphics/sound/fail to boot.
+This is left on by default since some games don't run at the proper speed when it's left off and usually
+there is no problems when enabled and it should be enabled by default for configing ROM Settings to test
+all relevant optimizations for any issues.
 
 
 
-The default area is just the defaults used for the ROM Settings whenever it says "Default".
+The default area is just the defaults used for the ROM Settings whenever it says “Default”.
 Then there is the force settings, they are self-explanatory. Keep in mind that activating these settings
-doesn't overwrite RDB entries so they're good for testing, but disactivating them can overwrite entries.
+doesn't overwrite Game.ini entries so it is good for testing, but disactivating them overwrites entries.
 Just do not go to ROM Settings tab and disactivate these force-enable/disable settings at the same time.
 --------------------------------------------------------------------------------------------------------
 
 Section#7 Known Issues
 --------------------------------------------------------------------------------------------------------
+Windowed video capture does not capture sounds, this could get fixed if I find an alternative to ffmpeg.
+
+Mouse cursor isn't hidden in fullscreen with Icepir8's LLE because that video plugin hides the cursor.
+
 Plugin-specific issues - This app relies on a lot of different plugins to work, many of them are closed-
 source but have specific bugs in them which means issues specific to many of the plugins in the emulator
 will likely never get resolved. All of the following plugins included in the emulator are closed-source:
 
 Direct64 v0.5.03.25
-Jabo's Direct3D8 1.6
-Jabo's Direct3D8 1.6.1
-Jabo's Legacy Direct3D
 Project64 Legacy Icepir8's LLE
+Jabo's Direct3D8 1.6.2
 
-Jabo's DirectSound 1.6.1
-No Audio plugin
+Jabo's DirectSound 1.6.2
+No Audio Plugin
 
 Jabo's DirectInput7 1.6.2
 
@@ -546,64 +387,52 @@ RSP Emulation Plugin
 
 Glide64 is open source but I cannot get it to compile.
 
-IMPORTANT: Plugin-hardware-specific issues - Some issues you see with a plugin may be specific to YOUR
-device only! For example, in Majora's Mask on a 4 years old GTX 1660 TI, TrulyNaN reports the GI model
-for Anju's letter to kafei does not display and the Don Gero's mask eye textures do not display right.
-If you see this or something similar, try changing to another video plugin. If shadows or some texture
-don't show up in Mario 64, you can change to Jabo's Legacy Direct3D to resolve it. In other cases like
-TrulyNaN's, you can try changing to Project64 Legacy LLE or GLideN64 if they are supported by your PC.
+If you try to record audio with Jabo's DirectSound before booting a game, it won't work.
 
-Limit FPS off glitches - Some games crash when you set Limit FPS off or the sound can get super screwed.
+IMPORTANT: Plugin hardware-specific issues - Some issues you see with a plugin may be specific to YOUR
+device only! There's several examples, common one's being shadows in Super Mario 64 or the fire effect
+around the Ocarina of Time logo. If see'ing such things, all you can do is change to a different video
+plugin and pray or get a better GPU. My GTX 1660 Super has no issues with any of the graphics plugins.
 
 Cheat code issues - The cheat codes in this emulator have not been extensively tested, it's likely there
 are some bad codes which may cause crashes or don't behave correctly due to lack of testing and whatnot.
-But the one's for Mario 64, Ocarina of Time, and Majora's Mask have been tested well.
+But the one's for Mario 64, Ocarina of Time, and Majora's Mask have been tested extensively and updated.
 
-Input delay with GLideN64 when framebuffer is on and with Icepir8's LLE. To resolve this for GLideN64 w/
-SM64 Hacks, ensure the internal name of the ROMhack is, "SUPER MARIO 64" if it does not use framebuffer.
-Note: You can update internal names of ROMhacks using a simple hex editor like HxD, and the CRC as well!
+Input delay with any accurate video plugin with a dedicated framebuffer. To resolve this for GLideN64 w/
+SM64 Hacks, ensure the internal name of the ROMhack is, “SUPER MARIO 64” if it does not use framebuffer.
+Note: You can update internal names of ROMhacks with a simple hex editor like HxD in the header section.
 
 GLideN64 fullscreen tearing. No good fix for this, the Vsync option won't even help. Turning framebuffer
 off fixes this but having it off by default will break graphics in hundreds of games.
-
-Core timing issues (usage of Counter Factor), not major though just can be annoying.
-
-Stuff in the app doesn't work in fullscreen, although you can access a lot of things using hotkeys.
-
-Minor emulation issues but nothing super concerning - See Core Note= in Game.ini.
 --------------------------------------------------------------------------------------------------------
 
 Section#8 Credits
 --------------------------------------------------------------------------------------------------------
-E. Bruce Shankle IV - The guy behind this awesome hacked build of Project64 aimed at high compatibility.
-Compatibility = Works on all PC's, takes advantage of what your hardware can do, working with all games.
-
 ********************************************************************************************************
-Formerly, the Project64 Team (1998-2024):
-********************************************************************************************************
-Zilmar (Tooie):		Founder. Core, Application programmer 1.0-1.4, 1.5, 1.6, copyright holder
+Former Project64 Team (Responsible for Development up to Project64 1.6.1 and Project64 Legacy)
 
-Jabo:			Video, Audio, Input plugin programmer 1.0-1.6.1, copyright holder
 
-Witten:			Application, Core programmer for 1.5-1.6.1, Bug tracking,
-				testing, suggestions, end user support 1.0-1.6.1
+Zilmar (Tooie):		Founder. Core, Application programmer 1.0-1.4, 1.5, 1.6, copyright holder.
 
-RadeonUser:	   	Application, Core programmer for 1.6.1, Bug tracking,
-				testing, suggestions, end user support 1.0-1.6.1
+Jabo:			Video, Audio, Input plugin programmer 1.0-1.6.1, copyright holder.
 
-Gent:			Application, database and web development, Bug tracking,
-				testing, suggestions & end user support 1.0-1.6.1
+Witten:			Application, Core programmer for 1.5-1.6.1, bug tracking, testing, suggestions,
+			end user support 1.0-1.6.1 and Project64 Legacy.
 
-Smiff:			Bug tracking, testing, suggestions 1.0-1.5 rdb and
-				end user support 1.0-1.6
+RadeonUser:	   	Application, Core programmer for 1.6.1, bug tracking, testing, suggestions,
+			end user support 1.0-1.6.1 and Project64 Legacy.
 
-Azimer:			Application, Core programmer, Audio plugin
-				programmer for 1.4-1.6.1
+Gent:			Application, database and web development, bug tracking, testing, suggestions,
+			end user support 1.0-1.6.1 and Project64 Legacy.
 
-Icepir8:		Application, Core programmer, Video plugin
-				programmer for 1.6.1
+Smiff:			Bug tracking, testing, suggestions, 1.0-1.5 RDBB, end user support 1.0-1.6.
 
-Contributors:		Hacktarux, Nekokabu
+Azimer:			Application, Core programmer, Audio plugin programmer for 1.4-1.6.1 and
+			Project64 Legacy.
+
+Icepir8:		Application, Core programmer, Video plugin programmer for Project64 Legacy.
+
+Project64 Legacy Contributors (who weren't mentioned in the above list): Starkness2, Hacktarux, OddMLan.
 ********************************************************************************************************
 
 
@@ -644,7 +473,7 @@ Recompiler TLB ACE Vulnerability fix in Recompiler CPU.c, Recompiler CPU.h, and 
 from hacktarux, authored by hacktarux in...
 https://github.com/pj64team/Project64-Legacy/commit/d05e6faeedcbfb721f4bacfc25d22e4781988f50
 
-Removed ROM Browser borders in BruceIV's Project64 Ver. 1.6.2.rc and ROM Browser.c
+Removed ROM Browser borders in BruceIV's Project64 1.6.2.rc and ROM Browser.c
 from oddMLan, authored by oddMLan in...
 https://github.com/pj64team/Project64-Legacy/commit/c1eaf72b4558f66278cca05a7f1dd464a89a87c8
 
@@ -655,22 +484,9 @@ https://github.com/project64/project64/commit/cd2f3cf173e88c8c1e18108f9f21405c07
 N64 PIF Protection Scheme Algorithm by Azimer & Zilmar, adapted into source code by X-Scale
 (see N64 CIC-NUS-6105 and 1.6 pif2 file).
 
-If there was anything else used from Legacy not explicitly listed here, it's because there was no way
-to determine the author of a change.
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////
-aglab2 (Better load times and fixed flickering with CF0, SD space, TLB safety checks)
-\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-https://github.com/aglab2/Project64-Legacy/commits/main/
+aglab2 (TLB safety checks, Virtual SD card support, vetter load times and fixed flickering with Lag off)
 https://github.com/pj64team/Project64-1.6-Plus/pull/23
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////
-z64me
-////////////////////////////////////////////////////////////////////////////////////////////////////////
-* Drag and drop ROM opening support
-* Fixed direct ROM openings from associated extension
+https://github.com/aglab2/Project64-Legacy/commits/main/
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -679,18 +495,17 @@ z64me
 woot - Beta Tester.
 l0lgamez - Beta Tester.
 NekoNeko - Beta Tester.
-TrulyNaN - Beta Tester, found GPU specific issues, Brazilian Portuguese AND Spanish translations.
+TrulyNan - “1.6 Shankle's Final Cut Gigachad Version will save us all.” I love that enthusiasm of yours!
 caseytopaz - Beta Tester.
 grimmer420 - Beta Tester.
 theluigidude2007 - Beta Tester.
 idc5580 - Flips Auto Patcher 2.0, allows mass patching of ROMhacks. Beta tester.
 Andzura - French translation support, D3D8 fullscreen resolution testing.
 lilycatx - Beta Tester, dutch translation support.
-nintendosatan - Beta Tester, russian translation support..
+nintendosatan - Beta Tester, russian translation support.
 idc8580 - Flips en masse patch applying (Alcaro made flips, idc made en masse patch applying).
 pomboatomico_1443 - Beta Tester.
-Banjo Kazooie Nostalgia ROMhack compatibility testing, Harvest Moon testing.
-Miroku - Intel GPU test, CF0 and OoT v1.1/v1.2 and PAL v1.0 LOD fixes, OoT v1.2 Cheat40, 51-59 mem info.
+Miroku - Intel GPU test, lots of OoT fixes and improved cheat support.
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -700,11 +515,10 @@ Direct64 - By Orkin. Thanks to Clements, Rice, Gonetz, Malcolm, Dave2001, cryhlo
 Azimer, StrmnNrmn, Kreed, and Maxim Stepin
 Glide64 - See the about. Some improvements to the default ini and hack support from Bruce IV/me.
 GLideN64 - See the about. Some improvements to the default ini from Bruce IV/me. Based on glN64 RC2.
-Jabo's Direct3D8 1.6.1 - Jabo, with changes to suit this project from Bruce Shankle IV/me.
-Jabo's Legacy Direct3D - Same as above, but with d3d8 to d3d9 by crosire.
 Project64 Legacy Icepir8's LLE - Icepir8 for improvements to ata4's multithreaded fork of Angrylion RDP.
-Jabo's DirectSound 1.6/1.6.1 - Jabo, with changes to suit this project from Bruce Shankle IV/me.
-No Audio plugin - Former Project64 Team.
+Jabo's Direct3D8 1.6.2 - Jabo, with changes to suit this project from Bruce Shankle IV/me.
+Jabo's DirectSound 1.6.2 - Jabo, with changes to suit this project from Bruce Shankle IV/me.
+No Audio Plugin - Project64 Legacy Team.
 Shankle's LINK's AziAudio [SEP2023] (1.0) - Azimer, aglab2, and Bruce Shankle IV/me.
 Jabo's DirectInput7 1.6.2 - Jabo & Gent, 1.6.2 updated app-synced build by Bruce Shankle IV/me.
 
@@ -721,17 +535,14 @@ koolsmoky for message window patch.
 kidkat for fixing potential crash and buffer overruns.
 KrossX for fixing XInput Rumble and Deadzone.
 
-Legacy N-Rage Changes from N-Rage 2.0 Credits:
-Zilmar for customizations and bugfixes.
-LuigiBlood for N64 Mouse support.
-
-Shankle's N-Rage's DirectInput8 1.6.2 Changes from Legacy N-Rage Credits:
-Bruce for several small changes including improvements for XInput mode and default plugin configuration.
-
 Shankle's Octomino SDL2 Input 0.1.1 -
 Octomino/clickdevin for original plugin.
 wermipls for configuration gui.
-Bruce for stripping the logging which was causing a lot of annoying issues and for better configuration.
+Bruce for fixing some problems with the config system.
+
+Legacy N-Rage Changes from N-Rage 2.0 Credits:
+Zilmar for customizations and bugfixes.
+LuigiBlood for N64 Mouse support.
 
 Project64 Legacy Icepir8's RSP - Icepir8, Angrylion RDP Plus developers.
 
@@ -745,10 +556,9 @@ Static Interpreter - by Iconoclast with Special thanks to Jabo, ziggy, and angry
 DATABASE CREDITS
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 Game.ini (ROM Database) - Original by Smiff, updated by Nekokabu + MASA + Jelta, and updated by BruceIV.
-SM64 U and OoT 1.0 U/J LOD fixes by theboy181.
+SM64 U LOD fix by theboy181.
 FIFA Soccer 64 audio fix by Gent.
 Mario Kart 64 (U) 60FPS Hack - theboy181
-Original Mario 64 Press L to Fly cheat - Unknown
 Adult Link Fist Pointer and MQ Debug LOD Fix - Phantom Natsu:
 https://www.youtube.com/watch?v=i7jjsZKoM3A
 https://www.youtube.com/watch?v=hNb3cYtNDC8
@@ -759,18 +569,6 @@ code from Miro as well as MTA.
 Dutch by lilycatx, Russian by SatanNintendo, French by Andzura, Brazilian Portugese by TrulyNaN. + DeepL
 
 gamecontrollerdb - https://github.com/mdqinc/SDL_GameControllerDB
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////
-ICON CREDITS
-\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-N64 Icon by MazeNL77 from NX10 Icon Set.
-License: CC Attribution 3.0 Unported
-Commercial usage: Allowed
-Posted: November 30, 2010
-https://creativecommons.org/licenses/by/3.0/
-Windows PC icon added. This application isn't endorsed or sponsored by the Microsoft company in any way.
-The icon is meant to communicate that the app allows a Windows computer to play Nintendo 64 video games.
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -786,66 +584,51 @@ ChatGPT
 DeepL
 GitHub Desktop
 listdiff.com
-LGCY, renamed from d3d8.dll - https://github.com/crosire/d3d8to9/releases/tag/v1.9.2
+
+And if you are one of those people who hates any project that uses misnomered AI tools, or believes that
+any project which doesn't use a misnomered AI tool is superior to one that does, don't download my work.
+Please. I do not want to benefit prejudiced people.
 --------------------------------------------------------------------------------------------------------
 
-Section#9 Special Thanks & Shoutouts
+Section#9 Shoutouts
 --------------------------------------------------------------------------------------------------------
-These are my special thanks and shoutouts to awesome people for their work, assistance, and/or kindness:
-
-Miroku - Your RAM hacking skills have been extremely useful to this project with improved cheat support,
-	 reduced pause delay, instant load times, and zero lag thanks to your RAM hackings. Thanks Miro!
+Miroku - Your RAM hacking skills have been extremely useful to this project with improved cheat support.
 
 BrusciaMau#3101 - Thanks for providing feedback about the Linux Operating System experience using Lutris
-		  and Proton for this N64 Emulator! I am so happy that it works well for you, so much so
-		  that you even suggest it over native options. Thanks for this praise and motivating me
-		  to work on the project further. You are a kind soul ♥.
+		  and Proton for this N64 Emulator!
 
-z64me - For being supportive and addressing issues during the project's primitive stages when I started.
+********************************************************************************************************
+This app can be used on Linux with, “Add as an exe to Lutris” & “Set the runtime to proton” according to
+Linux user BrusciaMau#3101. The user states some plugins won't work but this can be resolved by changing
+to a different Video/Sound/Input including GLideN64 and Azi Audio. Jabo's Direct3D8 WON'T work on Linux!
+********************************************************************************************************
 
-aglab2 - I'm so glad that you researched and documented about the vulnerability inside of N64 emulators.
-	 Thanks to your amazing discovery, hacktarux made a fix to the vulnerability in Project64 V 1.6.
-	 Not only that, but your Legacy fork was referenced for Project64 V1.6.2 to get improvements in.
-	 Thank you for contributing valuable code which has been used to improve everyone's experiences.
+z64me - Thanks for being supportive and addressing issues during this project's primitive development.
+
+aglab2 - I am so glad that you researched and documented about the N64 emulators' TLB ACE vulnerability.
+	 hacktarux made a fix to the vulnerability in Project64 Legacy thanks to your amazing discovery. 
 
 gaudy-twinned0z@icloud.com / clickdevin - Thanks so much for developing the Octomino SDL plugin, and for
 					  giving me the tip I needed for building. You really rock dude!
 
-TrulyNan - "1.6 Shankle's Final Cut Gigachad Version will save us all." I love that enthusiasm of yours!
+TrulyNan - “1.6 Shankle's Final Cut Gigachad Version will save us all.” I love that enthusiasm of yours!
 
-lilycatx - You're a very kind person and I especially thank you for making an awesome translation! ♥ :)
+lilycatx - Thanks for being a friendly user and contributing to the dutch translation.
 
-satannintendo - You have had a good attitude ever since we met, and thanks so much for your translation!
+satannintendo - Thank you for contributing to the russian translation.
 
-Brian W. - For remembering the day I turned 21. Thanks for wishing happy birthday, you're a good friend!
+Brian W. - Thank you for remembering my birthday and wishing me a happy birthday!
 
-Bruce Shankle III - For helping me learn to use Visual Studio when I first started this project, and for
-                    helping me obtain an Uninterruptible Power Supply which has helped out tremendously.
-                    Later on, he setup high speed internet to help me manage code and develop Project64.
-		    Not just that, but he cleaned up my living space after it became a wasteland because
-		    I was focusing so much on this project. He is a great father to me.
+Bruce Shankle III - Thank you for setting up internet for my PC and being a good dad.
 
-Emmanuel Sturdivant - He gave me candy he found at the bottom of a vending machine. A heart of kindness.
-
-l0lgamez - You were a great tester!
+l0lgamez - Thank you for testing earlier builds of this project!
 
 MTA - Thanks for checking out the project and notably suggesting a chinese fan translation of MM to add!
 
-TheGent & Smiff - Although both of your work on the original Database support files has been obsolete by
-		  now, I can't go without saying how you put a lot of time into it which is respectable.
-		  Good job to you two for investing so much into your original works.
+TheGent & Smiff - Thank you for establishing the original Game config and Cheat database support files.
 
 Zilmar - You programmed the core in Project64 1.6 from what I can understand. Thanks to your significant
 	 work on that, this project can exist and enable so many other game projects to remain playable.
-	 Thank you, for allowing this to be possible. And good luck with your builds, even if your users
-	 cannot trust you anymore after you back-stabbed them.
+	 I will never agree with your new direction for Project64, but I appreciate you making PJ64 1.6.
 
 Jabo - Thanks for making such an outstanding video plugin with very little drawbacks compared to others.
---------------------------------------------------------------------------------------------------------
-
-Section#10 Linux Usage
---------------------------------------------------------------------------------------------------------
-This app can be used on Linux with, "Add as an exe to Lutris" & "Set the runtime to proton" according to
-Linux user BrusciaMau#3101. The user states some plugins won't work but this can be resolved by changing
-to a different Video/Sound/Input including GLideN64 and Azi Audio. Jabo's Direct3D8 WON'T work on Linux!
---------------------------------------------------------------------------------------------------------

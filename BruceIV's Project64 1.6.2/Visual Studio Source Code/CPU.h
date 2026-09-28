@@ -1,5 +1,5 @@
 /*
-*Project 64 - A Nintendo 64 emulator.
+*Project64 - A Nintendo 64 emulator.
 *
 *(c) Copyright 2001 zilmar (zilmar@emulation64.com) and
 *Jabo (jabo@emulation64.com).
@@ -73,8 +73,8 @@ void EmuAI_InitializePluginHook();
 void EmuAI_SetFrameRate(int frameRate);
 void ChangeCompareTimer (void);
 void ChangeTimer        (int Type,int Value);
-void CheckTimer         (void);
-void EndEmulation       (void);
+void CheckTimer         ();
+void EndEmulation       ();
 int  DelaySlotEffectsCompare (DWORD PC,DWORD Reg1,DWORD Reg2);
 int  DelaySlotEffectsJump (DWORD JumpPC);
 void DoSomething        (void);
@@ -83,15 +83,15 @@ void GetInstantSaveDir  (char*Directory);
 void InPermLoop         (void);
 void ResetFunction	(void);
 void DisplayThreadExit	(char*ExitPoint);
-void INITIALIZECPUFlags (void);
-BOOL Machine_LoadState  (void);
-BOOL Machine_SaveState  (void);
-void PauseCPU           (void);
-void RefreshScreen      (void);
-void RunRsp             (void);
-void SetCoreToRunning   (void);
-void SetCoreToStepping  (void);
-void StepOpcode         (void);
+void INITIALIZECPUFlags ();
+BOOL Machine_LoadState  ();
+BOOL Machine_SaveState  ();
+void PauseCPU           ();
+void RefreshScreen      ();
+void RunRsp             ();
+void SetCoreToRunning   ();
+void SetCoreToStepping  ();
+void StepOpcode         ();
 void TimerDone          (void);
 #define NORMAL					0
 #define DO_DELAY_SLOT			1
@@ -111,7 +111,7 @@ enum SaveType {
 	FlashRAM
 };
 extern int NextInstruction,JumpToLocation,ManualPaused,CPU_Paused,CountPerOp;
-extern char SaveAsFileName[255],LoadFileName[255];
+extern char SaveAsFileName[256],LoadFileName[256];
 extern int DlistCount,AlistCount,CurrentSaveSlot;
 extern enum SaveType SaveUsing;
 extern CPU_ACTION CPU_Action;

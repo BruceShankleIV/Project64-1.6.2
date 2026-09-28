@@ -71,7 +71,6 @@
 #define IDC_DELAY_SI                    1104
 #define IDC_CONT_NAME                   1105
 #define IDC_CF1_CF0						1106
-#define IDC_HIDE						1107
 #define IDC_TEXT5                       1110
 #define IDC_ROMSEL_TEXT1                1111
 #define IDC_ROMSEL_TEXT2                1112
@@ -113,7 +112,6 @@
 #define IDC_LAN                         1154
 #define IDC_LAN_AUTHOR                  1155
 #define IDC_LAN_VERSION                 1156
-#define IDC_LAN_DATE                    1157
 #define IDC_GAME_INI                    1158
 #define IDC_GAME_INI_AUTHOR             1159
 #define IDC_GAME_INI_VERSION            1160
@@ -165,9 +163,9 @@
 #define ID_FILE_EXIT                    40005
 #define ID_OPTIONS_CONFIG_GFX           40073
 #define ID_OPTIONS_CONFIG_CONTROL       40074
-#define ID_OPTIONS_YUV					40075
-#define ID_OPTIONS_RGB				40076
-#define ID_OPTIONS_RGBA_PNG_SCREENSHOT				40077
+#define ID_OPTIONS_GAMECAPTURE					40075
+#define ID_OPTIONS_RGBREC				40076
+#define ID_OPTIONS_HIDE_CURSOR				40077
 #define ID_CPU_RESET                    40079
 #define ID_OPTIONS_CONFIG_AUDIO         40090
 #define ID_FILE_STARTEMULATION          40101
@@ -198,7 +196,8 @@
 #define ID_HELP_GUIDE                   40142
 #define ID_HELP_ABOUTSETTINGFILES       40146
 #define ID_SYSTEM_GSBUTTON              40148
-#define ID_OPTIONS_UsuallyonTop          40150
+#define ID_OPTIONS_UsuallyonTop         40150
+#define ID_OPTIONS_VideoToScreen		40151
 #define ID_PLAYGAME                     40152
 #define ID_BROWSERNOTES                 40153
 #define ID_EDITCHEATS                   40154
@@ -232,6 +231,5 @@
 #define IDC_ROMSETTWARN					40246
 #define IDC_ForceDisableTLB				40247
 #define IDC_ForceEnableDMA				40248
-#define IDC_ForceDisableCaching			40249
 #define IDC_ForceAuto16kbit				40250
 #define IDC_REGCACHE_TEXT               40253

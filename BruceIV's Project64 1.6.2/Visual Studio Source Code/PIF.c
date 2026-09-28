@@ -1,5 +1,5 @@
 /*
-*Project 64 - A Nintendo 64 emulator.
+*Project64 - A Nintendo 64 emulator.
 *
 *(c) Copyright 2001 zilmar (zilmar@emulation64.com) and
 *Jabo (jabo@emulation64.com).
@@ -56,7 +56,7 @@ int GetCicChipID (char*RomData) {
 	}
 	return -1;
 }
-void PifRamRead (void) {
+void PifRamRead () {
 	int Channel,CurPos;
 	Channel=0;
 	CurPos=0;
@@ -101,7 +101,7 @@ void PifRamRead (void) {
 	} while(CurPos<0x40);
 	if (ReadController) { ReadController(-1,NULL); }
 }
-void PifRamWrite (void) {
+void PifRamWrite () {
 	int Channel,CurPos;
 	Channel=0;
 	if (PIF_Ram[0x3F]>0x1) {
@@ -242,7 +242,7 @@ void ReadControllerCommand (int Control,BYTE*Command) {
 }
 int LoadPifRom(int country) {
 	char path_buffer[_MAX_PATH],drive[_MAX_DRIVE],dir[_MAX_DIR];
-	char fname[_MAX_FNAME],ext[_MAX_EXT],PifRomName[255];
+	char fname[_MAX_FNAME],ext[_MAX_EXT],PifRomName[256];
 	HANDLE hPifFile;
 	DWORD dwRead;
 	GetModuleFileName(NULL,path_buffer,sizeof(path_buffer));

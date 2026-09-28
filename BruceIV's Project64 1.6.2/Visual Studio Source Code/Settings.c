@@ -1,5 +1,5 @@
 /*
-*Project 64 - A Nintendo 64 emulator.
+*Project64 - A Nintendo 64 emulator.
 *
 *(c) Copyright 2001 zilmar (zilmar@emulation64.com) and
 *Jabo (jabo@emulation64.com).
@@ -149,7 +149,6 @@ BOOL CALLBACK GeneralOptionsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lPara
 	switch (uMsg) {
 	case WM_INITDIALOG:
 		SetFlagControl(hDlg,&AutoSleep,     IDC_AUTOSLEEP,      OPTION_AUTO_SLEEP);
-		SetFlagControl(hDlg,&AutoHide,		  IDC_HIDE,			   OPTION_AUTO_HIDE);
 		SetFlagControl(hDlg,&AutoFullScreen,IDC_LOAD_FULLSCREEN,OPTION_AUTO_FULLSCREEN);
 		SetFlagControl(hDlg,&BasicMode,     IDC_BASIC_MODE,     OPTION_BASIC_MODE);
 		break;
@@ -169,8 +168,6 @@ BOOL CALLBACK GeneralOptionsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lPara
 				RegSetValueEx(hKeyResults,"Basic Mode",0,REG_DWORD,(BYTE*)&BasicMode,sizeof(DWORD));
 				AutoSleep=SendMessage(GetDlgItem(hDlg,IDC_AUTOSLEEP),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
 				RegSetValueEx(hKeyResults,"Pause CPU Upon Focus Loss",0,REG_DWORD,(BYTE*)&AutoSleep,sizeof(DWORD));
-				AutoHide=SendMessage(GetDlgItem(hDlg,IDC_HIDE),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
-				RegSetValueEx(hKeyResults,"Always Hide Cursor in Fullscreen and ffmpeg",0,REG_DWORD,(BYTE*)&AutoHide,sizeof(DWORD));
 			}
 			RegCloseKey(hKeyResults);
 		}
@@ -199,7 +196,6 @@ BOOL CALLBACK DefaultOptionsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lPara
 		SetDlgItemText(hDlg,IDC_TEXT7,GS(SMCM_PROTECTED));
 		SetFlagControl(hDlg,&ForceDisableTLB,IDC_ForceDisableTLB,FORCE_DISABLE_TLB);
 		SetFlagControl(hDlg,&ForceEnableDMA,IDC_ForceEnableDMA,FORCE_ENABLE_DMA);
-		SetFlagControl(hDlg,&ForceDisableCaching,IDC_ForceDisableCaching,FORCE_DISABLE_REGISTERCACHING);
 		SetFlagControl(hDlg,&ForceAuto16kbit,IDC_ForceAuto16kbit,FORCE_AUTO4kbit);
 		AddDropDownItem(hDlg,IDC_REGCACHE,ON,REG_CACHE_ON,&SystemUseCache);
 		AddDropDownItem(hDlg,IDC_REGCACHE,OFF,REG_CACHE_OFF,&SystemUseCache);
@@ -223,8 +219,6 @@ BOOL CALLBACK DefaultOptionsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lPara
 				RegSetValueEx(hKeyResults,"Always Disable Translation Lookaside Buffer",0,REG_DWORD,(BYTE*)&ForceDisableTLB,sizeof(DWORD));
 				ForceEnableDMA=SendMessage(GetDlgItem(hDlg,IDC_ForceEnableDMA),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
 				RegSetValueEx(hKeyResults,"Always Enable Align DMA",0,REG_DWORD,(BYTE*)&ForceEnableDMA,sizeof(DWORD));
-				ForceDisableCaching=SendMessage(GetDlgItem(hDlg,IDC_ForceDisableCaching),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
-				RegSetValueEx(hKeyResults,"Always Disable Register Caching",0,REG_DWORD,(BYTE*)&ForceDisableCaching,sizeof(DWORD));
 				ForceAuto16kbit=SendMessage(GetDlgItem(hDlg,IDC_ForceAuto16kbit),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
 				RegSetValueEx(hKeyResults,"Always Autodetect With 16kbit",0,REG_DWORD,(BYTE*)&ForceAuto16kbit,sizeof(DWORD));
 				indx=SendMessage(GetDlgItem(hDlg,IDC_REGCACHE),CB_GETCURSEL,0,0);
@@ -309,7 +303,7 @@ BOOL CALLBACK DirSelectProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 		case IDC_SELECT_AUTO_DIR:
 		case IDC_SELECT_SNAP_DIR:
 			{
-				char Buffer[MAX_PATH],Directory[255],Title[255];
+				char Buffer[MAX_PATH],Directory[256],Title[256];
 				LPITEMIDLIST pidl;
 				BROWSEINFO bi;
 				switch (LOWORD(wParam)) {
@@ -735,7 +729,7 @@ BOOL CALLBACK RomSettingsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) 
 	int indx;
 	switch (uMsg) {
 	case WM_INITDIALOG:
-		ReadRomOptions();
+		ReadRomSettings();
 		if (CPURunning) SetDlgItemText(hDlg,IDC_ROMSETTWARN,GS(ROMSETTWARN));
 		SetDlgItemText(hDlg,IDC_REGCACHE_TEXT,GS(REG_CACHE));
 		SetDlgItemText(hDlg,IDC_PROTECT_MEMORY_ENLARGE_BUFFER_TEXT,GS(SMCM_PROTECTED));
@@ -785,10 +779,12 @@ BOOL CALLBACK RomSettingsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) 
 			EnableWindow(GetDlgItem(hDlg,IDC_VirtualSD),FALSE);
 			EnableWindow(GetDlgItem(hDlg,IDC_JUMPER_PAK),FALSE);
 		}
-		if (strlen(RomName)==0||ForceDisableCaching||!RomCpuRecompiler) EnableWindow(GetDlgItem(hDlg,IDC_REGCACHE),FALSE);
 		if (strlen(RomName)==0||!RomCpuRecompiler||ForceDisableTLB) EnableWindow(GetDlgItem(hDlg,IDC_USE_TLB),FALSE);
 		if (strlen(RomName)==0||ForceEnableDMA) EnableWindow(GetDlgItem(hDlg,IDC_ALIGN_DMA),FALSE);
-		if (strlen(RomName)==0||!RomCpuRecompiler) EnableWindow(GetDlgItem(hDlg,IDC_PROTECT_MEMORY_ENLARGE_BUFFER),FALSE);
+		if (strlen(RomName)==0||!RomCpuRecompiler) {
+			EnableWindow(GetDlgItem(hDlg,IDC_REGCACHE),FALSE);
+			EnableWindow(GetDlgItem(hDlg,IDC_PROTECT_MEMORY_ENLARGE_BUFFER),FALSE);
+		}
 		if (strlen(RomName)==0||!RomCpuRecompiler||RomCF!=-1&&RomCF!=1) EnableWindow(GetDlgItem(hDlg,IDC_CF1_CF0),FALSE);
 		if (strlen(RomName)==0||strcmp(RSPDLL,"RSP.dll")!=0||strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")!=0||strcmp(RomName,"THE LEGEND OF ZELDA")==0||strcmp(RomName,"THE MASK OF MUJURA")==0||strcmp(RomName,"ZELDA MAJORA'S MASK")==0||strcmp(RomName,"BANJO KAZOOIE 2")==0||strcmp(RomName,"BANJO TOOIE")==0||strcmp(RomName,"CONKER BFD")==0||strcmp(RomName,"DONKEY KONG 64")==0||strcmp(RomName,"JET FORCE GEMINI")==0||strcmp(RomName,"STAR TWINS")==0||strcmp(RomName,"Perfect Dark")==0) EnableWindow(GetDlgItem(hDlg,IDC_RSP_RECOMPILER),FALSE);
 		if (strlen(RomName)==0||!RomJAI&&!RomShankleAziAI) EnableWindow(GetDlgItem(hDlg,ALTERNATE_EMUAI),FALSE);
@@ -825,7 +821,7 @@ BOOL CALLBACK RomSettingsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) 
 				RomSyncGametoAudio=SendMessage(GetDlgItem(hDlg,IDC_SyncGametoAudio),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
 				RomJAI=SendMessage(GetDlgItem(hDlg,IDC_JAI),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
 			}
-			SaveRomOptions();
+			SaveRomSettings();
 		}
 		break;
 	default:

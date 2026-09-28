@@ -1,5 +1,5 @@
 /*
-*Project 64 - A Nintendo 64 emulator.
+*Project64 - A Nintendo 64 emulator.
 *
 *(c) Copyright 2001 zilmar (zilmar@emulation64.com) and
 *Jabo (jabo@emulation64.com).

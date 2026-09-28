@@ -1,5 +1,5 @@
 /*
-*Project 64 - A Nintendo 64 emulator.
+*Project64 - A Nintendo 64 emulator.
 *
 *(c) Copyright 2001 zilmar (zilmar@emulation64.com) and
 *Jabo (jabo@emulation64.com).
@@ -24,6 +24,6 @@
 *
 */
 void Timer_Initialize  (double Hertz);
-void Timer_Start       (void);
-void Timer_Stop        (void);
+void Timer_Start       ();
+void Timer_Stop        ();
 BOOL Timer_Process     (DWORD*FrameRate);

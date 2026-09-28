@@ -1,5 +1,5 @@
 /*
-*Project 64 - A Nintendo 64 emulator.
+*Project64 - A Nintendo 64 emulator.
 *
 *(c) Copyright 2001 zilmar (zilmar@emulation64.com) and
 *Jabo (jabo@emulation64.com).
@@ -4019,7 +4019,7 @@ void Compile_R4300i_COP0_CO_TLBP(BLOCK_SECTION*Section) {
 	Call_Direct(TLB_Probe);
 	Popad();
 }
-void compiler_COP0_CO_ERET (void) {
+void compiler_COP0_CO_ERET () {
 	if ((STATUS_REGISTER&STATUS_ERL)!=0) {
 		PROGRAM_COUNTER=ERROREPC_REGISTER;
 		STATUS_REGISTER&=~STATUS_ERL;

@@ -1,5 +1,5 @@
 /*
-*Project 64 - A Nintendo 64 emulator.
+*Project64 - A Nintendo 64 emulator.
 *
 *(c) Copyright 2001 zilmar (zilmar@emulation64.com) and
 *Jabo (jabo@emulation64.com).
@@ -25,6 +25,7 @@
 */
 #include <windows.h>
 #include "Language.h"
+#include "Main.h"
 /*********************Win32 Thread Timer********************/
 struct {
 	DWORD Frames,LastTime;
@@ -33,14 +34,14 @@ struct {
 void Timer_Initialize(double Hertz) {
 	FPSTimer.Ratio=1000.0f / Hertz;
 }
-void Timer_Start(void) {
+void Timer_Start() {
 	TIMECAPS Caps;
 	timeGetDevCaps(&Caps,sizeof(Caps));
-	if (timeBeginPeriod(Caps.wPeriodMin)==TIMERR_NOCANDO) MessageBox(NULL,"Error during timer begin",GS(MSG_ERROR_TITLE),MB_ICONERROR);
+	if (timeBeginPeriod(Caps.wPeriodMin)==TIMERR_NOCANDO) DisplayError("Error while starting timer");
 	FPSTimer.Frames=0;
 	FPSTimer.LastTime=timeGetTime();
 }
-void Timer_Stop(void) {
+void Timer_Stop() {
 	TIMECAPS Caps;
 	timeGetDevCaps(&Caps,sizeof(Caps));
 	timeEndPeriod(Caps.wPeriodMin);

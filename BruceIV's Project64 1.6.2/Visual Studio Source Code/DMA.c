@@ -1,5 +1,5 @@
 /*
-*Project 64 - A Nintendo 64 emulator.
+*Project64 - A Nintendo 64 emulator.
 *
 *(c) Copyright 2001 zilmar (zilmar@emulation64.com) and
 *Jabo (jabo@emulation64.com).
@@ -29,7 +29,7 @@
 #include "CPU.h"
 #include "SummerCart.h"
 int DMAUsed;
-void PI_DMA_READ (void) {
+void PI_DMA_READ () {
 	if (PI_DRAM_ADDR_REG+PI_RD_LEN_REG+1>RDRAMsize) {
 		PI_STATUS_REG&=~PI_STATUS_DMA_BUSY;
 		MI_INTR_REG|=MI_INTR_PI;
@@ -128,7 +128,7 @@ void PI_DMA_READ (void) {
 	CheckInterrupts();
 	return;
 }
-void PI_DMA_WRITE (void) {
+void PI_DMA_WRITE () {
 	DWORD i;
 	PI_DRAM_ADDR_REG&=0x1FFFFFFF;
 	if (PI_WR_LEN_REG!=2&&(PI_WR_LEN_REG&1)==0) PI_WR_LEN_REG++;
@@ -230,7 +230,7 @@ void PI_DMA_WRITE (void) {
 	MI_INTR_REG|=MI_INTR_PI;
 	CheckInterrupts();
 }
-void SI_DMA_READ (void) {
+void SI_DMA_READ () {
 	BYTE*PifRamPos=&PIF_Ram[0];
 	SI_DRAM_ADDR_REG&=0x1FFFFFFF;
 	if ((int)SI_DRAM_ADDR_REG>(int)RDRAMsize) {
@@ -278,7 +278,7 @@ void SI_DMA_READ (void) {
 	SI_STATUS_REG|=SI_STATUS_INTERRUPT;
 	CheckInterrupts();
 }
-void SI_DMA_WRITE (void) {
+void SI_DMA_WRITE () {
 	BYTE*PifRamPos=&PIF_Ram[0];
 	SI_DRAM_ADDR_REG&=0x1FFFFFFF;
 	if ((int)SI_DRAM_ADDR_REG>(int)RDRAMsize) {
@@ -326,7 +326,7 @@ void SI_DMA_WRITE (void) {
 	SI_STATUS_REG|=SI_STATUS_INTERRUPT;
 	CheckInterrupts();
 }
-void SP_DMA_READ (void) {
+void SP_DMA_READ () {
 	SP_DRAM_ADDR_REG&=0x1FFFFFFF;
 	if (SP_DRAM_ADDR_REG>RDRAMsize) {
 		SP_DMA_BUSY_REG=0;
@@ -338,7 +338,7 @@ void SP_DMA_READ (void) {
 	SP_DMA_BUSY_REG=0;
 	SP_STATUS_REG &=~SP_STATUS_DMA_BUSY;
 }
-void SP_DMA_WRITE (void) {
+void SP_DMA_WRITE () {
 	if (SP_DRAM_ADDR_REG>RDRAMsize) return;
 	if (SP_WR_LEN_REG+1+(SP_MEM_ADDR_REG&0xFFF)>0x1000) return;
 	memcpy(N64MEM+SP_DRAM_ADDR_REG,DMEM+(SP_MEM_ADDR_REG&0x1FFF),SP_WR_LEN_REG+1);

@@ -75,7 +75,7 @@ int RTC_Command (BYTE*Command) {
 }
 void ReadFromRTC() {
 	FILE*fp;
-	char File[255],Directory[255],String[100];
+	char File[256],Directory[256],String[100];
 	GetAutoSaveDir(Directory);
 	sprintf(File,"%s%s.rtc",Directory,RomName);
 	fp=fopen(File,"r");
@@ -89,11 +89,11 @@ void ReadFromRTC() {
 }
 void WriteToRTC() {
 	FILE*fp;
-	char File[255],Directory[255],String[100];
+	char File[256],Directory[256],String[100];
 	GetAutoSaveDir(Directory);
 	sprintf(File,"%s%s.rtc",Directory,RomName);
 	fp=fopen(File,"w");
-	// No error checking,write to it if possible otherwise don't bother.
+	// No error checking, write to it if possible, otherwise don't bother.
 	if (fp!=NULL) {
 		_i64toa(seconds_offset,String,10);
 		fprintf(fp,String);

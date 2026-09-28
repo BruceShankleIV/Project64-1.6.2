@@ -1,5 +1,5 @@
 /*
-*Project 64 - A Nintendo 64 emulator.
+*Project64 - A Nintendo 64 emulator.
 *
 *(c) Copyright 2001 zilmar (zilmar@emulation64.com) and
 *Jabo (jabo@emulation64.com).
@@ -92,8 +92,8 @@ typedef struct {
 #define RB_Crc1				6
 #define RB_Crc2				7
 #define RB_CICChip			8
-void LoadRomList             (void);
-void RomList_SortList        (void);
+void LoadRomList             ();
+void RomList_SortList        ();
 void FillRomExtensionInfo    (ROM_INFO*pRomInfo);
 BOOL FillRomInfo             (ROM_INFO*pRomInfo);
 #define COLOR_TEXT 0
@@ -106,9 +106,7 @@ void SetColors(char*status);
 int CALLBACK RomList_CompareItems(LPARAM lParam1,LPARAM lParam2,LPARAM lParamSort);
 char CurrentRBFileName[MAX_PATH+1]={""};
 ROMBROWSER_FIELDS RomBrowserFields[]={ "Game Name",0,RB_GameName,260,RB_GAMENAME,"Internal Name",1,RB_InternalName,133,RB_INTERNALNAME,"File Name",2,RB_FileName,101,RB_FILENAME,"1st CRC",3,RB_Crc1,71,RB_CRC1,"Size",4,RB_RomSize,58,RB_ROMSIZE,"Status",-1,RB_Status,93,RB_STATUS,"2nd CRC",-1,RB_Crc2,71,RB_CRC2,"ID",-1,RB_CartridgeID,23,RB_CART_ID,"CIC Chip",-1,RB_CICChip,79,RB_CICCHIP,};
-HWND hRomList=NULL;
-int NoOfFields=sizeof(RomBrowserFields) / sizeof(RomBrowserFields[0]),
- FieldType[(sizeof(RomBrowserFields) / sizeof(RomBrowserFields[0]))+1];
+int NoOfFields=sizeof(RomBrowserFields)/sizeof(RomBrowserFields[0]),FieldType[(sizeof(RomBrowserFields)/sizeof(RomBrowserFields[0]))+1];
 ITEM_LIST ItemList={0,0,NULL};
 COLOR_CACHE ColorCache;
 void AddRomToList (char*RomLocation) {
@@ -148,7 +146,7 @@ void CreateRomListControl (HWND hParent) {
 	ResetRomBrowserColumns();
 	LoadRomList();
 }
-void LoadRomList (void) {
+void LoadRomList () {
 	int count,index;
 	ROM_INFO*pRomInfo;
 	LV_ITEM  lvItem;
@@ -215,7 +213,7 @@ BOOL FillRomInfo(ROM_INFO*pRomInfo) {
 	FillRomExtensionInfo(pRomInfo);
 	return TRUE;
 }
-void RefreshRomBrowser (void) {
+void RefreshRomBrowser () {
 	char RomDir[MAX_PATH+1];
 	if (!hRomList) return;
 	ListView_DeleteAllItems(hRomList);
@@ -224,16 +222,18 @@ void RefreshRomBrowser (void) {
 	FillRomList (RomDir);
 	RomList_SortList();
 	SetFocus(hRomList);
+	ListView_SetExtendedListViewStyleEx(hRomList,LVS_EX_DOUBLEBUFFER,LVS_EX_DOUBLEBUFFER);
 }
-void ResetRomBrowserColumns (void) {
+void ResetRomBrowserColumns () {
 	int Column,index,screenHeight=GetSystemMetrics(SM_CYSCREEN),screenWidth=GetSystemMetrics(SM_CXSCREEN),i;
 	LV_COLUMN lvColumn;
 	char szString[300];
 	double n;
 	if (FirstBoot) {
-		if (screenHeight>=1440&&screenWidth>=1920) n=2;
-		else if (screenHeight>=1080&&screenWidth>=1440) n=1.26;
-		else n=1;
+		if (screenHeight>=2160&&screenWidth>=2880) n=2.003;
+		else if (screenHeight>=1440&&screenWidth>=1920) n=2.026;
+		else if (screenHeight>=1080&&screenWidth>=1440) n=1.261;
+		else n=1.003;
 		for (i=0;i<NoOfFields;++i) switch (RomBrowserFields[i].ID) {
 			case RB_GameName:
 				RomBrowserFields[i].ColWidth=(int)(260*n);
@@ -398,8 +398,11 @@ void RomList_OpenRom(LPNMHDR pnmh) {
 	strcpy(CurrentFileName,pRomInfo->szFullFileName);
 	CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)OpenChosenFile,NULL,0,NULL);
 }
-void RomList_SortList (void) {
+void RomList_SortList () {
 	SORT_FIELDS SortFields;
+	int count;
+	for (count=0;count<NoOfSortKeys;count++) SortFields.Key[count]=2;
+	SortFields.Key[count]=2;
 	ListView_SortItems(hRomList,RomList_CompareItems,&SortFields);
 }
 void RomListDrawItem (LPDRAWITEMSTRUCT ditem) {
@@ -453,8 +456,8 @@ void RomListNotify(LPNMHDR pnmh) {
 	case NM_RCLICK:       RomList_PopupMenu(pnmh); break;
 	}
 }
-void SelectRomDir (void) {
-	char Buffer[MAX_PATH],Directory[255];
+void SelectRomDir () {
+	char Buffer[MAX_PATH],Directory[256];
 	char RomDir[MAX_PATH+1];
 	LPITEMIDLIST pidl;
 	BROWSEINFO bi;
@@ -497,59 +500,54 @@ void FillRomList (char*Directory) {
 			continue;
 		}
 		_splitpath(FullPath,drive,dir,FileName,ext);
-		//if (_stricmp(ext,".zip")==0&&fd.nFileSizeLow <=(30.1*1024*1024)) { AddRomToList(FullPath); continue; }
 		if (_stricmp(ext,".v64")==0) { AddRomToList(FullPath); continue; }
 		if (_stricmp(ext,".z64")==0) { AddRomToList(FullPath); continue; }
 		if (_stricmp(ext,".n64")==0) { AddRomToList(FullPath); continue; }
 	} while (FindNextFile(hFind,&fd));
 	FindClose(hFind);
 }
-void HideRomBrowser(void) {
+void HideRomBrowser() {
 	if (inFullScreen) SetupPlugins(hMainWindow);
 	else {
-		long Style;
 		ShowWindow(hMainWindow,SW_RESTORE);
-		Style=GetWindowLong(hMainWindow,GWL_STYLE);
 		if (strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) {
 			if (!GLideN64HasBeenSetupFirst) {
 				GLideN64NeedsToBeSetupFirst=TRUE;
 				strcpy(GfxDLL,"GLideN64.dll");
 			}
 		} else {
-			Style=Style&~(WS_SIZEBOX|WS_MAXIMIZEBOX);
 			SetWindowLong(hMainWindow,GWL_EXSTYLE,GetWindowLong(hMainWindow,GWL_EXSTYLE)&~WS_EX_COMPOSITED);
+			SetWindowLong(hMainWindow,GWL_STYLE,GetWindowLong(hMainWindow,GWL_STYLE)&~(WS_SIZEBOX|WS_MAXIMIZEBOX));
+			DrawMenuBar(hMainWindow);
 		}
-		SetWindowLong(hMainWindow,GWL_STYLE,Style);
 		EnableWindow(hRomList,FALSE);
 		ShowWindow(hRomList,SW_HIDE);
 		SendMessage(hMainWindow,WM_USER+17,0,0);
 		ShowWindow(hMainWindow,SW_SHOW);
-		FixupMenubar(hMainWindow);
 		SetupPlugins(hMainWindow);
-		if (strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) ChangeWinSize(hMainWindow,640,480,NULL);
 	}
 }
 void HandleShutdown (HWND hParent) {
 	int screenHeight=GetSystemMetrics(SM_CYSCREEN),screenWidth=GetSystemMetrics(SM_CXSCREEN);
 	CPURunning=FALSE;
+	if (strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) {
+		SetWindowLong(hMainWindow,GWL_EXSTYLE,GetWindowLong(hMainWindow,GWL_EXSTYLE)&~WS_EX_COMPOSITED);
+		ShowWindow(hMainWindow,SW_RESTORE);
+	} else SetWindowLong(hMainWindow,GWL_STYLE,GetWindowLong(hMainWindow,GWL_STYLE)|WS_SIZEBOX|WS_MAXIMIZEBOX);
 	SetupPlugins(hHiddenWin);
-	if (strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) SetWindowLong(hMainWindow,GWL_EXSTYLE,GetWindowLong(hMainWindow,GWL_EXSTYLE)&~WS_EX_COMPOSITED);
-	else SetWindowLong(hMainWindow,GWL_STYLE,GetWindowLong(hMainWindow,GWL_STYLE)|WS_SIZEBOX|WS_MAXIMIZEBOX);
 	if (hRomList==NULL) CreateRomListControl(hParent);
 	else EnableWindow(hRomList,TRUE);
 	if (screenHeight>=1440&&screenWidth>=1920) ChangeWinSize(hMainWindow,1280,960,NULL);
 	else if (screenHeight>=1080&&screenWidth>=1440) ChangeWinSize(hMainWindow,800,600,NULL);
 	else ChangeWinSize(hMainWindow,640,480,NULL);
 	ShowWindow(hRomList,SW_SHOW);
-	DrawMenuBar(hMainWindow);
 	ShowWindow(hMainWindow,SW_SHOW);
 	if (__argc!=0) RefreshRomBrowser();
 	else SetFocus(hRomList);
 	if (__argc!=1) __argc=1;
-	ListView_SetExtendedListViewStyleEx(hRomList,LVS_EX_DOUBLEBUFFER,LVS_EX_DOUBLEBUFFER);
 	SetForegroundWindow(hMainWindow);
 }
-void FreeRomBrowser (void) {
+void FreeRomBrowser () {
 	if (ItemList.ListAlloc!=0) {
 		free(ItemList.List);
 		ItemList.ListAlloc=0;
@@ -616,7 +614,7 @@ void SetColors(char*status) {
 		AddToColorCache(colors);
 	}
 }
-void SaveRomBrowserColumnInfo (void) {
+void SaveRomBrowserColumnInfo () {
 	DWORD Disposition=0;
 	HKEY  hKeyResults=0;
 	char  String[256];
@@ -654,7 +652,7 @@ void SaveRomBrowserColumnPosition (int index,int Position) {
 		RegCloseKey(hKeyResults);
 	}
 }
-void LoadRomBrowserColumnInfo (void) {
+void LoadRomBrowserColumnInfo () {
 	char  String[256],szPos[10];
 	DWORD Disposition=0;
 	HKEY  hKeyResults=0;

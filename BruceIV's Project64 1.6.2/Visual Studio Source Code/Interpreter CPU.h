@@ -1,5 +1,5 @@
 /*
-*Project 64 - A Nintendo 64 emulator.
+*Project64 - A Nintendo 64 emulator.
 *
 *(c) Copyright 2001 zilmar (zilmar@emulation64.com) and
 *Jabo (jabo@emulation64.com).
@@ -23,8 +23,8 @@
 *should be forwarded to them so if they want them.
 *
 */
-void OpcodeMapInterpreter         (void);
-void ExecuteInterpreterOpCode (void);
+void OpcodeMapInterpreter         ();
+void ExecuteInterpreterOpCode ();
 void StartInterpreterCPU      (void);
 void TestInterpreterJump      (DWORD PC,DWORD TargetPC,int Reg1,int Reg2);
 extern void*R4300i_Opcode[64];

@@ -1,5 +1,5 @@
 /*
-*Project 64 - A Nintendo 64 emulator.
+*Project64 - A Nintendo 64 emulator.
 *
 *(c) Copyright 2001 zilmar (zilmar@emulation64.com) and
 *Jabo (jabo@emulation64.com).
@@ -31,12 +31,12 @@ typedef struct {
 typedef struct {
 	GAMESHARK_CODE Code[MaxGSEntries];
 } CHEAT_CODES;
-char*GetCheatIniFileName (void);
+char*GetCheatIniFileName ();
 void ChangeRomCheats	(HWND hParent);
-void CloseCheatWindow	(void);
-void ApplyCheats		(void);
-void LoadCheats			(void);
+void CloseCheatWindow	();
+void ApplyCheats		();
+void LoadCheats			();
 void ManageCheats		(HWND hParent);
-void ApplyGSButton		(void);
+void ApplyGSButton		();
 LRESULT CALLBACK Cheat_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam);
 extern HWND hManageWindow;

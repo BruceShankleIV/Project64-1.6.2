@@ -1,5 +1,5 @@
 /*
-*Project 64 - A Nintendo 64 emulator.
+*Project64 - A Nintendo 64 emulator.
 *
 *(c) Copyright 2001 zilmar (zilmar@emulation64.com) and
 *Jabo (jabo@emulation64.com).
@@ -1021,7 +1021,7 @@ void UnProtectGPR(BLOCK_SECTION*Section,DWORD Reg) {
 	}
 	x86Protected(MipsRegLo(Reg))=FALSE;
 }
-void UpdateCurrentHalfLine (void) {
+void UpdateCurrentHalfLine () {
 	if (Timers.Timer<0) {
 		HalfLine=0;
 		return;

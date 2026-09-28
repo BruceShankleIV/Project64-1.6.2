@@ -1,5 +1,5 @@
 /*
-*Project 64 - A Nintendo 64 emulator.
+*Project64 - A Nintendo 64 emulator.
 *
 *(c) Copyright 2001 zilmar (zilmar@emulation64.com) and
 *Jabo (jabo@emulation64.com).
@@ -23,6 +23,6 @@
 *should be forwarded to them so if they want them.
 *
 */
-void CloseSRAM   (void);
+void CloseSRAM   ();
 void DMAfromSRAM (BYTE*dest,int StartOffset,int len);
 void DMAtoSRAM   (BYTE*Source,int StartOffset,int len);

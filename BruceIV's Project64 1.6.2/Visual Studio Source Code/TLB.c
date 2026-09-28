@@ -1,5 +1,5 @@
 /*
-*Project 64 - A Nintendo 64 emulator.
+*Project64 - A Nintendo 64 emulator.
 *
 *(c) Copyright 2001 zilmar (zilmar@emulation64.com) and
 *Jabo (jabo@emulation64.com).
@@ -38,13 +38,13 @@ BOOL AddressDefined (DWORD VAddr) {
 	}
 	return FALSE;
 }
-void InitializeTLB (void) {
+void InitializeTLB () {
 	DWORD count;
 	for (count=0; count<32; count++) { tlb[count].EntryDefined=FALSE; }
 	for (count=0; count<64; count++) { FastTlb[count].ValidEntry=FALSE; }
 	SetupTLB();
 }
-void SetupTLB (void) {
+void SetupTLB () {
 	DWORD count;
 	memset(TLB_ReadMap,0,(0xFFFFF*sizeof(DWORD)));
 	memset(TLB_WriteMap,0,(0xFFFFF*sizeof(DWORD)));

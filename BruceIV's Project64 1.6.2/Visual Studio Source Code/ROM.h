@@ -1,5 +1,5 @@
 /*
-*Project 64 - A Nintendo 64 emulator.
+*Project64 - A Nintendo 64 emulator.
 *
 *(c) Copyright 2001 zilmar (zilmar@emulation64.com) and
 *Jabo (jabo@emulation64.com).
@@ -23,24 +23,22 @@
 *should be forwarded to them so if they want them.
 *
 */
-extern DWORD ClearFrame,RomClearFrame,RomFileSize,VirtualSD,RomVirtualSD,SaveUsing,RomSaveUsing,UseTLB,RomUseTLB,FiftyNineHertz,RomFiftyNineHertz,RomJAI,AudioSignal,RomAudioSignal,RomCF,UseCache,RomUseCache,RomShankleAziAI,RomAltEmulateAI,SyncGametoAudio,RomSyncGametoAudio,Lag,RomLag,DelayRDP,RomDelayRDP,DelayRSP,RomDelayRSP,AlignDMA,RomAlignDMA,DelayRDP,RomDelayRDP,DelayRSP,RomDelayRSP,DelaySI,RomRspRecompiler,CpuRecompiler,RomCpuRecompiler,ProtectMemoryEnlargeBuffer,RomProtectMemoryEnlargeBuffer,JumperPak,RomJumperPak,RomDelaySI,ForceAuto16kbit,ForceDisableTLB,ForceDisableCaching,ForceEnableDMA,EmulateAI;
+extern DWORD ClearFrame,RomClearFrame,RomFileSize,VirtualSD,RomVirtualSD,SaveUsing,RomSaveUsing,UseTLB,RomUseTLB,FiftyNineHertz,RomFiftyNineHertz,RomJAI,AudioSignal,RomAudioSignal,RomCF,UseCache,RomUseCache,RomShankleAziAI,RomAltEmulateAI,SyncGametoAudio,RomSyncGametoAudio,Lag,RomLag,DelayRDP,RomDelayRDP,DelayRSP,RomDelayRSP,AlignDMA,RomAlignDMA,DelayRDP,RomDelayRDP,DelayRSP,RomDelayRSP,DelaySI,RomRspRecompiler,CpuRecompiler,RomCpuRecompiler,ProtectMemoryEnlargeBuffer,RomProtectMemoryEnlargeBuffer,JumperPak,RomJumperPak,RomDelaySI,ForceAuto16kbit,ForceDisableTLB,ForceEnableDMA,EmulateAI;
 extern char CurrentFileName[MAX_PATH+1],RomName[MAX_PATH+1],RomHeader[0x1000],LastRoms[10][MAX_PATH+1],LastDirs[10][MAX_PATH+1];
 void AddRecentFile           (HWND hWnd,char*addition);
-void ChangeRomOptionMemSize  (DWORD NewSize);
-void ChangeRomOptionSaveType (enum SaveType type);
 void GetRomDirectory         (char*Directory);
 BOOL LoadDataFromRomFile     (char*FileName,BYTE*Data,int DataLen,int*RomSize);
-BOOL LoadRomHeader           (void);
+void LoadRomHeader           ();
 void CreateRecentFileList    (HMENU hMenu);
 void CreateRecentDirList     (HMENU hMenu);
 void LoadRecentRom           (DWORD Index);
-void HandleTimers	     (void);
+void HandleTimers	     ();
 void OpenChosenFile	     (void);
-void RecalculateCRC	     (void);
-void ReadRomOptions          (void);
-void SaveRecentDirs          (void);
-void SaveRecentFiles         (void);
-void HandleWindowTitle	     (void);
-void SaveRomOptions          (void);
+void RecalculateCRC	     ();
+void ReadRomSettings          ();
+void SaveRecentDirs          ();
+void SaveRecentFiles         ();
+void HandleWindowTitle	     ();
+void SaveRomSettings          ();
 void SetRecentRomDir         (DWORD Index);
 void SetRomDirectory         (char*Directory);

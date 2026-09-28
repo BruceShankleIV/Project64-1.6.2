@@ -1,5 +1,5 @@
 /*
-*Project 64 - A Nintendo 64 emulator.
+*Project64 - A Nintendo 64 emulator.
 *
 *(c) Copyright 2001 zilmar (zilmar@emulation64.com) and
 *Jabo (jabo@emulation64.com).
@@ -31,19 +31,19 @@ typedef struct {
 	int  LangID;
 } ROMBROWSER_FIELDS;
 void FillRomList               (char*Directory);
-void HideRomBrowser            (void);
-void RefreshRomBrowser         (void);
-void ResetRomBrowserColumns   (void);
+void HideRomBrowser            ();
+void RefreshRomBrowser         ();
+void ResetRomBrowserColumns    ();
 void ResizeRomListControl      (WORD nWidth,WORD nHeight);
 void RomListDrawItem           (LPDRAWITEMSTRUCT ditem);
 void RomListNotify             (LPNMHDR pnmh);
-void SelectRomDir              (void);
-void HandleShutdown   (HWND hParent);
-void FreeRomBrowser            (void);
-void LoadRomBrowserColumnInfo (void);
+void SelectRomDir              ();
+void HandleShutdown	       (HWND hParent);
+void FreeRomBrowser            ();
+void LoadRomBrowserColumnInfo  ();
 void SaveRomBrowserColumnPosition (int index,int Position);
-void SaveRomBrowserColumnInfo (void);
-#define IDC_ROMLIST		                 223
+void SaveRomBrowserColumnInfo  ();
+#define IDC_ROMLIST	       223
 extern char CurrentRBFileName[MAX_PATH+1];
 extern ROMBROWSER_FIELDS RomBrowserFields[];
 extern int NoOfFields;

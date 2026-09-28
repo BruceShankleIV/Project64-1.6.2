@@ -1,5 +1,5 @@
 /*
-*Project 64 - A Nintendo 64 emulator.
+*Project64 - A Nintendo 64 emulator.
 *
 *(c) Copyright 2001 zilmar (zilmar@emulation64.com) and
 *Jabo (jabo@emulation64.com).
@@ -1705,10 +1705,10 @@ void OrX86RegToX86Reg(int Destination,int Source) {
 	}
 	PUTDST16(RecompPos,x86Command);
 }
-void Popad(void) {
+void Popad() {
 	PUTDST8(RecompPos,0x61);
 }
-void Pushad(void) {
+void Pushad() {
 	PUTDST8(RecompPos,0x60);
 }
 void Push(int x86reg) {
@@ -1739,7 +1739,7 @@ void PushImm32(char*String,DWORD Value) {
 	PUTDST8(RecompPos,0x68);
 	PUTDST32(RecompPos,Value);
 }
-void Ret(void) {
+void Ret() {
 	PUTDST8(RecompPos,0xC3);
 }
 void Seta(int x86reg) {

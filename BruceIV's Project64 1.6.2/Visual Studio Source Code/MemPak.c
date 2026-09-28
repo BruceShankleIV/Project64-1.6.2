@@ -1,5 +1,5 @@
 /*
-*Project 64 - A Nintendo 64 emulator.
+*Project64 - A Nintendo 64 emulator.
 *
 *(c) Copyright 2001 zilmar (zilmar@emulation64.com) and
 *Jabo (jabo@emulation64.com).
@@ -29,13 +29,13 @@
 #include "CPU.h"
 static BYTE Mempak[4][0x8000];
 static HANDLE hMempakFile=NULL;
-void CloseMempak (void) {
+void CloseMempak () {
 	if (hMempakFile) {
 		CloseHandle(hMempakFile);
 		hMempakFile=NULL;
 	}
 }
-void LoadMempak (void) {
+void LoadMempak () {
 	char File[256],Directory[256];
 	DWORD dwRead,count,count2;
 	BYTE Initialize[]={

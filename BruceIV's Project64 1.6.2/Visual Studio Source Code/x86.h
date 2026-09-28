@@ -1,5 +1,5 @@
 /*
-*Project 64 - A Nintendo 64 emulator.
+*Project64 - A Nintendo 64 emulator.
 *
 *(c) Copyright 2001 zilmar (zilmar@emulation64.com) and
 *Jabo (jabo@emulation64.com).
@@ -134,12 +134,12 @@ void OrConstToX86Reg                 (DWORD Const,int  x86Reg);
 void OrVariableToX86Reg              (void*Variable,int x86Reg);
 void OrX86RegToVariable              (void*Variable,int x86Reg);
 void OrX86RegToX86Reg                (int Destination,int Source);
-void Popad                           (void);
-void Pushad                          (void);
+void Popad                           ();
+void Pushad                          ();
 void Push					         (int x86reg);
 void Pop					         (int x86reg);
 void PushImm32                       (char*String,DWORD Value);
-void Ret                             (void);
+void Ret                             ();
 void Seta                            (int x86reg);
 void Setae                           (int x86reg);
 void SetaVariable                    (void*Variable);
@@ -174,7 +174,7 @@ void TestX86RegToX86Reg              (int Destination,int Source);
 void XorConstToX86Reg                (int x86Reg,DWORD Const);
 void XorX86RegToX86Reg               (int Source,int Destination);
 void XorVariableToX86reg             (void*Variable,int x86reg);
-void fpuAbs					         (void);
+void fpuAbs					         ();
 void fpuAddDword			         (void*Variable);
 void fpuAddDwordRegPointer           (int x86Pointer);
 void fpuAddQword			         (void*Variable);
@@ -215,9 +215,9 @@ void fpuMulQword                     (void*Variable);
 void fpuMulQwordRegPointer           (int x86Pointer);
 void fpuMulReg                       (int x86reg);
 void fpuMulRegPop                    (int x86reg);
-void fpuNeg					         (void);
-void fpuRound				         (void);
-void fpuSqrt				         (void);
+void fpuNeg					         ();
+void fpuRound				         ();
+void fpuSqrt				         ();
 void fpuStoreControl		         (void*Variable);
 void fpuStoreDword			         (int*StackPos,void*Variable,BOOL pop);
 void fpuStoreDwordFromX86Reg         (int*StackPos,int x86Reg,BOOL pop);
@@ -228,7 +228,7 @@ void fpuStoreIntegerQword            (int*StackPos,void*Variable,BOOL pop);
 void fpuStoreIntegerQwordFromX86Reg  (int*StackPos,int x86Reg,BOOL pop);
 void fpuStoreQword			         (int*StackPos,void*Variable,char*VariableName,BOOL pop);
 void fpuStoreQwordFromX86Reg         (int*StackPos,int x86Reg,BOOL pop);
-void fpuStoreStatus			         (void);
+void fpuStoreStatus			         ();
 void fpuSubDword			         (void*Variable);
 void fpuSubDwordRegPointer           (int x86Pointer);
 void fpuSubDwordReverse              (void*Variable);

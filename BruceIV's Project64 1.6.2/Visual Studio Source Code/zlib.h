@@ -129,7 +129,7 @@ typedef z_stream FAR*z_streamp;
 #define zlib_version zlibVersion()
 /*for compatibility with versions<1.0.2*/
                         /*basic functions*/
-ZEXTERN const char*ZEXPORT zlibVersion OF((void));
+ZEXTERN const char*ZEXPORT zlibVersion OF(());
 /*The application can compare zlibVersion and ZLIB_VERSION for consistency.
    If the first character differs, the library code actually used is
    not compatible with the zlib.h header file used by the application.
@@ -703,7 +703,7 @@ ZEXTERN int ZEXPORT inflateInit2_ OF((z_streamp strm,int  windowBits,const char*
 #endif
 ZEXTERN const char  *ZEXPORT zError           OF((int err));
 ZEXTERN int            ZEXPORT inflateSyncPoint OF((z_streamp z));
-ZEXTERN const uLongf*ZEXPORT get_crc_table    OF((void));
+ZEXTERN const uLongf*ZEXPORT get_crc_table    OF(());
 #ifdef __cplusplus
 }
 #endif

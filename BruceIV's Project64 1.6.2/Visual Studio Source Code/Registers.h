@@ -1,5 +1,5 @@
 /*
-*Project 64 - A Nintendo 64 emulator.
+*Project64 - A Nintendo 64 emulator.
 *
 *(c) Copyright 2001 zilmar (zilmar@emulation64.com) and
 *Jabo (jabo@emulation64.com).
@@ -347,6 +347,6 @@ void UnMap_FPR                (BLOCK_SECTION*Section,int Reg,int WriteBackValue)
 void UnMap_GPR                (BLOCK_SECTION*Section,DWORD Reg,int WriteBackValue);
 BOOL UnMap_X86reg             (BLOCK_SECTION*Section,DWORD x86Reg);
 void UnProtectGPR             (BLOCK_SECTION*Section,DWORD Reg);
-void UpdateCurrentHalfLine    (void);
+void UpdateCurrentHalfLine    ();
 void UpdateFieldSerration     (int interlaced);
 void WriteBackRegisters       (BLOCK_SECTION*Section);

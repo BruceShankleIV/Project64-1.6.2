@@ -1,5 +1,5 @@
 /*
-*Project 64 - A Nintendo 64 emulator.
+*Project64 - A Nintendo 64 emulator.
 *
 *(c) Copyright 2001 zilmar (zilmar@emulation64.com) and
 *Jabo (jabo@emulation64.com).
@@ -24,6 +24,7 @@
 *
 */
 #include <windows.h>
+#include <commctrl.h>
 #include <stdio.h>
 #include "Main.h"
 #include "Cheat.h"
@@ -38,11 +39,11 @@ WORD RSPVersion,ContVersion;
 HANDLE hAudioThread=NULL;
 CONTROL Controllers[4];
 BOOL PluginsInitialized=FALSE,GLideN64NeedsToBeSetupFirst=FALSE,GLideN64HasBeenSetupFirst=FALSE,PluginsChanged(HWND hDlg),ValidPluginVersion(PLUGIN_INFO*PluginInfo);
-void AudioThread (void) {
+void AudioThread () {
 	SetThreadPriority(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
 	for (;;) { AiUpdate(TRUE); }
 }
-void GetCurrentDlls (void) {
+void GetCurrentDlls () {
 	long lResult;
 	HKEY hKeyResults=0;
 	char String[256];
@@ -69,7 +70,7 @@ void GetCurrentDlls (void) {
 		sprintf(AudioDLL,"%s",DefaultAudioDll);
 		sprintf(ControllerDLL,"%s",DefaultControllerDll);
 	}
-	if ((strcmp(GfxDLL,"Direct64-1.6.2.dll")==0||strcmp(GfxDLL,"Glide64.dll")==0||strcmp(GfxDLL,"Jabo_Direct3D8.dll")==0||strcmp(GfxDLL,"Jabo_Direct3D8_old.dll")==0||strcmp(GfxDLL,"Jabo_Direct3DL.dll")==0)&&strcmp(RSPDLL,"Icepir8sLegacyRSP.dll")==0) strcpy(RSPDLL,"RSP.dll");
+	if ((strcmp(GfxDLL,"Direct64-1.6.2.dll")==0||strcmp(GfxDLL,"Glide64.dll")==0||strcmp(GfxDLL,"Jabo_Direct3D8.dll")==0)&&strcmp(RSPDLL,"Icepir8sLegacyRSP.dll")==0) strcpy(RSPDLL,"RSP.dll");
 }
 void GetPluginDir(char*Directory) {
 	char path_buffer[_MAX_PATH],drive[_MAX_DRIVE],dir[_MAX_DIR],fname[_MAX_FNAME],ext[_MAX_EXT];
@@ -80,7 +81,7 @@ void GetPluginDir(char*Directory) {
 	strcat(Directory,"Plugin\\");
 }
 void FetchScreenAndVideoDir(char*Directory) {
-	char path_buffer[_MAX_PATH],drive[_MAX_DRIVE],dir[_MAX_DIR],fname[_MAX_FNAME],ext[_MAX_EXT],Dir[255],Group[200];
+	char path_buffer[_MAX_PATH],drive[_MAX_DRIVE],dir[_MAX_DIR],fname[_MAX_FNAME],ext[_MAX_EXT],Dir[256],Group[200];
 	long lResult;
 	HKEY hKeyResults=0;
 	GetModuleFileName(NULL,path_buffer,sizeof(path_buffer));
@@ -250,7 +251,9 @@ void SetupPlugins (HWND hWnd) {
 	DWORD NewRAMsize;
 	ShutdownPlugins();
 	if (CPURunning) {
-		ReadRomOptions();
+		ReadRomSettings();
+		SyncGametoAudio=RomSyncGametoAudio;
+		ClearFrame=RomClearFrame;
 		NewRAMsize=0x800000;
 		JumperPak=FALSE;
 		if (RomJumperPak) {
@@ -271,7 +274,6 @@ void SetupPlugins (HWND hWnd) {
 			if (strcmp(RomName,"NBA Courtside 2")==0||strcmp(RomName,"POKEMON STADIUM")==0) SaveUsing=FlashRAM;
 			// This masks most auto save type issues to extend compatibility for ROMhacks. The reason why it is still set manually per Game.ini is for hacks with custom internal name and shared CRC.
 		}
-		ClearFrame=RomClearFrame;
 		VirtualSD=RomVirtualSD;
 		AudioSignal=RomAudioSignal;
 		UseTLB=RomUseTLB;
@@ -281,7 +283,6 @@ void SetupPlugins (HWND hWnd) {
 		DelayRSP=RomDelayRSP;
 		AlignDMA=RomAlignDMA;
 		FiftyNineHertz=RomFiftyNineHertz;
-		SyncGametoAudio=RomSyncGametoAudio;
 		if (SyncGametoAudio) LimitFPS=TRUE;
 		EmulateAI=FALSE;
 		if (strcmp(AudioDLL,"No Audio.dll")==0||RomJAI||RomShankleAziAI) EmulateAI=TRUE;
@@ -321,6 +322,7 @@ void SetupPlugins (HWND hWnd) {
 		LoadCheats();
 		HandleWindowTitle();
 	} else GetCurrentDlls();
+	SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(PLUGINS_INITIALIZING));
 	PluginsInitialized=TRUE;
 	if (!inFullScreen) {
 		if (!LoadGFXDll(GfxDLL)) {
@@ -536,7 +538,8 @@ void SetupPlugins (HWND hWnd) {
 			if (RSPVersion==0x0101) InitiateRSP_1_1(RspInfo11,&RspTaskValue);
 		}
 	}
-	if (!PluginsInitialized) {
+	if (PluginsInitialized) SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(PLUGINS_INITIALIZED));
+	else {
 		if (inFullScreen) SendMessage(hMainWindow,WM_COMMAND,ID_OPTIONS_FULLSCREEN,0);
 		SendMessage(hMainWindow,WM_COMMAND,ID_OPTIONS_SETTINGS,0);
 		if (CPURunning) {
@@ -545,7 +548,6 @@ void SetupPlugins (HWND hWnd) {
 		} else SetupPlugins(hMainWindow);
 		return;
 	}
-	if (!GLideN64NeedsToBeSetupFirst) SetupMenu(hMainWindow);
 	if (CPURunning) {
 		DWORD count;
 		memset(&CPU_Action,0,sizeof(CPU_Action));
@@ -577,6 +579,8 @@ void SetupPlugins (HWND hWnd) {
 			SetupPlugins(hMainWindow);
 			return;
 		}
+		SetCurrentSaveState(hMainWindow,ID_CURRENTSAVE_DEFAULT);
+		SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MSG_EMULATION_STARTED));
 		if (EmulateAI&&!LimitFPS) {
 			LimitFPS=TRUE;
 			HandleTimers();
@@ -585,6 +589,7 @@ void SetupPlugins (HWND hWnd) {
 		} else HandleTimers();
 		if (strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) SetWindowLong(hMainWindow,GWL_EXSTYLE,GetWindowLong(hMainWindow,GWL_EXSTYLE)|WS_EX_COMPOSITED);
 	}
+	SetupMenu(hMainWindow);
 	UsuallyonTopWindow(hMainWindow);
 }
 void SetupPluginScreen (HWND hDlg) {

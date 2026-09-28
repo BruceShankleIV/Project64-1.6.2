@@ -1,5 +1,5 @@
 /*
-*Project 64 - A Nintendo 64 emulator.
+*Project64 - A Nintendo 64 emulator.
 *
 *(c) Copyright 2001 zilmar (zilmar@emulation64.com) and
 *Jabo (jabo@emulation64.com).
@@ -84,7 +84,7 @@ void _fastcall DTE_UNKNOWN() {
 	DisplayThreadExit("OpcodeMapInterpreter-i=0; i<64; i++\n\nThe emulator has crashed on an unknown Opcode at this location");
 }
 void _fastcall DUMMY() {}
-void OpcodeMapInterpreter (void) {
+void OpcodeMapInterpreter () {
 	int i;
 	for (i=0; i<64; i++) {
 		R4300i_Opcode[i]	=DTE_RESERVED;
@@ -371,7 +371,7 @@ void OpcodeMapInterpreter (void) {
 	R4300i_CoP2[ 6]=DUMMY; // COP2_CT
 	R4300i_CoP2[ 7]=DUMMY; // COP2_DCT
 }
-void ExecuteInterpreterOpCode (void) {
+void ExecuteInterpreterOpCode () {
 	if (!r4300i_LW_VAddr(PROGRAM_COUNTER,&Opcode.Hex)) {
 		DoTLBMiss(NextInstruction==JUMP,PROGRAM_COUNTER);
 		SetNormal

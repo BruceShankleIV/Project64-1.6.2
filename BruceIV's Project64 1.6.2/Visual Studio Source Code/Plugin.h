@@ -1,5 +1,5 @@
 /*
-*Project 64 - A Nintendo 64 emulator.
+*Project64 - A Nintendo 64 emulator.
 *
 *(c) Copyright 2001 zilmar (zilmar@emulation64.com) and
 *Jabo (jabo@emulation64.com).
@@ -207,7 +207,7 @@ typedef union {
 #define PLUGIN_RAW					5 // the controller plugin is passed in raw data
 /********Global DLL Function**************/
 void (__cdecl*GetDllInfo)             (PLUGIN_INFO*PluginInfo);
-void GetCurrentDlls		   (void);
+void GetCurrentDlls		   ();
 /**********RSP DLL Functions*********************/
 void (__cdecl*RSPCloseDLL)        (void);
 void (__cdecl*RSPDLLAbout)        (HWND hWnd);

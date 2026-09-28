@@ -25,7 +25,7 @@
 *This software provides an algorithm that emulates the protection scheme of
 *N64 PIF/CIC-NUS-6105,by determining the proper response to each challenge.
 *It was synthesized after a careful,exhaustive and detailed analysis of the
-*challenge/response pairs stored in the 'pif2.dat' file from Project 64.
+*challenge/response pairs stored in the 'pif2.dat' file from Project64.
 *These challenge/response pairs were the only resource used during this
 *project. There was no kind of physical access to N64 hardware.
 */

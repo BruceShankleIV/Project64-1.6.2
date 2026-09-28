@@ -1,5 +1,5 @@
 /*
-*Project 64 - A Nintendo 64 emulator.
+*Project64 - A Nintendo 64 emulator.
 *
 *(c) Copyright 2001 zilmar (zilmar@emulation64.com) and
 *Jabo (jabo@emulation64.com).
@@ -23,10 +23,10 @@
 *should be forwarded to them so if they want them.
 *
 */
-void PI_DMA_READ  (void);
-void PI_DMA_WRITE (void);
-void SI_DMA_READ  (void);
-void SI_DMA_WRITE (void);
-void SP_DMA_READ  (void);
-void SP_DMA_WRITE (void);
+void PI_DMA_READ  ();
+void PI_DMA_WRITE ();
+void SI_DMA_READ  ();
+void SI_DMA_WRITE ();
+void SP_DMA_READ  ();
+void SP_DMA_WRITE ();
 extern int DMAUsed;

@@ -16,8 +16,8 @@ typedef struct {
 } LANG_STR;
 LANG_STR DefaultString[]={
     { LANGUAGE_AUTHOR,    "BruceIV"			  },
-    { LANGUAGE_VERSION,   "25"				  },
-    { LANGUAGE_DATE,      "September 2026"		  },
+    { LANGUAGE_VERSION,   "GM"				  },
+	{ AUTOHIDE_ON,	      "Mouse cursor will now be hidden during recordings, screenshots, and fullscreen"},
 	{ INI_CURRENT_LANG,   "Language Database (.txt)"  },
 	{ INI_AUTHOR,         "Author"			  },
 	{ INI_VERSION,        "Version"			  },
@@ -72,7 +72,7 @@ LANG_STR DefaultString[]={
         { MENUDES_EXIT,"Closes Project64" },
         { MENUDES_RESET,"Resets the current ROM" },
         { MENUDES_PAUSE,"Pauses/resumes emulation of the current ROM" },
-        { MENUDES_BITMAP,"Takes a screenshot (plugin-dependent)" },
+        { MENUDES_BITMAP,"Takes a screenshot (see game capture configuration)" },
         { MENUDES_LIMIT_FPS,"Lets you toggle >1x speeds (plugin-dependent)" },
         { MENUDES_SAVE,"Saves last selected save state slot" },
         { MENUDES_SAVE_AS,"Lets you choose a directory to make a save state" },
@@ -80,7 +80,7 @@ LANG_STR DefaultString[]={
         { MENUDES_LOAD,"Lets you choose a save state to load" },
         { MENUDES_CHEAT,"Lets you edit cheat codes for a selected ROM" },
         { MENUDES_GS_BUTTON,"Activates GS cheats when enabled in the cheat menu" },
-        { MENUDES_FULL_SCREEN,"Enters current plugin's fullscreen mode (plugin-dependent)" },
+        { MENUDES_FULL_SCREEN,"Enters video plugin's fullscreen mode" },
         { MENUDES_ON_TOP,"Usually makes Project64 stay on top of all other windows" },
         { MENUDES_CONFIG_GFX,"Lets you change settings inside the Graphics plugin" },
         { MENUDES_CONFIG_AUDIO,"Lets you change settings inside the Audio plugin" },
@@ -111,7 +111,7 @@ LANG_STR DefaultString[]={
 	{ SHANKLE_AZI_AI_LANG,"Azi AI"},
 //Messages
 	{ UNKNOWN,"Unknown" },
-	{ FIFTYNINEHERTZ_LANG,"59 Hz"},
+	{ FIFTYNINEHERTZ_LANG,"59 FPS"},
 /*********************************************************************************
 *Options                                                                       *
 *********************************************************************************/
@@ -120,7 +120,7 @@ LANG_STR DefaultString[]={
 	{ TAB_ROMSELECTION,"ROM Selection"},
 	{ TAB_ADVANCED,"Advanced"},
 	{ TAB_ROMSETTINGS,"ROM Settings"},
-	{ ROMSETTWARN,"Reset, end, or start emulation again to apply any changes"},
+	{ ROMSETTWARN,"Start emulation again to apply any changes"},
 	{ TAB_ROMNOTES,"ROM Notes"},
 //Plugin Dialog
 	{ PLUG_ABOUT,"About"},
@@ -140,7 +140,7 @@ LANG_STR DefaultString[]={
 	{ OPTION_AUTO_SLEEP,     "Pause CPU Upon Focus Loss"},
 	{ OPTION_AUTO_FULLSCREEN,"Enter Fullscreen Mode Upon ROM Opening"},
 	{ OPTION_BASIC_MODE,     "Hide Advanced Settings"},
-	{ OPTION_AUTO_HIDE,	  "Always Hide Cursor in Fullscreen and ffmpeg"},
+	{ RECORDING_START,	 "Windowed gameplay recording in progress. Close cmd window or press Ctrl+C to end recording"},
 	{ RB_MAX_ROMS,        "Max # of ROMs Remembered (Max 10):"},
 	{ RB_ROMS,            "ROMs"},
 	{ RB_MAX_DIRS,        "Max # of ROM Dirs Remembered (Max 10):"},
@@ -179,14 +179,14 @@ LANG_STR DefaultString[]={
 	{ AllocateCompile_SD, "Manage SD Space"},
 	{ AllocateCompile_SD_MENUDES,"Attempts to allocate or compile 254MB of space for virtual SD card emulation"},
 	{ EXTRA_PROJECT64,    "Project64 is already running.\n\nWould you like to force-kill the current Project64 before starting another one? Force-killing prevents save data issues but this may disrupt plugin behavior" },
-	{ MSG_EMULATION_RESET,	  "Emulation reset"},
+	{ PLUGINS_INITIALIZING,"Plugins initializing"},
 	{ SMCM_PROTECTED,     "Protect Memory / Enlarge Buffer:"},
 	{ FORCE_RSP_RECOMPILER,"Recompile RCP RSP"},
 	{ USUALLYONTOP_OFF,	   "Usually on Top off" },
 	{ MSG_PLS_START,		  "You must start emulation to configure this plugin"},
 	{ SPEEDCAP_OFF,	       "2x Speed Cap revoked from Limit FPS off" },
 	{ FORCE_DISABLE_TLB,  "Always Disable Translation Lookaside Buffer"},
-	{ FORCE_DISABLE_REGISTERCACHING,"Always Disable Register Caching" },
+	{ PLUGINS_INITIALIZED,"Plugins initialized"},
 	{ SAVE_4K_EEPROM,     "4kbit EEPROM"},
 	{ SAVE_16K_EEPROM,    "16kbit EEPROM"},
 	{ SAVE_SRAM,          "SRAM"},
@@ -220,39 +220,45 @@ LANG_STR DefaultString[]={
 	{ MSG_FAIL_INIT_RSP,     "The default or selected RSP plugin is missing or invalid.\n\nYou need to select a reality signal processor (RSP) plugin"},
 	{ MSG_FAIL_INIT_CONTROL, "The default or selected input plugin is missing or invalid.\n\nYou need to select an input (controller) plugin"},
 	{ MSG_FAIL_LOAD_PLUGIN,  "Failed to load plugin"},
-	{ MENU_ADVANCE_DESC,	  "Advances through a game in single frames at a time (plugin-dependent)"},
-	{ MSG_UNABLE_SAVE_STATE,    "Unable to save state"},
-        { MSG_FAIL_OPEN_SAVE,   "Cannot access save data. You may be running the application from an admin rights directory"},
+	{ MENU_ADVANCE_DESC,	 "Advances through a game in single frames at a time (plugin-dependent)"},
+	{ MSG_UNABLE_SAVE_STATE, "Unable to save state"},
+    { MSG_FAIL_OPEN_SAVE,	 "Cannot access save data. You may be running the application from an admin rights directory"},
 	{ MSG_FAIL_OPEN_ZIP,     "Attempt to open zip file failed.\n\nPotentially is a corrupt zip file - try unzipping ROM manually"},
-	{ MSG_RB_INFO,		  "Displays ROM-specific information about a selected ROM"},
-	{ OPENROM_FAILED,	  "Failed to open ROM.\n\nMake sure it exists in the location you tried to open it from"},
+	{ MSG_RB_INFO,		 "Displays ROM-specific information about a selected ROM"},
+	{ OPENROM_FAILED,	 "Failed to open ROM.\n\nMake sure it exists in the location you tried to open it from"},
 	{ MSG_FAIL_IMAGE,        "File loaded does not appear to be a valid ROM.\n\nVerify that your ROM's checksum is valid"},
 	{ MSG_UNKNOWN_FILE_FORMAT,"Unknown file format"},
-        { MSG_FAIL_OPEN_MEMPAK,  "Failed to open mempak"},
-	{ MSG_ERROR_TITLE,      "App Error"},
+    { MSG_FAIL_OPEN_MEMPAK,  "Failed to open mempak"},
+	{ MSG_ERROR_TITLE,	 "App Error"},
 	{ Compile_SD_Info,	  "This action will attempt to compile virtual SD card space back into AUTO0.\n\nYou will be able to save to or load from your virtual SD card again if this action is successful" },
 	{ OFF,			  "OFF" },
 	{ MSG_EMULATION_STARTED, "Emulation started"},
-        { MSG_UNABLE_LOAD_STATE,"Unable to load save state"},
-        { MSG_EMULATION_ENDED,   "Emulation ended"},
-        { MSG_CONFIRMATION_UNINSTALL,"This action will attempt to terminate this instance and factory reset included registry configurations"},
+    { MSG_UNABLE_LOAD_STATE,"Unable to load save state"},
+    { MSG_EMULATION_ENDED,   "Emulation ended"},
+    { MSG_CONFIRMATION_UNINSTALL,"This action will attempt to terminate this instance and factory reset included registry configurations"},
 	{ MSG_SAVED_STATE,	  "Saved state"},
-        { GS_PRESS,              "GS button pressed"},
-	{ FPS_DISPLAY,           "Frames Per Second"},
+    { GS_PRESS,              "GS button pressed"},
+	{ AUTOHIDE_OFF,	      "Mouse cursor will now be visible at all times possible"},
 	{ FORCE_ENABLE_DMA,	  "Always Enable Align DMA"},
 	{ NUMBER_2,		  "2"},
 	{ NUMBER_3,		  "3"},
-	{ MENUDES_LOW,		  "Captures gameplay in yuv420p pixel format with libx264"},
-	{ MENUDES_MEDIUM,	  "Captures gameplay in rgb24 pixel format with libx264rgb"},
-	{ MENUDES_CUSTOM,	  "Captures gameplay in a lossless screenshot"},
-	{ LOW_PRESET,		  "YUV Video Only (for standard media players)"},
-	{ MEDIUM_PRESET,	  "RGB Video Only (for media players like mpv)"},
-	{ RGBA_PNG_SCREENSHOT,	  "Lossless Screenshot"},
-	{ GAME_CAPTURE,		  "ffmpeg Game Capture"},
+	{ MENUDES_GAMECAPTURE,"Records windowed gameplay using ffmpeg (requires even-numbered width & height px)"},
+	{ RGBREC_MENUDES,	  "Uses RGB (lossless) color space in windowed gameplay recordings for specialized media players like mpv"},
+	{ MENUDES_HIDE_MOUSE,	  "Hides the mouse cursor in windowed gameplay recordings and fullscreen"},
+	{ GAMECAPTURE,		  "Record Windowed Gameplay"},
+	{ RGBREC,	  "Record windowed gameplay with RGB instead of YUV"},
+	{ HIDE_MOUSE,	  "Hide Mouse Cursor"},
+	{ GAME_CAPTURE,		  "Configure Game Capture"},
 	{ FFMPEG_NOFIND,	  "Unable to locate ffmpeg"},
 	{ FFMPEG_NOBOOT,	  "Unable to boot ffmpeg"},
 	{ VIRTUALSD_LANG,	  "Virtual SD Card"},
-	{ RECOMPILER_SETTINGS,"VR4300i CPU Recompilation Optimizations"},
+	{ RECOMPILER_SETTINGS,	  "VR4300i CPU Recompilation Optimizations"},
+	{ VIDEOTOSCREEN,	  "Capture Screenshots with Video Plugin"},
+	{ MENUDES_VIDEOTOSCREEN,  "Uses video plugin CaptureScreen function instead of BMP capture"},
+	{ VIDEOTOSCREEN_ON,	  "Screenshots will now be captured with video plugin instead of BMP"},
+	{ VIDEOTOSCREEN_OFF,  "Screenshots will now be captured with BMP instead of video plugin"},
+	{ RGBREC_ON,	      "Recordings will now be encoded using RGB (lossless) color space"},
+	{ RGBREC_OFF,	      "Videos will now be encoded using YUV (lossy) color space"},
 };
 class CLanguage  {
 	void FindLangName  (int Index);
@@ -262,10 +268,10 @@ public:
 	CLanguage();
 	void CreateLangList (HMENU hMenu,int uPosition,int MenuID);
 	char*GetString    (int StringID);
-	void LoadLangList   (void);
+	void LoadLangList   ();
 	void LoadLanguage  (char*RegLocation);
 	const char*LangName  (int index);
-	int  GetNumberLang  (void);
+	int  GetNumberLang  ();
 	void SetCurrentLang (HMENU hMenu,int MenuIndx);
 	int  SetMenuBase    (int MenuBase);
 private:
@@ -290,7 +296,7 @@ CLanguage::CLanguage() {
 	m_NoOfStrings=0;
 	strcpy(m_CurrentLangName,"");
 }
-int CLanguage::GetNumberLang(void) {
+int CLanguage::GetNumberLang() {
 	return m_NoOflangs;
 }
 const char*CLanguage::LangName  (int index) {
@@ -354,7 +360,7 @@ char*CLanguage::GetString (int StringID) {
 	}
 	return NULL;
 }
-void CLanguage::LoadLangList (void) {
+void CLanguage::LoadLangList () {
 	char Directory[_MAX_PATH],SearchString[_MAX_PATH];
 	{
 		char path_buffer[_MAX_PATH],drive[_MAX_DRIVE],dir[_MAX_DIR];

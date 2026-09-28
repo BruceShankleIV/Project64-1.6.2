@@ -1,5 +1,5 @@
 /*
-*Project 64 - A Nintendo 64 emulator.
+*Project64 - A Nintendo 64 emulator.
 *
 *(c) Copyright 2001 zilmar (zilmar@emulation64.com) and
 *Jabo (jabo@emulation64.com).
@@ -81,8 +81,8 @@ typedef struct {
 extern FASTTLB FastTlb[64];
 extern TLB tlb[32];
 BOOL AddressDefined (DWORD VAddr);
-void InitializeTLB   (void);
-void SetupTLB       (void);
+void InitializeTLB   ();
+void SetupTLB       ();
 void TLB_Probe      (void);
 void TLB_Read       (void);
 BOOL TranslateVaddr (DWORD*Addr);

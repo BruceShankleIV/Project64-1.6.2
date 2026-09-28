@@ -1,5 +1,5 @@
 /*
-*Project 64 - A Nintendo 64 emulator.
+*Project64 - A Nintendo 64 emulator.
 *
 *(c) Copyright 2001 zilmar (zilmar@emulation64.com) and
 *Jabo (jabo@emulation64.com).
@@ -28,14 +28,14 @@
 #include "Main.h"
 #include "CPU.h"
 static HANDLE hSRAMFile=NULL;
-void CloseSRAM (void) {
+void CloseSRAM () {
 	if (hSRAMFile) {
 		CloseHandle(hSRAMFile);
 		hSRAMFile=NULL;
 	}
 }
-BOOL LoadSRAM (void) {
-	char File[255],Directory[255];
+BOOL LoadSRAM () {
+	char File[256],Directory[256];
 	LPVOID lpMsgBuf;
 	GetAutoSaveDir(Directory);
 	sprintf(File,"%s%s.sra",Directory,RomName);

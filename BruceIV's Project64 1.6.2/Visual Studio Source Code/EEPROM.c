@@ -1,5 +1,5 @@
 /*
-*Project 64 - A Nintendo 64 emulator.
+*Project64 - A Nintendo 64 emulator.
 *
 *(c) Copyright 2001 zilmar (zilmar@emulation64.com) and
 *Jabo (jabo@emulation64.com).
@@ -29,7 +29,7 @@
 #include "CPU.h"
 static HANDLE hEEPROMFile=NULL;
 BYTE EEPROM[0x800];
-void CloseEEPROM (void) {
+void CloseEEPROM () {
 	if (hEEPROMFile) {
 		CloseHandle(hEEPROMFile);
 		hEEPROMFile=NULL;
@@ -69,8 +69,8 @@ void EEPROMCommand (BYTE*Command) {
 		break;
 	}
 }
-void LoadEEPROM (void) {
-	char File[255],Directory[255];
+void LoadEEPROM () {
+	char File[256],Directory[256];
 	DWORD dwRead;
 	GetAutoSaveDir(Directory);
 	sprintf(File,"%s%s.eep",Directory,RomName);

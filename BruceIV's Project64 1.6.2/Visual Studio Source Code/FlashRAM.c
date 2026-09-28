@@ -1,5 +1,5 @@
 /*
-*Project 64 - A Nintendo 64 emulator.
+*Project64 - A Nintendo 64 emulator.
 *
 *(c) Copyright 2001 zilmar (zilmar@emulation64.com) and
 *Jabo (jabo@emulation64.com).
@@ -34,7 +34,7 @@ enum TFlashRAM_Modes {
 	FlashRAM_MODE_READ,
 	FlashRAM_MODE_STATUS,
 };
-BOOL LoadFlashRAM (void);
+BOOL LoadFlashRAM ();
 DWORD FlashRAM_Offset,FlashFlag=FlashRAM_MODE_NOPES;
 static HANDLE hFlashRAMFile=NULL;
 BYTE*FlashRAMPointer;
@@ -92,8 +92,8 @@ void DMAtoFlashRAM(BYTE*Source,int StartOffset,int len) {
 DWORD ReadFromFlashStatus () {
 	return (DWORD)(FlashStatus>>32);
 }
-BOOL LoadFlashRAM (void) {
-	char File[255],Directory[255];
+BOOL LoadFlashRAM () {
+	char File[256],Directory[256];
 	GetAutoSaveDir(Directory);
 	sprintf(File,"%s%s.fla",Directory,RomName);
 	hFlashRAMFile=CreateFile(File,GENERIC_WRITE|GENERIC_READ,FILE_SHARE_READ,NULL,OPEN_ALWAYS,FILE_ATTRIBUTE_NORMAL|FILE_FLAG_RANDOM_ACCESS,NULL);

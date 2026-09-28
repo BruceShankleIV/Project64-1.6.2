@@ -1,5 +1,5 @@
 /*
-*Project 64 - A Nintendo 64 emulator.
+*Project64 - A Nintendo 64 emulator.
 *
 *(c) Copyright 2001 zilmar (zilmar@emulation64.com) and
 *Jabo (jabo@emulation64.com).
@@ -26,5 +26,5 @@
 extern BYTE PifRom[0x7C0],*PIF_Ram;
 int  GetCicChipID (char*RomData);
 int  LoadPifRom   (int country);
-void PifRamWrite  (void);
-void PifRamRead   (void);
+void PifRamWrite  ();
+void PifRamRead   ();

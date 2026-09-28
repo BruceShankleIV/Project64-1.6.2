@@ -1,0 +1,76 @@
+Extractor building with WinRAR.
+
+Archive name
+BIVPJ64GM-Extractor.exe
+
+Archive format
+ZIP
+
+Compression method
+Best
+
+Set password...
+
+Enter password
+password
+
+Check ZIP legacy encryption
+
+Advanced->SFX options...
+
+Text and icon->Title of SFX window
+BruceIV's Project64 1.6.2 (Golden Master Edition) Extractor
+
+Load SFX icon from the file
+Icon_Gold.ico
+
+Load SFX logo from the file
+Banner_Gold.png
+
+Text to display in SFX window
+This “Golden Master Edition” of my Project64 1.6.2 is still technically in “beta” but also serves as a public release. As such, anyone who uses this build qualifies as a beta tester and is eligible to receive credit or otherwise aknowledgement for any issues they find or improvements they provide for it. Good luck, I've already tried to fix as many things as possible!
+
+
+Please report any bugs you encounter during your beta testing or fixes you would like to add for this build via my Project64 1.6.2 server: discord.gg/cHDxa9vzQM
+
+
+
+
+To extract the program from this file, you will need to enter password into the password window. But before doing that, you'll want to set a windows defender (or whatever antivirusware your PC uses) exception for the application folder. If you don't do this, the app could be misdetected as a malicious file since it's not a recognized/digitally signed application, as I cannot afford that. You can read about digital signing and why it's a thing from Microsoft's website: https://learn.microsoft.com/en-us/windows/win32/seccrypto/cryptography-tools#introduction-to-code-signing
+
+
+How to set a windows defender exception: search for Virus & threat protection, find Virus & threat protection settings and go to Manage settings, find Exclusions and go to Add or remove exclusions, click Add an exclusion and use the Folder option, then select the BruceIV's Project64 1.6.2 application folder.
+
+
+If you do not trust the application, you can close this window, review the “Visual Studio Source Code” folder including the “readme - building prereqs.txt” file and generate the application from the source code with Microsoft's Visual Studio application which can be downloaded from Microsoft's website here: https://visualstudio.microsoft.com/
+
+
+
+
+Finally, before using this application, you must agree to the licensing terms included in the Project64 source code files as stated by the Project64 copyright holders, Zilmar and Jabo:
+
+
+
+Project 64 - A Nintendo 64 emulator.
+(c) Copyright 2001 zilmar (zilmar@emulation64.com) and Jabo (jabo@emulation64.com)
+pj64 homepage: www.pj64.net
+
+
+Permission to use, copy, modify and distribute Project64 in both binary and
+source form, for non-commercial purposes, is hereby granted without fee,
+providing that this license information and copyright notice appear with
+all copies and any derived work.
+
+
+This software is provided 'as-is', without any express or implied
+warranty. In no event shall the authors be held liable for any damages
+arising from the use of this software.
+
+
+Project64 is freeware for PERSONAL USE only. Commercial users should
+seek permission of the copyright holders first. Commercial use includes
+charging money for Project64 or software derived from Project64.
+
+
+The copyright holders request that bug fixes and improvements to the code
+should be forwarded to them so if they want them.

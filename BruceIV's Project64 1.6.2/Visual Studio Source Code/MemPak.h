@@ -1,5 +1,5 @@
 /*
-*Project 64 - A Nintendo 64 emulator.
+*Project64 - A Nintendo 64 emulator.
 *
 *(c) Copyright 2001 zilmar (zilmar@emulation64.com) and
 *Jabo (jabo@emulation64.com).
@@ -23,7 +23,7 @@
 *should be forwarded to them so if they want them.
 *
 */
-void CloseMempak          (void);
+void CloseMempak          ();
 BYTE Mempacks_CalulateCrc (BYTE*DataToCrc);
 void ReadFromMempak       (int Control,int Address,BYTE*Buffer);
 void WriteToMempak        (int Control,int Address,BYTE*Buffer);

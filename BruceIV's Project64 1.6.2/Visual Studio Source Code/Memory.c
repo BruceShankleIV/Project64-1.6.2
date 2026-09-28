@@ -1,5 +1,5 @@
 /*
-*Project 64 - A Nintendo 64 emulator.
+*Project64 - A Nintendo 64 emulator.
 *
 *(c) Copyright 2001 zilmar (zilmar@emulation64.com) and
 *Jabo (jabo@emulation64.com).
@@ -41,13 +41,13 @@ BYTE*RecompCode,*RecompPos;
 BOOL WrittenToRom;
 DWORD WroteToRom;
 DWORD TempValue;
-int Allocate_ROM (void) {
+int Allocate_ROM () {
 	if (ROM!=NULL) { 	VirtualFree(ROM,0,MEM_RELEASE); }
 	ROM=(BYTE*)VirtualAlloc(NULL,RomFileSize,MEM_RESERVE|MEM_COMMIT|MEM_TOP_DOWN,PAGE_READWRITE);
 	WrittenToRom=FALSE;
 	return ROM==NULL?FALSE:TRUE;
 }
-int Allocate_Memory (void) {
+int Allocate_Memory () {
 	RDRAMsize=0x400000;
 	N64MEM=(unsigned char*) VirtualAlloc(NULL,0x20000000,MEM_RESERVE|MEM_TOP_DOWN,PAGE_READWRITE);
 	if(N64MEM==NULL) {
@@ -935,7 +935,7 @@ int r4300i_CPU_MemoryFilter (DWORD dwExptCode,LPEXCEPTION_POINTERS lpEP) {
 			lpEP->ContextRecord->Eip=(DWORD)ReadPos;
 			return EXCEPTION_CONTINUE_EXECUTION;
 		case 0xBF:
-			if (AlignDMA) DisplayThreadExit("r4300i_CPU_MemoryFilter-switch(*TypePos)-case 0x0F-switch(*(TypePos+1))-case 0xBF:-AlignDMA\n\nTry 'Align DMA=OFF'?\n\nNote: This is not actually part of DMA alignment, but acts as an extra accuracy check based on Interpreter behavior");
+			if (AlignDMA) DisplayThreadExit("r4300i_CPU_MemoryFilter-switch(*TypePos)-case 0x0F-switch(*(TypePos+1))-case 0xBF:-AlignDMA\n\nTry “Align DMA=OFF”?\n\nNote: This is not actually part of DMA alignment, but acts as an extra accuracy check based on Interpreter behavior");
 			r4300i_LH_NonMemory(MemAddress,Reg,TRUE);
 			lpEP->ContextRecord->Eip=(DWORD)ReadPos;
 			return EXCEPTION_CONTINUE_EXECUTION;
@@ -1663,7 +1663,7 @@ BOOL r4300i_SW_VAddr (DWORD VAddr,DWORD Value) {
 	*(DWORD*)(TLB_WriteMap[VAddr>>12]+VAddr)=Value;
 	return TRUE;
 }
-void Release_Memory (void) {
+void Release_Memory () {
 	if (OrigMem!=NULL) { VirtualFree(OrigMem,0,MEM_RELEASE); }
 	if (ROM!=NULL) { 	VirtualFree(ROM,0,MEM_RELEASE); }
 	VirtualFree(TLB_ReadMap,0,MEM_RELEASE);
@@ -1690,7 +1690,7 @@ void ResetMemoryStack (BLOCK_SECTION*Section) {
 	}
 	MoveX86regToVariable(x86reg,&MemoryStack);
 }
-void ResetRecompCode (void) {
+void ResetRecompCode () {
 	DWORD count,OldProtect;
 	RecompPos=RecompCode;
 	TargetIndex=0;

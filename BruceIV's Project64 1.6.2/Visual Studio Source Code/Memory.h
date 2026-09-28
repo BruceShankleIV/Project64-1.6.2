@@ -1,5 +1,5 @@
 /*
-*Project 64 - A Nintendo 64 emulator.
+*Project64 - A Nintendo 64 emulator.
 *
 *(c) Copyright 2001 zilmar (zilmar@emulation64.com) and
 *Jabo (jabo@emulation64.com).
@@ -29,9 +29,9 @@ extern void**JumpTable,**DelaySlotTable;
 extern BYTE*RecompCode,*RecompPos;
 extern BOOL WrittenToRom;
 /*Memory Control*/
-int  Allocate_ROM                (void);
-int  Allocate_Memory             (void);
-void Release_Memory              (void);
+int  Allocate_ROM                ();
+int  Allocate_Memory             ();
+void Release_Memory              ();
 /*CPU memory functions*/
 int  r4300i_Command_MemoryFilter (DWORD dwExptCode,LPEXCEPTION_POINTERS lpEP);
 int  r4300i_CPU_MemoryFilter     (DWORD dwExptCode,LPEXCEPTION_POINTERS lpEP);
@@ -60,4 +60,4 @@ void Compile_SH_Register         (int x86Reg,DWORD Addr);
 void Compile_SW_Const            (DWORD Value,DWORD Addr);
 void Compile_SW_Register         (int x86Reg,DWORD Addr);
 void ResetMemoryStack            (BLOCK_SECTION*Section);
-void ResetRecompCode             (void);
+void ResetRecompCode             ();

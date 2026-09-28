@@ -1,5 +1,5 @@
 /*
-*Project 64 - A Nintendo 64 emulator.
+*Project64 - A Nintendo 64 emulator.
 *
 *(c) Copyright 2001 zilmar (zilmar@emulation64.com) and
 *Jabo (jabo@emulation64.com).
@@ -34,15 +34,18 @@ extern "C" {
 #include "Settings API.h"
 #include "ROM Browser.h"
 #include "Language.h"
-/*********Source Version 25*********/
-/*Last updated on 09/13/2026 03:21PM*/
+/*********Source Version GM*********/
+/******(Golden Master Edition)******/
+/*Last updated @ 09/28/2026 12:48AM*/
 /*********General Defaults**********/
 #define AppName						"BruceIV's Project64 1.6.2"
 #define IniName						"Game.ini"
 #define CheatIniName				"Cheat.ini"
 #define LangFileName				"English.txt"
 #define Default_AutoSleep			FALSE
+#define Default_RecordRGB			FALSE
 #define Default_AutoHide			TRUE
+#define Default_VideoToScreen		FALSE
 #define Default_LimitFPS			TRUE
 #define Default_SpeedCap			FALSE
 #define Default_UsuallyonTop		FALSE
@@ -52,7 +55,6 @@ extern "C" {
 #define Default_CountPerOp			2
 #define Default_ForceDisableTLB		FALSE
 #define Default_ForceEnableDMA		FALSE
-#define Default_ForceDisableCaching	FALSE
 #define Default_ForceAuto16kbit		FALSE
 /***********Menu Stuff**************/
 #define ID_FILE_RECENT_FILE		1000
@@ -62,40 +64,37 @@ extern "C" {
 #define UseCache_Default	-1
 #define REG_CACHE_ON		0
 #define REG_CACHE_OFF		1
-#define Default_UseCache REG_CACHE_OFF // Based on my own testing, register caching ON is not consistent enough to warrant the slight performance/speed boost, although in a majority of cases it can be ON so this is still a good default option to be able to toggle.
+#define Default_UseCache REG_CACHE_ON
 /*********Protect Memory / Enlarge Buffer**********/
-#define ProtectMemoryEnlargeBuffer_Default	-1
+#define ProtectMemoryEnlargeBuffer_Default		-1
 #define PROTECT_MEMORY_ENLARGE_BUFFER_ON		0
 #define PROTECT_MEMORY_ENLARGE_BUFFER_OFF		1
-#define Default_UseProtectMemoryEnlargeBuffer PROTECT_MEMORY_ENLARGE_BUFFER_OFF // OFF due to issues with Icepir8's LLE.
+#define Default_UseProtectMemoryEnlargeBuffer PROTECT_MEMORY_ENLARGE_BUFFER_OFF
 /**********Rom Browser**************/
-#define Default_UseRB				TRUE
 #define Default_Recursion			TRUE
 /*********Global Variables**********/
 extern LARGE_INTEGER Frequency,Frames[9],LastFrame;
-extern BOOL AutoSleep,AutoHide,Recursion,LimitFPS,SpeedCap,AutoFullScreen,SystemCF,UsuallyonTop,BasicMode,BootupSettings,SetupPluginsAfterSaveRomOpt,SPECIAL_BREAK_Trigger,SPECIAL_BREAK_Yes,FirstBoot;
+extern BOOL AutoSleep,AutoHide,RecordRGB,Recursion,LimitFPS,SpeedCap,AutoFullScreen,SystemCF,UsuallyonTop,VideoToScreen,BasicMode,BootupSettings,SetupPluginsAfterSaveRomOpt,SPECIAL_BREAK_Trigger,SPECIAL_BREAK_Yes,FirstBoot;
 extern DWORD CurrentFrame,SystemUseCache,SystemProtectMemoryEnlargeBuffer,RomsToRemember,RomDirsToRemember;
-extern HWND hMainWindow,hHiddenWin,hStatusWnd;
+extern HWND hMainWindow,hHiddenWin,hStatusWnd,hRomList;
 extern char CurrentSave[256];
 extern HMENU hMainMenu;
 extern HINSTANCE hInst;
 /********Function Prototype*********/
 DWORD AsciiToHex          (char*HexValue);
 int CALLBACK SelectRomDirCallBack (HWND hwnd,DWORD uMsg,DWORD lp,DWORD lpData);
-void UsuallyonTopWindow    (HWND hWnd);
-void HandleModal1 (HWND hWnd);
-void HandleModal2(HWND hWnd);
-void  __cdecl DisplayError       (char*Message,...);
-void  ChangeWinSize        (HWND hWnd,long width,long height,HWND hStatusBar);
-void  DisplayFPS          (void);
-char*GetIniFileName      (void);
-char*GetLangFileName     (void);
-void  LoadSettings        (void);
+void UsuallyonTopWindow	  (HWND hWnd);
+void HandleModal1		  (HWND hWnd);
+void HandleModal2		  (HWND hWnd);
+void  __cdecl DisplayError(char*Message,...);
+void  ChangeWinSize       (HWND hWnd,long width,long height,HWND hStatusBar);
+char*GetIniFileName       ();
+char*GetLangFileName      ();
+void  LoadSettings        ();
 void  MenuSetText         (HMENU hMenu,int MenuPos,char*Title,char*Shortcut);
 void  SetCurrentSaveState (HWND hWnd,int State);
-void  FixupMenubar		  (HWND hWnd);
 void  SetupMenu           (HWND hWnd);
-void  CreateRomListControl (HWND hWnd);
+void  CreateRomListControl(HWND hWnd);
 #ifdef __cplusplus
 }
 #endif

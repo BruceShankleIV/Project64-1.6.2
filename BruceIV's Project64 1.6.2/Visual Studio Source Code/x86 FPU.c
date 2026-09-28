@@ -1,5 +1,5 @@
 /*
-*Project 64 - A Nintendo 64 emulator.
+*Project64 - A Nintendo 64 emulator.
 *
 *(c) Copyright 2001 zilmar (zilmar@emulation64.com) and
 *Jabo (jabo@emulation64.com).
@@ -31,7 +31,7 @@
 #define PUTDST8(dest,value)  (*((BYTE*)(dest))=(BYTE)(value)); dest+=1;
 #define PUTDST16(dest,value) (*((WORD*)(dest))=(WORD)(value)); dest+=2;
 #define PUTDST32(dest,value) (*((DWORD*)(dest))=(DWORD)(value)); dest+=4;
-void fpuAbs(void) {
+void fpuAbs() {
 	PUTDST16(RecompPos,0xE1D9);
 }
 void fpuAddDword(void*Variable) {
@@ -394,13 +394,13 @@ void fpuMulRegPop(int x86reg) {
 	case x86_ST7: PUTDST16(RecompPos,0xCFDE);
 	}
 }
-void fpuNeg(void) {
+void fpuNeg() {
 	PUTDST16(RecompPos,0xE0D9);
 }
-void fpuRound(void) {
+void fpuRound() {
 	PUTDST16(RecompPos,0xFCD9);
 }
-void fpuSqrt(void) {
+void fpuSqrt() {
 	PUTDST16(RecompPos,0xFAD9);
 }
 void fpuStoreControl(void*Variable) {
@@ -492,7 +492,7 @@ void fpuStoreQwordFromX86Reg(int*StackPos,int x86Reg,BOOL pop) {
 	}
 	PUTDST8(RecompPos,(pop==FALSE)?Command:(Command+0x8));
 }
-void fpuStoreStatus(void) {
+void fpuStoreStatus() {
 	PUTDST16(RecompPos,0xE0DF);
 }
 void fpuSubDword(void*Variable) {
@@ -585,7 +585,7 @@ int fpuRestoreControl() {
 	}
 	return fpucontrol;
 }
-void fpuSetupDouble(void) {
+void fpuSetupDouble() {
 	int temp=0;
 	_asm {
 		fnstcw word ptr [temp]

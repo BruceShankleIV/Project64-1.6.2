@@ -1,5 +1,5 @@
 /*
-*Project 64 - A Nintendo 64 emulator.
+*Project64 - A Nintendo 64 emulator.
 *
 *(c) Copyright 2001 zilmar (zilmar@emulation64.com) and
 *Jabo (jabo@emulation64.com).
@@ -159,15 +159,15 @@ struct {
 	DWORD NoOfIMEMBlocks;
 	DWORD NoOfPifRomBlocks;
 } N64_Blocks;
-BYTE*Compiler4300iBlock    (void);
-BYTE*CompileDelaySlot      (void);
+BYTE*Compiler4300iBlock    ();
+BYTE*CompileDelaySlot      ();
 void CompileExit            (DWORD TargetPC,REG_INFO ExitRegSet,int reason,int CompileNow,void (*x86Jmp)(DWORD Value));
 void CompileSystemCheck     (DWORD TimerModifier,DWORD TargetPC,REG_INFO RegSet);
 void FixRandomReg           (void);
 void FreeSection            (BLOCK_SECTION*Section,BLOCK_SECTION*Parent);
 void StartRecompilerCPU     (void);
 void GenerateSectionLinkage (BLOCK_SECTION*Section);
-void InitializeInitialCompilerVariable (void);
+void InitializeInitialCompilerVariable ();
 extern DWORD TLBLoadAddress,TargetIndex;
 extern ORIGINAL_MEMMARKER*OrigMem;
 extern TARGET_INFO*TargetInfo;
