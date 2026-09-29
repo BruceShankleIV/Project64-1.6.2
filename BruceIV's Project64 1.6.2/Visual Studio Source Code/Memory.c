@@ -159,10 +159,7 @@ void Compile_LH (int Reg,DWORD Addr,BOOL SignExtend) {
 	Const86
 }
 void Compile_LW (int Reg,DWORD Addr) {
-	if (!TranslateVaddr(&Addr)) {
-		Const86
-		return; // Original 1.6 did not have this, assuming it's a mistake
-	}
+	if (!TranslateVaddr(&Addr)) Const86
 	switch (Addr&0xFFF00000) {
 	case 0x00000000:
 	case 0x00100000:

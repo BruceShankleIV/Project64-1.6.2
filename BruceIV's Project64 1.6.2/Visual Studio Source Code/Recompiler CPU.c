@@ -1822,10 +1822,10 @@ BOOL GenerateX86Code (BLOCK_SECTION*Section,DWORD Test) {
 		}
 		BlockCycleCount+=CountPerOp;
 		BlockRandomModifier+=1;
-		for (count=1; count<10; count++) { x86Protected(count)=FALSE; }
+		for (count=1;count<10;count++) x86Protected(count)=FALSE;
 		OpcodeMapRecompiler(Section);
-		if (UseCache==REG_CACHE_OFF) { WriteBackRegisters(Section); }
-		for (count=1; count<10; count++) { x86Protected(count)=FALSE; }
+		if (UseCache==REG_CACHE_OFF) WriteBackRegisters(Section);
+		for (count=1;count<10;count++) x86Protected(count)=FALSE;
 		UnMap_AllFPRs(Section);
 		if ((Section->CompilePC&0xFFC)==0xFFC) {
 			if (NextInstruction==NORMAL) {

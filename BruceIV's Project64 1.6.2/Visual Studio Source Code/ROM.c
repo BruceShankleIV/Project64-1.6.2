@@ -458,7 +458,6 @@ void ReadRomSettings() {
 		IniFileName=GetIniFileName();
 		sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD*)(&RomHeader[0x10]),*(DWORD*)(&RomHeader[0x14]),RomHeader[0x3D]);
 		RomCF=_GetPrivateProfileInt(Identifier,"Counter Factor",-1,IniFileName);
-		if (RomCF>3||RomCF<1) RomCF=-1;
 		_GetPrivateProfileString(Identifier,"Save Type","",String,sizeof(String),IniFileName);
 		if (strcmp(String,"4kbit EEPROM")==0) { RomSaveUsing=EEPROM_4K; }
 		else if (strcmp(String,"16kbit EEPROM")==0) { RomSaveUsing=EEPROM_16K; }
@@ -503,15 +502,14 @@ void ReadRomSettings() {
 			_GetPrivateProfileString(Identifier,"Protect Memory / Enlarge Buffer","",String,sizeof(String),IniFileName);
 			if (strcmp(String,"ON")==0) RomProtectMemoryEnlargeBuffer=PROTECT_MEMORY_ENLARGE_BUFFER_ON;
 			else if (strcmp(String,"OFF")==0) { RomProtectMemoryEnlargeBuffer=PROTECT_MEMORY_ENLARGE_BUFFER_OFF; }
-			else RomProtectMemoryEnlargeBuffer=ProtectMemoryEnlargeBuffer_Default;
 			_GetPrivateProfileString(Identifier,"Register Caching","",String,sizeof(String),IniFileName);
 			if (strcmp(String,"ON")==0) { RomUseCache=REG_CACHE_ON; }
 			else if (strcmp(String,"OFF")==0) { RomUseCache=REG_CACHE_OFF; }
-			else RomUseCache=UseCache_Default;
 		} else {
 			RomLag=FALSE;
 			RomUseTLB=FALSE;
 		}
+		if (RomCF>3||RomCF<1) RomCF=-1;
 		if (RomCpuRecompiler&&RomCF!=-1&&RomCF!=1) RomLag=TRUE;
 	}
 }
