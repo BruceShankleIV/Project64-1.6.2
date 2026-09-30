@@ -144,12 +144,34 @@ void ResetFunction (void) {
 	}
 }
 void DisplayThreadExit (char*ExitPoint) {
-	DisplayError("Exit Point: %s",ExitPoint);
-	ExitThread(0);
+	if (VideoToScreen) {
+		VideoToScreen=FALSE;
+		if (AutoHide) SendMessage(hMainWindow,WM_COMMAND,ID_SYSTEM_GENERATEBITMAP,0);
+		else {
+			AutoHide=TRUE;
+			SendMessage(hMainWindow,WM_COMMAND,ID_SYSTEM_GENERATEBITMAP,0);
+			AutoHide=FALSE;
+		}
+		VideoToScreen=TRUE;
+	} else {
+		if (AutoHide) SendMessage(hMainWindow,WM_COMMAND,ID_SYSTEM_GENERATEBITMAP,0);
+		else {
+			AutoHide=TRUE;
+			SendMessage(hMainWindow,WM_COMMAND,ID_SYSTEM_GENERATEBITMAP,0);
+			AutoHide=FALSE;
+		}
+	}
+	if (strcmp(GfxDLL,"GLideN64.dll")==0&&inFullScreen) {
+		DisplayError("Emulation crash: %s",ExitPoint);
+		SendMessage(hMainWindow,WM_COMMAND,ID_FILE_EXIT,0);
+		// ISSUE: GLideN64 cannot gracefully recover from an emulation crash during fullscreen!
+	}
+	DisplayError("Emulation crash: %s",ExitPoint);
+	SendMessage(hMainWindow,WM_COMMAND,ID_FILE_ENDEMULATION,0);
 }
 void INITIALIZECPUFlags () {
 	inFullScreen=FALSE;
-	CPURunning =FALSE;
+	CPURunning=FALSE;
 	CurrentSaveSlot=ID_CURRENTSAVE_DEFAULT;
 }
 void ChangeCompareTimer(void) {

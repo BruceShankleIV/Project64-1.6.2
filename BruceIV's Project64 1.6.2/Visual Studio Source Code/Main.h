@@ -36,7 +36,7 @@ extern "C" {
 #include "Language.h"
 /*********Source Version GM*********/
 /******(Golden Master Edition)******/
-/*Last updated @ 09/29/2026 01:01AM*/
+/*Last updated @ 09/30/2026 01:11AM*/
 /*********General Defaults**********/
 #define AppName						"BruceIV's Project64 1.6.2"
 #define IniName						"Game.ini"

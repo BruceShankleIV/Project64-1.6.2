@@ -670,8 +670,6 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 			break;
 		case ID_FILE_ENDEMULATION:
 			CloseCheatWindow();
-			if (!(__argc>1)) __argc=0;
-			if (DrawScreen!=NULL) DrawScreen();
 			HandleShutdown(hWnd);
 			break;
 		case ID_FILE_ROMDIRECTORY: SelectRomDir(); break;
@@ -1100,7 +1098,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 		case ID_OPTIONS_HIDE_CURSOR:
 		CheckedMenuItem(ID_OPTIONS_HIDE_CURSOR,&AutoHide,"Hide Mouse Cursor");
 		SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)(AutoHide?GS(AUTOHIDE_ON):GS(AUTOHIDE_OFF)));
-		if (inFullScreen) AutoHide?ShowCursor(FALSE):ShowCursor(TRUE);
+		if (inFullScreen&&strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")!=0) AutoHide?ShowCursor(FALSE):ShowCursor(TRUE);
 		break;
 		case ID_OPTIONS_SETTINGS:
 		if (CPURunning&&strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) SetWindowLong(hWnd,GWL_EXSTYLE,GetWindowLong(hWnd,GWL_EXSTYLE)&~WS_EX_COMPOSITED);
@@ -1527,7 +1525,10 @@ void SetCurrentSaveState (HWND hWnd,int State) {
 	CurrentSaveSlot=State;
 }
 void HandleModal1(HWND hWnd) {
-	if (inFullScreen) SendMessage(hMainWindow,WM_COMMAND,ID_OPTIONS_FULLSCREEN,0);
+	if (inFullScreen) {
+		if (strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")!=0) ShowCursor(TRUE);
+		SendMessage(hMainWindow,WM_COMMAND,ID_OPTIONS_FULLSCREEN,0);
+	}
 	if (UsuallyonTop) {
 		if (hManageWindow) SetWindowPos(hManageWindow,HWND_NOTOPMOST,0,0,0,0,SWP_NOMOVE|SWP_NOSIZE);
 		SetWindowPos(hWnd,HWND_NOTOPMOST,0,0,0,0,SWP_NOMOVE|SWP_NOREPOSITION|SWP_NOSIZE);

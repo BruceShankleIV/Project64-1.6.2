@@ -513,6 +513,96 @@ void ReadRomSettings() {
 		if (RomCpuRecompiler&&RomCF!=-1&&RomCF!=1) RomLag=TRUE;
 	}
 }
+BOOL RecalculateCRC () {
+	int bootcode,i;
+	unsigned int seed,crc[2],t1,t2,t3,t4,t5,t6,r,d,j;
+	DWORD crc1=*(DWORD*)(&RomHeader[0x10]),crc2=*(DWORD*)(&RomHeader[0x14]);
+	BYTE crcC=RomHeader[0x3D];
+	if (crcC==0x45) {
+		// Decades Later by BroDute
+		if (crc1==0xE1CE3595&&crc2==0x68941049) {
+			HandleModal1(hMainWindow);
+			if (MessageBox(NULL,"The creator of this game describes himself as, “That one german guy that made the Star Revenge Series and remade vanilla SM64 to be finally a good game.”\n\nHe implies Super Mario 64 was never good, but his fan game, which is meant to serve as a remake (despite not resembling Super Mario 64 at all), fixes that issue.\n\nDo you still want to play this fan game?","Illegit Game Disclaimer",MB_YESNO|MB_ICONEXCLAMATION|MB_SETFOREGROUND)==IDNO) goto End;
+			HandleModal2(hMainWindow);
+		}
+		// Star Revenge by BroDute
+		if (crc1==0x5394053C&&crc2==0xA5D8610A||crc1==0xCEE7DD5F&&crc2==0x4046AC23||crc1==0xC380A1E6&&crc2==0x75432881) {
+			HandleModal1(hMainWindow);
+			if (MessageBox(NULL,"The Star Revenge series of projects has been used to insult another developer in the opening credits, whose work was used to develop the Star Revenge fan game projects. Do you still want to play this fan game?","Illegit Game Disclaimer",MB_YESNO|MB_ICONEXCLAMATION|MB_SETFOREGROUND)==IDNO) goto End;
+			HandleModal2(hMainWindow);
+		}
+		// Star Road by SKELUX, Hijack “Retooled” Edit by Pyro Jay
+		if (crc1==0xCAC63712&&crc2==0xE2372AF3) {
+			HandleModal1(hMainWindow);
+			if (MessageBox(NULL,"This ROMhack has been dubiously presented by the author via YouTube as a rerelease of one of their own fan game projects. This is actually an edit of a fan game project known as Star Road which is a critically acclaimed hacking project created by SKELUX in the sense of serving as a sequel to Super Mario 64. This edit does not improve upon his game in any significant way either, so I would suggest playing Star Road instead of this deceptively presented edit. The creator of Star Road explains this behavior as “When you put a lot of work into something, other people love to come along and put in a fraction of the work modifying it just so they can slap their name over yours.” I kindly ask you to ignore this illegit Star Road update.\n\nDespite this, do you still want to play this fan game?","Illegit Game Disclaimer",MB_YESNO|MB_ICONEXCLAMATION|MB_SETFOREGROUND)==IDNO) goto End;
+			HandleModal2(hMainWindow);
+		}
+		// B3313 by Chrisrlillo, Hijack Edits (under various names) by Thegreatestroman & Chlorobyte/Benedani
+		if (crc1==0xC39F397B&&crc2==0x9C2D6AFF||crc1==0xA52866E9&&crc2==0xA5C4CFD3) {
+			HandleModal1(hMainWindow);
+			if (MessageBox(NULL,"This ROM is one of several impostorous and unpermitted edits based on an unfinished 2023 copy of a fan game known as B3313, of which this ROM was deviously assembled from that copy using content stolen from the author of B3313 and his friends. This illegit reproduction of B3313 is being organized by a malicious group that is closely involved with ROMhacks. The group includes “Thegreatestroman”, “Chlorobyte/Benedani”, and “SimpleFlips”. This group has also been attempting to sabotage both the B3313 author's personal and professional life via the internet to discourage/demoralize him in a deceptive fashion for their personal satisfaction. I, Edwin Bruce Shankle IV, strongly recommend ignoring this stolen and modified copy of B3313.\n\nDo you still want to play this fan game?","Illegit Game Disclaimer",MB_YESNO|MB_ICONEXCLAMATION|MB_SETFOREGROUND)==IDNO) goto End;
+			HandleModal2(hMainWindow);
+		}
+	}
+	switch ((bootcode=6100+GetCicChipID(ROM))) {
+	case 6101:
+	case 6102:
+		seed=0xF8CA4DDC;
+		break;
+	case 6103:
+		seed=0xA3886759;
+		break;
+	case 6105:
+		seed=0xDF26F436;
+		break;
+	case 6106:
+		seed=0x1FEA617A;
+		break;
+	default:
+		return TRUE;
+	}
+	t1=t2=t3=t4=t5=t6=seed;
+	for (i=0x00001000;i<0x00101000;i+=4) {
+		if ((unsigned int)(i+3)>RomFileSize) d=0;
+		else d=ROM[i+3]<<24|ROM[i+2]<<16|ROM[i+1]<<8|ROM[i];
+		if ((t6+d)<t6) t4++;
+		t6+=d;
+		t3 ^=d;
+		r=(d<<(d&0x1F))|(d>>(32-(d&0x1F)));
+		t5+=r;
+		if (t2>d) t2 ^=r;
+		else t2 ^=t6 ^ d;
+		if (bootcode==6105) {
+			j=0x40+0x0710+(i&0xFF);
+			t1+=(ROM[j+3]<<24|ROM[j+2]<<16|ROM[j+1]<<8|ROM[j]) ^ d;
+		} else t1+=t5 ^ d;
+	}
+	if (bootcode==6103) {
+		crc[0]=(t6^t4)+t3;
+		crc[1]=(t5^t2)+t1;
+	} else if (bootcode==6106) {
+		crc[0]=(t6*t4)+t3;
+		crc[1]=(t5*t2)+t1;
+	} else {
+		crc[0]=t6^t4^t3;
+		crc[1]=t5^t2^t1;
+	}
+	if (*(DWORD*)&ROM[0x10]!=crc[0]) {
+		ROM[0x13]=(crc[0]&0xFF000000)>>24;
+		ROM[0x12]=(crc[0]&0x00FF0000)>>16;
+		ROM[0x11]=(crc[0]&0x0000FF00)>>8;
+		ROM[0x10]=(crc[0]&0x000000FF);
+		ROM[0x17]=(crc[1]&0xFF000000)>>24;
+		ROM[0x16]=(crc[1]&0x00FF0000)>>16;
+		ROM[0x15]=(crc[1]&0x0000FF00)>>8;
+		ROM[0x14]=(crc[1]&0x000000FF);
+	}
+	return TRUE;
+End:
+	HandleModal2(hMainWindow);
+	HandleShutdown(hMainWindow);
+	return FALSE;
+}
 void SetNewFileDirectory () {
 	char String[256],Directory[256],CurrentDir[256];
 	HKEY hKeyResults=0;
@@ -678,7 +768,7 @@ void OpenChosenFile(void) {
 	}
 	ByteSwapRom(ROM,RomFileSize);
 	memcpy(RomHeader,ROM,sizeof(RomHeader));
-	RecalculateCRC();
+	if (!RecalculateCRC()) return;
 	memcpy(&RomName[0],(void*)(ROM+0x20),20);
 	for (count=0; count<20; count+=4) {
 		RomName[count] ^=RomName[count+3];
@@ -703,91 +793,6 @@ void OpenChosenFile(void) {
 		Sleep(200);
 		timeEndPeriod(16);
 		SendMessage(hMainWindow,WM_COMMAND,ID_OPTIONS_FULLSCREEN,0);
-	}
-}
-void RecalculateCRC () {
-	int bootcode,i;
-	unsigned int seed,crc[2],t1,t2,t3,t4,t5,t6,r,d,j;
-	DWORD crc1=*(DWORD*)(&RomHeader[0x10]),crc2=*(DWORD*)(&RomHeader[0x14]);
-	BYTE crcC=RomHeader[0x3D];
-	if (crcC==0x45) {
-		// Decades Later by BroDute
-		if (crc1==0xE1CE3595&&crc2==0x68941049) {
-			HandleModal1(hMainWindow);
-			if (MessageBox(NULL,"The creator of this game describes himself as, “That one german guy that made the Star Revenge Series and remade vanilla SM64 to be finally a good game.”\n\nHe implies Super Mario 64 was never good, but his fan game, which is meant to serve as a remake (despite not resembling Super Mario 64 at all), fixes that issue.\n\nDo you still want to play this fan game?","Illegit Game Disclaimer",MB_YESNO|MB_ICONEXCLAMATION|MB_SETFOREGROUND)==IDNO) SendMessage(hMainWindow,WM_COMMAND,ID_FILE_EXIT,0);
-			HandleModal2(hMainWindow);
-		}
-		// Star Revenge by BroDute
-		if (crc1==0x5394053C&&crc2==0xA5D8610A||crc1==0xCEE7DD5F&&crc2==0x4046AC23||crc1==0xC380A1E6&&crc2==0x75432881) {
-			HandleModal1(hMainWindow);
-			if (MessageBox(NULL,"The Star Revenge series of projects has been used to insult another developer in the opening credits, whose work was used to develop the Star Revenge fan game projects. Do you still want to play this fan game?","Illegit Game Disclaimer",MB_YESNO|MB_ICONEXCLAMATION|MB_SETFOREGROUND)==IDNO) SendMessage(hMainWindow,WM_COMMAND,ID_FILE_EXIT,0);
-			HandleModal2(hMainWindow);
-		}
-		// Star Road by SKELUX, Hijack “Retooled” Edit by Pyro Jay
-		if (crc1==0xCAC63712&&crc2==0xE2372AF3) {
-			HandleModal1(hMainWindow);
-			if (MessageBox(NULL,"This ROMhack has been dubiously presented by the author via YouTube as a rerelease of one of their own fan game projects. This is actually an edit of a fan game project known as Star Road which is a critically acclaimed hacking project created by SKELUX in the sense of serving as a sequel to Super Mario 64. This edit does not improve upon his game in any significant way either, so I would suggest playing Star Road instead of this deceptively presented edit. The creator of Star Road explains this behavior as “When you put a lot of work into something, other people love to come along and put in a fraction of the work modifying it just so they can slap their name over yours.” I kindly ask you to ignore this illegit Star Road update.\n\nDespite this, do you still want to play this fan game?","Illegit Game Disclaimer",MB_YESNO|MB_ICONEXCLAMATION|MB_SETFOREGROUND)==IDNO) SendMessage(hMainWindow,WM_COMMAND,ID_FILE_EXIT,0);
-			HandleModal2(hMainWindow);
-		}
-		// B3313 by Chrisrlillo, Hijack Edits (under various names) by Thegreatestroman & Chlorobyte/Benedani
-		if (crc1==0xC39F397B&&crc2==0x9C2D6AFF||crc1==0xA52866E9&&crc2==0xA5C4CFD3) {
-			HandleModal1(hMainWindow);
-			if (MessageBox(NULL,"This ROM is one of several impostorous and unpermitted edits based on an unfinished 2023 copy of a fan game known as B3313, of which this ROM was deviously assembled from that copy using content stolen from the author of B3313 and his friends. This illegit reproduction of B3313 is being organized by a malicious group that is closely involved with ROMhacks. The group includes “Thegreatestroman”, “Chlorobyte/Benedani”, and “SimpleFlips”. This group has also been attempting to sabotage both the B3313 author's personal and professional life via the internet to discourage/demoralize him in a deceptive fashion for their personal satisfaction. I, Edwin Bruce Shankle IV, strongly recommended ignoring this stolen and modified copy of B3313.\n\nDo you still want to play this fan game?","Illegit Game Disclaimer",MB_YESNO|MB_ICONEXCLAMATION|MB_SETFOREGROUND)==IDNO) SendMessage(hMainWindow,WM_COMMAND,ID_FILE_EXIT,0);
-			HandleModal2(hMainWindow);
-		}
-	}
-	switch ((bootcode=6100+GetCicChipID(ROM))) {
-	case 6101:
-	case 6102:
-		seed=0xF8CA4DDC;
-		break;
-	case 6103:
-		seed=0xA3886759;
-		break;
-	case 6105:
-		seed=0xDF26F436;
-		break;
-	case 6106:
-		seed=0x1FEA617A;
-		break;
-	default:
-		return;
-	}
-	t1=t2=t3=t4=t5=t6=seed;
-	for (i=0x00001000;i<0x00101000;i+=4) {
-		if ((unsigned int)(i+3)>RomFileSize) d=0;
-		else d=ROM[i+3]<<24|ROM[i+2]<<16|ROM[i+1]<<8|ROM[i];
-		if ((t6+d)<t6) t4++;
-		t6+=d;
-		t3 ^=d;
-		r=(d<<(d&0x1F))|(d>>(32-(d&0x1F)));
-		t5+=r;
-		if (t2>d) t2 ^=r;
-		else t2 ^=t6 ^ d;
-		if (bootcode==6105) {
-			j=0x40+0x0710+(i&0xFF);
-			t1+=(ROM[j+3]<<24|ROM[j+2]<<16|ROM[j+1]<<8|ROM[j]) ^ d;
-		} else t1+=t5 ^ d;
-	}
-	if (bootcode==6103) {
-		crc[0]=(t6^t4)+t3;
-		crc[1]=(t5^t2)+t1;
-	} else if (bootcode==6106) {
-		crc[0]=(t6*t4)+t3;
-		crc[1]=(t5*t2)+t1;
-	} else {
-		crc[0]=t6^t4^t3;
-		crc[1]=t5^t2^t1;
-	}
-	if (*(DWORD*)&ROM[0x10]!=crc[0]) {
-		ROM[0x13]=(crc[0]&0xFF000000)>>24;
-		ROM[0x12]=(crc[0]&0x00FF0000)>>16;
-		ROM[0x11]=(crc[0]&0x0000FF00)>>8;
-		ROM[0x10]=(crc[0]&0x000000FF);
-		ROM[0x17]=(crc[1]&0xFF000000)>>24;
-		ROM[0x16]=(crc[1]&0x00FF0000)>>16;
-		ROM[0x15]=(crc[1]&0x0000FF00)>>8;
-		ROM[0x14]=(crc[1]&0x000000FF);
 	}
 }
 void SaveRecentDirs () {
@@ -920,7 +925,7 @@ void SetRomDirectory (char*Directory) {
 		RegSetValueEx(hKeyResults,"CustomPath ROMs",0,REG_SZ,(LPBYTE)Directory,strlen(Directory));
 		AddRecentDir(hMainWindow,Directory);
 		RegCloseKey(hKeyResults);
-		if (CPURunning) __argc=2;
+		if (CPURunning) __argc=1;
 		else RefreshRomBrowser();
 		SetupMenu(hMainWindow);
 	}

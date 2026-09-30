@@ -34,7 +34,6 @@ void CreateRecentDirList     (HMENU hMenu);
 void LoadRecentRom           (DWORD Index);
 void HandleTimers	     ();
 void OpenChosenFile	     (void);
-void RecalculateCRC	     ();
 void ReadRomSettings          ();
 void SaveRecentDirs          ();
 void SaveRecentFiles         ();

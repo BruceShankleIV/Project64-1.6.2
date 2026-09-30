@@ -529,6 +529,7 @@ void HideRomBrowser() {
 }
 void HandleShutdown (HWND hParent) {
 	int screenHeight=GetSystemMetrics(SM_CYSCREEN),screenWidth=GetSystemMetrics(SM_CXSCREEN);
+	if (CPURunning&&DrawScreen!=NULL) DrawScreen();
 	CPURunning=FALSE;
 	if (strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) {
 		SetWindowLong(hMainWindow,GWL_EXSTYLE,GetWindowLong(hMainWindow,GWL_EXSTYLE)&~WS_EX_COMPOSITED);
@@ -542,9 +543,10 @@ void HandleShutdown (HWND hParent) {
 	else ChangeWinSize(hMainWindow,640,480,NULL);
 	ShowWindow(hRomList,SW_SHOW);
 	ShowWindow(hMainWindow,SW_SHOW);
-	if (__argc!=0) RefreshRomBrowser();
-	else SetFocus(hRomList);
-	if (__argc!=1) __argc=1;
+	if (__argc!=0) {
+		RefreshRomBrowser();
+		 __argc=0;
+	} else SetFocus(hRomList);
 	SetForegroundWindow(hMainWindow);
 }
 void FreeRomBrowser () {
