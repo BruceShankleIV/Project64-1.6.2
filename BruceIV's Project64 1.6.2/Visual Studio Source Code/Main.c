@@ -669,6 +669,10 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 			CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)OpenChosenFile,NULL,0,NULL);
 			break;
 		case ID_FILE_ENDEMULATION:
+			if (inFullScreen) {
+				if (strcmp(GfxDLL,"GLideN64.dll")==0) break;
+				SendMessage(hMainWindow,WM_COMMAND,ID_OPTIONS_FULLSCREEN,0);
+			}
 			CloseCheatWindow();
 			HandleShutdown(hWnd);
 			break;
@@ -1334,8 +1338,8 @@ void SetupMenu (HWND hWnd) {
 	DestroyMenu(hMenu);
 	hMenu=LoadMenu(hInst,MAKEINTRESOURCE(MAIN_MENU));
 	FixMenuLang(hMenu);
-	CreateLangList(GetSubMenu(hMenu,0),6,ID_LANG_SELECT);
 	SetMenu(hWnd,hMenu);
+	CreateLangList(GetSubMenu(hMenu,0),6,ID_LANG_SELECT);
 	CreateRecentDirList(hMenu);
 	CreateRecentFileList(hMenu);
 	CheckMenuItem(hMenu,CurrentSaveSlot,MF_BYCOMMAND|MFS_CHECKED);
@@ -1360,7 +1364,7 @@ void SetupMenu (HWND hWnd) {
 	if (strlen(RomName)>0) EnableMenuItem(hMenu,ID_FILE_ROM_INFO,MFS_ENABLED|MF_BYCOMMAND);
 	//Enable if cpu is running
 	State=CPURunning?MFS_ENABLED:MFS_DISABLED;
-	EnableMenuItem(hMenu,ID_FILE_ENDEMULATION,State|MF_BYCOMMAND);
+	if (strcmp(GfxDLL,"GLideN64.dll")!=0) EnableMenuItem(hMenu,ID_FILE_ENDEMULATION,State|MF_BYCOMMAND);
 	EnableMenuItem(hMenu,ID_CPU_RESET,State|MF_BYCOMMAND);
 	EnableMenuItem(hMenu,ID_CPU_PAUSE,State|MF_BYCOMMAND);
 	if (!ClearFrame) EnableMenuItem(hMenu,ID_SYSTEM_ALTERNATEPAUSE,State|MF_BYCOMMAND);
@@ -1379,18 +1383,16 @@ void SetupMenu (HWND hWnd) {
 	//Disable if cpu is running
 	State=CPURunning?MFS_DISABLED:MFS_ENABLED;
 	EnableMenuItem(hMenu,ID_FILE_REFRESHROMLIST,State|MF_BYCOMMAND);
-	EnableMenuItem(hMenu,ID_FILE_STARTEMULATION,State|MF_BYCOMMAND);
 	if (SyncGametoAudio) {
 		EnableMenuItem(hMenu,ID_SYSTEM_LIMITFPS,State|MF_BYCOMMAND);
 		EnableMenuItem(hMenu,ID_SYSTEM_SPEEDCAP,State|MF_BYCOMMAND);
 	}
-	hMainMenu=hMenu;
-	if (strlen(LastRoms[0])==0) EnableMenuItem(hMenu,ID_FILE_STARTEMULATION,MFS_DISABLED|MF_BYCOMMAND);
+	if (!CPURunning&&strlen(LastRoms[0])!=0) EnableMenuItem(hMenu,ID_FILE_STARTEMULATION,MFS_ENABLED);
 	if (strlen(RomName)!=0) {
-		EnableMenuItem(hMenu,ID_OPTIONS_CHEATS,MFS_ENABLED|MF_BYCOMMAND);
+		EnableMenuItem(hMenu,ID_OPTIONS_CHEATS,MFS_ENABLED);
 		if (!CPURunning) HandleWindowTitle();
 	}
-	//SetMenu(hWnd,hMenu);
+	hMainMenu=hMenu;
 }
 void SetCurrentSaveState (HWND hWnd,int State) {
 	char String[256];

@@ -369,6 +369,11 @@ Windowed video capture does not capture sounds, this could get fixed if I find a
 
 Mouse cursor isn't hidden in fullscreen with Icepir8's LLE because that video plugin hides the cursor.
 
+Fullscreen issues with GLideN64 - Screen tearing all over the place, can't end emulation, any emulation
+crashes in fullscreen with GLideN64 will force the program to shut down because it can't be graceful...
+A workaround to the screen tearing in fullscreen is turning framebuffer off. It also fixes input delay,
+but breaks the graphics in most games since it's usually needed.
+
 Plugin-specific issues - This app relies on a lot of different plugins to work, many of them are closed-
 source but have specific bugs in them which means issues specific to many of the plugins in the emulator
 will likely never get resolved. All of the following plugins included in the emulator are closed-source:
@@ -401,9 +406,6 @@ But the one's for Mario 64, Ocarina of Time, and Majora's Mask have been tested 
 Input delay with any accurate video plugin with a dedicated framebuffer. To resolve this for GLideN64 w/
 SM64 Hacks, ensure the internal name of the ROMhack is, “SUPER MARIO 64” if it does not use framebuffer.
 Note: You can update internal names of ROMhacks with a simple hex editor like HxD in the header section.
-
-GLideN64 fullscreen tearing. No good fix for this, the Vsync option won't even help. Turning framebuffer
-off fixes this but having it off by default will break graphics in hundreds of games.
 --------------------------------------------------------------------------------------------------------
 
 Section#8 Credits

@@ -537,6 +537,8 @@ void SetupPlugins (HWND hWnd) {
 			if (RSPVersion==0x0100) InitiateRSP_1_0(RspInfo10,&RspTaskValue);
 			if (RSPVersion==0x0101) InitiateRSP_1_1(RspInfo11,&RspTaskValue);
 		}
+		SetupMenu(hMainWindow);
+		UsuallyonTopWindow(hMainWindow);
 	}
 	if (PluginsInitialized) SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(PLUGINS_INITIALIZED));
 	else {
@@ -589,8 +591,6 @@ void SetupPlugins (HWND hWnd) {
 		} else HandleTimers();
 		if (strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) SetWindowLong(hMainWindow,GWL_EXSTYLE,GetWindowLong(hMainWindow,GWL_EXSTYLE)|WS_EX_COMPOSITED);
 	}
-	SetupMenu(hMainWindow);
-	UsuallyonTopWindow(hMainWindow);
 }
 void SetupPluginScreen (HWND hDlg) {
 	WIN32_FIND_DATA FindData;
