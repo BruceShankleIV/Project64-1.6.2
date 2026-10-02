@@ -217,3 +217,4 @@ Als deze actie succesvol is, kun je weer gegevens opslaan op en laden van je vir
 #224# "Screenshots worden nu vastgelegd met BMP in plaats van de videoplugin"
 #225# "Opnames worden nu gecodeerd met behulp van de RGB-kleurruimte (zonder verlies)"
 #226# "Video’s worden nu gecodeerd met behulp van de YUV-kleurruimte (met verlies)"
+#227# "Plug-ins zijn NIET geïnitialiseerd!"

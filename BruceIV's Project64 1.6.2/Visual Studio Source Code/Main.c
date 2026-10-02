@@ -421,13 +421,6 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 			return DefWindowProc(hWnd,uMsg,wParam,lParam);
 		}
 	case WM_PAINT:
-		{ ValidateRect(hWnd,NULL); break; }
-		__try {
-			if (CPU_Paused&&DrawScreen!=NULL) DrawScreen();
-		}
-		__except (r4300i_CPU_MemoryFilter(GetExceptionCode(),GetExceptionInformation())) {
-			DisplayThreadExit("Main_Proc-r4300i_CPU_MemoryFilter(GetExceptionCode(),GetExceptionInformation())");
-		}
 		ValidateRect(hWnd,NULL);
 		break;
 	case WM_MOVE:
@@ -744,7 +737,6 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 			char Directory[256],statusMsg[256];
 			static BOOL toggle=FALSE;
 			if (VideoToScreen) {
-				if (ClearFrame) break;
 				FetchScreenAndVideoDir(Directory);
 				CaptureScreen(Directory);
 			} else {
@@ -979,7 +971,6 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 			if (strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")!=0&&!CPU_Paused&&(LimitFPS&&!SyncGametoAudio||!LimitFPS&&SpeedCap)) Timer_Start();
 			break;
 		case ID_SYSTEM_ALTERNATEPAUSE:
-			if (ClearFrame) break;
 			if (CPU_Paused) {
 				PauseCPU();
 				timeBeginPeriod(16);
@@ -1367,7 +1358,7 @@ void SetupMenu (HWND hWnd) {
 	if (strcmp(GfxDLL,"GLideN64.dll")!=0) EnableMenuItem(hMenu,ID_FILE_ENDEMULATION,State|MF_BYCOMMAND);
 	EnableMenuItem(hMenu,ID_CPU_RESET,State|MF_BYCOMMAND);
 	EnableMenuItem(hMenu,ID_CPU_PAUSE,State|MF_BYCOMMAND);
-	if (!ClearFrame) EnableMenuItem(hMenu,ID_SYSTEM_ALTERNATEPAUSE,State|MF_BYCOMMAND);
+	EnableMenuItem(hMenu,ID_SYSTEM_ALTERNATEPAUSE,State|MF_BYCOMMAND);
 	EnableMenuItem(hMenu,ID_OPTIONS_CHEATS,State|MF_BYCOMMAND);
 	EnableMenuItem(hMenu,ID_CPU_SAVE,State|MF_BYCOMMAND);
 	EnableMenuItem(hMenu,ID_CPU_SAVEAS,State|MF_BYCOMMAND);
@@ -1375,7 +1366,7 @@ void SetupMenu (HWND hWnd) {
 	EnableMenuItem(hMenu,ID_CPU_LOAD,State|MF_BYCOMMAND);
 	EnableMenuItem(hMenu,ID_SYSTEM_GSBUTTON,State|MF_BYCOMMAND);
 	EnableMenuItem(hMenu,ID_OPTIONS_GAMECAPTURE,State|MF_BYCOMMAND);	
-	if (CaptureScreen!=NULL&&!ClearFrame||!VideoToScreen) EnableMenuItem(hMenu,ID_SYSTEM_GENERATEBITMAP,State|MF_BYCOMMAND);
+	if (CaptureScreen!=NULL||!VideoToScreen) EnableMenuItem(hMenu,ID_SYSTEM_GENERATEBITMAP,State|MF_BYCOMMAND);
 	if (ChangeWindow!=NULL&&strcmp(GfxDLL,"Direct64-1.6.2.dll")!=0) EnableMenuItem(hMenu,ID_OPTIONS_FULLSCREEN,State|MF_BYCOMMAND);
 	else EnableMenuItem(hMenu,ID_OPTIONS_FULLSCREEN,MFS_DISABLED|MF_BYCOMMAND);
 	hSubMenu=GetSubMenu(hMenu,1); //System
@@ -1703,13 +1694,17 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpszArgs,in
 		sprintf(ResWarning,"Scale suggestion - I suggest using a scale of %s to get the best results from this app since I've only tested it at that scale ratio for the current resolution of your display.\n\nYou can review and update your scale setting from Settings->System->Display.",ResScale);
 		MessageBox(NULL,ResWarning,AppName,MB_OK|MB_SETFOREGROUND);
 	}
-	ListView_SetExtendedListViewStyleEx(hRomList,LVS_EX_DOUBLEBUFFER,LVS_EX_DOUBLEBUFFER); // Fixes flickering when adjusting the columns
+	ListView_SetExtendedListViewStyleEx(hRomList,LVS_EX_DOUBLEBUFFER,LVS_EX_DOUBLEBUFFER);
+	ShowWindow(hMainWindow,SW_SHOW);
 	if (__argc>1) {
 		SetupMenu(hMainWindow);
 		strcpy(CurrentFileName,__argv[1]);
 		CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)OpenChosenFile,NULL,0,NULL);
 		if (!CPURunning) CreateRomListControl(hMainWindow);
 	} else {
+		CPURunning=FALSE;
+		ShowWindow(hRomList,SW_SHOW);
+		SetWindowLong(hMainWindow,GWL_STYLE,GetWindowLong(hMainWindow,GWL_STYLE)|WS_SIZEBOX|WS_MAXIMIZEBOX);
 		HandleShutdown(hMainWindow);
 		if (strcmp(GfxDLL,"GLideN64.dll")==0||strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) {
 			BootupSettings=TRUE;

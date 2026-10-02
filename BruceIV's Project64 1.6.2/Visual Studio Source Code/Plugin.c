@@ -183,8 +183,7 @@ BOOL LoadGFXDll(char*RSPDLL) {
 	ChangeWindow=(void (__cdecl*)(void))GetProcAddress(hGfxDll,"ChangeWindow");
 	if (ChangeWindow==NULL) return FALSE;
 	GFXDllConfig=(void (__cdecl*)(HWND))GetProcAddress(hGfxDll,"DllConfig");
-	DrawScreen=(void (__cdecl*)(void))GetProcAddress(hGfxDll,"DrawScreen");
-	if (DrawScreen==NULL) return FALSE;
+	if (GFXDllConfig==NULL) return FALSE;
 	InitiateGFX=(BOOL (__cdecl*)(GFX_INFO))GetProcAddress(hGfxDll,"InitiateGFX");
 	if (InitiateGFX==NULL) return FALSE;
 	MoveScreen=(void (__cdecl*)(int,int))GetProcAddress(hGfxDll,"MoveScreen");
@@ -249,11 +248,11 @@ BOOL LoadRSPDLL(char*RSPDLL) {
 void SetupPlugins (HWND hWnd) {
 	static DWORD AI_DUMMY=0;
 	DWORD NewRAMsize;
+	int FAIL_MSG;
 	ShutdownPlugins();
 	if (CPURunning) {
 		ReadRomSettings();
 		SyncGametoAudio=RomSyncGametoAudio;
-		ClearFrame=RomClearFrame;
 		NewRAMsize=0x800000;
 		JumperPak=FALSE;
 		if (RomJumperPak) {
@@ -326,10 +325,16 @@ void SetupPlugins (HWND hWnd) {
 	PluginsInitialized=TRUE;
 	if (!inFullScreen) {
 		if (!LoadGFXDll(GfxDLL)) {
+			if (GLideN64NeedsToBeSetupFirst) {
+				GLideN64HasBeenSetupFirst=TRUE;
+				GLideN64NeedsToBeSetupFirst=FALSE;
+				strcpy(GfxDLL,"Icepir8sLegacyLLE.dll");
+				SetupPlugins(hMainWindow);
+				return;
+			}
+			FAIL_MSG=MSG_FAIL_INIT_GFX;
 			PluginsInitialized=FALSE;
-			HandleModal1(hMainWindow);
-			if (MessageBox(NULL,GS(MSG_FAIL_INIT_GFX),AppName,MB_OKCANCEL|MB_ICONEXCLAMATION|MB_SETFOREGROUND)==IDCANCEL) PluginsInitialized=TRUE;
-			HandleModal2(hMainWindow);
+			goto FAIL_INIT;
 		} else {
 			GFX_INFO GfxInfo;
 			GfxInfo.MemoryBswaped=TRUE;
@@ -371,10 +376,9 @@ void SetupPlugins (HWND hWnd) {
 					SetupPlugins(hMainWindow);
 					return;
 				}
+				FAIL_MSG=MSG_FAIL_INIT_GFX;
 				PluginsInitialized=FALSE;
-				HandleModal1(hMainWindow);
-				if (MessageBox(NULL,GS(MSG_FAIL_INIT_GFX),AppName,MB_OKCANCEL|MB_ICONEXCLAMATION|MB_SETFOREGROUND)==IDCANCEL) PluginsInitialized=TRUE;
-				HandleModal2(hMainWindow);
+				goto FAIL_INIT;
 			}
 		}
 	}
@@ -388,10 +392,9 @@ void SetupPlugins (HWND hWnd) {
 			InitiateAudio=NULL;
 			ProcessAList=NULL;
 			AiRomClosed=NULL;
+			FAIL_MSG=MSG_FAIL_INIT_AUDIO;
 			PluginsInitialized=FALSE;
-			HandleModal1(hMainWindow);
-			if (MessageBox(NULL,GS(MSG_FAIL_INIT_AUDIO),AppName,MB_OKCANCEL|MB_ICONEXCLAMATION|MB_SETFOREGROUND)==IDCANCEL) PluginsInitialized=TRUE;
-			HandleModal2(hMainWindow);
+			goto FAIL_INIT;
 		} else {
 			AUDIO_INFO AudioInfo;
 			AudioInfo.hwnd=hWnd;
@@ -421,18 +424,16 @@ void SetupPlugins (HWND hWnd) {
 				InitiateAudio=NULL;
 				ProcessAList=NULL;
 				AiRomClosed=NULL;
+				FAIL_MSG=MSG_FAIL_INIT_AUDIO;
 				PluginsInitialized=FALSE;
-				HandleModal1(hMainWindow);
-				if (MessageBox(NULL,GS(MSG_FAIL_INIT_AUDIO),AppName,MB_OKCANCEL|MB_ICONEXCLAMATION|MB_SETFOREGROUND)==IDCANCEL) PluginsInitialized=TRUE;
-				HandleModal2(hMainWindow);
+				goto FAIL_INIT;
 			}
 			if (AiUpdate) hAudioThread=CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)AudioThread,(LPVOID)NULL,0,NULL);
 		}
 		if (!LoadControllerDll(ControllerDLL)) {
+			FAIL_MSG=MSG_FAIL_INIT_CONTROL;
 			PluginsInitialized=FALSE;
-			HandleModal1(hMainWindow);
-			if (MessageBox(NULL,GS(MSG_FAIL_INIT_CONTROL),AppName,MB_OKCANCEL|MB_ICONEXCLAMATION|MB_SETFOREGROUND)==IDCANCEL) PluginsInitialized=TRUE;
-			HandleModal2(hMainWindow);
+			goto FAIL_INIT;
 		} else {
 			Controllers[0].Present=FALSE;
 			Controllers[0].RawData=FALSE;
@@ -460,10 +461,9 @@ void SetupPlugins (HWND hWnd) {
 			}
 		}
 		if (!LoadRSPDLL(RSPDLL)) {
+			FAIL_MSG=MSG_FAIL_INIT_RSP;
 			PluginsInitialized=FALSE;
-			HandleModal1(hMainWindow);
-			if (MessageBox(NULL,GS(MSG_FAIL_INIT_RSP),AppName,MB_OKCANCEL|MB_ICONEXCLAMATION|MB_SETFOREGROUND)==IDCANCEL) PluginsInitialized=TRUE;
-			HandleModal2(hMainWindow);
+			goto FAIL_INIT;
 		} else {
 			DWORD dwDataListsFromPluginInterpreterCore=0x00000000,dwDataListsToPluginRecompilerCore=0x00000001,dwDisposition;
 			const char*regPath="PJ64 V 1.6.2\\Configuration\\1.6 RSP";
@@ -537,18 +537,26 @@ void SetupPlugins (HWND hWnd) {
 			if (RSPVersion==0x0100) InitiateRSP_1_0(RspInfo10,&RspTaskValue);
 			if (RSPVersion==0x0101) InitiateRSP_1_1(RspInfo11,&RspTaskValue);
 		}
+		FAIL_INIT:
 		SetupMenu(hMainWindow);
 		UsuallyonTopWindow(hMainWindow);
-	}
-	if (PluginsInitialized) SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(PLUGINS_INITIALIZED));
-	else {
-		if (inFullScreen) SendMessage(hMainWindow,WM_COMMAND,ID_OPTIONS_FULLSCREEN,0);
-		SendMessage(hMainWindow,WM_COMMAND,ID_OPTIONS_SETTINGS,0);
-		if (CPURunning) {
-			GetCurrentDlls();
-			HideRomBrowser();
-		} else SetupPlugins(hMainWindow);
-		return;
+		if (PluginsInitialized) SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(PLUGINS_INITIALIZED));
+		else {
+			if (inFullScreen) SendMessage(hMainWindow,WM_COMMAND,ID_OPTIONS_FULLSCREEN,0);
+			HandleModal1(hMainWindow);
+			if (CPURunning) MessageBox(NULL,GS(FAIL_MSG),AppName,MB_OK|MB_ICONEXCLAMATION|MB_SETFOREGROUND);
+			else if (MessageBox(NULL,GS(FAIL_MSG),AppName,MB_OKCANCEL|MB_ICONEXCLAMATION|MB_SETFOREGROUND)==IDCANCEL) PluginsInitialized=TRUE;
+			HandleModal2(hMainWindow);
+			if (PluginsInitialized) SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(PLUGINS_NOT_INITIALIZED));
+			else {
+				SendMessage(hMainWindow,WM_COMMAND,ID_OPTIONS_SETTINGS,0);
+				if (CPURunning) {
+					GetCurrentDlls();
+					HideRomBrowser();
+				}
+			}
+			return;
+		}
 	}
 	if (CPURunning) {
 		DWORD count;

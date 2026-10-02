@@ -235,3 +235,4 @@ Las capturas de pantalla se realizarán ahora con BMP en lugar de con el compleme
 #225#
 Las grabaciones se codificarán ahora utilizando el espacio de color RGB (sin pérdidas)"
 #226# "A partir de ahora, los vídeos se codificarán utilizando el espacio de color YUV (con pérdida)"
+#227# "¡Los complementos NO se han inicializado!"

@@ -515,34 +515,32 @@ BOOL CALLBACK PluginSelectProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam)
 			if (PluginsChanged(hDlg)==FALSE) { FreePluginList(); break; }
 			if (!CPURunning) SetupPluginsAfterSaveRomOpt=TRUE;
 			sprintf(String,"PJ64 V 1.6.2\\Configuration\\Dll");
-			lResult=RegCreateKeyEx(HKEY_CURRENT_USER,String,0,"",REG_OPTION_NON_VOLATILE,
-				KEY_ALL_ACCESS,NULL,&hKeyResults,&Disposition);
+			lResult=RegCreateKeyEx(HKEY_CURRENT_USER,String,0,"",REG_OPTION_NON_VOLATILE,KEY_ALL_ACCESS,NULL,&hKeyResults,&Disposition);
 			if (lResult==ERROR_SUCCESS) {
 				DWORD index;
 				index=SendMessage(GetDlgItem(hDlg,RSP_LIST),CB_GETCURSEL,0,0);
 				index=SendMessage(GetDlgItem(hDlg,RSP_LIST),CB_GETITEMDATA,(WPARAM)index,0);
 				sprintf(String,"%s",PluginNames[index]);
-				RegSetValueEx(hKeyResults,"RSP Dll",0,REG_SZ,(CONST BYTE*)String,
-					strlen(String));
+				RegSetValueEx(hKeyResults,"RSP Dll",0,REG_SZ,(CONST BYTE*)String,strlen(String));
 				index=SendMessage(GetDlgItem(hDlg,GFX_LIST),CB_GETCURSEL,0,0);
 				index=SendMessage(GetDlgItem(hDlg,GFX_LIST),CB_GETITEMDATA,(WPARAM)index,0);
 				sprintf(String,"%s",PluginNames[index]);
-				RegSetValueEx(hKeyResults,"Graphics Dll",0,REG_SZ,(CONST BYTE*)String,
-					strlen(String));
+				RegSetValueEx(hKeyResults,"Graphics Dll",0,REG_SZ,(CONST BYTE*)String,strlen(String));
 				index=SendMessage(GetDlgItem(hDlg,AUDIO_LIST),CB_GETCURSEL,0,0);
 				index=SendMessage(GetDlgItem(hDlg,AUDIO_LIST),CB_GETITEMDATA,(WPARAM)index,0);
 				sprintf(String,"%s",PluginNames[index]);
-				RegSetValueEx(hKeyResults,"Audio Dll",0,REG_SZ,(CONST BYTE*)String,
-					strlen(String));
+				RegSetValueEx(hKeyResults,"Audio Dll",0,REG_SZ,(CONST BYTE*)String,strlen(String));
 				index=SendMessage(GetDlgItem(hDlg,CONT_LIST),CB_GETCURSEL,0,0);
 				index=SendMessage(GetDlgItem(hDlg,CONT_LIST),CB_GETITEMDATA,(WPARAM)index,0);
 				sprintf(String,"%s",PluginNames[index]);
-				RegSetValueEx(hKeyResults,"Controller Dll",0,REG_SZ,(CONST BYTE*)String,
-					strlen(String));
+				RegSetValueEx(hKeyResults,"Controller Dll",0,REG_SZ,(CONST BYTE*)String,strlen(String));
 			}
 			RegCloseKey(hKeyResults);
 			FreePluginList();
 		}
+		break;
+	case IDCANCEL:
+		if (CPURunning&&!PluginsInitialized) HandleShutdown(hMainWindow);
 		break;
 	default:
 		return FALSE;

@@ -232,3 +232,4 @@ Você será capaz salvar ou carregar do seu cartão SD virtual se essa ação for bem
 #224# "As capturas de tela agora serão feitas no formato BMP, em vez de pelo plug-in de vídeo"
 #225# "As gravações passarão a ser codificadas utilizando o espaço de cores RGB (sem perdas)"
 #226# "Os vídeos agora serão codificados usando o espaço de cores YUV (com perda)"
+#227# "Plug-ins NÃO foram inicializados!"

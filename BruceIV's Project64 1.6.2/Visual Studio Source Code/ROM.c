@@ -36,7 +36,7 @@
 #include "ROM Tools Common.h"
 #define MenuLocOfUsedFiles	11
 #define MenuLocOfUsedDirs	(MenuLocOfUsedFiles+1)
-DWORD ClearFrame,RomClearFrame,RomFileSize,VirtualSD,RomVirtualSD,SaveUsing,RomSaveUsing,CPUType,UseTLB,RomUseTLB,FiftyNineHertz,RomFiftyNineHertz,RomJAI,AudioSignal,RomAudioSignal,RomCF,UseCache,RomUseCache,RomShankleAziAI,RomAltEmulateAI,SyncGametoAudio,RomSyncGametoAudio,Lag,RomLag,DelayRDP,RomDelayRDP,DelayRSP,RomDelayRSP,AlignDMA,RomAlignDMA,DelayRDP,RomDelayRDP,DelayRSP,RomDelayRSP,DelaySI,RomDelaySI,RomRspRecompiler,CpuRecompiler,RomCpuRecompiler,ProtectMemoryEnlargeBuffer,RomProtectMemoryEnlargeBuffer,JumperPak,RomJumperPak,ForceAuto16kbit,ForceDisableTLB,ForceEnableDMA,EmulateAI;
+DWORD RomFileSize,VirtualSD,RomVirtualSD,SaveUsing,RomSaveUsing,CPUType,UseTLB,RomUseTLB,FiftyNineHertz,RomFiftyNineHertz,RomJAI,AudioSignal,RomAudioSignal,RomCF,UseCache,RomUseCache,RomShankleAziAI,RomAltEmulateAI,SyncGametoAudio,RomSyncGametoAudio,Lag,RomLag,DelayRDP,RomDelayRDP,DelayRSP,RomDelayRSP,AlignDMA,RomAlignDMA,DelayRDP,RomDelayRDP,DelayRSP,RomDelayRSP,DelaySI,RomDelaySI,RomRspRecompiler,CpuRecompiler,RomCpuRecompiler,ProtectMemoryEnlargeBuffer,RomProtectMemoryEnlargeBuffer,JumperPak,RomJumperPak,ForceAuto16kbit,ForceDisableTLB,ForceEnableDMA,EmulateAI;
 char CurrentFileName[MAX_PATH+1]={ "" },RomName[MAX_PATH+1]={ "" },RomHeader[0x1000],LastRoms[10][MAX_PATH+1],LastDirs[10][MAX_PATH+1];
 BOOL IsValidRomImage (BYTE Test[4]);
 void AddRecentDir(HWND hWnd,char*addition) {
@@ -432,7 +432,6 @@ void ReadRomSettings() {
 	RomAudioSignal=FALSE;
 	if (ForceDisableTLB) RomUseTLB=FALSE;
 	else RomUseTLB=TRUE;
-	RomClearFrame=FALSE;
 	RomFiftyNineHertz=FALSE;
 	RomDelaySI=FALSE;
 	if (strcmp(RSPDLL,"RSP.dll")==0&&(strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")!=0||strcmp(RomName,"THE LEGEND OF ZELDA")==0||strcmp(RomName,"THE MASK OF MUJURA")==0||strcmp(RomName,"ZELDA MAJORA'S MASK")==0||strcmp(RomName,"BANJO KAZOOIE 2")==0||strcmp(RomName,"BANJO TOOIE")==0||strcmp(RomName,"CONKER BFD")==0||strcmp(RomName,"DONKEY KONG 64")==0||strcmp(RomName,"JET FORCE GEMINI")==0||strcmp(RomName,"STAR TWINS")==0||strcmp(RomName,"Perfect Dark")==0)) RomRspRecompiler=TRUE;
@@ -464,8 +463,6 @@ void ReadRomSettings() {
 		else if (strcmp(String,"SRAM")==0) { RomSaveUsing=SRAM; }
 		else if (strcmp(String,"FlashRAM")==0) { RomSaveUsing=FlashRAM; }
 		else { RomSaveUsing=Auto; }
-		_GetPrivateProfileString(Identifier,"Clear Frame","",String,sizeof(String),IniFileName);
-		if (strcmp(GfxDLL,"Jabo_Direct3D8.dll")==0&&(strcmp(String,"1")==0||strcmp(String,"2")==0)) RomClearFrame=TRUE;
 		_GetPrivateProfileString(Identifier,"Azi AI","",String,sizeof(String),IniFileName);
 		if (strcmp(String,"ON")==0&&strcmp(AudioDLL,"Shankle_Audio.dll")==0) RomShankleAziAI=TRUE;
 		_GetPrivateProfileString(Identifier,"Sync Game to Audio","",String,sizeof(String),IniFileName);
@@ -522,25 +519,25 @@ BOOL RecalculateCRC () {
 		// Decades Later by BroDute
 		if (crc1==0xE1CE3595&&crc2==0x68941049) {
 			HandleModal1(hMainWindow);
-			if (MessageBox(NULL,"The creator of this game describes himself as, “That one german guy that made the Star Revenge Series and remade vanilla SM64 to be finally a good game.”\n\nHe implies Super Mario 64 was never good, but his fan game, which is meant to serve as a remake (despite not resembling Super Mario 64 at all), fixes that issue.\n\nDo you still want to play this fan game?","Illegit Game Disclaimer",MB_YESNO|MB_ICONEXCLAMATION|MB_SETFOREGROUND)==IDNO) goto End;
+			if (MessageBox(NULL,"The creator of this game describes himself as, “That one german guy that made the Star Revenge Series and remade vanilla SM64 to be finally a good game.”\n\nHe implies Super Mario 64 was never good, but his fan game, which is meant to serve as a remake, fixes that issue.\n\nDo you still want to play this fan game?","Illegit Hack Disclaimer",MB_YESNO|MB_ICONEXCLAMATION|MB_SETFOREGROUND)==IDNO) goto End;
 			HandleModal2(hMainWindow);
 		}
 		// Star Revenge by BroDute
 		if (crc1==0x5394053C&&crc2==0xA5D8610A||crc1==0xCEE7DD5F&&crc2==0x4046AC23||crc1==0xC380A1E6&&crc2==0x75432881) {
 			HandleModal1(hMainWindow);
-			if (MessageBox(NULL,"The Star Revenge series of projects has been used to insult another developer in the opening credits, whose work was used to develop the Star Revenge fan game projects. Do you still want to play this fan game?","Illegit Game Disclaimer",MB_YESNO|MB_ICONEXCLAMATION|MB_SETFOREGROUND)==IDNO) goto End;
+			if (MessageBox(NULL,"This series of projects has been used to insult another developer in the opening credits, whose work was used to develop this series of projects. Do you still want to play this fan game?","Illegit Hack Disclaimer",MB_YESNO|MB_ICONEXCLAMATION|MB_SETFOREGROUND)==IDNO) goto End;
 			HandleModal2(hMainWindow);
 		}
 		// Star Road by SKELUX, Hijack “Retooled” Edit by Pyro Jay
 		if (crc1==0xCAC63712&&crc2==0xE2372AF3) {
 			HandleModal1(hMainWindow);
-			if (MessageBox(NULL,"This ROMhack has been dubiously presented by the author via YouTube as a rerelease of one of their own fan game projects. This is actually an edit of a fan game project known as Star Road which is a critically acclaimed hacking project created by SKELUX in the sense of serving as a sequel to Super Mario 64. This edit does not improve upon his game in any significant way either, so I would suggest playing Star Road instead of this deceptively presented edit. The creator of Star Road explains this behavior as “When you put a lot of work into something, other people love to come along and put in a fraction of the work modifying it just so they can slap their name over yours.” I kindly ask you to ignore this illegit Star Road update.\n\nDespite this, do you still want to play this fan game?","Illegit Game Disclaimer",MB_YESNO|MB_ICONEXCLAMATION|MB_SETFOREGROUND)==IDNO) goto End;
+			if (MessageBox(NULL,"This ROMhack has been dubiously presented by the author via YouTube as a rerelease of one of their own projects. This is actually an edit of a project called Star Road which is a critically acclaimed fan game created by SKELUX in the sense of serving as a sequel to Super Mario 64. This edit also does not improve upon his game in any way, so I would suggest playing Star Road instead of this deceptively presented edit. “Other people love to put in a fraction of the work modifying a project you invest in, to slap their name over yours...”\n\nDo you still want to play this fan game?","Illegit Hack Disclaimer",MB_YESNO|MB_ICONEXCLAMATION|MB_SETFOREGROUND)==IDNO) goto End;
 			HandleModal2(hMainWindow);
 		}
 		// B3313 by Chrisrlillo, Hijack Edits (under various names) by Thegreatestroman & Chlorobyte/Benedani
 		if (crc1==0xC39F397B&&crc2==0x9C2D6AFF||crc1==0xA52866E9&&crc2==0xA5C4CFD3) {
 			HandleModal1(hMainWindow);
-			if (MessageBox(NULL,"This ROM is one of several impostorous and unpermitted edits based on an unfinished 2023 copy of a fan game known as B3313, of which this ROM was deviously assembled from that copy using content stolen from the author of B3313 and his friends. This illegit reproduction of B3313 is being organized by a malicious group that is closely involved with ROMhacks. This group includes “Thegreatestroman”, “Chlorobyte/Benedani”, and “SimpleFlips”. This group has also been attempting to sabotage both the B3313 author's personal and professional life via the internet to discourage him in a deceptive fashion for their satisfaction (organized bullying). I, Edwin Bruce Shankle IV, strongly recommend ignoring this stolen and modified copy of B3313.\n\nDo you still want to play this fan game?","Illegit Game Disclaimer",MB_YESNO|MB_ICONEXCLAMATION|MB_SETFOREGROUND)==IDNO) goto End;
+			if (MessageBox(NULL,"This ROM was made with content stolen from (against the will of) the B3313 fan game's author and his friends, which was obtained from an unfinished 2023 copy of said fan game. This theft project is being organized by a malicious group that is closely involved with ROMhacks. This group includes “Thegreatestroman”, “Chlorobyte/Benedani”, and “SimpleFlips”. This group has also been attempting to sabotage the B3313 author's personal and professional life via organized cyberbullying, including doxxing and fabrications to discourage him. I suggest ignoring this illegit hack.\n\nDo you still want to play this fan game?","Illegit Hack Disclaimer",MB_YESNO|MB_ICONEXCLAMATION|MB_SETFOREGROUND)==IDNO) goto End;
 			HandleModal2(hMainWindow);
 		}
 	}
@@ -598,7 +595,7 @@ BOOL RecalculateCRC () {
 		ROM[0x14]=(crc[1]&0x000000FF);
 	}
 	return TRUE;
-End:
+	End:
 	HandleModal2(hMainWindow);
 	HandleShutdown(hMainWindow);
 	return FALSE;

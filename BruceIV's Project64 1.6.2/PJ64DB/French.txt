@@ -219,3 +219,4 @@ Vous pourrez sauvegarder ou charger vers ou depuis la carte SD virtuelle si cett
 #224# "Les captures d'écran seront désormais réalisées au format BMP au lieu du plugin vidéo"
 #225# "Les enregistrements seront désormais encodés en utilisant l'espace colorimétrique RVB (sans perte)"
 #226# "Les vidéos seront désormais encodées en utilisant l'espace colorimétrique YUV (avec perte)"
+#227# "Les plugins ne sont PAS initialisés !"

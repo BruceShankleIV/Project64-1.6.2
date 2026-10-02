@@ -507,8 +507,7 @@ void FillRomList (char*Directory) {
 	FindClose(hFind);
 }
 void HideRomBrowser() {
-	if (inFullScreen) SetupPlugins(hMainWindow);
-	else {
+	if (!inFullScreen) {
 		ShowWindow(hMainWindow,SW_RESTORE);
 		if (strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) {
 			if (!GLideN64HasBeenSetupFirst) {
@@ -523,31 +522,30 @@ void HideRomBrowser() {
 		EnableWindow(hRomList,FALSE);
 		ShowWindow(hRomList,SW_HIDE);
 		SendMessage(hMainWindow,WM_USER+17,0,0);
-		ShowWindow(hMainWindow,SW_SHOW);
-		SetupPlugins(hMainWindow);
 	}
+	SetupPlugins(hMainWindow);
 }
 void HandleShutdown (HWND hParent) {
 	int screenHeight=GetSystemMetrics(SM_CYSCREEN),screenWidth=GetSystemMetrics(SM_CXSCREEN);
-	if (CPURunning&&DrawScreen!=NULL) DrawScreen();
-	CPURunning=FALSE;
-	if (strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) {
-		SetWindowLong(hMainWindow,GWL_EXSTYLE,GetWindowLong(hMainWindow,GWL_EXSTYLE)&~WS_EX_COMPOSITED);
-		ShowWindow(hMainWindow,SW_RESTORE);
-	} else SetWindowLong(hMainWindow,GWL_STYLE,GetWindowLong(hMainWindow,GWL_STYLE)|WS_SIZEBOX|WS_MAXIMIZEBOX);
+	if (CPURunning) {
+		CPURunning=FALSE;
+		ShowWindow(hRomList,SW_SHOW);
+		if (strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) {
+			SetWindowLong(hMainWindow,GWL_EXSTYLE,GetWindowLong(hMainWindow,GWL_EXSTYLE)&~WS_EX_COMPOSITED);
+			ShowWindow(hMainWindow,SW_RESTORE);
+		} else SetWindowLong(hMainWindow,GWL_STYLE,GetWindowLong(hMainWindow,GWL_STYLE)|WS_SIZEBOX|WS_MAXIMIZEBOX);
+	}
 	SetupPlugins(hHiddenWin);
-	if (hRomList==NULL) CreateRomListControl(hParent);
-	else EnableWindow(hRomList,TRUE);
+	if (hRomList==NULL) {
+		if (__argc<=1) CreateRomListControl(hParent);
+	} else EnableWindow(hRomList,TRUE);
 	if (screenHeight>=1440&&screenWidth>=1920) ChangeWinSize(hMainWindow,1280,960,NULL);
 	else if (screenHeight>=1080&&screenWidth>=1440) ChangeWinSize(hMainWindow,800,600,NULL);
 	else ChangeWinSize(hMainWindow,640,480,NULL);
-	ShowWindow(hRomList,SW_SHOW);
-	ShowWindow(hMainWindow,SW_SHOW);
 	if (__argc!=0) {
 		RefreshRomBrowser();
 		 __argc=0;
 	} else SetFocus(hRomList);
-	SetForegroundWindow(hMainWindow);
 }
 void FreeRomBrowser () {
 	if (ItemList.ListAlloc!=0) {

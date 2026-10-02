@@ -243,3 +243,4 @@ You will be able to save to or load from your virtual SD card again if this acti
 #224# "Screenshots will now be captured with BMP instead of video plugin"
 #225# "Recordings will now be encoded using RGB (lossless) color space"
 #226# "Videos will now be encoded using YUV (lossy) color space"
+#227# "Plugins NOT initialized!"

@@ -260,3 +260,4 @@ char*GS               (int StringID);
 #define VIDEOTOSCREEN_OFF		224
 #define RGBREC_ON			225
 #define RGBREC_OFF			226
+#define PLUGINS_NOT_INITIALIZED		227

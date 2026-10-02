@@ -26,7 +26,7 @@ Load SFX logo from the file
 Banner_Gold.png
 
 Text to display in SFX window
-This “Golden Master Edition” of my Project64 1.6.2 (3rd release) is still technically in “beta” but also serves as a public release. As such, anyone who uses this build qualifies as a beta tester and is eligible to receive credit or otherwise aknowledgement for any issues they find or improvements they provide for it. Good luck, I've already tried to fix as many things as possible!
+This “Golden Master Edition” of my Project64 1.6.2 (4th release) is still technically in “beta” but also serves as a public release. As such, anyone who uses this build qualifies as a beta tester and is eligible to receive credit or otherwise aknowledgement for any issues they find or improvements they provide for it. Good luck, I've already tried to fix as many things as possible!
 
 
 Please report any bugs you encounter during your beta testing or fixes you would like to add for this build via my Project64 1.6.2 server: discord.gg/cHDxa9vzQM

@@ -259,6 +259,7 @@ LANG_STR DefaultString[]={
 	{ VIDEOTOSCREEN_OFF,  "Screenshots will now be captured with BMP instead of video plugin"},
 	{ RGBREC_ON,	      "Recordings will now be encoded using RGB (lossless) color space"},
 	{ RGBREC_OFF,	      "Videos will now be encoded using YUV (lossy) color space"},
+	{ PLUGINS_NOT_INITIALIZED,"Plugins NOT initialized!"},
 };
 class CLanguage  {
 	void FindLangName  (int Index);

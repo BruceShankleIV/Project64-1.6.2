@@ -492,7 +492,6 @@ void DoSomething (void) {
 			ReleaseMutex(hPauseMutex);
 			SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MSG_CPU_PAUSED));
 			DisplayEmulationSpeed();
-			if (DrawScreen!=NULL) DrawScreen();
 			WaitForSingleObject(hPauseMutex,INFINITE);
 			if (CPU_Paused) {
 				ReleaseMutex(hPauseMutex);
