@@ -2223,7 +2223,7 @@ void StartRecompilerCPU (void) {
 		OrigMem=NULL;
 	}
 	if (GfxRomOpen!=NULL&&(!inFullScreen||strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0)) { GfxRomOpen(); }
-	if (ContRomOpen!=NULL&&!GLideN64NeedsToBeSetupFirst) { ContRomOpen(); }
+	if (ContRomOpen!=NULL&&!GonetzGLNeedsToBeSetupFirst) { ContRomOpen(); }
 	ResetRecompCode();
 	memset(&N64_Blocks,0,sizeof(N64_Blocks));
 	SetNormal

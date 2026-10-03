@@ -506,34 +506,11 @@ void FillRomList (char*Directory) {
 	} while (FindNextFile(hFind,&fd));
 	FindClose(hFind);
 }
-void HideRomBrowser() {
-	if (!inFullScreen) {
-		ShowWindow(hMainWindow,SW_RESTORE);
-		if (strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) {
-			if (!GLideN64HasBeenSetupFirst) {
-				GLideN64NeedsToBeSetupFirst=TRUE;
-				strcpy(GfxDLL,"GLideN64.dll");
-			}
-		} else {
-			SetWindowLong(hMainWindow,GWL_EXSTYLE,GetWindowLong(hMainWindow,GWL_EXSTYLE)&~WS_EX_COMPOSITED);
-			SetWindowLong(hMainWindow,GWL_STYLE,GetWindowLong(hMainWindow,GWL_STYLE)&~(WS_SIZEBOX|WS_MAXIMIZEBOX));
-			DrawMenuBar(hMainWindow);
-		}
-		EnableWindow(hRomList,FALSE);
-		ShowWindow(hRomList,SW_HIDE);
-		SendMessage(hMainWindow,WM_USER+17,0,0);
-	}
-	SetupPlugins(hMainWindow);
-}
 void HandleShutdown (HWND hParent) {
 	int screenHeight=GetSystemMetrics(SM_CYSCREEN),screenWidth=GetSystemMetrics(SM_CXSCREEN);
 	if (CPURunning) {
 		CPURunning=FALSE;
 		ShowWindow(hRomList,SW_SHOW);
-		if (strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) {
-			SetWindowLong(hMainWindow,GWL_EXSTYLE,GetWindowLong(hMainWindow,GWL_EXSTYLE)&~WS_EX_COMPOSITED);
-			ShowWindow(hMainWindow,SW_RESTORE);
-		} else SetWindowLong(hMainWindow,GWL_STYLE,GetWindowLong(hMainWindow,GWL_STYLE)|WS_SIZEBOX|WS_MAXIMIZEBOX);
 	}
 	SetupPlugins(hHiddenWin);
 	if (hRomList==NULL) {

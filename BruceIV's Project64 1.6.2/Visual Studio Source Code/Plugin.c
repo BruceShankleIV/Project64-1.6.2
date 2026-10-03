@@ -38,39 +38,10 @@ DWORD PluginCount,RspTaskValue,AudioIntrReg;
 WORD RSPVersion,ContVersion;
 HANDLE hAudioThread=NULL;
 CONTROL Controllers[4];
-BOOL PluginsInitialized=FALSE,GLideN64NeedsToBeSetupFirst=FALSE,GLideN64HasBeenSetupFirst=FALSE,PluginsChanged(HWND hDlg),ValidPluginVersion(PLUGIN_INFO*PluginInfo);
+BOOL PluginsInitialized=FALSE,GonetzGLNeedsToBeSetupFirst=FALSE,GonetzGLHasBeenSetupFirst=FALSE,PluginsChanged(HWND hDlg),ValidPluginVersion(PLUGIN_INFO*PluginInfo);
 void AudioThread () {
 	SetThreadPriority(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
 	for (;;) { AiUpdate(TRUE); }
-}
-void GetCurrentDlls () {
-	long lResult;
-	HKEY hKeyResults=0;
-	char String[256];
-	sprintf(String,"PJ64 V 1.6.2\\Configuration\\Dll");
-	lResult=RegOpenKeyEx(HKEY_CURRENT_USER,String,0,KEY_ALL_ACCESS,&hKeyResults);
-	if (lResult==ERROR_SUCCESS) {
-		DWORD Type,Bytes=100;
-		lResult=RegQueryValueEx(hKeyResults,"RSP Dll",0,&Type,(LPBYTE)(RSPDLL),&Bytes);
-		if (lResult!=ERROR_SUCCESS) sprintf(RSPDLL,"%s",DefaultRSPDLL);
-		if (!inFullScreen) {
-			Bytes=100;
-			lResult=RegQueryValueEx(hKeyResults,"Graphics Dll",0,&Type,(LPBYTE)(GfxDLL),&Bytes);
-			if (lResult!=ERROR_SUCCESS) sprintf(GfxDLL,"%s",DefaultGFXDll);
-		}
-		Bytes=100;
-		lResult=RegQueryValueEx(hKeyResults,"Audio Dll",0,&Type,(LPBYTE)(AudioDLL),&Bytes);
-		if (lResult!=ERROR_SUCCESS) sprintf(AudioDLL,"%s",DefaultAudioDll);
-		Bytes=100;
-		lResult=RegQueryValueEx(hKeyResults,"Controller Dll",0,&Type,(LPBYTE)(ControllerDLL),&Bytes);
-		if (lResult!=ERROR_SUCCESS) sprintf(ControllerDLL,"%s",DefaultControllerDll);
-	} else {
-		sprintf(RSPDLL,"%s",DefaultRSPDLL);
-		sprintf(GfxDLL,"%s",DefaultGFXDll);
-		sprintf(AudioDLL,"%s",DefaultAudioDll);
-		sprintf(ControllerDLL,"%s",DefaultControllerDll);
-	}
-	if ((strcmp(GfxDLL,"Direct64-1.6.2.dll")==0||strcmp(GfxDLL,"Glide64.dll")==0||strcmp(GfxDLL,"Jabo_Direct3D8.dll")==0)&&strcmp(RSPDLL,"Icepir8sLegacyRSP.dll")==0) strcpy(RSPDLL,"RSP.dll");
 }
 void GetPluginDir(char*Directory) {
 	char path_buffer[_MAX_PATH],drive[_MAX_DRIVE],dir[_MAX_DIR],fname[_MAX_FNAME],ext[_MAX_EXT];
@@ -246,9 +217,36 @@ BOOL LoadRSPDLL(char*RSPDLL) {
 	return TRUE;
 }
 void SetupPlugins (HWND hWnd) {
+	int FAIL_MSG;
+	long lResult;
+	char String[256];
 	static DWORD AI_DUMMY=0;
 	DWORD NewRAMsize;
-	int FAIL_MSG;
+	HKEY hKeyResults=0;
+	sprintf(String,"PJ64 V 1.6.2\\Configuration\\Dll");
+	lResult=RegOpenKeyEx(HKEY_CURRENT_USER,String,0,KEY_ALL_ACCESS,&hKeyResults);
+	if (lResult==ERROR_SUCCESS) {
+		DWORD Type,Bytes=100;
+		lResult=RegQueryValueEx(hKeyResults,"RSP Dll",0,&Type,(LPBYTE)(RSPDLL),&Bytes);
+		if (lResult!=ERROR_SUCCESS) sprintf(RSPDLL,"%s",DefaultRSPDLL);
+		if (!inFullScreen) {
+			Bytes=100;
+			lResult=RegQueryValueEx(hKeyResults,"Graphics Dll",0,&Type,(LPBYTE)(GfxDLL),&Bytes);
+			if (lResult!=ERROR_SUCCESS) sprintf(GfxDLL,"%s",DefaultGFXDll);
+		}
+		Bytes=100;
+		lResult=RegQueryValueEx(hKeyResults,"Audio Dll",0,&Type,(LPBYTE)(AudioDLL),&Bytes);
+		if (lResult!=ERROR_SUCCESS) sprintf(AudioDLL,"%s",DefaultAudioDll);
+		Bytes=100;
+		lResult=RegQueryValueEx(hKeyResults,"Controller Dll",0,&Type,(LPBYTE)(ControllerDLL),&Bytes);
+		if (lResult!=ERROR_SUCCESS) sprintf(ControllerDLL,"%s",DefaultControllerDll);
+	} else {
+		sprintf(RSPDLL,"%s",DefaultRSPDLL);
+		sprintf(GfxDLL,"%s",DefaultGFXDll);
+		sprintf(AudioDLL,"%s",DefaultAudioDll);
+		sprintf(ControllerDLL,"%s",DefaultControllerDll);
+	}
+	if ((strcmp(GfxDLL,"Direct64-1.6.2.dll")==0||strcmp(GfxDLL,"Glide64.dll")==0||strcmp(GfxDLL,"Jabo_Direct3D8.dll")==0)&&strcmp(RSPDLL,"Icepir8sLegacyRSP.dll")==0) strcpy(RSPDLL,"RSP.dll");
 	ShutdownPlugins();
 	if (CPURunning) {
 		ReadRomSettings();
@@ -320,18 +318,25 @@ void SetupPlugins (HWND hWnd) {
 		RDRAMsize=NewRAMsize;
 		LoadCheats();
 		HandleWindowTitle();
-	} else GetCurrentDlls();
+	}
+	ShowWindow(hMainWindow,SW_RESTORE);
 	SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(PLUGINS_INITIALIZING));
 	PluginsInitialized=TRUE;
 	if (!inFullScreen) {
-		if (!LoadGFXDll(GfxDLL)) {
-			if (GLideN64NeedsToBeSetupFirst) {
-				GLideN64HasBeenSetupFirst=TRUE;
-				GLideN64NeedsToBeSetupFirst=FALSE;
-				strcpy(GfxDLL,"Icepir8sLegacyLLE.dll");
-				SetupPlugins(hMainWindow);
-				return;
+		if (CPURunning) {
+			if (strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) {
+				if (!GonetzGLHasBeenSetupFirst) {
+					GonetzGLNeedsToBeSetupFirst=TRUE;
+					strcpy(GfxDLL,"GLideN64.dll");
+				}
+				goto SIZE_MAXIMIZE;
+			} else {
+				SetWindowLong(hMainWindow,GWL_STYLE,GetWindowLong(hMainWindow,GWL_STYLE)&~(WS_SIZEBOX|WS_MAXIMIZEBOX));
+				DrawMenuBar(hMainWindow);
 			}
+		} else SIZE_MAXIMIZE: SetWindowLong(hMainWindow,GWL_STYLE,GetWindowLong(hMainWindow,GWL_STYLE)|WS_SIZEBOX|WS_MAXIMIZEBOX);
+		if (!LoadGFXDll(GfxDLL)) {
+			if (GonetzGLNeedsToBeSetupFirst) goto DONE_INIT_GLideN64;
 			FAIL_MSG=MSG_FAIL_INIT_GFX;
 			PluginsInitialized=FALSE;
 			goto FAIL_INIT;
@@ -369,20 +374,14 @@ void SetupPlugins (HWND hWnd) {
 			GfxInfo.VI__X_SCALE_REG=&VI_X_SCALE_REG;
 			GfxInfo.VI__Y_SCALE_REG=&VI_Y_SCALE_REG;
 			if (!InitiateGFX(GfxInfo)) {
-				if (GLideN64NeedsToBeSetupFirst) {
-					GLideN64HasBeenSetupFirst=TRUE;
-					GLideN64NeedsToBeSetupFirst=FALSE;
-					strcpy(GfxDLL,"Icepir8sLegacyLLE.dll");
-					SetupPlugins(hMainWindow);
-					return;
-				}
+				if (GonetzGLNeedsToBeSetupFirst) goto DONE_INIT_GLideN64;
 				FAIL_MSG=MSG_FAIL_INIT_GFX;
 				PluginsInitialized=FALSE;
 				goto FAIL_INIT;
 			}
 		}
 	}
-	if (!GLideN64NeedsToBeSetupFirst) {
+	if (!GonetzGLNeedsToBeSetupFirst) {
 		if (!LoadAudioDll(AudioDLL)) {
 			AiCloseDLL=NULL;
 			AiDacrateChanged=NULL;
@@ -538,6 +537,9 @@ void SetupPlugins (HWND hWnd) {
 			if (RSPVersion==0x0101) InitiateRSP_1_1(RspInfo11,&RspTaskValue);
 		}
 		FAIL_INIT:
+		// SetWindowLong for GWL_EXSTYLE post video plugin initialization because it crashes if done before.
+		if (CPURunning&&strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) SetWindowLong(hMainWindow,GWL_EXSTYLE,GetWindowLong(hMainWindow,GWL_EXSTYLE)|WS_EX_COMPOSITED); // Fix flashing on LLE window resize.
+		if (!CPURunning||strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")!=0) SetWindowLong(hMainWindow,GWL_EXSTYLE,GetWindowLong(hMainWindow,GWL_EXSTYLE)&~WS_EX_COMPOSITED);  // Remove flash fix for LLE window resize when going to other video plugins or ROM Browser to avoid conflicts.
 		SetupMenu(hMainWindow);
 		UsuallyonTopWindow(hMainWindow);
 		if (PluginsInitialized) SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(PLUGINS_INITIALIZED));
@@ -550,11 +552,14 @@ void SetupPlugins (HWND hWnd) {
 			if (PluginsInitialized) SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(PLUGINS_NOT_INITIALIZED));
 			else {
 				SendMessage(hMainWindow,WM_COMMAND,ID_OPTIONS_SETTINGS,0);
-				if (CPURunning) {
-					GetCurrentDlls();
-					HideRomBrowser();
-				}
+				if (CPURunning) SetupPlugins(hMainWindow);
 			}
+			return;
+			DONE_INIT_GLideN64:
+			GonetzGLHasBeenSetupFirst=TRUE;
+			GonetzGLNeedsToBeSetupFirst=FALSE;
+			strcpy(GfxDLL,"Icepir8sLegacyLLE.dll");
+			SetupPlugins(hMainWindow);
 			return;
 		}
 	}
@@ -581,13 +586,10 @@ void SetupPlugins (HWND hWnd) {
 		Timer_Start();
 		if (CpuRecompiler) hCPU=CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)StartRecompilerCPU,NULL,0,NULL);
 		else hCPU=CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)StartInterpreterCPU,NULL,0,NULL);
-		if (strcmp(GfxDLL,"GLideN64.dll")==0&&!GLideN64HasBeenSetupFirst) GLideN64HasBeenSetupFirst=TRUE;
-		if (GLideN64NeedsToBeSetupFirst) {
+		if (strcmp(GfxDLL,"Glide64.dll")==0&&!GonetzGLHasBeenSetupFirst) GonetzGLHasBeenSetupFirst=TRUE;
+		if (GonetzGLNeedsToBeSetupFirst) {
 			EndEmulation();
-			GLideN64NeedsToBeSetupFirst=FALSE;
-			strcpy(GfxDLL,"Icepir8sLegacyLLE.dll");
-			SetupPlugins(hMainWindow);
-			return;
+			goto DONE_INIT_GLideN64;
 		}
 		SetCurrentSaveState(hMainWindow,ID_CURRENTSAVE_DEFAULT);
 		SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MSG_EMULATION_STARTED));
@@ -597,7 +599,6 @@ void SetupPlugins (HWND hWnd) {
 			LimitFPS=FALSE;
 			if (SpeedCap) HandleTimers();
 		} else HandleTimers();
-		if (strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) SetWindowLong(hMainWindow,GWL_EXSTYLE,GetWindowLong(hMainWindow,GWL_EXSTYLE)|WS_EX_COMPOSITED);
 	}
 }
 void SetupPluginScreen (HWND hDlg) {
@@ -699,7 +700,7 @@ void ShutdownPlugins (void) {
 		if (GFXCloseDLL!=NULL) { GFXCloseDLL(); }
 		FreeLibrary(hGfxDll);
 	}
-	if (!GLideN64NeedsToBeSetupFirst) {
+	if (!GonetzGLNeedsToBeSetupFirst) {
 		TerminateThread(hAudioThread,0);
 		if (AiCloseDLL!=NULL) { AiCloseDLL(); }
 		FreeLibrary(hAudioDll);

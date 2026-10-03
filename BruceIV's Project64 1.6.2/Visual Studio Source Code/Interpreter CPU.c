@@ -406,7 +406,7 @@ void StartInterpreterCPU (void) {
 	CoInitialize(NULL);
 	SetNormal
 	if (GfxRomOpen!=NULL&&(!inFullScreen||strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0)) { GfxRomOpen(); }
-	if (ContRomOpen!=NULL&&!GLideN64NeedsToBeSetupFirst) { ContRomOpen(); }
+	if (ContRomOpen!=NULL&&!GonetzGLNeedsToBeSetupFirst) { ContRomOpen(); }
 	__try {
 		for (;;) {
 			ExecuteInterpreterOpCode();

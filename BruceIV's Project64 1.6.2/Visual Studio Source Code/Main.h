@@ -34,9 +34,8 @@ extern "C" {
 #include "Settings API.h"
 #include "ROM Browser.h"
 #include "Language.h"
-/*********Source Version GM*********/
-/*****(Golden Master Release 4)*****/
-/*Last updated @ 10/01/2026 08:02PM*/
+/****Source Version GM Release 5****/
+/*Last updated @ 10/02/2026 11:48PM*/
 /*********General Defaults**********/
 #define AppName						"BruceIV's Project64 1.6.2"
 #define IniName						"Game.ini"

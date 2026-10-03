@@ -674,7 +674,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 		case ID_FILE_EXIT: DestroyWindow(hWnd); break;
 		case ID_CPU_RESET:
 			EndEmulation();
-			CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)ResetFunction,NULL,0,NULL);
+			SetupPlugins(hMainWindow);
 			break;
 		case ID_CPU_PAUSE:
 			ManualPaused=TRUE;
@@ -1010,15 +1010,18 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 		break;
 		case ID_OPTIONS_CONFIG_AUDIO:
 		if (CPURunning&&strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) SetWindowLong(hWnd,GWL_EXSTYLE,GetWindowLong(hWnd,GWL_EXSTYLE)&~WS_EX_COMPOSITED);
-		AiDllConfig(hWnd);
+		if (!CPURunning&&strcmp(ControllerDLL,"Jabo_Dsound.dll")==0) {
+			HandleModal1(hWnd);
+			MessageBox(NULL,GS(MSG_PLS_START),AppName,MB_OK|MB_ICONEXCLAMATION|MB_SETFOREGROUND);
+			HandleModal2(hWnd);
+		} else AiDllConfig(hWnd);
 		if (CPURunning&&strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) SetWindowLong(hWnd,GWL_EXSTYLE,GetWindowLong(hWnd,GWL_EXSTYLE)|WS_EX_COMPOSITED);
 		break;
 		case ID_OPTIONS_CONFIG_CONTROL:
 		if (CPURunning&&strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) SetWindowLong(hWnd,GWL_EXSTYLE,GetWindowLong(hWnd,GWL_EXSTYLE)&~WS_EX_COMPOSITED);
-		if (strcmp(ControllerDLL,"shankle-sdl2-input.dll")==0) {
+		if (!CPURunning&&strcmp(ControllerDLL,"shankle-sdl2-input.dll")==0) {
 			HandleModal1(hWnd);
-			if (CPURunning) ContConfig(hWnd);
-			else MessageBox(NULL,GS(MSG_PLS_START),AppName,MB_OK|MB_ICONEXCLAMATION|MB_SETFOREGROUND);
+			MessageBox(NULL,GS(MSG_PLS_START),AppName,MB_OK|MB_ICONEXCLAMATION|MB_SETFOREGROUND);
 			HandleModal2(hWnd);
 		} else ContConfig(hWnd);
 		if (CPURunning&&strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) SetWindowLong(hWnd,GWL_EXSTYLE,GetWindowLong(hWnd,GWL_EXSTYLE)|WS_EX_COMPOSITED);
@@ -1323,7 +1326,7 @@ LRESULT CALLBACK RomInfoProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 	return TRUE;
 }
 void SetupMenu (HWND hWnd) {
-	HMENU hMenu=GetMenu(hWnd),hSubMenu;
+	HMENU hMenu=GetMenu(hWnd);
 	int State;
 	if (inFullScreen) return;
 	DestroyMenu(hMenu);
@@ -1352,10 +1355,8 @@ void SetupMenu (HWND hWnd) {
 	if (strcmp(AudioDLL,"No Audio.dll")!=0) EnableMenuItem(hMenu,ID_OPTIONS_CONFIG_AUDIO,MF_BYCOMMAND|(AiDllConfig==NULL?MF_GRAYED:MF_ENABLED));
 	EnableMenuItem(hMenu,ID_OPTIONS_CONFIG_GFX,MF_BYCOMMAND|(GFXDllConfig==NULL?MF_GRAYED:MF_ENABLED));
 	EnableMenuItem(hMenu,ID_OPTIONS_CONFIG_CONTROL,MF_BYCOMMAND|(ContConfig==NULL?MF_GRAYED:MF_ENABLED));
-	if (strlen(RomName)>0) EnableMenuItem(hMenu,ID_FILE_ROM_INFO,MFS_ENABLED|MF_BYCOMMAND);
-	//Enable if cpu is running
 	State=CPURunning?MFS_ENABLED:MFS_DISABLED;
-	if (strcmp(GfxDLL,"GLideN64.dll")!=0) EnableMenuItem(hMenu,ID_FILE_ENDEMULATION,State|MF_BYCOMMAND);
+	EnableMenuItem(hMenu,ID_FILE_ENDEMULATION,State|MF_BYCOMMAND);
 	EnableMenuItem(hMenu,ID_CPU_RESET,State|MF_BYCOMMAND);
 	EnableMenuItem(hMenu,ID_CPU_PAUSE,State|MF_BYCOMMAND);
 	EnableMenuItem(hMenu,ID_SYSTEM_ALTERNATEPAUSE,State|MF_BYCOMMAND);
@@ -1368,18 +1369,16 @@ void SetupMenu (HWND hWnd) {
 	EnableMenuItem(hMenu,ID_OPTIONS_GAMECAPTURE,State|MF_BYCOMMAND);	
 	if (CaptureScreen!=NULL||!VideoToScreen) EnableMenuItem(hMenu,ID_SYSTEM_GENERATEBITMAP,State|MF_BYCOMMAND);
 	if (ChangeWindow!=NULL&&strcmp(GfxDLL,"Direct64-1.6.2.dll")!=0) EnableMenuItem(hMenu,ID_OPTIONS_FULLSCREEN,State|MF_BYCOMMAND);
-	else EnableMenuItem(hMenu,ID_OPTIONS_FULLSCREEN,MFS_DISABLED|MF_BYCOMMAND);
-	hSubMenu=GetSubMenu(hMenu,1); //System
-	EnableMenuItem(hSubMenu,13,State|MF_BYPOSITION); //Current Save State
-	//Disable if cpu is running
+	EnableMenuItem(GetSubMenu(hMenu,1),13,State|MF_BYPOSITION);
 	State=CPURunning?MFS_DISABLED:MFS_ENABLED;
 	EnableMenuItem(hMenu,ID_FILE_REFRESHROMLIST,State|MF_BYCOMMAND);
 	if (SyncGametoAudio) {
 		EnableMenuItem(hMenu,ID_SYSTEM_LIMITFPS,State|MF_BYCOMMAND);
 		EnableMenuItem(hMenu,ID_SYSTEM_SPEEDCAP,State|MF_BYCOMMAND);
 	}
-	if (!CPURunning&&strlen(LastRoms[0])!=0) EnableMenuItem(hMenu,ID_FILE_STARTEMULATION,MFS_ENABLED);
-	if (strlen(RomName)!=0) {
+	if (!CPURunning&&strlen(LastRoms[0])>0) EnableMenuItem(hMenu,ID_FILE_STARTEMULATION,MFS_ENABLED);
+	if (strlen(RomName)>0) {
+		EnableMenuItem(hMenu,ID_FILE_ROM_INFO,MFS_ENABLED);
 		EnableMenuItem(hMenu,ID_OPTIONS_CHEATS,MFS_ENABLED);
 		if (!CPURunning) HandleWindowTitle();
 	}
@@ -1706,7 +1705,7 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpszArgs,in
 		ShowWindow(hRomList,SW_SHOW);
 		SetWindowLong(hMainWindow,GWL_STYLE,GetWindowLong(hMainWindow,GWL_STYLE)|WS_SIZEBOX|WS_MAXIMIZEBOX);
 		HandleShutdown(hMainWindow);
-		if (strcmp(GfxDLL,"GLideN64.dll")==0||strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) {
+		if (strcmp(GfxDLL,"Glide64.dll")==0||strcmp(GfxDLL,"GLideN64.dll")==0||strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) {
 			BootupSettings=TRUE;
 			ChangeSettings(hMainWindow);
 			BootupSettings=FALSE;

@@ -451,7 +451,7 @@ void ReadRomSettings() {
 	else RomAlignDMA=FALSE;
 	RomUseCache=UseCache_Default;
 	RomJAI=FALSE;
-	if (strlen(RomName)!=0) {
+	if (strlen(RomName)>0) {
 		LPSTR IniFileName;
 		char String[100],Identifier[100];
 		IniFileName=GetIniFileName();
@@ -519,7 +519,7 @@ BOOL RecalculateCRC () {
 		// Decades Later by BroDute
 		if (crc1==0xE1CE3595&&crc2==0x68941049) {
 			HandleModal1(hMainWindow);
-			if (MessageBox(NULL,"The creator of this game describes himself as, “That one german guy that made the Star Revenge Series and remade vanilla SM64 to be finally a good game.”\n\nHe implies Super Mario 64 was never good, but his fan game, which is meant to serve as a remake, fixes that issue.\n\nDo you still want to play this fan game?","Illegit Hack Disclaimer",MB_YESNO|MB_ICONEXCLAMATION|MB_SETFOREGROUND)==IDNO) goto End;
+			if (MessageBox(NULL,"The creator of this game describes himself as, “That one german guy that made the Star Revenge Series and remade vanilla SM64 to be finally a good game.”\n\nHe implies Super Mario 64 was never good, but his fan game, which is meant to serve as a remake (despite not at all resembling the game it's a remake of), fixes that issue.\n\nDo you still want to play this fan game?","Illegit Hack Disclaimer",MB_YESNO|MB_ICONEXCLAMATION|MB_SETFOREGROUND)==IDNO) goto End;
 			HandleModal2(hMainWindow);
 		}
 		// Star Revenge by BroDute
@@ -531,13 +531,13 @@ BOOL RecalculateCRC () {
 		// Star Road by SKELUX, Hijack “Retooled” Edit by Pyro Jay
 		if (crc1==0xCAC63712&&crc2==0xE2372AF3) {
 			HandleModal1(hMainWindow);
-			if (MessageBox(NULL,"This ROMhack has been dubiously presented by the author via YouTube as a rerelease of one of their own projects. This is actually an edit of a project called Star Road which is a critically acclaimed fan game created by SKELUX in the sense of serving as a sequel to Super Mario 64. This edit also does not improve upon his game in any way, so I would suggest playing Star Road instead of this deceptively presented edit. “Other people love to put in a fraction of the work modifying a project you invest in, to slap their name over yours...”\n\nDo you still want to play this fan game?","Illegit Hack Disclaimer",MB_YESNO|MB_ICONEXCLAMATION|MB_SETFOREGROUND)==IDNO) goto End;
+			if (MessageBox(NULL,"This ROMhack has been dubiously presented by the author via YouTube as a rerelease of one of their own projects. This is actually an edit of a project called Star Road which is a critically acclaimed fan game created by SKELUX in the sense of serving as a sequel to Super Mario 64. This edit also does not improve upon his game in any way, with many users noticing out of place changes that don't make sense and new glitches. So I strongly suggest playing Star Road instead of this deceptively presented edit. “When you put a lot of work into something, other people love to come along and put in a fraction of the work modifying it just so they can slap their name over yours.”\n\nDo you still want to play this fan game?","Illegit Hack Disclaimer",MB_YESNO|MB_ICONEXCLAMATION|MB_SETFOREGROUND)==IDNO) goto End;
 			HandleModal2(hMainWindow);
 		}
 		// B3313 by Chrisrlillo, Hijack Edits (under various names) by Thegreatestroman & Chlorobyte/Benedani
 		if (crc1==0xC39F397B&&crc2==0x9C2D6AFF||crc1==0xA52866E9&&crc2==0xA5C4CFD3) {
 			HandleModal1(hMainWindow);
-			if (MessageBox(NULL,"This ROM was made with content stolen from (against the will of) the B3313 fan game's author and his friends, which was obtained from an unfinished 2023 copy of said fan game. This theft project is being organized by a malicious group that is closely involved with ROMhacks. This group includes “Thegreatestroman”, “Chlorobyte/Benedani”, and “SimpleFlips”. This group has also been attempting to sabotage the B3313 author's personal and professional life via organized cyberbullying, including doxxing and fabrications to discourage him. I suggest ignoring this illegit hack.\n\nDo you still want to play this fan game?","Illegit Hack Disclaimer",MB_YESNO|MB_ICONEXCLAMATION|MB_SETFOREGROUND)==IDNO) goto End;
+			if (MessageBox(NULL,"This ROM is part of an organized harm effort involving content repurposed from (against the will of) the author of a fan game known as B3313 and his friends, which was obtained from an unfinished 2023 copy of said fan game. This harm effort is being organized by a malicious group that is closely involved with ROMhacks. This group includes “Thegreatestroman”, “Chlorobyte/Benedani”, and “SimpleFlips”. This group has also been attempting to sabotage the B3313 author's personal and professional life to psychologically harm or discourage him via organized cyberbullying, including doxxing (revealing private or identifying information about someone online without their permission) as well as fabrications (the act of inventing false information in order to deceive someone). I, Edwin Bruce Shankle IV, suggest ignoring this illegit stolen hack and any others of similar nature to it.\n\nDo you still want to play this fan game?","Illegit Hack Disclaimer",MB_YESNO|MB_ICONEXCLAMATION|MB_SETFOREGROUND)==IDNO) goto End;
 			HandleModal2(hMainWindow);
 		}
 	}
@@ -779,12 +779,13 @@ void OpenChosenFile(void) {
 		if (RomName[count]==' ') RomName[count]='\0';
 		else if (RomName[count]!='\0') count=-1;
 	}
-	if (CPURunning) ResetFunction();
-	else {
+	if (!CPURunning) {
 		CPURunning=TRUE;
-		if (__argc>1) GetCurrentDlls();
-		HideRomBrowser();
+		EnableWindow(hRomList,FALSE);
+		ShowWindow(hRomList,SW_HIDE);
+		SendMessage(hMainWindow,WM_USER+17,0,0);
 	}
+	SetupPlugins(hMainWindow);
 	if (AutoFullScreen&&strcmp(GfxDLL,"Direct64-1.6.2.dll")!=0) {
 		timeBeginPeriod(16);
 		Sleep(200);

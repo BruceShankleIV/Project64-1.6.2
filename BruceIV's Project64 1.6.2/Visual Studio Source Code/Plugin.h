@@ -207,7 +207,6 @@ typedef union {
 #define PLUGIN_RAW					5 // the controller plugin is passed in raw data
 /********Global DLL Function**************/
 void (__cdecl*GetDllInfo)             (PLUGIN_INFO*PluginInfo);
-void GetCurrentDlls		   ();
 /**********RSP DLL Functions*********************/
 void (__cdecl*RSPCloseDLL)        (void);
 void (__cdecl*RSPDLLAbout)        (HWND hWnd);
@@ -263,7 +262,6 @@ void (__cdecl*RumbleCommand)	 (int Control,BOOL bRumble);
 /**********Plugin Functions*********************/
 void GetPluginDir        (char*Directory);
 void FetchScreenAndVideoDir      (char*Directory);
-void PluginConfiguration (HWND hWnd);
 void SetupPlugins        (HWND hWnd);
 void SetupPluginScreen   (HWND hDlg);
 void ShutdownPlugins     (void);
@@ -273,5 +271,5 @@ extern char RSPDLL[100],GfxDLL[100],AudioDLL[100],ControllerDLL[100],*PluginName
 extern DWORD PluginCount,RspTaskValue,AudioIntrReg;
 extern CONTROL Controllers[4];
 extern WORD RSPVersion;
-extern BOOL PluginsInitialized,GLideN64NeedsToBeSetupFirst,GLideN64HasBeenSetupFirst;
+extern BOOL PluginsInitialized,GonetzGLNeedsToBeSetupFirst,GonetzGLHasBeenSetupFirst;
 #endif

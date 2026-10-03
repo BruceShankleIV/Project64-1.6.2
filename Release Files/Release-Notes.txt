@@ -1,0 +1,9 @@
+As described in the BIVPJ64GM-Extractor.exe file, this is a public beta release which I have already tried fixing as many issues that I could for. With that, I have been unable to find anymore problems to be solved with the software from my own personal use. But simultaneously, I lack the free time needed to perform necessary testing: hence the release of the Golden Master Edition!
+
+To set this up, you'll need to download the latest BruceIV-Project64-1.6.2 zip file to obtain a copy of the emulator package for your Windows PC. After extracting the folder inside, you need to run BIVPJ64GM-Extractor.exe and you will be guided by me further thereafter.
+
+If desiring to patch ROMhacks, you'll need to use the Tool64 app in the Apps folder to convert baseROMs to big endian .z64 if they aren't already, then you can either use flips.exe to apply a patch for a single ROMhack, or use the FlipsAutoPatcher-v2.1.1.exe for patching multiple ROMhacks at a time. ROMhacks can be obtained from https://github.com/BruceShankleIV/Project64-1.6.2-ROMhacks-Collection
+
+Finally, if intending to make a translation for the emulator, a sample has been provided to work off of.
+
+Enjoy and please report any issues you find via the server dedicated to this project so that we can have a fully tested public release after this one: discord.gg/cHDxa9vzQM

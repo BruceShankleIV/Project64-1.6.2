@@ -31,7 +31,6 @@ typedef struct {
 	int  LangID;
 } ROMBROWSER_FIELDS;
 void FillRomList               (char*Directory);
-void HideRomBrowser            ();
 void RefreshRomBrowser         ();
 void ResetRomBrowserColumns    ();
 void ResizeRomListControl      (WORD nWidth,WORD nHeight);

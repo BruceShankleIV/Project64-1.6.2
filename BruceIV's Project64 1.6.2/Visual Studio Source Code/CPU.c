@@ -133,16 +133,6 @@ void EmuAI_SetNextTimer() {
 		ChangeTimer(AiTimer,0);
 	}
 }
-void ResetFunction (void) {
-	if (strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) {
-		GetCurrentDlls();
-		HideRomBrowser();
-	} else {
-		GetCurrentDlls();
-		if (strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) HideRomBrowser();
-		else SetupPlugins(hMainWindow);
-	}
-}
 void DisplayThreadExit (char*ExitPoint) {
 	if (VideoToScreen) {
 		VideoToScreen=FALSE;
@@ -252,7 +242,7 @@ void EndEmulation () {
 	VirtualProtect(N64MEM,RDRAMsize,PAGE_READWRITE,&OldProtect);
 	VirtualProtect(N64MEM+0x04000000,0x2000,PAGE_READWRITE,&OldProtect);
 	if (GfxRomClosed!=NULL&&(!inFullScreen||strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0)) { GfxRomClosed(); }
-	if (!GLideN64NeedsToBeSetupFirst) {
+	if (!GonetzGLNeedsToBeSetupFirst) {
 		if (AiRomClosed!=NULL) { AiRomClosed(); }
 		if (ContRomClosed!=NULL) { ContRomClosed(); }
 		if (RSPRomClosed!=NULL) { RSPRomClosed(); }
