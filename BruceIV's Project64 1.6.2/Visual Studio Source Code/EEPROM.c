@@ -27,12 +27,12 @@
 #include <stdio.h>
 #include "Main.h"
 #include "CPU.h"
-static HANDLE hEEPROMFile=NULL;
+static HANDLE hEEPROMFile=0;
 BYTE EEPROM[0x800];
 void CloseEEPROM () {
 	if (hEEPROMFile) {
 		CloseHandle(hEEPROMFile);
-		hEEPROMFile=NULL;
+		hEEPROMFile=0;
 	}
 }
 void EEPROMCommand (BYTE*Command) {
@@ -48,13 +48,13 @@ void EEPROMCommand (BYTE*Command) {
 		}
 		if (Command[1]!=3) {
 			Command[1]|=0x40;
-			if ((Command[1]&3)>0) { Command[3]=0x00; }
+			if ((Command[1]&3)>0) {Command[3]=0x00;}
 			if (SaveUsing==EEPROM_4K) {
-				if ((Command[1]&3)>1) { Command[4]=0x80; }
+				if ((Command[1]&3)>1) {Command[4]=0x80;}
 			} else {
-				if ((Command[1]&3)>1) { Command[4]=0xC0; }
+				if ((Command[1]&3)>1) {Command[4]=0xC0;}
 			}
-			if ((Command[1]&3)>2) { Command[5]=0x00; }
+			if ((Command[1]&3)>2) {Command[5]=0x00;}
 		} else {
 			Command[3]=0x00;
 			Command[4]=SaveUsing==EEPROM_4K?0x80:0xC0;
@@ -74,12 +74,12 @@ void LoadEEPROM () {
 	DWORD dwRead;
 	GetAutoSaveDir(Directory);
 	sprintf(File,"%s%s.eep",Directory,RomName);
-	hEEPROMFile=CreateFile(File,GENERIC_WRITE|GENERIC_READ,FILE_SHARE_READ,NULL,OPEN_ALWAYS,FILE_ATTRIBUTE_NORMAL|FILE_FLAG_RANDOM_ACCESS,NULL);
+	hEEPROMFile=CreateFile(File,GENERIC_WRITE|GENERIC_READ,FILE_SHARE_READ,0,OPEN_ALWAYS,FILE_ATTRIBUTE_NORMAL|FILE_FLAG_RANDOM_ACCESS,0);
 	if (hEEPROMFile==INVALID_HANDLE_VALUE) {
 		switch (GetLastError()) {
 		case ERROR_PATH_NOT_FOUND:
-			CreateDirectory(Directory,NULL);
-			hEEPROMFile=CreateFile(File,GENERIC_WRITE|GENERIC_READ,FILE_SHARE_READ,NULL,OPEN_ALWAYS,FILE_ATTRIBUTE_NORMAL|FILE_FLAG_RANDOM_ACCESS,NULL);
+			CreateDirectory(Directory,0);
+			hEEPROMFile=CreateFile(File,GENERIC_WRITE|GENERIC_READ,FILE_SHARE_READ,0,OPEN_ALWAYS,FILE_ATTRIBUTE_NORMAL|FILE_FLAG_RANDOM_ACCESS,0);
 			if (hEEPROMFile==INVALID_HANDLE_VALUE) {
 				DisplayError(GS(MSG_FAIL_OPEN_SAVE));
 			}
@@ -90,19 +90,19 @@ void LoadEEPROM () {
 		}
 	}
 	memset(EEPROM,0,sizeof(EEPROM));
-	SetFilePointer(hEEPROMFile,0,NULL,FILE_BEGIN);
-	ReadFile(hEEPROMFile,EEPROM,sizeof(EEPROM),&dwRead,NULL);
+	SetFilePointer(hEEPROMFile,0,0,FILE_BEGIN);
+	ReadFile(hEEPROMFile,EEPROM,sizeof(EEPROM),&dwRead,0);
 }
 void ReadFromEEPROM(BYTE*Buffer,int line) {
 	int i;
-	if (hEEPROMFile==NULL) LoadEEPROM();
-	for(i=0;i<8;i++) { Buffer[i]=EEPROM[line*8+i]; }
+	if (hEEPROMFile==0) LoadEEPROM();
+	for(i=0;i<8;i++) {Buffer[i]=EEPROM[line*8+i];}
 }
 void WriteToEEPROM(BYTE*Buffer,int line) {
 	DWORD dwWritten;
 	int i;
-	if (hEEPROMFile==NULL) LoadEEPROM();
-	for(i=0;i<8;i++) { EEPROM[line*8+i]=Buffer[i]; }
-	SetFilePointer(hEEPROMFile,line*8,NULL,FILE_BEGIN);
-	WriteFile(hEEPROMFile,Buffer,8,&dwWritten,NULL);
+	if (hEEPROMFile==0) LoadEEPROM();
+	for(i=0;i<8;i++) {EEPROM[line*8+i]=Buffer[i];}
+	SetFilePointer(hEEPROMFile,line*8,0,FILE_BEGIN);
+	WriteFile(hEEPROMFile,Buffer,8,&dwWritten,0);
 }

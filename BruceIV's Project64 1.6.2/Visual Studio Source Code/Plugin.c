@@ -36,16 +36,16 @@ char RSPDLL[100],GfxDLL[100],AudioDLL[100],ControllerDLL[100],*PluginNames[MaxDl
 HINSTANCE hAudioDll,hControllerDll,hGfxDll,hRSPDLL;
 DWORD PluginCount,RspTaskValue,AudioIntrReg;
 WORD RSPVersion,ContVersion;
-HANDLE hAudioThread=NULL;
+HANDLE hAudioThread=0;
 CONTROL Controllers[4];
-BOOL PluginsInitialized=FALSE,GonetzGLNeedsToBeSetupFirst=FALSE,GonetzGLHasBeenSetupFirst=FALSE,PluginsChanged(HWND hDlg),ValidPluginVersion(PLUGIN_INFO*PluginInfo);
+BOOL PluginsInitialized=FALSE,GLideN64NeedsToBeSetupFirst=FALSE,GonetzGLHasBeenSetupFirst=FALSE,PluginsChanged(HWND hDlg),ValidPluginVersion(PLUGIN_INFO*PluginInfo);
 void AudioThread () {
 	SetThreadPriority(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
-	for (;;) { AiUpdate(TRUE); }
+	for (;;) {AiUpdate(TRUE);}
 }
 void GetPluginDir(char*Directory) {
 	char path_buffer[_MAX_PATH],drive[_MAX_DRIVE],dir[_MAX_DIR],fname[_MAX_FNAME],ext[_MAX_EXT];
-	GetModuleFileName(NULL,path_buffer,sizeof(path_buffer));
+	GetModuleFileName(0,path_buffer,sizeof(path_buffer));
 	_splitpath(path_buffer,drive,dir,fname,ext);
 	strcpy(Directory,drive);
 	strcat(Directory,dir);
@@ -55,12 +55,11 @@ void FetchScreenAndVideoDir(char*Directory) {
 	char path_buffer[_MAX_PATH],drive[_MAX_DRIVE],dir[_MAX_DIR],fname[_MAX_FNAME],ext[_MAX_EXT],Dir[256],Group[200];
 	long lResult;
 	HKEY hKeyResults=0;
-	GetModuleFileName(NULL,path_buffer,sizeof(path_buffer));
+	GetModuleFileName(0,path_buffer,sizeof(path_buffer));
 	_splitpath(path_buffer,drive,dir,fname,ext);
 	sprintf(Directory,"%s%sScreenshots and Videos\\",drive,dir);
 	sprintf(Group,"PJ64 V 1.6.2\\Configuration");
-	lResult=RegOpenKeyEx(HKEY_CURRENT_USER,Group,0,KEY_ALL_ACCESS,
-		&hKeyResults);
+	lResult=RegOpenKeyEx(HKEY_CURRENT_USER,Group,0,KEY_ALL_ACCESS,&hKeyResults);
 	if (lResult==ERROR_SUCCESS) {
 		DWORD Type,Value,Bytes;
 		Bytes=4;
@@ -68,11 +67,11 @@ void FetchScreenAndVideoDir(char*Directory) {
 		if (lResult==ERROR_SUCCESS&&Value==FALSE) {
 			Bytes=sizeof(Dir);
 			lResult=RegQueryValueEx(hKeyResults,"CustomPath Screenshots and Videos",0,&Type,(LPBYTE)Dir,&Bytes);
-			if (lResult==ERROR_SUCCESS) { strcpy(Directory,Dir); }
+			if (lResult==ERROR_SUCCESS) {strcpy(Directory,Dir);}
 		}
 	}
 	RegCloseKey(hKeyResults);
-	CreateDirectory(Directory,NULL);
+	CreateDirectory(Directory,0);
 }
 BOOL LoadAudioDll(char*AudioDll) {
 	PLUGIN_INFO PluginInfo;
@@ -80,25 +79,25 @@ BOOL LoadAudioDll(char*AudioDll) {
 	GetPluginDir(DllName);
 	strcat(DllName,AudioDll);
 	hAudioDll=LoadLibrary(DllName);
-	if (hAudioDll==NULL) return FALSE;
+	if (hAudioDll==0) return FALSE;
 	GetDllInfo=(void (__cdecl*)(PLUGIN_INFO*))GetProcAddress(hAudioDll,"GetDllInfo");
-	if (GetDllInfo==NULL) return FALSE;
+	if (GetDllInfo==0) return FALSE;
 	GetDllInfo(&PluginInfo);
 	if (!ValidPluginVersion(&PluginInfo)||PluginInfo.MemoryBswaped==FALSE) return FALSE;
 	AiCloseDLL=(void (__cdecl*)(void))GetProcAddress(hAudioDll,"CloseDLL");
-	if (AiCloseDLL==NULL) return FALSE;
+	if (AiCloseDLL==0) return FALSE;
 	AiDacrateChanged=(void (__cdecl*)(int))GetProcAddress(hAudioDll,"AiDacrateChanged");
-	if (AiDacrateChanged==NULL) return FALSE;
+	if (AiDacrateChanged==0) return FALSE;
 	AiLenChanged=(void (__cdecl*)(void))GetProcAddress(hAudioDll,"AiLenChanged");
-	if (AiLenChanged==NULL) return FALSE;
+	if (AiLenChanged==0) return FALSE;
 	AiReadLength=(DWORD (__cdecl*)(void))GetProcAddress(hAudioDll,"AiReadLength");
-	if (AiReadLength==NULL) return FALSE;
+	if (AiReadLength==0) return FALSE;
 	InitiateAudio=(BOOL (__cdecl*)(AUDIO_INFO))GetProcAddress(hAudioDll,"InitiateAudio");
-	if (InitiateAudio==NULL) return FALSE;
+	if (InitiateAudio==0) return FALSE;
 	AiRomClosed=(void (__cdecl*)(void))GetProcAddress(hAudioDll,"RomClosed");
-	if (AiRomClosed==NULL) return FALSE;
+	if (AiRomClosed==0) return FALSE;
 	ProcessAList=(void (__cdecl*)(void))GetProcAddress(hAudioDll,"ProcessAList");
-	if (ProcessAList==NULL) return FALSE;
+	if (ProcessAList==0) return FALSE;
 	AiDllConfig=(void (__cdecl*)(HWND))GetProcAddress(hAudioDll,"DllConfig");
 	AiUpdate=(void (__cdecl*)(BOOL))GetProcAddress(hAudioDll,"AiUpdate");
 	return TRUE;
@@ -109,23 +108,23 @@ BOOL LoadControllerDll(char*ControllerDll) {
 	GetPluginDir(DllName);
 	strcat(DllName,ControllerDll);
 	hControllerDll=LoadLibrary(DllName);
-	if (hControllerDll==NULL) return FALSE;
+	if (hControllerDll==0) return FALSE;
 	GetDllInfo=(void (__cdecl*)(PLUGIN_INFO*))GetProcAddress(hControllerDll,"GetDllInfo");
-	if (GetDllInfo==NULL) return FALSE;
+	if (GetDllInfo==0) return FALSE;
 	PluginInfo.MemoryBswaped=TRUE;
 	PluginInfo.NormalMemory=TRUE;
 	GetDllInfo(&PluginInfo);
 	if (!ValidPluginVersion(&PluginInfo)||PluginInfo.MemoryBswaped==FALSE) return FALSE;
 	ContVersion=PluginInfo.Version;
 	ContCloseDLL=(void (__cdecl*)(void))GetProcAddress(hControllerDll,"CloseDLL");
-	if (ContCloseDLL==NULL) return FALSE;
+	if (ContCloseDLL==0) return FALSE;
 	if (ContVersion==0x0100) {
 		InitiateControllers_1_0=(void (__cdecl*)(HWND,CONTROL*))GetProcAddress(hControllerDll,"InitiateControllers");
-		if (InitiateControllers_1_0==NULL) return FALSE;
+		if (InitiateControllers_1_0==0) return FALSE;
 	}
 	if (ContVersion==0x0101) {
 		InitiateControllers_1_1=(void (__cdecl*)(CONTROL_INFO))GetProcAddress(hControllerDll,"InitiateControllers");
-		if (InitiateControllers_1_1==NULL) return FALSE;
+		if (InitiateControllers_1_1==0) return FALSE;
 	}
 	ControllerCommand=(void (__cdecl*)(int,BYTE*))GetProcAddress(hControllerDll,"ControllerCommand");
 	ReadController=(void (__cdecl*)(int,BYTE*))GetProcAddress(hControllerDll,"ReadController");
@@ -144,44 +143,44 @@ BOOL LoadGFXDll(char*RSPDLL) {
 	GetPluginDir(DllName);
 	strcat(DllName,GfxDLL);
 	hGfxDll=LoadLibrary(DllName);
-	if (hGfxDll==NULL) return FALSE;
+	if (hGfxDll==0) return FALSE;
 	GetDllInfo=(void (__cdecl*)(PLUGIN_INFO*))GetProcAddress(hGfxDll,"GetDllInfo");
-	if (GetDllInfo==NULL) return FALSE;
+	if (GetDllInfo==0) return FALSE;
 	GetDllInfo(&PluginInfo);
 	if (!ValidPluginVersion(&PluginInfo)||PluginInfo.MemoryBswaped==FALSE) return FALSE;
 	GFXCloseDLL=(void (__cdecl*)(void))GetProcAddress(hGfxDll,"CloseDLL");
-	if (GFXCloseDLL==NULL) return FALSE;
+	if (GFXCloseDLL==0) return FALSE;
 	ChangeWindow=(void (__cdecl*)(void))GetProcAddress(hGfxDll,"ChangeWindow");
-	if (ChangeWindow==NULL) return FALSE;
+	if (ChangeWindow==0) return FALSE;
 	GFXDllConfig=(void (__cdecl*)(HWND))GetProcAddress(hGfxDll,"DllConfig");
-	if (GFXDllConfig==NULL) return FALSE;
+	if (GFXDllConfig==0) return FALSE;
 	InitiateGFX=(BOOL (__cdecl*)(GFX_INFO))GetProcAddress(hGfxDll,"InitiateGFX");
-	if (InitiateGFX==NULL) return FALSE;
+	if (InitiateGFX==0) return FALSE;
 	MoveScreen=(void (__cdecl*)(int,int))GetProcAddress(hGfxDll,"MoveScreen");
-	if (MoveScreen==NULL) return FALSE;
+	if (MoveScreen==0) return FALSE;
 	ProcessDList=(void (__cdecl*)(void))GetProcAddress(hGfxDll,"ProcessDList");
-	if (ProcessDList==NULL) return FALSE;
+	if (ProcessDList==0) return FALSE;
 	GfxRomClosed=(void (__cdecl*)(void))GetProcAddress(hGfxDll,"RomClosed");
-	if (GfxRomClosed==NULL) return FALSE;
+	if (GfxRomClosed==0) return FALSE;
 	GfxRomOpen=(void (__cdecl*)(void))GetProcAddress(hGfxDll,"RomOpen");
-	if (GfxRomOpen==NULL) return FALSE;
+	if (GfxRomOpen==0) return FALSE;
 	UpdateScreen=(void (__cdecl*)(void))GetProcAddress(hGfxDll,"UpdateScreen");
-	if (UpdateScreen==NULL) return FALSE;
+	if (UpdateScreen==0) return FALSE;
 	ViStatusChanged=(void (__cdecl*)(void))GetProcAddress(hGfxDll,"ViStatusChanged");
-	if (ViStatusChanged==NULL) return FALSE;
+	if (ViStatusChanged==0) return FALSE;
 	ViWidthChanged=(void (__cdecl*)(void))GetProcAddress(hGfxDll,"ViWidthChanged");
-	if (ViWidthChanged==NULL) return FALSE;
+	if (ViWidthChanged==0) return FALSE;
 	if (PluginInfo.Version>=0x0103) {
 		ProcessRDPList=(void (__cdecl*)(void))GetProcAddress(hGfxDll,"ProcessRDPList");
-		if (ProcessRDPList==NULL) return FALSE;
+		if (ProcessRDPList==0) return FALSE;
 		CaptureScreen=(void (__cdecl*)(char*))GetProcAddress(hGfxDll,"CaptureScreen");
-		if (CaptureScreen==NULL) return FALSE;
+		if (CaptureScreen==0) return FALSE;
 		ShowCFB=(void (__cdecl*)(void))GetProcAddress(hGfxDll,"ShowCFB");
-		if (ShowCFB==NULL) return FALSE;
+		if (ShowCFB==0) return FALSE;
 	} else {
-		ProcessRDPList=NULL;
-		CaptureScreen=NULL;
-		ShowCFB=NULL;
+		ProcessRDPList=0;
+		CaptureScreen=0;
+		ShowCFB=0;
 	}
 	return TRUE;
 }
@@ -191,32 +190,32 @@ BOOL LoadRSPDLL(char*RSPDLL) {
 	GetPluginDir(DllName);
 	strcat(DllName,RSPDLL);
 	hRSPDLL=LoadLibrary(DllName);
-	if (hRSPDLL==NULL) return FALSE;
+	if (hRSPDLL==0) return FALSE;
 	GetDllInfo=(void (__cdecl*)(PLUGIN_INFO*))GetProcAddress(hRSPDLL,"GetDllInfo");
-	if (GetDllInfo==NULL) return FALSE;
+	if (GetDllInfo==0) return FALSE;
 	GetDllInfo(&PluginInfo);
 	if (!ValidPluginVersion(&PluginInfo)||PluginInfo.MemoryBswaped==FALSE) return FALSE;
 	RSPVersion=PluginInfo.Version;
-	if (RSPVersion==1) { RSPVersion=0x0100; }
+	if (RSPVersion==1) {RSPVersion=0x0100;}
 	DoRspCycles=(DWORD (__cdecl*)(DWORD))GetProcAddress(hRSPDLL,"DoRspCycles");
-	if (DoRspCycles==NULL) return FALSE;
-	InitiateRSP_1_0=NULL;
-	InitiateRSP_1_1=NULL;
+	if (DoRspCycles==0) return FALSE;
+	InitiateRSP_1_0=0;
+	InitiateRSP_1_1=0;
 	if (RSPVersion==0x100) {
 		InitiateRSP_1_0=(void (__cdecl*)(RSP_INFO_1_0,DWORD*))GetProcAddress(hRSPDLL,"InitiateRSP");
-		if (InitiateRSP_1_0==NULL) return FALSE;
+		if (InitiateRSP_1_0==0) return FALSE;
 	}
 	if (RSPVersion==0x101) {
 		InitiateRSP_1_1=(void (__cdecl*)(RSP_INFO_1_1,DWORD*))GetProcAddress(hRSPDLL,"InitiateRSP");
-		if (InitiateRSP_1_1==NULL) return FALSE;
+		if (InitiateRSP_1_1==0) return FALSE;
 	}
 	RSPRomClosed=(void (__cdecl*)(void))GetProcAddress(hRSPDLL,"RomClosed");
-	if (RSPRomClosed==NULL) return FALSE;
+	if (RSPRomClosed==0) return FALSE;
 	RSPCloseDLL=(void (__cdecl*)(void))GetProcAddress(hRSPDLL,"CloseDLL");
-	if (RSPCloseDLL==NULL) return FALSE;
+	if (RSPCloseDLL==0) return FALSE;
 	return TRUE;
 }
-void SetupPlugins (HWND hWnd) {
+void HandleGlobalTasks (HWND hWnd) {
 	int FAIL_MSG;
 	long lResult;
 	char String[256];
@@ -227,10 +226,7 @@ void SetupPlugins (HWND hWnd) {
 	lResult=RegOpenKeyEx(HKEY_CURRENT_USER,String,0,KEY_ALL_ACCESS,&hKeyResults);
 	if (lResult==ERROR_SUCCESS) {
 		DWORD Type,Bytes=100;
-		lResult=RegQueryValueEx(hKeyResults,"RSP Dll",0,&Type,(LPBYTE)(RSPDLL),&Bytes);
-		if (lResult!=ERROR_SUCCESS) sprintf(RSPDLL,"%s",DefaultRSPDLL);
 		if (!inFullScreen) {
-			Bytes=100;
 			lResult=RegQueryValueEx(hKeyResults,"Graphics Dll",0,&Type,(LPBYTE)(GfxDLL),&Bytes);
 			if (lResult!=ERROR_SUCCESS) sprintf(GfxDLL,"%s",DefaultGFXDll);
 		}
@@ -240,6 +236,9 @@ void SetupPlugins (HWND hWnd) {
 		Bytes=100;
 		lResult=RegQueryValueEx(hKeyResults,"Controller Dll",0,&Type,(LPBYTE)(ControllerDLL),&Bytes);
 		if (lResult!=ERROR_SUCCESS) sprintf(ControllerDLL,"%s",DefaultControllerDll);
+		Bytes=100;
+		lResult=RegQueryValueEx(hKeyResults,"RSP Dll",0,&Type,(LPBYTE)(RSPDLL),&Bytes);
+		if (lResult!=ERROR_SUCCESS) sprintf(RSPDLL,"%s",DefaultRSPDLL);
 	} else {
 		sprintf(RSPDLL,"%s",DefaultRSPDLL);
 		sprintf(GfxDLL,"%s",DefaultGFXDll);
@@ -247,7 +246,7 @@ void SetupPlugins (HWND hWnd) {
 		sprintf(ControllerDLL,"%s",DefaultControllerDll);
 	}
 	if ((strcmp(GfxDLL,"Direct64-1.6.2.dll")==0||strcmp(GfxDLL,"Glide64.dll")==0||strcmp(GfxDLL,"Jabo_Direct3D8.dll")==0)&&strcmp(RSPDLL,"Icepir8sLegacyRSP.dll")==0) strcpy(RSPDLL,"RSP.dll");
-	ShutdownPlugins();
+	SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(PLUGINS_INITIALIZING));
 	if (CPURunning) {
 		ReadRomSettings();
 		SyncGametoAudio=RomSyncGametoAudio;
@@ -284,30 +283,35 @@ void SetupPlugins (HWND hWnd) {
 		EmulateAI=FALSE;
 		if (strcmp(AudioDLL,"No Audio.dll")==0||RomJAI||RomShankleAziAI) EmulateAI=TRUE;
 		if (ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON) {
-			if (VirtualAlloc(RecompCode,0x03200000,MEM_COMMIT,PAGE_EXECUTE_READWRITE)==NULL) { // Performance
+			if (VirtualAlloc(RecompCode,0x03200000,MEM_COMMIT,PAGE_EXECUTE_READWRITE)==0) {// Performance
 				DisplayError(GS(MSG_MEM_ALLOC_ERROR));
-				DisplayThreadExit("SetupPlugins-ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON-VirtualAlloc(RecompCode,0x03200000,MEM_COMMIT,PAGE_EXECUTE_READWRITE)==NULL\n\nFailed on boot");
+				HandleShutdown();
+				return;
 			}
 		} else {
 			VirtualFree(RecompCode,0x03200000,MEM_DECOMMIT);
-			if (VirtualAlloc(RecompCode,0x01400000,MEM_COMMIT,PAGE_EXECUTE_READWRITE)==NULL) {
+			if (VirtualAlloc(RecompCode,0x01400000,MEM_COMMIT,PAGE_EXECUTE_READWRITE)==0) {
 				DisplayError(GS(MSG_MEM_ALLOC_ERROR));
-				DisplayThreadExit("SetupPlugins-ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON-else-VirtualAlloc(RecompCode,0x01400000,MEM_COMMIT,PAGE_EXECUTE_READWRITE)==NULL\n\nFailed on boot");
+				HandleShutdown();
+				return;
 			}
 		}
 		if (NewRAMsize!=RDRAMsize) {
 			if (RDRAMsize==0x400000) {
-				if (VirtualAlloc(N64MEM+0x400000,0x400000,MEM_COMMIT,PAGE_READWRITE)==NULL) {
+				if (VirtualAlloc(N64MEM+0x400000,0x400000,MEM_COMMIT,PAGE_READWRITE)==0) {
 					DisplayError(GS(MSG_MEM_ALLOC_ERROR));
-					DisplayThreadExit("SetupPlugins-VirtualAlloc(N64MEM+0x400000,0x400000,MEM_COMMIT,PAGE_READWRITE)==NULL\n\nFailed on boot");
+					HandleShutdown();
+					return;
 				}
-				if (VirtualAlloc((BYTE*)JumpTable+0x400000,0x400000,MEM_COMMIT,PAGE_READWRITE)==NULL) {
+				if (VirtualAlloc((BYTE*)JumpTable+0x400000,0x400000,MEM_COMMIT,PAGE_READWRITE)==0) {
 					DisplayError(GS(MSG_MEM_ALLOC_ERROR));
-					DisplayThreadExit("SetupPlugins-VirtualAlloc((BYTE*)JumpTable+0x400000,0x400000,MEM_COMMIT,PAGE_READWRITE)==NULL\n\nFailed on boot");
+					HandleShutdown();
+					return;
 				}
-				if (VirtualAlloc((BYTE*)DelaySlotTable+(0x400000>>0xA),(0x400000>>0xA),MEM_COMMIT,PAGE_READWRITE)==NULL) {
+				if (VirtualAlloc((BYTE*)DelaySlotTable+(0x400000>>0xA),(0x400000>>0xA),MEM_COMMIT,PAGE_READWRITE)==0) {
 					DisplayError(GS(MSG_MEM_ALLOC_ERROR));
-					DisplayThreadExit("SetupPlugins-VirtualAlloc((BYTE*)DelaySlotTable+(0x400000>>0xA),(0x400000>>0xA),MEM_COMMIT,PAGE_READWRITE)==NULL\n\nFailed on boot");
+					HandleShutdown();
+					return;
 				}
 			} else {
 				VirtualFree(N64MEM+0x400000,0x400000,MEM_DECOMMIT);
@@ -317,29 +321,26 @@ void SetupPlugins (HWND hWnd) {
 		}
 		RDRAMsize=NewRAMsize;
 		LoadCheats();
-		HandleWindowTitle();
-	}
-	ShowWindow(hMainWindow,SW_RESTORE);
-	SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(PLUGINS_INITIALIZING));
-	PluginsInitialized=TRUE;
-	if (!inFullScreen) {
-		if (CPURunning) {
+		if (!inFullScreen) {
 			if (strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) {
-				if (!GonetzGLHasBeenSetupFirst) {
-					GonetzGLNeedsToBeSetupFirst=TRUE;
+				if (GonetzGLHasBeenSetupFirst) goto SIZE_MAXIMIZE;
+				else {
+					GLideN64NeedsToBeSetupFirst=TRUE;
 					strcpy(GfxDLL,"GLideN64.dll");
 				}
-				goto SIZE_MAXIMIZE;
 			} else {
 				SetWindowLong(hMainWindow,GWL_STYLE,GetWindowLong(hMainWindow,GWL_STYLE)&~(WS_SIZEBOX|WS_MAXIMIZEBOX));
 				DrawMenuBar(hMainWindow);
 			}
-		} else SIZE_MAXIMIZE: SetWindowLong(hMainWindow,GWL_STYLE,GetWindowLong(hMainWindow,GWL_STYLE)|WS_SIZEBOX|WS_MAXIMIZEBOX);
+		}
+	} else SIZE_MAXIMIZE: SetWindowLong(hMainWindow,GWL_STYLE,GetWindowLong(hMainWindow,GWL_STYLE)|WS_SIZEBOX|WS_MAXIMIZEBOX);
+	ShutdownPlugins();
+	PluginsInitialized=TRUE;
+	if (!inFullScreen) {
 		if (!LoadGFXDll(GfxDLL)) {
-			if (GonetzGLNeedsToBeSetupFirst) goto DONE_INIT_GLideN64;
+			if (GLideN64NeedsToBeSetupFirst) goto DONE_INIT_GLideN64;
 			FAIL_MSG=MSG_FAIL_INIT_GFX;
 			PluginsInitialized=FALSE;
-			goto FAIL_INIT;
 		} else {
 			GFX_INFO GfxInfo;
 			GfxInfo.MemoryBswaped=TRUE;
@@ -374,199 +375,196 @@ void SetupPlugins (HWND hWnd) {
 			GfxInfo.VI__X_SCALE_REG=&VI_X_SCALE_REG;
 			GfxInfo.VI__Y_SCALE_REG=&VI_Y_SCALE_REG;
 			if (!InitiateGFX(GfxInfo)) {
-				if (GonetzGLNeedsToBeSetupFirst) goto DONE_INIT_GLideN64;
+				if (GLideN64NeedsToBeSetupFirst) goto DONE_INIT_GLideN64;
 				FAIL_MSG=MSG_FAIL_INIT_GFX;
 				PluginsInitialized=FALSE;
-				goto FAIL_INIT;
 			}
 		}
+		if (GLideN64NeedsToBeSetupFirst) goto StartEmulation;
 	}
-	if (!GonetzGLNeedsToBeSetupFirst) {
-		if (!LoadAudioDll(AudioDLL)) {
-			AiCloseDLL=NULL;
-			AiDacrateChanged=NULL;
-			AiLenChanged=NULL;
-			AiReadLength=NULL;
-			AiUpdate=NULL;
-			InitiateAudio=NULL;
-			ProcessAList=NULL;
-			AiRomClosed=NULL;
+	if (!LoadAudioDll(AudioDLL)) {
+		AiCloseDLL=0;
+		AiDacrateChanged=0;
+		AiLenChanged=0;
+		AiReadLength=0;
+		AiUpdate=0;
+		InitiateAudio=0;
+		ProcessAList=0;
+		AiRomClosed=0;
+		FAIL_MSG=MSG_FAIL_INIT_AUDIO;
+		PluginsInitialized=FALSE;
+	} else {
+		AUDIO_INFO AudioInfo;
+		AudioInfo.hwnd=hWnd;
+		AudioInfo.hinst=hInst;
+		AudioInfo.MemoryBswaped=TRUE;
+		AudioInfo.HEADER=RomHeader;
+		AudioInfo.RDRAM=N64MEM;
+		AudioInfo.DMEM=DMEM;
+		AudioInfo.IMEM=IMEM;
+		if (EmulateAI) AudioInfo.MI__INTR_REG=&AI_DUMMY;
+		else AudioInfo.MI__INTR_REG=&AudioIntrReg;
+		AudioInfo.AI__DRAM_ADDR_REG=&AI_DRAM_ADDR_REG;
+		AudioInfo.AI__LEN_REG=&AI_LEN_REG;
+		AudioInfo.AI__CONTROL_REG=&AI_CONTROL_REG;
+		if (EmulateAI||SyncGametoAudio) AudioInfo.AI__STATUS_REG=&AI_DUMMY;
+		else AudioInfo.AI__STATUS_REG=&AI_STATUS_REG;
+		AudioInfo.AI__DACRATE_REG=&AI_DACRATE_REG;
+		AudioInfo.AI__BITRATE_REG=&AI_BITRATE_REG;
+		AudioInfo.CheckInterrupts=AiCheckInterrupts;
+		if (EmulateAI) EmuAI_InitializePluginHook();
+		if (!InitiateAudio(AudioInfo)) {
+			AiCloseDLL=0;
+			AiDacrateChanged=0;
+			AiLenChanged=0;
+			AiReadLength=0;
+			AiUpdate=0;
+			InitiateAudio=0;
+			ProcessAList=0;
+			AiRomClosed=0;
 			FAIL_MSG=MSG_FAIL_INIT_AUDIO;
 			PluginsInitialized=FALSE;
-			goto FAIL_INIT;
-		} else {
-			AUDIO_INFO AudioInfo;
-			AudioInfo.hwnd=hWnd;
-			AudioInfo.hinst=hInst;
-			AudioInfo.MemoryBswaped=TRUE;
-			AudioInfo.HEADER=RomHeader;
-			AudioInfo.RDRAM=N64MEM;
-			AudioInfo.DMEM=DMEM;
-			AudioInfo.IMEM=IMEM;
-			if (EmulateAI) AudioInfo.MI__INTR_REG=&AI_DUMMY;
-			else AudioInfo.MI__INTR_REG=&AudioIntrReg;
-			AudioInfo.AI__DRAM_ADDR_REG=&AI_DRAM_ADDR_REG;
-			AudioInfo.AI__LEN_REG=&AI_LEN_REG;
-			AudioInfo.AI__CONTROL_REG=&AI_CONTROL_REG;
-			if (EmulateAI||SyncGametoAudio) AudioInfo.AI__STATUS_REG=&AI_DUMMY;
-			else AudioInfo.AI__STATUS_REG=&AI_STATUS_REG;
-			AudioInfo.AI__DACRATE_REG=&AI_DACRATE_REG;
-			AudioInfo.AI__BITRATE_REG=&AI_BITRATE_REG;
-			AudioInfo.CheckInterrupts=AiCheckInterrupts;
-			if (EmulateAI) EmuAI_InitializePluginHook();
-			if (!InitiateAudio(AudioInfo)) {
-				AiCloseDLL=NULL;
-				AiDacrateChanged=NULL;
-				AiLenChanged=NULL;
-				AiReadLength=NULL;
-				AiUpdate=NULL;
-				InitiateAudio=NULL;
-				ProcessAList=NULL;
-				AiRomClosed=NULL;
-				FAIL_MSG=MSG_FAIL_INIT_AUDIO;
-				PluginsInitialized=FALSE;
-				goto FAIL_INIT;
-			}
-			if (AiUpdate) hAudioThread=CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)AudioThread,(LPVOID)NULL,0,NULL);
 		}
-		if (!LoadControllerDll(ControllerDLL)) {
-			FAIL_MSG=MSG_FAIL_INIT_CONTROL;
-			PluginsInitialized=FALSE;
-			goto FAIL_INIT;
-		} else {
-			Controllers[0].Present=FALSE;
-			Controllers[0].RawData=FALSE;
-			Controllers[0].Plugin=PLUGIN_NONE;
-			Controllers[1].Present=FALSE;
-			Controllers[1].RawData=FALSE;
-			Controllers[1].Plugin=PLUGIN_NONE;
-			Controllers[2].Present=FALSE;
-			Controllers[2].RawData=FALSE;
-			Controllers[2].Plugin=PLUGIN_NONE;
-			Controllers[3].Present=FALSE;
-			Controllers[3].RawData=FALSE;
-			Controllers[3].Plugin=PLUGIN_NONE;
-			if (ContVersion==0x0100) {
-				InitiateControllers_1_0(hWnd,Controllers);
-			}
-			if (ContVersion==0x0101) {
-				CONTROL_INFO ControlInfo;
-				ControlInfo.Controls=Controllers;
-				ControlInfo.HEADER=RomHeader;
-				ControlInfo.hinst=hInst;
-				ControlInfo.hMainWindow=hWnd;
-				ControlInfo.MemoryBswaped=TRUE;
-				InitiateControllers_1_1(ControlInfo);
-			}
+		if (AiUpdate&&PluginsInitialized) hAudioThread=CreateThread(0,0,(LPTHREAD_START_ROUTINE)AudioThread,(LPVOID)0,0,0);
+	}
+	if (!LoadControllerDll(ControllerDLL)) {
+		FAIL_MSG=MSG_FAIL_INIT_CONTROL;
+		PluginsInitialized=FALSE;
+	} else {
+		Controllers[0].Present=FALSE;
+		Controllers[0].RawData=FALSE;
+		Controllers[0].Plugin=PLUGIN_NONE;
+		Controllers[1].Present=FALSE;
+		Controllers[1].RawData=FALSE;
+		Controllers[1].Plugin=PLUGIN_NONE;
+		Controllers[2].Present=FALSE;
+		Controllers[2].RawData=FALSE;
+		Controllers[2].Plugin=PLUGIN_NONE;
+		Controllers[3].Present=FALSE;
+		Controllers[3].RawData=FALSE;
+		Controllers[3].Plugin=PLUGIN_NONE;
+		if (ContVersion==0x0100) {
+			InitiateControllers_1_0(hWnd,Controllers);
 		}
-		if (!LoadRSPDLL(RSPDLL)) {
-			FAIL_MSG=MSG_FAIL_INIT_RSP;
-			PluginsInitialized=FALSE;
-			goto FAIL_INIT;
-		} else {
-			DWORD dwDataListsFromPluginInterpreterCore=0x00000000,dwDataListsToPluginRecompilerCore=0x00000001,dwDisposition;
-			const char*regPath="PJ64 V 1.6.2\\Configuration\\1.6 RSP";
-			HKEY hKey;
-			LONG lRet;
-			lRet=RegCreateKeyExA(HKEY_CURRENT_USER,regPath,0,NULL,REG_OPTION_NON_VOLATILE,KEY_SET_VALUE,NULL,&hKey,&dwDisposition);
-			if (lRet==ERROR_SUCCESS&&CPURunning&&strcmp(RSPDLL,"RSP.dll")==0) {
-				if (RomRspRecompiler) RegSetValueEx(hKey,"RSP Core",0,REG_DWORD,(const BYTE*)&dwDataListsToPluginRecompilerCore,sizeof(dwDataListsToPluginRecompilerCore));
-				else RegSetValueEx(hKey,"RSP Core",0,REG_DWORD,(const BYTE*)&dwDataListsFromPluginInterpreterCore,sizeof(dwDataListsFromPluginInterpreterCore));
-				if (strcmp(AudioDLL,"Jabo_Dsound.dll")==0) RegSetValueEx(hKey,"List Type",0,REG_DWORD,(const BYTE*)&dwDataListsFromPluginInterpreterCore,sizeof(dwDataListsFromPluginInterpreterCore));
-				else RegSetValueEx(hKey,"List Type",0,REG_DWORD,(const BYTE*)&dwDataListsToPluginRecompilerCore,sizeof(dwDataListsToPluginRecompilerCore));
-				RegCloseKey(hKey);
-			}
-			RSP_INFO_1_0 RspInfo10;
-			RSP_INFO_1_1 RspInfo11;
-			RspInfo10.CheckInterrupts=CheckInterrupts;
-			RspInfo11.CheckInterrupts=CheckInterrupts;
-			RspInfo10.ProcessDlist=ProcessDList;
-			RspInfo11.ProcessDlist=ProcessDList;
-			RspInfo10.ProcessAlist=ProcessAList;
-			RspInfo11.ProcessAlist=ProcessAList;
-			RspInfo10.ProcessRdpList=ProcessRDPList;
-			RspInfo11.ProcessRdpList=ProcessRDPList;
-			RspInfo11.ShowCFB=ShowCFB;
-			RspInfo10.hInst=hInst;
-			RspInfo11.hInst=hInst;
-			RspInfo10.RDRAM=N64MEM;
-			RspInfo11.RDRAM=N64MEM;
-			RspInfo10.DMEM=DMEM;
-			RspInfo11.DMEM=DMEM;
-			RspInfo10.IMEM=IMEM;
-			RspInfo11.IMEM=IMEM;
-			RspInfo10.MemoryBswaped=FALSE;
-			RspInfo11.MemoryBswaped=FALSE;
-			RspInfo10.MI__INTR_REG=&MI_INTR_REG;
-			RspInfo11.MI__INTR_REG=&MI_INTR_REG;
-			RspInfo10.SP__MEM_ADDR_REG=&SP_MEM_ADDR_REG;
-			RspInfo11.SP__MEM_ADDR_REG=&SP_MEM_ADDR_REG;
-			RspInfo10.SP__DRAM_ADDR_REG=&SP_DRAM_ADDR_REG;
-			RspInfo11.SP__DRAM_ADDR_REG=&SP_DRAM_ADDR_REG;
-			RspInfo10.SP__RD_LEN_REG=&SP_RD_LEN_REG;
-			RspInfo11.SP__RD_LEN_REG=&SP_RD_LEN_REG;
-			RspInfo10.SP__WR_LEN_REG=&SP_WR_LEN_REG;
-			RspInfo11.SP__WR_LEN_REG=&SP_WR_LEN_REG;
-			RspInfo10.SP__STATUS_REG=&SP_STATUS_REG;
-			RspInfo11.SP__STATUS_REG=&SP_STATUS_REG;
-			RspInfo10.SP__DMA_FULL_REG=&SP_DMA_FULL_REG;
-			RspInfo11.SP__DMA_FULL_REG=&SP_DMA_FULL_REG;
-			RspInfo10.SP__DMA_BUSY_REG=&SP_DMA_BUSY_REG;
-			RspInfo11.SP__DMA_BUSY_REG=&SP_DMA_BUSY_REG;
-			RspInfo10.SP__PC_REG=&SP_PC_REG;
-			RspInfo11.SP__PC_REG=&SP_PC_REG;
-			RspInfo10.SP__SEMAPHORE_REG=&SP_SEMAPHORE_REG;
-			RspInfo11.SP__SEMAPHORE_REG=&SP_SEMAPHORE_REG;
-			RspInfo10.DPC__START_REG=&DPC_START_REG;
-			RspInfo11.DPC__START_REG=&DPC_START_REG;
-			RspInfo10.DPC__END_REG=&DPC_END_REG;
-			RspInfo11.DPC__END_REG=&DPC_END_REG;
-			RspInfo10.DPC__CURRENT_REG=&DPC_CURRENT_REG;
-			RspInfo11.DPC__CURRENT_REG=&DPC_CURRENT_REG;
-			RspInfo10.DPC__STATUS_REG=&DPC_STATUS_REG;
-			RspInfo11.DPC__STATUS_REG=&DPC_STATUS_REG;
-			RspInfo10.DPC__CLOCK_REG=&DPC_CLOCK_REG;
-			RspInfo11.DPC__CLOCK_REG=&DPC_CLOCK_REG;
-			RspInfo10.DPC__BUFBUSY_REG=&DPC_BUFBUSY_REG;
-			RspInfo11.DPC__BUFBUSY_REG=&DPC_BUFBUSY_REG;
-			RspInfo10.DPC__PIPEBUSY_REG=&DPC_PIPEBUSY_REG;
-			RspInfo11.DPC__PIPEBUSY_REG=&DPC_PIPEBUSY_REG;
-			RspInfo10.DPC__TMEM_REG=&DPC_TMEM_REG;
-			RspInfo11.DPC__TMEM_REG=&DPC_TMEM_REG;
-			if (RSPVersion==0x0100) InitiateRSP_1_0(RspInfo10,&RspTaskValue);
-			if (RSPVersion==0x0101) InitiateRSP_1_1(RspInfo11,&RspTaskValue);
+		if (ContVersion==0x0101) {
+			CONTROL_INFO ControlInfo;
+			ControlInfo.Controls=Controllers;
+			ControlInfo.HEADER=RomHeader;
+			ControlInfo.hinst=hInst;
+			ControlInfo.hMainWindow=hWnd;
+			ControlInfo.MemoryBswaped=TRUE;
+			InitiateControllers_1_1(ControlInfo);
 		}
-		FAIL_INIT:
-		// SetWindowLong for GWL_EXSTYLE post video plugin initialization because it crashes if done before.
-		if (CPURunning&&strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) SetWindowLong(hMainWindow,GWL_EXSTYLE,GetWindowLong(hMainWindow,GWL_EXSTYLE)|WS_EX_COMPOSITED); // Fix flashing on LLE window resize.
-		if (!CPURunning||strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")!=0) SetWindowLong(hMainWindow,GWL_EXSTYLE,GetWindowLong(hMainWindow,GWL_EXSTYLE)&~WS_EX_COMPOSITED);  // Remove flash fix for LLE window resize when going to other video plugins or ROM Browser to avoid conflicts.
-		SetupMenu(hMainWindow);
-		UsuallyonTopWindow(hMainWindow);
-		if (PluginsInitialized) SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(PLUGINS_INITIALIZED));
+	}
+	if (!LoadRSPDLL(RSPDLL)) {
+		FAIL_MSG=MSG_FAIL_INIT_RSP;
+		PluginsInitialized=FALSE;
+	} else {
+		DWORD dwDataListsFromPluginInterpreterCore=0x00000000,dwDataListsToPluginRecompilerCore=0x00000001,dwDisposition;
+		const char*regPath="PJ64 V 1.6.2\\Configuration\\1.6 RSP";
+		HKEY hKey;
+		LONG lRet;
+		lRet=RegCreateKeyExA(HKEY_CURRENT_USER,regPath,0,0,REG_OPTION_NON_VOLATILE,KEY_SET_VALUE,0,&hKey,&dwDisposition);
+		if (lRet==ERROR_SUCCESS&&CPURunning&&strcmp(RSPDLL,"RSP.dll")==0) {
+			if (RomRspRecompiler) RegSetValueEx(hKey,"RSP Core",0,REG_DWORD,(const BYTE*)&dwDataListsToPluginRecompilerCore,sizeof(dwDataListsToPluginRecompilerCore));
+			else RegSetValueEx(hKey,"RSP Core",0,REG_DWORD,(const BYTE*)&dwDataListsFromPluginInterpreterCore,sizeof(dwDataListsFromPluginInterpreterCore));
+			if (strcmp(AudioDLL,"Jabo_Dsound.dll")==0) RegSetValueEx(hKey,"List Type",0,REG_DWORD,(const BYTE*)&dwDataListsFromPluginInterpreterCore,sizeof(dwDataListsFromPluginInterpreterCore));
+			else RegSetValueEx(hKey,"List Type",0,REG_DWORD,(const BYTE*)&dwDataListsToPluginRecompilerCore,sizeof(dwDataListsToPluginRecompilerCore));
+			RegCloseKey(hKey);
+		}
+		RSP_INFO_1_0 RspInfo10;
+		RSP_INFO_1_1 RspInfo11;
+		RspInfo10.CheckInterrupts=CheckInterrupts;
+		RspInfo11.CheckInterrupts=CheckInterrupts;
+		RspInfo10.ProcessDlist=ProcessDList;
+		RspInfo11.ProcessDlist=ProcessDList;
+		RspInfo10.ProcessAlist=ProcessAList;
+		RspInfo11.ProcessAlist=ProcessAList;
+		RspInfo10.ProcessRdpList=ProcessRDPList;
+		RspInfo11.ProcessRdpList=ProcessRDPList;
+		RspInfo11.ShowCFB=ShowCFB;
+		RspInfo10.hInst=hInst;
+		RspInfo11.hInst=hInst;
+		RspInfo10.RDRAM=N64MEM;
+		RspInfo11.RDRAM=N64MEM;
+		RspInfo10.DMEM=DMEM;
+		RspInfo11.DMEM=DMEM;
+		RspInfo10.IMEM=IMEM;
+		RspInfo11.IMEM=IMEM;
+		RspInfo10.MemoryBswaped=FALSE;
+		RspInfo11.MemoryBswaped=FALSE;
+		RspInfo10.MI__INTR_REG=&MI_INTR_REG;
+		RspInfo11.MI__INTR_REG=&MI_INTR_REG;
+		RspInfo10.SP__MEM_ADDR_REG=&SP_MEM_ADDR_REG;
+		RspInfo11.SP__MEM_ADDR_REG=&SP_MEM_ADDR_REG;
+		RspInfo10.SP__DRAM_ADDR_REG=&SP_DRAM_ADDR_REG;
+		RspInfo11.SP__DRAM_ADDR_REG=&SP_DRAM_ADDR_REG;
+		RspInfo10.SP__RD_LEN_REG=&SP_RD_LEN_REG;
+		RspInfo11.SP__RD_LEN_REG=&SP_RD_LEN_REG;
+		RspInfo10.SP__WR_LEN_REG=&SP_WR_LEN_REG;
+		RspInfo11.SP__WR_LEN_REG=&SP_WR_LEN_REG;
+		RspInfo10.SP__STATUS_REG=&SP_STATUS_REG;
+		RspInfo11.SP__STATUS_REG=&SP_STATUS_REG;
+		RspInfo10.SP__DMA_FULL_REG=&SP_DMA_FULL_REG;
+		RspInfo11.SP__DMA_FULL_REG=&SP_DMA_FULL_REG;
+		RspInfo10.SP__DMA_BUSY_REG=&SP_DMA_BUSY_REG;
+		RspInfo11.SP__DMA_BUSY_REG=&SP_DMA_BUSY_REG;
+		RspInfo10.SP__PC_REG=&SP_PC_REG;
+		RspInfo11.SP__PC_REG=&SP_PC_REG;
+		RspInfo10.SP__SEMAPHORE_REG=&SP_SEMAPHORE_REG;
+		RspInfo11.SP__SEMAPHORE_REG=&SP_SEMAPHORE_REG;
+		RspInfo10.DPC__START_REG=&DPC_START_REG;
+		RspInfo11.DPC__START_REG=&DPC_START_REG;
+		RspInfo10.DPC__END_REG=&DPC_END_REG;
+		RspInfo11.DPC__END_REG=&DPC_END_REG;
+		RspInfo10.DPC__CURRENT_REG=&DPC_CURRENT_REG;
+		RspInfo11.DPC__CURRENT_REG=&DPC_CURRENT_REG;
+		RspInfo10.DPC__STATUS_REG=&DPC_STATUS_REG;
+		RspInfo11.DPC__STATUS_REG=&DPC_STATUS_REG;
+		RspInfo10.DPC__CLOCK_REG=&DPC_CLOCK_REG;
+		RspInfo11.DPC__CLOCK_REG=&DPC_CLOCK_REG;
+		RspInfo10.DPC__BUFBUSY_REG=&DPC_BUFBUSY_REG;
+		RspInfo11.DPC__BUFBUSY_REG=&DPC_BUFBUSY_REG;
+		RspInfo10.DPC__PIPEBUSY_REG=&DPC_PIPEBUSY_REG;
+		RspInfo11.DPC__PIPEBUSY_REG=&DPC_PIPEBUSY_REG;
+		RspInfo10.DPC__TMEM_REG=&DPC_TMEM_REG;
+		RspInfo11.DPC__TMEM_REG=&DPC_TMEM_REG;
+		if (RSPVersion==0x0100) InitiateRSP_1_0(RspInfo10,&RspTaskValue);
+		if (RSPVersion==0x0101) InitiateRSP_1_1(RspInfo11,&RspTaskValue);
+	}
+	SetupMenu(hMainWindow);
+	UsuallyonTopWindow(hMainWindow);
+	if (PluginsInitialized) SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(PLUGINS_INITIALIZED));
+	else {
+		if (UserCancelPluginInit) goto SET_INIT;
+		if (inFullScreen) SendMessage(hMainWindow,WM_COMMAND,ID_OPTIONS_FULLSCREEN,0);
+		HandleModal1(hMainWindow);
+		if (CPURunning) {
+			if (MessageBox(0,GS(FAIL_MSG),AppName,MB_OKCANCEL|MB_ICONEXCLAMATION|MB_SETFOREGROUND)==IDCANCEL) {
+				UserCancelPluginInit=TRUE;
+				HandleShutdown();
+				UserCancelPluginInit=FALSE;
+				return;
+			}
+		} else if (MessageBox(0,GS(FAIL_MSG),AppName,MB_OKCANCEL|MB_ICONEXCLAMATION|MB_SETFOREGROUND)==IDCANCEL) SET_INIT: PluginsInitialized=TRUE;
+		HandleModal2(hMainWindow);
+		if (PluginsInitialized) SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(PLUGINS_NOT_INITIALIZED));
 		else {
-			if (inFullScreen) SendMessage(hMainWindow,WM_COMMAND,ID_OPTIONS_FULLSCREEN,0);
-			HandleModal1(hMainWindow);
-			if (CPURunning) MessageBox(NULL,GS(FAIL_MSG),AppName,MB_OK|MB_ICONEXCLAMATION|MB_SETFOREGROUND);
-			else if (MessageBox(NULL,GS(FAIL_MSG),AppName,MB_OKCANCEL|MB_ICONEXCLAMATION|MB_SETFOREGROUND)==IDCANCEL) PluginsInitialized=TRUE;
-			HandleModal2(hMainWindow);
-			if (PluginsInitialized) SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(PLUGINS_NOT_INITIALIZED));
-			else {
-				SendMessage(hMainWindow,WM_COMMAND,ID_OPTIONS_SETTINGS,0);
-				if (CPURunning) SetupPlugins(hMainWindow);
-			}
-			return;
-			DONE_INIT_GLideN64:
-			GonetzGLHasBeenSetupFirst=TRUE;
-			GonetzGLNeedsToBeSetupFirst=FALSE;
-			strcpy(GfxDLL,"Icepir8sLegacyLLE.dll");
-			SetupPlugins(hMainWindow);
-			return;
+			SendMessage(hMainWindow,WM_COMMAND,ID_OPTIONS_SETTINGS,0);
+			if (CPURunning) HandleGlobalTasks(hMainWindow);
 		}
+		return;
+		DONE_INIT_GLideN64:
+		GonetzGLHasBeenSetupFirst=TRUE;
+		GLideN64NeedsToBeSetupFirst=FALSE;
+		strcpy(GfxDLL,"Icepir8sLegacyLLE.dll");
+		goto SIZE_MAXIMIZE;
 	}
 	if (CPURunning) {
 		DWORD count;
+		StartEmulation:
 		memset(&CPU_Action,0,sizeof(CPU_Action));
-		CPU_Action.hStepping=CreateEvent(NULL,FALSE,FALSE,NULL);
+		CPU_Action.hStepping=CreateEvent(0,FALSE,FALSE,0);
 		WrittenToRom=FALSE;
 		memset(N64MEM,0,RDRAMsize);
 		InitializeTLB();
@@ -576,7 +574,7 @@ void SetupPlugins (HWND hWnd) {
 		Timers.CurrentTimerType=-1;
 		Timers.Timer=0;
 		CurrentFrame=0;
-		for (count=0; count<MaxTimers; count++) { Timers.Active[count]=FALSE; }
+		for (count=0;count<MaxTimers;count++) {Timers.Active[count]=FALSE;}
 		ChangeTimer(ViTimer,5000);
 		ChangeCompareTimer();
 		ViFieldSerration=0;
@@ -584,24 +582,25 @@ void SetupPlugins (HWND hWnd) {
 		CPU_Paused=FALSE;
 		ManualPaused=FALSE;
 		Timer_Start();
-		if (CpuRecompiler) hCPU=CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)StartRecompilerCPU,NULL,0,NULL);
-		else hCPU=CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)StartInterpreterCPU,NULL,0,NULL);
-		if (strcmp(GfxDLL,"Glide64.dll")==0&&!GonetzGLHasBeenSetupFirst) GonetzGLHasBeenSetupFirst=TRUE;
-		if (GonetzGLNeedsToBeSetupFirst) {
+		if (CpuRecompiler) hCPU=CreateThread(0,0,(LPTHREAD_START_ROUTINE)StartRecompilerCPU,0,0,0);
+		else hCPU=CreateThread(0,0,(LPTHREAD_START_ROUTINE)StartInterpreterCPU,0,0,0);
+		if (GLideN64NeedsToBeSetupFirst) {
 			EndEmulation();
 			goto DONE_INIT_GLideN64;
 		}
-		SetCurrentSaveState(hMainWindow,ID_CURRENTSAVE_DEFAULT);
-		SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MSG_EMULATION_STARTED));
+		if ((strcmp(GfxDLL,"Glide64.dll")==0||strcmp(GfxDLL,"GLideN64.dll")==0)&&!GonetzGLHasBeenSetupFirst) GonetzGLHasBeenSetupFirst=TRUE;
+		HandleWindowTitle();
 		if (EmulateAI&&!LimitFPS) {
 			LimitFPS=TRUE;
 			HandleTimers();
 			LimitFPS=FALSE;
 			if (SpeedCap) HandleTimers();
 		} else HandleTimers();
+		SetCurrentSaveState(hMainWindow,ID_CURRENTSAVE_DEFAULT);
+		SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MSG_EMULATION_STARTED));
 	}
 }
-void SetupPluginScreen (HWND hDlg) {
+void SetupPluginsScreen (HWND hDlg) {
 	WIN32_FIND_DATA FindData;
 	PLUGIN_INFO PluginInfo;
 	char SearchsStr[300],Plugin[300];
@@ -626,13 +625,13 @@ void SetupPluginScreen (HWND hDlg) {
 		GetPluginDir(Plugin);
 		strcat(Plugin,PluginNames[PluginCount]);
 		hLib=LoadLibrary(Plugin);
-		if (hLib==NULL&&!BootupSettings) {
+		if (hLib==0&&!BootupSettings) {
 			DisplayError("%s\n %s",GS(MSG_FAIL_LOAD_PLUGIN),Plugin);
 			if (FindNextFile(hFind,&FindData)==0) return;
 			continue;
 		}
 		GetDllInfo=(void (__cdecl*)(PLUGIN_INFO*))GetProcAddress(hLib,"GetDllInfo");
-		if (GetDllInfo==NULL) {
+		if (GetDllInfo==0) {
 			FreeLibrary(hLib);
 			if (FindNextFile(hFind,&FindData)==0) return;
 			continue;
@@ -652,7 +651,7 @@ void SetupPluginScreen (HWND hDlg) {
 			if(_stricmp(RSPDLL,PluginNames[PluginCount])==0) {
 				SendMessage(GetDlgItem(hDlg,RSP_LIST),CB_SETCURSEL,(WPARAM)index,(LPARAM)0);
 				RSPDLLAbout=(void (__cdecl*)(HWND))GetProcAddress(hLib,"DllAbout");
-				EnableWindow(GetDlgItem(hDlg,RSP_ABOUT),RSPDLLAbout!=NULL?TRUE:FALSE);
+				EnableWindow(GetDlgItem(hDlg,RSP_ABOUT),RSPDLLAbout!=0?TRUE:FALSE);
 			} else {
 				FreeLibrary(hLib);
 			}
@@ -663,7 +662,7 @@ void SetupPluginScreen (HWND hDlg) {
 			if(_stricmp(GfxDLL,PluginNames[PluginCount])==0) {
 				SendMessage(GetDlgItem(hDlg,GFX_LIST),CB_SETCURSEL,(WPARAM)index,(LPARAM)0);
 				GFXDllAbout=(void (__cdecl*)(HWND))GetProcAddress(hLib,"DllAbout");
-				EnableWindow(GetDlgItem(hDlg,GFX_ABOUT),GFXDllAbout!=NULL?TRUE:FALSE);
+				EnableWindow(GetDlgItem(hDlg,GFX_ABOUT),GFXDllAbout!=0?TRUE:FALSE);
 			} else {
 				FreeLibrary(hLib);
 			}
@@ -674,7 +673,7 @@ void SetupPluginScreen (HWND hDlg) {
 			if(_stricmp(AudioDLL,PluginNames[PluginCount])==0) {
 				SendMessage(GetDlgItem(hDlg,AUDIO_LIST),CB_SETCURSEL,(WPARAM)index,(LPARAM)0);
 				AiDllAbout=(void (__cdecl*)(HWND))GetProcAddress(hLib,"DllAbout");
-				EnableWindow(GetDlgItem(hDlg,AUDIO_ABOUT),AiDllAbout!=NULL?TRUE:FALSE);
+				EnableWindow(GetDlgItem(hDlg,AUDIO_ABOUT),AiDllAbout!=0?TRUE:FALSE);
 			} else {
 				FreeLibrary(hLib);
 			}
@@ -685,7 +684,7 @@ void SetupPluginScreen (HWND hDlg) {
 			if(_stricmp(ControllerDLL,PluginNames[PluginCount])==0) {
 				SendMessage(GetDlgItem(hDlg,CONT_LIST),CB_SETCURSEL,(WPARAM)index,(LPARAM)0);
 				ContDllAbout=(void (__cdecl*)(HWND))GetProcAddress(hLib,"DllAbout");
-				EnableWindow(GetDlgItem(hDlg,CONT_ABOUT),ContDllAbout!=NULL?TRUE:FALSE);
+				EnableWindow(GetDlgItem(hDlg,CONT_ABOUT),ContDllAbout!=0?TRUE:FALSE);
 			} else {
 				FreeLibrary(hLib);
 			}
@@ -697,19 +696,17 @@ void SetupPluginScreen (HWND hDlg) {
 }
 void ShutdownPlugins (void) {
 	if (!inFullScreen) {
-		if (GFXCloseDLL!=NULL) { GFXCloseDLL(); }
+		if (GFXCloseDLL!=0) GFXCloseDLL();
 		FreeLibrary(hGfxDll);
 	}
-	if (!GonetzGLNeedsToBeSetupFirst) {
-		TerminateThread(hAudioThread,0);
-		if (AiCloseDLL!=NULL) { AiCloseDLL(); }
-		FreeLibrary(hAudioDll);
-		if (ContCloseDLL!=NULL) { ContCloseDLL(); }
-		FreeLibrary(hControllerDll);
-		if (RSPCloseDLL!=NULL) { RSPCloseDLL(); }
-		FreeLibrary(hRSPDLL);
-	}
-	PluginsInitialized=FALSE;
+	if (GLideN64NeedsToBeSetupFirst) return;
+	TerminateThread(hAudioThread,0);
+	if (AiCloseDLL!=0) AiCloseDLL();
+	FreeLibrary(hAudioDll);
+	if (ContCloseDLL!=0) ContCloseDLL();
+	FreeLibrary(hControllerDll);
+	if (RSPCloseDLL!=0) RSPCloseDLL();
+	FreeLibrary(hRSPDLL);
 }
 BOOL ValidPluginVersion (PLUGIN_INFO*PluginInfo) {
 	switch (PluginInfo->Type) {

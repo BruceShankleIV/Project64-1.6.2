@@ -28,11 +28,11 @@
 #include "Main.h"
 #include "CPU.h"
 static BYTE Mempak[4][0x8000];
-static HANDLE hMempakFile=NULL;
+static HANDLE hMempakFile=0;
 void CloseMempak () {
 	if (hMempakFile) {
 		CloseHandle(hMempakFile);
-		hMempakFile=NULL;
+		hMempakFile=0;
 	}
 }
 void LoadMempak () {
@@ -57,8 +57,8 @@ void LoadMempak () {
 		0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
 		0x00,0x71,0x00,0x03,0x00,0x03,0x00,0x03,0x00,0x03,0x00,0x03,0x00,0x03,0x00,0x03,
 	};
-	for (count=0; count<4; count++) {
-		for (count2=0; count2<0x8000; count2+=2) {
+	for (count=0;count<4;count++) {
+		for (count2=0;count2<0x8000;count2+=2) {
 			Mempak[count][count2]=0x00;
 			Mempak[count][count2+1]=0x03;
 		}
@@ -66,12 +66,12 @@ void LoadMempak () {
 	}
 	GetAutoSaveDir(Directory);
 	sprintf(File,"%sMemPaks\\%s.mpk",Directory,RomName);
-	hMempakFile=CreateFile(File,GENERIC_WRITE|GENERIC_READ,FILE_SHARE_READ,NULL,OPEN_ALWAYS,FILE_ATTRIBUTE_NORMAL|FILE_FLAG_RANDOM_ACCESS,NULL);
+	hMempakFile=CreateFile(File,GENERIC_WRITE|GENERIC_READ,FILE_SHARE_READ,0,OPEN_ALWAYS,FILE_ATTRIBUTE_NORMAL|FILE_FLAG_RANDOM_ACCESS,0);
 	if (hMempakFile==INVALID_HANDLE_VALUE) {
 		switch (GetLastError()) {
 		case ERROR_PATH_NOT_FOUND:
-			CreateDirectory(Directory,NULL);
-			hMempakFile=CreateFile(File,GENERIC_WRITE|GENERIC_READ,FILE_SHARE_READ,NULL,OPEN_ALWAYS,FILE_ATTRIBUTE_NORMAL|FILE_FLAG_RANDOM_ACCESS,NULL);
+			CreateDirectory(Directory,0);
+			hMempakFile=CreateFile(File,GENERIC_WRITE|GENERIC_READ,FILE_SHARE_READ,0,OPEN_ALWAYS,FILE_ATTRIBUTE_NORMAL|FILE_FLAG_RANDOM_ACCESS,0);
 			if (hMempakFile==INVALID_HANDLE_VALUE) DisplayError(GS(MSG_FAIL_OPEN_MEMPAK));
 			return;
 		default:
@@ -79,19 +79,19 @@ void LoadMempak () {
 			return;
 		}
 	}
-	SetFilePointer(hMempakFile,0,NULL,FILE_BEGIN);
-	ReadFile(hMempakFile,Mempak,sizeof(Mempak),&dwRead,NULL);
-	WriteFile(hMempakFile,Mempak,sizeof(Mempak),&dwRead,NULL);
+	SetFilePointer(hMempakFile,0,0,FILE_BEGIN);
+	ReadFile(hMempakFile,Mempak,sizeof(Mempak),&dwRead,0);
+	WriteFile(hMempakFile,Mempak,sizeof(Mempak),&dwRead,0);
 }
 BYTE Mempacks_CalulateCrc(BYTE*DataToCrc) {
 	DWORD Count;
 	DWORD XorTap;
 	int Length;
 	BYTE CRC=0;
-	for (Count=0; Count<0x21; Count++) {
-		for (Length=0x80; Length>=1; Length>>=1) {
+	for (Count=0;Count<0x21;Count++) {
+		for (Length=0x80;Length>=1;Length>>=1) {
 			XorTap=(CRC&0x80)?0x85:0;
-			CRC <<=1;
+			CRC<<=1;
 			if (Count==0x20) {
 				CRC&=0xFF;
 			} else {
@@ -99,7 +99,7 @@ BYTE Mempacks_CalulateCrc(BYTE*DataToCrc) {
 					CRC|=1;
 				}
 			}
-			CRC ^=XorTap;
+			CRC^=XorTap;
 		}
 		DataToCrc++;
 	}
@@ -112,8 +112,8 @@ void ReadFromMempak(int Control,int Address,BYTE*Buffer) {
 		return;
 	}
 	Address&=0xFFE0;
-	if (Address <=0x7FE0) {
-		if (hMempakFile==NULL) {
+	if (Address<=0x7FE0) {
+		if (hMempakFile==0) {
 			LoadMempak();
 		}
 		memcpy(Buffer,&Mempak[Control][Address],0x20);
@@ -125,15 +125,15 @@ void ReadFromMempak(int Control,int Address,BYTE*Buffer) {
 }
 void WriteToMempak(int Control,int Address,BYTE*Buffer) {
 	DWORD dwWritten;
-	if (Address==0x8001) { Buffer[0x20]=Mempacks_CalulateCrc(Buffer); return; }
+	if (Address==0x8001) {Buffer[0x20]=Mempacks_CalulateCrc(Buffer); return;}
 	Address&=0xFFE0;
-	if (Address <=0x7FE0) {
-		if (hMempakFile==NULL) {
+	if (Address<=0x7FE0) {
+		if (hMempakFile==0) {
 			LoadMempak();
 		}
 		memcpy(&Mempak[Control][Address],Buffer,0x20);
-		SetFilePointer(hMempakFile,Control*0x8000,NULL,FILE_BEGIN);
-		WriteFile(hMempakFile,&Mempak[Control][0],0x8000,&dwWritten,NULL);
+		SetFilePointer(hMempakFile,Control*0x8000,0,FILE_BEGIN);
+		WriteFile(hMempakFile,&Mempak[Control][0],0x8000,&dwWritten,0);
 	} else {
 		/*Rumble pack area*/
 	}

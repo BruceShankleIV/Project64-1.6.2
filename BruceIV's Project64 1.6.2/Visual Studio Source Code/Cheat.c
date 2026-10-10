@@ -34,14 +34,14 @@
 #include "CPU.h"
 #include "Plugin.h"
 #include "Resource.h"
-#define UM_CLOSE_CHEATS         (WM_USER+132)
-#define UM_CHANGECODEEXTENSION  (WM_USER+101)
+#define UM_CLOSE_CHEATS         (WM_APP+1)
+#define UM_CHANGECODEEXTENSION  (WM_APP+2)
 #define IDC_MYTREE				0x500
 #define MaxCheats				500
 #define SelectCheat				1
 #define EditCheat				2
 #define NewCheat 				3
-HWND hManageWindow=NULL,hSelectCheat,hAddCheat,hCheatTree;
+HWND hManageWindow=0,hSelectCheat,hAddCheat,hCheatTree;
 CHEAT_CODES Codes[MaxCheats];
 char codestring[2048],optionsstring[8192];
 int NoOfCodes,codeformat,numcodes,numoptions,ReadCodeString (HWND hDlg),_TreeView_GetCheckState (HWND hwndTreeView,HTREEITEM hItem),MinSizeDlg,MaxSizeDlg;
@@ -63,7 +63,7 @@ enum TV_CHECK_STATE{
 	TV_STATE_INDETERMINATE,
 } DialogState;
 void AddCheatExtension(int CheatNo,char*CheatName,int CheatNameLen) {
-	char*String=NULL,Identifier[100],CheatNumber[20];
+	char*String=0,Identifier[100],CheatNumber[20];
 	LPSTR IniFileName=GetCheatIniFileName();
 	sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD*)(&RomHeader[0x10]),*(DWORD*)(&RomHeader[0x14]),RomHeader[0x3D]);
 	sprintf(CheatNumber,"Cheat%d",CheatNo);
@@ -71,10 +71,10 @@ void AddCheatExtension(int CheatNo,char*CheatName,int CheatNameLen) {
 	//Add cheat extension to the end
 	if (CheatUsesCodeExtensions(String)) {
 		char CheatExt[300];
-		if (!LoadCheatExt(CheatName,CheatExt,sizeof(CheatExt))) { strcpy(CheatExt,"?"); }
+		if (!LoadCheatExt(CheatName,CheatExt,sizeof(CheatExt))) {strcpy(CheatExt,"?");}
 		sprintf(CheatName,"%s (=> %s)",CheatName,CheatExt);
 	}
-	if (String) { free(String); }
+	if (String) {free(String);}
 }
 /********************************************************************************************
   ConvertXP64Address
@@ -83,10 +83,10 @@ void AddCheatExtension(int CheatNo,char*CheatName,int CheatNameLen) {
 ********************************************************************************************/
 DWORD ConvertXP64Address(DWORD Address) {
 	DWORD tmpAddress;
-	tmpAddress=(Address ^ 0x68000000)&0xFF000000;
-	tmpAddress+=((Address+0x002B0000) ^ 0x00810000)&0x00FF0000;
-	tmpAddress+=((Address+0x00002B00) ^ 0x00008200)&0x0000FF00;
-	tmpAddress+=((Address+0x0000002B) ^ 0x00000083)&0x000000FF;
+	tmpAddress=(Address^0x68000000)&0xFF000000;
+	tmpAddress+=((Address+0x002B0000)^0x00810000)&0x00FF0000;
+	tmpAddress+=((Address+0x00002B00)^0x00008200)&0x0000FF00;
+	tmpAddress+=((Address+0x0000002B)^0x00000083)&0x000000FF;
 	return tmpAddress;
 }
 /********************************************************************************************
@@ -96,8 +96,8 @@ DWORD ConvertXP64Address(DWORD Address) {
 ********************************************************************************************/
 WORD ConvertXP64Value(WORD Value) {
 	WORD tmpValue;
-	tmpValue=((Value+0x2B00) ^ 0x8400)&0xFF00;
-	tmpValue+=((Value+0x002B) ^ 0x0085)&0x00FF;
+	tmpValue=((Value+0x2B00)^0x8400)&0xFF00;
+	tmpValue+=((Value+0x002B)^0x0085)&0x00FF;
 	return tmpValue;
 }
 void ApplyGSButton () {
@@ -105,10 +105,10 @@ void ApplyGSButton () {
 	DWORD Address;
 	WORD Memory;
 	GAMESHARK_CODE PrevCode;
-	for (count=0; count<NoOfCodes; count++) {
+	for (count=0;count<NoOfCodes;count++) {
 		PrevCode.Command=0X00000000;
 		PrevCode.Value=0x0000;
-		for (count2=0; count2<MaxGSEntries; count2++) {
+		for (count2=0;count2<MaxGSEntries;count2++) {
 			if ((PrevCode.Command&0xFF000000)==0x50000000) {
 				int numrepeats=(PrevCode.Command&0x0000FF00)>>8,offset=PrevCode.Command&0x000000FF,incr=PrevCode.Value;
 				switch (Codes[count].Code[count2].Command&0xFF000000) {
@@ -116,7 +116,7 @@ void ApplyGSButton () {
 				case 0x88000000:
 					Address=0x80000000|(Codes[count].Code[count2].Command&0xFFFFFF);
 					Memory=Codes[count].Code[count2].Value;
-					for (count3=0; count3<numrepeats; count3++) {
+					for (count3=0;count3<numrepeats;count3++) {
 						r4300i_SB_VAddr(Address,(BYTE)Memory);
 						Address+=offset;
 						Memory+=incr;
@@ -125,7 +125,7 @@ void ApplyGSButton () {
 				case 0x89000000:
 					Address=0x80000000|(Codes[count].Code[count2].Command&0xFFFFFF);
 					Memory=Codes[count].Code[count2].Value;
-					for (count3=0; count3<numrepeats; count3++) {
+					for (count3=0;count3<numrepeats;count3++) {
 						r4300i_SH_VAddr(Address,(WORD)Memory);
 						Address+=offset;
 						Memory+=incr;
@@ -135,7 +135,7 @@ void ApplyGSButton () {
 				case 0xA8000000:
 					Address=0x80000000|(ConvertXP64Address(Codes[count].Code[count2].Command)&0xFFFFFF);
 					Memory=ConvertXP64Value(Codes[count].Code[count2].Value);
-					for (count3=0; count3<numrepeats; count3++) {
+					for (count3=0;count3<numrepeats;count3++) {
 						r4300i_SB_VAddr(Address,(BYTE)Memory);
 						Address+=offset;
 						Memory+=incr;
@@ -144,7 +144,7 @@ void ApplyGSButton () {
 				case 0xA9000000:
 					Address=0x80000000|(ConvertXP64Address(Codes[count].Code[count2].Command)&0xFFFFFF);
 					Memory=ConvertXP64Value(Codes[count].Code[count2].Value);
-					for (count3=0; count3<numrepeats; count3++) {
+					for (count3=0;count3<numrepeats;count3++) {
 						r4300i_SH_VAddr(Address,(WORD)Memory);
 						Address+=offset;
 						Memory+=incr;
@@ -193,7 +193,7 @@ int ApplyCheatEntry (GAMESHARK_CODE*Code,BOOL Execute) {
 			case 0x80000000:
 				Address=0x80000000|(Code[1].Command&0xFFFFFF);
 				Memory=Code[1].Value;
-				for (count=0; count<numrepeats; count++) {
+				for (count=0;count<numrepeats;count++) {
 					r4300i_SB_VAddr(Address,(BYTE)Memory);
 					Address+=offset;
 					Memory+=incr;
@@ -202,7 +202,7 @@ int ApplyCheatEntry (GAMESHARK_CODE*Code,BOOL Execute) {
 			case 0x81000000:
 				Address=0x80000000|(Code[1].Command&0xFFFFFF);
 				Memory=Code[1].Value;
-				for (count=0; count<numrepeats; count++) {
+				for (count=0;count<numrepeats;count++) {
 					r4300i_SH_VAddr(Address,(WORD)Memory);
 					Address+=offset;
 					Memory+=incr;
@@ -214,92 +214,92 @@ int ApplyCheatEntry (GAMESHARK_CODE*Code,BOOL Execute) {
 		break;
 	case 0x80000000:
 		Address=0x80000000|(Code->Command&0xFFFFFF);
-		if (Execute) { r4300i_SB_VAddr(Address,(BYTE)Code->Value); }
+		if (Execute) {r4300i_SB_VAddr(Address,(BYTE)Code->Value);}
 		break;
 	case 0x81000000:
 		Address=0x80000000|(Code->Command&0xFFFFFF);
-		if (Execute) { r4300i_SH_VAddr(Address,Code->Value); }
+		if (Execute) {r4300i_SH_VAddr(Address,Code->Value);}
 		break;
 	case 0xA0000000:
 		Address=0xA0000000|(Code->Command&0xFFFFFF);
-		if (Execute) { r4300i_SB_VAddr(Address,(BYTE)Code->Value);  }
+		if (Execute) {r4300i_SB_VAddr(Address,(BYTE)Code->Value);}
 		break;
 	case 0xA1000000:
 		Address=0xA0000000|(Code->Command&0xFFFFFF);
-		if (Execute) { r4300i_SH_VAddr(Address,Code->Value); }
+		if (Execute) {r4300i_SH_VAddr(Address,Code->Value);}
 		break;
 	case 0xD0000000:													// Added by Witten (witten@pj64cheats.net)
 		Address=0x80000000|(Code->Command&0xFFFFFF);
 		r4300i_LB_VAddr(Address,(BYTE*)&Memory);
 		Memory&=0x00FF;
-		if (Memory!=Code->Value) { Execute=FALSE; }
+		if (Memory!=Code->Value) {Execute=FALSE;}
 		return ApplyCheatEntry(&Code[1],Execute)+1;
 	case 0xD1000000:													// Added by Witten (witten@pj64cheats.net)
 		Address=0x80000000|(Code->Command&0xFFFFFF);
 		r4300i_LH_VAddr(Address,(WORD*)&Memory);
-		if (Memory!=Code->Value) { Execute=FALSE; }
+		if (Memory!=Code->Value) {Execute=FALSE;}
 		return ApplyCheatEntry(&Code[1],Execute)+1;
 	case 0xD2000000:													// Added by Witten (witten@pj64cheats.net)
 		Address=0x80000000|(Code->Command&0xFFFFFF);
 		r4300i_LB_VAddr(Address,(BYTE*)&Memory);
 		Memory&=0x00FF;
-		if (Memory==Code->Value) { Execute=FALSE; }
+		if (Memory==Code->Value) {Execute=FALSE;}
 		return ApplyCheatEntry(&Code[1],Execute)+1;
 	case 0xD3000000:													// Added by Witten (witten@pj64cheats.net)
 		Address=0x80000000|(Code->Command&0xFFFFFF);
 		r4300i_LH_VAddr(Address,(WORD*)&Memory);
-		if (Memory==Code->Value) { Execute=FALSE; }
+		if (Memory==Code->Value) {Execute=FALSE;}
 		return ApplyCheatEntry(&Code[1],Execute)+1;
 		// Xplorer64 (Author: Witten)
 	case 0x30000000:
 	case 0x82000000:
 	case 0x84000000:
 		Address=0x80000000|(Code->Command&0xFFFFFF);
-		if (Execute) { r4300i_SB_VAddr(Address,(BYTE)Code->Value); }
+		if (Execute) {r4300i_SB_VAddr(Address,(BYTE)Code->Value);}
 		break;
 	case 0x31000000:
 	case 0x83000000:
 	case 0x85000000:
 		Address=0x80000000|(Code->Command&0xFFFFFF);
-		if (Execute) { r4300i_SH_VAddr(Address,Code->Value); }
+		if (Execute) {r4300i_SH_VAddr(Address,Code->Value);}
 		break;
 	case 0xE8000000:
 		Address=0x80000000|(ConvertXP64Address(Code->Command)&0xFFFFFF);
-		if (Execute) { r4300i_SB_VAddr(Address,(BYTE)ConvertXP64Value(Code->Value)); }
+		if (Execute) {r4300i_SB_VAddr(Address,(BYTE)ConvertXP64Value(Code->Value));}
 		break;
 	case 0xE9000000:
 		Address=0x80000000|(ConvertXP64Address(Code->Command)&0xFFFFFF);
-		if (Execute) { r4300i_SH_VAddr(Address,ConvertXP64Value(Code->Value)); }
+		if (Execute) {r4300i_SH_VAddr(Address,ConvertXP64Value(Code->Value));}
 		break;
 	case 0xC8000000:
 		Address=0xA0000000|(ConvertXP64Address(Code->Command)&0xFFFFFF);
-		if (Execute) { r4300i_SB_VAddr(Address,(BYTE)Code->Value); }
+		if (Execute) {r4300i_SB_VAddr(Address,(BYTE)Code->Value);}
 		break;
 	case 0xC9000000:
 		Address=0xA0000000|(ConvertXP64Address(Code->Command)&0xFFFFFF);
-		if (Execute) { r4300i_SH_VAddr(Address,ConvertXP64Value(Code->Value)); }
+		if (Execute) {r4300i_SH_VAddr(Address,ConvertXP64Value(Code->Value));}
 		break;
 	case 0xB8000000:
 		Address=0x80000000|(ConvertXP64Address(Code->Command)&0xFFFFFF);
 		r4300i_LB_VAddr(Address,(BYTE*)&Memory);
 		Memory&=0x00FF;
-		if (Memory!=ConvertXP64Value(Code->Value)) { Execute=FALSE; }
+		if (Memory!=ConvertXP64Value(Code->Value)) {Execute=FALSE;}
 		return ApplyCheatEntry(&Code[1],Execute)+1;
 	case 0xB9000000:
 		Address=0x80000000|(ConvertXP64Address(Code->Command)&0xFFFFFF);
 		r4300i_LH_VAddr(Address,(WORD*)&Memory);
-		if (Memory!=ConvertXP64Value(Code->Value)) { Execute=FALSE; }
+		if (Memory!=ConvertXP64Value(Code->Value)) {Execute=FALSE;}
 		return ApplyCheatEntry(&Code[1],Execute)+1;
 	case 0xBA000000:
 		Address=0x80000000|(ConvertXP64Address(Code->Command)&0xFFFFFF);
 		r4300i_LB_VAddr(Address,(BYTE*)&Memory);
 		Memory&=0x00FF;
-		if (Memory==ConvertXP64Value(Code->Value)) { Execute=FALSE; }
+		if (Memory==ConvertXP64Value(Code->Value)) {Execute=FALSE;}
 		return ApplyCheatEntry(&Code[1],Execute)+1;
 	case 0xBB000000:
 		Address=0x80000000|(ConvertXP64Address(Code->Command)&0xFFFFFF);
 		r4300i_LH_VAddr(Address,(WORD*)&Memory);
-		if (Memory==ConvertXP64Value(Code->Value)) { Execute=FALSE; }
+		if (Memory==ConvertXP64Value(Code->Value)) {Execute=FALSE;}
 		return ApplyCheatEntry(&Code[1],Execute)+1;
 	case 0: return MaxGSEntries;
 	}
@@ -307,8 +307,8 @@ int ApplyCheatEntry (GAMESHARK_CODE*Code,BOOL Execute) {
 }
 void ApplyCheats () {
 	int CurrentCheat,CurrentEntry;
-	for (CurrentCheat=0; CurrentCheat<NoOfCodes; CurrentCheat++) {
-		for (CurrentEntry=0; CurrentEntry<MaxGSEntries;) {
+	for (CurrentCheat=0;CurrentCheat<NoOfCodes;CurrentCheat++) {
+		for (CurrentEntry=0;CurrentEntry<MaxGSEntries;) {
 			CurrentEntry+=ApplyCheatEntry(&Codes[CurrentCheat].Code[CurrentEntry],TRUE);
 		}
 	}
@@ -344,13 +344,13 @@ BOOL CheatActive (char*Name) {
 	long lResult;
 	sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD*)(&RomHeader[0x10]),*(DWORD*)(&RomHeader[0x14]),RomHeader[0x3D]);
 	sprintf(String,"PJ64 V 1.6.2\\Configuration\\Cheats\\%s",Identifier);
-	lResult=RegOpenKeyEx(HKEY_CURRENT_USER,String,0,KEY_ALL_ACCESS,&hKeyResults); // check if game ID exists in registry
+	lResult=RegOpenKeyEx(HKEY_CURRENT_USER,String,0,KEY_ALL_ACCESS,&hKeyResults);// check if game ID exists in registry
 	if (lResult==ERROR_SUCCESS) {
 		DWORD Type,Bytes,Active;
 		Bytes=sizeof(Active);
-		lResult=RegQueryValueEx(hKeyResults,Name,0,&Type,(LPBYTE)(&Active),&Bytes); // get cheat-state from registry
+		lResult=RegQueryValueEx(hKeyResults,Name,0,&Type,(LPBYTE)(&Active),&Bytes);// get cheat-state from registry
 		RegCloseKey(hKeyResults);
-		if (lResult==ERROR_SUCCESS) { return Active; } // if no errors return active state
+		if (lResult==ERROR_SUCCESS) {return Active;} // if no errors return active state
 	}
 	return FALSE;
 }
@@ -360,7 +360,7 @@ LRESULT CALLBACK CheatsCodeExProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lPar
 	case WM_INITDIALOG:
 		CheatNo=lParam;
 		{
-			char*String=NULL,Identifier[100],CheatName[300],CheatExt[300],*ReadPos;
+			char*String=0,Identifier[100],CheatName[300],CheatExt[300],*ReadPos;
 			LPSTR IniFileName;
 			DWORD len;
 			SetWindowText(hDlg,"Code Extensions");
@@ -376,38 +376,38 @@ LRESULT CALLBACK CheatsCodeExProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lPar
 			ReadPos=String;
 			while (strlen(ReadPos)>0) {
 				int index;
-				if(strchr(ReadPos,',')==NULL) {
+				if(strchr(ReadPos,',')==0) {
 					len=strlen(ReadPos);
 				} else {
 					len=strchr(ReadPos,',')-ReadPos;
 				}
-				if (len>=sizeof(CheatName)) { len=sizeof(CheatName)-1; }
+				if (len>=sizeof(CheatName)) {len=sizeof(CheatName)-1;}
 				strncpy(CheatName,ReadPos,len);
 				CheatName[len]=0;
 				index=SendMessage(GetDlgItem(hDlg,IDC_CHEAT_LIST),LB_ADDSTRING,0,(LPARAM)CheatName);
 				if (strcmp(CheatExt,CheatName)==0) {
 					SendMessage(GetDlgItem(hDlg,IDC_CHEAT_LIST),LB_SETCURSEL,index,0);
 				}
-				if (strchr(ReadPos,',')==NULL) {
+				if (strchr(ReadPos,',')==0) {
 					ReadPos+=strlen(ReadPos);
 				} else {
 					ReadPos=strchr(ReadPos,',')+1;
 				}
 			}
-			if (String) { free(String); }
+			if (String) {free(String);}
 		}
 		break;
 	case WM_COMMAND:
 		switch (LOWORD(wParam)) {
 		case IDC_CHEAT_LIST:
-			if (HIWORD(wParam)==LBN_DBLCLK) { PostMessage(hDlg,WM_COMMAND,IDOK,0); break; }
+			if (HIWORD(wParam)==LBN_DBLCLK) {PostMessage(hDlg,WM_COMMAND,IDOK,0); break;}
 			break;
 		case IDOK:
 			{
 				char CheatName[300],CheatExt[300];
 				int index;
 				index=SendMessage(GetDlgItem(hDlg,IDC_CHEAT_LIST),LB_GETCURSEL,0,0);
-				if (index<0) { index=0; }
+				if (index<0) {index=0;}
 				GetDlgItemText(hDlg,IDC_CHEAT_NAME,CheatName,sizeof(CheatName));
 				index=SendMessage(GetDlgItem(hDlg,IDC_CHEAT_LIST),LB_GETTEXT,index,(LPARAM)CheatExt);
 				SaveCheatExt(CheatName,CheatExt);
@@ -428,16 +428,16 @@ BOOL CheatUsesCodeExtensions (char*CheatString) {
 	BOOL CodeExtension;
 	DWORD count,len;
 	char*ReadPos;
-	if (strlen(CheatString)==0||strchr(CheatString,'"')==NULL) return FALSE;
+	if (strlen(CheatString)==0||strchr(CheatString,'"')==0) return FALSE;
 	len=strrchr(CheatString,'"')-strchr(CheatString,'"')-1;
 	ReadPos=strrchr(CheatString,'"')+2;
 	CodeExtension=FALSE;
-	for (count=0; count<MaxGSEntries&&CodeExtension==FALSE; count++) {
-		if (strchr(ReadPos,' ')==NULL) { break; }
+	for (count=0;count<MaxGSEntries&&CodeExtension==FALSE;count++) {
+		if (strchr(ReadPos,' ')==0) {break;}
 		ReadPos=strchr(ReadPos,' ')+1;
-		if (ReadPos[0]=='?'&&ReadPos[1]=='?') { CodeExtension=TRUE; }
-		if (ReadPos[2]=='?'&&ReadPos[3]=='?') { CodeExtension=TRUE; }
-		if (strchr(ReadPos,',')==NULL) continue;
+		if (ReadPos[0]=='?'&&ReadPos[1]=='?') {CodeExtension=TRUE;}
+		if (ReadPos[2]=='?'&&ReadPos[3]=='?') {CodeExtension=TRUE;}
+		if (strchr(ReadPos,',')==0) continue;
 		ReadPos=strchr(ReadPos,',')+1;
 	}
 	return CodeExtension;
@@ -451,22 +451,22 @@ int ReadCodeString (HWND hDlg) {
 	numcodes=0;
 	memset(codestring,'\0',2048);
 	numlines=SendDlgItemMessage(hDlg,IDC_CHEAT_CODES,EM_GETLINECOUNT,0,0);
-	if (numlines==0) { validcodes=FALSE; }
-	for (linecount=0; linecount<numlines; linecount++) //read line after line (bypassing limitation GetDlgItemText)
+	if (numlines==0) {validcodes=FALSE;}
+	for (linecount=0;linecount<numlines;linecount++) //read line after line (bypassing limitation GetDlgItemText)
 	{
 		memset(tempformat,0,sizeof(tempformat));
 		*(LPWORD)str=sizeof(str);
 		len=SendDlgItemMessage(hDlg,IDC_CHEAT_CODES,EM_GETLINE,(WPARAM)linecount,(LPARAM)(LPCSTR)str);
 		str[len]=0;
-		if (len <=0) continue;
-		for (i=0; i<128; i++) {
-			if (((str[i]>='A')&&(str[i] <='F'))||((str[i]>='0')&&(str[i] <='9'))) { // Is hexvalue
+		if (len<=0) continue;
+		for (i=0;i<128;i++) {
+			if (((str[i]>='A')&&(str[i]<='F'))||((str[i]>='0')&&(str[i]<='9'))) {// Is hexvalue
 				tempformat[i]='X';
 			}
 			if ((str[i]==' ')||(str[i]=='?')) {
 				tempformat[i]=str[i];
 			}
-			if (str[i]==0) { break; }
+			if (str[i]==0) {break;}
 		}
 		if (strcmp(tempformat,formatnormal)==0) {
 			strcat(codestring,",");
@@ -505,7 +505,7 @@ void ReadOptionsString(HWND hDlg)
 	numoptions=0;
 	memset(optionsstring,'\0',2048);
 	numlines=SendDlgItemMessage(hDlg,IDC_CHEAT_OPTIONS,EM_GETLINECOUNT,0,0);
-	for (linecount=0; linecount<numlines; linecount++) //read line after line (bypassing limitation GetDlgItemText)
+	for (linecount=0;linecount<numlines;linecount++) //read line after line (bypassing limitation GetDlgItemText)
 	{
 		memset(str,0,sizeof(str));
 		*(LPWORD)str=sizeof(str);
@@ -515,8 +515,8 @@ void ReadOptionsString(HWND hDlg)
 			switch (codeformat) {
 			case 1: //option=lower byte
 				if (len>=2) {
-					for (i=0; i<2; i++) {
-						if (!(((str[i]>='a')&&(str[i] <='f'))||((str[i]>='A')&&(str[i] <='F'))||((str[i]>='0')&&(str[i] <='9')))) {
+					for (i=0;i<2;i++) {
+						if (!(((str[i]>='a')&&(str[i]<='f'))||((str[i]>='A')&&(str[i]<='F'))||((str[i]>='0')&&(str[i]<='9')))) {
 							validoptions=FALSE;
 							break;
 						}
@@ -525,7 +525,7 @@ void ReadOptionsString(HWND hDlg)
 						validoptions=FALSE;
 						break;
 					}
-					for (j=0; j<2; j++) {
+					for (j=0;j<2;j++) {
 						str[j]=toupper(str[j]);
 					}
 					strcat(optionsstring,",$");
@@ -535,8 +535,8 @@ void ReadOptionsString(HWND hDlg)
 				break;
 			case 2: //option=word
 				if (len>=4) {
-					for (i=0; i<4; i++) {
-						if (!(((str[i]>='a')&&(str[i] <='f'))||((str[i]>='A')&&(str[i] <='F'))||((str[i]>='0')&&(str[i] <='9')))) {
+					for (i=0;i<4;i++) {
+						if (!(((str[i]>='a')&&(str[i]<='f'))||((str[i]>='A')&&(str[i]<='F'))||((str[i]>='0')&&(str[i]<='9')))) {
 							validoptions=FALSE;
 							break;
 						}
@@ -545,7 +545,7 @@ void ReadOptionsString(HWND hDlg)
 						validoptions=FALSE;
 						break;
 					}
-					for (j=0; j<4; j++) {
+					for (j=0;j<4;j++) {
 						str[j]=toupper(str[j]);
 					}
 					strcat(optionsstring,",$");
@@ -596,7 +596,7 @@ LRESULT CALLBACK CheatAddProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) 
 					EnableWindow(GetDlgItem(hDlg,IDC_LABEL_OPTIONS_FORMAT),TRUE);
 					EnableWindow(GetDlgItem(hDlg,IDC_CHEAT_OPTIONS),TRUE);
 				}
-				if ((codeformat <=0)&&IsWindowEnabled(GetDlgItem(hDlg,IDC_LABEL_OPTIONS))) {
+				if ((codeformat<=0)&&IsWindowEnabled(GetDlgItem(hDlg,IDC_LABEL_OPTIONS))) {
 					EnableWindow(GetDlgItem(hDlg,IDC_LABEL_OPTIONS),FALSE);
 					EnableWindow(GetDlgItem(hDlg,IDC_LABEL_OPTIONS_FORMAT),FALSE);
 					EnableWindow(GetDlgItem(hDlg,IDC_CHEAT_OPTIONS),FALSE);
@@ -625,7 +625,7 @@ LRESULT CALLBACK CheatAddProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) 
 				int CheatLen,count,CheatNo;
 				LPSTR IniFileName;
 				GetDlgItemText(hDlg,IDC_CODE_NAME,NewCheatName,sizeof(NewCheatName));
-				for (count=0; ; count++) {
+				for (count=0;;count++) {
 					GetCheatName(count,CheatName,sizeof(CheatName));
 					if (strlen(CheatName)==0) {
 						CheatNo=count;
@@ -646,13 +646,13 @@ LRESULT CALLBACK CheatAddProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) 
 				sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD*)(&RomHeader[0x10]),*(DWORD*)(&RomHeader[0x14]),RomHeader[0x3D]);
 				sprintf(NewCheatName,"Cheat%d",CheatNo);
 				_WritePrivateProfileString(Identifier,NewCheatName,cheat,IniFileName);
-				if (cheat) { free(cheat); cheat=NULL; }
+				if (cheat) {free(cheat);cheat=0;}
 				if (validoptions) {
 					cheat=malloc(strlen(optionsstring)+1);
 					strcpy(cheat,optionsstring+1);
 					sprintf(NewCheatName,"Cheat%d_O",CheatNo);
 					_WritePrivateProfileString(Identifier,NewCheatName,cheat,IniFileName);
-					if (cheat) { free(cheat); cheat=NULL; }
+					if (cheat) {free(cheat);cheat=0;}
 				}
 				CheatLen=SendDlgItemMessage(hDlg,IDC_NOTES,WM_GETTEXTLENGTH,0,0)+5;
 				if (CheatLen>5) {
@@ -660,7 +660,7 @@ LRESULT CALLBACK CheatAddProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) 
 					GetDlgItemText(hDlg,IDC_NOTES,cheat,CheatLen);
 					sprintf(NewCheatName,"Cheat%d_N",CheatNo);
 					_WritePrivateProfileString(Identifier,NewCheatName,cheat,IniFileName);
-					if (cheat) { free(cheat); cheat=NULL; }
+					if (cheat) {free(cheat);cheat=0;}
 				}
 				RefreshCheatManager();
 				SetDlgItemText(hDlg,IDC_CODE_NAME,"");
@@ -699,7 +699,7 @@ LRESULT CALLBACK CheatEditProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam)
 		SetWindowText(GetDlgItem(hDlg,IDC_CHEATNOTES)," Cheat Notes: ");
 		SetWindowText(GetDlgItem(hDlg,IDC_ADD),"Update Cheat");
 		{
-			char*String=NULL,*ReadPos,*Buffer,Identifier[100],CheatName[300];
+			char*String=0,*ReadPos,*Buffer,Identifier[100],CheatName[300];
 			LPSTR IniFileName;
 			TVITEM item;
 			int len;
@@ -724,14 +724,14 @@ LRESULT CALLBACK CheatEditProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam)
 			do {
 				strncat(Buffer,ReadPos,strchr(ReadPos,',')-ReadPos);
 				ReadPos=strchr(ReadPos,',');
-				if (ReadPos!=NULL) {
+				if (ReadPos!=0) {
 					strcat(Buffer,"\r\n");
 					ReadPos+=1;
 				}
 			} while (ReadPos);
 			SetDlgItemText(hDlg,IDC_CHEAT_CODES,Buffer);
-			if (Buffer) { free(Buffer); Buffer=NULL; }
-			if (String) { free(String); String=NULL; }
+			if (Buffer) {free(Buffer);Buffer=0;}
+			if (String) {free(String);String=0;}
 			//Add option values to screen
 			sprintf(CheatName,"Cheat%d_O",item.lParam);
 			_GetPrivateProfileString2(Identifier,CheatName,"",&String,IniFileName);
@@ -742,20 +742,20 @@ LRESULT CALLBACK CheatEditProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam)
 				do {
 					strncat(Buffer,ReadPos,strchr(ReadPos,',')-ReadPos);
 					ReadPos=strchr(ReadPos,'$');
-					if (ReadPos!=NULL) {
+					if (ReadPos!=0) {
 						strcat(Buffer,"\r\n");
 						ReadPos+=1;
 					}
 				} while (ReadPos);
 				SetDlgItemText(hDlg,IDC_CHEAT_OPTIONS,Buffer);
 			}
-			if (Buffer) { free(Buffer); Buffer=NULL; }
-			if (String) { free(String); String=NULL; }
+			if (Buffer) {free(Buffer);Buffer=0;}
+			if (String) {free(String);String=0;}
 			//Add cheat Notes
 			sprintf(CheatName,"Cheat%d_N",item.lParam);
 			_GetPrivateProfileString2(Identifier,CheatName,"",&String,IniFileName);
 			SetDlgItemText(hDlg,IDC_NOTES,String);
-			if (String) { free(String); String=NULL; }
+			if (String) {free(String);String=0;}
 			//Update Screen
 			PostMessage(hDlg,WM_COMMAND,MAKEWPARAM(IDC_CHEAT_CODES,EN_CHANGE),(LPARAM)GetDlgItem(hDlg,IDC_CHEAT_CODES));
 		}
@@ -782,7 +782,7 @@ LRESULT CALLBACK CheatEditProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam)
 					EnableWindow(GetDlgItem(hDlg,IDC_LABEL_OPTIONS_FORMAT),TRUE);
 					EnableWindow(GetDlgItem(hDlg,IDC_CHEAT_OPTIONS),TRUE);
 				}
-				if ((codeformat <=0)&&IsWindowEnabled(GetDlgItem(hDlg,IDC_LABEL_OPTIONS))) {
+				if ((codeformat<=0)&&IsWindowEnabled(GetDlgItem(hDlg,IDC_LABEL_OPTIONS))) {
 					EnableWindow(GetDlgItem(hDlg,IDC_LABEL_OPTIONS),FALSE);
 					EnableWindow(GetDlgItem(hDlg,IDC_LABEL_OPTIONS_FORMAT),FALSE);
 					EnableWindow(GetDlgItem(hDlg,IDC_CHEAT_OPTIONS),FALSE);
@@ -807,14 +807,14 @@ LRESULT CALLBACK CheatEditProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam)
 			break;
 		case IDC_ADD:
 			{
-				char Identifier[100],Key[100],*Ext[]={"","_N","_O","_R" };
+				char Identifier[100],Key[100],*Ext[]={"","_N","_O","_R"};
 				char NewCheatName[300],*cheat;
 				int CheatLen,type;
 				LPSTR IniFileName;
 				IniFileName=GetCheatIniFileName();
 				sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD*)(&RomHeader[0x10]),*(DWORD*)(&RomHeader[0x14]),RomHeader[0x3D]);
 				//Delete old Entries
-				for (type=0; type<(sizeof(Ext) / sizeof(char*)); type++) {
+				for (type=0;type<(sizeof(Ext) / sizeof(char*));type++) {
 					sprintf(Key,"Cheat%d%s",CheatNo,Ext[type]);
 					_DeletePrivateProfileString(Identifier,Key,IniFileName);
 				}
@@ -827,13 +827,13 @@ LRESULT CALLBACK CheatEditProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam)
 				//Add to ini
 				sprintf(NewCheatName,"Cheat%d",CheatNo);
 				_WritePrivateProfileString(Identifier,NewCheatName,cheat,IniFileName);
-				if (cheat) { free(cheat); cheat=NULL; }
+				if (cheat) {free(cheat);cheat=0;}
 				if (validoptions) {
 					cheat=malloc(strlen(optionsstring)+1);
 					strcpy(cheat,optionsstring+1);
 					sprintf(NewCheatName,"Cheat%d_O",CheatNo);
 					_WritePrivateProfileString(Identifier,NewCheatName,cheat,IniFileName);
-					if (cheat) { free(cheat); cheat=NULL; }
+					if (cheat) {free(cheat);cheat=0;}
 				}
 				CheatLen=SendDlgItemMessage(hDlg,IDC_NOTES,WM_GETTEXTLENGTH,0,0)+5;
 				if (CheatLen>5) {
@@ -841,7 +841,7 @@ LRESULT CALLBACK CheatEditProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam)
 					GetDlgItemText(hDlg,IDC_NOTES,cheat,CheatLen);
 					sprintf(NewCheatName,"Cheat%d_N",CheatNo);
 					_WritePrivateProfileString(Identifier,NewCheatName,cheat,IniFileName);
-					if (cheat) { free(cheat); cheat=NULL; }
+					if (cheat) {free(cheat);cheat=0;}
 				}
 				LoadCheats();
 				RefreshCheatManager();
@@ -856,7 +856,7 @@ LRESULT CALLBACK CheatEditProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam)
 }
 void ChangeChildrenStatus(HTREEITEM hParent,BOOL Checked) {
 	HTREEITEM hItem=TreeView_GetChild(hCheatTree,hParent);
-	if (hItem==NULL) {
+	if (hItem==0) {
 		//Save Cheat
 		char CheatName[300];
 		TVITEM item;
@@ -868,7 +868,7 @@ void ChangeChildrenStatus(HTREEITEM hParent,BOOL Checked) {
 		SaveCheat(CheatName,Checked);
 		return;
 	}
-	while (hItem!=NULL) {
+	while (hItem!=0) {
 		ChangeChildrenStatus(hItem,Checked);
 		_TreeView_SetCheckState(hCheatTree,hItem,Checked?TV_STATE_CHECKED:TV_STATE_CLEAR);
 		hItem=TreeView_GetNextSibling(hCheatTree,hItem);
@@ -881,7 +881,7 @@ void CheckParentStatus(HTREEITEM hParent) {
 	hItem=TreeView_GetChild(hCheatTree,hParent);
 	InitialState=_TreeView_GetCheckState(hCheatTree,hParent);
 	CurrentState=_TreeView_GetCheckState(hCheatTree,hItem);
-	while (hItem!=NULL) {
+	while (hItem!=0) {
 		if (_TreeView_GetCheckState(hCheatTree,hItem)!=CurrentState) {
 			CurrentState=TV_STATE_INDETERMINATE;
 			break;
@@ -906,10 +906,7 @@ LRESULT CALLBACK CheatListProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam)
 			SetWindowText(GetDlgItem(hDlg,IDC_UNMARK),"Unmark All");
 			GetWindowRect(GetDlgItem(hDlg,IDC_CHEATSFRAME),&rcList);
 			GetWindowRect(GetDlgItem(hDlg,IDC_UNMARK),&rcButton);
-			hCheatTree=CreateWindowEx(WS_EX_CLIENTEDGE,WC_TREEVIEW,"",
-					WS_CHILD|WS_BORDER|WS_VISIBLE|WS_VSCROLL|TVS_HASLINES|
-					TVS_HASBUTTONS|TVS_LINESATROOT|TVS_DISABLEDRAGDROP|WS_TABSTOP|
-					TVS_FULLROWSELECT,8,15,rcList.right-rcList.left-16,rcButton.top-rcList.top-22,hDlg,(HMENU)IDC_MYTREE,hInst,NULL);
+			hCheatTree=CreateWindowEx(WS_EX_CLIENTEDGE,WC_TREEVIEW,"",WS_CHILD|WS_BORDER|WS_VISIBLE|WS_VSCROLL|TVS_HASLINES|TVS_HASBUTTONS|TVS_LINESATROOT|TVS_DISABLEDRAGDROP|WS_TABSTOP|TVS_FULLROWSELECT,8,15,rcList.right-rcList.left-16,rcButton.top-rcList.top-22,hDlg,(HMENU)IDC_MYTREE,hInst,0);
 			Style=GetWindowLong(hCheatTree,GWL_STYLE);
 			SetWindowLong(hCheatTree,GWL_STYLE,TVS_CHECKBOXES|TVS_SHOWSELALWAYS|Style);
 			{
@@ -921,19 +918,18 @@ LRESULT CALLBACK CheatListProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam)
 				DeleteObject(hBmp);
 				TreeView_SetImageList(hCheatTree,hImageList,TVSIL_STATE);
 			}
-			hSelectedItem=NULL;
+			hSelectedItem=0;
 		}
 		break;
 	case WM_SIZE:
 		{
-			int nWidth=LOWORD(lParam);  // width of client area
-			int nHeight=HIWORD(lParam); // height of client area
-			SetWindowPos(GetDlgItem(hDlg,IDC_CHEATSFRAME),NULL,0,0,nWidth,nHeight-100,SWP_NOOWNERZORDER);
-			SetWindowPos(GetDlgItem(hDlg,IDC_NOTESFRAME),NULL,0,nHeight-96,nWidth,95,SWP_NOOWNERZORDER);
-			SetWindowPos(GetDlgItem(hDlg,IDC_NOTES),NULL,6,nHeight-80,nWidth-12,72,SWP_NOOWNERZORDER);
-			SetWindowPos(GetDlgItem(hDlg,IDC_UNMARK),NULL,nWidth-110,nHeight-124,0,0,SWP_NOSIZE|SWP_NOOWNERZORDER);
-			SetWindowPos(GetDlgItem(hDlg,IDC_DELETE),NULL,nWidth-165,nHeight-124,0,0,SWP_NOSIZE|SWP_NOOWNERZORDER);
-			SetWindowPos(hCheatTree,NULL,0,0,nWidth-13,nHeight-142,SWP_NOMOVE|SWP_NOOWNERZORDER);
+			int nWidth=LOWORD(lParam),nHeight=HIWORD(lParam);
+			SetWindowPos(GetDlgItem(hDlg,IDC_CHEATSFRAME),0,0,0,nWidth,nHeight-100,SWP_NOOWNERZORDER);
+			SetWindowPos(GetDlgItem(hDlg,IDC_NOTESFRAME),0,0,nHeight-96,nWidth,95,SWP_NOOWNERZORDER);
+			SetWindowPos(GetDlgItem(hDlg,IDC_NOTES),0,6,nHeight-80,nWidth-12,72,SWP_NOOWNERZORDER);
+			SetWindowPos(GetDlgItem(hDlg,IDC_UNMARK),0,nWidth-110,nHeight-124,0,0,SWP_NOSIZE|SWP_NOOWNERZORDER);
+			SetWindowPos(GetDlgItem(hDlg,IDC_DELETE),0,nWidth-165,nHeight-124,0,0,SWP_NOSIZE|SWP_NOOWNERZORDER);
+			SetWindowPos(hCheatTree,0,0,0,nWidth-13,nHeight-142,SWP_NOMOVE|SWP_NOOWNERZORDER);
 		}
 		break;
 	case WM_COMMAND:
@@ -963,7 +959,7 @@ LRESULT CALLBACK CheatListProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam)
 		{
 			LPNMHDR lpnmh=(LPNMHDR) lParam;
 			if ((lpnmh->code==NM_RCLICK)&&(lpnmh->idFrom==IDC_MYTREE)) {
-				TVHITTESTINFO ht={ 0 };
+				TVHITTESTINFO ht={0};
 				DWORD dwpos=GetMessagePos();
 				ht.pt.x=GET_X_LPARAM(dwpos);
 				ht.pt.y=GET_Y_LPARAM(dwpos);
@@ -974,15 +970,15 @@ LRESULT CALLBACK CheatListProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam)
 				HMENU hPopupMenu=GetSubMenu(hMenu,0);
 				POINT Mouse;
 				GetCursorPos(&Mouse);
-				MenuSetText(hPopupMenu,0,"Add Cheat",NULL);
-				MenuSetText(hPopupMenu,1,"Edit Cheat",NULL);
-				MenuSetText(hPopupMenu,3,"Delete Cheat",NULL);
-				if (hSelectedItem==NULL||TreeView_GetChild(hCheatTree,hSelectedItem)!=NULL) {
+				MenuSetText(hPopupMenu,0,"Add Cheat",0);
+				MenuSetText(hPopupMenu,1,"Edit Cheat",0);
+				MenuSetText(hPopupMenu,3,"Delete Cheat",0);
+				if (hSelectedItem==0||TreeView_GetChild(hCheatTree,hSelectedItem)!=0) {
 					DeleteMenu(hPopupMenu,3,MF_BYPOSITION);
 					DeleteMenu(hPopupMenu,2,MF_BYPOSITION);
 					DeleteMenu(hPopupMenu,1,MF_BYPOSITION);
 				}
-				TrackPopupMenu(hPopupMenu,0,Mouse.x,Mouse.y,0,hDlg,NULL);
+				TrackPopupMenu(hPopupMenu,0,Mouse.x,Mouse.y,0,hDlg,0);
 				DestroyMenu(hMenu);
 		}
 		   if ((lpnmh->code==NM_CLICK)&&(lpnmh->idFrom==IDC_MYTREE)) {
@@ -1023,8 +1019,8 @@ LRESULT CALLBACK CheatListProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam)
 			if ((lpnmh->code==TVN_SELCHANGED)&&(lpnmh->idFrom==IDC_MYTREE)) {
 				HTREEITEM hItem;
 				hItem=TreeView_GetSelection(hCheatTree);
-				if (TreeView_GetChild(hCheatTree,hItem)==NULL) {
-					char*String=NULL,Lookup[40],Identifier[100];
+				if (TreeView_GetChild(hCheatTree,hItem)==0) {
+					char*String=0,Lookup[40],Identifier[100];
 					LPSTR IniFileName;
 					TVITEM item;
 					item.mask=TVIF_PARAM;
@@ -1042,7 +1038,7 @@ LRESULT CALLBACK CheatListProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam)
 		break;
 	case UM_CHANGECODEEXTENSION:
 		{
-			char Identifier[100],*String=NULL,CheatName[300],CheatExt[300];
+			char Identifier[100],*String=0,CheatName[300],CheatExt[300];
 			HTREEITEM hItemChanged=(HTREEITEM)lParam;
 			LPSTR IniFileName;
 			TVITEM item;
@@ -1054,7 +1050,7 @@ LRESULT CALLBACK CheatListProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam)
 			sprintf(CheatName,"Cheat%d",item.lParam);
 			_GetPrivateProfileString2(Identifier,CheatName,"",&String,IniFileName);
 			if (!CheatUsesCodeExtensions(String)) {
-				if (String) { free(String); }
+				if (String) {free(String);}
 				break;
 			}
 			sprintf(CheatName,"Cheat%d_O",item.lParam);
@@ -1062,7 +1058,7 @@ LRESULT CALLBACK CheatListProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam)
 			if (strlen(String)>0) {
 				DialogBoxParam(hInst,MAKEINTRESOURCE(IDD_Cheats_CodeEx),hDlg,(DLGPROC)CheatsCodeExProc,item.lParam);
 			}
-			if (String) { free(String); }
+			if (String) {free(String);}
 			GetCheatName(item.lParam,CheatName,sizeof(CheatName));
 			if (!LoadCheatExt(CheatName,CheatExt,sizeof(CheatExt))) {
 				sprintf(CheatExt,"?");
@@ -1070,7 +1066,7 @@ LRESULT CALLBACK CheatListProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam)
 			item.mask=TVIF_PARAM|TVIF_TEXT;
 			item.pszText=CheatName;
 			item.cchTextMax=sizeof(CheatName);
-			if (strrchr(CheatName,'\\')!=NULL) {
+			if (strrchr(CheatName,'\\')!=0) {
 				strcpy(CheatName,strrchr(CheatName,'\\')+1);
 			}
 			sprintf(CheatName,"%s (=> %s)",CheatName,CheatExt);
@@ -1083,19 +1079,19 @@ LRESULT CALLBACK CheatListProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam)
 	return TRUE;
 }
 void DeleteCheat(int CheatNo) {
-	char Identifier[100],Key[100],*Ext[]={"","_N","_O","_R" };
+	char Identifier[100],Key[100],*Ext[]={"","_N","_O","_R"};
 	LPSTR IniFileName;
 	int type;
 	IniFileName=GetCheatIniFileName();
 	sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD*)(&RomHeader[0x10]),*(DWORD*)(&RomHeader[0x14]),RomHeader[0x3D]);
-	for (type=0; type<(sizeof(Ext) / sizeof(char*)); type++) {
+	for (type=0;type<(sizeof(Ext) / sizeof(char*));type++) {
 		sprintf(Key,"Cheat%d%s",CheatNo,Ext[type]);
 		_DeletePrivateProfileString(Identifier,Key,IniFileName);
 	}
 	RenameCheat(CheatNo);
 }
 void RenameCheat(int CheatNo) {
-	char*Input=NULL,*Data=NULL,*Pos=NULL,Identifier[100],CurrentSection[300];
+	char*Input=0,*Data=0,*Pos=0,Identifier[100],CurrentSection[300];
 	int DataLen=0,DataLeft,result,count;
 	static long Fpos=0;
 	LPSTR IniFileName;
@@ -1109,9 +1105,9 @@ char*LineFeed="\n";
 	IniFileName=GetCheatIniFileName();
 	sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD*)(&RomHeader[0x10]),*(DWORD*)(&RomHeader[0x14]),RomHeader[0x3D]);
 	fInput=fopen(IniFileName,"r+b");
-	if (fInput==NULL) {
+	if (fInput==0) {
 		fInput=fopen(IniFileName,"w+b");
-		if (IniFileName==NULL) return;
+		if (IniFileName==0) return;
 	}
 	CurrentSection[0]=0;
 	do {
@@ -1119,20 +1115,20 @@ char*LineFeed="\n";
 			Fpos=ftell(fInput)-DataLeft;
 		}
 		result=fGetString2(fInput,&Input,&Data,&DataLen,&DataLeft);
-		if (result <=1) continue;
+		if (result<=1) continue;
 		Pos=Input;
-		while (Pos!=NULL) {
+		while (Pos!=0) {
 			Pos=strchr(Pos,'/');
-			if (Pos!=NULL) {
-				if (Pos[1]=='/') { Pos[0]=0; } else { Pos+=1; }
+			if (Pos!=0) {
+				if (Pos[1]=='/') {Pos[0]=0;} else {Pos+=1;}
 			}
 		}
-		for (count=strlen(&Input[0])-1; count>=0; count --) {
-			if (Input[count]!=' '&&Input[count]!='\r') { break; }
+		for (count=strlen(&Input[0])-1;count>=0;count--) {
+			if (Input[count]!=' '&&Input[count]!='\r') {break;}
 			Input[count]=0;
 		}
 		//stip leading spaces
-		if (strlen(Input) <=1) continue;
+		if (strlen(Input)<=1) continue;
 		if (Input[0]=='[') {
 			if (Input[strlen(Input)-1]!=']') continue;
 			if (strcmp(Identifier,CurrentSection)==0) {
@@ -1148,7 +1144,7 @@ char*LineFeed="\n";
 			continue;
 		}
 		Pos=strchr(Input,'=');
-		if (Pos==NULL) continue;
+		if (Pos==0) continue;
 		if (strncmp(Input,"Cheat",5)!=0) {
 			WritePos=ftell(fInput)-DataLeft;
 			continue;
@@ -1157,7 +1153,7 @@ char*LineFeed="\n";
 			WritePos=ftell(fInput)-DataLeft;
 			continue;
 		}
-		if (strchr(Input,'_')>0&&strchr(Input,'_')<Pos) { Pos=strchr(Input,'_'); }
+		if (strchr(Input,'_')>0&&strchr(Input,'_')<Pos) {Pos=strchr(Input,'_');}
 		{
 			long OldLen=strlen(Input)+strlen(LineFeed),CurrentPos=ftell(fInput);
 			int Newlen=strlen(Pos)+strlen(LineFeed);
@@ -1176,14 +1172,14 @@ char*LineFeed="\n";
 		WritePos=ftell(fInput)-DataLeft;
 	} while (result>=0);
 	fclose(fInput);
-	if (Input) { free(Input); Input=NULL; }
-	if (Data) { free(Data); Data=NULL; }
+	if (Input) {free(Input);Input=0;}
+	if (Data) {free(Data); Data=0;}
 }
 void DisableAllCheats() {
 	char CheatName[300];
 	int count;
-	for (count=0; ; count++) {
-		if (!GetCheatName(count,CheatName,sizeof(CheatName))) { break; }
+	for (count=0;;count++) {
+		if (!GetCheatName(count,CheatName,sizeof(CheatName))) {break;}
 		SaveCheat(CheatName,FALSE);
 	}
 }
@@ -1191,13 +1187,13 @@ char*GetCheatIniFileName() {
 	char path_buffer[_MAX_PATH],drive[_MAX_DRIVE],dir[_MAX_DIR];
 	char fname[_MAX_FNAME],ext[_MAX_EXT];
 	static char IniFileName[_MAX_PATH];
-	GetModuleFileName(NULL,path_buffer,sizeof(path_buffer));
+	GetModuleFileName(0,path_buffer,sizeof(path_buffer));
 	_splitpath(path_buffer,drive,dir,fname,ext);
 	sprintf(IniFileName,"%s%sPJ64DB\\%s",drive,dir,CheatIniName);
 	return IniFileName;
 }
 BOOL GetCheatName(int CheatNo,char*CheatName,int CheatNameLen) {
-	char*String=NULL,Identifier[100];
+	char*String=0,Identifier[100];
 	DWORD len;
 	LPSTR IniFileName;
 	IniFileName=GetCheatIniFileName();
@@ -1206,13 +1202,13 @@ BOOL GetCheatName(int CheatNo,char*CheatName,int CheatNameLen) {
 	_GetPrivateProfileString2(Identifier,CheatName,"",&String,IniFileName);
 	if (strlen(String)==0) {
 		memset(CheatName,0,CheatNameLen);
-		if (String) { free(String); }
+		if (String) {free(String);}
 		return FALSE;
 	}
 	len=strrchr(String,'"')-strchr(String,'"')-1;
 	memset(CheatName,0,CheatNameLen);
 	strncpy(CheatName,strchr(String,'"')+1,len);
-	if (String) { free(String); }
+	if (String) {free(String);}
 	return TRUE;
 }
 void CloseCheatWindow () {
@@ -1223,7 +1219,7 @@ BOOL LoadCheatExt(char*CheatName,char*CheatExt,int MaxCheatExtLen) {
 	char String[300],Identifier[100];
 	HKEY hKeyResults=0;
 	long lResult;
-	if (CheatName!=NULL) {
+	if (CheatName!=0) {
 		sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD*)(&RomHeader[0x10]),*(DWORD*)(&RomHeader[0x14]),RomHeader[0x3D]);
 		sprintf(String,"PJ64 V 1.6.2\\Configuration\\Cheats\\%s",Identifier);
 		lResult=RegOpenKeyEx(HKEY_CURRENT_USER,String,0,KEY_ALL_ACCESS,&hKeyResults);
@@ -1242,11 +1238,11 @@ void LoadCode (LPSTR CheatName,LPSTR CheatString)
 {
 	char*ReadPos=CheatString;
 	int count2;
-	for (count2=0; count2<MaxGSEntries; count2++) {
+	for (count2=0;count2<MaxGSEntries;count2++) {
 		char CheatExt[300];
 		WORD Value;
 		Codes[NoOfCodes].Code[count2].Command=AsciiToHex(ReadPos);
-		if (strchr(ReadPos,' ')==NULL) { break; }
+		if (strchr(ReadPos,' ')==0) {break;}
 		ReadPos=strchr(ReadPos,' ')+1;
 		if (strncmp(ReadPos,"????",4)==0) {
 			if (LoadCheatExt(CheatName,CheatExt,sizeof(CheatExt))) {
@@ -1274,7 +1270,7 @@ void LoadCode (LPSTR CheatName,LPSTR CheatString)
 		} else {
 			Codes[NoOfCodes].Code[count2].Value=(WORD)AsciiToHex(ReadPos);
 		}
-		if (strchr(ReadPos,',')==NULL) continue;
+		if (strchr(ReadPos,',')==0) continue;
 		ReadPos=strchr(ReadPos,',')+1;
 	}
 	if (count2==0) return;
@@ -1287,33 +1283,33 @@ void LoadCode (LPSTR CheatName,LPSTR CheatString)
 void LoadPermCheats ()
 {
 	LPSTR IniFileName;
-	char*String=NULL,Identifier[100],CheatName[300];
+	char*String=0,Identifier[100],CheatName[300];
 	int count;
 	IniFileName=GetIniFileName();
 	sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD*)(&RomHeader[0x10]),*(DWORD*)(&RomHeader[0x14]),RomHeader[0x3D]);
-	for (count=0; ; count++) {
+	for (count=0;;count++) {
 		sprintf(CheatName,"Cheat%d",count);
 		_GetPrivateProfileString2(Identifier,CheatName,"",&String,IniFileName);
-		if (strlen(String)==0) { break; }
-		LoadCode (NULL,String);
+		if (strlen(String)==0) {break;}
+		LoadCode (0,String);
 	}
-	if (String) { free(String); }
+	if (String) {free(String);}
 }
 void LoadCheats () {
 	DWORD len,count;
 	LPSTR IniFileName;
-	char*String=NULL;
+	char*String=0;
 	char Identifier[100],CheatName[300];
 	IniFileName=GetCheatIniFileName();
 	sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD*)(&RomHeader[0x10]),*(DWORD*)(&RomHeader[0x14]),RomHeader[0x3D]);
 	NoOfCodes=0;
 	LoadPermCheats();
-	for (count=0; ; count++) {
+	for (count=0;;count++) {
 		char*ReadPos;
 		sprintf(CheatName,"Cheat%d",count);
 		_GetPrivateProfileString2(Identifier,CheatName,"",&String,IniFileName);
-		if (strlen(String)==0) { break; }
-		if (strchr(String,'"')==NULL) continue;
+		if (strlen(String)==0) {break;}
+		if (strchr(String,'"')==0) continue;
 		len=strrchr(String,'"')-strchr(String,'"')-1;
 		if ((int)len<1) continue;
 		memset(CheatName,0,sizeof(CheatName));
@@ -1323,7 +1319,7 @@ void LoadCheats () {
 		ReadPos=strrchr(String,'"')+2;
 		LoadCode(CheatName,ReadPos);
 	}
-	if (String) { free(String); }
+	if (String) {free(String);}
 }
 void ManageCheats (HWND hParent) {
 	DWORD X,Y,WindowWidth,WindowHeight,Style;
@@ -1340,9 +1336,9 @@ void ManageCheats (HWND hParent) {
 	WindowHeight=(int)(415*n);
   	X=(GetSystemMetrics(SM_CXSCREEN)-WindowWidth) / 2;
 	Y=(GetSystemMetrics(SM_CYSCREEN)-WindowHeight) / 2;
-	if (hParent) { Style=WS_SIZEBOX|WS_SYSMENU; }
-	if (!hParent) { Style=WS_SIZEBOX|WS_SYSMENU|WS_MINIMIZEBOX; }
-	hManageWindow=CreateWindow("PJ64.Cheats","Cheats",Style,X,Y,WindowWidth,WindowHeight,hParent,NULL,hInst,NULL);
+	if (hParent) {Style=WS_SIZEBOX|WS_SYSMENU;}
+	if (!hParent) {Style=WS_SIZEBOX|WS_SYSMENU|WS_MINIMIZEBOX;}
+	hManageWindow=CreateWindow("PJ64.Cheats","Cheats",Style,X,Y,WindowWidth,WindowHeight,hParent,0,hInst,0);
 	if (UsuallyonTop) SetWindowPos(hManageWindow,HWND_TOPMOST,0,0,0,0,SWP_NOMOVE|SWP_NOSIZE);
 	RefreshCheatManager();
 	ShowWindow(hManageWindow,SW_SHOW);
@@ -1350,9 +1346,9 @@ void ManageCheats (HWND hParent) {
 		MSG msg;
 		EnableWindow(hParent,FALSE);
 		while (hManageWindow) {
-			if (!GetMessage(&msg,NULL,0,0)) {
+			if (!GetMessage(&msg,0,0,0)) {
 				DestroyWindow(hManageWindow);
-				hManageWindow=NULL;
+				hManageWindow=0;
 				PostMessage(msg.hwnd,msg.message,msg.wParam,msg.lParam);
 				continue;
 			}
@@ -1377,7 +1373,7 @@ LRESULT CALLBACK Cheat_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 		ShowWindow(hSelectCheat,SW_SHOW);
 		break;
 	case WM_MOVE:
-		if (IsIconic(hWnd)) { break; }
+		if (IsIconic(hWnd)) {break;}
 		break;
 	case UM_CLOSE_CHEATS:
 		DestroyWindow(hWnd);
@@ -1400,7 +1396,7 @@ LRESULT CALLBACK Cheat_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 					break;
 				}
 			}
-			if ((lprc->right-lprc->left) <=MinWidth) {
+			if ((lprc->right-lprc->left)<=MinWidth) {
 				switch (fwSide) {
 				case WMSZ_TOPLEFT:
 				case WMSZ_LEFT:
@@ -1420,7 +1416,7 @@ LRESULT CALLBACK Cheat_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 		SetWindowPos(hSelectCheat,HWND_TOP,5,5,nWidth-8,nHeight-10,SWP_NOOWNERZORDER);
 		break;
 	case WM_DESTROY:
-		hManageWindow=NULL;
+		hManageWindow=0;
 		break;
 	default:
 		return DefWindowProc(hWnd,uMsg,wParam,lParam);
@@ -1469,7 +1465,7 @@ LRESULT CALLBACK ManageCheatsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lPar
 		}
 		break;
 	case WM_DESTROY:
-		hManageWindow=NULL;
+		hManageWindow=0;
 		break;
 	default:
 		return FALSE;
@@ -1481,7 +1477,7 @@ void AddCodeLayers (int CheatNumber,char*CheatName,HTREEITEM hParent,BOOL CheatA
 	TV_INSERTSTRUCT tv;
 	//Work out text to add
 	strcpy(Text,CheatName);
-	if (strchr(Text,'\\')>0) {*strchr(Text,'\\')=0; }
+	if (strchr(Text,'\\')>0) {*strchr(Text,'\\')=0;}
 	//See if text is already added
 	tv.item.mask     =TVIF_TEXT;
 	tv.item.pszText  =Item;
@@ -1515,10 +1511,10 @@ void RefreshCheatManager() {
 	char CheatName[300];
 	BOOL IsCheatActive;
 	DWORD count;
-	if (hManageWindow==NULL) return;
+	if (hManageWindow==0) return;
 	TreeView_DeleteAllItems(hCheatTree);
-	for (count=0; ; count++) {
-		if (!GetCheatName(count,CheatName,sizeof(CheatName))) { break; }
+	for (count=0;;count++) {
+		if (!GetCheatName(count,CheatName,sizeof(CheatName))) {break;}
 		IsCheatActive=CheatActive (CheatName);
 		AddCheatExtension(count,CheatName,sizeof(CheatName));
 		AddCodeLayers(count,CheatName,TVI_ROOT,IsCheatActive);
@@ -1532,7 +1528,7 @@ void SaveCheat(char*CheatName,BOOL Active) {
 	sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD*)(&RomHeader[0x10]),*(DWORD*)(&RomHeader[0x14]),RomHeader[0x3D]);
 	sprintf(String,"PJ64 V 1.6.2\\Configuration\\Cheats\\%s",Identifier);
 	lResult=RegCreateKeyEx(HKEY_CURRENT_USER,String,0,"",REG_OPTION_NON_VOLATILE,
-		KEY_ALL_ACCESS,NULL,&hKeyResults,&Disposition);
+		KEY_ALL_ACCESS,0,&hKeyResults,&Disposition);
 	if (lResult==ERROR_SUCCESS) {
 		if (Active) {
 			RegSetValueEx(hKeyResults,CheatName,0,REG_DWORD,(CONST BYTE*)(&Active),sizeof(DWORD));
@@ -1550,7 +1546,7 @@ void SaveCheatExt(char*CheatName,char*CheatExt) {
 	sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD*)(&RomHeader[0x10]),*(DWORD*)(&RomHeader[0x14]),RomHeader[0x3D]);
 	sprintf(String,"PJ64 V 1.6.2\\Configuration\\Cheats\\%s",Identifier);
 	lResult=RegCreateKeyEx(HKEY_CURRENT_USER,String,0,"",REG_OPTION_NON_VOLATILE,
-		KEY_ALL_ACCESS,NULL,&hKeyResults,&Disposition);
+		KEY_ALL_ACCESS,0,&hKeyResults,&Disposition);
 	if (lResult==ERROR_SUCCESS) {
 		sprintf(String,"%s.exten",CheatName);
 		RegSetValueEx(hKeyResults,String,0,REG_SZ,(CONST BYTE*)CheatExt,strlen(CheatExt));
@@ -1571,7 +1567,7 @@ int _TreeView_GetCheckState(HWND hwndTreeView,HTREEITEM hItem) {
 	case 2: return TV_STATE_CLEAR;
 	case 3: return TV_STATE_INDETERMINATE;
 	}
-	return ((int)(tvItem.state>>12) -1);
+	return ((int)(tvItem.state>>12)-1);
 }
 BOOL _TreeView_SetCheckState(HWND hwndTreeView,HTREEITEM hItem,int state) {
 	TVITEM tvItem;

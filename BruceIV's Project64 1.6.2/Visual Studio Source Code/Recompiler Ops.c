@@ -40,7 +40,7 @@ void CompileWriteTLBMiss(BLOCK_SECTION*Section,int AddressReg,int LookUpReg) {
 	TestX86RegToX86Reg(LookUpReg,LookUpReg);
 	CompileExit(Section->CompilePC,Section->RegWorking,TLBWriteMiss,FALSE,JeLabel32);
 }
-/**************************Branch functions ************************/
+/**************************Branch functions************************/
 void Compile_R4300i_Branch (BLOCK_SECTION*Section,void (*CompareFunc)(BLOCK_SECTION*Section),int BranchType,BOOL Link) {
 	static int EffectDelaySlot,DoneJumpDelay,DoneContinueDelay;
 	static REG_INFO RegBeforeDelay;
@@ -70,12 +70,12 @@ void Compile_R4300i_Branch (BLOCK_SECTION*Section,void (*CompareFunc)(BLOCK_SECT
 			EffectDelaySlot=TRUE;
 		}
 		Section->Jump.TargetPC      =Section->CompilePC+((short)Opcode.offset<<2)+4;
-		Section->Jump.LinkLocation  =NULL;
-		Section->Jump.LinkLocation2 =NULL;
+		Section->Jump.LinkLocation  =0;
+		Section->Jump.LinkLocation2 =0;
 		Section->Jump.DoneDelaySlot =FALSE;
 		Section->Cont.TargetPC      =Section->CompilePC+8;
-		Section->Cont.LinkLocation  =NULL;
-		Section->Cont.LinkLocation2 =NULL;
+		Section->Cont.LinkLocation  =0;
+		Section->Cont.LinkLocation2 =0;
 		Section->Cont.DoneDelaySlot =FALSE;
 		if (Section->Jump.TargetPC<Section->Cont.TargetPC) {
 			Section->Cont.FallThrough=FALSE;
@@ -97,25 +97,25 @@ void Compile_R4300i_Branch (BLOCK_SECTION*Section,void (*CompareFunc)(BLOCK_SECT
 				return;
 			}
 			if (!Section->Jump.FallThrough&&!Section->Cont.FallThrough) {
-				if (Section->Jump.LinkLocation!=NULL) {
+				if (Section->Jump.LinkLocation!=0) {
 					SetJump32((DWORD*)Section->Jump.LinkLocation,(DWORD*)RecompPos);
-					Section->Jump.LinkLocation=NULL;
-					if (Section->Jump.LinkLocation2!=NULL) {
+					Section->Jump.LinkLocation=0;
+					if (Section->Jump.LinkLocation2!=0) {
 						SetJump32((DWORD*)Section->Jump.LinkLocation2,(DWORD*)RecompPos);
-						Section->Jump.LinkLocation2=NULL;
+						Section->Jump.LinkLocation2=0;
 					}
 					Section->Jump.FallThrough=TRUE;
-				} else if (Section->Cont.LinkLocation!=NULL) {
+				} else if (Section->Cont.LinkLocation!=0) {
 					SetJump32((DWORD*)Section->Cont.LinkLocation,(DWORD*)RecompPos);
-					Section->Cont.LinkLocation=NULL;
-					if (Section->Cont.LinkLocation2!=NULL) {
+					Section->Cont.LinkLocation=0;
+					if (Section->Cont.LinkLocation2!=0) {
 						SetJump32((DWORD*)Section->Cont.LinkLocation2,(DWORD*)RecompPos);
-						Section->Cont.LinkLocation2=NULL;
+						Section->Cont.LinkLocation2=0;
 					}
 					Section->Cont.FallThrough=TRUE;
 				}
 			}
-			for (count=1; count<10; count++) { x86Protected(count)=FALSE; }
+			for (count=1;count<10;count++) {x86Protected(count)=FALSE;}
 			memcpy(&RegBeforeDelay,&Section->RegWorking,sizeof(REG_INFO));
 		}
 		DODS
@@ -124,19 +124,19 @@ void Compile_R4300i_Branch (BLOCK_SECTION*Section,void (*CompareFunc)(BLOCK_SECT
 			JUMP_INFO*FallInfo=Section->Jump.FallThrough?&Section->Jump:&Section->Cont;
 			JUMP_INFO*JumpInfo=Section->Jump.FallThrough?&Section->Cont:&Section->Jump;
 			if (FallInfo->FallThrough&&!FallInfo->DoneDelaySlot) {
-				for (count=1; count<10; count++) { x86Protected(count)=FALSE; }
+				for (count=1;count<10;count++) {x86Protected(count)=FALSE;}
 				memcpy(&FallInfo->RegSet,&Section->RegWorking,sizeof(REG_INFO));
 				FallInfo->DoneDelaySlot=TRUE;
 				if (!JumpInfo->DoneDelaySlot) {
 					FallInfo->FallThrough=FALSE;
 					JmpLabel32(0);
 					FallInfo->LinkLocation=RecompPos-4;
-					if (JumpInfo->LinkLocation!=NULL) {
+					if (JumpInfo->LinkLocation!=0) {
 						SetJump32((DWORD*)JumpInfo->LinkLocation,(DWORD*)RecompPos);
-						JumpInfo->LinkLocation=NULL;
-						if (JumpInfo->LinkLocation2!=NULL) {
+						JumpInfo->LinkLocation=0;
+						if (JumpInfo->LinkLocation2!=0) {
 							SetJump32((DWORD*)JumpInfo->LinkLocation2,(DWORD*)RecompPos);
-							JumpInfo->LinkLocation2=NULL;
+							JumpInfo->LinkLocation2=0;
 						}
 						JumpInfo->FallThrough=TRUE;
 						DODS
@@ -148,7 +148,7 @@ void Compile_R4300i_Branch (BLOCK_SECTION*Section,void (*CompareFunc)(BLOCK_SECT
 		} else {
 			int count;
 			CompareFunc(Section);
-			for (count=1; count<10; count++) { x86Protected(count)=FALSE; }
+			for (count=1;count<10;count++) {x86Protected(count)=FALSE;}
 			memcpy(&Section->Cont.RegSet,&Section->RegWorking,sizeof(REG_INFO));
 			memcpy(&Section->Jump.RegSet,&Section->RegWorking,sizeof(REG_INFO));
 		}
@@ -161,19 +161,19 @@ void Compile_R4300i_BranchLikely (BLOCK_SECTION*Section,void (*CompareFunc)(BLOC
 	if (NextInstruction==NORMAL) {
 		Section->Jump.TargetPC    =Section->CompilePC+((short)Opcode.offset<<2)+4;
 		Section->Jump.FallThrough =TRUE;
-		Section->Jump.LinkLocation=NULL;
-		Section->Jump.LinkLocation2=NULL;
+		Section->Jump.LinkLocation=0;
+		Section->Jump.LinkLocation2=0;
 		Section->Cont.TargetPC    =Section->CompilePC+8;
 		Section->Cont.FallThrough =FALSE;
-		Section->Cont.LinkLocation=NULL;
-		Section->Cont.LinkLocation2=NULL;
+		Section->Cont.LinkLocation=0;
+		Section->Cont.LinkLocation2=0;
 		if (Link) {
 			UnMap_GPR(Section,31,FALSE);
 			MipsRegLo(31)=Section->CompilePC+8;
 			MipsRegState(31)=STATE_CONST_32;
 		}
 		CompareFunc(Section);
-		for (count=1; count<10; count++) { x86Protected(count)=FALSE; }
+		for (count=1;count<10;count++) {x86Protected(count)=FALSE;}
 		memcpy(&Section->Cont.RegSet,&Section->RegWorking,sizeof(REG_INFO));
 		if (Section->Cont.FallThrough)  {
 			GenerateSectionLinkage(Section);
@@ -181,31 +181,31 @@ void Compile_R4300i_BranchLikely (BLOCK_SECTION*Section,void (*CompareFunc)(BLOC
 		} else {
 			if ((Section->CompilePC&0xFFC)==0xFFC) {
 				Section->Jump.FallThrough=FALSE;
-				if (Section->Jump.LinkLocation!=NULL) {
+				if (Section->Jump.LinkLocation!=0) {
 					SetJump32(Section->Jump.LinkLocation,RecompPos);
-					Section->Jump.LinkLocation=NULL;
-					if (Section->Jump.LinkLocation2!=NULL) {
+					Section->Jump.LinkLocation=0;
+					if (Section->Jump.LinkLocation2!=0) {
 						SetJump32(Section->Jump.LinkLocation2,RecompPos);
-						Section->Jump.LinkLocation2=NULL;
+						Section->Jump.LinkLocation2=0;
 					}
 				}
 				JmpLabel32(0);
 				Section->Jump.LinkLocation=RecompPos-4;
-				if (Section->Cont.LinkLocation!=NULL) {
+				if (Section->Cont.LinkLocation!=0) {
 					SetJump32(Section->Cont.LinkLocation,RecompPos);
-					Section->Cont.LinkLocation=NULL;
-					if (Section->Cont.LinkLocation2!=NULL) {
+					Section->Cont.LinkLocation=0;
+					if (Section->Cont.LinkLocation2!=0) {
 						SetJump32(Section->Cont.LinkLocation2,RecompPos);
-						Section->Cont.LinkLocation2=NULL;
+						Section->Cont.LinkLocation2=0;
 					}
 				}
-				CompileExit (Section->CompilePC+8,Section->RegWorking,Normal,TRUE,NULL);
+				CompileExit (Section->CompilePC+8,Section->RegWorking,Normal,TRUE,0);
 				GenerateSectionLinkage(Section);
 				SetEnd
 			} else DODS
 		}
 	} else if (NextInstruction==DELAY_SLOT_DONE) {
-		for (count=1; count<10; count++) { x86Protected(count)=FALSE; }
+		for (count=1;count<10;count++) {x86Protected(count)=FALSE;}
 		memcpy(&Section->Jump.RegSet,&Section->RegWorking,sizeof(REG_INFO));
 		GenerateSectionLinkage(Section);
 		SetEnd
@@ -667,7 +667,7 @@ void BGTZ_Compare (BLOCK_SECTION*Section) {
 void BLEZ_Compare (BLOCK_SECTION*Section) {
 	if (IsConst(Opcode.rs)) {
 		if (Is64Bit(Opcode.rs)) {
-			if (MipsReg_S(Opcode.rs) <=0) {
+			if (MipsReg_S(Opcode.rs)<=0) {
 				Section->Jump.FallThrough=TRUE;
 				Section->Cont.FallThrough=FALSE;
 			} else {
@@ -675,7 +675,7 @@ void BLEZ_Compare (BLOCK_SECTION*Section) {
 				Section->Cont.FallThrough=TRUE;
 			}
 		} else if (IsSigned(Opcode.rs)) {
-			if (MipsRegLo_S(Opcode.rs) <=0) {
+			if (MipsRegLo_S(Opcode.rs)<=0) {
 				Section->Jump.FallThrough=TRUE;
 				Section->Cont.FallThrough=FALSE;
 			} else {
@@ -921,8 +921,8 @@ void Compile_R4300i_J (BLOCK_SECTION*Section) {
 	if (NextInstruction==NORMAL) {
 		Section->Jump.TargetPC    =(Section->CompilePC&0xF0000000)+(Opcode.target<<2);
 		Section->Jump.FallThrough =TRUE;
-		Section->Jump.LinkLocation=NULL;
-		Section->Jump.LinkLocation2=NULL;
+		Section->Jump.LinkLocation=0;
+		Section->Jump.LinkLocation2=0;
 		DODS
 		if ((Section->CompilePC&0xFFC)==0xFFC) {
 			memcpy(&Section->Jump.RegSet,&Section->RegWorking,sizeof(REG_INFO));
@@ -947,7 +947,7 @@ void Compile_R4300i_JAL (BLOCK_SECTION*Section) {
 				AddConstToVariable(BlockCycleCount,&CP0[9]);
 				SubConstFromVariable(BlockCycleCount,&Timers.Timer);
 			}
-			if (BlockRandomModifier!=0) { SubConstFromVariable(BlockRandomModifier,&CP0[1]); }
+			if (BlockRandomModifier!=0) {SubConstFromVariable(BlockRandomModifier,&CP0[1]);}
 			WriteBackRegisters(Section);
 			MoveConstToVariable(DELAY_SLOT,&NextInstruction);
 			Ret();
@@ -957,14 +957,14 @@ void Compile_R4300i_JAL (BLOCK_SECTION*Section) {
 		DODS
 	} else if (NextInstruction==DELAY_SLOT_DONE) {
 		MoveConstToVariable((Section->CompilePC&0xF0000000)+(Opcode.target<<2),&PROGRAM_COUNTER);
-		CompileExit((DWORD)-1,Section->RegWorking,Normal,TRUE,NULL);
+		CompileExit((DWORD)-1,Section->RegWorking,Normal,TRUE,0);
 		SetEnd
 	}
 }
 void Compile_R4300i_ADDI (BLOCK_SECTION*Section) {
 	if (Opcode.rt==0) return;
 	if (IsConst(Opcode.rs)) {
-		if (IsMapped(Opcode.rt)) { UnMap_GPR(Section,Opcode.rt,FALSE); }
+		if (IsMapped(Opcode.rt)) {UnMap_GPR(Section,Opcode.rt,FALSE);}
 		MipsRegLo(Opcode.rt)=MipsRegLo(Opcode.rs)+(short)Opcode.immediate;
 		MipsRegState(Opcode.rt)=STATE_CONST_32;
 		return;
@@ -982,7 +982,7 @@ void Compile_R4300i_ADDI (BLOCK_SECTION*Section) {
 void Compile_R4300i_ADDIU (BLOCK_SECTION*Section) {
 	if (Opcode.rt==0) return;
 	if (IsConst(Opcode.rs)) {
-		if (IsMapped(Opcode.rt)) { UnMap_GPR(Section,Opcode.rt,FALSE); }
+		if (IsMapped(Opcode.rt)) {UnMap_GPR(Section,Opcode.rt,FALSE);}
 		MipsRegLo(Opcode.rt)=MipsRegLo(Opcode.rs)+(short)Opcode.immediate;
 		MipsRegState(Opcode.rt)=STATE_CONST_32;
 		return;
@@ -1102,7 +1102,7 @@ void Compile_R4300i_SLTI (BLOCK_SECTION*Section) {
 void Compile_R4300i_ANDI (BLOCK_SECTION*Section) {
 	if (Opcode.rt==0) return;
 	if (IsConst(Opcode.rs)) {
-		if (IsMapped(Opcode.rt)) { UnMap_GPR(Section,Opcode.rt,FALSE); }
+		if (IsMapped(Opcode.rt)) {UnMap_GPR(Section,Opcode.rt,FALSE);}
 		MipsRegState(Opcode.rt)=STATE_CONST_32;
 		MipsRegLo(Opcode.rt)=MipsRegLo(Opcode.rs)&Opcode.immediate;
 	} else if (Opcode.immediate!=0) {
@@ -1115,7 +1115,7 @@ void Compile_R4300i_ANDI (BLOCK_SECTION*Section) {
 void Compile_R4300i_ORI (BLOCK_SECTION*Section) {
 	if (Opcode.rt==0) return;
 	if (IsConst(Opcode.rs)) {
-		if (IsMapped(Opcode.rt)) { UnMap_GPR(Section,Opcode.rt,FALSE); }
+		if (IsMapped(Opcode.rt)) {UnMap_GPR(Section,Opcode.rt,FALSE);}
 		MipsRegState(Opcode.rt)=MipsRegState(Opcode.rs);
 		MipsRegHi(Opcode.rt)=MipsRegHi(Opcode.rs);
 		MipsRegLo(Opcode.rt)=MipsRegLo(Opcode.rs)|Opcode.immediate;
@@ -1134,17 +1134,17 @@ void Compile_R4300i_ORI (BLOCK_SECTION*Section) {
 void Compile_R4300i_XORI (BLOCK_SECTION*Section) {
 	if (Opcode.rt==0) return;
 	if (IsConst(Opcode.rs)) {
-		if (Opcode.rs!=Opcode.rt) { UnMap_GPR(Section,Opcode.rt,FALSE); }
+		if (Opcode.rs!=Opcode.rt) {UnMap_GPR(Section,Opcode.rt,FALSE);}
 		MipsRegState(Opcode.rt)=MipsRegState(Opcode.rs);
 		MipsRegHi(Opcode.rt)=MipsRegHi(Opcode.rs);
-		MipsRegLo(Opcode.rt)=MipsRegLo(Opcode.rs) ^ Opcode.immediate;
+		MipsRegLo(Opcode.rt)=MipsRegLo(Opcode.rs)^Opcode.immediate;
 	} else {
 		if (IsMapped(Opcode.rs)&&Is32Bit(Opcode.rs)) {
 			Map_GPR_32bit(Section,Opcode.rt,IsSigned(Opcode.rs),Opcode.rs);
 		} else {
 			Map_GPR_64bit(Section,Opcode.rt,Opcode.rs);
 		}
-		if (Opcode.immediate!=0) { XorConstToX86Reg(MipsRegLo(Opcode.rt),Opcode.immediate); }
+		if (Opcode.immediate!=0) {XorConstToX86Reg(MipsRegLo(Opcode.rt),Opcode.immediate);}
 	}
 }
 void Compile_R4300i_LUI (BLOCK_SECTION*Section) {
@@ -1154,24 +1154,24 @@ void Compile_R4300i_LUI (BLOCK_SECTION*Section) {
 	MipsRegState(Opcode.rt)=STATE_CONST_32;
 }
 void Compile_R4300i_DADDIU (BLOCK_SECTION*Section) {
-	if (Opcode.rs!=0) { UnMap_GPR(Section,Opcode.rs,TRUE); }
-	if (Opcode.rs!=0) { UnMap_GPR(Section,Opcode.rt,TRUE); }
+	if (Opcode.rs!=0) {UnMap_GPR(Section,Opcode.rs,TRUE);}
+	if (Opcode.rs!=0) {UnMap_GPR(Section,Opcode.rt,TRUE);}
 	Pushad();
 	MoveConstToVariable(Opcode.Hex,&Opcode.Hex);
 	Call_Direct(r4300i_DADDIU);
 	Popad();
 }
 void Compile_R4300i_LDL (BLOCK_SECTION*Section) {
-	if (Opcode.base!=0) { UnMap_GPR(Section,Opcode.base,TRUE); }
-	if (Opcode.rt!=0) { UnMap_GPR(Section,Opcode.rt,TRUE); }
+	if (Opcode.base!=0) {UnMap_GPR(Section,Opcode.base,TRUE);}
+	if (Opcode.rt!=0) {UnMap_GPR(Section,Opcode.rt,TRUE);}
 	Pushad();
 	MoveConstToVariable(Opcode.Hex,&Opcode.Hex);
 	Call_Direct(r4300i_LDL);
 	Popad();
 }
 void Compile_R4300i_LDR (BLOCK_SECTION*Section) {
-	if (Opcode.base!=0) { UnMap_GPR(Section,Opcode.base,TRUE); }
-	if (Opcode.rt!=0) { UnMap_GPR(Section,Opcode.rt,TRUE); }
+	if (Opcode.base!=0) {UnMap_GPR(Section,Opcode.base,TRUE);}
+	if (Opcode.rt!=0) {UnMap_GPR(Section,Opcode.rt,TRUE);}
 	Pushad();
 	MoveConstToVariable(Opcode.Hex,&Opcode.Hex);
 	Call_Direct(r4300i_LDR);
@@ -1181,12 +1181,12 @@ void Compile_R4300i_LB (BLOCK_SECTION*Section) {
 	DWORD TempReg1,TempReg2;
 	if (Opcode.rt==0) return;
 	if (IsConst(Opcode.base)) {
-		DWORD Address=(MipsRegLo(Opcode.base)+(short)Opcode.offset) ^ 3;
+		DWORD Address=(MipsRegLo(Opcode.base)+(short)Opcode.offset)^3;
 		Map_GPR_32bit(Section,Opcode.rt,TRUE,0);
 		Compile_LB(MipsRegLo(Opcode.rt),Address,TRUE);
 		return;
 	}
-	if (IsMapped(Opcode.rt)) { ProtectGPR(Section,Opcode.rt); }
+	if (IsMapped(Opcode.rt)) {ProtectGPR(Section,Opcode.rt);}
 	if (IsMapped(Opcode.base)) {
 		ProtectGPR(Section,Opcode.base);
 		if (Opcode.offset!=0) {
@@ -1226,12 +1226,12 @@ void Compile_R4300i_LH (BLOCK_SECTION*Section) {
 	DWORD TempReg1,TempReg2;
 	if (Opcode.rt==0) return;
 	if (IsConst(Opcode.base)) {
-		DWORD Address=(MipsRegLo(Opcode.base)+(short)Opcode.offset) ^ 2;
+		DWORD Address=(MipsRegLo(Opcode.base)+(short)Opcode.offset)^2;
 		Map_GPR_32bit(Section,Opcode.rt,TRUE,0);
 		Compile_LH(MipsRegLo(Opcode.rt),Address,TRUE);
 		return;
 	}
-	if (IsMapped(Opcode.rt)) { ProtectGPR(Section,Opcode.rt); }
+	if (IsMapped(Opcode.rt)) {ProtectGPR(Section,Opcode.rt);}
 	if (IsMapped(Opcode.base)) {
 		ProtectGPR(Section,Opcode.base);
 		if (Opcode.offset!=0) {
@@ -1283,7 +1283,7 @@ void Compile_R4300i_LWL (BLOCK_SECTION*Section) {
 		return;
 	}
 	shift=Map_TempReg(Section,x86_ECX,-1,FALSE);
-	if (IsMapped(Opcode.rt)) { ProtectGPR(Section,Opcode.rt); }
+	if (IsMapped(Opcode.rt)) {ProtectGPR(Section,Opcode.rt);}
 	if (IsMapped(Opcode.base)) {
 		ProtectGPR(Section,Opcode.base);
 		if (Opcode.offset!=0) {
@@ -1337,7 +1337,7 @@ void Compile_R4300i_LW (BLOCK_SECTION*Section) {
 		return;
 	}
 	if (UseTLB) {
-		if (IsMapped(Opcode.rt)) { ProtectGPR(Section,Opcode.rt); }
+		if (IsMapped(Opcode.rt)) {ProtectGPR(Section,Opcode.rt);}
 		if (IsMapped(Opcode.base)&&Opcode.offset==0) {
 			ProtectGPR(Section,Opcode.base);
 			TempReg1=MipsRegLo(Opcode.base);
@@ -1397,12 +1397,12 @@ void Compile_R4300i_LBU (BLOCK_SECTION*Section) {
 	DWORD TempReg1,TempReg2;
 	if (Opcode.rt==0) return;
 	if (IsConst(Opcode.base)) {
-		DWORD Address=(MipsRegLo(Opcode.base)+(short)Opcode.offset) ^ 3;
+		DWORD Address=(MipsRegLo(Opcode.base)+(short)Opcode.offset)^3;
 		Map_GPR_32bit(Section,Opcode.rt,FALSE,0);
 		Compile_LB(MipsRegLo(Opcode.rt),Address,FALSE);
 		return;
 	}
-	if (IsMapped(Opcode.rt)) { ProtectGPR(Section,Opcode.rt); }
+	if (IsMapped(Opcode.rt)) {ProtectGPR(Section,Opcode.rt);}
 	if (IsMapped(Opcode.base)) {
 		ProtectGPR(Section,Opcode.base);
 		if (Opcode.offset!=0) {
@@ -1442,12 +1442,12 @@ void Compile_R4300i_LHU (BLOCK_SECTION*Section) {
 	DWORD TempReg1,TempReg2;
 	if (Opcode.rt==0) return;
 	if (IsConst(Opcode.base)) {
-		DWORD Address=(MipsRegLo(Opcode.base)+(short)Opcode.offset) ^ 2;
+		DWORD Address=(MipsRegLo(Opcode.base)+(short)Opcode.offset)^2;
 		Map_GPR_32bit(Section,Opcode.rt,FALSE,0);
 		Compile_LH(MipsRegLo(Opcode.rt),Address,FALSE);
 		return;
 	}
-	if (IsMapped(Opcode.rt)) { ProtectGPR(Section,Opcode.rt); }
+	if (IsMapped(Opcode.rt)) {ProtectGPR(Section,Opcode.rt);}
 	if (IsMapped(Opcode.base)) {
 		ProtectGPR(Section,Opcode.base);
 		if (Opcode.offset!=0) {
@@ -1499,7 +1499,7 @@ void Compile_R4300i_LWR (BLOCK_SECTION*Section) {
 		return;
 	}
 	shift=Map_TempReg(Section,x86_ECX,-1,FALSE);
-	if (IsMapped(Opcode.rt)) { ProtectGPR(Section,Opcode.rt); }
+	if (IsMapped(Opcode.rt)) {ProtectGPR(Section,Opcode.rt);}
 	if (IsMapped(Opcode.base)) {
 		ProtectGPR(Section,Opcode.base);
 		if (Opcode.offset!=0) {
@@ -1543,7 +1543,7 @@ void Compile_R4300i_LWR (BLOCK_SECTION*Section) {
 	ShiftRightUnsign(TempReg1);
 	AddX86RegToX86Reg(MipsRegLo(Opcode.rt),TempReg1);
 }
-void Compile_R4300i_LWU (BLOCK_SECTION*Section) { //added by Witten
+void Compile_R4300i_LWU (BLOCK_SECTION*Section) {//added by Witten
 	DWORD TempReg1,TempReg2;
 	if (Opcode.rt==0) return;
 	if (IsConst(Opcode.base)) {
@@ -1552,7 +1552,7 @@ void Compile_R4300i_LWU (BLOCK_SECTION*Section) { //added by Witten
 		Compile_LW(MipsRegLo(Opcode.rt),Address);
 		return;
 	}
-	if (IsMapped(Opcode.rt)) { ProtectGPR(Section,Opcode.rt); }
+	if (IsMapped(Opcode.rt)) {ProtectGPR(Section,Opcode.rt);}
 	if (IsMapped(Opcode.base)) {
 		ProtectGPR(Section,Opcode.base);
 		if (Opcode.offset!=0) {
@@ -1589,7 +1589,7 @@ void Compile_R4300i_LWU (BLOCK_SECTION*Section) { //added by Witten
 void Compile_R4300i_SB (BLOCK_SECTION*Section) {
 	DWORD TempReg1,TempReg2;
 	if (IsConst(Opcode.base)) {
-		DWORD Address=(MipsRegLo(Opcode.base)+(short)Opcode.offset) ^ 3;
+		DWORD Address=(MipsRegLo(Opcode.base)+(short)Opcode.offset)^3;
 		if (IsConst(Opcode.rt)) {
 			Compile_SB_Const((BYTE)MipsRegLo(Opcode.rt),Address);
 		} else if (IsMapped(Opcode.rt)&&Is8BitReg(MipsRegLo(Opcode.rt))) {
@@ -1599,7 +1599,7 @@ void Compile_R4300i_SB (BLOCK_SECTION*Section) {
 		}
 		return;
 	}
-	if (IsMapped(Opcode.rt)) { ProtectGPR(Section,Opcode.rt); }
+	if (IsMapped(Opcode.rt)) {ProtectGPR(Section,Opcode.rt);}
 	if (IsMapped(Opcode.base)) {
 		ProtectGPR(Section,Opcode.base);
 		if (Opcode.offset!=0) {
@@ -1651,7 +1651,7 @@ void Compile_R4300i_SB (BLOCK_SECTION*Section) {
 void Compile_R4300i_SH (BLOCK_SECTION*Section) {
 	DWORD TempReg1,TempReg2;
 	if (IsConst(Opcode.base)) {
-		DWORD Address=(MipsRegLo(Opcode.base)+(short)Opcode.offset) ^ 2;
+		DWORD Address=(MipsRegLo(Opcode.base)+(short)Opcode.offset)^2;
 		if (IsConst(Opcode.rt)) {
 			Compile_SH_Const((WORD)MipsRegLo(Opcode.rt),Address);
 		} else if (IsMapped(Opcode.rt)) {
@@ -1661,7 +1661,7 @@ void Compile_R4300i_SH (BLOCK_SECTION*Section) {
 		}
 		return;
 	}
-	if (IsMapped(Opcode.rt)) { ProtectGPR(Section,Opcode.rt); }
+	if (IsMapped(Opcode.rt)) {ProtectGPR(Section,Opcode.rt);}
 	if (IsMapped(Opcode.base)) {
 		ProtectGPR(Section,Opcode.base);
 		if (Opcode.offset!=0) {
@@ -1797,7 +1797,7 @@ void Compile_R4300i_SW (BLOCK_SECTION*Section) {
 		}
 		return;
 	}
-	if (IsMapped(Opcode.rt)) { ProtectGPR(Section,Opcode.rt); }
+	if (IsMapped(Opcode.rt)) {ProtectGPR(Section,Opcode.rt);}
 	if (IsMapped(Opcode.base)) {
 		ProtectGPR(Section,Opcode.base);
 		if (Opcode.offset!=0) {
@@ -1919,16 +1919,16 @@ void Compile_R4300i_SWR (BLOCK_SECTION*Section) {
 	}
 }
 void Compile_R4300i_SDL (BLOCK_SECTION*Section) {
-	if (Opcode.base!=0) { UnMap_GPR(Section,Opcode.base,TRUE); }
-	if (Opcode.rt!=0) { UnMap_GPR(Section,Opcode.rt,TRUE); }
+	if (Opcode.base!=0) {UnMap_GPR(Section,Opcode.base,TRUE);}
+	if (Opcode.rt!=0) {UnMap_GPR(Section,Opcode.rt,TRUE);}
 	Pushad();
 	MoveConstToVariable(Opcode.Hex,&Opcode.Hex);
 	Call_Direct(r4300i_SDL);
 	Popad();
 }
 void Compile_R4300i_SDR (BLOCK_SECTION*Section) {
-	if (Opcode.base!=0) { UnMap_GPR(Section,Opcode.base,TRUE); }
-	if (Opcode.rt!=0) { UnMap_GPR(Section,Opcode.rt,TRUE); }
+	if (Opcode.base!=0) {UnMap_GPR(Section,Opcode.base,TRUE);}
+	if (Opcode.rt!=0) {UnMap_GPR(Section,Opcode.rt,TRUE);}
 	Pushad();
 	MoveConstToVariable(Opcode.Hex,&Opcode.Hex);
 	Call_Direct(r4300i_SDR);
@@ -1936,11 +1936,11 @@ void Compile_R4300i_SDR (BLOCK_SECTION*Section) {
 }
 void _fastcall ClearRecompilerCache (DWORD Address) {
 	if (!TranslateVaddr(&Address)||Address>=RDRAMsize) return;
-	DWORD Block=Address>>12,SetMem=(strcmp(RomName,"THE LEGEND OF ZELDA")==0)?0x4EA1:0x1000; // TLOZ Auto because Indiana breaks past 0x3000
+	DWORD Block=Address>>12,SetMem=(strcmp(RomName,"THE LEGEND OF ZELDA")==0)?0x4EA1:0x1000;// TLOZ Auto because Indiana breaks past 0x3000
 	if (N64_Blocks.NoOfRDRAMBlocks[Block]>0) {
 		N64_Blocks.NoOfRDRAMBlocks[Block]=0;
 		memset(JumpTable+(Block<<10),0,SetMem);
-		*(DelaySlotTable+Block)=NULL;
+		*(DelaySlotTable+Block)=0;
 	}
 }
 void Compile_R4300i_CACHE (BLOCK_SECTION*Section) {
@@ -1973,7 +1973,7 @@ void Compile_R4300i_LL (BLOCK_SECTION*Section) {
 		return;
 	}
 	if (UseTLB) {
-		if (IsMapped(Opcode.rt)) { ProtectGPR(Section,Opcode.rt); }
+		if (IsMapped(Opcode.rt)) {ProtectGPR(Section,Opcode.rt);}
 		if (IsMapped(Opcode.base)&&Opcode.offset==0) {
 			ProtectGPR(Section,Opcode.base);
 			TempReg1=MipsRegLo(Opcode.base);
@@ -2055,7 +2055,7 @@ void Compile_R4300i_SC (BLOCK_SECTION*Section) {
 		MoveVariableToX86reg(&LLBit,MipsRegLo(Opcode.rt));
 		return;
 	}
-	if (IsMapped(Opcode.rt)) { ProtectGPR(Section,Opcode.rt); }
+	if (IsMapped(Opcode.rt)) {ProtectGPR(Section,Opcode.rt);}
 	if (IsMapped(Opcode.base)) {
 		ProtectGPR(Section,Opcode.base);
 		if (Opcode.offset!=0) {
@@ -2113,7 +2113,7 @@ void Compile_R4300i_LD (BLOCK_SECTION*Section) {
 		Compile_LW(MipsRegLo(Opcode.rt),Address+4);
 		return;
 	}
-	if (IsMapped(Opcode.rt)) { ProtectGPR(Section,Opcode.rt); }
+	if (IsMapped(Opcode.rt)) {ProtectGPR(Section,Opcode.rt);}
 	if (IsMapped(Opcode.base)&&Opcode.offset==0) {
 		if (UseTLB) {
 			ProtectGPR(Section,Opcode.base);
@@ -2181,7 +2181,7 @@ void Compile_R4300i_SD (BLOCK_SECTION*Section) {
 		}
 		return;
 	}
-	if (IsMapped(Opcode.rt)) { ProtectGPR(Section,Opcode.rt); }
+	if (IsMapped(Opcode.rt)) {ProtectGPR(Section,Opcode.rt);}
 	if (IsMapped(Opcode.base)) {
 		ProtectGPR(Section,Opcode.base);
 		if (Opcode.offset!=0) {
@@ -2260,7 +2260,7 @@ void Compile_R4300i_SD (BLOCK_SECTION*Section) {
 void Compile_R4300i_SPECIAL_SLL (BLOCK_SECTION*Section) {
 	if (Opcode.rd==0) return;
 	if (IsConst(Opcode.rt)) {
-		if (IsMapped(Opcode.rd)) { UnMap_GPR(Section,Opcode.rd,FALSE); }
+		if (IsMapped(Opcode.rd)) {UnMap_GPR(Section,Opcode.rd,FALSE);}
 		MipsRegLo(Opcode.rd)=MipsRegLo(Opcode.rt)<<Opcode.sa;
 		MipsRegState(Opcode.rd)=STATE_CONST_32;
 		return;
@@ -2293,7 +2293,7 @@ void Compile_R4300i_SPECIAL_SLL (BLOCK_SECTION*Section) {
 void Compile_R4300i_SPECIAL_SRL (BLOCK_SECTION*Section) {
 	if (Opcode.rd==0) return;
 	if (IsConst(Opcode.rt)) {
-		if (IsMapped(Opcode.rd)) { UnMap_GPR(Section,Opcode.rd,FALSE); }
+		if (IsMapped(Opcode.rd)) {UnMap_GPR(Section,Opcode.rd,FALSE);}
 		MipsRegLo(Opcode.rd)=MipsRegLo(Opcode.rt)>>Opcode.sa;
 		MipsRegState(Opcode.rd)=STATE_CONST_32;
 		return;
@@ -2304,7 +2304,7 @@ void Compile_R4300i_SPECIAL_SRL (BLOCK_SECTION*Section) {
 void Compile_R4300i_SPECIAL_SRA (BLOCK_SECTION*Section) {
 	if (Opcode.rd==0) return;
 	if (IsConst(Opcode.rt)) {
-		if (IsMapped(Opcode.rd)) { UnMap_GPR(Section,Opcode.rd,FALSE); }
+		if (IsMapped(Opcode.rd)) {UnMap_GPR(Section,Opcode.rd,FALSE);}
 		MipsRegLo(Opcode.rd)=MipsRegLo_S(Opcode.rt)>>Opcode.sa;
 		MipsRegState(Opcode.rd)=STATE_CONST_32;
 		return;
@@ -2317,7 +2317,7 @@ void Compile_R4300i_SPECIAL_SLLV (BLOCK_SECTION*Section) {
 	if (IsConst(Opcode.rs)) {
 		DWORD Shift=(MipsRegLo(Opcode.rs)&0x1F);
 		if (IsConst(Opcode.rt)) {
-			if (IsMapped(Opcode.rd)) { UnMap_GPR(Section,Opcode.rd,FALSE); }
+			if (IsMapped(Opcode.rd)) {UnMap_GPR(Section,Opcode.rd,FALSE);}
 			MipsRegLo(Opcode.rd)=MipsRegLo(Opcode.rt)<<Shift;
 			MipsRegState(Opcode.rd)=STATE_CONST_32;
 		} else {
@@ -2336,7 +2336,7 @@ void Compile_R4300i_SPECIAL_SRLV (BLOCK_SECTION*Section) {
 	if (IsKnown(Opcode.rs)&&IsConst(Opcode.rs)) {
 		DWORD Shift=(MipsRegLo(Opcode.rs)&0x1F);
 		if (IsConst(Opcode.rt)) {
-			if (IsMapped(Opcode.rd)) { UnMap_GPR(Section,Opcode.rd,FALSE); }
+			if (IsMapped(Opcode.rd)) {UnMap_GPR(Section,Opcode.rd,FALSE);}
 			MipsRegLo(Opcode.rd)=MipsRegLo(Opcode.rt)>>Shift;
 			MipsRegState(Opcode.rd)=STATE_CONST_32;
 		} else {
@@ -2355,7 +2355,7 @@ void Compile_R4300i_SPECIAL_SRAV (BLOCK_SECTION*Section) {
 	if (IsKnown(Opcode.rs)&&IsConst(Opcode.rs)) {
 		DWORD Shift=(MipsRegLo(Opcode.rs)&0x1F);
 		if (IsConst(Opcode.rt)) {
-			if (IsMapped(Opcode.rd)) { UnMap_GPR(Section,Opcode.rd,FALSE); }
+			if (IsMapped(Opcode.rd)) {UnMap_GPR(Section,Opcode.rd,FALSE);}
 			MipsRegLo(Opcode.rd)=MipsRegLo_S(Opcode.rt)>>Shift;
 			MipsRegState(Opcode.rd)=STATE_CONST_32;
 		} else {
@@ -2374,11 +2374,11 @@ void Compile_R4300i_SPECIAL_JR (BLOCK_SECTION*Section) {
 		if (IsConst(Opcode.rs)) {
 			Section->Jump.TargetPC    =MipsRegLo(Opcode.rs);
 			Section->Jump.FallThrough =TRUE;
-			Section->Jump.LinkLocation=NULL;
-			Section->Jump.LinkLocation2=NULL;
+			Section->Jump.LinkLocation=0;
+			Section->Jump.LinkLocation2=0;
 			Section->Cont.FallThrough =FALSE;
-			Section->Cont.LinkLocation=NULL;
-			Section->Cont.LinkLocation2=NULL;
+			Section->Cont.LinkLocation=0;
+			Section->Cont.LinkLocation2=0;
 			if ((Section->CompilePC&0xFFC)==0xFFC) {
 				GenerateSectionLinkage(Section);
 				SetEnd
@@ -2396,7 +2396,7 @@ void Compile_R4300i_SPECIAL_JR (BLOCK_SECTION*Section) {
 				AddConstToVariable(BlockCycleCount,&CP0[9]);
 				SubConstFromVariable(BlockCycleCount,&Timers.Timer);
 			}
-			if (BlockRandomModifier!=0) { SubConstFromVariable(BlockRandomModifier,&CP0[1]); }
+			if (BlockRandomModifier!=0) {SubConstFromVariable(BlockRandomModifier,&CP0[1]);}
 			WriteBackRegisters(Section);
 			MoveConstToVariable(DELAY_SLOT,&NextInstruction);
 			Ret();
@@ -2415,7 +2415,7 @@ void Compile_R4300i_SPECIAL_JR (BLOCK_SECTION*Section) {
 		DODS
 	} else if (NextInstruction==DELAY_SLOT_DONE) {
 		if (DelaySlotEffectsCompare(Section->CompilePC,Opcode.rs,0)) {
-			CompileExit((DWORD)-1,Section->RegWorking,Normal,TRUE,NULL);
+			CompileExit((DWORD)-1,Section->RegWorking,Normal,TRUE,0);
 		} else {
 			if (IsConst(Opcode.rs)) {
 				memcpy(&Section->Jump.RegSet,&Section->RegWorking,sizeof(REG_INFO));
@@ -2426,7 +2426,7 @@ void Compile_R4300i_SPECIAL_JR (BLOCK_SECTION*Section) {
 				} else {
 					MoveX86regToVariable(Map_TempReg(Section,x86_Any,Opcode.rs,FALSE),&PROGRAM_COUNTER);
 				}
-				CompileExit((DWORD)-1,Section->RegWorking,Normal,TRUE,NULL);
+				CompileExit((DWORD)-1,Section->RegWorking,Normal,TRUE,0);
 			}
 		}
 		SetEnd
@@ -2449,7 +2449,7 @@ void Compile_R4300i_SPECIAL_JALR (BLOCK_SECTION*Section) {
 				AddConstToVariable(BlockCycleCount,&CP0[9]);
 				SubConstFromVariable(BlockCycleCount,&Timers.Timer);
 			}
-			if (BlockRandomModifier!=0) { SubConstFromVariable(BlockRandomModifier,&CP0[1]); }
+			if (BlockRandomModifier!=0) {SubConstFromVariable(BlockRandomModifier,&CP0[1]);}
 			WriteBackRegisters(Section);
 			MoveConstToVariable(DELAY_SLOT,&NextInstruction);
 			Ret();
@@ -2462,11 +2462,11 @@ void Compile_R4300i_SPECIAL_JALR (BLOCK_SECTION*Section) {
 			memcpy(&Section->Jump.RegSet,&Section->RegWorking,sizeof(REG_INFO));
 			Section->Jump.TargetPC    =MipsRegLo(Opcode.rs);
 			Section->Jump.FallThrough =TRUE;
-			Section->Jump.LinkLocation=NULL;
-			Section->Jump.LinkLocation2=NULL;
+			Section->Jump.LinkLocation=0;
+			Section->Jump.LinkLocation2=0;
 			Section->Cont.FallThrough =FALSE;
-			Section->Cont.LinkLocation=NULL;
-			Section->Cont.LinkLocation2=NULL;
+			Section->Cont.LinkLocation=0;
+			Section->Cont.LinkLocation2=0;
 			GenerateSectionLinkage(Section);
 		} else {
 			if (IsMapped(Opcode.rs)) {
@@ -2474,13 +2474,13 @@ void Compile_R4300i_SPECIAL_JALR (BLOCK_SECTION*Section) {
 			} else {
 				MoveX86regToVariable(Map_TempReg(Section,x86_Any,Opcode.rs,FALSE),&PROGRAM_COUNTER);
 			}
-			CompileExit((DWORD)-1,Section->RegWorking,Normal,TRUE,NULL);
+			CompileExit((DWORD)-1,Section->RegWorking,Normal,TRUE,0);
 		}
 		SetEnd
 	}
 }
 void Compile_R4300i_SPECIAL_SYSCALL(BLOCK_SECTION*Section) {
-	CompileExit(Section->CompilePC,Section->RegWorking,DoSysCall,TRUE,NULL);
+	CompileExit(Section->CompilePC,Section->RegWorking,DoSysCall,TRUE,0);
 }
 void Compile_R4300i_SPECIAL_MFLO (BLOCK_SECTION*Section) {
 	if (Opcode.rd==0) return;
@@ -2575,7 +2575,7 @@ void Compile_R4300i_SPECIAL_DSRLV (BLOCK_SECTION*Section) {
 	if (IsConst(Opcode.rs)) {
 		DWORD Shift=(MipsRegLo(Opcode.rs)&0x3F);
 		if (IsConst(Opcode.rt)) {
-			if (IsMapped(Opcode.rd)) { UnMap_GPR(Section,Opcode.rd,FALSE); }
+			if (IsMapped(Opcode.rd)) {UnMap_GPR(Section,Opcode.rd,FALSE);}
 			MipsReg(Opcode.rd)=Is64Bit(Opcode.rt)?MipsReg(Opcode.rt):(_int64)MipsRegLo_S(Opcode.rt);
 			MipsReg(Opcode.rd)=MipsReg(Opcode.rd)>>Shift;
 			if ((MipsRegHi(Opcode.rd)==0)&&(MipsRegLo(Opcode.rd)&0x80000000)==0) {
@@ -2667,7 +2667,7 @@ void Compile_R4300i_SPECIAL_DIV (BLOCK_SECTION*Section) {
 			MoveConstToVariable(0,&HI.UW[1]);
 			return;
 		}
-		Jump[1]=NULL;
+		Jump[1]=0;
 	} else {
 		if (IsMapped(Opcode.rt)) {
 			CompConstToX86reg(MipsRegLo(Opcode.rt),0);
@@ -2702,7 +2702,7 @@ void Compile_R4300i_SPECIAL_DIV (BLOCK_SECTION*Section) {
 	ShiftRightSignImmed(x86_EDX,31);
 	MoveX86regToVariable(x86_EAX,&LO.UW[1]);
 	MoveX86regToVariable(x86_EDX,&HI.UW[1]);
-	if(Jump[1]!=NULL) {
+	if(Jump[1]!=0) {
 		*((BYTE*)(Jump[1]))=(BYTE)(RecompPos-Jump[1]-1);
 	}
 }
@@ -2717,7 +2717,7 @@ void Compile_R4300i_SPECIAL_DIVU (BLOCK_SECTION*Section) {
 			MoveConstToVariable(0,&HI.UW[1]);
 			return;
 		}
-		Jump[1]=NULL;
+		Jump[1]=0;
 	} else {
 		if (IsMapped(Opcode.rt)) {
 			CompConstToX86reg(MipsRegLo(Opcode.rt),0);
@@ -2746,13 +2746,13 @@ void Compile_R4300i_SPECIAL_DIVU (BLOCK_SECTION*Section) {
 	ShiftRightSignImmed(x86_EDX,31);
 	MoveX86regToVariable(x86_EAX,&LO.UW[1]);
 	MoveX86regToVariable(x86_EDX,&HI.UW[1]);
-	if(Jump[1]!=NULL) {
+	if(Jump[1]!=0) {
 		*((BYTE*)(Jump[1]))=(BYTE)(RecompPos-Jump[1]-1);
 	}
 }
 void Compile_R4300i_SPECIAL_DMULT (BLOCK_SECTION*Section) {
-	if (Opcode.rs!=0) { UnMap_GPR(Section,Opcode.rs,TRUE); }
-	if (Opcode.rs!=0) { UnMap_GPR(Section,Opcode.rt,TRUE); }
+	if (Opcode.rs!=0) {UnMap_GPR(Section,Opcode.rs,TRUE);}
+	if (Opcode.rs!=0) {UnMap_GPR(Section,Opcode.rt,TRUE);}
 	Pushad();
 	MoveConstToVariable(Opcode.Hex,&Opcode.Hex);
 	Call_Direct(r4300i_SPECIAL_DMULT);
@@ -2776,14 +2776,14 @@ void Compile_R4300i_SPECIAL_DMULTU (BLOCK_SECTION*Section) {
 	Map_TempReg(Section,x86_EBX,-1,FALSE);
 	Map_TempReg(Section,x86_ECX,-1,FALSE);
 	MulX86reg(x86_EDX);
-	MoveX86RegToX86Reg(x86_EAX,x86_EBX); /*EDX:EAX -> ECX:EBX*/
+	MoveX86RegToX86Reg(x86_EAX,x86_EBX);/*EDX:EAX-> ECX:EBX*/
 	MoveX86RegToX86Reg(x86_EDX,x86_ECX);
 	Map_TempReg(Section,x86_EAX,Opcode.rs,FALSE);
 	Map_TempReg(Section,x86_EDX,Opcode.rt,TRUE);
 	MulX86reg(x86_EDX);
 	Map_TempReg(Section,x86_ESI,-1,FALSE);
 	Map_TempReg(Section,x86_EDI,-1,FALSE);
-	MoveX86RegToX86Reg(x86_EAX,x86_ESI); /*EDX:EAX -> EDI:ESI*/
+	MoveX86RegToX86Reg(x86_EAX,x86_ESI);/*EDX:EAX-> EDI:ESI*/
 	MoveX86RegToX86Reg(x86_EDX,x86_EDI);
 	XorX86RegToX86Reg(x86_EDX,x86_EDX);
 	MoveVariableToX86reg(&LO.UW[1],x86_EAX);
@@ -2822,7 +2822,7 @@ void Compile_R4300i_SPECIAL_ADD (BLOCK_SECTION*Section) {
 	if (Opcode.rd==0) return;
 	if (IsConst(source1)&&IsConst(source2)) {
 		DWORD temp=MipsRegLo(source1)+MipsRegLo(source2);
-		if (IsMapped(Opcode.rd)) { UnMap_GPR(Section,Opcode.rd,FALSE); }
+		if (IsMapped(Opcode.rd)) {UnMap_GPR(Section,Opcode.rd,FALSE);}
 		MipsRegLo(Opcode.rd)=temp;
 		MipsRegState(Opcode.rd)=STATE_CONST_32;
 		return;
@@ -2844,7 +2844,7 @@ void Compile_R4300i_SPECIAL_ADDU (BLOCK_SECTION*Section) {
 	if (Opcode.rd==0) return;
 	if (IsConst(source1)&&IsConst(source2)) {
 		DWORD temp=MipsRegLo(source1)+MipsRegLo(source2);
-		if (IsMapped(Opcode.rd)) { UnMap_GPR(Section,Opcode.rd,FALSE); }
+		if (IsMapped(Opcode.rd)) {UnMap_GPR(Section,Opcode.rd,FALSE);}
 		MipsRegLo(Opcode.rd)=temp;
 		MipsRegState(Opcode.rd)=STATE_CONST_32;
 		return;
@@ -2864,7 +2864,7 @@ void Compile_R4300i_SPECIAL_SUB (BLOCK_SECTION*Section) {
 	if (Opcode.rd==0) return;
 	if (IsConst(Opcode.rt) &&IsConst(Opcode.rs)) {
 		DWORD temp=MipsRegLo(Opcode.rs)-MipsRegLo(Opcode.rt);
-		if (IsMapped(Opcode.rd)) { UnMap_GPR(Section,Opcode.rd,FALSE); }
+		if (IsMapped(Opcode.rd)) {UnMap_GPR(Section,Opcode.rd,FALSE);}
 		MipsRegLo(Opcode.rd)=temp;
 		MipsRegState(Opcode.rd)=STATE_CONST_32;
 	} else {
@@ -2888,7 +2888,7 @@ void Compile_R4300i_SPECIAL_SUBU (BLOCK_SECTION*Section) {
 	if (Opcode.rd==0) return;
 	if (IsConst(Opcode.rt) &&IsConst(Opcode.rs)) {
 		DWORD temp=MipsRegLo(Opcode.rs)-MipsRegLo(Opcode.rt);
-		if (IsMapped(Opcode.rd)) { UnMap_GPR(Section,Opcode.rd,FALSE); }
+		if (IsMapped(Opcode.rd)) {UnMap_GPR(Section,Opcode.rd,FALSE);}
 		MipsRegLo(Opcode.rd)=temp;
 		MipsRegState(Opcode.rd)=STATE_CONST_32;
 	} else {
@@ -2982,7 +2982,7 @@ void Compile_R4300i_SPECIAL_AND (BLOCK_SECTION*Section) {
 			} else {
 				DWORD Value=MipsRegLo(ConstReg);
 				int Sign=FALSE;
-				if (IsSigned(ConstReg)&&IsSigned(MappedReg)) { Sign=TRUE; }
+				if (IsSigned(ConstReg)&&IsSigned(MappedReg)) {Sign=TRUE;}
 				if (Value!=0) {
 					Map_GPR_32bit(Section,Opcode.rd,Sign,MappedReg);
 					AndConstToX86Reg(MipsRegLo(Opcode.rd),Value);
@@ -3036,7 +3036,7 @@ void Compile_R4300i_SPECIAL_AND (BLOCK_SECTION*Section) {
 void Compile_R4300i_SPECIAL_OR (BLOCK_SECTION*Section) {
 	if (IsKnown(Opcode.rt)&&IsKnown(Opcode.rs)) {
 		if (IsConst(Opcode.rt)&&IsConst(Opcode.rs)) {
-			if (IsMapped(Opcode.rd)) { UnMap_GPR(Section,Opcode.rd,FALSE); }
+			if (IsMapped(Opcode.rd)) {UnMap_GPR(Section,Opcode.rd,FALSE);}
 			if (Is64Bit(Opcode.rt)||Is64Bit(Opcode.rs)) {
 				MipsReg(Opcode.rd)=
 					(Is64Bit(Opcode.rt)?MipsReg(Opcode.rt):(_int64)MipsRegLo_S(Opcode.rt))|
@@ -3089,7 +3089,7 @@ void Compile_R4300i_SPECIAL_OR (BLOCK_SECTION*Section) {
 			} else {
 				int Value=MipsRegLo(ConstReg);
 				Map_GPR_32bit(Section,Opcode.rd,TRUE,MappedReg);
-				if (Value!=0) { OrConstToX86Reg(Value,MipsRegLo(Opcode.rd)); }
+				if (Value!=0) {OrConstToX86Reg(Value,MipsRegLo(Opcode.rd));}
 			}
 		}
 	} else if (IsKnown(Opcode.rt)||IsKnown(Opcode.rs)) {
@@ -3126,11 +3126,11 @@ void Compile_R4300i_SPECIAL_XOR (BLOCK_SECTION*Section) {
 	}
 	if (IsKnown(Opcode.rt)&&IsKnown(Opcode.rs)) {
 		if (IsConst(Opcode.rt)&&IsConst(Opcode.rs)) {
-			if (IsMapped(Opcode.rd)) { UnMap_GPR(Section,Opcode.rd,FALSE); }
+			if (IsMapped(Opcode.rd)) {UnMap_GPR(Section,Opcode.rd,FALSE);}
 			if (Is64Bit(Opcode.rt)||Is64Bit(Opcode.rs)) DisplayThreadExit("Compile_R4300i_SPECIAL_XOR-Is64Bit(Opcode.rt)||Is64Bit(Opcode.rs)\n\nThe emulator has crashed on an unknown Opcode at this location");
 			else {
 				MipsRegState(Opcode.rd)=STATE_CONST_32;
-				MipsRegLo(Opcode.rd)=MipsRegLo(Opcode.rt) ^ MipsRegLo(Opcode.rs);
+				MipsRegLo(Opcode.rd)=MipsRegLo(Opcode.rt)^MipsRegLo(Opcode.rs);
 			}
 		} else if (IsMapped(Opcode.rt)&&IsMapped(Opcode.rs)) {
 			int source1=Opcode.rd==Opcode.rt?Opcode.rt:Opcode.rs;
@@ -3161,8 +3161,8 @@ void Compile_R4300i_SPECIAL_XOR (BLOCK_SECTION*Section) {
 				ConstHi=Is32Bit(ConstReg)?(DWORD)(MipsRegLo_S(ConstReg)>>31):MipsRegHi(ConstReg);
 				ConstLo=MipsRegLo(ConstReg);
 				Map_GPR_64bit(Section,Opcode.rd,MappedReg);
-				if (ConstHi!=0) { XorConstToX86Reg(MipsRegHi(Opcode.rd),ConstHi); }
-				if (ConstLo!=0) { XorConstToX86Reg(MipsRegLo(Opcode.rd),ConstLo); }
+				if (ConstHi!=0) {XorConstToX86Reg(MipsRegHi(Opcode.rd),ConstHi);}
+				if (ConstLo!=0) {XorConstToX86Reg(MipsRegLo(Opcode.rd),ConstLo);}
 			} else {
 				int Value=MipsRegLo(ConstReg);
 				if (IsSigned(Opcode.rt)!=IsSigned(Opcode.rs)) {
@@ -3170,7 +3170,7 @@ void Compile_R4300i_SPECIAL_XOR (BLOCK_SECTION*Section) {
 				} else {
 					Map_GPR_32bit(Section,Opcode.rd,IsSigned(MappedReg)?TRUE:FALSE,MappedReg);
 				}
-				if (Value!=0) { XorConstToX86Reg(MipsRegLo(Opcode.rd),Value); }
+				if (Value!=0) {XorConstToX86Reg(MipsRegLo(Opcode.rd),Value);}
 			}
 		}
 	} else if (IsKnown(Opcode.rt)||IsKnown(Opcode.rs)) {
@@ -3208,7 +3208,7 @@ void Compile_R4300i_SPECIAL_XOR (BLOCK_SECTION*Section) {
 void Compile_R4300i_SPECIAL_NOR (BLOCK_SECTION*Section) {
 	if (IsKnown(Opcode.rt)&&IsKnown(Opcode.rs)) {
 		if (IsConst(Opcode.rt)&&IsConst(Opcode.rs)) {
-			if (IsMapped(Opcode.rd)) { UnMap_GPR(Section,Opcode.rd,FALSE); }
+			if (IsMapped(Opcode.rd)) {UnMap_GPR(Section,Opcode.rd,FALSE);}
 			if (Is64Bit(Opcode.rt)||Is64Bit(Opcode.rs)) DisplayThreadExit("Compile_R4300i_SPECIAL_NOR-Is64Bit(Opcode.rt)||Is64Bit(Opcode.rs)\n\nThe emulator has crashed on an unknown Opcode at this location");
 			else {
 				MipsRegLo(Opcode.rd)=~(MipsRegLo(Opcode.rt)|MipsRegLo(Opcode.rs));
@@ -3265,7 +3265,7 @@ void Compile_R4300i_SPECIAL_NOR (BLOCK_SECTION*Section) {
 				} else {
 					Map_GPR_32bit(Section,Opcode.rd,IsSigned(MappedReg)?TRUE:FALSE,MappedReg);
 				}
-				if (Value!=0) { OrConstToX86Reg(Value,MipsRegLo(Opcode.rd)); }
+				if (Value!=0) {OrConstToX86Reg(Value,MipsRegLo(Opcode.rd));}
 				NotX86Reg(MipsRegLo(Opcode.rd));
 			}
 		}
@@ -3302,7 +3302,7 @@ void Compile_R4300i_SPECIAL_SLT (BLOCK_SECTION*Section) {
 		if (IsConst(Opcode.rt)&&IsConst(Opcode.rs)) {
 			if (Is64Bit(Opcode.rt)||Is64Bit(Opcode.rs)) DisplayThreadExit("Compile_R4300i_SPECIAL_SLT-Is64Bit(Opcode.rt)||Is64Bit(Opcode.rs)\n\nThe emulator has crashed on an unknown Opcode at this location");
 			else {
-				if (IsMapped(Opcode.rd)) { UnMap_GPR(Section,Opcode.rd,FALSE); }
+				if (IsMapped(Opcode.rd)) {UnMap_GPR(Section,Opcode.rd,FALSE);}
 				MipsRegState(Opcode.rd)=STATE_CONST_32;
 				if (MipsRegLo_S(Opcode.rs)<MipsRegLo_S(Opcode.rt)) {
 					MipsRegLo(Opcode.rd)=1;
@@ -3456,7 +3456,7 @@ void Compile_R4300i_SPECIAL_SLTU (BLOCK_SECTION*Section) {
 		if (IsConst(Opcode.rt)&&IsConst(Opcode.rs)) {
 			if (Is64Bit(Opcode.rt)||Is64Bit(Opcode.rs)) DisplayThreadExit("Compile_R4300i_SPECIAL_SLTU-Is64Bit(Opcode.rt)||Is64Bit(Opcode.rs)\n\nThe emulator has crashed on an unknown Opcode at this location");
 			else {
-				if (IsMapped(Opcode.rd)) { UnMap_GPR(Section,Opcode.rd,FALSE); }
+				if (IsMapped(Opcode.rd)) {UnMap_GPR(Section,Opcode.rd,FALSE);}
 				MipsRegState(Opcode.rd)=STATE_CONST_32;
 				if (MipsRegLo(Opcode.rs)<MipsRegLo(Opcode.rt)) {
 					MipsRegLo(Opcode.rd)=1;
@@ -3498,7 +3498,7 @@ void Compile_R4300i_SPECIAL_SLTU (BLOCK_SECTION*Section) {
 				MappedReg=IsConst(Opcode.rt)?Opcode.rs:Opcode.rt;
 				ConstLo=MipsRegLo(ConstReg);
 				ConstHi=(int)ConstLo>>31;
-				if (Is64Bit(ConstReg)) { ConstHi=MipsRegHi(ConstReg); }
+				if (Is64Bit(ConstReg)) {ConstHi=MipsRegHi(ConstReg);}
 				ProtectGPR(Section,MappedReg);
 				MappedRegLo=MipsRegLo(MappedReg);
 				MappedRegHi=MipsRegHi(MappedReg);
@@ -3601,7 +3601,7 @@ void Compile_R4300i_SPECIAL_SLTU (BLOCK_SECTION*Section) {
 void Compile_R4300i_SPECIAL_DADD (BLOCK_SECTION*Section) {
 	if (Opcode.rd==0) return;
 	if (IsConst(Opcode.rt) &&IsConst(Opcode.rs)) {
-		if (IsMapped(Opcode.rd)) { UnMap_GPR(Section,Opcode.rd,FALSE); }
+		if (IsMapped(Opcode.rd)) {UnMap_GPR(Section,Opcode.rd,FALSE);}
 		MipsReg(Opcode.rd)=
 			Is64Bit(Opcode.rs)?MipsReg(Opcode.rs):(_int64)MipsRegLo_S(Opcode.rs)+
 			Is64Bit(Opcode.rt)?MipsReg(Opcode.rt):(_int64)MipsRegLo_S(Opcode.rt);
@@ -3633,7 +3633,7 @@ void Compile_R4300i_SPECIAL_DADDU (BLOCK_SECTION*Section) {
 	if (IsConst(Opcode.rt) &&IsConst(Opcode.rs)) {
 		__int64 ValRs=Is64Bit(Opcode.rs)?MipsReg(Opcode.rs):(_int64)MipsRegLo_S(Opcode.rs);
 		__int64 ValRt=Is64Bit(Opcode.rt)?MipsReg(Opcode.rt):(_int64)MipsRegLo_S(Opcode.rt);
-		if (IsMapped(Opcode.rd)) { UnMap_GPR(Section,Opcode.rd,FALSE); }
+		if (IsMapped(Opcode.rd)) {UnMap_GPR(Section,Opcode.rd,FALSE);}
 		MipsReg(Opcode.rd)=ValRs+ValRt;
 		if ((MipsRegHi(Opcode.rd)==0)&&(MipsRegLo(Opcode.rd)&0x80000000)==0) {
 			MipsRegState(Opcode.rd)=STATE_CONST_32;
@@ -3661,9 +3661,9 @@ void Compile_R4300i_SPECIAL_DADDU (BLOCK_SECTION*Section) {
 void Compile_R4300i_SPECIAL_DSUB (BLOCK_SECTION*Section) {
 	if (Opcode.rd==0) return;
 	if (IsConst(Opcode.rt) &&IsConst(Opcode.rs)) {
-		if (IsMapped(Opcode.rd)) { UnMap_GPR(Section,Opcode.rd,FALSE); }
+		if (IsMapped(Opcode.rd)) {UnMap_GPR(Section,Opcode.rd,FALSE);}
 		MipsReg(Opcode.rd)=
-			Is64Bit(Opcode.rs)?MipsReg(Opcode.rs):(_int64)MipsRegLo_S(Opcode.rs) -
+			Is64Bit(Opcode.rs)?MipsReg(Opcode.rs):(_int64)MipsRegLo_S(Opcode.rs)-
 			Is64Bit(Opcode.rt)?MipsReg(Opcode.rt):(_int64)MipsRegLo_S(Opcode.rt);
 		if (MipsRegLo_S(Opcode.rd)<0&&MipsRegHi_S(Opcode.rd)==-1) {
 			MipsRegState(Opcode.rd)=STATE_CONST_32;
@@ -3699,9 +3699,9 @@ void Compile_R4300i_SPECIAL_DSUB (BLOCK_SECTION*Section) {
 void Compile_R4300i_SPECIAL_DSUBU (BLOCK_SECTION*Section) {
 	if (Opcode.rd==0) return;
 	if (IsConst(Opcode.rt) &&IsConst(Opcode.rs)) {
-		if (IsMapped(Opcode.rd)) { UnMap_GPR(Section,Opcode.rd,FALSE); }
+		if (IsMapped(Opcode.rd)) {UnMap_GPR(Section,Opcode.rd,FALSE);}
 		MipsReg(Opcode.rd)=
-			Is64Bit(Opcode.rs)?MipsReg(Opcode.rs):(_int64)MipsRegLo_S(Opcode.rs) -
+			Is64Bit(Opcode.rs)?MipsReg(Opcode.rs):(_int64)MipsRegLo_S(Opcode.rs)-
 			Is64Bit(Opcode.rt)?MipsReg(Opcode.rt):(_int64)MipsRegLo_S(Opcode.rt);
 		if (MipsRegLo_S(Opcode.rd)<0&&MipsRegHi_S(Opcode.rd)==-1) {
 			MipsRegState(Opcode.rd)=STATE_CONST_32;
@@ -3737,7 +3737,7 @@ void Compile_R4300i_SPECIAL_DSUBU (BLOCK_SECTION*Section) {
 void Compile_R4300i_SPECIAL_DSLL (BLOCK_SECTION*Section) {
 	if (Opcode.rd==0) return;
 	if (IsConst(Opcode.rt)) {
-		if (IsMapped(Opcode.rd)) { UnMap_GPR(Section,Opcode.rd,FALSE); }
+		if (IsMapped(Opcode.rd)) {UnMap_GPR(Section,Opcode.rd,FALSE);}
 		MipsReg(Opcode.rd)=Is64Bit(Opcode.rt)?MipsReg(Opcode.rt):(_int64)MipsRegLo_S(Opcode.rt)<<Opcode.sa;
 		if (MipsRegLo_S(Opcode.rd)<0&&MipsRegHi_S(Opcode.rd)==-1) {
 			MipsRegState(Opcode.rd)=STATE_CONST_32;
@@ -3755,7 +3755,7 @@ void Compile_R4300i_SPECIAL_DSLL (BLOCK_SECTION*Section) {
 void Compile_R4300i_SPECIAL_DSRL (BLOCK_SECTION*Section) {
 	if (Opcode.rd==0) return;
 	if (IsConst(Opcode.rt)) {
-		if (IsMapped(Opcode.rd)) { UnMap_GPR(Section,Opcode.rd,FALSE); }
+		if (IsMapped(Opcode.rd)) {UnMap_GPR(Section,Opcode.rd,FALSE);}
 		MipsReg(Opcode.rd)=Is64Bit(Opcode.rt)?MipsReg(Opcode.rt):(QWORD)MipsRegLo_S(Opcode.rt)>>Opcode.sa;
 		if (MipsRegLo_S(Opcode.rd)<0&&MipsRegHi_S(Opcode.rd)==-1) {
 			MipsRegState(Opcode.rd)=STATE_CONST_32;
@@ -3773,7 +3773,7 @@ void Compile_R4300i_SPECIAL_DSRL (BLOCK_SECTION*Section) {
 void Compile_R4300i_SPECIAL_DSRA (BLOCK_SECTION*Section) {
 	if (Opcode.rd==0) return;
 	if (IsConst(Opcode.rt)) {
-		if (IsMapped(Opcode.rd)) { UnMap_GPR(Section,Opcode.rd,FALSE); }
+		if (IsMapped(Opcode.rd)) {UnMap_GPR(Section,Opcode.rd,FALSE);}
 		MipsReg_S(Opcode.rd)=Is64Bit(Opcode.rt)?MipsReg_S(Opcode.rt):(_int64)MipsRegLo_S(Opcode.rt)>>Opcode.sa;
 		if (MipsRegLo_S(Opcode.rd)<0&&MipsRegHi_S(Opcode.rd)==-1) {
 			MipsRegState(Opcode.rd)=STATE_CONST_32;
@@ -3791,7 +3791,7 @@ void Compile_R4300i_SPECIAL_DSRA (BLOCK_SECTION*Section) {
 void Compile_R4300i_SPECIAL_DSLL32 (BLOCK_SECTION*Section) {
 	if (Opcode.rd==0) return;
 	if (IsConst(Opcode.rt)) {
-		if (Opcode.rt!=Opcode.rd) { UnMap_GPR(Section,Opcode.rd,FALSE); }
+		if (Opcode.rt!=Opcode.rd) {UnMap_GPR(Section,Opcode.rd,FALSE);}
 		MipsRegHi(Opcode.rd)=MipsRegLo(Opcode.rt)<<Opcode.sa;
 		MipsRegLo(Opcode.rd)=0;
 		if (MipsRegLo_S(Opcode.rd)<0&&MipsRegHi_S(Opcode.rd)==-1) {
@@ -3826,7 +3826,7 @@ void Compile_R4300i_SPECIAL_DSLL32 (BLOCK_SECTION*Section) {
 }
 void Compile_R4300i_SPECIAL_DSRL32 (BLOCK_SECTION*Section) {
 	if (IsConst(Opcode.rt)) {
-		if (Opcode.rt!=Opcode.rd) { UnMap_GPR(Section,Opcode.rd,FALSE); }
+		if (Opcode.rt!=Opcode.rd) {UnMap_GPR(Section,Opcode.rd,FALSE);}
 		MipsRegState(Opcode.rd)=STATE_CONST_32;
 		MipsRegLo(Opcode.rd)=(DWORD)(MipsReg(Opcode.rt)>>(Opcode.sa+32));
 	} else if (IsMapped(Opcode.rt)) {
@@ -3855,7 +3855,7 @@ void Compile_R4300i_SPECIAL_DSRL32 (BLOCK_SECTION*Section) {
 }
 void Compile_R4300i_SPECIAL_DSRA32 (BLOCK_SECTION*Section) {
 	if (IsConst(Opcode.rt)) {
-		if (Opcode.rt!=Opcode.rd) { UnMap_GPR(Section,Opcode.rd,FALSE); }
+		if (Opcode.rt!=Opcode.rd) {UnMap_GPR(Section,Opcode.rd,FALSE);}
 		MipsRegState(Opcode.rd)=STATE_CONST_32;
 		MipsRegLo(Opcode.rd)=(DWORD)(MipsReg_S(Opcode.rt)>>(Opcode.sa+32));
 	} else if (IsMapped(Opcode.rt)) {
@@ -3963,7 +3963,7 @@ void Compile_R4300i_COP0_MT (BLOCK_SECTION*Section) {
 		break;
 	case 6: //Wired
 		Pushad();
-		if (BlockRandomModifier!=0) { SubConstFromVariable(BlockRandomModifier,&CP0[1]); }
+		if (BlockRandomModifier!=0) {SubConstFromVariable(BlockRandomModifier,&CP0[1]);}
 		BlockRandomModifier=0;
 		Call_Direct(FixRandomReg);
 		Popad();
@@ -4004,7 +4004,7 @@ void Compile_R4300i_COP0_CO_TLBWI(BLOCK_SECTION*Section) {
 }
 void Compile_R4300i_COP0_CO_TLBWR(BLOCK_SECTION*Section) {
 	if (!UseTLB) return;
-	if (BlockRandomModifier!=0) { SubConstFromVariable(BlockRandomModifier,&CP0[1]); }
+	if (BlockRandomModifier!=0) {SubConstFromVariable(BlockRandomModifier,&CP0[1]);}
 	BlockRandomModifier=0;
 	Pushad();
 	Call_Direct(FixRandomReg);
@@ -4033,7 +4033,7 @@ void compiler_COP0_CO_ERET () {
 void Compile_R4300i_COP0_CO_ERET(BLOCK_SECTION*Section) {
 	WriteBackRegisters(Section);
 	Call_Direct(compiler_COP0_CO_ERET);
-	CompileExit((DWORD)-1,Section->RegWorking,Normal,TRUE,NULL);
+	CompileExit((DWORD)-1,Section->RegWorking,Normal,TRUE,0);
 	SetEnd
 }
 void Compile_R4300i_COP0_CO(BLOCK_SECTION*Section) {

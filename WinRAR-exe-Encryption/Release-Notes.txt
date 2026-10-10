@@ -1,0 +1,11 @@
+As described in the BIVPJ64v26.exe file, this is a refined public release which obsoletes all previous versions of Project64 for the most part.
+
+To set this up, you'll need to download the current BruceIV-Project64-1.6.2 zip file to obtain a copy of the emulator package for your Windows PC. After extracting the folder inside, you need to run BIVPJ64v26.exe and you will be guided by me further thereafter.
+
+If desiring to patch ROMhacks, you'll need to use the Tool64 app in the Apps folder to convert baseROMs to big endian .z64 if they aren't already, then you can either use flips.exe to apply a patch for a single ROMhack, or use the FlipsAutoPatcher-v2.1.1.exe for patching multiple ROMhacks at a time. ROMhacks can be obtained from https://github.com/BruceShankleIV/Project64-1.6.2-ROMhacks-Collection
+
+If intending to make a translation for the emulator, a sample has been provided to work off of.
+
+Finally, if intending to play multiplayer online instead of locally, an option to do that via the netplay input plugin is provided within the Additional-Input-Plugins.zip file. Also included is support for raphnet N64 to USB adapters (versions 3 and up) to allow use of an N64 controller with Project64 using raphnetraw plugins. If you have an adaptoid then you can use the N-Rage plugin already included with the emulator package.
+
+I will quit actively working on the project after this release, but feel free to report any bugs you encounter during your usage of or fixes you would like to add for this build via my Project64 1.6.2 server in case I revisit the project or someone else wants to make a fork: discord.gg/cHDxa9vzQM

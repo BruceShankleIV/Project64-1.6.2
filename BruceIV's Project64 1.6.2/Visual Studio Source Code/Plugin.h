@@ -43,18 +43,18 @@
 #define SYSTEM_PAL					1
 #define SYSTEM_MPAL					2
 typedef struct {
-	WORD Version;        /*Should be set to 1*/
-	WORD Type;           /*Set to PLUGIN_TYPE_GFX*/
-	char Name[100];      /*Name of the DLL*/
+	WORD Version;       /*Should be set to 1*/
+	WORD Type;          /*Set to PLUGIN_TYPE_GFX*/
+	char Name[100];     /*Name of the DLL*/
 	/*If DLL supports memory these memory options then set them to TRUE or FALSE
 	if it does not support it*/
-	BOOL NormalMemory;   /*a normal BYTE array*/
-	BOOL MemoryBswaped;  /*a normal BYTE array where the memory has been pre
+	BOOL NormalMemory;  /*a normal BYTE array*/
+	BOOL MemoryBswaped; /*a normal BYTE array where the memory has been pre
 							bswap on a dword (32 bits) boundry*/
 } PLUGIN_INFO;
 typedef struct {
 	HWND hWnd;			/*Render window*/
-	HWND hStatusBar;	/*if render window does not have a status bar then this is NULL*/
+	HWND hStatusBar;	/*if render window does not have a status bar then this is 0*/
 	BOOL MemoryBswaped;
 	BYTE*HEADER;	// This is the rom header (first 40h bytes of the rom. This will be in the same memory format as the rest of the memory.
 	BYTE*RDRAM;
@@ -262,8 +262,8 @@ void (__cdecl*RumbleCommand)	 (int Control,BOOL bRumble);
 /**********Plugin Functions*********************/
 void GetPluginDir        (char*Directory);
 void FetchScreenAndVideoDir      (char*Directory);
-void SetupPlugins        (HWND hWnd);
-void SetupPluginScreen   (HWND hDlg);
+void HandleGlobalTasks        (HWND hWnd);
+void SetupPluginsScreen   (HWND hDlg);
 void ShutdownPlugins     (void);
 /**********External Global Variables***************/
 #define MaxDlls	100
@@ -271,5 +271,5 @@ extern char RSPDLL[100],GfxDLL[100],AudioDLL[100],ControllerDLL[100],*PluginName
 extern DWORD PluginCount,RspTaskValue,AudioIntrReg;
 extern CONTROL Controllers[4];
 extern WORD RSPVersion;
-extern BOOL PluginsInitialized,GonetzGLNeedsToBeSetupFirst,GonetzGLHasBeenSetupFirst;
+extern BOOL PluginsInitialized,GLideN64NeedsToBeSetupFirst,GonetzGLHasBeenSetupFirst;
 #endif

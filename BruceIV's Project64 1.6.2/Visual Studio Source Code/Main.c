@@ -41,43 +41,12 @@
 #include "Resource.h"
 #include "SummerCart.h"
 LARGE_INTEGER Frequency,Frames[9],LastFrame;
-BOOL AutoSleep,AutoHide,RecordRGB,Recursion,LimitFPS,SpeedCap,AutoFullScreen,SystemCF,UsuallyonTop,VideoToScreen,BasicMode,BootupSettings=FALSE,SetupPluginsAfterSaveRomOpt=FALSE,SPECIAL_BREAK_Trigger=FALSE,SPECIAL_BREAK_Yes=FALSE,FirstBoot=FALSE;
+BOOL AutoSleep,AutoHide,CreateStatusBar,RecordRGB,Recursion,LimitFPS,SpeedCap,AutoFullScreen,SystemCF,UsuallyonTop,VideoToScreen,BasicMode,BootupSettings=FALSE,DelayHandleGlobalTasks=FALSE,SPECIAL_BREAK_Trigger=FALSE,SPECIAL_BREAK_Yes=FALSE,FirstBoot=FALSE,UserCancelPluginInit=FALSE,RefreshRomBrowserOnShutdown=TRUE;
 DWORD CurrentFrame,SystemUseCache,SystemProtectMemoryEnlargeBuffer,RomsToRemember,RomDirsToRemember;
-HWND hMainWindow,hHiddenWin,hStatusWnd,hRomList=NULL;
+HWND hMainWindow,hHiddenWin,hStatusWnd,hRomList=0;
 char CurrentSave[256];
 HMENU hMainMenu;
 HINSTANCE hInst;
-void RomInfo     ();
-void ShutdownApplication ();
-LRESULT CALLBACK AboutIniBoxProc (HWND,UINT,WPARAM,LPARAM);
-LRESULT CALLBACK Main_Proc       (HWND,UINT,WPARAM,LPARAM);
-LRESULT CALLBACK RomInfoProc     (HWND,UINT,WPARAM,LPARAM);
-int CALLBACK SelectRomDirCallBack (HWND hwnd,DWORD uMsg,DWORD lp,DWORD lpData) {
-	if (uMsg==BFFM_INITIALIZED&&lpData) SendMessage((HWND)hwnd,BFFM_SETSELECTION,TRUE,lpData);
-	return 0;
-}
-int ChooseN64RomToOpen () {
-	OPENFILENAME openfilename;
-	char FileName[256],Directory[256];
-	memset(&FileName,0,sizeof(FileName));
-	memset(&openfilename,0,sizeof(openfilename));
-	GetRomDirectory(Directory);
-	openfilename.lStructSize=sizeof(openfilename);
-	openfilename.hwndOwner  =hMainWindow;
-	openfilename.lpstrFilter="N64 ROMs (*.zip,*.z64,*.v64,*.n64)\0*.zip;*.z64;*.v64;*.n64\0All files (*.*)\0*.*\0";
-	openfilename.lpstrFile  =FileName;
-	openfilename.lpstrInitialDir  =Directory;
-	openfilename.nMaxFile   =MAX_PATH;
-	openfilename.Flags      =OFN_FILEMUSTEXIST|OFN_HIDEREADONLY;
-	if (GetOpenFileName (&openfilename)) {
-		strcpy(CurrentFileName,FileName);
-		return TRUE;
-	}
-	return FALSE;
-}
-void AboutIniBox () {
-	DialogBox(hInst,MAKEINTRESOURCE(IDD_About_Ini),hMainWindow,(DLGPROC)AboutIniBoxProc);
-}
 LRESULT CALLBACK AboutIniBoxProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 	switch (uMsg) {
 	case WM_INITDIALOG:
@@ -138,14 +107,120 @@ LRESULT CALLBACK AboutIniBoxProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lPara
 	}
 	return TRUE;
 }
+LRESULT CALLBACK RomInfoProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) {
+	char String[256],count;
+	char drive[_MAX_DRIVE],dir[_MAX_DIR];
+	char fname[_MAX_FNAME],ext[_MAX_EXT];
+	switch (uMsg) {
+	case WM_INITDIALOG:
+		SetWindowText(hDlg,GS(INFO_TITLE));
+		SetDlgItemText(hDlg,IDC_ROM_NAME,GS(INFO_ROM_NAME_TEXT));
+		SetDlgItemText(hDlg,IDC_FILE_NAME,GS(INFO_FILE_NAME_TEXT));
+		SetDlgItemText(hDlg,IDC_LOCATION,GS(INFO_LOCATION_TEXT));
+		SetDlgItemText(hDlg,IDC_ROM_SIZE,GS(INFO_SIZE_TEXT));
+		SetDlgItemText(hDlg,IDC_CART_ID,GS(INFO_CART_ID_TEXT));
+		SetDlgItemText(hDlg,IDC_CRC1,GS(INFO_CRC1_TEXT));
+		SetDlgItemText(hDlg,IDC_CRC2,GS(INFO_CRC2_TEXT));
+		SetDlgItemText(hDlg,IDC_CIC_CHIP,GS(INFO_CIC_CHIP_TEXT));
+		memcpy(&String[1],(void*)(&RomHeader[0x20]),20);
+		for(count=1 ;count<21;count+=4) {
+			String[count]^=String[count+3];
+			String[count+3]^=String[count];
+			String[count]^=String[count+3];
+			String[count+1]^=String[count+2];
+			String[count+2]^=String[count+1];
+			String[count+1]^=String[count+2];
+		}
+		String[0]=' ';
+		String[21]='\0';
+		SetDlgItemText(hDlg,IDC_INFO_ROMNAME,String);
+		_splitpath(CurrentFileName,drive,dir,fname,ext);
+		strcpy(&String[1],fname);
+		strcat(String,ext);
+		SetDlgItemText(hDlg,IDC_INFO_FILENAME,String);
+		strcpy(&String[1],drive);
+		strcat(String,dir);
+		SetDlgItemText(hDlg,IDC_INFO_LOCATION,String);
+		sprintf(&String[1],"%.1f MBit",(float)RomFileSize/0x20000);
+		SetDlgItemText(hDlg,IDC_INFO_ROMSIZE,String);
+		String[1]=RomHeader[0x3F];
+		String[2]=RomHeader[0x3E];
+		String[3]='\0';
+		SetDlgItemText(hDlg,IDC_INFO_CARTID,String);
+		sprintf(&String[1],"0x%08X",*(DWORD*)(&RomHeader[0x10]));
+		SetDlgItemText(hDlg,IDC_INFO_CRC1,String);
+		sprintf(&String[1],"0x%08X",*(DWORD*)(&RomHeader[0x14]));
+		SetDlgItemText(hDlg,IDC_INFO_CRC2,String);
+		if (GetCicChipID(RomHeader)<0) {
+			sprintf(&String[1],GS(UNKNOWN));
+		} else {
+			if (GetCicChipID(RomHeader)==4) sprintf(&String[1],"CIC-NUS-XENO");
+			else if (GetCicChipID(RomHeader)==7) sprintf(&String[1],"CIC-NUS-5167");
+			else if (GetCicChipID(RomHeader)==8) sprintf(&String[1],"CIC-NUS-8303");
+			else if (GetCicChipID(RomHeader)==9) sprintf(&String[1],"CIC-NUS-DDUS");
+			else sprintf(&String[1],"CIC-NUS-610%d",GetCicChipID(RomHeader));
+		}
+		SetDlgItemText(hDlg,IDC_INFO_CIC,String);
+		break;
+	case WM_COMMAND:
+		switch (LOWORD(wParam)) {
+		case IDCANCEL:
+			EndDialog(hDlg,0);
+			break;
+		}
+	default:
+		return FALSE;
+	}
+	return TRUE;
+}
+void RomInfo () {
+	DialogBox(hInst,"ROM_INFO_DIALOG",hMainWindow,(DLGPROC)RomInfoProc);
+}
+void ShutdownApplication () {
+	CloseCheatWindow();
+	if (TargetInfo!=0) VirtualFree(TargetInfo,0,MEM_RELEASE);
+	SaveRomBrowserColumnInfo();
+	FreeRomBrowser();
+	ShutdownPlugins();
+	SaveRecentFiles();
+	Release_Memory();
+	CloseHandle(hPauseMutex);
+	CoUninitialize();
+}
+int CALLBACK SelectRomDirCallBack (HWND hwnd,DWORD uMsg,DWORD lp,DWORD lpData) {
+	if (uMsg==BFFM_INITIALIZED&&lpData) SendMessage((HWND)hwnd,BFFM_SETSELECTION,TRUE,lpData);
+	return 0;
+}
+int ChooseN64RomToOpen () {
+	OPENFILENAME openfilename;
+	char FileName[256],Directory[256];
+	memset(&FileName,0,sizeof(FileName));
+	memset(&openfilename,0,sizeof(openfilename));
+	GetRomDirectory(Directory);
+	openfilename.lStructSize=sizeof(openfilename);
+	openfilename.hwndOwner  =hMainWindow;
+	openfilename.lpstrFilter="N64 ROMs (*.zip,*.z64,*.v64,*.n64)\0*.zip;*.z64;*.v64;*.n64\0All files (*.*)\0*.*\0";
+	openfilename.lpstrFile  =FileName;
+	openfilename.lpstrInitialDir  =Directory;
+	openfilename.nMaxFile   =MAX_PATH;
+	openfilename.Flags      =OFN_FILEMUSTEXIST|OFN_HIDEREADONLY;
+	if (GetOpenFileName (&openfilename)) {
+		strcpy(CurrentFileName,FileName);
+		return TRUE;
+	}
+	return FALSE;
+}
+void AboutIniBox () {
+	DialogBox(hInst,MAKEINTRESOURCE(IDD_About_Ini),hMainWindow,(DLGPROC)AboutIniBoxProc);
+}
 void UsuallyonTopWindow(HWND hWnd) {
 	SetWindowPos(hWnd,(UsuallyonTop?HWND_TOPMOST:HWND_NOTOPMOST),0,0,0,0,SWP_NOMOVE|SWP_NOREPOSITION|SWP_NOSIZE);
 }
 DWORD AsciiToHex (char*HexValue) {
 	DWORD Count,Finish,Value=0;
 	Finish=strlen(HexValue);
-	if (Finish>8) { Finish=8; }
-	for (Count=0; Count<Finish; Count++) {
+	if (Finish>8) {Finish=8;}
+	for (Count=0;Count<Finish;Count++) {
 		Value=(Value<<4);
 		switch(HexValue[Count]) {
 		case '1': Value+=1; break;
@@ -176,11 +251,11 @@ void ChangeWinSize (HWND hWnd,long width,long height,HWND hStatusBar) {
 	RECT rc1,swrect;
 	wndpl.length=sizeof(wndpl);
 	GetWindowPlacement(hWnd,&wndpl);
-	if (hStatusBar!=NULL) {
+	if (hStatusBar!=0) {
 		GetClientRect(hStatusBar,&swrect);
 		SetRect(&rc1,0,0,width,height+swrect.bottom);
 	} else SetRect(&rc1,0,0,width,height);
-	AdjustWindowRectEx(&rc1,GetWindowLong(hWnd,GWL_STYLE),GetMenu(hWnd)!=NULL,GetWindowLong(hWnd,GWL_EXSTYLE));
+	AdjustWindowRectEx(&rc1,GetWindowLong(hWnd,GWL_STYLE),GetMenu(hWnd)!=0,GetWindowLong(hWnd,GWL_EXSTYLE));
 	MoveWindow(hWnd,wndpl.rcNormalPosition.left,wndpl.rcNormalPosition.top,rc1.right-rc1.left,rc1.bottom-rc1.top,TRUE);
 }
 void __cdecl DisplayError (char*Message,...) {
@@ -190,26 +265,26 @@ void __cdecl DisplayError (char*Message,...) {
 	vsprintf(Msg,Message,ap);
 	va_end(ap);
 	HandleModal1(hMainWindow);
-	MessageBox(NULL,Msg,GS(MSG_ERROR_TITLE),MB_OK|MB_ICONERROR|MB_SETFOREGROUND);
+	MessageBox(0,Msg,GS(MSG_ERROR_TITLE),MB_OK|MB_ICONERROR|MB_SETFOREGROUND);
 	HandleModal2(hMainWindow);
 }
 void FixMenuLang (HMENU hMenu) {
 	HMENU hSubMenu;
-	MenuSetText(hMenu,0,GS(MENU_FILE),NULL);
-	MenuSetText(hMenu,1,GS(MENU_SYSTEM),NULL);
-	MenuSetText(hMenu,2,GS(MENU_OPTIONS),NULL);
-	MenuSetText(hMenu,3,GS(MENU_HELP),NULL);
+	MenuSetText(hMenu,0,GS(MENU_FILE),0);
+	MenuSetText(hMenu,1,GS(MENU_SYSTEM),0);
+	MenuSetText(hMenu,2,GS(MENU_OPTIONS),0);
+	MenuSetText(hMenu,3,GS(MENU_HELP),0);
 	//File
 	hSubMenu=GetSubMenu(hMenu,0);
 	MenuSetText(hSubMenu,0,GS(MENU_OPEN),"Ctrl+O");
-	MenuSetText(hSubMenu,1,GS(MENU_ROM_INFO),NULL);
+	MenuSetText(hSubMenu,1,GS(INFO_TITLE),0);
 	MenuSetText(hSubMenu,3,GS(MENU_START),"F10");
 	MenuSetText(hSubMenu,4,GS(MENU_END),"F11");
-	MenuSetText(hSubMenu,6,GS(MENU_LANGUAGE),NULL);
-	MenuSetText(hSubMenu,8,GS(MENU_CHOOSE_ROM),NULL);
+	MenuSetText(hSubMenu,6,GS(MENU_LANGUAGE),0);
+	MenuSetText(hSubMenu,8,GS(MENU_CHOOSE_ROM),0);
 	MenuSetText(hSubMenu,9,GS(MENU_REFRESH),"F5");
-	MenuSetText(hSubMenu,11,GS(MENU_RECENT_ROM),NULL);
-	MenuSetText(hSubMenu,12,GS(MENU_RECENT_DIR),NULL);
+	MenuSetText(hSubMenu,11,GS(MENU_RECENT_ROM),0);
+	MenuSetText(hSubMenu,12,GS(MENU_RECENT_DIR),0);
 	MenuSetText(hSubMenu,14,GS(MENU_EXIT),"Alt+F4");
 	//System
 	hSubMenu=GetSubMenu(hMenu,1);
@@ -218,12 +293,12 @@ void FixMenuLang (HMENU hMenu) {
 	MenuSetText(hSubMenu,2,GS(MENU_ADVANCE),"Caps Lock");
 	MenuSetText(hSubMenu,3,GS(MENU_BITMAP),"F3");
 	MenuSetText(hSubMenu,5,GS(MENU_LIMIT_FPS),"F4");
-	MenuSetText(hSubMenu,6,GS(SPEEDCAP),"Shift+F4");
+	MenuSetText(hSubMenu,6,GS(SPEEDCAP),"Ctrl+F4");
 	MenuSetText(hSubMenu,8,GS(MENU_SAVE),"F5");
 	MenuSetText(hSubMenu,9,GS(MENU_SAVE_AS),"Ctrl+S");
 	MenuSetText(hSubMenu,10,GS(MENU_RESTORE),"F7");
 	MenuSetText(hSubMenu,11,GS(MENU_LOAD),"Ctrl+L");
-	MenuSetText(hSubMenu,13,GS(MENU_CURRENT_SAVE),NULL);
+	MenuSetText(hSubMenu,13,GS(MENU_CURRENT_SAVE),0);
 	MenuSetText(hSubMenu,15,GS(MENU_CHEAT),"Ctrl+C");
 	MenuSetText(hSubMenu,16,GS(MENU_GS_BUTTON),"Ctrl+G");
 	MenuSetText(hSubMenu,18,GS(GAMECAPTURE),"F9");
@@ -235,24 +310,25 @@ void FixMenuLang (HMENU hMenu) {
 	MenuSetText(hSubMenu,5,GS(MENU_CONFIG_GFX),"Ctrl+V");
 	MenuSetText(hSubMenu,6,GS(MENU_CONFIG_AUDIO),"Ctrl+A");
 	MenuSetText(hSubMenu,7,GS(MENU_CONFIG_CTRL),"Ctrl+I");
-	MenuSetText(hSubMenu,9,GS(GAME_CAPTURE),NULL);
+	MenuSetText(hSubMenu,9,GS(GAME_CAPTURE),0);
 	MenuSetText(hSubMenu,11,GS(MENU_UNINSTALL),"Ctrl+F");
 	MenuSetText(hSubMenu,13,GS(MENU_SETTINGS),"Ctrl+T");
-	//ffmpeg
+	//Game Display Options
 	hSubMenu=GetSubMenu(hSubMenu,9);
-	MenuSetText(hSubMenu,0,GS(RGBREC),"Shift+R");
-	MenuSetText(hSubMenu,1,GS(HIDE_MOUSE),"Shift+H");
-	MenuSetText(hSubMenu,2,GS(VIDEOTOSCREEN),"Shift+V");
+	MenuSetText(hSubMenu,0,GS(RGBREC),"Ctrl+R");
+	MenuSetText(hSubMenu,1,GS(VIDEOTOSCREEN),"Ctrl+P");
+	MenuSetText(hSubMenu,2,GS(HIDE_MOUSE),"Ctrl+H");
+	MenuSetText(hSubMenu,3,GS(CREATE_STATUS_BAR),"Ctrl+B");
 	//Help Menu
 	hSubMenu=GetSubMenu(hMenu,3);
-	MenuSetText(hSubMenu,0,GS(MENU_USER_GUIDE),NULL);
-	MenuSetText(hSubMenu,1,GS(MENU_ABOUT_INI),NULL);
+	MenuSetText(hSubMenu,0,GS(MENU_USER_GUIDE),0);
+	MenuSetText(hSubMenu,1,GS(MENU_ABOUT_INI),0);
 }
 char*GetIniFileName() {
 	char path_buffer[_MAX_PATH],drive[_MAX_DRIVE],dir[_MAX_DIR];
 	char fname[_MAX_FNAME],ext[_MAX_EXT];
 	static char IniFileName[_MAX_PATH];
-	GetModuleFileName(NULL,path_buffer,sizeof(path_buffer));
+	GetModuleFileName(0,path_buffer,sizeof(path_buffer));
 	_splitpath(path_buffer,drive,dir,fname,ext);
 	sprintf(IniFileName,"%s%sPJ64DB\\%s",drive,dir,IniName);
 	return IniFileName;
@@ -261,7 +337,7 @@ char*GetLangFileName() {
 	char path_buffer[_MAX_PATH],drive[_MAX_DRIVE],dir[_MAX_DIR];
 	char fname[_MAX_FNAME],ext[_MAX_EXT];
 	static char IniFileName[_MAX_PATH];
-	GetModuleFileName(NULL,path_buffer,sizeof(path_buffer));
+	GetModuleFileName(0,path_buffer,sizeof(path_buffer));
 	_splitpath(path_buffer,drive,dir,fname,ext);
 	sprintf(IniFileName,"%s%s%s",drive,dir,LangFileName);
 	return IniFileName;
@@ -289,67 +365,70 @@ void LoadSettings () {
 	RecordRGB=Default_RecordRGB;
 	AutoHide=Default_AutoHide;
 	VideoToScreen=Default_VideoToScreen;
+	CreateStatusBar=Default_CreateStatusBar;
 	sprintf(String,"PJ64 V 1.6.2\\Configuration");
 	lResult=RegOpenKeyEx(HKEY_CURRENT_USER,String,0,KEY_ALL_ACCESS,&hKeyResults);
 	if (lResult==ERROR_SUCCESS) {
 		lResult=RegQueryValueEx(hKeyResults,"Limit FPS",0,&Type,(LPBYTE)(&LimitFPS),&Bytes);
-		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) { LimitFPS=Default_LimitFPS;	}
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {LimitFPS=Default_LimitFPS;}
 		lResult=RegQueryValueEx(hKeyResults,"Speed Cap",0,&Type,(LPBYTE)(&SpeedCap),&Bytes);
-		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) { SpeedCap=Default_SpeedCap;	}
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {SpeedCap=Default_SpeedCap;}
 		lResult=RegQueryValueEx(hKeyResults,"Usually on Top",0,&Type,(LPBYTE)(&UsuallyonTop),&Bytes);
-		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) { UsuallyonTop=Default_UsuallyonTop;	}
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {UsuallyonTop=Default_UsuallyonTop;}
 		lResult=RegQueryValueEx(hKeyResults,"Record gameplay with RGB instead of YUV",0,&Type,(LPBYTE)(&RecordRGB),&Bytes);
-		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) { RecordRGB=Default_RecordRGB;	}
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {RecordRGB=Default_RecordRGB;}
 		lResult=RegQueryValueEx(hKeyResults,"Hide Mouse Cursor",0,&Type,(LPBYTE)(&AutoHide),&Bytes);
-		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) { AutoHide=Default_AutoHide;	}
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {AutoHide=Default_AutoHide;}
+		lResult=RegQueryValueEx(hKeyResults,"Display Status Bar",0,&Type,(LPBYTE)(&CreateStatusBar),&Bytes);
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {CreateStatusBar=Default_CreateStatusBar;}
 		lResult=RegQueryValueEx(hKeyResults,"Capture Screenshots with Video Plugin",0,&Type,(LPBYTE)(&VideoToScreen),&Bytes);
-		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) { VideoToScreen=Default_VideoToScreen;	}
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {VideoToScreen=Default_VideoToScreen;}
 		RegCloseKey(hKeyResults);
 	}
 	sprintf(String,"PJ64 V 1.6.2\\Configuration\\Settings\\Options");
 	lResult=RegOpenKeyEx(HKEY_CURRENT_USER,String,0,KEY_ALL_ACCESS,&hKeyResults);
 	if (lResult==ERROR_SUCCESS) {
 		lResult=RegQueryValueEx(hKeyResults,"Basic Mode",0,&Type,(LPBYTE)(&BasicMode),&Bytes);
-		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) { BasicMode=Default_BasicMode; }
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {BasicMode=Default_BasicMode;}
 		lResult=RegQueryValueEx(hKeyResults,"Pause CPU Upon Focus Loss",0,&Type,(BYTE*)(&AutoSleep),&Bytes);
-		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) { AutoSleep=Default_AutoSleep; }
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {AutoSleep=Default_AutoSleep;}
 		lResult=RegQueryValueEx(hKeyResults,"Enter Fullscreen Mode Upon ROM Opening",0,&Type,(BYTE*)(&AutoFullScreen),&Bytes);
-		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) { AutoFullScreen=FALSE; }
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {AutoFullScreen=FALSE;}
 		RegCloseKey(hKeyResults);
 	}
 	sprintf(String,"PJ64 V 1.6.2\\Configuration\\Settings\\Advanced");
 	lResult=RegOpenKeyEx(HKEY_CURRENT_USER,String,0,KEY_ALL_ACCESS,&hKeyResults);
 	if (lResult==ERROR_SUCCESS) {
 		lResult=RegQueryValueEx(hKeyResults,"Always Disable Translation Lookaside Buffer",0,&Type,(BYTE*)(&ForceDisableTLB),&Bytes);
-		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) { ForceDisableTLB=Default_ForceDisableTLB; }
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {ForceDisableTLB=Default_ForceDisableTLB;}
 		lResult=RegQueryValueEx(hKeyResults,"Always Enable Align DMA",0,&Type,(BYTE*)(&ForceEnableDMA),&Bytes);
-		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) { ForceEnableDMA=Default_ForceEnableDMA; }
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {ForceEnableDMA=Default_ForceEnableDMA;}
 		lResult=RegQueryValueEx(hKeyResults,"Always Autodetect With 16kbit",0,&Type,(BYTE*)(&ForceAuto16kbit),&Bytes);
-		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) { ForceAuto16kbit=Default_ForceAuto16kbit; }
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {ForceAuto16kbit=Default_ForceAuto16kbit;}
 		lResult=RegQueryValueEx(hKeyResults,"Protect Memory / Enlarge Buffer",0,&Type,(LPBYTE)(&SystemProtectMemoryEnlargeBuffer),&Bytes);
-		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) { SystemProtectMemoryEnlargeBuffer=Default_UseProtectMemoryEnlargeBuffer; }
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {SystemProtectMemoryEnlargeBuffer=Default_UseProtectMemoryEnlargeBuffer;}
 		lResult=RegQueryValueEx(hKeyResults,"Register Caching",0,&Type,(LPBYTE)(&SystemUseCache),&Bytes);
-		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) { SystemUseCache=Default_UseCache; }
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {SystemUseCache=Default_UseCache;}
 		lResult=RegQueryValueEx(hKeyResults,"Counter Factor",0,&Type,(LPBYTE)(&SystemCF),&Bytes);
-		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) { SystemCF=Default_CountPerOp; }
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {SystemCF=Default_CountPerOp;}
 		RegCloseKey(hKeyResults);
 	}
 	sprintf(String,"PJ64 V 1.6.2\\Configuration\\Settings\\ROM Selection");
 	lResult=RegOpenKeyEx(HKEY_CURRENT_USER,String,0,KEY_ALL_ACCESS,&hKeyResults);
 	if (lResult==ERROR_SUCCESS) {
 		lResult=RegQueryValueEx(hKeyResults,"Directory Recursion",0,&Type,(BYTE*)(&Recursion),&Bytes);
-		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) { Recursion=Default_Recursion; }
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {Recursion=Default_Recursion;}
 		lResult=RegQueryValueEx(hKeyResults,"Max # of ROMs Remembered",0,&Type,(BYTE*)(&RomsToRemember),&Bytes);
-		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) { RomsToRemember=Default_RomsToRemember; }
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {RomsToRemember=Default_RomsToRemember;}
 		lResult=RegQueryValueEx(hKeyResults,"Max # of ROM Dirs Remembered",0,&Type,(BYTE*)(&RomDirsToRemember),&Bytes);
-		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) { RomDirsToRemember=Default_RomsDirsToRemember; }
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {RomDirsToRemember=Default_RomsDirsToRemember;}
 		RegCloseKey(hKeyResults);
 	}
 }
 int InitializeApplication (HINSTANCE hInstance) {
 	INITCOMMONCONTROLSEX IntComStruct;
 	HKEY hKeyResults=0;
-	CoInitialize(NULL);
+	CoInitialize(0);
 	IntComStruct.dwSize=sizeof(IntComStruct);
 	IntComStruct.dwICC=ICC_TREEVIEW_CLASSES;
 	InitCommonControls();
@@ -367,7 +446,7 @@ int InitializeApplication (HINSTANCE hInstance) {
 	}
 	init_summercart(&SummerCart);
 	poweron_summercart(&SummerCart);
-	hPauseMutex=CreateMutex(NULL,FALSE,NULL);
+	hPauseMutex=CreateMutex(0,FALSE,0);
 	INITIALIZECPUFlags();
 	LoadSettings();
 	SetupRegisters(&Registers);
@@ -394,20 +473,52 @@ void CheckedMenuItem(UINT uMenuID,BOOL*Flag,char*FlagName) {
 	}
 	sprintf(String,"PJ64 V 1.6.2\\Configuration");
 	lResult=RegCreateKeyEx(HKEY_CURRENT_USER,String,0,"",
-		REG_OPTION_NON_VOLATILE,KEY_ALL_ACCESS,NULL,&hKeyResults,&Disposition);
+		REG_OPTION_NON_VOLATILE,KEY_ALL_ACCESS,0,&hKeyResults,&Disposition);
 	if (lResult==ERROR_SUCCESS) {
 		RegSetValueEx(hKeyResults,FlagName,0,REG_DWORD,(BYTE*)Flag,sizeof(DWORD));
 	}
 	RegCloseKey(hKeyResults);
 }
+void SelectRomDir() {
+	char Buffer[MAX_PATH],RomDir[MAX_PATH+1],Directory[256];
+	LPITEMIDLIST pidl;
+	BROWSEINFO bi;
+	GetRomDirectory(RomDir);
+	bi.hwndOwner=hMainWindow;
+	bi.pidlRoot=0;
+	bi.pszDisplayName=Buffer;
+	bi.lpszTitle=GS(DIR_SELECT_ROM);
+	bi.ulFlags=BIF_RETURNFSANCESTORS|BIF_RETURNONLYFSDIRS;
+	bi.lpfn=(BFFCALLBACK)SelectRomDirCallBack;
+	bi.lParam=(DWORD)RomDir;
+	if ((pidl=SHBrowseForFolder(&bi))!=0) {
+		if (SHGetPathFromIDList(pidl,Directory)) {
+			int len=strlen(Directory);
+			if (Directory[len-1]!='\\') {
+				strcat(Directory,"\\");
+			}
+			SetRomDirectory(Directory);
+			SetupMenu(hMainWindow);
+		}
+	}
+}
+void SetRecentRomDir (DWORD Index) {
+	Index-=ID_FILE_RECENT_DIR;
+	if (Index<0||Index>RomDirsToRemember) return;
+	SetRomDirectory(LastDirs[Index]);
+	SetupMenu(hMainWindow);
+}
+void ResetThreadHGT () {
+	HandleGlobalTasks(hMainWindow);
+}
 LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
+	int screenHeight=GetSystemMetrics(SM_CYSCREEN),screenWidth=GetSystemMetrics(SM_CXSCREEN);
 	switch (uMsg) {
 	case WM_CREATE:
-		if (hHiddenWin) {
-			hStatusWnd=CreateStatusWindow(WS_CHILD|WS_VISIBLE,"",hWnd,100);
-			SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)"");
-			ChangeWinSize (hWnd,640,480,hStatusWnd);
-		}
+		if (CreateStatusBar) hStatusWnd=CreateStatusWindow(WS_CHILD|WS_VISIBLE,"",hWnd,100);
+		if (screenHeight>=1440&&screenWidth>=1920) ChangeWinSize(hWnd,1280,960,hStatusWnd);
+		else if (screenHeight>=1080&&screenWidth>=1440) ChangeWinSize(hWnd,800,600,hStatusWnd);
+		else ChangeWinSize(hWnd,640,480,hStatusWnd);
 		break;
 	case WM_NCLBUTTONDBLCLK:
 		return DefWindowProc(hWnd,uMsg,wParam,lParam);
@@ -421,22 +532,28 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 			return DefWindowProc(hWnd,uMsg,wParam,lParam);
 		}
 	case WM_PAINT:
-		ValidateRect(hWnd,NULL);
+		ValidateRect(hWnd,0);
 		break;
 	case WM_MOVE:
-		if (hWnd==hHiddenWin) { break; }
-		if (MoveScreen!=NULL&&CPURunning) {
+		if (hWnd==hHiddenWin) {break;}
+		if (MoveScreen!=0&&CPURunning) {
 			MoveScreen((int)(short)LOWORD(lParam),(int)(short)HIWORD(lParam));
 		}
 		if (IsIconic(hWnd)) {
-			if (!CPU_Paused&&!inFullScreen) { PauseCPU(); }
+			if (!CPU_Paused&&!inFullScreen) {PauseCPU();}
 			break;
 		} else {
-			if (!ManualPaused&&(CPU_Paused||CPU_Action.Pause)) { PauseCPU(); }
+			if (!ManualPaused&&(CPU_Paused||CPU_Action.Pause)) {PauseCPU();}
 		}
 		break;
+	case WM_ENTERSIZEMOVE:
+		if (strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0&&CPURunning) SetWindowLong(hMainWindow,GWL_EXSTYLE,GetWindowLong(hMainWindow,GWL_EXSTYLE)|WS_EX_COMPOSITED);
+		break;
+	case WM_EXITSIZEMOVE:
+		if (strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0&&CPURunning) SetWindowLong(hMainWindow,GWL_EXSTYLE,GetWindowLong(hMainWindow,GWL_EXSTYLE)&~WS_EX_COMPOSITED);
+		break;
 	case WM_SIZE:
-		if (hWnd==hHiddenWin) { break; }
+		if (hWnd==hHiddenWin) {break;}
 		{
 			RECT clrect,swrect;
 			int Parts[2];
@@ -452,18 +569,18 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 		SendMessage(hWnd,WM_NCPAINT,0,0);
 		break;
 	case WM_SETFOCUS:
-		if (hWnd==hHiddenWin) { break; }
-		if (AutoSleep&&!ManualPaused&&(CPU_Paused||CPU_Action.Pause)) { PauseCPU(); }
+		if (hWnd==hHiddenWin) {break;}
+		if (AutoSleep&&!ManualPaused&&(CPU_Paused||CPU_Action.Pause)) {PauseCPU();}
 		break;
 	case WM_KILLFOCUS:
-		if (hWnd==hHiddenWin) { break; }
-		if (AutoSleep&&!CPU_Paused) { PauseCPU(); }
+		if (hWnd==hHiddenWin) {break;}
+		if (AutoSleep&&!CPU_Paused) {PauseCPU();}
 		break;
 	case WM_NOTIFY:
-		if (wParam==IDC_ROMLIST) { RomListNotify((LPNMHDR)lParam); }
+		if (wParam==IDC_ROMLIST) {RomListNotify((LPNMHDR)lParam);}
 		return DefWindowProc(hWnd,uMsg,wParam,lParam);
 	case WM_DRAWITEM:
-		if (wParam==IDC_ROMLIST) { RomListDrawItem((LPDRAWITEMSTRUCT)lParam); }
+		if (wParam==IDC_ROMLIST) {RomListDrawItem((LPDRAWITEMSTRUCT)lParam);}
 		break;
 	case WM_MENUSELECT:
 		switch (LOWORD(wParam)) {
@@ -499,6 +616,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 		case ID_OPTIONS_GAMECAPTURE: SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MENUDES_GAMECAPTURE)); break;
 		case ID_OPTIONS_RGBREC: SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(RGBREC_MENUDES)); break;
 		case ID_OPTIONS_HIDE_CURSOR: SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MENUDES_HIDE_MOUSE)); break;
+		case ID_OPTIONS_CREATE_STATUS_BAR: SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MENUDES_CREATE_STATUS_BAR)); break;
 		case ID_OPTIONS_SETTINGS: SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MENUDES_SETTINGS)); break;
 		case ID_HELP_GUIDE: SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MENUDES_USER_GUIDE)); break;
 		case ID_HELP_ABOUTSETTINGFILES: SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MENUDES_ABOUT_INI)); break;
@@ -595,40 +713,24 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 			SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MENUDES_GAME_SLOT));
 			break;
 		default:
-			if (LOWORD(wParam)>=ID_FILE_RECENT_FILE&&LOWORD(wParam) <=(ID_FILE_RECENT_FILE+RomsToRemember)) {
-				SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MENUDES_RECENT_ROM));
-			} else if (LOWORD(wParam)>=ID_FILE_RECENT_DIR&&LOWORD(wParam) <=(ID_FILE_RECENT_DIR+RomDirsToRemember)) {
-				SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MENUDES_RECENT_DIR));
-			} else if (LOWORD(wParam)>=ID_LANG_SELECT&&LOWORD(wParam) <=(ID_LANG_SELECT+100)) {
-				SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MENUDES_LANGUAGES));
-			} else {
-				SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)"");
-			}
+			if (LOWORD(wParam)>=ID_FILE_RECENT_FILE&&LOWORD(wParam)<=(ID_FILE_RECENT_FILE+RomsToRemember)) SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MENUDES_RECENT_ROM));
+			else if (LOWORD(wParam)>=ID_FILE_RECENT_DIR&&LOWORD(wParam)<=(ID_FILE_RECENT_DIR+RomDirsToRemember)) SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MENUDES_RECENT_DIR));
+			else if (LOWORD(wParam)>=ID_LANG_SELECT&&LOWORD(wParam)<=(ID_LANG_SELECT+100)) SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MENUDES_LANGUAGES));
+			else SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)"");
 		}
 		break;
 	case WM_KEYDOWN:
-		if (!CPURunning) { break; }
-		if (WM_KeyDown) { WM_KeyDown(wParam,lParam); };
+		if (CPURunning&&WM_KeyDown) WM_KeyDown(wParam,lParam);
 		break;
 	case WM_KEYUP:
-		if (!CPURunning) { break; }
-		if (WM_KeyUp) { WM_KeyUp(wParam,lParam); };
+		if (CPURunning&&WM_KeyUp) WM_KeyUp(wParam,lParam);
 		break;
-	case WM_USER+10:
-		if (hWnd==hHiddenWin) { break; }
-		if (!wParam) {
-			while (ShowCursor(FALSE)>=0) Sleep(0);
-		} else {
-			while (ShowCursor(TRUE)<0) Sleep(0);
-		}
-		break;
-	case WM_USER+17: SetFocus(hWnd); break;
 	case WM_COMMAND:
 		switch (LOWORD(wParam)) {
 		case ID_PLAYGAME:
 			if (strlen(CurrentRBFileName)>0) {
 				strcpy(CurrentFileName,CurrentRBFileName);
-				CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)OpenChosenFile,NULL,0,NULL);
+				CreateThread(0,0,(LPTHREAD_START_ROUTINE)OpenChosenFile,0,0,0);
 			}
 			break;
 		case ID_EDITCHEATS: ChangeRomCheats(hWnd); break;
@@ -655,11 +757,11 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 				RomFileSize=OrigFileSize;
 			}
 			break;
-		case ID_FILE_OPEN_ROM: if (ChooseN64RomToOpen()) CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)OpenChosenFile,NULL,0,NULL); break;
+		case ID_FILE_OPEN_ROM: if (ChooseN64RomToOpen()) CreateThread(0,0,(LPTHREAD_START_ROUTINE)OpenChosenFile,0,0,0); break;
 		case ID_FILE_ROM_INFO: RomInfo(); break;
 		case ID_FILE_STARTEMULATION:
 			strcpy(CurrentFileName,LastRoms[0]);
-			CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)OpenChosenFile,NULL,0,NULL);
+			CreateThread(0,0,(LPTHREAD_START_ROUTINE)OpenChosenFile,0,0,0);
 			break;
 		case ID_FILE_ENDEMULATION:
 			if (inFullScreen) {
@@ -667,14 +769,16 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 				SendMessage(hMainWindow,WM_COMMAND,ID_OPTIONS_FULLSCREEN,0);
 			}
 			CloseCheatWindow();
-			HandleShutdown(hWnd);
+			HandleShutdown();
+			SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MSG_EMULATION_ENDED));
 			break;
 		case ID_FILE_ROMDIRECTORY: SelectRomDir(); break;
 		case ID_FILE_REFRESHROMLIST: RefreshRomBrowser(); break;
 		case ID_FILE_EXIT: DestroyWindow(hWnd); break;
 		case ID_CPU_RESET:
 			EndEmulation();
-			SetupPlugins(hMainWindow);
+			CreateThread(0,0,(LPTHREAD_START_ROUTINE)ResetThreadHGT,0,0,0);
+			// Issue: If CPU thread is ongoing and attempting to transition to Ice LLE, Ice LLE cannot start another CPU Thread with GLideN64 before it initializes, causing a crash later. Due to this, a dedicated reset thread for HandleGlobalTasks(hMainWindow); is used.
 			break;
 		case ID_CPU_PAUSE:
 			ManualPaused=TRUE;
@@ -701,7 +805,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 				openfilename.Flags      =OFN_OVERWRITEPROMPT|OFN_HIDEREADONLY;
 				if (GetSaveFileName (&openfilename)) {
 					_splitpath(SaveFile,drive,dir,fname,ext);
-					if (strcmp(ext,"st")==0) _makepath(SaveFile,drive,dir,fname,NULL);
+					if (strcmp(ext,"st")==0) _makepath(SaveFile,drive,dir,fname,0);
 					strcpy(SaveAsFileName,SaveFile);
 					if (CPU_Paused) {
 						if (!Machine_SaveState()) CPU_Action.SaveState=TRUE;
@@ -740,7 +844,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 				FetchScreenAndVideoDir(Directory);
 				CaptureScreen(Directory);
 			} else {
-				int fileIndex=0,screenHeight=GetSystemMetrics(SM_CYSCREEN),screenWidth=GetSystemMetrics(SM_CXSCREEN),rowSize,cropHeight=0,sourceX=0,sourceY=0;
+				int fileIndex=0,rowSize,cropHeight=0,sourceX=0,sourceY=0;
 				char outputFile[_MAX_PATH],Directory[_MAX_PATH],*IniFile,Identifier[256],GameName[256];
 				HDC hScreenDC,hMemoryDC;
 				HBITMAP hBitmap,hOldBitmap;
@@ -761,7 +865,9 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 				} while (GetFileAttributes(outputFile)!=INVALID_FILE_ATTRIBUTES);
 				if (!inFullScreen) {
 					if (!GetClientRect(hMainWindow,&rc)) break;
-					if (screenHeight>=2160&&screenWidth>=2880) cropHeight=44;
+					if (hStatusWnd==0) {
+						cropHeight=0;
+					} else if (screenHeight>=2160&&screenWidth>=2880) cropHeight=43;
 					else if (screenHeight>=1440&&screenWidth>=1920) cropHeight=29;
 					else cropHeight=28;
 					screenWidth=rc.right-rc.left;
@@ -769,14 +875,14 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 					screenHeight-=cropHeight;
 				}
 				hScreenDC=GetDC(hMainWindow);
-				if (hScreenDC==NULL) break;
+				if (hScreenDC==0) break;
 				hMemoryDC=CreateCompatibleDC(hScreenDC);
-				if (hMemoryDC==NULL) {
+				if (hMemoryDC==0) {
 					ReleaseDC(hMainWindow,hScreenDC);
 					break;
 				}
 				hBitmap=CreateCompatibleBitmap(hScreenDC,screenWidth,screenHeight);
-				if (hBitmap==NULL) {
+				if (hBitmap==0) {
 					DeleteDC(hMemoryDC);
 					ReleaseDC(hMainWindow,hScreenDC);
 					break;
@@ -801,7 +907,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 								cursorX=-10000;
 								cursorY=-10000;
 							}
-							if (cursorX>-1000&&cursorY>-1000&&cursorX<screenWidth+1000&&cursorY<screenHeight+1000) DrawIconEx(hMemoryDC,cursorX-(int)ii.xHotspot,cursorY-(int)ii.yHotspot,ci.hCursor,0,0,0,NULL,DI_NORMAL);
+							if (cursorX>-1000&&cursorY>-1000&&cursorX<screenWidth+1000&&cursorY<screenHeight+1000) DrawIconEx(hMemoryDC,cursorX-(int)ii.xHotspot,cursorY-(int)ii.yHotspot,ci.hCursor,0,0,0,0,DI_NORMAL);
 							if (ii.hbmMask) DeleteObject(ii.hbmMask);
 							if (ii.hbmColor) DeleteObject(ii.hbmColor);
 						}
@@ -817,18 +923,18 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 				bi.bmiHeader.biCompression=BI_RGB;
 				rowSize=((screenWidth*3+3)&~3);
 				imageSize=rowSize*screenHeight;
-				pixels=(BYTE *)malloc(imageSize);
-				if (pixels!=NULL) {
+				pixels=(BYTE*)malloc(imageSize);
+				if (pixels!=0) {
 					if (GetDIBits(hScreenDC,hBitmap,0,screenHeight,pixels,&bi,DIB_RGB_COLORS)) {
 						ZeroMemory(&bfh,sizeof(bfh));
 						bfh.bfType=0x4D42;
 						bfh.bfOffBits=sizeof(BITMAPFILEHEADER)+sizeof(BITMAPINFOHEADER);
 						bfh.bfSize=bfh.bfOffBits+imageSize;
-						hFile=CreateFile(outputFile,GENERIC_WRITE,0,NULL,CREATE_ALWAYS,FILE_ATTRIBUTE_NORMAL,NULL);
+						hFile=CreateFile(outputFile,GENERIC_WRITE,0,0,CREATE_ALWAYS,FILE_ATTRIBUTE_NORMAL,0);
 						if (hFile!=INVALID_HANDLE_VALUE) {
-							WriteFile(hFile,&bfh,sizeof(bfh),&bytesWritten,NULL);
-							WriteFile(hFile,&bi.bmiHeader,sizeof(bi.bmiHeader),&bytesWritten,NULL);
-							WriteFile(hFile,pixels,imageSize,&bytesWritten,NULL);
+							WriteFile(hFile,&bfh,sizeof(bfh),&bytesWritten,0);
+							WriteFile(hFile,&bi.bmiHeader,sizeof(bi.bmiHeader),&bytesWritten,0);
+							WriteFile(hFile,pixels,imageSize,&bytesWritten,0);
 							CloseHandle(hFile);
 						}
 					}
@@ -961,7 +1067,6 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 				inFullScreen=FALSE;
 				UsuallyonTopWindow(hWnd);
 				if (AutoHide) ShowCursor(TRUE);
-				if (strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) DrawMenuBar(hWnd);
 			} else {
 				if (UsuallyonTop) SetWindowPos(hWnd,HWND_NOTOPMOST,0,0,0,0,SWP_NOMOVE|SWP_NOREPOSITION|SWP_NOSIZE);
 				ChangeWindow();
@@ -977,7 +1082,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 				Sleep(1);
 				timeEndPeriod(16);
 				PauseCPU();
-			} else PauseCPU();
+			} else SendMessage(hMainWindow,WM_COMMAND,ID_CPU_PAUSE,0);
 			break;
 		case ID_OPTIONS_UsuallyonTop:
 			CheckedMenuItem(ID_OPTIONS_UsuallyonTop,&UsuallyonTop,"Usually on Top");
@@ -989,16 +1094,17 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 			SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)(VideoToScreen?GS(VIDEOTOSCREEN_ON):GS(VIDEOTOSCREEN_OFF)));
 			break;
 		case ID_OPTIONS_CONFIG_GFX:
-		if (CPURunning&&strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) SetWindowLong(hWnd,GWL_EXSTYLE,GetWindowLong(hWnd,GWL_EXSTYLE)&~WS_EX_COMPOSITED);
-		if (strcmp(GfxDLL,"GLideN64.dll")==0||strcmp(GfxDLL,"Glide64.dll")==0) {
+		if (strcmp(GfxDLL,"Glide64.dll")==0&&!CPU_Paused&&!AutoSleep) goto ForcePause;
+		if (strcmp(GfxDLL,"GLideN64.dll")==0) {
 			HandleModal1(hWnd);
 			if (CPU_Paused) GFXDllConfig(hWnd);
 			else {
 				if (AutoSleep) {
-					AutoSleep=FALSE;
+					ManualPaused=TRUE;
 					GFXDllConfig(hWnd);
-					AutoSleep=TRUE;
+					ManualPaused=FALSE;
 				} else {
+					ForcePause:
 					PauseCPU();
 					GFXDllConfig(hWnd);
 					PauseCPU();
@@ -1006,33 +1112,28 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 			}
 			HandleModal2(hWnd);
 		} else GFXDllConfig(hWnd);
-		if (CPURunning&&strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) SetWindowLong(hWnd,GWL_EXSTYLE,GetWindowLong(hWnd,GWL_EXSTYLE)|WS_EX_COMPOSITED);
 		break;
 		case ID_OPTIONS_CONFIG_AUDIO:
-		if (CPURunning&&strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) SetWindowLong(hWnd,GWL_EXSTYLE,GetWindowLong(hWnd,GWL_EXSTYLE)&~WS_EX_COMPOSITED);
-		if (!CPURunning&&strcmp(ControllerDLL,"Jabo_Dsound.dll")==0) {
+		if (!CPURunning&&strcmp(AudioDLL,"Jabo_Dsound.dll")==0) {
 			HandleModal1(hWnd);
-			MessageBox(NULL,GS(MSG_PLS_START),AppName,MB_OK|MB_ICONEXCLAMATION|MB_SETFOREGROUND);
+			MessageBox(0,GS(MSG_PLS_START),AppName,MB_OK|MB_ICONEXCLAMATION|MB_SETFOREGROUND);
 			HandleModal2(hWnd);
 		} else AiDllConfig(hWnd);
-		if (CPURunning&&strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) SetWindowLong(hWnd,GWL_EXSTYLE,GetWindowLong(hWnd,GWL_EXSTYLE)|WS_EX_COMPOSITED);
 		break;
 		case ID_OPTIONS_CONFIG_CONTROL:
-		if (CPURunning&&strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) SetWindowLong(hWnd,GWL_EXSTYLE,GetWindowLong(hWnd,GWL_EXSTYLE)&~WS_EX_COMPOSITED);
 		if (!CPURunning&&strcmp(ControllerDLL,"shankle-sdl2-input.dll")==0) {
 			HandleModal1(hWnd);
-			MessageBox(NULL,GS(MSG_PLS_START),AppName,MB_OK|MB_ICONEXCLAMATION|MB_SETFOREGROUND);
+			MessageBox(0,GS(MSG_PLS_START),AppName,MB_OK|MB_ICONEXCLAMATION|MB_SETFOREGROUND);
 			HandleModal2(hWnd);
 		} else ContConfig(hWnd);
-		if (CPURunning&&strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) SetWindowLong(hWnd,GWL_EXSTYLE,GetWindowLong(hWnd,GWL_EXSTYLE)|WS_EX_COMPOSITED);
 		break;
 		case ID_OPTIONS_GAMECAPTURE:
 		{
 			char path_buffer[_MAX_PATH],drive[_MAX_DRIVE],dir[_MAX_DIR],Runtimesdir[_MAX_DIR],ffmpegPath[_MAX_PATH],outputFile[_MAX_PATH],Directory[_MAX_PATH],*IniFile,Identifier[256],cmd[4096],WinTitle[512],GameName[256];
-			int fileIndex=0,screenHeight=GetSystemMetrics(SM_CYSCREEN),screenWidth=GetSystemMetrics(SM_CXSCREEN);
+			int fileIndex=0;
 			GetWindowText(hMainWindow,WinTitle,sizeof(WinTitle));
-			GetModuleFileName(NULL,path_buffer,sizeof(path_buffer));
-			_splitpath(path_buffer,drive,dir,NULL,NULL);
+			GetModuleFileName(0,path_buffer,sizeof(path_buffer));
+			_splitpath(path_buffer,drive,dir,0,0);
 			sprintf(Runtimesdir,"%s\\Runtimes\\",dir);
 			_makepath(ffmpegPath,drive,Runtimesdir,"ffmpeg","exe");
 			if (GetFileAttributes(ffmpegPath)==INVALID_FILE_ATTRIBUTES) {
@@ -1049,15 +1150,20 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 					else sprintf(outputFile,"%s\\%s %04d_RGB.mp4",Directory,GameName,fileIndex);
 					fileIndex++;
 				} while (GetFileAttributes(outputFile)!=INVALID_FILE_ATTRIBUTES);
-				if (screenHeight>=2160&&screenWidth>=2880) {
-					if (AutoHide) sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -draw_mouse 0 -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-44:0:0\" -level 4.1 -c:v libx264rgb -crf 14 -pix_fmt rgb24 -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
-					else sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-44:0:0\" -level 4.1 -c:v libx264rgb -crf 14 -pix_fmt rgb24 -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
-				} else if (screenHeight>=1440&&screenWidth>=1920) {
-					if (AutoHide) sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -draw_mouse 0 -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-29:0:0\" -level 4.1 -c:v libx264rgb -crf 14 -pix_fmt rgb24 -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
-					else sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-29:0:0\" -level 4.1 -c:v libx264rgb -crf 14 -pix_fmt rgb24 -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
+				if (hStatusWnd==0) {
+					if (AutoHide) sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -draw_mouse 0 -framerate 60 -i title=\"%s\" -level 4.1 -c:v libx264rgb -crf 14 -pix_fmt rgb24 -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
+					else sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -framerate 60 -i title=\"%s\" -level 4.1 -c:v libx264rgb -crf 14 -pix_fmt rgb24 -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
 				} else {
-					if (AutoHide) sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -draw_mouse 0 -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-28:0:0\" -level 4.1 -c:v libx264rgb -crf 14 -pix_fmt rgb24 -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
-					else sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-28:0:0\" -level 4.1 -c:v libx264rgb -crf 14 -pix_fmt rgb24 -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
+					if (screenHeight>=2160&&screenWidth>=2880) {
+						if (AutoHide) sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -draw_mouse 0 -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-44:0:0\" -level 4.1 -c:v libx264rgb -crf 14 -pix_fmt rgb24 -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
+						else sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-44:0:0\" -level 4.1 -c:v libx264rgb -crf 14 -pix_fmt rgb24 -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
+					} else if (screenHeight>=1440&&screenWidth>=1920) {
+						if (AutoHide) sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -draw_mouse 0 -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-29:0:0\" -level 4.1 -c:v libx264rgb -crf 14 -pix_fmt rgb24 -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
+						else sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-29:0:0\" -level 4.1 -c:v libx264rgb -crf 14 -pix_fmt rgb24 -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
+					} else {
+						if (AutoHide) sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -draw_mouse 0 -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-28:0:0\" -level 4.1 -c:v libx264rgb -crf 14 -pix_fmt rgb24 -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
+						else sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-28:0:0\" -level 4.1 -c:v libx264rgb -crf 14 -pix_fmt rgb24 -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
+					}
 				}
 			} else {
 				do {
@@ -1065,15 +1171,20 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 					else sprintf(outputFile,"%s\\%s %04d.mp4",Directory,GameName,fileIndex);
 					fileIndex++;
 				} while (GetFileAttributes(outputFile)!=INVALID_FILE_ATTRIBUTES);
-				if (screenHeight>=2160&&screenWidth>=2880) {
-					if (AutoHide) sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -draw_mouse 0 -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-44:0:0\" -level 4.1 -crf 14 -pix_fmt yuv420p -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
-					else sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-44:0:0\" -level 4.1 -crf 14 -pix_fmt yuv420p -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
-				} else if (screenHeight>=1440&&screenWidth>=1920) {
-					if (AutoHide) sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -draw_mouse 0 -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-29:0:0\" -level 4.1 -crf 14 -pix_fmt yuv420p -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
-					else sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-29:0:0\" -level 4.1 -crf 14 -pix_fmt yuv420p -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
+				if (hStatusWnd==0) {
+					if (AutoHide) sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -draw_mouse 0 -framerate 60 -i title=\"%s\" -level 4.1 -crf 14 -pix_fmt yuv420p -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
+					else sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -framerate 60 -i title=\"%s\" -level 4.1 -crf 14 -pix_fmt yuv420p -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
 				} else {
-					if (AutoHide) sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -draw_mouse 0 -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-28:0:0\" -level 4.1 -crf 14 -pix_fmt yuv420p -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
-					else sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-28:0:0\" -level 4.1 -crf 14 -pix_fmt yuv420p -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
+					if (screenHeight>=2160&&screenWidth>=2880) {
+						if (AutoHide) sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -draw_mouse 0 -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-44:0:0\" -level 4.1 -crf 14 -pix_fmt yuv420p -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
+						else sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-44:0:0\" -level 4.1 -crf 14 -pix_fmt yuv420p -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
+					} else if (screenHeight>=1440&&screenWidth>=1920) {
+						if (AutoHide) sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -draw_mouse 0 -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-29:0:0\" -level 4.1 -crf 14 -pix_fmt yuv420p -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
+						else sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-29:0:0\" -level 4.1 -crf 14 -pix_fmt yuv420p -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
+					} else {
+						if (AutoHide) sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -draw_mouse 0 -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-28:0:0\" -level 4.1 -crf 14 -pix_fmt yuv420p -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
+						else sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-28:0:0\" -level 4.1 -crf 14 -pix_fmt yuv420p -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
+					}
 				}
 			}
 			STARTUPINFO si;
@@ -1083,7 +1194,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 			si.dwFlags=STARTF_USESHOWWINDOW;
 			si.wShowWindow=SW_SHOW;
 			ZeroMemory(&pi,sizeof(pi));
-			if (!CreateProcess(NULL,cmd,NULL,NULL,FALSE,CREATE_NEW_CONSOLE,NULL,NULL,&si,&pi)) DisplayError(GS(FFMPEG_NOBOOT));
+			if (!CreateProcess(0,cmd,0,0,FALSE,CREATE_NEW_CONSOLE,0,0,&si,&pi)) DisplayError(GS(FFMPEG_NOBOOT));
 			CloseHandle(pi.hProcess);
 			CloseHandle(pi.hThread);
 		}
@@ -1098,8 +1209,12 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 		SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)(AutoHide?GS(AUTOHIDE_ON):GS(AUTOHIDE_OFF)));
 		if (inFullScreen&&strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")!=0) AutoHide?ShowCursor(FALSE):ShowCursor(TRUE);
 		break;
+		case ID_OPTIONS_CREATE_STATUS_BAR:
+		CheckedMenuItem(ID_OPTIONS_CREATE_STATUS_BAR,&CreateStatusBar,"Display Status Bar");
+		if (CreateStatusBar&&hStatusWnd==0) hStatusWnd=CreateStatusWindow(WS_CHILD|WS_VISIBLE,"",hMainWindow,100);
+		SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)(CreateStatusBar?GS(STATUSBAR_ON):GS(STATUSBAR_OFF)));
+		break;
 		case ID_OPTIONS_SETTINGS:
-		if (CPURunning&&strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) SetWindowLong(hWnd,GWL_EXSTYLE,GetWindowLong(hWnd,GWL_EXSTYLE)&~WS_EX_COMPOSITED);
 		if (UsuallyonTop) SetWindowPos(hWnd,HWND_NOTOPMOST,0,0,0,0,SWP_NOMOVE|SWP_NOREPOSITION|SWP_NOSIZE);
 		if (Recursion) {
 			ChangeSettings(hWnd);
@@ -1109,27 +1224,26 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 			if (Recursion) RefreshRomBrowser();
 		}
 		UsuallyonTopWindow(hWnd);
-		if (CPURunning&&strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) SetWindowLong(hWnd,GWL_EXSTYLE,GetWindowLong(hWnd,GWL_EXSTYLE)|WS_EX_COMPOSITED);
 		break;
 		case ID_OPTIONS_CHEATS:
-		if (CPURunning) ManageCheats(NULL);
+		if (CPURunning) ManageCheats(0);
 		else ChangeRomCheats(hWnd);
 		break;
 		case ID_HELP_GUIDE:
 			{
 				char path_buffer[_MAX_PATH],drive[_MAX_DRIVE],dir[_MAX_DIR],Runtimesdir[_MAX_DIR],fname[_MAX_FNAME],ext[_MAX_EXT],HelpFileName[_MAX_PATH];
-				GetModuleFileName(NULL,path_buffer,sizeof(path_buffer));
+				GetModuleFileName(0,path_buffer,sizeof(path_buffer));
 				_splitpath(path_buffer,drive,dir,fname,ext);
 				sprintf(Runtimesdir,"%sRuntimes\\",dir);
 				_makepath(HelpFileName,drive,Runtimesdir,"User Guide","txt");
-				if (HtmlHelp(hWnd,HelpFileName,HH_DISPLAY_INDEX,0)==NULL) {
-					ShellExecute(hWnd,"open",HelpFileName,NULL,NULL,SW_SHOW);
+				if (HtmlHelp(hWnd,HelpFileName,HH_DISPLAY_INDEX,0)==0) {
+					ShellExecute(hWnd,"open",HelpFileName,0,0,SW_SHOW);
 				}
 			}
 		break;
 		case ID_HELP_UNINSTALL:
 			HandleModal1(hWnd);
-			if (MessageBox(NULL,GS(MSG_CONFIRMATION_UNINSTALL),GS(MENU_UNINSTALL),MB_OKCANCEL|MB_ICONEXCLAMATION|MB_SETFOREGROUND)==IDOK) {
+			if (MessageBox(0,GS(MSG_CONFIRMATION_UNINSTALL),GS(MENU_UNINSTALL),MB_OKCANCEL|MB_ICONEXCLAMATION|MB_SETFOREGROUND)==IDOK) {
 				DestroyWindow(hWnd);
 				RegDeleteTree(HKEY_CURRENT_USER,"PJ64 V 1.6.2");
 			}
@@ -1139,27 +1253,25 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 		{
 			static char isoFilePath[1024];
 			HandleModal1(hWnd);
-			SHGetFolderPath(NULL,CSIDL_APPDATA,NULL,0,isoFilePath);
+			SHGetFolderPath(0,CSIDL_APPDATA,0,0,isoFilePath);
 			strcat(isoFilePath,"\\PJ64 1.6.2\\AUTO0.iso");
-			if (MessageBox(NULL,GS(Allocate_SD_Info),GS(AllocateCompile_SD),MB_OKCANCEL|MB_ICONEXCLAMATION|MB_SETFOREGROUND)==IDOK) {
+			if (MessageBox(0,GS(Allocate_SD_Info),GS(AllocateCompile_SD),MB_OKCANCEL|MB_ICONEXCLAMATION|MB_SETFOREGROUND)==IDOK) {
 				char path_buffer[_MAX_PATH],drive[_MAX_DRIVE],dir[_MAX_DIR],RuntimesSDdir[_MAX_DIR],fname[_MAX_FNAME],ext[_MAX_EXT],HelpFileName[_MAX_PATH];
-				GetModuleFileName(NULL,path_buffer,sizeof(path_buffer));
+				GetModuleFileName(0,path_buffer,sizeof(path_buffer));
 				_splitpath(path_buffer,drive,dir,fname,ext);
 				sprintf(RuntimesSDdir,"%sRuntimes\\SD\\",dir);
 				if (GetFileAttributes(isoFilePath)!=INVALID_FILE_ATTRIBUTES) _makepath(HelpFileName,drive,RuntimesSDdir,"SD_Allocate","bat");
 				else _makepath(HelpFileName,drive,RuntimesSDdir,"SD_Compile","bat");
-				if (HtmlHelp(hWnd,HelpFileName,HH_DISPLAY_INDEX,0)==NULL) ShellExecute(hWnd,"runas",HelpFileName,NULL,NULL,SW_SHOW);
+				if (HtmlHelp(hWnd,HelpFileName,HH_DISPLAY_INDEX,0)==0) ShellExecute(hWnd,"runas",HelpFileName,0,0,SW_SHOW);
 			}
 			HandleModal2(hWnd);
 		}
 			break;
 		case ID_HELP_ABOUTSETTINGFILES: AboutIniBox(); break;
 		default:
-			if (LOWORD(wParam)>=ID_FILE_RECENT_FILE&&LOWORD(wParam) <=(ID_FILE_RECENT_FILE+RomsToRemember)) {
-				LoadRecentRom(LOWORD(wParam));
-			} else if (LOWORD(wParam)>=ID_FILE_RECENT_DIR&&LOWORD(wParam) <=(ID_FILE_RECENT_DIR+RomDirsToRemember)) {
-				SetRecentRomDir(LOWORD(wParam));
-			} else if (LOWORD(wParam)>=ID_LANG_SELECT&&LOWORD(wParam) <=(ID_LANG_SELECT+100)) {
+			if (LOWORD(wParam)>=ID_FILE_RECENT_FILE&&LOWORD(wParam)<=(ID_FILE_RECENT_FILE+RomsToRemember)) LoadRecentRom(LOWORD(wParam));
+			else if (LOWORD(wParam)>=ID_FILE_RECENT_DIR&&LOWORD(wParam)<=(ID_FILE_RECENT_DIR+RomDirsToRemember)) SetRecentRomDir(LOWORD(wParam));
+			else if (LOWORD(wParam)>=ID_LANG_SELECT&&LOWORD(wParam)<=(ID_LANG_SELECT+100)) {
 				SelectLangMenuItem(GetMenu(hWnd),LOWORD(wParam));
 				ResetRomBrowserColumns();
 				SetupMenu(hWnd);
@@ -1186,7 +1298,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 					break;
 				}
 			}
-			if ((lprc->right-lprc->left) <=MinWidth) {
+			if ((lprc->right-lprc->left)<=MinWidth) {
 				switch (fwSide) {
 				case WMSZ_TOPLEFT:
 				case WMSZ_LEFT:
@@ -1211,7 +1323,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 		DragQueryFile(hDrop,0,CurrentFileName,sizeof(CurrentFileName));
 		DragFinish(hDrop);
 		SetForegroundWindow(hWnd);
-		CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)OpenChosenFile,NULL,0,NULL);
+		CreateThread(0,0,(LPTHREAD_START_ROUTINE)OpenChosenFile,0,0,0);
 		break;
 	}
 	default:
@@ -1222,7 +1334,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 void MenuSetText (HMENU hMenu,int MenuPos,char*Title,char*Shortcut) {
 	MENUITEMINFO MenuInfo;
 	char String[256];
-	if (Title==NULL||strlen(Title)==0) return;
+	if (Title==0||strlen(Title)==0) return;
 	memset(&MenuInfo,0,sizeof(MENUITEMINFO));
 	MenuInfo.cbSize=sizeof(MENUITEMINFO);
 	MenuInfo.fMask=MIIM_TYPE;
@@ -1231,9 +1343,9 @@ void MenuSetText (HMENU hMenu,int MenuPos,char*Title,char*Shortcut) {
 	MenuInfo.dwTypeData=String;
 	MenuInfo.cch=256;
 	GetMenuItemInfo(hMenu,MenuPos,TRUE,&MenuInfo);
-	if (strchr(Title,'\t')!=NULL) {*(strchr(Title,'\t'))='\0'; }
+	if (strchr(Title,'\t')!=0) {*(strchr(Title,'\t'))='\0';}
 	strcpy(String,Title);
-	if (Shortcut) { sprintf(String,"%s\t%s",String,Shortcut); }
+	if (Shortcut) {sprintf(String,"%s\t%s",String,Shortcut);}
 	SetMenuItemInfo(hMenu,MenuPos,TRUE,&MenuInfo);
 }
 int RegisterWinClass () {
@@ -1251,78 +1363,9 @@ int RegisterWinClass () {
 	if (RegisterClass(&wcl)==0) return FALSE;
 	wcl.lpfnWndProc		=(WNDPROC)Cheat_Proc;
 	wcl.hbrBackground	=(HBRUSH)(COLOR_BTNFACE+1);
-	wcl.lpszMenuName	=NULL;
+	wcl.lpszMenuName	=0;
 	wcl.lpszClassName	="PJ64.Cheats";
 	if (RegisterClass(&wcl)==0) return FALSE;
-	return TRUE;
-}
-void RomInfo () {
-	DialogBox(hInst,"ROM_INFO_DIALOG",hMainWindow,(DLGPROC)RomInfoProc);
-}
-LRESULT CALLBACK RomInfoProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) {
-	char String[256],count;
-	char drive[_MAX_DRIVE],dir[_MAX_DIR];
-	char fname[_MAX_FNAME],ext[_MAX_EXT];
-	switch (uMsg) {
-	case WM_INITDIALOG:
-		SetWindowText(hDlg,GS(INFO_TITLE));
-		SetDlgItemText(hDlg,IDC_ROM_NAME,GS(INFO_ROM_NAME_TEXT));
-		SetDlgItemText(hDlg,IDC_FILE_NAME,GS(INFO_FILE_NAME_TEXT));
-		SetDlgItemText(hDlg,IDC_LOCATION,GS(INFO_LOCATION_TEXT));
-		SetDlgItemText(hDlg,IDC_ROM_SIZE,GS(INFO_SIZE_TEXT));
-		SetDlgItemText(hDlg,IDC_CART_ID,GS(INFO_CART_ID_TEXT));
-		SetDlgItemText(hDlg,IDC_CRC1,GS(INFO_CRC1_TEXT));
-		SetDlgItemText(hDlg,IDC_CRC2,GS(INFO_CRC2_TEXT));
-		SetDlgItemText(hDlg,IDC_CIC_CHIP,GS(INFO_CIC_CHIP_TEXT));
-		memcpy(&String[1],(void*)(&RomHeader[0x20]),20);
-		for(count=1 ; count<21; count+=4) {
-			String[count] ^=String[count+3];
-			String[count+3] ^=String[count];
-			String[count] ^=String[count+3];
-			String[count+1] ^=String[count+2];
-			String[count+2] ^=String[count+1];
-			String[count+1] ^=String[count+2];
-		}
-		String[0]=' ';
-		String[21]='\0';
-		SetDlgItemText(hDlg,IDC_INFO_ROMNAME,String);
-		_splitpath(CurrentFileName,drive,dir,fname,ext);
-		strcpy(&String[1],fname);
-		strcat(String,ext);
-		SetDlgItemText(hDlg,IDC_INFO_FILENAME,String);
-		strcpy(&String[1],drive);
-		strcat(String,dir);
-		SetDlgItemText(hDlg,IDC_INFO_LOCATION,String);
-		sprintf(&String[1],"%.1f MBit",(float)RomFileSize/0x20000);
-		SetDlgItemText(hDlg,IDC_INFO_ROMSIZE,String);
-		String[1]=RomHeader[0x3F];
-		String[2]=RomHeader[0x3E];
-		String[3]='\0';
-		SetDlgItemText(hDlg,IDC_INFO_CARTID,String);
-		sprintf(&String[1],"0x%08X",*(DWORD*)(&RomHeader[0x10]));
-		SetDlgItemText(hDlg,IDC_INFO_CRC1,String);
-		sprintf(&String[1],"0x%08X",*(DWORD*)(&RomHeader[0x14]));
-		SetDlgItemText(hDlg,IDC_INFO_CRC2,String);
-		if (GetCicChipID(RomHeader)<0) {
-			sprintf(&String[1],GS(UNKNOWN));
-		} else {
-			if (GetCicChipID(RomHeader)==4) sprintf(&String[1],"CIC-NUS-XENO");
-			else if (GetCicChipID(RomHeader)==7) sprintf(&String[1],"CIC-NUS-5167");
-			else if (GetCicChipID(RomHeader)==8) sprintf(&String[1],"CIC-NUS-8303");
-			else if (GetCicChipID(RomHeader)==9) sprintf(&String[1],"CIC-NUS-DDUS");
-			else sprintf(&String[1],"CIC-NUS-610%d",GetCicChipID(RomHeader));
-		}
-		SetDlgItemText(hDlg,IDC_INFO_CIC,String);
-		break;
-	case WM_COMMAND:
-		switch (LOWORD(wParam)) {
-		case IDCANCEL:
-			EndDialog(hDlg,0);
-			break;
-		}
-	default:
-		return FALSE;
-	}
 	return TRUE;
 }
 void SetupMenu (HWND hWnd) {
@@ -1336,45 +1379,37 @@ void SetupMenu (HWND hWnd) {
 	CreateLangList(GetSubMenu(hMenu,0),6,ID_LANG_SELECT);
 	CreateRecentDirList(hMenu);
 	CreateRecentFileList(hMenu);
-	CheckMenuItem(hMenu,CurrentSaveSlot,MF_BYCOMMAND|MFS_CHECKED);
-	if (LimitFPS) {
-		CheckMenuItem(hMenu,ID_SYSTEM_LIMITFPS,MF_BYCOMMAND|MFS_CHECKED);
-	}
-	if (SpeedCap) {
-		CheckMenuItem(hMenu,ID_SYSTEM_SPEEDCAP,MF_BYCOMMAND|MFS_CHECKED);
-	}
-	if (RecordRGB) {
-		CheckMenuItem(hMenu,ID_OPTIONS_RGBREC,MF_BYCOMMAND|MFS_CHECKED);
-	}
-	if (AutoHide) {
-		CheckMenuItem(hMenu,ID_OPTIONS_HIDE_CURSOR,MF_BYCOMMAND|MFS_CHECKED);
-	}
-	if (VideoToScreen) {
-		CheckMenuItem(hMenu,ID_OPTIONS_VideoToScreen,MF_BYCOMMAND|MFS_CHECKED);
-	}
-	if (strcmp(AudioDLL,"No Audio.dll")!=0) EnableMenuItem(hMenu,ID_OPTIONS_CONFIG_AUDIO,MF_BYCOMMAND|(AiDllConfig==NULL?MF_GRAYED:MF_ENABLED));
-	EnableMenuItem(hMenu,ID_OPTIONS_CONFIG_GFX,MF_BYCOMMAND|(GFXDllConfig==NULL?MF_GRAYED:MF_ENABLED));
-	EnableMenuItem(hMenu,ID_OPTIONS_CONFIG_CONTROL,MF_BYCOMMAND|(ContConfig==NULL?MF_GRAYED:MF_ENABLED));
+	CheckMenuItem(hMenu,CurrentSaveSlot,MFS_CHECKED);
+	if (LimitFPS) CheckMenuItem(hMenu,ID_SYSTEM_LIMITFPS,MFS_CHECKED);
+	if (SpeedCap) CheckMenuItem(hMenu,ID_SYSTEM_SPEEDCAP,MFS_CHECKED);
+	if (RecordRGB) CheckMenuItem(hMenu,ID_OPTIONS_RGBREC,MFS_CHECKED);
+	if (AutoHide) CheckMenuItem(hMenu,ID_OPTIONS_HIDE_CURSOR,MFS_CHECKED);
+	if (VideoToScreen) CheckMenuItem(hMenu,ID_OPTIONS_VideoToScreen,MFS_CHECKED);
+	if (CreateStatusBar) CheckMenuItem(hMenu,ID_OPTIONS_CREATE_STATUS_BAR,MFS_CHECKED);
+	if (UsuallyonTop) CheckMenuItem(hMenu,ID_OPTIONS_UsuallyonTop,MFS_CHECKED);
+	if (strcmp(AudioDLL,"No Audio.dll")!=0) EnableMenuItem(hMenu,ID_OPTIONS_CONFIG_AUDIO,AiDllConfig==0?MF_GRAYED:MF_ENABLED);
+	EnableMenuItem(hMenu,ID_OPTIONS_CONFIG_GFX,GFXDllConfig==0?MF_GRAYED:MF_ENABLED);
+	EnableMenuItem(hMenu,ID_OPTIONS_CONFIG_CONTROL,ContConfig==0?MF_GRAYED:MF_ENABLED);
 	State=CPURunning?MFS_ENABLED:MFS_DISABLED;
-	EnableMenuItem(hMenu,ID_FILE_ENDEMULATION,State|MF_BYCOMMAND);
-	EnableMenuItem(hMenu,ID_CPU_RESET,State|MF_BYCOMMAND);
-	EnableMenuItem(hMenu,ID_CPU_PAUSE,State|MF_BYCOMMAND);
-	EnableMenuItem(hMenu,ID_SYSTEM_ALTERNATEPAUSE,State|MF_BYCOMMAND);
-	EnableMenuItem(hMenu,ID_OPTIONS_CHEATS,State|MF_BYCOMMAND);
-	EnableMenuItem(hMenu,ID_CPU_SAVE,State|MF_BYCOMMAND);
-	EnableMenuItem(hMenu,ID_CPU_SAVEAS,State|MF_BYCOMMAND);
-	EnableMenuItem(hMenu,ID_CPU_RESTORE,State|MF_BYCOMMAND);
-	EnableMenuItem(hMenu,ID_CPU_LOAD,State|MF_BYCOMMAND);
-	EnableMenuItem(hMenu,ID_SYSTEM_GSBUTTON,State|MF_BYCOMMAND);
-	EnableMenuItem(hMenu,ID_OPTIONS_GAMECAPTURE,State|MF_BYCOMMAND);	
-	if (CaptureScreen!=NULL||!VideoToScreen) EnableMenuItem(hMenu,ID_SYSTEM_GENERATEBITMAP,State|MF_BYCOMMAND);
-	if (ChangeWindow!=NULL&&strcmp(GfxDLL,"Direct64-1.6.2.dll")!=0) EnableMenuItem(hMenu,ID_OPTIONS_FULLSCREEN,State|MF_BYCOMMAND);
+	EnableMenuItem(hMenu,ID_FILE_ENDEMULATION,State);
+	EnableMenuItem(hMenu,ID_CPU_RESET,State);
+	EnableMenuItem(hMenu,ID_CPU_PAUSE,State);
+	EnableMenuItem(hMenu,ID_SYSTEM_ALTERNATEPAUSE,State);
+	EnableMenuItem(hMenu,ID_OPTIONS_CHEATS,State);
+	EnableMenuItem(hMenu,ID_CPU_SAVE,State);
+	EnableMenuItem(hMenu,ID_CPU_SAVEAS,State);
+	EnableMenuItem(hMenu,ID_CPU_RESTORE,State);
+	EnableMenuItem(hMenu,ID_CPU_LOAD,State);
+	EnableMenuItem(hMenu,ID_SYSTEM_GSBUTTON,State);
+	EnableMenuItem(hMenu,ID_OPTIONS_GAMECAPTURE,State);	
+	if (CaptureScreen!=0||!VideoToScreen) EnableMenuItem(hMenu,ID_SYSTEM_GENERATEBITMAP,State);
+	if (ChangeWindow!=0&&strcmp(GfxDLL,"Direct64-1.6.2.dll")!=0) EnableMenuItem(hMenu,ID_OPTIONS_FULLSCREEN,State);
 	EnableMenuItem(GetSubMenu(hMenu,1),13,State|MF_BYPOSITION);
 	State=CPURunning?MFS_DISABLED:MFS_ENABLED;
-	EnableMenuItem(hMenu,ID_FILE_REFRESHROMLIST,State|MF_BYCOMMAND);
+	EnableMenuItem(hMenu,ID_FILE_REFRESHROMLIST,State);
 	if (SyncGametoAudio) {
-		EnableMenuItem(hMenu,ID_SYSTEM_LIMITFPS,State|MF_BYCOMMAND);
-		EnableMenuItem(hMenu,ID_SYSTEM_SPEEDCAP,State|MF_BYCOMMAND);
+		EnableMenuItem(hMenu,ID_SYSTEM_LIMITFPS,State);
+		EnableMenuItem(hMenu,ID_SYSTEM_SPEEDCAP,State);
 	}
 	if (!CPURunning&&strlen(LastRoms[0])>0) EnableMenuItem(hMenu,ID_FILE_STARTEMULATION,MFS_ENABLED);
 	if (strlen(RomName)>0) {
@@ -1516,7 +1551,7 @@ void SetCurrentSaveState (HWND hWnd,int State) {
 	SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)String);
 	CurrentSaveSlot=State;
 }
-void HandleModal1(HWND hWnd) {
+void HandleModal1 (HWND hWnd) {
 	if (inFullScreen) {
 		if (strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")!=0) ShowCursor(TRUE);
 		SendMessage(hMainWindow,WM_COMMAND,ID_OPTIONS_FULLSCREEN,0);
@@ -1527,30 +1562,19 @@ void HandleModal1(HWND hWnd) {
 	}
 	EnableWindow(hWnd,FALSE);
 }
-void HandleModal2(HWND hWnd) {
-	EnableWindow(hWnd,TRUE);
-	UsuallyonTopWindow(hMainWindow);
+void HandleModal2 (HWND hWnd) {
+	if (UsuallyonTop) UsuallyonTopWindow(hMainWindow);
 	SetForegroundWindow(hMainWindow);
+	EnableWindow(hWnd,TRUE);
 }
-void ShutdownApplication () {
-	CloseCheatWindow();
-	if (TargetInfo!=NULL) VirtualFree(TargetInfo,0,MEM_RELEASE);
-	SaveRomBrowserColumnInfo();
-	FreeRomBrowser();
-	ShutdownPlugins();
-	SaveRecentFiles();
-	Release_Memory();
-	CloseHandle(hPauseMutex);
-	CoUninitialize();
-}
-void TerminatePreviousInstance() {
+void TerminatePreviousInstance () {
 	TCHAR exe[MAX_PATH];
-	GetModuleFileName(NULL,exe,MAX_PATH);
+	GetModuleFileName(0,exe,MAX_PATH);
 	LPCTSTR name=_tcsrchr(exe,'\\');
 	name=name?name+1:exe;
 	HANDLE s=CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS,0);
 	if (s==INVALID_HANDLE_VALUE) return;
-	PROCESSENTRY32 e={ 0 };
+	PROCESSENTRY32 e={0};
 	e.dwSize=sizeof(e);
 	DWORD pid=GetCurrentProcessId(),foundPID=0;
 	int matchCount=0;
@@ -1564,8 +1588,8 @@ void TerminatePreviousInstance() {
 			}
 		} while (Process32Next(s,&e));
 	CloseHandle(s);
-	if (matchCount==1) { // USUALLY ON TOP ISSUE
-		int result=MessageBox(NULL,GS(EXTRA_PROJECT64),AppName,MB_YESNOCANCEL|MB_ICONQUESTION|MB_SETFOREGROUND);
+	if (matchCount==1) {
+		int result=MessageBox(0,GS(EXTRA_PROJECT64),AppName,MB_YESNOCANCEL|MB_ICONQUESTION|MB_SETFOREGROUND);
 		if (result==IDCANCEL) ExitProcess(0);
 		if (result==IDNO) return;
 		HANDLE p=OpenProcess(PROCESS_TERMINATE,FALSE,foundPID);
@@ -1578,11 +1602,11 @@ void TerminatePreviousInstance() {
 int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpszArgs,int nWinMode) {
 	int screenHeight=GetSystemMetrics(SM_CYSCREEN),screenWidth=GetSystemMetrics(SM_CXSCREEN);
 	TerminatePreviousInstance();
-	HANDLE hJob=CreateJobObject(NULL,NULL);
-	JOBOBJECT_BASIC_UI_RESTRICTIONS jbur={ 0 };
+	HANDLE hJob=CreateJobObject(0,0);
+	JOBOBJECT_BASIC_UI_RESTRICTIONS jbur={0};
 	jbur.UIRestrictionsClass=JOB_OBJECT_UILIMIT_DESKTOP|JOB_OBJECT_UILIMIT_DISPLAYSETTINGS|JOB_OBJECT_UILIMIT_EXITWINDOWS|JOB_OBJECT_UILIMIT_GLOBALATOMS|JOB_OBJECT_UILIMIT_HANDLES|JOB_OBJECT_UILIMIT_READCLIPBOARD|JOB_OBJECT_UILIMIT_SYSTEMPARAMETERS|JOB_OBJECT_UILIMIT_WRITECLIPBOARD;
 	if (!SetInformationJobObject(hJob,JobObjectBasicUIRestrictions,&jbur,sizeof(jbur))) CloseHandle(hJob);
-	JOBOBJECT_EXTENDED_LIMIT_INFORMATION jeli={ 0 };
+	JOBOBJECT_EXTENDED_LIMIT_INFORMATION jeli={0};
 	jeli.BasicLimitInformation.LimitFlags=JOB_OBJECT_LIMIT_ACTIVE_PROCESS|JOB_OBJECT_LIMIT_AFFINITY|JOB_OBJECT_LIMIT_DIE_ON_UNHANDLED_EXCEPTION|JOB_OBJECT_LIMIT_JOB_MEMORY|JOB_OBJECT_LIMIT_PRIORITY_CLASS|JOB_OBJECT_LIMIT_PROCESS_MEMORY|JOB_OBJECT_LIMIT_WORKINGSET;
 	jeli.BasicLimitInformation.ActiveProcessLimit=1;
 	jeli.JobMemoryLimit=100*1024*1024;
@@ -1592,7 +1616,7 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpszArgs,in
 	jeli.BasicLimitInformation.Affinity=1;
 	jeli.BasicLimitInformation.PriorityClass=NORMAL_PRIORITY_CLASS;
 	if (!SetInformationJobObject(hJob,JobObjectExtendedLimitInformation,&jeli,sizeof(jeli))) CloseHandle(hJob);
-	JOBOBJECT_SECURITY_LIMIT_INFORMATION jsl={ 0 };
+	JOBOBJECT_SECURITY_LIMIT_INFORMATION jsl={0};
 	jsl.SecurityLimitFlags=JOB_OBJECT_SECURITY_NO_ADMIN|JOB_OBJECT_SECURITY_RESTRICTED_TOKEN|JOB_OBJECT_SECURITY_ONLY_TOKEN|JOB_OBJECT_SECURITY_FILTER_TOKENS;
 	if (!SetInformationJobObject(hJob,JobObjectSecurityLimitInformation,&jsl,sizeof(jsl))) CloseHandle(hJob);
 	if (!AssignProcessToJobObject(hJob,GetCurrentProcess())) CloseHandle(hJob);
@@ -1614,7 +1638,7 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpszArgs,in
 	AccelWinMode   =LoadAccelerators(hInst,MAKEINTRESOURCE(IDR_WINDOWMODE));
 	AccelCPURunning=LoadAccelerators(hInst,MAKEINTRESOURCE(IDR_CPURUNNING));
 	AccelRomBrowser=LoadAccelerators(hInst,MAKEINTRESOURCE(IDR_ROMBROWSER));
-	hHiddenWin=CreateWindow(AppName,AppName,WS_OVERLAPPED|WS_CLIPCHILDREN|WS_CLIPSIBLINGS|WS_SYSMENU|WS_MINIMIZEBOX,X,Y,4,3,NULL,NULL,hInst,NULL);
+	hHiddenWin=CreateWindow(AppName,AppName,WS_OVERLAPPED|WS_CLIPCHILDREN|WS_CLIPSIBLINGS|WS_SYSMENU|WS_MINIMIZEBOX,X,Y,4,3,0,0,hInst,0);
 	if (!hHiddenWin) return FALSE;
 	char*IniFile,String[256],String2[256],title[256];
 	IniFile=GetIniFileName();
@@ -1622,22 +1646,18 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpszArgs,in
 	_GetPrivateProfileString("Meta","Date","",String2,sizeof(String2),IniFile);
 	if (strlen(String)==0) strcpy(String,"UNKNOWN VERSION");
 	if (strlen(String2)==0) strcpy(String2,"UNKNOWN DATE");
-	sprintf(title,"%s %s %s",AppName,String,String2);
-	hMainWindow=CreateWindow(AppName,title,WS_OVERLAPPED|WS_CLIPCHILDREN|WS_CLIPSIBLINGS|WS_SYSMENU|WS_MINIMIZEBOX,X,Y,4,3,NULL,NULL,hInst,NULL);
+	sprintf(title,"%s V%s %s",AppName,String,String2);
+	hMainWindow=CreateWindow(AppName,title,WS_OVERLAPPED|WS_CLIPCHILDREN|WS_CLIPSIBLINGS|WS_SYSMENU|WS_MINIMIZEBOX,X,Y,4,3,0,0,hInst,0);
 	DragAcceptFiles(hMainWindow,TRUE);
 	if (!hMainWindow) return FALSE;
 	{
 		DWORD dwDataTF=0x00000000,dwDataWH600p=0x00000258,dwDataWW600p=0x00000320,dwDataFSH1080p=0x00000438,dwDataFSW1080pFSH25K=0x000005a0,dwDataFSW25K=0X00000780,dwDataOPT1080p=0x00000804,dwDataFSF=0x00000016,dwData960pHeight=0x000003c0,dwData960pWidth=0x00000500,dwDataOPT960p=0x00000807,dwDataRange=0x0000003f,dwDisposition;
-		const char*regPaths[]={
-			"PJ64 V 1.6.2\\Configuration\\Direct64",
-			"PJ64 V 1.6.2\\Jabo Ver1.6.2 Regs\\Direct3D8 1.6.2",
-			"PJ64 V 1.6.2\\Jabo Ver1.6.2 Regs\\DirectInput7 1.6.2   ",
-		};
-		for (int i=0; i<sizeof(regPaths) / sizeof(regPaths[0]);++i) {
+		const char*regPaths[]={"PJ64 V 1.6.2\\Configuration\\Direct64","PJ64 V 1.6.2\\Jabo Ver1.6.2 Regs\\Direct3D8 1.6.2","PJ64 V 1.6.2\\Jabo Ver1.6.2 Regs\\DirectInput7 1.6.2   ",};
+		for (int i=0;i<sizeof(regPaths) / sizeof(regPaths[0]);++i) {
 			HKEY hKey;
 			LONG lRet=RegOpenKeyEx(HKEY_CURRENT_USER,regPaths[i],0,KEY_READ,&hKey);
 			if (lRet!=ERROR_SUCCESS) {
-				lRet=RegCreateKeyEx(HKEY_CURRENT_USER,regPaths[i],0,NULL,REG_OPTION_NON_VOLATILE,KEY_WRITE,NULL,&hKey,&dwDisposition);
+				lRet=RegCreateKeyEx(HKEY_CURRENT_USER,regPaths[i],0,0,REG_OPTION_NON_VOLATILE,KEY_WRITE,0,&hKey,&dwDisposition);
 				if (lRet==ERROR_SUCCESS) {
 					if (strstr(regPaths[i],"f")) RegSetValueEx(hKey,"Texture Filter",0,REG_DWORD,(const BYTE*)&dwDataTF,sizeof(dwDataTF));
 					if (strstr(regPaths[i],"8")) RegSetValueEx(hKey,"Full Screen Format",0,REG_DWORD,(const BYTE*)&dwDataFSF,sizeof(dwDataFSF));
@@ -1686,32 +1706,27 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpszArgs,in
 #define PLUGINS "Modern Plugins - Project64_Modern.exe uses GLideN64 Video, Azi Audio, and N-Rage's Input as default plugins for modern PC's and modern ROMhacks. Switching to Jabo's D3D8 is necessary for most legacy ROMhacks."
 #endif
 		sprintf(IntroMessage,"About - This is an updated Project64 v1.6.1 that's semi-maintained for casual play of retro and ROMhack games with minimal system requirements. See User Guide or contact me for info and troubleshooting.\n\n\n%s\n\n\nContact Info -\nMy email: bruceiv.shankle@gmail.com\nReport bugs: discord.gg/cHDxa9vzQM\n\nI'm usually busy so be patient or try to resolve an issue yourself and post any solutions you find.\n\n\n\n                                                                - Edwin Bruce Shankle IV",PLUGINS);
-		MessageBox(NULL,IntroMessage,AppName,MB_OK|MB_ICONINFORMATION|MB_SETFOREGROUND);
+		MessageBox(0,IntroMessage,AppName,MB_OK|MB_ICONINFORMATION|MB_SETFOREGROUND);
 		if (screenHeight>=2160&&screenWidth>=2880) ResScale="200%";
 		else if (screenHeight>=1440&&screenWidth>=1920) ResScale="125%";
 		else ResScale="100%";
 		sprintf(ResWarning,"Scale suggestion - I suggest using a scale of %s to get the best results from this app since I've only tested it at that scale ratio for the current resolution of your display.\n\nYou can review and update your scale setting from Settings->System->Display.",ResScale);
-		MessageBox(NULL,ResWarning,AppName,MB_OK|MB_SETFOREGROUND);
+		MessageBox(0,ResWarning,AppName,MB_OK|MB_SETFOREGROUND);
 	}
-	ListView_SetExtendedListViewStyleEx(hRomList,LVS_EX_DOUBLEBUFFER,LVS_EX_DOUBLEBUFFER);
 	ShowWindow(hMainWindow,SW_SHOW);
 	if (__argc>1) {
-		SetupMenu(hMainWindow);
 		strcpy(CurrentFileName,__argv[1]);
-		CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)OpenChosenFile,NULL,0,NULL);
+		CreateThread(0,0,(LPTHREAD_START_ROUTINE)OpenChosenFile,0,0,0);
 		if (!CPURunning) CreateRomListControl(hMainWindow);
 	} else {
-		CPURunning=FALSE;
-		ShowWindow(hRomList,SW_SHOW);
-		SetWindowLong(hMainWindow,GWL_STYLE,GetWindowLong(hMainWindow,GWL_STYLE)|WS_SIZEBOX|WS_MAXIMIZEBOX);
-		HandleShutdown(hMainWindow);
+		HandleShutdown();
 		if (strcmp(GfxDLL,"Glide64.dll")==0||strcmp(GfxDLL,"GLideN64.dll")==0||strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) {
 			BootupSettings=TRUE;
 			ChangeSettings(hMainWindow);
 			BootupSettings=FALSE;
 		}
 	}
-	while (GetMessage(&msg,NULL,0,0)) {
+	while (GetMessage(&msg,0,0,0)) {
 		if (!CPURunning&&TranslateAccelerator(hMainWindow,AccelRomBrowser,&msg)) continue;
 		if (CPURunning) {
 			if (TranslateAccelerator(hMainWindow,AccelCPURunning,&msg)) continue;

@@ -1,5 +1,5 @@
 Archive name
-BIVPJ64GM-Extractor.exe
+BIVPJ64v26.exe
 
 Archive format
 ZIP
@@ -17,19 +17,16 @@ Check ZIP legacy encryption
 Advanced->SFX options...
 
 Text and icon->Title of SFX window
-BruceIV's Project64 1.6.2 (Golden Master Edition) Extractor
+BruceIV's Project64 1.6.2 v26 .exe Extractor
 
 Load SFX icon from the file
-Icon_Gold.ico
-
-Load SFX logo from the file
-Banner_Gold.png
+Visual Studio Source Code\BruceIV's Project64 1.6.2.ico
 
 Text to display in SFX window
-This “Golden Master Edition” of my Project64 1.6.2 (5th release) is still technically in “beta” but also serves as a public release. As such, anyone who uses this build qualifies as a beta tester and is eligible to receive credit or otherwise aknowledgement for any issues they find or improvements they provide for it. Good luck, I've already tried to fix as many things as possible!
+This is version 26 of my Project64 1.6.2 retail/ROMhack N64 gaming emulator and serves as a refined public release.
 
 
-Please report any bugs you encounter during your beta testing or fixes you would like to add for this build via my Project64 1.6.2 server: discord.gg/cHDxa9vzQM
+I will quit actively working on the project after this release, but feel free to report any bugs you encounter during your beta testing or fixes you would like to add for this build via my Project64 1.6.2 server in case I revisit the project or someone else wants to make a fork: discord.gg/cHDxa9vzQM
 
 
 

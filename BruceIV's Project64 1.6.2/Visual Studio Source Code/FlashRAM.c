@@ -36,7 +36,7 @@ enum TFlashRAM_Modes {
 };
 BOOL LoadFlashRAM ();
 DWORD FlashRAM_Offset,FlashFlag=FlashRAM_MODE_NOPES;
-static HANDLE hFlashRAMFile=NULL;
+static HANDLE hFlashRAMFile=0;
 BYTE*FlashRAMPointer;
 QWORD FlashStatus=0;
 void DMAfromFlashRAM(BYTE*dest,int StartOffset,int len) {
@@ -44,7 +44,7 @@ void DMAfromFlashRAM(BYTE*dest,int StartOffset,int len) {
 	DWORD dwRead,count;
 	switch (FlashFlag) {
 	case FlashRAM_MODE_READ:
-		if (hFlashRAMFile==NULL) {
+		if (hFlashRAMFile==0) {
 			if (!LoadFlashRAM()) return;
 		}
 		if (len>0x10000) {
@@ -55,9 +55,9 @@ void DMAfromFlashRAM(BYTE*dest,int StartOffset,int len) {
 		}
 		memset(FlipBuffer,0,sizeof(FlipBuffer));
 		StartOffset=StartOffset<<1;
-		SetFilePointer(hFlashRAMFile,StartOffset,NULL,FILE_BEGIN);
-		ReadFile(hFlashRAMFile,FlipBuffer,len,&dwRead,NULL);
-		for (count=dwRead; (int)count<len; count++) {
+		SetFilePointer(hFlashRAMFile,StartOffset,0,FILE_BEGIN);
+		ReadFile(hFlashRAMFile,FlipBuffer,len,&dwRead,0);
+		for (count=dwRead;(int)count<len;count++) {
 			FlipBuffer[count]=0xFF;
 		}
 		_asm {
@@ -96,12 +96,12 @@ BOOL LoadFlashRAM () {
 	char File[256],Directory[256];
 	GetAutoSaveDir(Directory);
 	sprintf(File,"%s%s.fla",Directory,RomName);
-	hFlashRAMFile=CreateFile(File,GENERIC_WRITE|GENERIC_READ,FILE_SHARE_READ,NULL,OPEN_ALWAYS,FILE_ATTRIBUTE_NORMAL|FILE_FLAG_RANDOM_ACCESS,NULL);
+	hFlashRAMFile=CreateFile(File,GENERIC_WRITE|GENERIC_READ,FILE_SHARE_READ,0,OPEN_ALWAYS,FILE_ATTRIBUTE_NORMAL|FILE_FLAG_RANDOM_ACCESS,0);
 	if (hFlashRAMFile==INVALID_HANDLE_VALUE) {
 		switch (GetLastError()) {
 		case ERROR_PATH_NOT_FOUND:
-			CreateDirectory(Directory,NULL);
-			hFlashRAMFile=CreateFile(File,GENERIC_WRITE|GENERIC_READ,FILE_SHARE_READ,NULL,OPEN_ALWAYS,FILE_ATTRIBUTE_NORMAL|FILE_FLAG_RANDOM_ACCESS,NULL);
+			CreateDirectory(Directory,0);
+			hFlashRAMFile=CreateFile(File,GENERIC_WRITE|GENERIC_READ,FILE_SHARE_READ,0,OPEN_ALWAYS,FILE_ATTRIBUTE_NORMAL|FILE_FLAG_RANDOM_ACCESS,0);
 			if (hFlashRAMFile==INVALID_HANDLE_VALUE) {
 				DisplayError(GS(MSG_FAIL_OPEN_SAVE));
 				return FALSE;
@@ -122,16 +122,16 @@ void WriteToFlashCommand(DWORD FlashRAM_Command) {
 		switch (FlashFlag) {
 		case FlashRAM_MODE_ERASE:
 			memset(EmptyBlock,0xFF,sizeof(EmptyBlock));
-			if (hFlashRAMFile==NULL) {
+			if (hFlashRAMFile==0) {
 				if (!LoadFlashRAM()) return;
 			}
-			SetFilePointer(hFlashRAMFile,FlashRAM_Offset,NULL,FILE_BEGIN);
-			WriteFile(hFlashRAMFile,EmptyBlock,128,&dwWritten,NULL);
+			SetFilePointer(hFlashRAMFile,FlashRAM_Offset,0,FILE_BEGIN);
+			WriteFile(hFlashRAMFile,EmptyBlock,128,&dwWritten,0);
 		case FlashRAM_MODE_NOPES:
 		case FlashRAM_MODE_READ:
 		case FlashRAM_MODE_STATUS: break;
 		case FlashRAM_MODE_WRITE:
-			if (hFlashRAMFile==NULL) {
+			if (hFlashRAMFile==0) {
 				if (!LoadFlashRAM()) return;
 			}
 			memset(FlipBuffer,0,sizeof(FlipBuffer));
@@ -147,8 +147,8 @@ void WriteToFlashCommand(DWORD FlashRAM_Command) {
 				cmp edx,128
 				jb memcpyloop
 			}
-			SetFilePointer(hFlashRAMFile,FlashRAM_Offset,NULL,FILE_BEGIN);
-			WriteFile(hFlashRAMFile,FlipBuffer,128,&dwWritten,NULL);
+			SetFilePointer(hFlashRAMFile,FlashRAM_Offset,0,FILE_BEGIN);
+			WriteFile(hFlashRAMFile,FlipBuffer,128,&dwWritten,0);
 			break;
 		}
 		FlashFlag=FlashRAM_MODE_NOPES;

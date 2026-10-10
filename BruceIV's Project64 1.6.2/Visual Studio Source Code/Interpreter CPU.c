@@ -78,15 +78,15 @@ void _fastcall r4300i_COP2 (void) {
 	((void (_fastcall*)()) R4300i_CoP2[ Opcode.rs ])();
 }
 void _fastcall DTE_RESERVED() {
-	DisplayThreadExit("OpcodeMapInterpreter-i=0; i<64; i++\n\nThe emulator has crashed on a reserved Opcode at this location");
+	DisplayThreadExit("OpcodeMapInterpreter-i=0;i<64;i++\n\nThe emulator has crashed on a reserved Opcode at this location");
 }
 void _fastcall DTE_UNKNOWN() {
-	DisplayThreadExit("OpcodeMapInterpreter-i=0; i<64; i++\n\nThe emulator has crashed on an unknown Opcode at this location");
+	DisplayThreadExit("OpcodeMapInterpreter-i=0;i<64;i++\n\nThe emulator has crashed on an unknown Opcode at this location");
 }
 void _fastcall DUMMY() {}
 void OpcodeMapInterpreter () {
 	int i;
-	for (i=0; i<64; i++) {
+	for (i=0;i<64;i++) {
 		R4300i_Opcode[i]	=DTE_RESERVED;
 		R4300i_Special[i]	=DTE_RESERVED;
 		R4300i_Regimm[i]	=DTE_RESERVED;
@@ -118,13 +118,13 @@ void OpcodeMapInterpreter () {
 	R4300i_Opcode[15]=r4300i_LUI;
 	R4300i_Opcode[16]=r4300i_COP0;
 	R4300i_Opcode[17]=r4300i_COP1;
-	R4300i_Opcode[18]=DUMMY; // COP2
-	R4300i_Opcode[19]=DUMMY; // COP3
+	R4300i_Opcode[18]=DUMMY;// COP2
+	R4300i_Opcode[19]=DUMMY;// COP3
 	R4300i_Opcode[20]=r4300i_BEQL;
 	R4300i_Opcode[21]=r4300i_BNEL;
 	R4300i_Opcode[22]=r4300i_BLEZL;
 	R4300i_Opcode[23]=r4300i_BGTZL;
-	R4300i_Opcode[24]=DUMMY; // DADDI
+	R4300i_Opcode[24]=DUMMY;// DADDI
 	R4300i_Opcode[25]=r4300i_DADDIU;
 	R4300i_Opcode[26]=r4300i_LDL;
 	R4300i_Opcode[27]=r4300i_LDR;
@@ -143,20 +143,20 @@ void OpcodeMapInterpreter () {
 	R4300i_Opcode[44]=r4300i_SDL;
 	R4300i_Opcode[45]=r4300i_SDR;
 	R4300i_Opcode[46]=r4300i_SWR;
-	R4300i_Opcode[47]=DUMMY; // CACHE
+	R4300i_Opcode[47]=DUMMY;// CACHE
 	R4300i_Opcode[48]=r4300i_LL;
 	R4300i_Opcode[49]=r4300i_LWC1;
-	R4300i_Opcode[50]=DUMMY; // LWC2
-	R4300i_Opcode[52]=DUMMY; // LLD
+	R4300i_Opcode[50]=DUMMY;// LWC2
+	R4300i_Opcode[52]=DUMMY;// LLD
 	R4300i_Opcode[53]=r4300i_LDC1;
-	R4300i_Opcode[54]=DUMMY; // LDC2
+	R4300i_Opcode[54]=DUMMY;// LDC2
 	R4300i_Opcode[55]=r4300i_LD;
 	R4300i_Opcode[56]=r4300i_SC;
 	R4300i_Opcode[57]=r4300i_SWC1;
-	R4300i_Opcode[58]=DUMMY; // SWC2
-	R4300i_Opcode[60]=DUMMY; // SCD
+	R4300i_Opcode[58]=DUMMY;// SWC2
+	R4300i_Opcode[60]=DUMMY;// SCD
 	R4300i_Opcode[61]=r4300i_SDC1;
-	R4300i_Opcode[62]=DUMMY; // SDC2
+	R4300i_Opcode[62]=DUMMY;// SDC2
 	R4300i_Opcode[63]=r4300i_SD;
 	R4300i_Special[ 0]=r4300i_SPECIAL_SLL;
 	R4300i_Special[ 2]=r4300i_SPECIAL_SRL;
@@ -168,7 +168,7 @@ void OpcodeMapInterpreter () {
 	R4300i_Special[ 9]=r4300i_SPECIAL_JALR;
 	R4300i_Special[12]=r4300i_SPECIAL_SYSCALL;
 	R4300i_Special[13]=r4300i_SPECIAL_BREAK;
-	R4300i_Special[15]=DUMMY; // SPECIAL_SYNC
+	R4300i_Special[15]=DUMMY;// SPECIAL_SYNC
 	R4300i_Special[16]=r4300i_SPECIAL_MFHI;
 	R4300i_Special[17]=r4300i_SPECIAL_MTHI;
 	R4300i_Special[18]=r4300i_SPECIAL_MFLO;
@@ -198,12 +198,12 @@ void OpcodeMapInterpreter () {
 	R4300i_Special[45]=r4300i_SPECIAL_DADDU;
 	R4300i_Special[46]=r4300i_SPECIAL_DSUB;
 	R4300i_Special[47]=r4300i_SPECIAL_DSUBU;
-	R4300i_Special[48]=DUMMY; // SPECIAL_TGE
-	R4300i_Special[49]=DUMMY; // SPECIAL_TGEU
-	R4300i_Special[50]=DUMMY; // SPECIAL_TLT
-	R4300i_Special[51]=DUMMY; // SPECIAL_TLTU
-	R4300i_Special[52]=DUMMY; // SPECIAL_TEQ
-	R4300i_Special[54]=DUMMY; // SPECIAL_TNE
+	R4300i_Special[48]=DUMMY;// SPECIAL_TGE
+	R4300i_Special[49]=DUMMY;// SPECIAL_TGEU
+	R4300i_Special[50]=DUMMY;// SPECIAL_TLT
+	R4300i_Special[51]=DUMMY;// SPECIAL_TLTU
+	R4300i_Special[52]=DUMMY;// SPECIAL_TEQ
+	R4300i_Special[54]=DUMMY;// SPECIAL_TNE
 	R4300i_Special[56]=r4300i_SPECIAL_DSLL;
 	R4300i_Special[58]=r4300i_SPECIAL_DSRL;
 	R4300i_Special[59]=r4300i_SPECIAL_DSRA;
@@ -214,20 +214,20 @@ void OpcodeMapInterpreter () {
 	R4300i_Regimm[ 1]=r4300i_REGIMM_BGEZ;
 	R4300i_Regimm[ 2]=r4300i_REGIMM_BLTZL;
 	R4300i_Regimm[ 3]=r4300i_REGIMM_BGEZL;
-	R4300i_Regimm[ 8]=DUMMY; // REGIMM_TGEI
-	R4300i_Regimm[ 9]=DUMMY; // REGIMM_TGEIU
-	R4300i_Regimm[10]=DUMMY; // REGIMM_TLTI
-	R4300i_Regimm[11]=DUMMY; // REGIMM_TLTIU
-	R4300i_Regimm[12]=DUMMY; // REGIMM_TEQI
-	R4300i_Regimm[14]=DUMMY; // REGIMM_TNEI
+	R4300i_Regimm[ 8]=DUMMY;// REGIMM_TGEI
+	R4300i_Regimm[ 9]=DUMMY;// REGIMM_TGEIU
+	R4300i_Regimm[10]=DUMMY;// REGIMM_TLTI
+	R4300i_Regimm[11]=DUMMY;// REGIMM_TLTIU
+	R4300i_Regimm[12]=DUMMY;// REGIMM_TEQI
+	R4300i_Regimm[14]=DUMMY;// REGIMM_TNEI
 	R4300i_Regimm[16]=r4300i_REGIMM_BLTZAL;
 	R4300i_Regimm[17]=r4300i_REGIMM_BGEZAL;
-	R4300i_Regimm[18]=DUMMY; // REGIMM_BLTZALL
-	R4300i_Regimm[19]=DUMMY; // REGIMM_BGEZALL
+	R4300i_Regimm[18]=DUMMY;// REGIMM_BLTZALL
+	R4300i_Regimm[19]=DUMMY;// REGIMM_BGEZALL
 	R4300i_CoP0[ 0]=r4300i_COP0_MF;
-	R4300i_CoP0[ 1]=DUMMY; // COP0_DMF
+	R4300i_CoP0[ 1]=DUMMY;// COP0_DMF
 	R4300i_CoP0[ 4]=r4300i_COP0_MT;
-	R4300i_CoP0[ 5]=DUMMY; // COP0_DMT
+	R4300i_CoP0[ 5]=DUMMY;// COP0_DMT
 	R4300i_CoP0[16]=r4300i_COP0_CO;
 	R4300i_CoP0[17]=r4300i_COP0_CO;
 	R4300i_CoP0[18]=r4300i_COP0_CO;
@@ -252,11 +252,11 @@ void OpcodeMapInterpreter () {
 	R4300i_CoP1[ 0]=r4300i_COP1_MF;
 	R4300i_CoP1[ 1]=r4300i_COP1_DMF;
 	R4300i_CoP1[ 2]=r4300i_COP1_CF;
-	R4300i_CoP1[ 3]=DUMMY; // COP1_DCF
+	R4300i_CoP1[ 3]=DUMMY;// COP1_DCF
 	R4300i_CoP1[ 4]=r4300i_COP1_MT;
 	R4300i_CoP1[ 5]=r4300i_COP1_DMT;
 	R4300i_CoP1[ 6]=r4300i_COP1_CT;
-	R4300i_CoP1[ 7]=DUMMY; // COP1_DCT
+	R4300i_CoP1[ 7]=DUMMY;// COP1_DCT
 	R4300i_CoP1[ 8]=r4300i_COP1_BC;
 	R4300i_CoP1[16]=r4300i_COP1_S;
 	R4300i_CoP1[17]=r4300i_COP1_D;
@@ -274,7 +274,7 @@ void OpcodeMapInterpreter () {
 	R4300i_CoP1_S[ 5]=r4300i_COP1_S_ABS;
 	R4300i_CoP1_S[ 6]=r4300i_COP1_S_MOV;
 	R4300i_CoP1_S[ 7]=r4300i_COP1_S_NEG;
-	R4300i_CoP1_S[ 8]=DUMMY; // COP1_S_ROUND_L
+	R4300i_CoP1_S[ 8]=DUMMY;// COP1_S_ROUND_L
 	R4300i_CoP1_S[ 9]=r4300i_COP1_S_TRUNC_L;
 	R4300i_CoP1_S[10]=r4300i_COP1_S_CEIL_L;		//added by Witten
 	R4300i_CoP1_S[11]=r4300i_COP1_S_FLOOR_L;		//added by Witten
@@ -282,7 +282,7 @@ void OpcodeMapInterpreter () {
 	R4300i_CoP1_S[13]=r4300i_COP1_S_TRUNC_W;
 	R4300i_CoP1_S[14]=r4300i_COP1_S_CEIL_W;		//added by Witten
 	R4300i_CoP1_S[15]=r4300i_COP1_S_FLOOR_W;
-	R4300i_CoP1_S[32]=DUMMY; // COP1_S_CVT_S
+	R4300i_CoP1_S[32]=DUMMY;// COP1_S_CVT_S
 	R4300i_CoP1_S[33]=r4300i_COP1_S_CVT_D;
 	R4300i_CoP1_S[36]=r4300i_COP1_S_CVT_W;
 	R4300i_CoP1_S[37]=r4300i_COP1_S_CVT_L;
@@ -310,7 +310,7 @@ void OpcodeMapInterpreter () {
 	R4300i_CoP1_D[ 5]=r4300i_COP1_D_ABS;
 	R4300i_CoP1_D[ 6]=r4300i_COP1_D_MOV;
 	R4300i_CoP1_D[ 7]=r4300i_COP1_D_NEG;
-	R4300i_CoP1_D[ 8]=DUMMY; // COP1_D_ROUND_L
+	R4300i_CoP1_D[ 8]=DUMMY;// COP1_D_ROUND_L
 	R4300i_CoP1_D[ 9]=r4300i_COP1_D_TRUNC_L;		//added by Witten
 	R4300i_CoP1_D[10]=r4300i_COP1_D_CEIL_L;		//added by Witten
 	R4300i_CoP1_D[11]=r4300i_COP1_D_FLOOR_L;		//added by Witten
@@ -319,7 +319,7 @@ void OpcodeMapInterpreter () {
 	R4300i_CoP1_D[14]=r4300i_COP1_D_CEIL_W;		//added by Witten
 	R4300i_CoP1_D[15]=r4300i_COP1_D_FLOOR_W;		//added by Witten
 	R4300i_CoP1_D[32]=r4300i_COP1_D_CVT_S;
-	R4300i_CoP1_D[33]=DUMMY; // COP1_D_CVT_D
+	R4300i_CoP1_D[33]=DUMMY;// COP1_D_CVT_D
 	R4300i_CoP1_D[36]=r4300i_COP1_D_CVT_W;
 	R4300i_CoP1_D[37]=r4300i_COP1_D_CVT_L;
 	R4300i_CoP1_D[48]=r4300i_COP1_D_CMP;
@@ -338,38 +338,38 @@ void OpcodeMapInterpreter () {
 	R4300i_CoP1_D[61]=r4300i_COP1_D_CMP;
 	R4300i_CoP1_D[62]=r4300i_COP1_D_CMP;
 	R4300i_CoP1_D[63]=r4300i_COP1_D_CMP;
-	R4300i_CoP1_W[ 8]=DUMMY; // COP1_W_ROUND_L
-	R4300i_CoP1_W[ 9]=DUMMY; // COP1_W_TRUNC_L
-	R4300i_CoP1_W[10]=DUMMY; // COP1_W_CEIL_L
-	R4300i_CoP1_W[11]=DUMMY; // COP1_W_FLOOR_L
-	R4300i_CoP1_W[12]=DUMMY; // COP1_W_ROUND_W
-	R4300i_CoP1_W[13]=DUMMY; // COP1_W_TRUNC_W
-	R4300i_CoP1_W[14]=DUMMY; // COP1_W_CEIL_W
-	R4300i_CoP1_W[15]=DUMMY; // COP1_W_FLOOR_W
+	R4300i_CoP1_W[ 8]=DUMMY;// COP1_W_ROUND_L
+	R4300i_CoP1_W[ 9]=DUMMY;// COP1_W_TRUNC_L
+	R4300i_CoP1_W[10]=DUMMY;// COP1_W_CEIL_L
+	R4300i_CoP1_W[11]=DUMMY;// COP1_W_FLOOR_L
+	R4300i_CoP1_W[12]=DUMMY;// COP1_W_ROUND_W
+	R4300i_CoP1_W[13]=DUMMY;// COP1_W_TRUNC_W
+	R4300i_CoP1_W[14]=DUMMY;// COP1_W_CEIL_W
+	R4300i_CoP1_W[15]=DUMMY;// COP1_W_FLOOR_W
 	R4300i_CoP1_W[32]=r4300i_COP1_W_CVT_S;
 	R4300i_CoP1_W[33]=r4300i_COP1_W_CVT_D;
-	R4300i_CoP1_W[36]=DUMMY; // COP1_W_CVT_W
-	R4300i_CoP1_W[37]=DUMMY; // COP1_W_CVT_L
-	R4300i_CoP1_L[ 8]=DUMMY; // COP1_L_ROUND_L
-	R4300i_CoP1_L[ 9]=DUMMY; // COP1_L_TRUNC_L
-	R4300i_CoP1_L[10]=DUMMY; // COP1_L_CEIL_L
-	R4300i_CoP1_L[11]=DUMMY; // COP1_L_FLOOR_L
-	R4300i_CoP1_L[12]=DUMMY; // COP1_L_ROUND_W
-	R4300i_CoP1_L[13]=DUMMY; // COP1_L_TRUNC_W
-	R4300i_CoP1_L[14]=DUMMY; // COP1_L_CEIL_W
-	R4300i_CoP1_L[15]=DUMMY; // COP1_L_FLOOR_W
+	R4300i_CoP1_W[36]=DUMMY;// COP1_W_CVT_W
+	R4300i_CoP1_W[37]=DUMMY;// COP1_W_CVT_L
+	R4300i_CoP1_L[ 8]=DUMMY;// COP1_L_ROUND_L
+	R4300i_CoP1_L[ 9]=DUMMY;// COP1_L_TRUNC_L
+	R4300i_CoP1_L[10]=DUMMY;// COP1_L_CEIL_L
+	R4300i_CoP1_L[11]=DUMMY;// COP1_L_FLOOR_L
+	R4300i_CoP1_L[12]=DUMMY;// COP1_L_ROUND_W
+	R4300i_CoP1_L[13]=DUMMY;// COP1_L_TRUNC_W
+	R4300i_CoP1_L[14]=DUMMY;// COP1_L_CEIL_W
+	R4300i_CoP1_L[15]=DUMMY;// COP1_L_FLOOR_W
 	R4300i_CoP1_L[32]=r4300i_COP1_L_CVT_S;
 	R4300i_CoP1_L[33]=r4300i_COP1_L_CVT_D;
-	R4300i_CoP1_L[36]=DUMMY; // COP1_L_CVT_W
-	R4300i_CoP1_L[37]=DUMMY; // COP1_L_CVT_L
-	R4300i_CoP2[ 0]=DUMMY; // COP2_MF
-	R4300i_CoP2[ 1]=DUMMY; // COP2_DMF
-	R4300i_CoP2[ 2]=DUMMY; // COP2_CF
-	R4300i_CoP2[ 3]=DUMMY; // COP2_DCF
-	R4300i_CoP2[ 4]=DUMMY; // COP2_MT
-	R4300i_CoP2[ 5]=DUMMY; // COP2_DMT
-	R4300i_CoP2[ 6]=DUMMY; // COP2_CT
-	R4300i_CoP2[ 7]=DUMMY; // COP2_DCT
+	R4300i_CoP1_L[36]=DUMMY;// COP1_L_CVT_W
+	R4300i_CoP1_L[37]=DUMMY;// COP1_L_CVT_L
+	R4300i_CoP2[ 0]=DUMMY;// COP2_MF
+	R4300i_CoP2[ 1]=DUMMY;// COP2_DMF
+	R4300i_CoP2[ 2]=DUMMY;// COP2_CF
+	R4300i_CoP2[ 3]=DUMMY;// COP2_DCF
+	R4300i_CoP2[ 4]=DUMMY;// COP2_MT
+	R4300i_CoP2[ 5]=DUMMY;// COP2_DMT
+	R4300i_CoP2[ 6]=DUMMY;// COP2_CT
+	R4300i_CoP2[ 7]=DUMMY;// COP2_DCT
 }
 void ExecuteInterpreterOpCode () {
 	if (!r4300i_LW_VAddr(PROGRAM_COUNTER,&Opcode.Hex)) {
@@ -378,8 +378,8 @@ void ExecuteInterpreterOpCode () {
 		return;
 	}
 	COUNT_REGISTER+=CountPerOp;
-	Timers.Timer -=CountPerOp;
-	RANDOM_REGISTER -=1;
+	Timers.Timer-=CountPerOp;
+	RANDOM_REGISTER-=1;
 	if ((int)RANDOM_REGISTER<(int)WIRED_REGISTER) {
 		RANDOM_REGISTER=31;
 	}
@@ -398,15 +398,15 @@ void ExecuteInterpreterOpCode () {
 	case JUMP:
 		PROGRAM_COUNTER=JumpToLocation;
 		SetNormal
-		if ((int)Timers.Timer<0) { TimerDone(); }
-		if (CPU_Action.DoSomething) { DoSomething(); }
+		if ((int)Timers.Timer<0) {TimerDone();}
+		if (CPU_Action.DoSomething) {DoSomething();}
 	}
 }
 void StartInterpreterCPU (void) {
-	CoInitialize(NULL);
+	CoInitialize(0);
 	SetNormal
-	if (GfxRomOpen!=NULL&&(!inFullScreen||strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0)) { GfxRomOpen(); }
-	if (ContRomOpen!=NULL&&!GonetzGLNeedsToBeSetupFirst) { ContRomOpen(); }
+	if (GfxRomOpen!=0&&(!inFullScreen||strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0)) {GfxRomOpen();}
+	if (ContRomOpen!=0&&!GLideN64NeedsToBeSetupFirst) {ContRomOpen();}
 	__try {
 		for (;;) {
 			ExecuteInterpreterOpCode();

@@ -4,7 +4,7 @@
 #include "CPU.h"
 #include "Real-Time Clock.h"
 // Supports the player setting a custom time.
-// This will be negative if the time is lower than current,positive if higher than current.
+// This will be negative if the time is lower than current, positive if higher than current.
 __time64_t seconds_offset=0;
 int first_load=TRUE;
 BYTE INTtoBCD (int val) {
@@ -37,7 +37,7 @@ int RTC_Command (BYTE*Command) {
 					ReadFromRTC();
 					first_load=FALSE;
 				}
-				rawtime=time(NULL)-seconds_offset;
+				rawtime=time(0)-seconds_offset;
 				timeinfo=_localtime64(&rawtime);
 				Command[4]=INTtoBCD(timeinfo->tm_sec);
 				Command[5]=INTtoBCD(timeinfo->tm_min);
@@ -53,7 +53,7 @@ int RTC_Command (BYTE*Command) {
 		break;
 	case 8:	// Real-Time Clock write
 		if (Command[3]==2) {
-			__time64_t rawtime=time(NULL);
+			__time64_t rawtime=time(0);
 			struct tm*timeinfo;
 			timeinfo=localtime(&rawtime);
 			timeinfo->tm_sec=BCDtoBYTE(Command[4]);
@@ -63,7 +63,7 @@ int RTC_Command (BYTE*Command) {
 			timeinfo->tm_wday=BCDtoBYTE(Command[8]);
 			timeinfo->tm_mon=BCDtoBYTE(Command[9])-1;
 			timeinfo->tm_year=BCDtoBYTE(Command[10])+BCDtoBYTE(Command[11])*100;
-			seconds_offset=time(NULL)-_mktime64(timeinfo);
+			seconds_offset=time(0)-_mktime64(timeinfo);
 			WriteToRTC();
 			Command[12]=0;
 		}
@@ -79,7 +79,7 @@ void ReadFromRTC() {
 	GetAutoSaveDir(Directory);
 	sprintf(File,"%s%s.rtc",Directory,RomName);
 	fp=fopen(File,"r");
-	if (fp!=NULL) {
+	if (fp!=0) {
 		fscanf(fp,"%s",String);
 		seconds_offset=_atoi64(String);
 		fclose(fp);
@@ -94,7 +94,7 @@ void WriteToRTC() {
 	sprintf(File,"%s%s.rtc",Directory,RomName);
 	fp=fopen(File,"w");
 	// No error checking, write to it if possible, otherwise don't bother.
-	if (fp!=NULL) {
+	if (fp!=0) {
 		_i64toa(seconds_offset,String,10);
 		fprintf(fp,String);
 		fclose(fp);

@@ -1,9 +1,13 @@
-As described in the BIVPJ64GM-Extractor.exe file, this is a public beta release which I have already tried fixing as many issues that I could for. With that, I have been unable to find anymore problems to be solved with the software from my own personal use. But simultaneously, I lack the free time needed to perform necessary testing: hence the release of the Golden Master Edition!
+This is a refined public release which obsoletes all previous versions of Project64 for the most part.
 
-To set this up, you'll need to download the latest BruceIV-Project64-1.6.2 zip file to obtain a copy of the emulator package for your Windows PC. After extracting the folder inside, you need to run BIVPJ64GM-Extractor.exe and you will be guided by me further thereafter.
+To set this up, you'll need to download the current BruceIV-Project64-1.6.2 zip file to obtain a copy of the emulator package for your Windows PC. After extracting the folder inside, you can begin playing retail and ROMhacked N64 games right away. There is no installation process. If you ever get a prompt to install my Project64 1.6.2, be wary of malware. My Project64 1.6.2 is released as PORTABLE ONLY!
 
 If desiring to patch ROMhacks, you'll need to use the Tool64 app in the Apps folder to convert baseROMs to big endian .z64 if they aren't already, then you can either use flips.exe to apply a patch for a single ROMhack, or use the FlipsAutoPatcher-v2.1.1.exe for patching multiple ROMhacks at a time. ROMhacks can be obtained from https://github.com/BruceShankleIV/Project64-1.6.2-ROMhacks-Collection
 
-Finally, if intending to make a translation for the emulator, a sample has been provided to work off of.
+If intending to make a translation for the emulator, a sample has been provided to work off of.
 
-Enjoy and please report any issues you find via the server dedicated to this project so that we can have a fully tested public release after this one: discord.gg/cHDxa9vzQM
+Finally, if intending to play multiplayer online instead of locally, an option to do that via the netplay input plugin is provided within the Additional-Input-Plugins.zip file. Also included is support for raphnet N64 to USB adapters (versions 3 and up) to allow use of an N64 controller with Project64 using raphnetraw plugins. If you have an adaptoid then you can use the N-Rage plugin already included with the emulator package.
+
+I will quit actively working on the project after this release, but feel free to report any bugs you encounter during your usage of or fixes you would like to add for this build via my Project64 1.6.2 server in case I revisit the project or someone else wants to make a fork: discord.gg/cHDxa9vzQM
+
+ - Edwin Bruce Shankle IV

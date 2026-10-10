@@ -45,7 +45,7 @@ OPCODE Opcode;
 HANDLE hCPU;
 BOOL inFullScreen,CPURunning;
 DWORD MemoryStack,EmuAI_Frequency,EmuAI_VICntFrame,EmuAI_BitRate,EmuAI_Buffer[2],LastVICntFrame;
-char*TimeName[MaxTimers]={ "CompareTimer","SiTimer","PiTimer","ViTimer" };
+char*TimeName[MaxTimers]={"CompareTimer","SiTimer","PiTimer","ViTimer"};
 void (__cdecl*AiDacrateChangedPlugin) (int SystemType);
 void (__cdecl*AiLenChangedPlugin)     ();
 DWORD (__cdecl*AiReadLengthPlugin)    ();
@@ -68,7 +68,7 @@ void __cdecl EmuAI_AiLenChanged (void) {
 		EmuAI_Buffer[1]=AI_LEN_REG&0x3FFF8;
 		AI_STATUS_REG|=0x80000000;
 	} else AI_STATUS_REG|=0x80000000;
-	if (AiLenChangedPlugin!=NULL) AiLenChangedPlugin();
+	if (AiLenChangedPlugin!=0) AiLenChangedPlugin();
 }
 DWORD __cdecl EmuAI_AiReadLength (void) {
 	DWORD SetTimer,RemainingCount,retVal=0;
@@ -83,10 +83,10 @@ DWORD __cdecl EmuAI_AiReadLength (void) {
 void __cdecl EmuAI_AiDacrateChanged (int SystemType) {
 	if (EmuAI_FrameRate==60) {
 		EmuAI_Frequency=48681812 / (AI_DACRATE_REG+1);
-		if (AiDacrateChangedPlugin!=NULL) AiDacrateChangedPlugin(SYSTEM_NTSC);
+		if (AiDacrateChangedPlugin!=0) AiDacrateChangedPlugin(SYSTEM_NTSC);
 	} else {
 		EmuAI_Frequency=49656530 / (AI_DACRATE_REG+1);
-		if (AiDacrateChangedPlugin!=NULL) AiDacrateChangedPlugin(SYSTEM_PAL);
+		if (AiDacrateChangedPlugin!=0) AiDacrateChangedPlugin(SYSTEM_PAL);
 	}
 }
 void EmuAI_ClearAudio() {
@@ -154,7 +154,6 @@ void DisplayThreadExit (char*ExitPoint) {
 	if (strcmp(GfxDLL,"GLideN64.dll")==0&&inFullScreen) {
 		DisplayError("Emulation crash: %s",ExitPoint);
 		SendMessage(hMainWindow,WM_COMMAND,ID_FILE_EXIT,0);
-		// ISSUE: GLideN64 cannot gracefully recover from an emulation crash during fullscreen!
 	}
 	DisplayError("Emulation crash: %s",ExitPoint);
 	SendMessage(hMainWindow,WM_COMMAND,ID_FILE_ENDEMULATION,0);
@@ -166,8 +165,8 @@ void INITIALIZECPUFlags () {
 }
 void ChangeCompareTimer(void) {
 	DWORD NextCompare=COMPARE_REGISTER-COUNT_REGISTER;
-	if ((NextCompare&0x80000000)!=0) { NextCompare=0x7FFFFFFF; }
-	if (NextCompare==0) { NextCompare=0x1; }
+	if ((NextCompare&0x80000000)!=0) {NextCompare=0x7FFFFFFF;}
+	if (NextCompare==0) {NextCompare=0x1;}
 	ChangeTimer(CompareTimer,NextCompare);
 }
 void ChangeTimer(int Type,int Value) {
@@ -182,7 +181,7 @@ void ChangeTimer(int Type,int Value) {
 }
 void CheckTimer () {
 	int count;
-	for (count=0; count<MaxTimers; count++) {
+	for (count=0;count<MaxTimers;count++) {
 		if (!Timers.Active[count]) continue;
 		if (!(count==CompareTimer&&Timers.NextTimer[count]==0x7FFFFFFF)) {
 			Timers.NextTimer[count]+=Timers.Timer;
@@ -190,17 +189,17 @@ void CheckTimer () {
 	}
 	Timers.CurrentTimerType=-1;
 	Timers.Timer=0x7FFFFFFF;
-	for (count=0; count<MaxTimers; count++) {
+	for (count=0;count<MaxTimers;count++) {
 		if (!Timers.Active[count]) continue;
 		if (Timers.NextTimer[count]>=Timers.Timer) continue;
 		Timers.Timer=Timers.NextTimer[count];
 		Timers.CurrentTimerType=count;
 	}
 	if (Timers.CurrentTimerType==-1) DisplayThreadExit("CheckTimer-Timers.CurrentTimerType==-1");
-	for (count=0; count<MaxTimers; count++) {
+	for (count=0;count<MaxTimers;count++) {
 		if (!Timers.Active[count]) continue;
 		if (!(count==CompareTimer&&Timers.NextTimer[count]==0x7FFFFFFF)) {
-			Timers.NextTimer[count] -=Timers.Timer;
+			Timers.NextTimer[count]-=Timers.Timer;
 		}
 	}
 	if (Timers.NextTimer[CompareTimer]==0x7FFFFFFF) {
@@ -221,18 +220,18 @@ void EndEmulation () {
 	CPU_Action.DoSomething=TRUE;
 	PulseEvent(CPU_Action.hStepping);
 	timeBeginPeriod(16);
-	for (count=0; count<20; count++) {
+	for (count=0;count<20;count++) {
 		Sleep(100);
 		GetExitCodeThread(hCPU,&ExitCode);
 		if (ExitCode!=STILL_ACTIVE) {
-			hCPU=NULL;
+			hCPU=0;
 			count=100;
 		}
 	}
 	timeEndPeriod(16);
-	if (hCPU!=NULL) {
+	if (hCPU!=0) {
 		TerminateThread(hCPU,0);
-		hCPU=NULL;
+		hCPU=0;
 	}
 	CloseHandle(CPU_Action.hStepping);
 	CloseEEPROM();
@@ -241,13 +240,11 @@ void EndEmulation () {
 	Timer_Stop();
 	VirtualProtect(N64MEM,RDRAMsize,PAGE_READWRITE,&OldProtect);
 	VirtualProtect(N64MEM+0x04000000,0x2000,PAGE_READWRITE,&OldProtect);
-	if (GfxRomClosed!=NULL&&(!inFullScreen||strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0)) { GfxRomClosed(); }
-	if (!GonetzGLNeedsToBeSetupFirst) {
-		if (AiRomClosed!=NULL) { AiRomClosed(); }
-		if (ContRomClosed!=NULL) { ContRomClosed(); }
-		if (RSPRomClosed!=NULL) { RSPRomClosed(); }
-		SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MSG_EMULATION_ENDED));
-	}
+	if (GfxRomClosed!=0&&(!inFullScreen||strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0)) GfxRomClosed();
+	if (GLideN64NeedsToBeSetupFirst) return;
+	if (AiRomClosed!=0) AiRomClosed();
+	if (ContRomClosed!=0) ContRomClosed();
+	if (RSPRomClosed!=0) RSPRomClosed();
 }
 int DelaySlotEffectsCompare (DWORD PC,DWORD Reg1,DWORD Reg2) {
 	OPCODE Command;
@@ -434,10 +431,10 @@ int DelaySlotEffectsJump (DWORD JumpPC) {
 void ProcessMessages () {
 	HANDLE hEvent;
 	MSG msg;
-	hEvent=CreateEvent(NULL,FALSE,FALSE,NULL);
+	hEvent=CreateEvent(0,FALSE,FALSE,0);
 	MsgWaitForMultipleObjects(1,&hEvent,FALSE,1000,QS_ALLINPUT);
 	CloseHandle(hEvent);
-	while (PeekMessage(&msg,NULL,0,0,PM_REMOVE)!=0) {
+	while (PeekMessage(&msg,0,0,0,PM_REMOVE)!=0) {
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
 		if (msg.message==WM_QUIT) {
@@ -506,13 +503,13 @@ void DoSomething (void) {
 		CPU_Action.RestoreState=FALSE;
 		Machine_LoadState();
 	}
-	if (CPU_Action.DoInterrupt==TRUE) { CPU_Action.DoSomething=TRUE; }
+	if (CPU_Action.DoInterrupt==TRUE) {CPU_Action.DoSomething=TRUE;}
 }
 void GetAutoSaveDir(char*Directory) {
 	char path_buffer[_MAX_PATH],drive[_MAX_DRIVE],dir[_MAX_DIR],fname[_MAX_FNAME],ext[_MAX_EXT],Dir[256],Group[200];
 	long lResult;
 	HKEY hKeyResults=0;
-	GetModuleFileName(NULL,path_buffer,sizeof(path_buffer));
+	GetModuleFileName(0,path_buffer,sizeof(path_buffer));
 	_splitpath(path_buffer,drive,dir,fname,ext);
 	sprintf(Directory,"%s%sSave Data\\",drive,dir);
 	sprintf(Group,"PJ64 V 1.6.2\\Configuration");
@@ -525,7 +522,7 @@ void GetAutoSaveDir(char*Directory) {
 		if (lResult==ERROR_SUCCESS&&Value==FALSE) {
 			Bytes=sizeof(Dir);
 			lResult=RegQueryValueEx(hKeyResults,"CustomPath Save Data",0,&Type,(LPBYTE)Dir,&Bytes);
-			if (lResult==ERROR_SUCCESS) { strcpy(Directory,Dir); }
+			if (lResult==ERROR_SUCCESS) {strcpy(Directory,Dir);}
 		}
 	}
 	RegCloseKey(hKeyResults);
@@ -534,7 +531,7 @@ void GetInstantSaveDir(char*Directory) {
 	char path_buffer[_MAX_PATH],drive[_MAX_DRIVE],dir[_MAX_DIR],fname[_MAX_FNAME],ext[_MAX_EXT],Dir[256],Group[200];
 	long lResult;
 	HKEY hKeyResults=0;
-	GetModuleFileName(NULL,path_buffer,sizeof(path_buffer));
+	GetModuleFileName(0,path_buffer,sizeof(path_buffer));
 	_splitpath(path_buffer,drive,dir,fname,ext);
 	sprintf(Directory,"%s%sSave States\\",drive,dir);
 	sprintf(Group,"PJ64 V 1.6.2\\Configuration");
@@ -547,7 +544,7 @@ void GetInstantSaveDir(char*Directory) {
 		if (lResult==ERROR_SUCCESS&&Value==FALSE) {
 			Bytes=sizeof(Dir);
 			lResult=RegQueryValueEx(hKeyResults,"CustomPath SaveStates",0,&Type,(LPBYTE)Dir,&Bytes);
-			if (lResult==ERROR_SUCCESS) { strcpy(Directory,Dir); }
+			if (lResult==ERROR_SUCCESS) {strcpy(Directory,Dir);}
 		}
 	}
 	RegCloseKey(hKeyResults);
@@ -557,7 +554,7 @@ void InPermLoop (void) {
 	if (CPU_Action.DoInterrupt) return;
 	/*Interrupts enabled*/
 	if ((STATUS_REGISTER&STATUS_IE)==0||(STATUS_REGISTER&STATUS_EXL)!=0||(STATUS_REGISTER&STATUS_ERL)!=0||(STATUS_REGISTER&0xFF00)==0) {
-		if (UpdateScreen!=NULL) { UpdateScreen(); }
+		if (UpdateScreen!=0) {UpdateScreen();}
 		CurrentFrame=0;
 		DisplayEmulationSpeed();
 		DisplayThreadExit("InPermLoop-(STATUS_REGISTER&STATUS_IE )==0||(STATUS_REGISTER&STATUS_EXL)!=0||(STATUS_REGISTER&STATUS_ERL)!=0||(STATUS_REGISTER&0xFF00)==0");
@@ -579,19 +576,19 @@ BOOL Machine_LoadState() {
 	if (strlen(LoadFileName)==0) {
 		GetInstantSaveDir(Directory);
 		sprintf(FileName,"%s%s",Directory,CurrentSave);
-		sprintf(ZipFile,"%s.zip",FileName); // Support for compressed save state files from previous versions of Project64.
+		sprintf(ZipFile,"%s.zip",FileName);// Support for compressed save state files from previous versions of Project64.
 	} else {
 		strcpy(FileName,LoadFileName);
-		strcpy(ZipFile,LoadFileName); // Support for compressed save state files from previous versions of Project64.
+		strcpy(ZipFile,LoadFileName);// Support for compressed save state files from previous versions of Project64.
 	}
 	file=unzOpen(ZipFile);
-	if (file!=NULL) {
+	if (file!=0) {
 		unz_file_info info;
 		char zname[132];
 		int port=0;
 		port=unzGoToFirstFile(file);
 		while (port==UNZ_OK&&LoadedZipFile==FALSE) {
-			unzGetCurrentFileInfo(file,&info,zname,128,NULL,0,NULL,0);
+			unzGetCurrentFileInfo(file,&info,zname,128,0,0,0,0);
 			if (unzLocateFile(file,zname,1)!=UNZ_OK) {
 				unzClose(file);
 				port=-1;
@@ -608,7 +605,7 @@ BOOL Machine_LoadState() {
 				continue;
 			}
 			unzReadCurrentFile(file,&SaveRDRAMsize,sizeof(SaveRDRAMsize));
-			unzReadCurrentFile(file,LoadHeader,0x40); // Support for compressed save state files from previous versions of Project64.
+			unzReadCurrentFile(file,LoadHeader,0x40);// Support for compressed save state files from previous versions of Project64.
 			goto SharedBlock;
 			PostSB1:
 			unzReadCurrentFile(file,&Value,sizeof(Value));
@@ -642,7 +639,7 @@ BOOL Machine_LoadState() {
 		}
 	}
 	if (!LoadedZipFile) {
-		hSaveFile=CreateFile(FileName,GENERIC_WRITE|GENERIC_READ,FILE_SHARE_READ,NULL,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL|FILE_FLAG_RANDOM_ACCESS,NULL);
+		hSaveFile=CreateFile(FileName,GENERIC_WRITE|GENERIC_READ,FILE_SHARE_READ,0,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL|FILE_FLAG_RANDOM_ACCESS,0);
 		if (hSaveFile==INVALID_HANDLE_VALUE) {
 			DisplayError(GS(MSG_UNABLE_LOAD_STATE));
 			_splitpath(FileName,drive,dir,ZipFile,ext);
@@ -650,42 +647,42 @@ BOOL Machine_LoadState() {
 			SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)String);
 			return FALSE;
 		}
-		SetFilePointer(hSaveFile,0,NULL,FILE_BEGIN);
-		ReadFile(hSaveFile,&Value,sizeof(Value),&dwRead,NULL);
+		SetFilePointer(hSaveFile,0,0,FILE_BEGIN);
+		ReadFile(hSaveFile,&Value,sizeof(Value),&dwRead,0);
 		if (Value!=0x23D8A6C8) return FALSE;
-		ReadFile(hSaveFile,&SaveRDRAMsize,sizeof(SaveRDRAMsize),&dwRead,NULL);
+		ReadFile(hSaveFile,&SaveRDRAMsize,sizeof(SaveRDRAMsize),&dwRead,0);
 		NonZipPath=TRUE;
 		goto SharedBlock;
 		PostSB2:
-		ReadFile(hSaveFile,&Value,sizeof(Value),&dwRead,NULL);
+		ReadFile(hSaveFile,&Value,sizeof(Value),&dwRead,0);
 		ChangeTimer(ViTimer,Value);
-		ReadFile(hSaveFile,&PROGRAM_COUNTER,sizeof(PROGRAM_COUNTER),&dwRead,NULL);
-		ReadFile(hSaveFile,GPR,sizeof(_int64)*32,&dwRead,NULL);
-		ReadFile(hSaveFile,FPR,sizeof(_int64)*32,&dwRead,NULL);
-		ReadFile(hSaveFile,CP0,sizeof(DWORD)*32,&dwRead,NULL);
-		ReadFile(hSaveFile,FPCR,sizeof(DWORD)*32,&dwRead,NULL);
-		ReadFile(hSaveFile,&HI,sizeof(_int64),&dwRead,NULL);
-		ReadFile(hSaveFile,&LO,sizeof(_int64),&dwRead,NULL);
-		ReadFile(hSaveFile,RegRDRAM,sizeof(DWORD)*10,&dwRead,NULL);
-		ReadFile(hSaveFile,RegSP,sizeof(DWORD)*10,&dwRead,NULL);
-		ReadFile(hSaveFile,RegDPC,sizeof(DWORD)*10,&dwRead,NULL);
-		ReadFile(hSaveFile,RegMI,sizeof(DWORD)*4,&dwRead,NULL);
-		ReadFile(hSaveFile,RegVI,sizeof(DWORD)*14,&dwRead,NULL);
-		ReadFile(hSaveFile,RegAI,sizeof(DWORD)*6,&dwRead,NULL);
-		ReadFile(hSaveFile,RegPI,sizeof(DWORD)*13,&dwRead,NULL);
-		ReadFile(hSaveFile,RegRI,sizeof(DWORD)*8,&dwRead,NULL);
-		ReadFile(hSaveFile,RegSI,sizeof(DWORD)*4,&dwRead,NULL);
-		ReadFile(hSaveFile,tlb,sizeof(TLB)*32,&dwRead,NULL);
-		ReadFile(hSaveFile,PIF_Ram,0x40,&dwRead,NULL);
-		ReadFile(hSaveFile,RDRAM,RDRAMsize,&dwRead,NULL);
-		ReadFile(hSaveFile,DMEM,0x1000,&dwRead,NULL);
-		ReadFile(hSaveFile,IMEM,0x1000,&dwRead,NULL);
+		ReadFile(hSaveFile,&PROGRAM_COUNTER,sizeof(PROGRAM_COUNTER),&dwRead,0);
+		ReadFile(hSaveFile,GPR,sizeof(_int64)*32,&dwRead,0);
+		ReadFile(hSaveFile,FPR,sizeof(_int64)*32,&dwRead,0);
+		ReadFile(hSaveFile,CP0,sizeof(DWORD)*32,&dwRead,0);
+		ReadFile(hSaveFile,FPCR,sizeof(DWORD)*32,&dwRead,0);
+		ReadFile(hSaveFile,&HI,sizeof(_int64),&dwRead,0);
+		ReadFile(hSaveFile,&LO,sizeof(_int64),&dwRead,0);
+		ReadFile(hSaveFile,RegRDRAM,sizeof(DWORD)*10,&dwRead,0);
+		ReadFile(hSaveFile,RegSP,sizeof(DWORD)*10,&dwRead,0);
+		ReadFile(hSaveFile,RegDPC,sizeof(DWORD)*10,&dwRead,0);
+		ReadFile(hSaveFile,RegMI,sizeof(DWORD)*4,&dwRead,0);
+		ReadFile(hSaveFile,RegVI,sizeof(DWORD)*14,&dwRead,0);
+		ReadFile(hSaveFile,RegAI,sizeof(DWORD)*6,&dwRead,0);
+		ReadFile(hSaveFile,RegPI,sizeof(DWORD)*13,&dwRead,0);
+		ReadFile(hSaveFile,RegRI,sizeof(DWORD)*8,&dwRead,0);
+		ReadFile(hSaveFile,RegSI,sizeof(DWORD)*4,&dwRead,0);
+		ReadFile(hSaveFile,tlb,sizeof(TLB)*32,&dwRead,0);
+		ReadFile(hSaveFile,PIF_Ram,0x40,&dwRead,0);
+		ReadFile(hSaveFile,RDRAM,RDRAMsize,&dwRead,0);
+		ReadFile(hSaveFile,DMEM,0x1000,&dwRead,0);
+		ReadFile(hSaveFile,IMEM,0x1000,&dwRead,0);
 		CloseHandle(hSaveFile);
 		_splitpath(FileName,drive,dir,ZipFile,ext);
 		sprintf(FileName,"%s%s",ZipFile,ext);
 	}
 	ChangeCompareTimer();
-	if (AiRomClosed!=NULL&&!SyncGametoAudio) AiRomClosed();
+	if (AiRomClosed!=0&&!SyncGametoAudio) AiRomClosed();
 	DlistCount=0;
 	AlistCount=0;
 	AI_STATUS_REG=0;
@@ -717,18 +714,9 @@ BOOL Machine_LoadState() {
 	//fix RDRAM size
 	if (SaveRDRAMsize!=RDRAMsize) {
 		if (RDRAMsize==0x400000) {
-			if (VirtualAlloc(N64MEM+0x400000,0x400000,MEM_COMMIT,PAGE_READWRITE)==NULL) {
-				DisplayError(GS(MSG_MEM_ALLOC_ERROR));
-				DisplayThreadExit("Machine_LoadState-SharedBlock-VirtualAlloc(N64MEM+0x400000,0x400000,MEM_COMMIT,PAGE_READWRITE)==NULL");
-			}
-			if (VirtualAlloc((BYTE*)JumpTable+0x400000,0x400000,MEM_COMMIT,PAGE_READWRITE)==NULL) {
-				DisplayError(GS(MSG_MEM_ALLOC_ERROR));
-				DisplayThreadExit("Machine_LoadState-SharedBlock-VirtualAlloc((BYTE*)JumpTable+0x400000,0x400000,MEM_COMMIT,PAGE_READWRITE)==NULL");
-			}
-			if (VirtualAlloc((BYTE*)DelaySlotTable+(0x400000>>0xA),(0x400000>>0xA),MEM_COMMIT,PAGE_READWRITE)==NULL) {
-				DisplayError(GS(MSG_MEM_ALLOC_ERROR));
-				DisplayThreadExit("Machine_LoadState-SharedBlock-VirtualAlloc((BYTE*)DelaySlotTable+(0x400000>>0xA),(0x400000>>0xA),MEM_COMMIT,PAGE_READWRITE)==NULL");
-			}
+			if (VirtualAlloc(N64MEM+0x400000,0x400000,MEM_COMMIT,PAGE_READWRITE)==0) DisplayThreadExit("Machine_LoadState-SharedBlock-VirtualAlloc(N64MEM+0x400000,0x400000,MEM_COMMIT,PAGE_READWRITE)==0\n\n(MEM_ALLOC_ERROR)");
+			if (VirtualAlloc((BYTE*)JumpTable+0x400000,0x400000,MEM_COMMIT,PAGE_READWRITE)==0) DisplayThreadExit("Machine_LoadState-SharedBlock-VirtualAlloc((BYTE*)JumpTable+0x400000,0x400000,MEM_COMMIT,PAGE_READWRITE)==0\n\n(MEM_ALLOC_ERROR)");
+			if (VirtualAlloc((BYTE*)DelaySlotTable+(0x400000>>0xA),(0x400000>>0xA),MEM_COMMIT,PAGE_READWRITE)==0) DisplayThreadExit("Machine_LoadState-SharedBlock-VirtualAlloc((BYTE*)DelaySlotTable+(0x400000>>0xA),(0x400000>>0xA),MEM_COMMIT,PAGE_READWRITE)==0\n\n(MEM_ALLOC_ERROR)");
 		} else {
 			VirtualFree(N64MEM+0x400000,0x400000,MEM_DECOMMIT);
 			VirtualFree((BYTE*)JumpTable+0x400000,0x400000,MEM_DECOMMIT);
@@ -749,16 +737,16 @@ BOOL Machine_SaveState() {
 		GetInstantSaveDir(Directory);
 		sprintf(FileName,"%s%s",Directory,CurrentSave);
 	} else sprintf(FileName,"%s",SaveAsFileName);
-	hSaveFile=CreateFile(FileName,GENERIC_WRITE|GENERIC_READ,FILE_SHARE_READ,NULL,OPEN_ALWAYS,FILE_ATTRIBUTE_NORMAL|FILE_FLAG_RANDOM_ACCESS,NULL);
+	hSaveFile=CreateFile(FileName,GENERIC_WRITE|GENERIC_READ,FILE_SHARE_READ,0,OPEN_ALWAYS,FILE_ATTRIBUTE_NORMAL|FILE_FLAG_RANDOM_ACCESS,0);
 	if (hSaveFile==INVALID_HANDLE_VALUE) {
 		switch (GetLastError()) {
 		case ERROR_PATH_NOT_FOUND:
-			CreateDirectory(Directory,NULL);
-			hSaveFile=CreateFile(FileName,GENERIC_WRITE|GENERIC_READ,FILE_SHARE_READ,NULL,OPEN_ALWAYS,FILE_ATTRIBUTE_NORMAL|FILE_FLAG_RANDOM_ACCESS,NULL);
+			CreateDirectory(Directory,0);
+			hSaveFile=CreateFile(FileName,GENERIC_WRITE|GENERIC_READ,FILE_SHARE_READ,0,OPEN_ALWAYS,FILE_ATTRIBUTE_NORMAL|FILE_FLAG_RANDOM_ACCESS,0);
 			if (hSaveFile!=INVALID_HANDLE_VALUE) break;
 		default:
 			DisplayError(GS(MSG_UNABLE_SAVE_STATE));
-			_splitpath(FileName,NULL,NULL,DisplayFileName,ext);
+			_splitpath(FileName,0,0,DisplayFileName,ext);
 			sprintf(String,"%s %s%s",GS(MSG_UNABLE_SAVE_STATE),DisplayFileName,ext);
 			SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)String);
 			return TRUE;
@@ -767,39 +755,39 @@ BOOL Machine_SaveState() {
 	while ((int)Registers.CP0[1]<(int)Registers.CP0[6]) {
 		Registers.CP0[1]+=32-Registers.CP0[6];
 	}
-	SetFilePointer(hSaveFile,0,NULL,FILE_BEGIN);
+	SetFilePointer(hSaveFile,0,0,FILE_BEGIN);
 	Value=0x23D8A6C8;
-	WriteFile(hSaveFile,&Value,sizeof(Value),&dwWritten,NULL);
-	WriteFile(hSaveFile,&RDRAMsize,sizeof(RDRAMsize),&dwWritten,NULL);
+	WriteFile(hSaveFile,&Value,sizeof(Value),&dwWritten,0);
+	WriteFile(hSaveFile,&RDRAMsize,sizeof(RDRAMsize),&dwWritten,0);
 	Value=Timers.NextTimer[ViTimer]+Timers.Timer;
-	WriteFile(hSaveFile,&Value,sizeof(Value),&dwWritten,NULL);
-	WriteFile(hSaveFile,&PROGRAM_COUNTER,sizeof(PROGRAM_COUNTER),&dwWritten,NULL);
-	WriteFile(hSaveFile,GPR,sizeof(_int64)*32,&dwWritten,NULL);
-	WriteFile(hSaveFile,FPR,sizeof(_int64)*32,&dwWritten,NULL);
-	WriteFile(hSaveFile,CP0,sizeof(DWORD)*32,&dwWritten,NULL);
-	WriteFile(hSaveFile,FPCR,sizeof(DWORD)*32,&dwWritten,NULL);
-	WriteFile(hSaveFile,&HI,sizeof(_int64),&dwWritten,NULL);
-	WriteFile(hSaveFile,&LO,sizeof(_int64),&dwWritten,NULL);
-	WriteFile(hSaveFile,RegRDRAM,sizeof(DWORD)*10,&dwWritten,NULL);
-	WriteFile(hSaveFile,RegSP,sizeof(DWORD)*10,&dwWritten,NULL);
-	WriteFile(hSaveFile,RegDPC,sizeof(DWORD)*10,&dwWritten,NULL);
+	WriteFile(hSaveFile,&Value,sizeof(Value),&dwWritten,0);
+	WriteFile(hSaveFile,&PROGRAM_COUNTER,sizeof(PROGRAM_COUNTER),&dwWritten,0);
+	WriteFile(hSaveFile,GPR,sizeof(_int64)*32,&dwWritten,0);
+	WriteFile(hSaveFile,FPR,sizeof(_int64)*32,&dwWritten,0);
+	WriteFile(hSaveFile,CP0,sizeof(DWORD)*32,&dwWritten,0);
+	WriteFile(hSaveFile,FPCR,sizeof(DWORD)*32,&dwWritten,0);
+	WriteFile(hSaveFile,&HI,sizeof(_int64),&dwWritten,0);
+	WriteFile(hSaveFile,&LO,sizeof(_int64),&dwWritten,0);
+	WriteFile(hSaveFile,RegRDRAM,sizeof(DWORD)*10,&dwWritten,0);
+	WriteFile(hSaveFile,RegSP,sizeof(DWORD)*10,&dwWritten,0);
+	WriteFile(hSaveFile,RegDPC,sizeof(DWORD)*10,&dwWritten,0);
 	Value=MI_INTR_REG;
 	if (AiReadLength()!=0) MI_INTR_REG|=MI_INTR_AI;
-	WriteFile(hSaveFile,RegMI,sizeof(DWORD)*4,&dwWritten,NULL);
+	WriteFile(hSaveFile,RegMI,sizeof(DWORD)*4,&dwWritten,0);
 	MI_INTR_REG=Value;
-	WriteFile(hSaveFile,RegVI,sizeof(DWORD)*14,&dwWritten,NULL);
-	WriteFile(hSaveFile,RegAI,sizeof(DWORD)*6,&dwWritten,NULL);
-	WriteFile(hSaveFile,RegPI,sizeof(DWORD)*13,&dwWritten,NULL);
-	WriteFile(hSaveFile,RegRI,sizeof(DWORD)*8,&dwWritten,NULL);
-	WriteFile(hSaveFile,RegSI,sizeof(DWORD)*4,&dwWritten,NULL);
-	WriteFile(hSaveFile,tlb,sizeof(TLB)*32,&dwWritten,NULL);
-	WriteFile(hSaveFile,PIF_Ram,0x40,&dwWritten,NULL);
-	WriteFile(hSaveFile,RDRAM,RDRAMsize,&dwWritten,NULL);
-	WriteFile(hSaveFile,DMEM,0x1000,&dwWritten,NULL);
-	WriteFile(hSaveFile,IMEM,0x1000,&dwWritten,NULL);
+	WriteFile(hSaveFile,RegVI,sizeof(DWORD)*14,&dwWritten,0);
+	WriteFile(hSaveFile,RegAI,sizeof(DWORD)*6,&dwWritten,0);
+	WriteFile(hSaveFile,RegPI,sizeof(DWORD)*13,&dwWritten,0);
+	WriteFile(hSaveFile,RegRI,sizeof(DWORD)*8,&dwWritten,0);
+	WriteFile(hSaveFile,RegSI,sizeof(DWORD)*4,&dwWritten,0);
+	WriteFile(hSaveFile,tlb,sizeof(TLB)*32,&dwWritten,0);
+	WriteFile(hSaveFile,PIF_Ram,0x40,&dwWritten,0);
+	WriteFile(hSaveFile,RDRAM,RDRAMsize,&dwWritten,0);
+	WriteFile(hSaveFile,DMEM,0x1000,&dwWritten,0);
+	WriteFile(hSaveFile,IMEM,0x1000,&dwWritten,0);
 	CloseHandle(hSaveFile);
 	DeleteFile(DisplayFileName);
-	_splitpath(FileName,NULL,NULL,DisplayFileName,ext);
+	_splitpath(FileName,0,0,DisplayFileName,ext);
 	sprintf(FileName,"%s%s",DisplayFileName,ext);
 	strcpy(SaveAsFileName,"");
 	strcpy(LoadFileName,"");
@@ -844,14 +832,14 @@ void RefreshScreen () {
 		} else {
 			VI_INTR_TIME=(VI_V_SYNC_REG+1)*1500;
 			if ((VI_V_SYNC_REG % 1)!=0) {
-				VI_INTR_TIME -=38;
+				VI_INTR_TIME-=38;
 			}
 		}
 	}
 	ChangeTimer(ViTimer,Timers.Timer+Timers.NextTimer[ViTimer]+VI_INTR_TIME);
 	EmuAI_SetVICountPerFrame(VI_INTR_TIME);
 	UpdateFieldSerration((VI_STATUS_REG&0x40)!=0);
-	if (LimitFPS||SpeedCap) { Timer_Process(NULL); }
+	if (LimitFPS||SpeedCap) {Timer_Process(0);}
 	if ((CurrentFrame&7)==0) {
 		QueryPerformanceCounter(&Time);
 		Frames[(CurrentFrame>>3) % 9].QuadPart=Time.QuadPart-LastFrame.QuadPart;
@@ -860,9 +848,9 @@ void RefreshScreen () {
 	}
 	CurrentFrame+=1;
 	__try {
-		if (UpdateScreen!=NULL) UpdateScreen();
-	} __except (r4300i_CPU_MemoryFilter(GetExceptionCode(),GetExceptionInformation())) { DisplayThreadExit("RefreshScreen-r4300i_CPU_MemoryFilter(GetExceptionCode(),GetExceptionInformation())"); }
-	if ((STATUS_REGISTER&STATUS_IE)!=0) { ApplyCheats(); }
+		if (UpdateScreen!=0) UpdateScreen();
+	} __except (r4300i_CPU_MemoryFilter(GetExceptionCode(),GetExceptionInformation())) {DisplayThreadExit("RefreshScreen-r4300i_CPU_MemoryFilter(GetExceptionCode(),GetExceptionInformation())");}
+	if ((STATUS_REGISTER&STATUS_IE)!=0) {ApplyCheats();}
 }
 void RunRsp () {
 	if ((SP_STATUS_REG&SP_STATUS_HALT)==0) {

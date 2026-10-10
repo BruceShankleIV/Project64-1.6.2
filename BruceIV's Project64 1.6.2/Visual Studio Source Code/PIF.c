@@ -37,7 +37,7 @@ BYTE PifRom[0x7C0],*PIF_Ram;
 int GetCicChipID (char*RomData) {
 	_int64 CRC=0;
 	int count;
-	for (count=0x40; count<0x1000; count+=4) {
+	for (count=0x40;count<0x1000;count+=4) {
 		CRC+=*(DWORD*)(RomData+count);
 	}
 	switch (CRC) {
@@ -63,20 +63,20 @@ void PifRamRead () {
 	if (PIF_Ram[0x3F]==0x2) {
 		char hold[32],resp[32]={0};
 		int i,j;
-		for (i=0,j=48; i<32; i+=2,j++)
+		for (i=0,j=48;i<32;i+=2,j++)
 		{
 			hold[i+1]=PIF_Ram[j] % 16;
 			hold[i]=PIF_Ram[j] / 16;
 		}
 		N64_CIC_NUS_6105(hold,resp,32-2);
-		for (i=48,j=0; i <=63; i++,j+=2) PIF_Ram[i]=resp[j]*16+resp[j+1];
+		for (i=48,j=0;i<=63;i++,j+=2) PIF_Ram[i]=resp[j]*16+resp[j+1];
 		return;
 	}
 	do {
 		switch(PIF_Ram[CurPos]) {
 		case 0x00:
 			Channel+=1;
-			if (Channel>6) { CurPos=0x40; }
+			if (Channel>6) {CurPos=0x40;}
 			break;
 		case 0xFE: CurPos=0x40;
 		case 0xFF:
@@ -86,7 +86,7 @@ void PifRamRead () {
 			if ((PIF_Ram[CurPos]&0xC0)==0) {
 				if (Channel<4) {
 					if (Controllers[Channel].Present&&Controllers[Channel].RawData) {
-						if (ReadController) { ReadController(Channel,&PIF_Ram[CurPos]); }
+						if (ReadController) {ReadController(Channel,&PIF_Ram[CurPos]);}
 					} else {
 						ReadControllerCommand(Channel,&PIF_Ram[CurPos]);
 					}
@@ -99,7 +99,7 @@ void PifRamRead () {
 		}
 		CurPos+=1;
 	} while(CurPos<0x40);
-	if (ReadController) { ReadController(-1,NULL); }
+	if (ReadController) {ReadController(-1,0);}
 }
 void PifRamWrite () {
 	int Channel,CurPos;
@@ -121,11 +121,11 @@ void PifRamWrite () {
 		}
 		return;
 	}
-	for (CurPos=0; CurPos<0x40; CurPos++) {
+	for (CurPos=0;CurPos<0x40;CurPos++) {
 		switch(PIF_Ram[CurPos])	{
 		case 0x00:
 			Channel+=1;
-			if (Channel>6) { CurPos=0x40; }
+			if (Channel>6) {CurPos=0x40;}
 			break;
 		case 0xFE: CurPos=0x40;
 		case 0xFF:
@@ -135,7 +135,7 @@ void PifRamWrite () {
 			if ((PIF_Ram[CurPos]&0xC0)==0) {
 				if (Channel<4) {
 					if (Controllers[Channel].Present&&Controllers[Channel].RawData) {
-						if (ControllerCommand) { ControllerCommand(Channel,&PIF_Ram[CurPos]); }
+						if (ControllerCommand) {ControllerCommand(Channel,&PIF_Ram[CurPos]);}
 					} else {
 						ProcessControllerCommand(Channel,&PIF_Ram[CurPos]);
 					}
@@ -150,13 +150,13 @@ void PifRamWrite () {
 		}
 	}
 	PIF_Ram[0x3F]=0;
-	if (ControllerCommand) { ControllerCommand(-1,NULL); }
+	if (ControllerCommand) {ControllerCommand(-1,0);}
 }
 void ProcessControllerCommand (int Control,BYTE*Command) {
 	switch (Command[2]) {
 	case 0x00: // check
 	case 0xFF: // reset&check ?
-		if ((Command[1]&0x80)!=0) { break; }
+		if ((Command[1]&0x80)!=0) {break;}
 		if (Controllers[Control].Present==TRUE) {
 			Command[3]=0x05;
 			Command[4]=0x00;
@@ -184,7 +184,7 @@ void ProcessControllerCommand (int Control,BYTE*Command) {
 				Command[0x25]=Mempacks_CalulateCrc(&Command[5]);
 				break;
 			case PLUGIN_MEMPAK: ReadFromMempak(Control,address,&Command[5]); break;
-			case PLUGIN_RAW: if (ControllerCommand) { ControllerCommand(Control,Command); } break;
+			case PLUGIN_RAW: if (ControllerCommand) {ControllerCommand(Control,Command);} break;
 			default:
 				memset(&Command[5],0,0x20);
 				Command[0x25]=0;
@@ -198,9 +198,9 @@ void ProcessControllerCommand (int Control,BYTE*Command) {
 			DWORD address=((Command[3]<<8)|Command[4]);
 			switch (Controllers[Control].Plugin) {
 			case PLUGIN_MEMPAK: WriteToMempak(Control,address,&Command[5]); break;
-			case PLUGIN_RAW: if (ControllerCommand) { ControllerCommand(Control,Command); } break;
+			case PLUGIN_RAW: if (ControllerCommand) {ControllerCommand(Control,Command);} break;
 			case PLUGIN_RUMBLE_PAK:
-				if (RumbleCommand!=NULL) {
+				if (RumbleCommand!=0) {
 					RumbleCommand(Control,*(BOOL*)(&Command[5]));
 					break;
 				}
@@ -228,14 +228,14 @@ void ReadControllerCommand (int Control,BYTE*Command) {
 	case 0x02: //read from controller pack
 		if (Controllers[Control].Present==TRUE) {
 			switch (Controllers[Control].Plugin) {
-			case PLUGIN_RAW: if (ControllerCommand) { ReadController(Control,Command); }
+			case PLUGIN_RAW: if (ControllerCommand) {ReadController(Control,Command);}
 			}
 		}
 		break;
 	case 0x03: //write controller pak
 		if (Controllers[Control].Present==TRUE) {
 			switch (Controllers[Control].Plugin) {
-			case PLUGIN_RAW: if (ControllerCommand) { ReadController(Control,Command); }
+			case PLUGIN_RAW: if (ControllerCommand) {ReadController(Control,Command);}
 			}
 		}
 	}
@@ -245,7 +245,7 @@ int LoadPifRom(int country) {
 	char fname[_MAX_FNAME],ext[_MAX_EXT],PifRomName[256];
 	HANDLE hPifFile;
 	DWORD dwRead;
-	GetModuleFileName(NULL,path_buffer,sizeof(path_buffer));
+	GetModuleFileName(0,path_buffer,sizeof(path_buffer));
 	_splitpath(path_buffer,drive,dir,fname,ext);
 	switch(RomRegion(country)) {
 	case PAL_Region:
@@ -253,14 +253,14 @@ int LoadPifRom(int country) {
 	default:
 		sprintf(PifRomName,"%s%sPIFROM\\NTSC.raw",drive,dir);
 	}
-	hPifFile=CreateFile(PifRomName,GENERIC_READ,FILE_SHARE_READ,NULL,OPEN_EXISTING,
-		FILE_ATTRIBUTE_NORMAL|FILE_FLAG_RANDOM_ACCESS,NULL);
+	hPifFile=CreateFile(PifRomName,GENERIC_READ,FILE_SHARE_READ,0,OPEN_EXISTING,
+		FILE_ATTRIBUTE_NORMAL|FILE_FLAG_RANDOM_ACCESS,0);
 	if (hPifFile==INVALID_HANDLE_VALUE) {
 		memset(PifRom,0,0x7C0);
 		return FALSE;
 	}
-	SetFilePointer(hPifFile,0,NULL,FILE_BEGIN);
-	ReadFile(hPifFile,PifRom,0x7C0,&dwRead,NULL);
+	SetFilePointer(hPifFile,0,0,FILE_BEGIN);
+	ReadFile(hPifFile,PifRom,0x7C0,&dwRead,0);
 	CloseHandle(hPifFile);
 	return TRUE;
 }

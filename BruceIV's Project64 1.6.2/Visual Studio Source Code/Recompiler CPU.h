@@ -126,21 +126,21 @@ typedef struct {
 } BLOCK_SECTION;
 typedef struct {
 	BLOCK_SECTION*Parent;
-	JUMP_INFO    *JumpInfo;
+	JUMP_INFO*JumpInfo;
 } BLOCK_PARENT;
 typedef struct {
 	DWORD    TargetPC;
 	REG_INFO ExitRegSet;
 	int      reason;
 	int      NextInstruction;
-	BYTE*  JumpLoc; //32bit jump
+	BYTE*  JumpLoc;//32bit jump
 } EXIT_INFO;
 typedef struct {
 	DWORD	 	  StartVAddr;
 	BYTE*		  CompiledLocation;
 	int           NoOfSections;
 	BLOCK_SECTION BlockInfo;
-	EXIT_INFO **ExitInfo;
+	EXIT_INFO**ExitInfo;
 	int           ExitCount;
 } BLOCK_INFO;
 typedef struct {
@@ -173,4 +173,4 @@ extern ORIGINAL_MEMMARKER*OrigMem;
 extern TARGET_INFO*TargetInfo;
 extern WORD FPU_RoundingMode;
 #define SetJump32(Loc,JumpLoc)*(DWORD*)(Loc)=(DWORD)(((DWORD)(JumpLoc))-(((DWORD)(Loc))+4));
-#define SetJump8(Loc,JumpLoc) *(BYTE *)(Loc)=(BYTE)(((BYTE)(JumpLoc))-(((BYTE)(Loc))+1));
+#define SetJump8(Loc,JumpLoc)*(BYTE*)(Loc)=(BYTE)(((BYTE)(JumpLoc))-(((BYTE)(Loc))+1));

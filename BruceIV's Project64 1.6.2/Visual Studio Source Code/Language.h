@@ -8,9 +8,6 @@ char*GS               (int StringID);
 #if defined(__cplusplus)
 }
 #endif
-/*********************************************************************************
-*Meta Information                                                              *
-*********************************************************************************/
 #define LANGUAGE_NAME	                1
 #define LANGUAGE_AUTHOR	                2
 #define LANGUAGE_VERSION                3
@@ -22,10 +19,9 @@ char*GS               (int StringID);
 #define LIMITFPS_ON			9
 #define INI_CURRENT_GAME_INI                 10
 #define INI_CURRENT_CHEAT_INI                 11
-// Menu
 #define MENU_FILE			12
 	#define MENU_OPEN		13
-	#define MENU_ROM_INFO		14
+#define PLUGINS_NOT_INITIALIZED		14
 	#define MENU_START		15
 	#define MENU_END		16
 	#define MENU_CHOOSE_ROM		17
@@ -60,7 +56,6 @@ char*GS               (int StringID);
 	#define MENU_ABOUT_INI		46
 	#define MENU_ADVANCE		47
 	#define MENU_UNINSTALL		48
-// Menu Descriptions
 #define MENUDES_OPEN			49
 #define MENUDES_ROM_INFO		50
 #define MENUDES_START			51
@@ -93,10 +88,6 @@ char*GS               (int StringID);
 #define MENUDES_GAME_SLOT		78
 #define MENUDES_UNINSTALLAPP	79
 #define MSG_LOADED_STATE		80
-/*********************************************************************************
-*Rom Browser                                                                   *
-*********************************************************************************/
-//Rom Browser Fields
 #define RB_FILENAME			81
 #define RB_INTERNALNAME			82
 #define RB_GAMENAME			83
@@ -107,12 +98,8 @@ char*GS               (int StringID);
 #define RB_CRC2				88
 #define RB_CICCHIP			89
 #define SHANKLE_AZI_AI_LANG		90
-//Messages
 #define UNKNOWN		        91
 #define FIFTYNINEHERTZ_LANG		92
-/*********************************************************************************
-*Options                                                                       *
-*********************************************************************************/
 #define TAB_PLUGIN			93
 #define TAB_DIRECTORY			94
 #define TAB_ROMSELECTION		95
@@ -120,7 +107,6 @@ char*GS               (int StringID);
 #define TAB_ROMSETTINGS			97
 #define ROMSETTWARN			98
 #define TAB_ROMNOTES			99
-//Plugin Dialog
 #define PLUG_ABOUT			100
 #define PLUG_RSP			101
 #define PLUG_GFX			102
@@ -135,7 +121,6 @@ char*GS               (int StringID);
 #define DIR_SELECT_AUTO			111
 #define DIR_SELECT_INSTANT		112
 #define DIR_SELECT_SCREEN               113
-//Options (general) Tab
 #define OPTION_AUTO_SLEEP		114
 #define OPTION_AUTO_FULLSCREEN	        115
 #define OPTION_BASIC_MODE		116
@@ -172,13 +157,10 @@ char*GS               (int StringID);
 #define ROM_DELAY_RDP			147
 #define ROM_DELAY_RSP			148
 #define USUALLYONTOP_ON			149
-//Core Styles
 #define OPTIONAL_CRASH			150
 #define CORE_RECOMPILER			151
-//RDRAM Size
 #define AllocateCompile_SD		152
 #define AllocateCompile_SD_MENUDES	153
-//Core Styles
 #define EXTRA_PROJECT64			154
 #define PLUGINS_INITIALIZING	155
 #define SMCM_PROTECTED			156
@@ -192,14 +174,9 @@ char*GS               (int StringID);
 #define SAVE_16K_EEPROM			164
 #define SAVE_SRAM			165
 #define SAVE_FlashRAM			166
-//Rom Notes
 #define NOTE_STATUS			167
 #define NOTE_CORE			168
 #define NOTE_PLUGIN			169
-/*********************************************************************************
-*ROM Information                                                               *
-*********************************************************************************/
-//Rom Info Title
 #define INFO_TITLE			170
 #define INFO_ROM_NAME_TEXT		171
 #define INFO_FILE_NAME_TEXT		172
@@ -210,9 +187,6 @@ char*GS               (int StringID);
 #define INFO_CRC2_TEXT			177
 #define INFO_CIC_CHIP_TEXT		178
 #define ROM_ALIGN_DMA			179
-/*********************************************************************************
-*Messages                                                                      *
-*********************************************************************************/
 #define MSG_CPU_PAUSED			180
 #define MSG_CPU_RESUMED			181
 #define MSG_MEM_ALLOC_ERROR             182
@@ -260,4 +234,7 @@ char*GS               (int StringID);
 #define VIDEOTOSCREEN_OFF		224
 #define RGBREC_ON			225
 #define RGBREC_OFF			226
-#define PLUGINS_NOT_INITIALIZED		227
+#define MENUDES_CREATE_STATUS_BAR	227
+#define STATUSBAR_ON				228
+#define STATUSBAR_OFF				229
+#define CREATE_STATUS_BAR			230

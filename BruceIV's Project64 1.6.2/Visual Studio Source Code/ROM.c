@@ -37,15 +37,15 @@
 #define MenuLocOfUsedFiles	11
 #define MenuLocOfUsedDirs	(MenuLocOfUsedFiles+1)
 DWORD RomFileSize,VirtualSD,RomVirtualSD,SaveUsing,RomSaveUsing,CPUType,UseTLB,RomUseTLB,FiftyNineHertz,RomFiftyNineHertz,RomJAI,AudioSignal,RomAudioSignal,RomCF,UseCache,RomUseCache,RomShankleAziAI,RomAltEmulateAI,SyncGametoAudio,RomSyncGametoAudio,Lag,RomLag,DelayRDP,RomDelayRDP,DelayRSP,RomDelayRSP,AlignDMA,RomAlignDMA,DelayRDP,RomDelayRDP,DelayRSP,RomDelayRSP,DelaySI,RomDelaySI,RomRspRecompiler,CpuRecompiler,RomCpuRecompiler,ProtectMemoryEnlargeBuffer,RomProtectMemoryEnlargeBuffer,JumperPak,RomJumperPak,ForceAuto16kbit,ForceDisableTLB,ForceEnableDMA,EmulateAI;
-char CurrentFileName[MAX_PATH+1]={ "" },RomName[MAX_PATH+1]={ "" },RomHeader[0x1000],LastRoms[10][MAX_PATH+1],LastDirs[10][MAX_PATH+1];
+char CurrentFileName[MAX_PATH+1]={""},RomName[MAX_PATH+1]={""},RomHeader[0x1000],LastRoms[10][MAX_PATH+1],LastDirs[10][MAX_PATH+1];
 BOOL IsValidRomImage (BYTE Test[4]);
 void AddRecentDir(HWND hWnd,char*addition) {
 	DWORD count;
-	if (addition!=NULL&&RomDirsToRemember>0) {
+	if (addition!=0&&RomDirsToRemember>0) {
 		char Dir[MAX_PATH+1];
 		BOOL bFound=FALSE;
 		strcpy(Dir,addition);
-		for (count=0; count<RomDirsToRemember&&!bFound; count++) {
+		for (count=0;count<RomDirsToRemember&&!bFound;count++) {
 			if (strcmp(addition,LastDirs[count])==0) {
 				if (count!=0) {
 					memmove(&LastDirs[1],&LastDirs[0],sizeof(LastDirs[0])*count);
@@ -53,18 +53,18 @@ void AddRecentDir(HWND hWnd,char*addition) {
 				bFound=TRUE;
 			}
 		}
-		if (bFound==FALSE) { memmove(&LastDirs[1],&LastDirs[0],sizeof(LastDirs[0])*(RomDirsToRemember-1)); }
+		if (bFound==FALSE) {memmove(&LastDirs[1],&LastDirs[0],sizeof(LastDirs[0])*(RomDirsToRemember-1));}
 		strcpy(LastDirs[0],Dir);
 		SaveRecentDirs();
 	}
 }
 void AddRecentFile(HWND hWnd,char*addition) {
 	DWORD count;
-	if (addition!=NULL&&RomsToRemember>0) {
+	if (addition!=0&&RomsToRemember>0) {
 		char Rom[MAX_PATH+1];
 		BOOL bFound=FALSE;
 		strcpy(Rom,addition);
-		for (count=0; count<RomsToRemember&&!bFound; count++) {
+		for (count=0;count<RomsToRemember&&!bFound;count++) {
 			if (strcmp(addition,LastRoms[count])==0) {
 				if (count!=0) {
 					memmove(&LastRoms[1],&LastRoms[0],sizeof(LastRoms[0])*count);
@@ -72,7 +72,7 @@ void AddRecentFile(HWND hWnd,char*addition) {
 				bFound=TRUE;
 			}
 		}
-		if (bFound==FALSE) { memmove(&LastRoms[1],&LastRoms[0],sizeof(LastRoms[0])*(RomsToRemember-1)); }
+		if (bFound==FALSE) {memmove(&LastRoms[1],&LastRoms[0],sizeof(LastRoms[0])*(RomsToRemember-1));}
 		strcpy(LastRoms[0],Rom);
 		SaveRecentFiles();
 	}
@@ -81,24 +81,24 @@ void ByteSwapRom (BYTE*Rom,DWORD RomLen) {
 	DWORD count;
 	switch (*((DWORD*)&Rom[0])) {
 	case 0x12408037:
-		for(count=0 ; count<RomLen; count+=4) {
-			Rom[count] ^=Rom[count+2];
-			Rom[count+2] ^=Rom[count];
-			Rom[count] ^=Rom[count+2];
-			Rom[count+1] ^=Rom[count+3];
-			Rom[count+3] ^=Rom[count+1];
-			Rom[count+1] ^=Rom[count+3];
+		for(count=0;count<RomLen;count+=4) {
+			Rom[count]^=Rom[count+2];
+			Rom[count+2]^=Rom[count];
+			Rom[count]^=Rom[count+2];
+			Rom[count+1]^=Rom[count+3];
+			Rom[count+3]^=Rom[count+1];
+			Rom[count+1]^=Rom[count+3];
 		}
 	case 0x80371240: break;
 	case 0x40072780: // N64DD IPL (J)
 	case 0x40123780:
-		for(count=0 ; count<RomLen; count+=4) {
-			Rom[count] ^=Rom[count+3];
-			Rom[count+3] ^=Rom[count];
-			Rom[count] ^=Rom[count+3];
-			Rom[count+1] ^=Rom[count+2];
-			Rom[count+2] ^=Rom[count+1];
-			Rom[count+1] ^=Rom[count+2];
+		for(count=0;count<RomLen;count+=4) {
+			Rom[count]^=Rom[count+3];
+			Rom[count+3]^=Rom[count];
+			Rom[count]^=Rom[count+3];
+			Rom[count+1]^=Rom[count+2];
+			Rom[count+2]^=Rom[count+1];
+			Rom[count+1]^=Rom[count+2];
 		}
 		break;
 	default:
@@ -109,7 +109,7 @@ void GetRomDirectory (char*Directory) {
 	char path_buffer[_MAX_PATH],drive[_MAX_DRIVE],dir[_MAX_DIR],fname[_MAX_FNAME],ext[_MAX_EXT],Dir[256],Group[200];
 	long lResult;
 	HKEY hKeyResults=0;
-	GetModuleFileName(NULL,path_buffer,sizeof(path_buffer));
+	GetModuleFileName(0,path_buffer,sizeof(path_buffer));
 	_splitpath(path_buffer,drive,dir,fname,ext);
 	sprintf(Group,"PJ64 V 1.6.2\\Configuration");
 	lResult=RegOpenKeyEx(HKEY_CURRENT_USER,Group,0,KEY_ALL_ACCESS,&hKeyResults);
@@ -117,7 +117,7 @@ void GetRomDirectory (char*Directory) {
 	if (lResult==ERROR_SUCCESS) {
 		DWORD Type,Bytes=sizeof(Dir);
 		lResult=RegQueryValueEx(hKeyResults,"CustomPath ROMs",0,&Type,(LPBYTE)Dir,&Bytes);
-		if (lResult==ERROR_SUCCESS) { strcpy(Directory,Dir); }
+		if (lResult==ERROR_SUCCESS) {strcpy(Directory,Dir);}
 	}
 	RegCloseKey(hKeyResults);
 }
@@ -125,7 +125,7 @@ BOOL IsValidRomImage (BYTE Test[4]) {
 	if (*((DWORD*)&Test[0])==0x40123780) return TRUE;
 	if (*((DWORD*)&Test[0])==0x12408037) return TRUE;
 	if (*((DWORD*)&Test[0])==0x80371240) return TRUE;
-	if (*((DWORD*)&Test[0])==0x40072780) return TRUE; // N64DD IPL (J)
+	if (*((DWORD*)&Test[0])==0x40072780) return TRUE;// N64DD IPL (J)
 	return FALSE;
 }
 BOOL LoadDataFromRomFile(char*FileName,BYTE*Data,int DataLen,int*RomSize) {
@@ -137,11 +137,11 @@ BOOL LoadDataFromRomFile(char*FileName,BYTE*Data,int DataLen,int*RomSize) {
 		char zname[132];
 		unzFile file;
 		file=unzOpen(FileName);
-		if (file==NULL) return FALSE;
+		if (file==0) return FALSE;
 		port=unzGoToFirstFile(file);
 		FoundRom=FALSE;
 		while(port==UNZ_OK&&FoundRom==FALSE) {
-			unzGetCurrentFileInfo(file,&info,zname,128,NULL,0,NULL,0);
+			unzGetCurrentFileInfo(file,&info,zname,128,0,0,0,0);
 			if (unzLocateFile(file,zname,1)!=UNZ_OK) {
 				unzClose(file);
 				return FALSE;
@@ -180,37 +180,37 @@ BOOL LoadDataFromRomFile(char*FileName,BYTE*Data,int DataLen,int*RomSize) {
 	} else {
 		DWORD dwRead;
 		HANDLE hFile;
-		hFile=CreateFile(FileName,GENERIC_READ,FILE_SHARE_READ,NULL,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL|FILE_FLAG_RANDOM_ACCESS,NULL);
-		if (hFile==INVALID_HANDLE_VALUE) { return FALSE; }
+		hFile=CreateFile(FileName,GENERIC_READ,FILE_SHARE_READ,0,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL|FILE_FLAG_RANDOM_ACCESS,0);
+		if (hFile==INVALID_HANDLE_VALUE) {return FALSE;}
 		SetFilePointer(hFile,0,0,FILE_BEGIN);
-		ReadFile(hFile,Test,4,&dwRead,NULL);
-		if (!IsValidRomImage(Test)) { CloseHandle(hFile); return FALSE; }
-		RomFileSize=GetFileSize(hFile,NULL);
+		ReadFile(hFile,Test,4,&dwRead,0);
+		if (!IsValidRomImage(Test)) {CloseHandle(hFile); return FALSE;}
+		RomFileSize=GetFileSize(hFile,0);
 		SetFilePointer(hFile,0,0,FILE_BEGIN);
-		if (!ReadFile(hFile,Data,DataLen,&dwRead,NULL)) { CloseHandle(hFile); return FALSE; }
-		*RomSize=GetFileSize(hFile,NULL);
+		if (!ReadFile(hFile,Data,DataLen,&dwRead,0)) {CloseHandle(hFile); return FALSE;}
+		*RomSize=GetFileSize(hFile,0);
 		CloseHandle(hFile);
 	}
 	switch (*((DWORD*)&Data[0])) {
 	case 0x12408037:
-		for(count=0 ; count<DataLen; count+=4) {
-			Data[count] ^=Data[count+2];
-			Data[count+2] ^=Data[count];
-			Data[count] ^=Data[count+2];
-			Data[count+1] ^=Data[count+3];
-			Data[count+3] ^=Data[count+1];
-			Data[count+1] ^=Data[count+3];
+		for(count=0;count<DataLen;count+=4) {
+			Data[count]^=Data[count+2];
+			Data[count+2]^=Data[count];
+			Data[count]^=Data[count+2];
+			Data[count+1]^=Data[count+3];
+			Data[count+3]^=Data[count+1];
+			Data[count+1]^=Data[count+3];
 		}
 	case 0x80371240: break;
 	case 0x40072780: // N64DD IPL (J)
 	case 0x40123780:
-		for(count=0 ; count<DataLen; count+=4) {
-			Data[count] ^=Data[count+3];
-			Data[count+3] ^=Data[count];
-			Data[count] ^=Data[count+3];
-			Data[count+1] ^=Data[count+2];
-			Data[count+2] ^=Data[count+1];
-			Data[count+1] ^=Data[count+2];
+		for(count=0;count<DataLen;count+=4) {
+			Data[count]^=Data[count+3];
+			Data[count+3]^=Data[count];
+			Data[count]^=Data[count+3];
+			Data[count+1]^=Data[count+2];
+			Data[count+2]^=Data[count+1];
+			Data[count+1]^=Data[count+2];
 		}
 		break;
 	}
@@ -225,7 +225,7 @@ void CreateRecentDirList (HMENU hMenu) {
 	lResult=RegOpenKeyEx(HKEY_CURRENT_USER,String,0,KEY_ALL_ACCESS,&hKeyResults);
 	if (lResult==ERROR_SUCCESS) {
 		DWORD Type,Bytes;
-		for (count=0; count<RomDirsToRemember; count++) {
+		for (count=0;count<RomDirsToRemember;count++) {
 			Bytes=sizeof(LastDirs[count]);
 			sprintf(String,"RecentDir%d",count+1);
 			lResult=RegQueryValueEx(hKeyResults,String,0,&Type,(LPBYTE)LastDirs[count],&Bytes);
@@ -257,8 +257,8 @@ void CreateRecentDirList (HMENU hMenu) {
 			InsertMenuItem(hSubMenu,0,TRUE,&menuinfo);
 		}
 		menuinfo.fMask=MIIM_TYPE|MIIM_ID;
-		for (count=0; count<RomDirsToRemember; count++) {
-			if (strlen(LastDirs[count])==0) { break; }
+		for (count=0;count<RomDirsToRemember;count++) {
+			if (strlen(LastDirs[count])==0) {break;}
 			menuinfo.wID=ID_FILE_RECENT_DIR+count;
 			sprintf(String,"&%d %s",(count+1) % 10,LastDirs[count]);
 			InsertMenuItem(hSubMenu,count,TRUE,&menuinfo);
@@ -280,7 +280,7 @@ void CreateRecentFileList(HMENU hMenu) {
 	lResult=RegOpenKeyEx(HKEY_CURRENT_USER,String,0,KEY_ALL_ACCESS,&hKeyResults);
 	if (lResult==ERROR_SUCCESS) {
 		DWORD Type,Bytes;
-		for (count=0; count<RomsToRemember; count++) {
+		for (count=0;count<RomsToRemember;count++) {
 			Bytes=sizeof(LastRoms[count]);
 			sprintf(String,"RecentFile%d",count+1);
 			lResult=RegQueryValueEx(hKeyResults,String,0,&Type,(LPBYTE)LastRoms[count],&Bytes);
@@ -311,8 +311,8 @@ void CreateRecentFileList(HMENU hMenu) {
 		InsertMenuItem(hSubMenu,0,TRUE,&menuinfo);
 	}
 	menuinfo.fMask=MIIM_TYPE|MIIM_ID;
-	for (count=0; count<RomsToRemember; count++) {
-		if (strlen(LastRoms[count])==0) { break; }
+	for (count=0;count<RomsToRemember;count++) {
+		if (strlen(LastRoms[count])==0) {break;}
 		menuinfo.wID=ID_FILE_RECENT_FILE+count;
 		sprintf(String,"&%d %s",(count+1) % 10,LastRoms[count]);
 		InsertMenuItem(hSubMenu,count,TRUE,&menuinfo);
@@ -325,10 +325,10 @@ void CreateRecentFileList(HMENU hMenu) {
 	}
 }
 void LoadRecentRom (DWORD Index) {
-	Index -=ID_FILE_RECENT_FILE;
+	Index-=ID_FILE_RECENT_FILE;
 	if (Index<0||Index>RomsToRemember) return;
 	strcpy(CurrentFileName,LastRoms[Index]);
-	CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)OpenChosenFile,NULL,0,NULL);
+	CreateThread(0,0,(LPTHREAD_START_ROUTINE)OpenChosenFile,0,0,0);
 }
 void LoadRomHeader () {
 	char drive[_MAX_DRIVE],FileName[_MAX_DIR],dir[_MAX_DIR],ext[_MAX_EXT],zname[132];
@@ -338,14 +338,14 @@ void LoadRomHeader () {
 		unz_file_info info;
 		unzFile file;
 		file=unzOpen(CurrentFileName);
-		if (file==NULL) {
+		if (file==0) {
 			DisplayError(GS(MSG_FAIL_OPEN_ZIP));
 			return;
 		}
 		port=unzGoToFirstFile(file);
 		FoundRom=FALSE;
 		while(port==UNZ_OK&&FoundRom==FALSE) {
-			unzGetCurrentFileInfo(file,&info,zname,128,NULL,0,NULL,0);
+			unzGetCurrentFileInfo(file,&info,zname,128,0,0,0,0);
 			if (unzLocateFile(file,zname,1)!=UNZ_OK) {
 				unzClose(file);
 				DisplayError(GS(MSG_FAIL_OPEN_ZIP));
@@ -381,17 +381,17 @@ void LoadRomHeader () {
 	} else {
 		DWORD dwRead;
 		HANDLE hFile;
-		hFile=CreateFile(CurrentFileName,GENERIC_READ,FILE_SHARE_READ,NULL,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL|FILE_FLAG_RANDOM_ACCESS,NULL);
+		hFile=CreateFile(CurrentFileName,GENERIC_READ,FILE_SHARE_READ,0,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL|FILE_FLAG_RANDOM_ACCESS,0);
 		if (hFile==INVALID_HANDLE_VALUE) return;
 		SetFilePointer(hFile,0,0,FILE_BEGIN);
-		ReadFile(hFile,Test,4,&dwRead,NULL);
+		ReadFile(hFile,Test,4,&dwRead,0);
 		if (!IsValidRomImage(Test)) {
 			CloseHandle(hFile);
 			DisplayError(GS(MSG_FAIL_IMAGE));
 			return;
 		}
 		SetFilePointer(hFile,0,0,FILE_BEGIN);
-		ReadFile(hFile,RomHeader,sizeof(RomHeader),&dwRead,NULL);
+		ReadFile(hFile,RomHeader,sizeof(RomHeader),&dwRead,0);
 		CloseHandle(hFile);
 	}
 	ByteSwapRom(RomHeader,sizeof(RomHeader));
@@ -429,85 +429,81 @@ void HandleTimers() {
 void ReadRomSettings() {
 	RomSaveUsing=Auto;
 	RomCF=-1;
+	if (strcmp(AudioDLL,"Jabo_Dsound.dll")==0) RomSyncGametoAudio=TRUE;
+	else RomSyncGametoAudio=FALSE;
+	RomJAI=FALSE;
+	if (ForceEnableDMA) RomAlignDMA=TRUE;
+	else RomAlignDMA=FALSE;
+	RomAltEmulateAI=FALSE;
+	RomShankleAziAI=FALSE;
+	RomDelayRDP=FALSE;
+	RomJumperPak=FALSE;
 	RomAudioSignal=FALSE;
-	if (ForceDisableTLB) RomUseTLB=FALSE;
-	else RomUseTLB=TRUE;
+	RomDelayRSP=FALSE;
+	RomVirtualSD=FALSE;
 	RomFiftyNineHertz=FALSE;
 	RomDelaySI=FALSE;
 	if (strcmp(RSPDLL,"RSP.dll")==0&&(strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")!=0||strcmp(RomName,"THE LEGEND OF ZELDA")==0||strcmp(RomName,"THE MASK OF MUJURA")==0||strcmp(RomName,"ZELDA MAJORA'S MASK")==0||strcmp(RomName,"BANJO KAZOOIE 2")==0||strcmp(RomName,"BANJO TOOIE")==0||strcmp(RomName,"CONKER BFD")==0||strcmp(RomName,"DONKEY KONG 64")==0||strcmp(RomName,"JET FORCE GEMINI")==0||strcmp(RomName,"STAR TWINS")==0||strcmp(RomName,"Perfect Dark")==0)) RomRspRecompiler=TRUE;
 	else RomRspRecompiler=FALSE;
 	RomCpuRecompiler=TRUE;
-	RomVirtualSD=FALSE;
-	RomProtectMemoryEnlargeBuffer=ProtectMemoryEnlargeBuffer_Default;
-	RomJumperPak=FALSE;
 	RomLag=FALSE;
-	RomDelayRDP=FALSE;
-	RomDelayRSP=FALSE;
-	RomShankleAziAI=FALSE;
-	RomAltEmulateAI=FALSE;
-	if (strcmp(AudioDLL,"Jabo_Dsound.dll")==0) RomSyncGametoAudio=TRUE;
-	else RomSyncGametoAudio=FALSE;
-	if (ForceEnableDMA) RomAlignDMA=TRUE;
-	else RomAlignDMA=FALSE;
+	if (ForceDisableTLB) RomUseTLB=FALSE;
+	else RomUseTLB=TRUE;
 	RomUseCache=UseCache_Default;
-	RomJAI=FALSE;
+	RomProtectMemoryEnlargeBuffer=ProtectMemoryEnlargeBuffer_Default;
 	if (strlen(RomName)>0) {
 		LPSTR IniFileName;
 		char String[100],Identifier[100];
 		IniFileName=GetIniFileName();
 		sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD*)(&RomHeader[0x10]),*(DWORD*)(&RomHeader[0x14]),RomHeader[0x3D]);
-		RomCF=_GetPrivateProfileInt(Identifier,"Counter Factor",-1,IniFileName);
 		_GetPrivateProfileString(Identifier,"Save Type","",String,sizeof(String),IniFileName);
-		if (strcmp(String,"4kbit EEPROM")==0) { RomSaveUsing=EEPROM_4K; }
-		else if (strcmp(String,"16kbit EEPROM")==0) { RomSaveUsing=EEPROM_16K; }
-		else if (strcmp(String,"SRAM")==0) { RomSaveUsing=SRAM; }
-		else if (strcmp(String,"FlashRAM")==0) { RomSaveUsing=FlashRAM; }
-		else { RomSaveUsing=Auto; }
-		_GetPrivateProfileString(Identifier,"Azi AI","",String,sizeof(String),IniFileName);
-		if (strcmp(String,"ON")==0&&strcmp(AudioDLL,"Shankle_Audio.dll")==0) RomShankleAziAI=TRUE;
+		if (strcmp(String,"4kbit EEPROM")==0) {RomSaveUsing=EEPROM_4K;}
+		else if (strcmp(String,"16kbit EEPROM")==0) {RomSaveUsing=EEPROM_16K;}
+		else if (strcmp(String,"SRAM")==0) {RomSaveUsing=SRAM;}
+		else if (strcmp(String,"FlashRAM")==0) {RomSaveUsing=FlashRAM;}
+		else {RomSaveUsing=Auto;}
+		RomCF=_GetPrivateProfileInt(Identifier,"Counter Factor",-1,IniFileName);
+		if (RomCF>3||RomCF<1) RomCF=-1;
 		_GetPrivateProfileString(Identifier,"Sync Game to Audio","",String,sizeof(String),IniFileName);
 		if (strcmp(String,"OFF")==0) RomSyncGametoAudio=FALSE;
-		_GetPrivateProfileString(Identifier,"Delay SI","",String,sizeof(String),IniFileName);
-		if (strcmp(String,"ON")==0) RomDelaySI=TRUE;
+		_GetPrivateProfileString(Identifier,"Jabo AI","",String,sizeof(String),IniFileName);
+		if (strcmp(String,"ON")==0&&strcmp(AudioDLL,"Jabo_Dsound.dll")==0) {RomSyncGametoAudio=TRUE; RomJAI=TRUE;}
+		_GetPrivateProfileString(Identifier,"Align DMA","",String,sizeof(String),IniFileName);
+		if (strcmp(String,"ON")==0) RomAlignDMA=TRUE;
+		_GetPrivateProfileString(Identifier,"Legacy AiLenChanged","",String,sizeof(String),IniFileName);
+		if (strcmp(String,"ON")==0&&(RomJAI||RomShankleAziAI)) RomAltEmulateAI=TRUE;
+		_GetPrivateProfileString(Identifier,"Azi AI","",String,sizeof(String),IniFileName);
+		if (strcmp(String,"ON")==0&&strcmp(AudioDLL,"Shankle_Audio.dll")==0) RomShankleAziAI=TRUE;
+		_GetPrivateProfileString(Identifier,"Delay RDP","",String,sizeof(String),IniFileName);
+		if (strcmp(String,"ON")==0) RomDelayRDP=TRUE;
+		_GetPrivateProfileString(Identifier,"Jumper Pak","",String,sizeof(String),IniFileName);
+		if (strcmp(String,"ON")==0) RomJumperPak=TRUE;
 		_GetPrivateProfileString(Identifier,"Signal","",String,sizeof(String),IniFileName);
 		if (strcmp(String,"ON")==0) RomAudioSignal=TRUE;
 		_GetPrivateProfileString(Identifier,"Delay RSP","",String,sizeof(String),IniFileName);
 		if (strcmp(String,"ON")==0) RomDelayRSP=TRUE;
-		_GetPrivateProfileString(Identifier,"Delay RDP","",String,sizeof(String),IniFileName);
-		if (strcmp(String,"ON")==0) RomDelayRDP=TRUE;
-		_GetPrivateProfileString(Identifier,"Align DMA","",String,sizeof(String),IniFileName);
-		if (strcmp(String,"ON")==0) RomAlignDMA=TRUE;
+		_GetPrivateProfileString(Identifier,"Virtual SD Card","",String,sizeof(String),IniFileName);
+		if (strcmp(String,"ON")==0) RomVirtualSD=TRUE;
 		_GetPrivateProfileString(Identifier,"59 FPS","",String,sizeof(String),IniFileName);
 		if (strcmp(String,"ON")==0) RomFiftyNineHertz=TRUE;
+		_GetPrivateProfileString(Identifier,"Delay SI","",String,sizeof(String),IniFileName);
+		if (strcmp(String,"ON")==0) RomDelaySI=TRUE;
 		_GetPrivateProfileString(Identifier,"Recompile RCP RSP","",String,sizeof(String),IniFileName);
 		if (strcmp(String,"ON")==0) RomRspRecompiler=TRUE;
 		_GetPrivateProfileString(Identifier,"Recompile VR4300i CPU","",String,sizeof(String),IniFileName);
 		if (strcmp(String,"OFF")==0) RomCpuRecompiler=FALSE;
-		_GetPrivateProfileString(Identifier,"Virtual SD Card","",String,sizeof(String),IniFileName);
-		if (strcmp(String,"ON")==0) RomVirtualSD=TRUE;
-		_GetPrivateProfileString(Identifier,"Jumper Pak","",String,sizeof(String),IniFileName);
-		if (strcmp(String,"ON")==0) RomJumperPak=TRUE;
-		_GetPrivateProfileString(Identifier,"Jabo AI","",String,sizeof(String),IniFileName);
-		if (strcmp(String,"ON")==0&&strcmp(AudioDLL,"Jabo_Dsound.dll")==0) { RomSyncGametoAudio=TRUE; RomJAI=TRUE; }
-		_GetPrivateProfileString(Identifier,"Legacy AiLenChanged","",String,sizeof(String),IniFileName);
-		if (strcmp(String,"ON")==0&&(RomJAI||RomShankleAziAI)) RomAltEmulateAI=TRUE;
 		if (RomCpuRecompiler) {
 			_GetPrivateProfileString(Identifier,"Lag","",String,sizeof(String),IniFileName);
-			if (strcmp(String,"ON")==0) RomLag=TRUE;
+			if (strcmp(String,"ON")==0||RomCF!=-1&&RomCF!=1) RomLag=TRUE;
 			_GetPrivateProfileString(Identifier,"Translation Lookaside Buffer","",String,sizeof(String),IniFileName);
 			if (strcmp(String,"OFF")==0) RomUseTLB=FALSE;
+			_GetPrivateProfileString(Identifier,"Register Caching","",String,sizeof(String),IniFileName);
+			if (strcmp(String,"ON")==0) RomUseCache=REG_CACHE_ON;
+			else if (strcmp(String,"OFF")==0) RomUseCache=REG_CACHE_OFF;
 			_GetPrivateProfileString(Identifier,"Protect Memory / Enlarge Buffer","",String,sizeof(String),IniFileName);
 			if (strcmp(String,"ON")==0) RomProtectMemoryEnlargeBuffer=PROTECT_MEMORY_ENLARGE_BUFFER_ON;
-			else if (strcmp(String,"OFF")==0) { RomProtectMemoryEnlargeBuffer=PROTECT_MEMORY_ENLARGE_BUFFER_OFF; }
-			_GetPrivateProfileString(Identifier,"Register Caching","",String,sizeof(String),IniFileName);
-			if (strcmp(String,"ON")==0) { RomUseCache=REG_CACHE_ON; }
-			else if (strcmp(String,"OFF")==0) { RomUseCache=REG_CACHE_OFF; }
-		} else {
-			RomLag=FALSE;
-			RomUseTLB=FALSE;
-		}
-		if (RomCF>3||RomCF<1) RomCF=-1;
-		if (RomCpuRecompiler&&RomCF!=-1&&RomCF!=1) RomLag=TRUE;
+			else if (strcmp(String,"OFF")==0) RomProtectMemoryEnlargeBuffer=PROTECT_MEMORY_ENLARGE_BUFFER_OFF;
+		} else RomUseTLB=FALSE;
 	}
 }
 BOOL RecalculateCRC () {
@@ -516,32 +512,32 @@ BOOL RecalculateCRC () {
 	DWORD crc1=*(DWORD*)(&RomHeader[0x10]),crc2=*(DWORD*)(&RomHeader[0x14]);
 	BYTE crcC=RomHeader[0x3D];
 	if (crcC==0x45) {
-		// Decades Later by BroDute
+		// Decades Later, AKA Super Mario 64 but FINALLY A GOOD GAME by BroDute
 		if (crc1==0xE1CE3595&&crc2==0x68941049) {
 			HandleModal1(hMainWindow);
-			if (MessageBox(NULL,"The creator of this game describes himself as, “That one german guy that made the Star Revenge Series and remade vanilla SM64 to be finally a good game.”\n\nHe implies Super Mario 64 was never good, but his fan game, which is meant to serve as a remake (despite not at all resembling the game it's a remake of), fixes that issue.\n\nDo you still want to play this fan game?","Illegit Hack Disclaimer",MB_YESNO|MB_ICONEXCLAMATION|MB_SETFOREGROUND)==IDNO) goto End;
+			if (MessageBox(0,"The creator of this project describes the completion of this fan game as “remade vanilla SM64 to be finally a good game.”\n\nHe implies Super Mario 64 is such a bad game that he had to remake it to be “finally a good game.”\n\n\nDo you still want to play this fan game?","Illegit Hack Disclaimer",MB_YESNO|MB_ICONEXCLAMATION|MB_SETFOREGROUND)==IDNO) goto End;
 			HandleModal2(hMainWindow);
 		}
 		// Star Revenge by BroDute
 		if (crc1==0x5394053C&&crc2==0xA5D8610A||crc1==0xCEE7DD5F&&crc2==0x4046AC23||crc1==0xC380A1E6&&crc2==0x75432881) {
 			HandleModal1(hMainWindow);
-			if (MessageBox(NULL,"This series of projects has been used to insult another developer in the opening credits, whose work was used to develop this series of projects. Do you still want to play this fan game?","Illegit Hack Disclaimer",MB_YESNO|MB_ICONEXCLAMATION|MB_SETFOREGROUND)==IDNO) goto End;
+			if (MessageBox(NULL,"This series of projects has been used to insult another developer (SKELUX) in the opening credits from the signpost. His ROMhacking tools were used to develop this series of projects.\n\n\nDo you still want to play this fan game?","Illegit Hack Disclaimer",MB_YESNO|MB_ICONEXCLAMATION|MB_SETFOREGROUND)==IDNO) goto End;
 			HandleModal2(hMainWindow);
 		}
 		// Star Road by SKELUX, Hijack “Retooled” Edit by Pyro Jay
 		if (crc1==0xCAC63712&&crc2==0xE2372AF3) {
 			HandleModal1(hMainWindow);
-			if (MessageBox(NULL,"This ROMhack has been dubiously presented by the author via YouTube as a rerelease of one of their own projects. This is actually an edit of a project called Star Road which is a critically acclaimed fan game created by SKELUX in the sense of serving as a sequel to Super Mario 64. This edit also does not improve upon his game in any way, with many users noticing out of place changes that don't make sense and new glitches. So I strongly suggest playing Star Road instead of this deceptively presented edit. “When you put a lot of work into something, other people love to come along and put in a fraction of the work modifying it just so they can slap their name over yours.”\n\nDo you still want to play this fan game?","Illegit Hack Disclaimer",MB_YESNO|MB_ICONEXCLAMATION|MB_SETFOREGROUND)==IDNO) goto End;
+			if (MessageBox(0,"This ROMhack has been presented by the author on YouTube as a remastered update for one of their projects. But Star Road is made by SKELUX and this is a hijack edit which introduces regressions.\n\nSKELUX explains “When you put a lot of work into something, other people love to come along and put in a fraction of the work modifying it just so they can slap their name over yours.”\n\n\nDo you still want to play this fan game?", "Illegit Hack Disclaimer",MB_YESNO|MB_ICONEXCLAMATION|MB_SETFOREGROUND)==IDNO) goto End;
 			HandleModal2(hMainWindow);
 		}
 		// B3313 by Chrisrlillo, Hijack Edits (under various names) by Thegreatestroman & Chlorobyte/Benedani
 		if (crc1==0xC39F397B&&crc2==0x9C2D6AFF||crc1==0xA52866E9&&crc2==0xA5C4CFD3) {
 			HandleModal1(hMainWindow);
-			if (MessageBox(NULL,"This ROM is part of an organized harm effort involving content repurposed from (against the will of) the author of a fan game known as B3313 and his friends, which was obtained from an unfinished 2023 copy of said fan game. This harm effort is being organized by a malicious group that is closely involved with ROMhacks. This group includes “Thegreatestroman”, “Chlorobyte/Benedani”, and “SimpleFlips”. This group has also been attempting to sabotage the B3313 author's personal and professional life to psychologically harm or discourage him via organized cyberbullying, including doxxing (revealing private or identifying information about someone online without their permission) as well as fabrications (the act of inventing false information in order to deceive someone). I, Edwin Bruce Shankle IV, suggest ignoring this illegit stolen hack and any others of similar nature to it.\n\nDo you still want to play this fan game?","Illegit Hack Disclaimer",MB_YESNO|MB_ICONEXCLAMATION|MB_SETFOREGROUND)==IDNO) goto End;
+			if (MessageBox(0,"This illegit hack is part of an organized harm effort against the author of a fan game called B3313. This effort includes stealing content of the author and his friends from an unfinished copy of B3313 in 2023. Harm is organized by mean-spirited individuals closely involved with N64 ROMhacks including “Thegreatestroman”, “Chlorobyte/Benedani”, and “SimpleFlips”. Harm is attempted on the author's life with cyberbullying by doxxing and badmouthing.\n\nI strongly suggest ignoring these hacks and anything else motivated by harmful intentions!\n\n\nDo you still want to play this fan game?","Illegit Hack Disclaimer",MB_YESNO|MB_ICONEXCLAMATION|MB_SETFOREGROUND)==IDNO) goto End;
 			HandleModal2(hMainWindow);
 		}
 	}
-	switch ((bootcode=6100+GetCicChipID(ROM))) {
+	switch (bootcode=6100+GetCicChipID(ROM)) {
 	case 6101:
 	case 6102:
 		seed=0xF8CA4DDC;
@@ -564,15 +560,15 @@ BOOL RecalculateCRC () {
 		else d=ROM[i+3]<<24|ROM[i+2]<<16|ROM[i+1]<<8|ROM[i];
 		if ((t6+d)<t6) t4++;
 		t6+=d;
-		t3 ^=d;
+		t3^=d;
 		r=(d<<(d&0x1F))|(d>>(32-(d&0x1F)));
 		t5+=r;
-		if (t2>d) t2 ^=r;
-		else t2 ^=t6 ^ d;
+		if (t2>d) t2^=r;
+		else t2^=t6^d;
 		if (bootcode==6105) {
 			j=0x40+0x0710+(i&0xFF);
-			t1+=(ROM[j+3]<<24|ROM[j+2]<<16|ROM[j+1]<<8|ROM[j]) ^ d;
-		} else t1+=t5 ^ d;
+			t1+=(ROM[j+3]<<24|ROM[j+2]<<16|ROM[j+1]<<8|ROM[j])^d;
+		} else t1+=t5^d;
 	}
 	if (bootcode==6103) {
 		crc[0]=(t6^t4)+t3;
@@ -597,7 +593,7 @@ BOOL RecalculateCRC () {
 	return TRUE;
 	End:
 	HandleModal2(hMainWindow);
-	HandleShutdown(hMainWindow);
+	HandleShutdown();
 	return FALSE;
 }
 void SetNewFileDirectory () {
@@ -610,7 +606,7 @@ void SetNewFileDirectory () {
 		char drive[_MAX_DRIVE],dir[_MAX_DIR],fname[_MAX_FNAME],ext[_MAX_EXT];
 		DWORD Type,ChangeRomDir,Bytes=4;
 		lResult=RegQueryValueEx(hKeyResults,"AppPath ROMs",0,&Type,(LPBYTE)(&ChangeRomDir),&Bytes);
-		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) { ChangeRomDir=FALSE; }
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {ChangeRomDir=FALSE;}
 		if (!ChangeRomDir) return;
 		_splitpath(CurrentFileName,drive,dir,fname,ext);
 		sprintf(Directory,"%s%s",drive,dir);
@@ -624,8 +620,8 @@ void OpenChosenFile(void) {
 	char drive[_MAX_DRIVE],FileName[_MAX_DIR],dir[_MAX_DIR],ext[_MAX_EXT],MapFile[_MAX_PATH];
 	int count;
 	BYTE Test[4];
-	for (count=0; count<(int)RomsToRemember; count++) {
-		if (strlen(LastRoms[count])==0) { break; }
+	for (count=0;count<(int)RomsToRemember;count++) {
+		if (strlen(LastRoms[count])==0) {break;}
 		EnableMenuItem(hMainMenu,ID_FILE_RECENT_FILE+count,MFS_DISABLED|MF_BYCOMMAND);
 	}
 	CloseCheatWindow();
@@ -637,26 +633,26 @@ void OpenChosenFile(void) {
 		char zname[132];
 		unzFile file;
 		file=unzOpen(CurrentFileName);
-		if (file==NULL) {
+		if (file==0) {
 			unzClose(file);
 			DisplayError(GS(OPENROM_FAILED));
-			HandleShutdown(hMainWindow);
+			HandleShutdown();
 			return;
 		}
 		port=unzGoToFirstFile(file);
 		FoundRom=FALSE;
 		while (port==UNZ_OK&&FoundRom==FALSE) {
-			unzGetCurrentFileInfo(file,&info,zname,128,NULL,0,NULL,0);
+			unzGetCurrentFileInfo(file,&info,zname,128,0,0,0,0);
 			if (unzLocateFile(file,zname,1)!=UNZ_OK) {
 				unzClose(file);
 				DisplayError(GS(MSG_FAIL_OPEN_ZIP));
-				HandleShutdown(hMainWindow);
+				HandleShutdown();
 				return;
 			}
 			if (unzOpenCurrentFile(file)!=UNZ_OK) {
 				unzClose(file);
 				DisplayError(GS(MSG_FAIL_OPEN_ZIP));
-				HandleShutdown(hMainWindow);
+				HandleShutdown();
 				return;
 			}
 			unzReadCurrentFile(file,Test,4);
@@ -667,12 +663,12 @@ void OpenChosenFile(void) {
 					unzCloseCurrentFile(file);
 					unzClose(file);
 					DisplayError(GS(MSG_MEM_ALLOC_ERROR));
-					HandleShutdown(hMainWindow);
+					HandleShutdown();
 					return;
 				}
 				memcpy(ROM,Test,4);
 				len=4;
-				for (count=4; count<(int)RomFileSize; count+=ReadFromRomSection) {
+				for (count=4;count<(int)RomFileSize;count+=ReadFromRomSection) {
 					len+=unzReadCurrentFile(file,&ROM[count],ReadFromRomSection);
 				}
 				if ((int)RomFileSize!=len) {
@@ -688,13 +684,13 @@ void OpenChosenFile(void) {
 						DisplayError(GS(MSG_FAIL_OPEN_ZIP));
 						break;
 					}
-					HandleShutdown(hMainWindow);
+					HandleShutdown();
 					return;
 				}
 				if (unzCloseCurrentFile(file)==UNZ_CRCERROR) {
 					unzClose(file);
 					DisplayError(GS(MSG_FAIL_OPEN_ZIP));
-					HandleShutdown(hMainWindow);
+					HandleShutdown();
 					return;
 				}
 				AddRecentFile(hMainWindow,CurrentFileName);
@@ -709,45 +705,43 @@ void OpenChosenFile(void) {
 		if (FoundRom==FALSE) {
 			unzClose(file);
 			DisplayError(GS(MSG_FAIL_IMAGE));
-			HandleShutdown(hMainWindow);
+			HandleShutdown();
 			return;
 		}
 	} else {
 		DWORD dwRead,dwToRead,TotalRead;
 		HANDLE hFile;
-		hFile=CreateFile(CurrentFileName,GENERIC_READ,FILE_SHARE_READ,NULL,
-			OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL|FILE_FLAG_RANDOM_ACCESS,
-			NULL);
+		hFile=CreateFile(CurrentFileName,GENERIC_READ,FILE_SHARE_READ,0,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL|FILE_FLAG_RANDOM_ACCESS,0);
 		if (hFile==INVALID_HANDLE_VALUE) {
 			CloseHandle(hFile);
 			DisplayError(GS(OPENROM_FAILED));
-			HandleShutdown(hMainWindow);
+			HandleShutdown();
 			return;
 		}
 		SetFilePointer(hFile,0,0,FILE_BEGIN);
-		ReadFile(hFile,Test,4,&dwRead,NULL);
+		ReadFile(hFile,Test,4,&dwRead,0);
 		if (!IsValidRomImage(Test)) {
 			CloseHandle(hFile);
 			DisplayError(GS(MSG_FAIL_IMAGE));
-			HandleShutdown(hMainWindow);
+			HandleShutdown();
 			return;
 		}
-		RomFileSize=GetFileSize(hFile,NULL);
+		RomFileSize=GetFileSize(hFile,0);
 		if (!Allocate_ROM()) {
 			CloseHandle(hFile);
 			DisplayError(GS(MSG_MEM_ALLOC_ERROR));
-			HandleShutdown(hMainWindow);
+			HandleShutdown();
 			return;
 		}
 		SetFilePointer(hFile,0,0,FILE_BEGIN);
 		TotalRead=0;
-		for (count=0; count<(int)RomFileSize; count+=ReadFromRomSection) {
+		for (count=0;count<(int)RomFileSize;count+=ReadFromRomSection) {
 			dwToRead=RomFileSize-count;
 			if (dwToRead>ReadFromRomSection) dwToRead=ReadFromRomSection;
-			if (!ReadFile(hFile,&ROM[count],dwToRead,&dwRead,NULL)) {
+			if (!ReadFile(hFile,&ROM[count],dwToRead,&dwRead,0)) {
 				CloseHandle(hFile);
 				DisplayError(GS(OPENROM_FAILED));
-				HandleShutdown(hMainWindow);
+				HandleShutdown();
 				return;
 			}
 			TotalRead+=dwRead;
@@ -756,7 +750,7 @@ void OpenChosenFile(void) {
 		if (RomFileSize!=dwRead) {
 			CloseHandle(hFile);
 			DisplayError(GS(OPENROM_FAILED));
-			HandleShutdown(hMainWindow);
+			HandleShutdown();
 			return;
 		}
 		CloseHandle(hFile);
@@ -767,25 +761,25 @@ void OpenChosenFile(void) {
 	memcpy(RomHeader,ROM,sizeof(RomHeader));
 	if (!RecalculateCRC()) return;
 	memcpy(&RomName[0],(void*)(ROM+0x20),20);
-	for (count=0; count<20; count+=4) {
-		RomName[count] ^=RomName[count+3];
-		RomName[count+3] ^=RomName[count];
-		RomName[count] ^=RomName[count+3];
-		RomName[count+1] ^=RomName[count+2];
-		RomName[count+2] ^=RomName[count+1];
-		RomName[count+1] ^=RomName[count+2];
+	for (count=0;count<20;count+=4) {
+		RomName[count]^=RomName[count+3];
+		RomName[count+3]^=RomName[count];
+		RomName[count]^=RomName[count+3];
+		RomName[count+1]^=RomName[count+2];
+		RomName[count+2]^=RomName[count+1];
+		RomName[count+1]^=RomName[count+2];
 	}
-	for (count=19; count>=0; count--) {
+	for (count=19;count>=0;count--) {
 		if (RomName[count]==' ') RomName[count]='\0';
 		else if (RomName[count]!='\0') count=-1;
 	}
-	if (!CPURunning) {
-		CPURunning=TRUE;
-		EnableWindow(hRomList,FALSE);
+	if (!CPURunning) CPURunning=TRUE;
+	if (IsWindowVisible(hRomList)) {
+		SetFocus(hMainWindow);
 		ShowWindow(hRomList,SW_HIDE);
-		SendMessage(hMainWindow,WM_USER+17,0,0);
+		EnableWindow(hRomList,FALSE);
 	}
-	SetupPlugins(hMainWindow);
+	HandleGlobalTasks(hMainWindow);
 	if (AutoFullScreen&&strcmp(GfxDLL,"Direct64-1.6.2.dll")!=0) {
 		timeBeginPeriod(16);
 		Sleep(200);
@@ -800,11 +794,11 @@ void SaveRecentDirs () {
 	char String[256];
 	sprintf(String,"PJ64 V 1.6.2\\Configuration");
 	lResult=RegCreateKeyEx(HKEY_CURRENT_USER,String,0,"",REG_OPTION_NON_VOLATILE,
-		KEY_ALL_ACCESS,NULL,&hKeyResults,&Disposition);
+		KEY_ALL_ACCESS,0,&hKeyResults,&Disposition);
 	if (lResult==ERROR_SUCCESS) {
 		DWORD count;
-		for (count=0; count<RomDirsToRemember; count++) {
-			if (strlen(LastDirs[count])==0) { break; }
+		for (count=0;count<RomDirsToRemember;count++) {
+			if (strlen(LastDirs[count])==0) {break;}
 			sprintf(String,"RecentDir%d",count+1);
 			RegSetValueEx(hKeyResults,String,0,REG_SZ,(LPBYTE)LastDirs[count],strlen(LastDirs[count]));
 		}
@@ -818,11 +812,11 @@ void SaveRecentFiles () {
 	char String[256];
 	sprintf(String,"PJ64 V 1.6.2\\Configuration");
 	lResult=RegCreateKeyEx(HKEY_CURRENT_USER,String,0,"",REG_OPTION_NON_VOLATILE,
-		KEY_ALL_ACCESS,NULL,&hKeyResults,&Disposition);
+		KEY_ALL_ACCESS,0,&hKeyResults,&Disposition);
 	if (lResult==ERROR_SUCCESS) {
 		DWORD count;
-		for (count=0; count<RomsToRemember; count++) {
-			if (strlen(LastRoms[count])==0) { break; }
+		for (count=0;count<RomsToRemember;count++) {
+			if (strlen(LastRoms[count])==0) {break;}
 			sprintf(String,"RecentFile%d",count+1);
 			RegSetValueEx(hKeyResults,String,0,REG_SZ,(LPBYTE)LastRoms[count],strlen(LastRoms[count]));
 		}
@@ -830,17 +824,15 @@ void SaveRecentFiles () {
 	}
 }
 void HandleWindowTitle () {
-	char*IniFile,String[100],String2[100],GameName[100],Identifier[100],WinTitle[100];
+	char*IniFile,String[100],GameName[100],Identifier[100],WinTitle[100];
 	IniFile=GetIniFileName();
-	_GetPrivateProfileString("Meta","Version","",String,sizeof(String),IniFile);
-	_GetPrivateProfileString("Meta","Date","",String2,sizeof(String2),IniFile);
-	if (strlen(String)==0) strcpy(String,"UNKNOWN VERSION");
-	if (strlen(String2)==0) strcpy(String2,"UNKNOWN DATE");
+	_GetPrivateProfileString("Meta","Date","",String,sizeof(String),IniFile);
+	if (strlen(String)==0) strcpy(String,"UNKNOWN DATE");
 	sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD*)(&RomHeader[0x10]),*(DWORD*)(&RomHeader[0x14]),RomHeader[0x3D]);
 	_GetPrivateProfileString(Identifier,"Game Name","",GameName,sizeof(GameName),IniFile);
 	if (strlen(RomName)==0) strcpy(RomName,"(INTERNAL NAME UNAVAILABLE)");
 	if (strlen(GameName)==0) strcpy(GameName,"(UNREGISTERED GAME ENTRY)");
-	sprintf(WinTitle,"BIVPJ64%s %s - %s, %s",String,String2,RomName,GameName);
+	sprintf(WinTitle,"BIVPJ64 %s - %s, %s",String,RomName,GameName);
 	SetWindowText(hMainWindow,WinTitle);
 }
 void SaveRomSettings () {
@@ -906,11 +898,6 @@ void SaveRomSettings () {
 		_WritePrivateProfileString(Identifier,"Protect Memory / Enlarge Buffer","Default",GetIniFileName());
 	}
 }
-void SetRecentRomDir (DWORD Index) {
-	Index -=ID_FILE_RECENT_DIR;
-	if (Index<0||Index>RomDirsToRemember) return;
-	SetRomDirectory(LastDirs[Index]);
-}
 void SetRomDirectory (char*Directory) {
 	long lResult;
 	HKEY hKeyResults=0;
@@ -918,13 +905,12 @@ void SetRomDirectory (char*Directory) {
 	char Group[200];
 	sprintf(Group,"PJ64 V 1.6.2\\Configuration");
 	lResult=RegCreateKeyEx(HKEY_CURRENT_USER,Group,0,"",REG_OPTION_NON_VOLATILE,
-		KEY_ALL_ACCESS,NULL,&hKeyResults,&Disposition);
+		KEY_ALL_ACCESS,0,&hKeyResults,&Disposition);
 	if (lResult==ERROR_SUCCESS) {
 		RegSetValueEx(hKeyResults,"CustomPath ROMs",0,REG_SZ,(LPBYTE)Directory,strlen(Directory));
 		AddRecentDir(hMainWindow,Directory);
 		RegCloseKey(hKeyResults);
-		if (CPURunning) __argc=1;
+		if (CPURunning) RefreshRomBrowserOnShutdown=TRUE;
 		else RefreshRomBrowser();
-		SetupMenu(hMainWindow);
 	}
 }

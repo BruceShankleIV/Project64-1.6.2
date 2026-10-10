@@ -30,7 +30,7 @@
 struct {
 	DWORD Frames,LastTime;
 	DOUBLE Ratio;
-} FPSTimer={ 0,0,1000.0F / 60.0F };
+} FPSTimer={0,0,1000.0F / 60.0F};
 void Timer_Initialize(double Hertz) {
 	FPSTimer.Ratio=1000.0f / Hertz;
 }
@@ -63,7 +63,7 @@ BOOL Timer_Process(DWORD*FrameRate) {
 	}
 	if (CurrentTime-FPSTimer.LastTime>=1000) {
 		/*Output FPS*/
-		if (FrameRate!=NULL) {*FrameRate=FPSTimer.Frames; }
+		if (FrameRate!=0) {*FrameRate=FPSTimer.Frames;}
 		FPSTimer.Frames=0;
 		FPSTimer.LastTime=CurrentTime;
 		return TRUE;

@@ -24,7 +24,7 @@
 *
 */
 void CompileReadTLBMiss (BLOCK_SECTION*Section,int AddressReg,int LookUpReg);
-/**************************Branch functions ************************/
+/**************************Branch functions************************/
 void Compile_R4300i_Branch         (BLOCK_SECTION*Section,void (*CompareFunc)(BLOCK_SECTION*Section),int BranchType,BOOL Link);
 void Compile_R4300i_BranchLikely   (BLOCK_SECTION*Section,void (*CompareFunc)(BLOCK_SECTION*Section),BOOL Link);
 void BNE_Compare                   (BLOCK_SECTION*Section);
@@ -119,9 +119,9 @@ void Compile_R4300i_SPECIAL_DSLL32 (BLOCK_SECTION*Section);
 void Compile_R4300i_SPECIAL_DSRL32 (BLOCK_SECTION*Section);
 void Compile_R4300i_SPECIAL_DSRA32 (BLOCK_SECTION*Section);
 /**************************COP0 functions**************************/
-void Compile_R4300i_COP0_MF        (BLOCK_SECTION*Section);
-void Compile_R4300i_COP0_MT        (BLOCK_SECTION*Section);
-void Compile_R4300i_COP0_CO	   (BLOCK_SECTION*Section);
+void Compile_R4300i_COP0_MF		   (BLOCK_SECTION*Section);
+void Compile_R4300i_COP0_MT		   (BLOCK_SECTION*Section);
+void Compile_R4300i_COP0_CO		   (BLOCK_SECTION*Section);
 /**************************COP1 functions**************************/
 void Compile_R4300i_COP1_MF        (BLOCK_SECTION*Section);
 void Compile_R4300i_COP1_DMF       (BLOCK_SECTION*Section);

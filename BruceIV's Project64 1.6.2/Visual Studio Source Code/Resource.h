@@ -166,6 +166,7 @@
 #define ID_OPTIONS_GAMECAPTURE					40075
 #define ID_OPTIONS_RGBREC				40076
 #define ID_OPTIONS_HIDE_CURSOR				40077
+#define ID_OPTIONS_CREATE_STATUS_BAR	40078
 #define ID_CPU_RESET                    40079
 #define ID_OPTIONS_CONFIG_AUDIO         40090
 #define ID_FILE_STARTEMULATION          40101
@@ -206,7 +207,7 @@
 #define ID_POPUP_EDIT                   40162
 #define ID_POPUP_DELETE                 40163
 #define ID_HELP_UNINSTALL               40167
-#define ID_ALLOCATE_COMPILE_SD	40171
+#define ID_ALLOCATE_COMPILE_SD			40171
 #define ID_CURRENTSAVE_10               40203
 #define ID_CURRENTSAVE_11               40204
 #define ID_CURRENTSAVE_12               40205

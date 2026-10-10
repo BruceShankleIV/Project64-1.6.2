@@ -30,7 +30,7 @@
 #include "CPU.h"
 #include "x86.h"
 #include "Plugin.h"
-#define SectionCPC4 Section->CompilePC -=4;
+#define SectionCPC4 Section->CompilePC-=4;
 #define LoopCD Call_Direct(InPermLoop);
 void _fastcall CreateSectionLinkage (BLOCK_SECTION*Section);
 void _fastcall DetermineLoop(BLOCK_SECTION*Section,DWORD Test,DWORD Test2,DWORD TestID);
@@ -48,9 +48,9 @@ BOOL IsAllParentLoops(BLOCK_SECTION*Section,BLOCK_SECTION*Parent,BOOL IgnoreIfCo
 void MarkCodeBlock (DWORD PAddr);
 void SyncRegState (BLOCK_SECTION*Section,REG_INFO*SyncTo);
 DWORD TLBLoadAddress,TargetIndex;
-TARGET_INFO*TargetInfo=NULL;
+TARGET_INFO*TargetInfo=0;
 BLOCK_INFO BlockInfo;
-ORIGINAL_MEMMARKER*OrigMem=NULL;
+ORIGINAL_MEMMARKER*OrigMem=0;
 void OpcodeMapRecompiler (BLOCK_SECTION*Section) {
 	switch (Opcode.op) {
 	case R4300i_SPECIAL:
@@ -59,7 +59,7 @@ void OpcodeMapRecompiler (BLOCK_SECTION*Section) {
 		if (strcmp(RomName,"THE LEGEND OF ZELDA")==0&&!SPECIAL_BREAK_Yes) {
 			if (SPECIAL_BREAK_Trigger) break;
 			HandleModal1(hMainWindow);
-			if (MessageBox(NULL,GS(SPECIAL_BREAK),GS(OPTIONAL_CRASH),MB_YESNO|MB_ICONERROR|MB_SETFOREGROUND)==IDYES) SPECIAL_BREAK_Yes=TRUE;
+			if (MessageBox(0,GS(SPECIAL_BREAK),GS(OPTIONAL_CRASH),MB_YESNO|MB_ICONERROR|MB_SETFOREGROUND)==IDYES) SPECIAL_BREAK_Yes=TRUE;
 			HandleModal2(hMainWindow);
 			SPECIAL_BREAK_Trigger=TRUE;
 			if (!SPECIAL_BREAK_Yes) break;
@@ -398,17 +398,17 @@ void InitializeInitialCompilerVariable () {
 }
 void _fastcall AddParent(BLOCK_SECTION*Section,BLOCK_SECTION*Parent) {
 	int NoOfParents,count;
-	if (Section==NULL) return;
-	if (Parent==NULL) {
+	if (Section==0) return;
+	if (Parent==0) {
 		InitializeRegSet(&Section->RegStart);
 		memcpy(&Section->RegWorking,&Section->RegStart,sizeof(REG_INFO));
 		return;
 	}
-	if (Section->ParentSection!=NULL) {
-		for (NoOfParents=0;Section->ParentSection[NoOfParents]!=NULL;NoOfParents++) {
+	if (Section->ParentSection!=0) {
+		for (NoOfParents=0;Section->ParentSection[NoOfParents]!=0;NoOfParents++) {
 			if (Section->ParentSection[NoOfParents]==Parent) return;
 		}
-		for (NoOfParents=0;Section->ParentSection[NoOfParents]!=NULL;NoOfParents++);
+		for (NoOfParents=0;Section->ParentSection[NoOfParents]!=0;NoOfParents++);
 		NoOfParents+=1;
 	} else {
 		NoOfParents=1;
@@ -419,7 +419,7 @@ void _fastcall AddParent(BLOCK_SECTION*Section,BLOCK_SECTION*Parent) {
 		Section->ParentSection=realloc(Section->ParentSection,(NoOfParents+1)*sizeof(void*));
 	}
 	Section->ParentSection[NoOfParents-1]=Parent;
-	Section->ParentSection[NoOfParents]=NULL;
+	Section->ParentSection[NoOfParents]=0;
 	if (NoOfParents==1) {
 		if (Parent->ContinueSection==Section) {
 			memcpy(&Section->RegStart,&Parent->Cont.RegSet,sizeof(REG_INFO));
@@ -430,14 +430,14 @@ void _fastcall AddParent(BLOCK_SECTION*Section,BLOCK_SECTION*Parent) {
 		memcpy(&Section->RegWorking,&Section->RegStart,sizeof(REG_INFO));
 	} else {
 		if (Parent->ContinueSection==Section) {
-			for (count=0; count<32; count++) {
+			for (count=0;count<32;count++) {
 				if (Section->RegStart.MIPS_RegState[count]!=Parent->Cont.RegSet.MIPS_RegState[count]) {
 					Section->RegStart.MIPS_RegState[count]=STATE_UNKNOWN;
 				}
 			}
 		}
 		if (Parent->JumpSection==Section) {
-			for (count=0; count<32; count++) {
+			for (count=0;count<32;count++) {
 				if (Section->RegStart.MIPS_RegState[count]!=Parent->Jump.RegSet.MIPS_RegState[count]) {
 					Section->RegStart.MIPS_RegState[count]=STATE_UNKNOWN;
 				}
@@ -449,10 +449,10 @@ void _fastcall AddParent(BLOCK_SECTION*Section,BLOCK_SECTION*Parent) {
 void AnalyzeBlock () {
 	BLOCK_SECTION*Section=&BlockInfo.BlockInfo;
 	BlockInfo.NoOfSections=1;
-	InitializeSection (Section,NULL,BlockInfo.StartVAddr,BlockInfo.NoOfSections);
+	InitializeSection (Section,0,BlockInfo.StartVAddr,BlockInfo.NoOfSections);
 }
 int ConstantsType (__int64 Value) {
-	if (((Value>>32)==-1)&&((Value&0x80000000)!=0)||((Value>>32)==0)&&((Value&0x80000000)==0)) { return STATE_CONST_32; }
+	if (((Value>>32)==-1)&&((Value&0x80000000)!=0)||((Value>>32)==0)&&((Value&0x80000000)==0)) {return STATE_CONST_32;}
 	return STATE_CONST_64;
 }
 BYTE*Compiler4300iBlock() {
@@ -460,11 +460,11 @@ BYTE*Compiler4300iBlock() {
 	int count;
 	if (BlockInfo.ExitInfo)
 	{
-		for (count=0; count<BlockInfo.ExitCount; count++) {
+		for (count=0;count<BlockInfo.ExitCount;count++) {
 			free(BlockInfo.ExitInfo[count]);
 		}
-		if (BlockInfo.ExitInfo) { free(BlockInfo.ExitInfo); }
-		BlockInfo.ExitInfo=NULL;
+		if (BlockInfo.ExitInfo) {free(BlockInfo.ExitInfo);}
+		BlockInfo.ExitInfo=0;
 	}
 	memset(&BlockInfo,0,sizeof(BlockInfo));
 	BlockInfo.CompiledLocation=RecompPos;
@@ -474,18 +474,18 @@ BYTE*Compiler4300iBlock() {
 	TranslateVaddr(&StartAddress);
 	MarkCodeBlock(StartAddress);
 	GenerateX86Code(&BlockInfo.BlockInfo,GetNewTestValue());
-	for (count=0; count<BlockInfo.ExitCount; count++) {
+	for (count=0;count<BlockInfo.ExitCount;count++) {
 		SetJump32(BlockInfo.ExitInfo[count]->JumpLoc,RecompPos);
 		NextInstruction=BlockInfo.ExitInfo[count]->NextInstruction;
-		CompileExit(BlockInfo.ExitInfo[count]->TargetPC,BlockInfo.ExitInfo[count]->ExitRegSet,BlockInfo.ExitInfo[count]->reason,TRUE,NULL);
+		CompileExit(BlockInfo.ExitInfo[count]->TargetPC,BlockInfo.ExitInfo[count]->ExitRegSet,BlockInfo.ExitInfo[count]->reason,TRUE,0);
 	}
 	FreeSection (BlockInfo.BlockInfo.ContinueSection,&BlockInfo.BlockInfo);
 	FreeSection (BlockInfo.BlockInfo.JumpSection,&BlockInfo.BlockInfo);
-	for (count=0; count<BlockInfo.ExitCount; count++) {
+	for (count=0;count<BlockInfo.ExitCount;count++) {
 		free(BlockInfo.ExitInfo[count]);
 	}
-	if (BlockInfo.ExitInfo) { free(BlockInfo.ExitInfo); }
-	BlockInfo.ExitInfo=NULL;
+	if (BlockInfo.ExitInfo) {free(BlockInfo.ExitInfo);}
+	BlockInfo.ExitInfo=0;
 	BlockInfo.ExitCount=0;
 	return BlockInfo.CompiledLocation;
 }
@@ -498,19 +498,19 @@ BYTE*CompileDelaySlot () {
 	if (!r4300i_LW_VAddr(StartAddress,&Opcode.Hex)) DisplayThreadExit("CompileDelaySlot-!r4300i_LW_VAddr(StartAddress,&Opcode.Hex)");
 	TranslateVaddr(&StartAddress);
 	MarkCodeBlock(StartAddress);
-	InitializeSection (Section,NULL,PROGRAM_COUNTER,0);
+	InitializeSection (Section,0,PROGRAM_COUNTER,0);
 	InitializeRegSet(&Section->RegStart);
 	memcpy(&Section->RegWorking,&Section->RegStart,sizeof(REG_INFO));
 	BlockCycleCount+=CountPerOp;
 	BlockRandomModifier+=1;
 	OpcodeMapRecompiler(Section);
-	for (count=1; count<10; count++) { x86Protected(count)=FALSE; }
+	for (count=1;count<10;count++) {x86Protected(count)=FALSE;}
 	WriteBackRegisters(Section);
 	if (BlockCycleCount!=0) {
 		AddConstToVariable(BlockCycleCount,&CP0[9]);
 		SubConstFromVariable(BlockCycleCount,&Timers.Timer);
 	}
-	if (BlockRandomModifier!=0) { SubConstFromVariable(BlockRandomModifier,&CP0[1]); }
+	if (BlockRandomModifier!=0) {SubConstFromVariable(BlockRandomModifier,&CP0[1]);}
 	x86Reg=Map_TempReg(Section,x86_Any,-1,FALSE);
 	MoveVariableToX86reg(&JumpToLocation,x86Reg);
 	MoveX86regToVariable(x86Reg,&PROGRAM_COUNTER);
@@ -526,7 +526,7 @@ void CompileExit (DWORD TargetPC,REG_INFO ExitRegSet,int reason,int CompileNow,v
 		} else {
 			BlockInfo.ExitInfo=realloc(BlockInfo.ExitInfo,(BlockInfo.ExitCount+1)*sizeof(void*));
 		}
-		if (x86Jmp==NULL) DisplayThreadExit("CompileExit-x86Jmp==NULL");
+		if (x86Jmp==0) DisplayThreadExit("CompileExit-x86Jmp==0");
 		x86Jmp(0);
 		BlockInfo.ExitInfo[BlockInfo.ExitCount]=malloc(sizeof(EXIT_INFO));
 		BlockInfo.ExitInfo[BlockInfo.ExitCount]->TargetPC=TargetPC;
@@ -537,26 +537,26 @@ void CompileExit (DWORD TargetPC,REG_INFO ExitRegSet,int reason,int CompileNow,v
 		BlockInfo.ExitCount+=1;
 		return;
 	}
-	InitializeSection (&Section,NULL,(DWORD)-1,0);
+	InitializeSection (&Section,0,(DWORD)-1,0);
 	memcpy(&Section.RegWorking,&ExitRegSet,sizeof(REG_INFO));
-	if (TargetPC!=(DWORD)-1) { MoveConstToVariable(TargetPC,&PROGRAM_COUNTER); }
+	if (TargetPC!=(DWORD)-1) {MoveConstToVariable(TargetPC,&PROGRAM_COUNTER);}
 	if (ExitRegSet.CycleCount!=0) {
 		AddConstToVariable(ExitRegSet.CycleCount,&CP0[9]);
 		SubConstFromVariable(ExitRegSet.CycleCount,&Timers.Timer);
 	}
-	if (ExitRegSet.RandomModifier!=0) { SubConstFromVariable(ExitRegSet.RandomModifier,&CP0[1]); }
+	if (ExitRegSet.RandomModifier!=0) {SubConstFromVariable(ExitRegSet.RandomModifier,&CP0[1]);}
 	WriteBackRegisters(&Section);
 	switch (reason) {
 	case Normal: case Normal_NoSysCheck:
 		Section.RegWorking.RandomModifier=0;
 		Section.RegWorking.CycleCount=0;
-		if (reason==Normal) { CompileSystemCheck(0,(DWORD)-1,Section.RegWorking); }
-		if (ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON) { // Performance
+		if (reason==Normal) {CompileSystemCheck(0,(DWORD)-1,Section.RegWorking);}
+		if (ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON) {// Performance
 			BYTE*Jump,*Jump2;
 			if (TargetPC>=0x80000000&&TargetPC<0x90000000) {
 				DWORD pAddr=TargetPC&0x1FFFFFFF;
 				MoveVariableToX86reg((BYTE*)JumpTable+pAddr,x86_ECX);
-				Jump2=NULL;
+				Jump2=0;
 			} else if (!(TargetPC>=0x90000000&&TargetPC<0xC0000000)) {
 				MoveConstToX86reg((TargetPC>>12),x86_ECX);
 				MoveConstToX86reg(TargetPC,x86_EBX);
@@ -572,7 +572,7 @@ void CompileExit (DWORD TargetPC,REG_INFO ExitRegSet,int reason,int CompileNow,v
 				Jump=RecompPos-1;
 				JmpDirectReg(x86_ECX);
 				*((BYTE*)(Jump))=(BYTE)(RecompPos-Jump-1);
-				if (Jump2!=NULL)*((BYTE*)(Jump2))=(BYTE)(RecompPos-Jump2-1);
+				if (Jump2!=0)*((BYTE*)(Jump2))=(BYTE)(RecompPos-Jump2-1);
 			}
 		}
 		Ret();
@@ -621,8 +621,8 @@ void CompileSystemCheck (DWORD TimerModifier,DWORD TargetPC,REG_INFO RegSet) {
 	JnsLabel32(0);
 	Jump=RecompPos-4;
 	Pushad();
-	if (TargetPC!=(DWORD)-1) { MoveConstToVariable(TargetPC,&PROGRAM_COUNTER); }
-	InitializeSection (&Section,NULL,(DWORD)-1,0);
+	if (TargetPC!=(DWORD)-1) {MoveConstToVariable(TargetPC,&PROGRAM_COUNTER);}
+	InitializeSection (&Section,0,(DWORD)-1,0);
 	memcpy(&Section.RegWorking,&RegSet,sizeof(REG_INFO));
 	WriteBackRegisters(&Section);
 	Call_Direct(TimerDone);
@@ -631,7 +631,7 @@ void CompileSystemCheck (DWORD TimerModifier,DWORD TargetPC,REG_INFO RegSet) {
 	CompConstToVariable(0,&CPU_Action.DoSomething);
 	JeLabel32(0);
 	Jump2=RecompPos-4;
-	CompileExit(-1,Section.RegWorking,DoCPU_Action,TRUE,NULL);
+	CompileExit(-1,Section.RegWorking,DoCPU_Action,TRUE,0);
 	SetJump32(Jump2,RecompPos);
 	Ret();
 	SetJump32(Jump,RecompPos);
@@ -639,11 +639,11 @@ void CompileSystemCheck (DWORD TimerModifier,DWORD TargetPC,REG_INFO RegSet) {
 	CompConstToVariable(0,&CPU_Action.DoSomething);
 	JeLabel32(0);
 	Jump=RecompPos-4;
-	if (TargetPC!=(DWORD)-1) { MoveConstToVariable(TargetPC,&PROGRAM_COUNTER); }
-	InitializeSection (&Section,NULL,(DWORD)-1,0);
+	if (TargetPC!=(DWORD)-1) {MoveConstToVariable(TargetPC,&PROGRAM_COUNTER);}
+	InitializeSection (&Section,0,(DWORD)-1,0);
 	memcpy(&Section.RegWorking,&RegSet,sizeof(REG_INFO));
 	WriteBackRegisters(&Section);
-	CompileExit(-1,Section.RegWorking,DoCPU_Action,TRUE,NULL);
+	CompileExit(-1,Section.RegWorking,DoCPU_Action,TRUE,0);
 	SetJump32(Jump,RecompPos);
 }
 void _fastcall CreateSectionLinkage (BLOCK_SECTION*Section) {
@@ -666,13 +666,13 @@ void _fastcall CreateSectionLinkage (BLOCK_SECTION*Section) {
 		TargetPC[0]=&Section->Cont.TargetPC;
 		TargetPC[1]=&Section->Jump.TargetPC;
 	}
-	for (count=0; count<2; count++) {
-		if (*TargetPC[count]!=(DWORD)-1&&*TargetSection[count]==NULL) {
+	for (count=0;count<2;count++) {
+		if (*TargetPC[count]!=(DWORD)-1&&*TargetSection[count]==0) {
 			*TargetSection[count]=ExistingSection(BlockInfo.BlockInfo.ContinueSection,*TargetPC[count],GetNewTestValue());
-			if (*TargetSection[count]==NULL) {
+			if (*TargetSection[count]==0) {
 				*TargetSection[count]=ExistingSection(BlockInfo.BlockInfo.JumpSection,*TargetPC[count],GetNewTestValue());
 			}
-			if (*TargetSection[count]==NULL) {
+			if (*TargetSection[count]==0) {
 				BlockInfo.NoOfSections+=1;
 				*TargetSection[count]=malloc(sizeof(BLOCK_SECTION));
 				InitializeSection (*TargetSection[count],Section,*TargetPC[count],BlockInfo.NoOfSections);
@@ -684,7 +684,7 @@ void _fastcall CreateSectionLinkage (BLOCK_SECTION*Section) {
 	}
 }
 void _fastcall DetermineLoop(BLOCK_SECTION*Section,DWORD Test,DWORD Test2,DWORD TestID) {
-	if (Section==NULL) return;
+	if (Section==0) return;
 	if (Section->SectionID!=TestID) {
 		if (Section->Test2==Test2) return;
 		Section->Test2=Test2;
@@ -701,15 +701,15 @@ void _fastcall DetermineLoop(BLOCK_SECTION*Section,DWORD Test,DWORD Test2,DWORD 
 	DetermineLoop(Section->JumpSection,Test,Test2,TestID);
 	if (Section->Test==Test) return;
 	Section->Test=Test;
-	if (Section->ContinueSection!=NULL) {
+	if (Section->ContinueSection!=0) {
 		DetermineLoop(Section->ContinueSection,Test,GetNewTestValue(),((BLOCK_SECTION*)Section->ContinueSection)->SectionID);
 	}
-	if (Section->JumpSection!=NULL) {
+	if (Section->JumpSection!=0) {
 		DetermineLoop(Section->JumpSection,Test,GetNewTestValue(),((BLOCK_SECTION*)Section->JumpSection)->SectionID);
 	}
 }
 BOOL DisplaySectionInformation (BLOCK_SECTION*Section,DWORD ID,DWORD Test) {
-	if (Section==NULL||Section->Test==Test) return FALSE;
+	if (Section==0||Section->Test==Test) return FALSE;
 	Section->Test=Test;
 	if (Section->SectionID!=ID) {
 		if (DisplaySectionInformation(Section->ContinueSection,ID,Test)) return TRUE;
@@ -720,19 +720,19 @@ BOOL DisplaySectionInformation (BLOCK_SECTION*Section,DWORD ID,DWORD Test) {
 }
 BLOCK_SECTION*ExistingSection(BLOCK_SECTION*StartSection,DWORD Addr,DWORD Test) {
 	BLOCK_SECTION*Section;
-	if (StartSection==NULL) { return NULL; }
-	if (StartSection->StartPC==Addr) { return StartSection; }
-	if (StartSection->Test==Test) { return NULL; }
+	if (StartSection==0) {return 0;}
+	if (StartSection->StartPC==Addr) {return StartSection;}
+	if (StartSection->Test==Test) {return 0;}
 	StartSection->Test=Test;
 	Section=ExistingSection(StartSection->JumpSection,Addr,Test);
-	if (Section!=NULL) { return Section; }
+	if (Section!=0) {return Section;}
 	Section=ExistingSection(StartSection->ContinueSection,Addr,Test);
-	if (Section!=NULL) { return Section; }
-	return NULL;
+	if (Section!=0) {return Section;}
+	return 0;
 }
 void _fastcall FillSectionInfo(BLOCK_SECTION*Section) {
 	OPCODE Command;
-	if (Section->CompiledLocation!=NULL) return;
+	if (Section->CompiledLocation!=0) return;
 	Section->CompilePC    =Section->StartPC;
 	memcpy(&Section->RegWorking,&Section->RegStart,sizeof(REG_INFO));
 	SetNormal
@@ -742,7 +742,7 @@ void _fastcall FillSectionInfo(BLOCK_SECTION*Section) {
 		case R4300i_SPECIAL:
 			switch (Command.funct) {
 			case R4300i_SPECIAL_SLL:
-				if (Command.rd==0) { break; }
+				if (Command.rd==0) {break;}
 				if (Section->InLoop&&Command.rt==Command.rd) {
 					MipsRegState(Command.rd)=STATE_UNKNOWN;
 				}
@@ -764,7 +764,7 @@ void _fastcall FillSectionInfo(BLOCK_SECTION*Section) {
 			case R4300i_SPECIAL_DDIV:
 			case R4300i_SPECIAL_DDIVU: break;
 			case R4300i_SPECIAL_SRL:
-				if (Command.rd==0) { break; }
+				if (Command.rd==0) {break;}
 				if (Section->InLoop&&Command.rt==Command.rd) {
 					MipsRegState(Command.rd)=STATE_UNKNOWN;
 				}
@@ -776,7 +776,7 @@ void _fastcall FillSectionInfo(BLOCK_SECTION*Section) {
 				}
 				break;
 			case R4300i_SPECIAL_SRA:
-				if (Command.rd==0) { break; }
+				if (Command.rd==0) {break;}
 				if (Section->InLoop&&Command.rt==Command.rd) {
 					MipsRegState(Command.rd)=STATE_UNKNOWN;
 				}
@@ -788,7 +788,7 @@ void _fastcall FillSectionInfo(BLOCK_SECTION*Section) {
 				}
 				break;
 			case R4300i_SPECIAL_SLLV:
-				if (Command.rd==0) { break; }
+				if (Command.rd==0) {break;}
 				if (Section->InLoop&&(Command.rt==Command.rd||Command.rs==Command.rd)) {
 					MipsRegState(Command.rd)=STATE_UNKNOWN;
 				}
@@ -800,7 +800,7 @@ void _fastcall FillSectionInfo(BLOCK_SECTION*Section) {
 				}
 				break;
 			case R4300i_SPECIAL_SRLV:
-				if (Command.rd==0) { break; }
+				if (Command.rd==0) {break;}
 				if (Section->InLoop&&(Command.rt==Command.rd||Command.rs==Command.rd)) {
 					MipsRegState(Command.rd)=STATE_UNKNOWN;
 				}
@@ -812,7 +812,7 @@ void _fastcall FillSectionInfo(BLOCK_SECTION*Section) {
 				}
 				break;
 			case R4300i_SPECIAL_SRAV:
-				if (Command.rd==0) { break; }
+				if (Command.rd==0) {break;}
 				if (Section->InLoop&&(Command.rt==Command.rd||Command.rs==Command.rd)) {
 					MipsRegState(Command.rd)=STATE_UNKNOWN;
 				}
@@ -844,7 +844,7 @@ void _fastcall FillSectionInfo(BLOCK_SECTION*Section) {
 			case R4300i_SPECIAL_MFHI:
 			case R4300i_SPECIAL_MFLO: MipsRegState(Command.rd)=STATE_UNKNOWN; break;
 			case R4300i_SPECIAL_DSLLV:
-				if (Command.rd==0) { break; }
+				if (Command.rd==0) {break;}
 				if (Section->InLoop&&(Command.rt==Command.rd||Command.rs==Command.rd)) {
 					MipsRegState(Command.rd)=STATE_UNKNOWN;
 				}
@@ -856,7 +856,7 @@ void _fastcall FillSectionInfo(BLOCK_SECTION*Section) {
 				}
 				break;
 			case R4300i_SPECIAL_DSRLV:
-				if (Command.rd==0) { break; }
+				if (Command.rd==0) {break;}
 				if (Section->InLoop&&(Command.rt==Command.rd||Command.rs==Command.rd)) {
 					MipsRegState(Command.rd)=STATE_UNKNOWN;
 				}
@@ -868,7 +868,7 @@ void _fastcall FillSectionInfo(BLOCK_SECTION*Section) {
 				}
 				break;
 			case R4300i_SPECIAL_DSRAV:
-				if (Command.rd==0) { break; }
+				if (Command.rd==0) {break;}
 				if (Section->InLoop&&(Command.rt==Command.rd||Command.rs==Command.rd)) {
 					MipsRegState(Command.rd)=STATE_UNKNOWN;
 				}
@@ -881,7 +881,7 @@ void _fastcall FillSectionInfo(BLOCK_SECTION*Section) {
 				break;
 			case R4300i_SPECIAL_ADD:
 			case R4300i_SPECIAL_ADDU:
-				if (Command.rd==0) { break; }
+				if (Command.rd==0) {break;}
 				if (Section->InLoop&&(Command.rt==Command.rd||Command.rs==Command.rd)) {
 					MipsRegState(Command.rd)=STATE_UNKNOWN;
 				}
@@ -894,7 +894,7 @@ void _fastcall FillSectionInfo(BLOCK_SECTION*Section) {
 				break;
 			case R4300i_SPECIAL_SUB:
 			case R4300i_SPECIAL_SUBU:
-				if (Command.rd==0) { break; }
+				if (Command.rd==0) {break;}
 				if (Section->InLoop&&(Command.rt==Command.rd||Command.rs==Command.rd)) {
 					MipsRegState(Command.rd)=STATE_UNKNOWN;
 				}
@@ -906,7 +906,7 @@ void _fastcall FillSectionInfo(BLOCK_SECTION*Section) {
 				}
 				break;
 			case R4300i_SPECIAL_AND:
-				if (Command.rd==0) { break; }
+				if (Command.rd==0) {break;}
 				if (Section->InLoop&&(Command.rt==Command.rd||Command.rs==Command.rd)) {
 					MipsRegState(Command.rd)=STATE_UNKNOWN;
 				}
@@ -930,7 +930,7 @@ void _fastcall FillSectionInfo(BLOCK_SECTION*Section) {
 				}
 				break;
 			case R4300i_SPECIAL_OR:
-				if (Command.rd==0) { break; }
+				if (Command.rd==0) {break;}
 				if (Section->InLoop&&(Command.rt==Command.rd||Command.rs==Command.rd)) {
 					MipsRegState(Command.rd)=STATE_UNKNOWN;
 				}
@@ -954,23 +954,23 @@ void _fastcall FillSectionInfo(BLOCK_SECTION*Section) {
 				}
 				break;
 			case R4300i_SPECIAL_XOR:
-				if (Command.rd==0) { break; }
+				if (Command.rd==0) {break;}
 				if (Section->InLoop&&(Command.rt==Command.rd||Command.rs==Command.rd)) {
 					MipsRegState(Command.rd)=STATE_UNKNOWN;
 				}
 				if (IsConst(Command.rt)&&IsConst(Command.rs)) {
 					if (Is64Bit(Command.rt)&&Is64Bit(Command.rs)) {
-						MipsReg(Command.rd)=MipsReg(Command.rt) ^ MipsReg(Command.rs);
+						MipsReg(Command.rd)=MipsReg(Command.rt)^MipsReg(Command.rs);
 						MipsRegState(Command.rd)=STATE_CONST_64;
 					} else if (Is64Bit(Command.rt)||Is64Bit(Command.rs)) {
 						if (Is64Bit(Command.rt)) {
-							MipsReg(Command.rd)=MipsReg(Command.rt) ^ MipsRegLo(Command.rs);
+							MipsReg(Command.rd)=MipsReg(Command.rt)^MipsRegLo(Command.rs);
 						} else {
-							MipsReg(Command.rd)=MipsRegLo(Command.rt) ^ MipsReg(Command.rs);
+							MipsReg(Command.rd)=MipsRegLo(Command.rt)^MipsReg(Command.rs);
 						}
 						MipsRegState(Command.rd)=STATE_CONST_64;
 					} else {
-						MipsRegLo(Command.rd)=MipsRegLo(Command.rt) ^ MipsRegLo(Command.rs);
+						MipsRegLo(Command.rd)=MipsRegLo(Command.rt)^MipsRegLo(Command.rs);
 						MipsRegState(Command.rd)=STATE_CONST_32;
 					}
 				} else {
@@ -978,7 +978,7 @@ void _fastcall FillSectionInfo(BLOCK_SECTION*Section) {
 				}
 				break;
 			case R4300i_SPECIAL_NOR:
-				if (Command.rd==0) { break; }
+				if (Command.rd==0) {break;}
 				if (Section->InLoop&&(Command.rt==Command.rd||Command.rs==Command.rd)) {
 					MipsRegState(Command.rd)=STATE_UNKNOWN;
 				}
@@ -1002,7 +1002,7 @@ void _fastcall FillSectionInfo(BLOCK_SECTION*Section) {
 				}
 				break;
 			case R4300i_SPECIAL_SLT:
-				if (Command.rd==0) { break; }
+				if (Command.rd==0) {break;}
 				if (IsConst(Command.rt)&&IsConst(Command.rs)) {
 					if (Is64Bit(Command.rt)||Is64Bit(Command.rs)) {
 						if (Is64Bit(Command.rt)) {
@@ -1019,7 +1019,7 @@ void _fastcall FillSectionInfo(BLOCK_SECTION*Section) {
 				}
 				break;
 			case R4300i_SPECIAL_SLTU:
-				if (Command.rd==0) { break; }
+				if (Command.rd==0) {break;}
 				if (IsConst(Command.rt)&&IsConst(Command.rs)) {
 					if (Is64Bit(Command.rt)||Is64Bit(Command.rs)) {
 						if (Is64Bit(Command.rt)) {
@@ -1037,7 +1037,7 @@ void _fastcall FillSectionInfo(BLOCK_SECTION*Section) {
 				break;
 			case R4300i_SPECIAL_DADD:
 			case R4300i_SPECIAL_DADDU:
-				if (Command.rd==0) { break; }
+				if (Command.rd==0) {break;}
 				if (Section->InLoop&&(Command.rt==Command.rd||Command.rs==Command.rd)) {
 					MipsRegState(Command.rd)=STATE_UNKNOWN;
 				}
@@ -1052,13 +1052,13 @@ void _fastcall FillSectionInfo(BLOCK_SECTION*Section) {
 				break;
 			case R4300i_SPECIAL_DSUB:
 			case R4300i_SPECIAL_DSUBU:
-				if (Command.rd==0) { break; }
+				if (Command.rd==0) {break;}
 				if (Section->InLoop&&(Command.rt==Command.rd||Command.rs==Command.rd)) {
 					MipsRegState(Command.rd)=STATE_UNKNOWN;
 				}
 				if (IsConst(Command.rt)&&IsConst(Command.rs)) {
 					MipsReg(Command.rd)=
-						Is64Bit(Command.rs)?MipsReg(Command.rs):(_int64)MipsRegLo_S(Command.rs) -
+						Is64Bit(Command.rs)?MipsReg(Command.rs):(_int64)MipsRegLo_S(Command.rs)-
 						Is64Bit(Command.rt)?MipsReg(Command.rt):(_int64)MipsRegLo_S(Command.rt);
 					MipsRegState(Command.rd)=STATE_CONST_64;
 				} else {
@@ -1066,7 +1066,7 @@ void _fastcall FillSectionInfo(BLOCK_SECTION*Section) {
 				}
 				break;
 			case R4300i_SPECIAL_DSLL:
-				if (Command.rd==0) { break; }
+				if (Command.rd==0) {break;}
 				if (Section->InLoop&&Command.rt==Command.rd) {
 					MipsRegState(Command.rd)=STATE_UNKNOWN;
 				}
@@ -1078,7 +1078,7 @@ void _fastcall FillSectionInfo(BLOCK_SECTION*Section) {
 				}
 				break;
 			case R4300i_SPECIAL_DSRL:
-				if (Command.rd==0) { break; }
+				if (Command.rd==0) {break;}
 				if (Section->InLoop&&Command.rt==Command.rd) {
 					MipsRegState(Command.rd)=STATE_UNKNOWN;
 				}
@@ -1090,7 +1090,7 @@ void _fastcall FillSectionInfo(BLOCK_SECTION*Section) {
 				}
 				break;
 			case R4300i_SPECIAL_DSRA:
-				if (Command.rd==0) { break; }
+				if (Command.rd==0) {break;}
 				if (Section->InLoop&&Command.rt==Command.rd) {
 					MipsRegState(Command.rd)=STATE_UNKNOWN;
 				}
@@ -1102,7 +1102,7 @@ void _fastcall FillSectionInfo(BLOCK_SECTION*Section) {
 				}
 				break;
 			case R4300i_SPECIAL_DSLL32:
-				if (Command.rd==0) { break; }
+				if (Command.rd==0) {break;}
 				if (Section->InLoop&&Command.rt==Command.rd) {
 					MipsRegState(Command.rd)=STATE_UNKNOWN;
 				}
@@ -1114,7 +1114,7 @@ void _fastcall FillSectionInfo(BLOCK_SECTION*Section) {
 				}
 				break;
 			case R4300i_SPECIAL_DSRL32:
-				if (Command.rd==0) { break; }
+				if (Command.rd==0) {break;}
 				if (Section->InLoop&&Command.rt==Command.rd) {
 					MipsRegState(Command.rd)=STATE_UNKNOWN;
 				}
@@ -1126,7 +1126,7 @@ void _fastcall FillSectionInfo(BLOCK_SECTION*Section) {
 				}
 				break;
 			case R4300i_SPECIAL_DSRA32:
-				if (Command.rd==0) { break; }
+				if (Command.rd==0) {break;}
 				if (Section->InLoop&&Command.rt==Command.rd) {
 					MipsRegState(Command.rd)=STATE_UNKNOWN;
 				}
@@ -1198,7 +1198,7 @@ void _fastcall FillSectionInfo(BLOCK_SECTION*Section) {
 		case R4300i_J:
 			SetDelay
 			Section->Jump.TargetPC=(Section->CompilePC&0xF0000000)+(Command.target<<2);
-			if (Section->CompilePC==Section->Jump.TargetPC) { Section->Jump.PermLoop=TRUE; }
+			if (Section->CompilePC==Section->Jump.TargetPC) {Section->Jump.PermLoop=TRUE;}
 			break;
 		case R4300i_BEQ:
 		case R4300i_BNE:
@@ -1215,7 +1215,7 @@ void _fastcall FillSectionInfo(BLOCK_SECTION*Section) {
 			break;
 		case R4300i_ADDI:
 		case R4300i_ADDIU:
-			if (Command.rt==0) { break; }
+			if (Command.rt==0) {break;}
 			if (Section->InLoop&&Command.rs==Command.rt) {
 				MipsRegState(Command.rt)=STATE_UNKNOWN;
 			}
@@ -1227,7 +1227,7 @@ void _fastcall FillSectionInfo(BLOCK_SECTION*Section) {
 			}
 			break;
 		case R4300i_SLTI:
-			if (Command.rt==0) { break; }
+			if (Command.rt==0) {break;}
 			if (IsConst(Command.rs)) {
 				if (Is64Bit(Command.rs)) {
 					MipsRegLo(Command.rt)=(MipsReg_S(Command.rs)<(_int64)((short)Command.immediate))?1:0;
@@ -1240,7 +1240,7 @@ void _fastcall FillSectionInfo(BLOCK_SECTION*Section) {
 			}
 			break;
 		case R4300i_SLTIU:
-			if (Command.rt==0) { break; }
+			if (Command.rt==0) {break;}
 			if (IsConst(Command.rs)) {
 				if (Is64Bit(Command.rs)) {
 					MipsRegLo(Command.rt)=(MipsReg(Command.rs)<(unsigned _int64)((short)Command.immediate))?1:0;
@@ -1253,12 +1253,12 @@ void _fastcall FillSectionInfo(BLOCK_SECTION*Section) {
 			}
 			break;
 		case R4300i_LUI:
-			if (Command.rt==0) { break; }
+			if (Command.rt==0) {break;}
 			MipsRegLo(Command.rt)=((short)Command.offset<<16);
 			MipsRegState(Command.rt)=STATE_CONST_32;
 			break;
 		case R4300i_ANDI:
-			if (Command.rt==0) { break; }
+			if (Command.rt==0) {break;}
 			if (Section->InLoop&&Command.rs==Command.rt) {
 				MipsRegState(Command.rt)=STATE_UNKNOWN;
 			}
@@ -1270,7 +1270,7 @@ void _fastcall FillSectionInfo(BLOCK_SECTION*Section) {
 			}
 			break;
 		case R4300i_ORI:
-			if (Command.rt==0) { break; }
+			if (Command.rt==0) {break;}
 			if (Section->InLoop&&Command.rs==Command.rt) {
 				MipsRegState(Command.rt)=STATE_UNKNOWN;
 			}
@@ -1282,13 +1282,13 @@ void _fastcall FillSectionInfo(BLOCK_SECTION*Section) {
 			}
 			break;
 		case R4300i_XORI:
-			if (Command.rt==0) { break; }
+			if (Command.rt==0) {break;}
 			if (Section->InLoop&&Command.rs==Command.rt) {
 				MipsRegState(Command.rt)=STATE_UNKNOWN;
 			}
 			if (IsConst(Command.rs)) {
 				MipsRegState(Command.rt)=STATE_CONST_32;
-				MipsRegLo(Command.rt)=MipsRegLo(Command.rs) ^ Command.immediate;
+				MipsRegLo(Command.rt)=MipsRegLo(Command.rs)^Command.immediate;
 			} else {
 				MipsRegState(Command.rt)=STATE_UNKNOWN;
 			}
@@ -1296,7 +1296,7 @@ void _fastcall FillSectionInfo(BLOCK_SECTION*Section) {
 		case R4300i_COP0:
 			switch (Command.rs) {
 			case R4300i_COP0_MF:
-				if (Command.rt==0) { break; }
+				if (Command.rt==0) {break;}
 				MipsRegState(Command.rt)=STATE_UNKNOWN;
 			case R4300i_COP0_MT: break;
 			default:
@@ -1316,7 +1316,7 @@ void _fastcall FillSectionInfo(BLOCK_SECTION*Section) {
 			case R4300i_COP1_CF:
 			case R4300i_COP1_MF:
 			case R4300i_COP1_DMF:
-				if (Command.rt==0) { break; }
+				if (Command.rt==0) {break;}
 				MipsRegState(Command.rt)=STATE_UNKNOWN;
 				break;
 			case R4300i_COP1_BC:
@@ -1373,7 +1373,7 @@ void _fastcall FillSectionInfo(BLOCK_SECTION*Section) {
 			break;
 		case R4300i_DADDI:
 		case R4300i_DADDIU:
-			if (Command.rt==0) { break; }
+			if (Command.rt==0) {break;}
 			if (Section->InLoop&&Command.rs==Command.rt) {
 				MipsRegState(Command.rt)=STATE_UNKNOWN;
 			}
@@ -1403,7 +1403,7 @@ void _fastcall FillSectionInfo(BLOCK_SECTION*Section) {
 		case R4300i_LWR:
 		case R4300i_SC:
 		case R4300i_LD:
-			if (Command.rt==0) { break; }
+			if (Command.rt==0) {break;}
 			MipsRegState(Command.rt)=STATE_UNKNOWN;
 		case R4300i_SB:
 		case R4300i_SH:
@@ -1421,7 +1421,7 @@ void _fastcall FillSectionInfo(BLOCK_SECTION*Section) {
 		default:
 			SetEnd
 			SectionCPC4
-			if (Command.Hex==0x7C1C97C0||Command.Hex==0x7FFFFFFF||Command.Hex==0xF1F3F5F7||Command.Hex==0xC1200000||Command.Hex==0x4C5A5353) { break; }
+			if (Command.Hex==0x7C1C97C0||Command.Hex==0x7FFFFFFF||Command.Hex==0xF1F3F5F7||Command.Hex==0xC1200000||Command.Hex==0x4C5A5353) {break;}
 		}
 		switch (NextInstruction) {
 		case NORMAL:
@@ -1470,16 +1470,16 @@ void _fastcall FixConstants (BLOCK_SECTION*Section,DWORD Test,int*Changed) {
 	BLOCK_SECTION*Parent;
 	int count,NoOfParents;
 	REG_INFO Original[2];
-	if (Section==NULL||Section->Test==Test) return;
+	if (Section==0||Section->Test==Test) return;
 	Section->Test=Test;
 	InheritConstants(Section);
 	memcpy(&Original[0],&Section->Cont.RegSet,sizeof(REG_INFO));
 	memcpy(&Original[1],&Section->Jump.RegSet,sizeof(REG_INFO));
 	if (Section->ParentSection) {
-		for (NoOfParents=0;Section->ParentSection[NoOfParents]!=NULL;NoOfParents++) {
+		for (NoOfParents=0;Section->ParentSection[NoOfParents]!=0;NoOfParents++) {
 			Parent=Section->ParentSection[NoOfParents];
 			if (Parent->ContinueSection==Section) {
-				for (count=0; count<32; count++) {
+				for (count=0;count<32;count++) {
 					if (Section->RegStart.MIPS_RegState[count]!=Parent->Cont.RegSet.MIPS_RegState[count]) {
 						Section->RegStart.MIPS_RegState[count]=STATE_UNKNOWN;
 					}
@@ -1487,7 +1487,7 @@ void _fastcall FixConstants (BLOCK_SECTION*Section,DWORD Test,int*Changed) {
 				}
 			}
 			if (Parent->JumpSection==Section) {
-				for (count=0; count<32; count++) {
+				for (count=0;count<32;count++) {
 					if (Section->RegStart.MIPS_RegState[count]!=Parent->Jump.RegSet.MIPS_RegState[count]) {
 						Section->RegStart.MIPS_RegState[count]=STATE_UNKNOWN;
 					}
@@ -1497,10 +1497,10 @@ void _fastcall FixConstants (BLOCK_SECTION*Section,DWORD Test,int*Changed) {
 		}
 	}
 	FillSectionInfo(Section);
-	if (memcmp(&Original[0],&Section->Cont.RegSet,sizeof(REG_INFO))!=0) {*Changed=TRUE; }
-	if (memcmp(&Original[1],&Section->Jump.RegSet,sizeof(REG_INFO))!=0) {*Changed=TRUE; }
-	if (Section->JumpSection) { FixConstants(Section->JumpSection,Test,Changed); }
-	if (Section->ContinueSection) { FixConstants(Section->ContinueSection,Test,Changed); }
+	if (memcmp(&Original[0],&Section->Cont.RegSet,sizeof(REG_INFO))!=0) {*Changed=TRUE;}
+	if (memcmp(&Original[1],&Section->Jump.RegSet,sizeof(REG_INFO))!=0) {*Changed=TRUE;}
+	if (Section->JumpSection) {FixConstants(Section->JumpSection,Test,Changed);}
+	if (Section->ContinueSection) {FixConstants(Section->ContinueSection,Test,Changed);}
 }
 void FixRandomReg (void) {
 	while ((int)Registers.CP0[1]<(int)Registers.CP0[6]) {
@@ -1508,39 +1508,39 @@ void FixRandomReg (void) {
 	}
 }
 void FreeSection (BLOCK_SECTION*Section,BLOCK_SECTION*Parent) {
-	if (Section==NULL) return;
+	if (Section==0) return;
 	if (Section->ParentSection) {
 		int NoOfParents,count;
-		for (NoOfParents=0;Section->ParentSection[NoOfParents]!=NULL;NoOfParents++);
-		for (count=0; count<NoOfParents; count++) {
+		for (NoOfParents=0;Section->ParentSection[NoOfParents]!=0;NoOfParents++);
+		for (count=0;count<NoOfParents;count++) {
 			if (Section->ParentSection[count]==Parent) {
 				if (NoOfParents==1) {
 					free(Section->ParentSection);
-					Section->ParentSection=NULL;
+					Section->ParentSection=0;
 				} else {
 					memmove(&Section->ParentSection[count],&Section->ParentSection[count+1],
 						sizeof(void*)*(NoOfParents-count));
 					Section->ParentSection=realloc(Section->ParentSection,NoOfParents*sizeof(void*));
 				}
-				NoOfParents -=1;
+				NoOfParents-=1;
 			}
 		}
-		if (Parent->JumpSection==Section) { Parent->JumpSection=NULL; }
-		if (Parent->ContinueSection==Section) { Parent->ContinueSection=NULL; }
+		if (Parent->JumpSection==Section) {Parent->JumpSection=0;}
+		if (Parent->ContinueSection==Section) {Parent->ContinueSection=0;}
 		if (Section->ParentSection) {
-			for (count=0; count<NoOfParents; count++) {
+			for (count=0;count<NoOfParents;count++) {
 				if (!IsAllParentLoops(Section,Section->ParentSection[count],FALSE,GetNewTestValue())) return;
 			}
-			for (count=0; count<NoOfParents; count++) {
+			for (count=0;count<NoOfParents;count++) {
 				Parent=Section->ParentSection[count];
-				if (Parent->JumpSection==Section) { Parent->JumpSection=NULL; }
-				if (Parent->ContinueSection==Section) { Parent->ContinueSection=NULL; }
+				if (Parent->JumpSection==Section) {Parent->JumpSection=0;}
+				if (Parent->ContinueSection==Section) {Parent->ContinueSection=0;}
 			}
 			free(Section->ParentSection);
-			Section->ParentSection=NULL;
+			Section->ParentSection=0;
 		}
 	}
-	if (Section->ParentSection==NULL) {
+	if (Section->ParentSection==0) {
 		FreeSection(Section->JumpSection,Section);
 		FreeSection(Section->ContinueSection,Section);
 		free(Section);
@@ -1555,53 +1555,53 @@ void GenerateSectionLinkage (BLOCK_SECTION*Section) {
 	TargetSection[1]=Section->JumpSection;
 	JumpInfo[0]=&Section->Cont;
 	JumpInfo[1]=&Section->Jump;
-	for (count=0; count<2; count++) {
-		if (JumpInfo[count]->LinkLocation==NULL&&JumpInfo[count]->FallThrough==FALSE) {
+	for (count=0;count<2;count++) {
+		if (JumpInfo[count]->LinkLocation==0&&JumpInfo[count]->FallThrough==FALSE) {
 			JumpInfo[count]->TargetPC=-1;
 		}
 	}
 	if ((Section->CompilePC&0xFFC)==0xFFC) {
 		//Handle Fall through
-		Jump=NULL;
-		for (count=0; count<2; count++) {
+		Jump=0;
+		for (count=0;count<2;count++) {
 			if (!JumpInfo[count]->FallThrough) continue;
 			JumpInfo[count]->FallThrough=FALSE;
-			if (JumpInfo[count]->LinkLocation!=NULL) {
+			if (JumpInfo[count]->LinkLocation!=0) {
 				SetJump32(JumpInfo[count]->LinkLocation,RecompPos);
-				JumpInfo[count]->LinkLocation=NULL;
-				if (JumpInfo[count]->LinkLocation2!=NULL) {
+				JumpInfo[count]->LinkLocation=0;
+				if (JumpInfo[count]->LinkLocation2!=0) {
 					SetJump32(JumpInfo[count]->LinkLocation2,RecompPos);
-					JumpInfo[count]->LinkLocation2=NULL;
+					JumpInfo[count]->LinkLocation2=0;
 				}
 			}
 			MoveConstToVariable(JumpInfo[count]->TargetPC,&JumpToLocation);
-			if (JumpInfo[(count+1)&1]->LinkLocation==NULL) { break; }
+			if (JumpInfo[(count+1)&1]->LinkLocation==0) {break;}
 			JmpLabel8(0);
 			Jump=RecompPos-1;
 		}
-		for (count=0; count<2; count++) {
-			if (JumpInfo[count]->LinkLocation==NULL) continue;
+		for (count=0;count<2;count++) {
+			if (JumpInfo[count]->LinkLocation==0) continue;
 			JumpInfo[count]->FallThrough=FALSE;
-			if (JumpInfo[count]->LinkLocation!=NULL) {
+			if (JumpInfo[count]->LinkLocation!=0) {
 				SetJump32(JumpInfo[count]->LinkLocation,RecompPos);
-				JumpInfo[count]->LinkLocation=NULL;
-				if (JumpInfo[count]->LinkLocation2!=NULL) {
+				JumpInfo[count]->LinkLocation=0;
+				if (JumpInfo[count]->LinkLocation2!=0) {
 					SetJump32(JumpInfo[count]->LinkLocation2,RecompPos);
-					JumpInfo[count]->LinkLocation2=NULL;
+					JumpInfo[count]->LinkLocation2=0;
 				}
 			}
 			MoveConstToVariable(JumpInfo[count]->TargetPC,&JumpToLocation);
-			if (JumpInfo[(count+1)&1]->LinkLocation==NULL) { break; }
+			if (JumpInfo[(count+1)&1]->LinkLocation==0) {break;}
 			JmpLabel8(0);
 			Jump=RecompPos-1;
 		}
-		if (Jump!=NULL) SetJump8(Jump,RecompPos);
+		if (Jump!=0) SetJump8(Jump,RecompPos);
 		MoveConstToVariable(Section->CompilePC+4,&PROGRAM_COUNTER);
 		if (BlockCycleCount!=0) {
 			AddConstToVariable(BlockCycleCount,&CP0[9]);
 			SubConstFromVariable(BlockCycleCount,&Timers.Timer);
 		}
-		if (BlockRandomModifier!=0) { SubConstFromVariable(BlockRandomModifier,&CP0[1]); }
+		if (BlockRandomModifier!=0) {SubConstFromVariable(BlockRandomModifier,&CP0[1]);}
 		WriteBackRegisters(Section);
 		MoveConstToVariable(DELAY_SLOT,&NextInstruction);
 		Ret();
@@ -1614,60 +1614,60 @@ void GenerateSectionLinkage (BLOCK_SECTION*Section) {
 			LoopCD
 		}
 	}
-	if (TargetSection[0]!=TargetSection[1]||TargetSection[0]==NULL) {
-		for (count=0; count<2; count++) {
-			if (JumpInfo[count]->LinkLocation==NULL&&JumpInfo[count]->FallThrough==FALSE) {
+	if (TargetSection[0]!=TargetSection[1]||TargetSection[0]==0) {
+		for (count=0;count<2;count++) {
+			if (JumpInfo[count]->LinkLocation==0&&JumpInfo[count]->FallThrough==FALSE) {
 				FreeSection(TargetSection[count],Section);
-			} else if (TargetSection[count]==NULL&&JumpInfo[count]->FallThrough) {
-				if (JumpInfo[count]->LinkLocation!=NULL) {
+			} else if (TargetSection[count]==0&&JumpInfo[count]->FallThrough) {
+				if (JumpInfo[count]->LinkLocation!=0) {
 					SetJump32(JumpInfo[count]->LinkLocation,RecompPos);
-					JumpInfo[count]->LinkLocation=NULL;
-					if (JumpInfo[count]->LinkLocation2!=NULL) {
+					JumpInfo[count]->LinkLocation=0;
+					if (JumpInfo[count]->LinkLocation2!=0) {
 						SetJump32(JumpInfo[count]->LinkLocation2,RecompPos);
-						JumpInfo[count]->LinkLocation2=NULL;
+						JumpInfo[count]->LinkLocation2=0;
 					}
 				}
 				if (JumpInfo[count]->TargetPC>(Section->CompilePC+4)) {
-					CompileExit (JumpInfo[count]->TargetPC,JumpInfo[count]->RegSet,Normal,TRUE,NULL);
+					CompileExit (JumpInfo[count]->TargetPC,JumpInfo[count]->RegSet,Normal,TRUE,0);
 				} else {
-					CompileExit (JumpInfo[count]->TargetPC,JumpInfo[count]->RegSet,Normal,TRUE,NULL);
+					CompileExit (JumpInfo[count]->TargetPC,JumpInfo[count]->RegSet,Normal,TRUE,0);
 				}
 				JumpInfo[count]->FallThrough=FALSE;
-			} else if (TargetSection[count]!=NULL&&JumpInfo[count]!=NULL) {
+			} else if (TargetSection[count]!=0&&JumpInfo[count]!=0) {
 				if (!JumpInfo[count]->FallThrough) continue;
 				if (JumpInfo[count]->TargetPC==TargetSection[count]->StartPC) continue;
-				if (JumpInfo[count]->LinkLocation!=NULL) {
+				if (JumpInfo[count]->LinkLocation!=0) {
 					SetJump32(JumpInfo[count]->LinkLocation,RecompPos);
-					JumpInfo[count]->LinkLocation=NULL;
-					if (JumpInfo[count]->LinkLocation2!=NULL) {
+					JumpInfo[count]->LinkLocation=0;
+					if (JumpInfo[count]->LinkLocation2!=0) {
 						SetJump32(JumpInfo[count]->LinkLocation2,RecompPos);
-						JumpInfo[count]->LinkLocation2=NULL;
+						JumpInfo[count]->LinkLocation2=0;
 					}
 				}
-				CompileExit (JumpInfo[count]->TargetPC,JumpInfo[count]->RegSet,Normal,TRUE,NULL);
+				CompileExit (JumpInfo[count]->TargetPC,JumpInfo[count]->RegSet,Normal,TRUE,0);
 				FreeSection(TargetSection[count],Section);
 			}
 		}
 	} else {
-		if (Section->Cont.LinkLocation==NULL&&Section->Cont.FallThrough==FALSE) { Section->ContinueSection=NULL; }
-		if (Section->Jump.LinkLocation==NULL&&Section->Jump.FallThrough==FALSE) { Section->JumpSection=NULL; }
-		if (Section->JumpSection==NULL&& Section->ContinueSection==NULL) {
+		if (Section->Cont.LinkLocation==0&&Section->Cont.FallThrough==FALSE) {Section->ContinueSection=0;}
+		if (Section->Jump.LinkLocation==0&&Section->Jump.FallThrough==FALSE) {Section->JumpSection=0;}
+		if (Section->JumpSection==0&& Section->ContinueSection==0) {
 			FreeSection(TargetSection[0],Section);
 		}
 	}
 	TargetSection[0]=Section->ContinueSection;
 	TargetSection[1]=Section->JumpSection;
-	for (count=0; count<2; count++) {
-		if (TargetSection[count]==NULL) continue;
+	for (count=0;count<2;count++) {
+		if (TargetSection[count]==0) continue;
 		if (!JumpInfo[count]->FallThrough) continue;
-		if (TargetSection[count]->CompiledLocation!=NULL) {
+		if (TargetSection[count]->CompiledLocation!=0) {
 			JumpInfo[count]->FallThrough=FALSE;
-			if (JumpInfo[count]->LinkLocation!=NULL) {
+			if (JumpInfo[count]->LinkLocation!=0) {
 				SetJump32(JumpInfo[count]->LinkLocation,RecompPos);
-				JumpInfo[count]->LinkLocation=NULL;
-				if (JumpInfo[count]->LinkLocation2!=NULL) {
+				JumpInfo[count]->LinkLocation=0;
+				if (JumpInfo[count]->LinkLocation2!=0) {
 					SetJump32(JumpInfo[count]->LinkLocation2,RecompPos);
-					JumpInfo[count]->LinkLocation2=NULL;
+					JumpInfo[count]->LinkLocation2=0;
 				}
 			}
 			if (JumpInfo[count]->RegSet.RandomModifier!=0) {
@@ -1677,7 +1677,7 @@ void GenerateSectionLinkage (BLOCK_SECTION*Section) {
 			if (JumpInfo[count]->RegSet.CycleCount!=0) {
 				AddConstToVariable(JumpInfo[count]->RegSet.CycleCount,&CP0[9]);
 			}
-			if (JumpInfo[count]->TargetPC <=Section->CompilePC) {
+			if (JumpInfo[count]->TargetPC<=Section->CompilePC) {
 				DWORD CycleCount=JumpInfo[count]->RegSet.CycleCount;
 				JumpInfo[count]->RegSet.CycleCount=0;
 				if (JumpInfo[count]->PermLoop) {
@@ -1699,13 +1699,13 @@ void GenerateSectionLinkage (BLOCK_SECTION*Section) {
 			SetJump32((DWORD*)RecompPos-1,TargetSection[count]->CompiledLocation);
 		}
 	}
-	for (count=0; count<2; count++) {
+	for (count=0;count<2;count++) {
 		int count2;
-		if (TargetSection[count]==NULL) continue;
-		if (TargetSection[count]->ParentSection==NULL) continue;
-		for (count2=0;TargetSection[count]->ParentSection[count2]!=NULL;count2++) {
+		if (TargetSection[count]==0) continue;
+		if (TargetSection[count]->ParentSection==0) continue;
+		for (count2=0;TargetSection[count]->ParentSection[count2]!=0;count2++) {
 			Parent=TargetSection[count]->ParentSection[count2];
-			if (Parent->CompiledLocation!=NULL) continue;
+			if (Parent->CompiledLocation!=0) continue;
 			if (JumpInfo[count]->FallThrough) {
 				JumpInfo[count]->FallThrough=FALSE;
 				JmpLabel32(0);
@@ -1713,7 +1713,7 @@ void GenerateSectionLinkage (BLOCK_SECTION*Section) {
 			}
 		}
 	}
-	for (count=0; count<2; count++) {
+	for (count=0;count<2;count++) {
 		if (JumpInfo[count]->FallThrough) {
 			if (JumpInfo[count]->TargetPC<Section->CompilePC) {
 				DWORD CycleCount=JumpInfo[count]->RegSet.CycleCount;
@@ -1729,31 +1729,31 @@ void GenerateSectionLinkage (BLOCK_SECTION*Section) {
 			}
 		}
 	}
-	for (count=0; count<2; count++) {
+	for (count=0;count<2;count++) {
 		if (JumpInfo[count]->FallThrough) {
 			GenerateX86Code(TargetSection[count],GetNewTestValue());
 		}
 	}
-	for (count=0; count<2; count++) {
-		if (JumpInfo[count]->LinkLocation==NULL) continue;
-		if (TargetSection[count]==NULL) {
+	for (count=0;count<2;count++) {
+		if (JumpInfo[count]->LinkLocation==0) continue;
+		if (TargetSection[count]==0) {
 			SetJump32(JumpInfo[count]->LinkLocation,RecompPos);
-			JumpInfo[count]->LinkLocation=NULL;
-			if (JumpInfo[count]->LinkLocation2!=NULL) {
+			JumpInfo[count]->LinkLocation=0;
+			if (JumpInfo[count]->LinkLocation2!=0) {
 				SetJump32(JumpInfo[count]->LinkLocation2,RecompPos);
-				JumpInfo[count]->LinkLocation2=NULL;
+				JumpInfo[count]->LinkLocation2=0;
 			}
-			CompileExit (JumpInfo[count]->TargetPC,JumpInfo[count]->RegSet,Normal,TRUE,NULL);
+			CompileExit (JumpInfo[count]->TargetPC,JumpInfo[count]->RegSet,Normal,TRUE,0);
 			continue;
 		}
-		if (TargetSection[count]->CompiledLocation==NULL) {
+		if (TargetSection[count]->CompiledLocation==0) {
 			GenerateX86Code(TargetSection[count],GetNewTestValue());
 		} else {
 			SetJump32(JumpInfo[count]->LinkLocation,RecompPos);
-			JumpInfo[count]->LinkLocation=NULL;
-			if (JumpInfo[count]->LinkLocation2!=NULL) {
+			JumpInfo[count]->LinkLocation=0;
+			if (JumpInfo[count]->LinkLocation2!=0) {
 				SetJump32(JumpInfo[count]->LinkLocation2,RecompPos);
-				JumpInfo[count]->LinkLocation2=NULL;
+				JumpInfo[count]->LinkLocation2=0;
 			}
 			memcpy(&Section->RegWorking,&JumpInfo[count]->RegSet,sizeof(REG_INFO));
 			if (JumpInfo[count]->RegSet.RandomModifier!=0) {
@@ -1763,7 +1763,7 @@ void GenerateSectionLinkage (BLOCK_SECTION*Section) {
 			if (JumpInfo[count]->RegSet.CycleCount!=0) {
 				AddConstToVariable(JumpInfo[count]->RegSet.CycleCount,&CP0[9]);
 			}
-			if (JumpInfo[count]->TargetPC <=Section->CompilePC) {
+			if (JumpInfo[count]->TargetPC<=Section->CompilePC) {
 				DWORD CycleCount=JumpInfo[count]->RegSet.CycleCount;
 				JumpInfo[count]->RegSet.CycleCount=0;
 				if (JumpInfo[count]->PermLoop) {
@@ -1788,18 +1788,18 @@ void GenerateSectionLinkage (BLOCK_SECTION*Section) {
 }
 BOOL GenerateX86Code (BLOCK_SECTION*Section,DWORD Test) {
 	int count;
-	if (Section==NULL) return FALSE;
-	if (Section->CompiledLocation!=NULL) {
+	if (Section==0) return FALSE;
+	if (Section->CompiledLocation!=0) {
 		if (Section->Test==Test) return FALSE;
 		Section->Test=Test;
 		if (GenerateX86Code(Section->ContinueSection,Test)||GenerateX86Code(Section->JumpSection,Test)) return TRUE;
 		return FALSE;
 	}
 	if (Section->ParentSection) {
-		for (count=0;Section->ParentSection[count]!=NULL;count++) {
+		for (count=0;Section->ParentSection[count]!=0;count++) {
 			BLOCK_SECTION*Parent;
 			Parent=Section->ParentSection[count];
-			if (Parent->CompiledLocation!=NULL) continue;
+			if (Parent->CompiledLocation!=0) continue;
 			if (IsAllParentLoops(Section,Parent,TRUE,GetNewTestValue())) continue;
 			return FALSE;
 		}
@@ -1829,7 +1829,7 @@ BOOL GenerateX86Code (BLOCK_SECTION*Section,DWORD Test) {
 		UnMap_AllFPRs(Section);
 		if ((Section->CompilePC&0xFFC)==0xFFC) {
 			if (NextInstruction==NORMAL) {
-				CompileExit (Section->CompilePC+4,Section->RegWorking,Normal,TRUE,NULL);
+				CompileExit (Section->CompilePC+4,Section->RegWorking,Normal,TRUE,0);
 				SetEnd
 			}
 		}
@@ -1843,8 +1843,8 @@ BOOL GenerateX86Code (BLOCK_SECTION*Section,DWORD Test) {
 			break;
 		case DELAY_SLOT:
 			NextInstruction=DELAY_SLOT_DONE;
-			BlockCycleCount -=CountPerOp;
-			BlockRandomModifier -=1;
+			BlockCycleCount-=CountPerOp;
+			BlockRandomModifier-=1;
 			SectionCPC4
 			break;
 		}
@@ -1853,7 +1853,7 @@ BOOL GenerateX86Code (BLOCK_SECTION*Section,DWORD Test) {
 }
 DWORD GetNewTestValue() {
 	static DWORD LastTest=0;
-	if (LastTest==0xFFFFFFFF) { LastTest=0; }
+	if (LastTest==0xFFFFFFFF) {LastTest=0;}
 	LastTest+=1;
 	return LastTest;
 }
@@ -1861,11 +1861,11 @@ void InitializeRegSet(REG_INFO*RegSet) {
 	int count;
 	RegSet->MIPS_RegState[0]=STATE_CONST_32;
 	RegSet->MIPS_RegVal[0].DW=0;
-	for (count=1; count<32; count++) {
+	for (count=1;count<32;count++) {
 		RegSet->MIPS_RegState[count] =STATE_UNKNOWN;
 		RegSet->MIPS_RegVal[count].DW=0;
 	}
-	for (count=0; count<10; count++) {
+	for (count=0;count<10;count++) {
 		RegSet->x86reg_MappedTo[count]=NotMapped;
 		RegSet->x86reg_Protected[count]=FALSE;
 		RegSet->x86reg_MapOrder[count]=0;
@@ -1873,7 +1873,7 @@ void InitializeRegSet(REG_INFO*RegSet) {
 	RegSet->CycleCount=0;
 	RegSet->RandomModifier=0;
 	RegSet->Stack_TopPos=0;
-	for (count=0; count<8; count++) {
+	for (count=0;count<8;count++) {
 		RegSet->x86fpu_MappedTo[count]=-1;
 		RegSet->x86fpu_State[count]=FPU_Unkown;
 		RegSet->x86fpu_RoundingModel[count]=RoundDefault;
@@ -1885,7 +1885,7 @@ void _fastcall InheritConstants(BLOCK_SECTION*Section) {
 	int NoOfParents,count;
 	BLOCK_SECTION*Parent;
 	REG_INFO*RegSet;
-	if (Section->ParentSection==NULL) {
+	if (Section->ParentSection==0) {
 		InitializeRegSet(&Section->RegStart);
 		memcpy(&Section->RegWorking,&Section->RegStart,sizeof(REG_INFO));
 		return;
@@ -1894,10 +1894,10 @@ void _fastcall InheritConstants(BLOCK_SECTION*Section) {
 	RegSet=Section==Parent->ContinueSection?&Parent->Cont.RegSet:&Parent->Jump.RegSet;
 	memcpy(&Section->RegStart,RegSet,sizeof(REG_INFO));
 	memcpy(&Section->RegWorking,&Section->RegStart,sizeof(REG_INFO));
-	for (NoOfParents=1;Section->ParentSection[NoOfParents]!=NULL;NoOfParents++) {
+	for (NoOfParents=1;Section->ParentSection[NoOfParents]!=0;NoOfParents++) {
 		Parent=Section->ParentSection[NoOfParents];
 		RegSet=Section==Parent->ContinueSection?&Parent->Cont.RegSet:&Parent->Jump.RegSet;
-		for (count=0; count<32; count++) {
+		for (count=0;count<32;count++) {
 			if (IsConst(count)) {
 				if (MipsRegState(count)!=RegSet->MIPS_RegState[count]) {
 					MipsRegState(count)=STATE_UNKNOWN;
@@ -1918,13 +1918,13 @@ BOOL InheritParentInfo (BLOCK_SECTION*Section) {
 	JUMP_INFO*JumpInfo;
 	BOOL NeedSync;
 	DisplaySectionInformation(Section,Section->SectionID,GetNewTestValue());
-	if (Section->ParentSection==NULL) {
+	if (Section->ParentSection==0) {
 		InitializeRegSet(&Section->RegStart);
 		memcpy(&Section->RegWorking,&Section->RegStart,sizeof(REG_INFO));
 		return TRUE;
 	}
 	NoOfParents=0;
-	for (count=0;Section->ParentSection[count]!=NULL;count++) {
+	for (count=0;Section->ParentSection[count]!=0;count++) {
 		Parent=Section->ParentSection[count];
 		NoOfParents+=Parent->JumpSection!=Parent->ContinueSection?1:2;
 	}
@@ -1932,12 +1932,12 @@ BOOL InheritParentInfo (BLOCK_SECTION*Section) {
 		return FALSE;
 	} else if (NoOfParents==1) {
 		Parent=Section->ParentSection[0];
-		if (Section==Parent->ContinueSection) { JumpInfo=&Parent->Cont; }
-		else if (Section==Parent->JumpSection) { JumpInfo=&Parent->Jump; }
+		if (Section==Parent->ContinueSection) {JumpInfo=&Parent->Cont;}
+		else if (Section==Parent->JumpSection) {JumpInfo=&Parent->Jump;}
 		memcpy(&Section->RegStart,&JumpInfo->RegSet,sizeof(REG_INFO));
-		if (JumpInfo->LinkLocation!=NULL) {
+		if (JumpInfo->LinkLocation!=0) {
 			SetJump32(JumpInfo->LinkLocation,RecompPos);
-			if (JumpInfo->LinkLocation2!=NULL) {
+			if (JumpInfo->LinkLocation2!=0) {
 				SetJump32(JumpInfo->LinkLocation2,RecompPos);
 			}
 		}
@@ -1945,17 +1945,17 @@ BOOL InheritParentInfo (BLOCK_SECTION*Section) {
 		return TRUE;
 	}
 	//Multiple Parents
-	for (count=0,NoOfCompiledParents=0;Section->ParentSection[count]!=NULL;count++) {
+	for (count=0,NoOfCompiledParents=0;Section->ParentSection[count]!=0;count++) {
 		Parent=Section->ParentSection[count];
-		if (Parent->CompiledLocation!=NULL) {
+		if (Parent->CompiledLocation!=0) {
 			NoOfCompiledParents+=Parent->JumpSection!=Parent->ContinueSection?1:2;
 		}
 	}
 	if (NoOfCompiledParents==0) return FALSE;
 	SectionParents=(BLOCK_PARENT*)malloc(NoOfParents*sizeof(BLOCK_PARENT));
-	for (count=0,NoOfCompiledParents=0;Section->ParentSection[count]!=NULL;count++) {
+	for (count=0,NoOfCompiledParents=0;Section->ParentSection[count]!=0;count++) {
 		Parent=Section->ParentSection[count];
-		if (Parent->CompiledLocation==NULL) continue;
+		if (Parent->CompiledLocation==0) continue;
 		if (Parent->JumpSection!=Parent->ContinueSection) {
 			SectionParents[NoOfCompiledParents].Parent=Parent;
 			SectionParents[NoOfCompiledParents].JumpInfo=
@@ -1971,9 +1971,9 @@ BOOL InheritParentInfo (BLOCK_SECTION*Section) {
 		}
 	}
 	start=NoOfCompiledParents;
-	for (count=0;Section->ParentSection[count]!=NULL;count++) {
+	for (count=0;Section->ParentSection[count]!=0;count++) {
 		Parent=Section->ParentSection[count];
-		if (Parent->CompiledLocation!=NULL) continue;
+		if (Parent->CompiledLocation!=0) continue;
 		if (Parent->JumpSection!=Parent->ContinueSection) {
 			SectionParents[start].Parent=Parent;
 			SectionParents[start].JumpInfo=
@@ -1998,15 +1998,15 @@ BOOL InheritParentInfo (BLOCK_SECTION*Section) {
 	Parent=SectionParents[FirstParent].Parent;
 	JumpInfo=SectionParents[FirstParent].JumpInfo;
 	memcpy(&Section->RegWorking,&JumpInfo->RegSet,sizeof(REG_INFO));
-	if (JumpInfo->LinkLocation!=NULL) {
+	if (JumpInfo->LinkLocation!=0) {
 		SetJump32(JumpInfo->LinkLocation,RecompPos);
-		JumpInfo->LinkLocation=NULL;
-		if (JumpInfo->LinkLocation2!=NULL) {
+		JumpInfo->LinkLocation=0;
+		if (JumpInfo->LinkLocation2!=0) {
 			SetJump32(JumpInfo->LinkLocation2,RecompPos);
-			JumpInfo->LinkLocation2=NULL;
+			JumpInfo->LinkLocation2=0;
 		}
 	}
-	if (BlockRandomModifier!=0) { SubConstFromVariable(BlockRandomModifier,&CP0[1]); }
+	if (BlockRandomModifier!=0) {SubConstFromVariable(BlockRandomModifier,&CP0[1]);}
 	if (BlockCycleCount!=0) {
 		AddConstToVariable(BlockCycleCount,&CP0[9]);
 		SubConstFromVariable(BlockCycleCount,&Timers.Timer);
@@ -2020,11 +2020,11 @@ BOOL InheritParentInfo (BLOCK_SECTION*Section) {
 		if (count==FirstParent) continue;
 		Parent=SectionParents[count].Parent;
 		RegSet=&SectionParents[count].JumpInfo->RegSet;
-		if (CurrentRoundingModel!=RegSet->RoundingModel) { CurrentRoundingModel=RoundUnknown; }
-		if (NoOfParents!=NoOfCompiledParents) { CurrentRoundingModel=RoundUnknown; }
+		if (CurrentRoundingModel!=RegSet->RoundingModel) {CurrentRoundingModel=RoundUnknown;}
+		if (NoOfParents!=NoOfCompiledParents) {CurrentRoundingModel=RoundUnknown;}
 		//Find Parent MapRegState
 		MemoryStackPos=-1;
-		for (count2=1; count2<10; count2++) {
+		for (count2=1;count2<10;count2++) {
 			if (RegSet->x86reg_MappedTo[count2]==Stack_Mapped) {
 				MemoryStackPos=count2;
 				break;
@@ -2035,7 +2035,7 @@ BOOL InheritParentInfo (BLOCK_SECTION*Section) {
 				UnMap_X86reg(Section,Map_MemoryStack(Section,FALSE));
 			}
 		}
-		for (count2=1; count2<32; count2++) {
+		for (count2=1;count2<32;count2++) {
 			if (Is32BitMapped(count2)) {
 				switch (RegSet->MIPS_RegState[count2]) {
 				case STATE_MAPPED_64: Map_GPR_64bit(Section,count2,count2);
@@ -2067,7 +2067,7 @@ BOOL InheritParentInfo (BLOCK_SECTION*Section) {
 					Map_GPR_32bit(Section,count2,TRUE,count2);
 				}
 			}
-			for (count3=1; count3<10; count3++) { x86Protected(count3)=FALSE; }
+			for (count3=1;count3<10;count3++) {x86Protected(count3)=FALSE;}
 		}
 	}
 	memcpy(&Section->RegStart,&Section->RegWorking,sizeof(REG_INFO));
@@ -2081,14 +2081,14 @@ BOOL InheritParentInfo (BLOCK_SECTION*Section) {
 		Parent  =SectionParents[count].Parent;
 		JumpInfo=SectionParents[count].JumpInfo;
 		RegSet =&SectionParents[count].JumpInfo->RegSet;
-		if (JumpInfo->RegSet.CycleCount!=0) { NeedSync=TRUE; }
-		if (JumpInfo->RegSet.RandomModifier !=0) { NeedSync=TRUE; }
-		for (count2=0; count2<8; count2++) {
+		if (JumpInfo->RegSet.CycleCount!=0) {NeedSync=TRUE;}
+		if (JumpInfo->RegSet.RandomModifier !=0) {NeedSync=TRUE;}
+		for (count2=0;count2<8;count2++) {
 			if (FpuMappedTo(count2)==(DWORD)-1) {
 				NeedSync=TRUE;
 			}
 		}
-		for (count2=1; count2<10; count2++) {
+		for (count2=1;count2<10;count2++) {
 			if (x86Mapped(count2)==Stack_Mapped) {
 				if (x86Mapped(count2)!=RegSet->x86reg_MappedTo[count2]) {
 					NeedSync=TRUE;
@@ -2096,8 +2096,8 @@ BOOL InheritParentInfo (BLOCK_SECTION*Section) {
 				break;
 			}
 		}
-		for (count2=0; count2<32; count2++) {
-			if (NeedSync==TRUE)  { break; }
+		for (count2=0;count2<32;count2++) {
+			if (NeedSync==TRUE)  {break;}
 			if (MipsRegState(count2)!=RegSet->MIPS_RegState[count2]) {
 				NeedSync=TRUE;
 				continue;
@@ -2123,36 +2123,36 @@ BOOL InheritParentInfo (BLOCK_SECTION*Section) {
 		JumpInfo=SectionParents[CurrentParent].JumpInfo;
 		JmpLabel32(0);
 		JumpInfo->LinkLocation=RecompPos-4;
-		JumpInfo->LinkLocation2=NULL;
+		JumpInfo->LinkLocation2=0;
 		CurrentParent=count;
 		Parent =SectionParents[CurrentParent].Parent;
 		JumpInfo=SectionParents[CurrentParent].JumpInfo;
-		if (JumpInfo->LinkLocation!=NULL) {
+		if (JumpInfo->LinkLocation!=0) {
 			SetJump32(JumpInfo->LinkLocation,RecompPos);
-			JumpInfo->LinkLocation=NULL;
-			if (JumpInfo->LinkLocation2!=NULL) {
+			JumpInfo->LinkLocation=0;
+			if (JumpInfo->LinkLocation2!=0) {
 				SetJump32(JumpInfo->LinkLocation2,RecompPos);
-				JumpInfo->LinkLocation2=NULL;
+				JumpInfo->LinkLocation2=0;
 			}
 		}
 		memcpy(&Section->RegWorking,&JumpInfo->RegSet,sizeof(REG_INFO));
-		if (BlockRandomModifier!=0) { SubConstFromVariable(BlockRandomModifier,&CP0[1]); }
+		if (BlockRandomModifier!=0) {SubConstFromVariable(BlockRandomModifier,&CP0[1]);}
 		if (BlockCycleCount!=0) {
 			AddConstToVariable(BlockCycleCount,&CP0[9]);
 			SubConstFromVariable(BlockCycleCount,&Timers.Timer);
 		}
-		SyncRegState(Section,&Section->RegStart); 		//Sync
+		SyncRegState(Section,&Section->RegStart);		//Sync
 		memcpy(&Section->RegStart,&Section->RegWorking,sizeof(REG_INFO));
 	}
 	for (count=0;count<NoOfCompiledParents;count++) {
 		Parent =SectionParents[count].Parent;
 		JumpInfo=SectionParents[count].JumpInfo;
-		if (JumpInfo->LinkLocation!=NULL) {
+		if (JumpInfo->LinkLocation!=0) {
 			SetJump32(JumpInfo->LinkLocation,RecompPos);
-			JumpInfo->LinkLocation=NULL;
-			if (JumpInfo->LinkLocation2!=NULL) {
+			JumpInfo->LinkLocation=0;
+			if (JumpInfo->LinkLocation2!=0) {
 				SetJump32(JumpInfo->LinkLocation2,RecompPos);
-				JumpInfo->LinkLocation2=NULL;
+				JumpInfo->LinkLocation2=0;
 			}
 		}
 	}
@@ -2163,33 +2163,33 @@ BOOL InheritParentInfo (BLOCK_SECTION*Section) {
 }
 BOOL IsAllParentLoops(BLOCK_SECTION*Section,BLOCK_SECTION*Parent,BOOL IgnoreIfCompiled,DWORD Test) {
 	int count;
-	if (IgnoreIfCompiled&&Parent->CompiledLocation!=NULL) return TRUE;
-	if (!Section->InLoop||!Parent->InLoop||Parent->ParentSection==NULL) return FALSE;
+	if (IgnoreIfCompiled&&Parent->CompiledLocation!=0) return TRUE;
+	if (!Section->InLoop||!Parent->InLoop||Parent->ParentSection==0) return FALSE;
 	if (Section==Parent||Parent->Test==Test) return TRUE;
 	Parent->Test=Test;
-	for (count=0;Parent->ParentSection[count]!=NULL;count++) {
+	for (count=0;Parent->ParentSection[count]!=0;count++) {
 		if (!IsAllParentLoops(Section,Parent->ParentSection[count],IgnoreIfCompiled,Test)) return FALSE;
 	}
 	return TRUE;
 }
 void _fastcall InitializeSection (BLOCK_SECTION*Section,BLOCK_SECTION*Parent,DWORD StartAddr,DWORD ID) {
-	Section->ParentSection    =NULL;
-	Section->JumpSection      =NULL;
-	Section->ContinueSection  =NULL;
-	Section->CompiledLocation =NULL;
+	Section->ParentSection    =0;
+	Section->JumpSection      =0;
+	Section->ContinueSection  =0;
+	Section->CompiledLocation =0;
 	Section->SectionID        =ID;
 	Section->Test             =0;
 	Section->Test2            =0;
 	Section->InLoop           =FALSE;
 	Section->StartPC          =StartAddr;
 	Section->CompilePC        =Section->StartPC;
-	Section->Jump.LinkLocation=NULL;
-	Section->Jump.LinkLocation2=NULL;
+	Section->Jump.LinkLocation=0;
+	Section->Jump.LinkLocation2=0;
 	Section->Jump.FallThrough =FALSE;
 	Section->Jump.PermLoop    =FALSE;
 	Section->Jump.TargetPC    =(DWORD)-1;
-	Section->Cont.LinkLocation=NULL;
-	Section->Cont.LinkLocation2=NULL;
+	Section->Cont.LinkLocation=0;
+	Section->Cont.LinkLocation2=0;
 	Section->Cont.FallThrough =FALSE;
 	Section->Cont.PermLoop    =FALSE;
 	Section->Cont.TargetPC    =(DWORD)-1;
@@ -2198,32 +2198,32 @@ void _fastcall InitializeSection (BLOCK_SECTION*Section,BLOCK_SECTION*Parent,DWO
 void MarkCodeBlock (DWORD PAddr) {
 	if (PAddr<RDRAMsize) {
 		N64_Blocks.NoOfRDRAMBlocks[PAddr>>12]+=1;
-	} else if (PAddr>=0x04000000&&PAddr <=0x04000FFC) {
+	} else if (PAddr>=0x04000000&&PAddr<=0x04000FFC) {
 		N64_Blocks.NoOfDMEMBlocks+=1;
-	} else if (PAddr>=0x04001000&&PAddr <=0x04001FFC) {
+	} else if (PAddr>=0x04001000&&PAddr<=0x04001FFC) {
 		N64_Blocks.NoOfIMEMBlocks+=1;
-	} else if (PAddr>=0x1FC00000&&PAddr <=0x1FC00800) {
+	} else if (PAddr>=0x1FC00000&&PAddr<=0x1FC00800) {
 		N64_Blocks.NoOfPifRomBlocks+=1;
 	}
 }
 void StartRecompilerCPU (void) {
 	DWORD Addr;
 	BYTE*Block;
-	CoInitialize(NULL);
-	if (TargetInfo==NULL&&ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_OFF) {
-		TargetInfo=VirtualAlloc(NULL,MaxCodeBlocks*sizeof(TARGET_INFO),MEM_COMMIT|MEM_RESERVE,PAGE_READWRITE);
-		if (TargetInfo==NULL) {
+	CoInitialize(0);
+	if (TargetInfo==0&&ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_OFF) {
+		TargetInfo=VirtualAlloc(0,MaxCodeBlocks*sizeof(TARGET_INFO),MEM_COMMIT|MEM_RESERVE,PAGE_READWRITE);
+		if (TargetInfo==0) {
 			DisplayError(GS(MSG_MEM_ALLOC_ERROR));
-			DisplayThreadExit("StartRecompilerCPU-TargetInfo==NULL&&ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_OFF-TargetInfo==NUL");
+			DisplayThreadExit("StartRecompilerCPU-TargetInfo==0&&ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_OFF-TargetInfo==NUL");
 		}
 		TargetIndex=0;
 	}
-	if (OrigMem!=NULL) {
+	if (OrigMem!=0) {
 		VirtualFree(OrigMem,0,MEM_RELEASE);
-		OrigMem=NULL;
+		OrigMem=0;
 	}
-	if (GfxRomOpen!=NULL&&(!inFullScreen||strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0)) { GfxRomOpen(); }
-	if (ContRomOpen!=NULL&&!GonetzGLNeedsToBeSetupFirst) { ContRomOpen(); }
+	if (GfxRomOpen!=0&&(!inFullScreen||strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0)) {GfxRomOpen();}
+	if (ContRomOpen!=0&&!GLideN64NeedsToBeSetupFirst) {ContRomOpen();}
 	ResetRecompCode();
 	memset(&N64_Blocks,0,sizeof(N64_Blocks));
 	SetNormal
@@ -2243,8 +2243,8 @@ void StartRecompilerCPU (void) {
 			if (NextInstruction==DELAY_SLOT) {
 				__try {
 					Block=*(DelaySlotTable+(Addr>>12));
-				} __except(EXCEPTION_EXECUTE_HANDLER) { DisplayThreadExit("StartRecompilerCPU-EXCEPTION_EXECUTE_HANDLER"); }
-				if (Block==NULL) {
+				} __except(EXCEPTION_EXECUTE_HANDLER) {DisplayThreadExit("StartRecompilerCPU-EXCEPTION_EXECUTE_HANDLER");}
+				if (Block==0) {
 					DWORD OldProtect;
 					Block=CompileDelaySlot();
 					*(DelaySlotTable+(Addr>>12))=Block;
@@ -2291,24 +2291,24 @@ void StartRecompilerCPU (void) {
 					}
 				}
 			}
-			if (ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_OFF&&Block!=NULL&&strcmp(RomName,"RAT ATTACK")!=0) {
+			if (ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_OFF&&Block!=0&&strcmp(RomName,"RAT ATTACK")!=0) {
 				TARGET_INFO*Target=(TARGET_INFO*)Block;
 				if (*(QWORD*)(N64MEM+Addr)!=Target->OriginalMemory) {
 					DWORD Start=(Addr&~0xFFF)-0x10000,End=Start+0x20000,count;
-					if (End<RDRAMsize) { End=RDRAMsize; }
-					for (count=(Start>>12); count<(End>>12); count++) {
+					if (End<RDRAMsize) {End=RDRAMsize;}
+					for (count=(Start>>12);count<(End>>12);count++) {
 						if (N64_Blocks.NoOfRDRAMBlocks[count]>0) {
 							N64_Blocks.NoOfRDRAMBlocks[count]=0;
 							memset(JumpTable+(count<<10),0,0x1000);
-							*(DelaySlotTable+count)=NULL;
+							*(DelaySlotTable+count)=0;
 						}
 					}
-					Block=NULL;
+					Block=0;
 				} else {
 					Block=Target->CodeBlock;
 				}
 			}
-			if (Block==NULL) {
+			if (Block==0) {
 				DWORD OldProtect;
 				__try {
 					Block=Compiler4300iBlock();
@@ -2337,19 +2337,19 @@ void StartRecompilerCPU (void) {
 				popad
 			}
 		}
-	} __except(r4300i_CPU_MemoryFilter(GetExceptionCode(),GetExceptionInformation())) { DisplayThreadExit("StartRecompilerCPU-r4300i_CPU_MemoryFilter(GetExceptionCode(),GetExceptionInformation())"); }
+	} __except(r4300i_CPU_MemoryFilter(GetExceptionCode(),GetExceptionInformation())) {DisplayThreadExit("StartRecompilerCPU-r4300i_CPU_MemoryFilter(GetExceptionCode(),GetExceptionInformation())");}
 }
 void SyncRegState (BLOCK_SECTION*Section,REG_INFO*SyncTo) {
 	int count,x86Reg,x86RegHi,changed;
 	changed=FALSE;
 	UnMap_AllFPRs(Section);
-	if (CurrentRoundingModel!=SyncTo->RoundingModel) { CurrentRoundingModel=RoundUnknown; }
+	if (CurrentRoundingModel!=SyncTo->RoundingModel) {CurrentRoundingModel=RoundUnknown;}
 	x86Reg=Map_MemoryStack(Section,FALSE);
-	for (x86Reg=1; x86Reg<10; x86Reg++) {
+	for (x86Reg=1;x86Reg<10;x86Reg++) {
 		if (x86Mapped(x86Reg)!=Stack_Mapped) continue;
 		if (SyncTo->x86reg_MappedTo[x86Reg]!=Stack_Mapped) {
 			UnMap_X86reg(Section,x86Reg);
-			for (count=1; count<10; count++) {
+			for (count=1;count<10;count++) {
 				if (SyncTo->x86reg_MappedTo[count]==Stack_Mapped) {
 					MoveX86RegToX86Reg(count,x86Reg);
 					changed=TRUE;
@@ -2361,12 +2361,12 @@ void SyncRegState (BLOCK_SECTION*Section,REG_INFO*SyncTo) {
 			changed=TRUE;
 		}
 	}
-	for (x86Reg=1; x86Reg<10; x86Reg++) {
+	for (x86Reg=1;x86Reg<10;x86Reg++) {
 		if (SyncTo->x86reg_MappedTo[x86Reg]!=Stack_Mapped) continue;
-		if (x86Mapped(x86Reg)==Stack_Mapped) { break; }
+		if (x86Mapped(x86Reg)==Stack_Mapped) {break;}
 		UnMap_X86reg(Section,x86Reg);
 	}
-	for (count=1; count<32; count++) {
+	for (count=1;count<32;count++) {
 		if (MipsRegState(count)==SyncTo->MIPS_RegState[count]) {
 			switch (MipsRegState(count)) {
 			case STATE_UNKNOWN: continue;

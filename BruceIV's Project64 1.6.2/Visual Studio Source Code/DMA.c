@@ -37,7 +37,7 @@ void PI_DMA_READ () {
 		return;
 	}
 	if (PI_CART_ADDR_REG>=0x08000000&&PI_CART_ADDR_REG <=0x08010000||PI_CART_ADDR_REG>=0x08040000&&PI_CART_ADDR_REG <=0x08050000||PI_CART_ADDR_REG>=0x08080000&&PI_CART_ADDR_REG <=0x08090000) {
-		if (SaveUsing==Auto) { SaveUsing=SRAM; }
+		if (SaveUsing==Auto) { SaveUsing=SRAM;}
 		if (SaveUsing==SRAM) {
 			DMAtoSRAM(
 				N64MEM+PI_DRAM_ADDR_REG,
@@ -61,57 +61,40 @@ void PI_DMA_READ () {
 			return;
 		}
 	}
-	if (PI_CART_ADDR_REG>=0x10000000
-		&&PI_CART_ADDR_REG<0x14000000)
-	{
+	if (PI_CART_ADDR_REG>=0x10000000&&PI_CART_ADDR_REG<0x14000000) {
 		//CART ROM
-		DWORD length=(PI_RD_LEN_REG&0xFFFFFF)+1;
-		DWORD i=(PI_CART_ADDR_REG-0x10000000);
-		DWORD romsize=0x40000000;
+		DWORD length=(PI_RD_LEN_REG&0xFFFFFF)+1,i=(PI_CART_ADDR_REG-0x10000000),romsize=0x40000000;
 		// TODO: add proper bounds check
-		length=(i+length)>romsize ?
-			(romsize-i):length;
-		length=(PI_DRAM_ADDR_REG+length)>0x7FFFFF ?
-			(0x7FFFFF-PI_DRAM_ADDR_REG):length;
-		if (i>romsize||PI_DRAM_ADDR_REG>0x7FFFFF||!SummerCart.cfg_rom_write)
-		{
+		length=(i+length)>romsize?(romsize-i):length;
+		length=(PI_DRAM_ADDR_REG+length)>0x7FFFFF?(0x7FFFFF-PI_DRAM_ADDR_REG):length;
+		if (i>romsize||PI_DRAM_ADDR_REG>0x7FFFFF||!SummerCart.cfg_rom_write) {
 			PI_STATUS_REG&=~PI_STATUS_DMA_BUSY;
 			MI_INTR_REG|=MI_INTR_PI;
 			CheckInterrupts();
 			return;
 		}
-		DWORD dram_address=PI_DRAM_ADDR_REG;
-		DWORD rom_address=(PI_CART_ADDR_REG-0x10000000);
-		BYTE*dram=RDRAM;
-		BYTE*rom=ROM;
-		for (i=0; i<length;++i)
-			rom[(rom_address+i) ^ 3]=dram[(dram_address+i) ^ 3];
+		DWORD dram_address=PI_DRAM_ADDR_REG,rom_address=(PI_CART_ADDR_REG-0x10000000);
+		BYTE*dram=RDRAM,*rom=ROM;
+		for (i=0; i<length;++i) rom[(rom_address+i) ^ 3]=dram[(dram_address+i) ^ 3];
 		PI_STATUS_REG&=~PI_STATUS_DMA_BUSY;
 		MI_INTR_REG|=MI_INTR_PI;
 		CheckInterrupts();
 		return;
 	}
-	if (PI_CART_ADDR_REG>=0x1ffe0000&&PI_CART_ADDR_REG<0x1fff0000)
-	{
+	if (PI_CART_ADDR_REG>=0x1ffe0000&&PI_CART_ADDR_REG<0x1fff0000) {
 		//SC64 BUFFER
-		DWORD length=(PI_RD_LEN_REG&0xFFFFFF)+1;
-		DWORD i=(PI_CART_ADDR_REG-0x1ffe0000);
+		DWORD length=(PI_RD_LEN_REG&0xFFFFFF)+1,i=(PI_CART_ADDR_REG-0x1ffe0000);
 		length=(i+length)>8192?(8192-i):length;
-		length=(PI_DRAM_ADDR_REG+length)>0x7FFFFF ?
-			(0x7FFFFF-PI_DRAM_ADDR_REG):length;
-		if (i>8192||PI_DRAM_ADDR_REG>0x7FFFFF||!SummerCart.unlock)
-		{
+		length=(PI_DRAM_ADDR_REG+length)>0x7FFFFF?(0x7FFFFF-PI_DRAM_ADDR_REG):length;
+		if (i>8192||PI_DRAM_ADDR_REG>0x7FFFFF||!SummerCart.unlock) {
 			PI_STATUS_REG&=~PI_STATUS_DMA_BUSY;
 			MI_INTR_REG|=MI_INTR_PI;
 			CheckInterrupts();
 			return;
 		}
-		DWORD dram_address=PI_DRAM_ADDR_REG;
-		DWORD rom_address=(PI_CART_ADDR_REG-0x1ffe0000);
-		BYTE*dram=RDRAM;
-		BYTE*rom=SummerCart.buffer;
-		for (i=0; i<length;++i)
-			rom[(rom_address+i) ^ 3]=dram[(dram_address+i) ^ 3];
+		DWORD dram_address=PI_DRAM_ADDR_REG,rom_address=(PI_CART_ADDR_REG-0x1ffe0000);
+		BYTE*dram=RDRAM,*rom=SummerCart.buffer;
+		for (i=0; i<length;++i) rom[(rom_address+i) ^ 3]=dram[(dram_address+i) ^ 3];
 		PI_STATUS_REG&=~PI_STATUS_DMA_BUSY;
 		MI_INTR_REG|=MI_INTR_PI;
 		CheckInterrupts();
@@ -144,7 +127,7 @@ void PI_DMA_WRITE () {
 		return;
 	}
 	if (PI_CART_ADDR_REG>=0x08000000&&PI_CART_ADDR_REG <=0x08010000||PI_CART_ADDR_REG>=0x08040000&&PI_CART_ADDR_REG <=0x08050000||PI_CART_ADDR_REG>=0x08080000&&PI_CART_ADDR_REG <=0x08090000) {
-		if (SaveUsing==Auto) { SaveUsing=SRAM; }
+		if (SaveUsing==Auto) { SaveUsing=SRAM;}
 		if (SaveUsing==SRAM) {
 			DMAfromSRAM(
 				N64MEM+PI_DRAM_ADDR_REG,
@@ -157,11 +140,7 @@ void PI_DMA_WRITE () {
 			return;
 		}
 		if (SaveUsing==FlashRAM) {
-			DMAfromFlashRAM(
-				N64MEM+PI_DRAM_ADDR_REG,
-				PI_CART_ADDR_REG-0x08000000,
-				PI_WR_LEN_REG+1
-			);
+			DMAfromFlashRAM(N64MEM+PI_DRAM_ADDR_REG,PI_CART_ADDR_REG-0x08000000,PI_WR_LEN_REG+1);
 			PI_STATUS_REG&=~PI_STATUS_DMA_BUSY;
 			MI_INTR_REG|=MI_INTR_PI;
 			CheckInterrupts();
@@ -173,18 +152,11 @@ void PI_DMA_WRITE () {
 		if (PI_CART_ADDR_REG>=0x06000000&&PI_CART_ADDR_REG<0x08000000) PI_CART_ADDR_REG -=0x06000000;
 		else PI_CART_ADDR_REG -=0x10000000;
 		if (PI_CART_ADDR_REG+PI_WR_LEN_REG+1<RomFileSize) {
-			for (i=0; i<PI_WR_LEN_REG+1; i++) {
-				*(N64MEM+((PI_DRAM_ADDR_REG+i) ^ 3))=*(ROM+((PI_CART_ADDR_REG+i) ^ 3));
-			}
+			for (i=0; i<PI_WR_LEN_REG+1; i++) *(N64MEM+((PI_DRAM_ADDR_REG+i) ^ 3))=*(ROM+((PI_CART_ADDR_REG+i) ^ 3));
 		} else if (RomFileSize>PI_CART_ADDR_REG) {
-			DWORD Len;
-			Len=RomFileSize-PI_CART_ADDR_REG;
-			for (i=0; i<Len; i++) {
-				*(N64MEM+((PI_DRAM_ADDR_REG+i) ^ 3))=*(ROM+((PI_CART_ADDR_REG+i) ^ 3));
-			}
-			for (i=Len; i<PI_WR_LEN_REG+1-Len; i++) {
-				*(N64MEM+((PI_DRAM_ADDR_REG+i) ^ 3))=0;
-			}
+			DWORD Len=RomFileSize-PI_CART_ADDR_REG;
+			for (i=0; i<Len; i++) *(N64MEM+((PI_DRAM_ADDR_REG+i) ^ 3))=*(ROM+((PI_CART_ADDR_REG+i) ^ 3));
+			for (i=Len; i<PI_WR_LEN_REG+1-Len; i++) *(N64MEM+((PI_DRAM_ADDR_REG+i) ^ 3))=0;
 		}
 		if (PI_CART_ADDR_REG>=0x06000000&&PI_CART_ADDR_REG<0x08000000) PI_CART_ADDR_REG+=0x06000000;
 		else PI_CART_ADDR_REG+=0x10000000;
@@ -289,7 +261,7 @@ void SI_DMA_WRITE () {
 		int count,RDRAMPos;
 		RDRAMPos=(int)SI_DRAM_ADDR_REG;
 		for (count=0; count<0x40; count++,RDRAMPos++) {
-			if (RDRAMPos<0) { PIF_Ram[count]=0; continue; }
+			if (RDRAMPos<0) { PIF_Ram[count]=0; continue;}
 			PIF_Ram[count]=N64MEM[RDRAMPos ^3];
 		}
 	} else {

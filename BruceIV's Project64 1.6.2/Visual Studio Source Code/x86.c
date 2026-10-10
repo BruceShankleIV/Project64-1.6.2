@@ -337,7 +337,7 @@ void DecX86reg(int x86Reg) {
 	case x86_EDX: PUTDST16(RecompPos,0xCAFF); break;
 	case x86_ESI: PUTDST16(RecompPos,0xCEFF); break;
 	case x86_EDI: PUTDST16(RecompPos,0xCFFF); break;
-	case x86_ESP: PUTDST8 (RecompPos,0x4C);   break;
+	case x86_ESP: PUTDST8 (RecompPos,0x4C);  break;
 	case x86_EBP: PUTDST8 (RecompPos,0x4D);
 	}
 }
@@ -383,7 +383,7 @@ void IncX86reg(int x86Reg) {
 	case x86_EDX: PUTDST16(RecompPos,0xC2FF); break;
 	case x86_ESI: PUTDST16(RecompPos,0xC6FF); break;
 	case x86_EDI: PUTDST16(RecompPos,0xC7FF); break;
-	case x86_ESP: PUTDST8 (RecompPos,0x44);   break;
+	case x86_ESP: PUTDST8 (RecompPos,0x44);  break;
 	case x86_EBP: PUTDST8 (RecompPos,0x45);
 	}
 }

@@ -39,7 +39,7 @@ void __cdecl CheckInterrupts (void) {
 	} else  {
 		FAKE_CAUSE_REGISTER&=~CAUSE_IP2;
 	}
-	if ((STATUS_REGISTER&STATUS_IE)==0||(STATUS_REGISTER&STATUS_EXL)!=0||(STATUS_REGISTER&STATUS_ERL)!=0) { return; }
+	if ((STATUS_REGISTER&STATUS_IE)==0||(STATUS_REGISTER&STATUS_EXL)!=0||(STATUS_REGISTER&STATUS_ERL)!=0) {return;}
 	if ((STATUS_REGISTER&FAKE_CAUSE_REGISTER&0xFF00)!=0) {
 		if (!CPU_Action.DoInterrupt) {
 			CPU_Action.DoSomething=TRUE;
@@ -65,7 +65,7 @@ void DoAddressError (BOOL DelaySlot,DWORD BadVaddr,BOOL FromRead) {
 }
 void _fastcall DoCopUnusableException (BOOL DelaySlot,int Coprocessor) {
 	CAUSE_REGISTER=EXC_CPU;
-	if (Coprocessor==1) { CAUSE_REGISTER|=0x10000000; }
+	if (Coprocessor==1) {CAUSE_REGISTER|=0x10000000;}
 	if (DelaySlot) {
 		CAUSE_REGISTER|=CAUSE_BD;
 		EPC_REGISTER=PROGRAM_COUNTER-4;
@@ -76,7 +76,7 @@ void _fastcall DoCopUnusableException (BOOL DelaySlot,int Coprocessor) {
 	PROGRAM_COUNTER=0x80000180;
 }
 void DoIntrException (BOOL DelaySlot) {
-	if ((STATUS_REGISTER&STATUS_IE)==0||(STATUS_REGISTER&STATUS_EXL)!=0||(STATUS_REGISTER&STATUS_ERL)!=0) { return; }
+	if ((STATUS_REGISTER&STATUS_IE)==0||(STATUS_REGISTER&STATUS_EXL)!=0||(STATUS_REGISTER&STATUS_ERL)!=0) {return;}
 	CAUSE_REGISTER=FAKE_CAUSE_REGISTER;
 	CAUSE_REGISTER|=EXC_INT;
 	if (DelaySlot) {

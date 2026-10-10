@@ -122,7 +122,7 @@
 #endif
 /*The following definitions for FAR are needed only for MSDOS mixed
 *model programming (small or medium model with some far allocations).
-*This was tested only with MSC; for other MSDOS compilers you may have
+*This was tested only with MSC;for other MSDOS compilers you may have
 *to define NO_MEMCPY in zutil.h.  If you don't need the mixed model,
 *just define FAR to be empty.
 */
@@ -147,7 +147,7 @@
 #    ifdef FAR
 #      undef FAR
 #    endif
-#    include <windows.h>
+#    include<windows.h>
 #    define ZEXPORT  WINAPI
 #    ifdef WIN32
 #      define ZEXPORTVA  WINAPIV
@@ -157,7 +157,7 @@
 #  endif
 #  if defined (__BORLANDC__)
 #    if (__BORLANDC__>=0x0500)&&defined (WIN32)
-#      include <windows.h>
+#      include<windows.h>
 #      define ZEXPORT __declspec(dllexport) WINAPI
 #      define ZEXPORTRVA __declspec(dllexport) WINAPIV
 #    else
@@ -188,10 +188,10 @@
 #   define FAR
 #endif
 #if!defined(MACOS)&&!defined(TARGET_OS_MAC)
-typedef unsigned char  Byte;  /*8 bits*/
+typedef unsigned char  Byte; /*8 bits*/
 #endif
-typedef unsigned int   uInt;  /*16 bits or more*/
-typedef unsigned long  uLong; /*32 bits or more*/
+typedef unsigned int   uInt; /*16 bits or more*/
+typedef unsigned long  uLong;/*32 bits or more*/
 #ifdef SMALL_MEDIUM
    /*Borland C/C++ and some old MSC versions ignore FAR inside typedef*/
 #  define Bytef Byte FAR
@@ -210,13 +210,13 @@ typedef uLong FAR uLongf;
    typedef Byte    *voidp;
 #endif
 #ifdef HAVE_UNISTD_H
-#  include <sys/types.h> /*for off_t*/
-#  include <unistd.h>    /*for SEEK_*and off_t*/
+#  include<sys/types.h> /*for off_t*/
+#  include<unistd.h>    /*for SEEK_*and off_t*/
 #  define z_off_t  off_t
 #endif
 #ifndef SEEK_SET
-#  define SEEK_SET        0       /*Seek from beginning of file. */
-#  define SEEK_CUR        1       /*Seek from current position. */
+#  define SEEK_SET        0       /*Seek from beginning of file.*/
+#  define SEEK_CUR        1       /*Seek from current position.*/
 #  define SEEK_END        2       /*Set file pointer to EOF plus "offset"*/
 #endif
 #ifndef z_off_t

@@ -32,10 +32,10 @@ WORD FPU_RoundingMode=0x0000;//_RC_NEAR
 char Name[50];
 void ChangeDefaultRoundingModel (void) {
 	switch((FPCR[31]&3)) {
-	case 0: FPU_RoundingMode=0x0000; break; //_RC_NEAR
-	case 1: FPU_RoundingMode=0x0C00; break; //_RC_CHOP
-	case 2: FPU_RoundingMode=0x0800; break; //_RC_UP
-	case 3: FPU_RoundingMode=0x0400; //_RC_UP
+	case 0: FPU_RoundingMode=0x0000; break;//_RC_NEAR
+	case 1: FPU_RoundingMode=0x0C00; break;//_RC_CHOP
+	case 2: FPU_RoundingMode=0x0800; break;//_RC_UP
+	case 3: FPU_RoundingMode=0x0400;//_RC_UP
 	}
 }
 void CompileCop1Test (BLOCK_SECTION*Section) {
@@ -575,8 +575,8 @@ void Compile_R4300i_COP1_S_CMP (BLOCK_SECTION*Section) {
 	DWORD Reg2=RegInStack(Section,Opcode.ft,FPU_Float)?Opcode.fs:Opcode.ft;
 	int x86reg,cmp=0;
 	CompileCop1Test(Section);
-	if ((Opcode.funct&2)!=0) { cmp|=0x4000; }
-	if ((Opcode.funct&4)!=0) { cmp|=0x0100; }
+	if ((Opcode.funct&2)!=0) {cmp|=0x4000;}
+	if ((Opcode.funct&4)!=0) {cmp|=0x0100;}
 	Load_FPR_ToTop(Section,Reg1,Reg1,FPU_Float);
 	Map_TempReg(Section,x86_EAX,0,FALSE);
 	if (RegInStack(Section,Reg2,FPU_Float)) {
@@ -813,8 +813,8 @@ void Compile_R4300i_COP1_D_CMP (BLOCK_SECTION*Section) {
 	DWORD Reg2=RegInStack(Section,Opcode.ft,FPU_Float)?Opcode.fs:Opcode.ft;
 	int x86reg,cmp=0;
 	CompileCop1Test(Section);
-	if ((Opcode.funct&2)!=0) { cmp|=0x4000; }
-	if ((Opcode.funct&4)!=0) { cmp|=0x0100; }
+	if ((Opcode.funct&2)!=0) {cmp|=0x4000;}
+	if ((Opcode.funct&4)!=0) {cmp|=0x0100;}
 	Load_FPR_ToTop(Section,Reg1,Reg1,FPU_Double);
 	Map_TempReg(Section,x86_EAX,0,FALSE);
 	if (RegInStack(Section,Reg2,FPU_Double)) {

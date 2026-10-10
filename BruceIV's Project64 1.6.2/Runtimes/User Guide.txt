@@ -410,6 +410,7 @@ Note: You can update internal names of ROMhacks with a simple hex editor like Hx
 
 Section#8 Credits
 --------------------------------------------------------------------------------------------------------
+For credits of source code updates from other emulators (including Project64 Legacy), please see Main.h.
 ********************************************************************************************************
 Former Project64 Team (Responsible for Development up to Project64 1.6.1 and Project64 Legacy)
 
@@ -436,61 +437,6 @@ Icepir8:		Application, Core programmer, Video plugin programmer for Project64 Le
 
 Project64 Legacy Contributors (who weren't mentioned in the above list): Starkness2, Hacktarux, OddMLan.
 ********************************************************************************************************
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////
-Code from other builds
-\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-Game image tearing fix in Registers.c
-authored by Zilmar in...
-https://github.com/project64/project64/commit/0e691d2e53ab4fb744a6b1f08d622c8ffb4da21d
-https://github.com/project64/project64/commit/c7f895737ab3abc257931c4f9a7d65890a037f02
-from oddMLan in...
-https://github.com/pj64team/Project64-Legacy/commit/78a8a720074530b9ffff383b3d59a5017bbca167
-
-Screen shaking fix in CPU.c, Registers.c, and Registers.h
-authored by Zilmar in...
-https://github.com/project64/project64/commit/7345ecd97e131907d2d1ce6de9438dcd60793d6c
-https://github.com/project64/project64/commit/7909b1850600bf3bfb2673f10830a73d425693ad
-from oddMLan in...
-https://github.com/pj64team/Project64-Legacy/commit/371c029d0574f8916a9d149822be89debea3ee2d
-
-PD Accuracy improvements in DMA.c
-from Icepir8, authored by Icepir8 in...
-https://github.com/pj64team/Project64-Legacy/commit/2e68aa6e1781fb26a2697197a162ad7e5b39f575
-
-CIC Chip improvements in PIF.c and Registers.c
-from RadeonUser, authored by RadeonUser in...
-https://github.com/pj64team/Project64-Legacy/commit/1b4ae1635e1409e12c2c74e84308a2aff771f7b2
-
-Internal AI Twisted edge Sound fix in CPU.c
-from Project64 Legacy, authored by loganmc10 in...
-https://github.com/mupen64plus/mupen64plus-core/commit/2170d5e0c9ed3c12e487eb1c5425798712b6dac8
-
-Legacy AiLenChanged in CPU.c
-Adapted from EmuAI fix authored by Azimer in...
-https://github.com/pj64team/Project64-Legacy/commit/6da131efcc6a61360bc2e7a0828b3725fa168d6a
-
-Recompiler TLB ACE Vulnerability fix in Recompiler CPU.c, Recompiler CPU.h, and Recompiler Ops.c
-from hacktarux, authored by hacktarux in...
-https://github.com/pj64team/Project64-Legacy/commit/d05e6faeedcbfb721f4bacfc25d22e4781988f50
-
-Removed ROM Browser borders in BruceIV's Project64 1.6.2.rc and ROM Browser.c
-from oddMLan, authored by oddMLan in...
-https://github.com/pj64team/Project64-Legacy/commit/c1eaf72b4558f66278cca05a7f1dd464a89a87c8
-
-96kb .sra for Dezaemon 3D in SRAM.c
-from Nekokabu, authored by Nekokabu in...
-https://github.com/project64/project64/commit/cd2f3cf173e88c8c1e18108f9f21405c077352e8
-
-N64 PIF Protection Scheme Algorithm by Azimer & Zilmar, adapted into source code by X-Scale
-(see N64 CIC-NUS-6105 and 1.6 pif2 file).
-
-aglab2 (TLB safety checks, Virtual SD card support, vetter load times and fixed flickering with Lag off)
-https://github.com/pj64team/Project64-1.6-Plus/pull/23
-https://github.com/aglab2/Project64-Legacy/commits/main/
-
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 1.6.2 TESTERS/HELPERS/TRANSLATORS
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -586,10 +532,6 @@ ChatGPT
 DeepL
 GitHub Desktop
 listdiff.com
-
-And if you are one of those people who hates any project that uses misnomered AI tools, or believes that
-any project which doesn't use a misnomered AI tool is superior to one that does, don't download my work.
-Please. I do not want to benefit prejudiced people.
 --------------------------------------------------------------------------------------------------------
 
 Section#9 Shoutouts
@@ -619,13 +561,13 @@ lilycatx - Thanks for being a friendly user and contributing to the dutch transl
 
 satannintendo - Thank you for contributing to the russian translation.
 
-Brian W. - Thank you for remembering my birthday and wishing me a happy birthday!
+Brian W. - Thank you for wishing me a happy birthday and being a fun gaming buddy!
 
 Bruce Shankle III - Thank you for setting up internet for my PC and being a good dad.
 
 l0lgamez - Thank you for testing earlier builds of this project!
 
-MTA - Thanks for checking out the project and notably suggesting a chinese fan translation of MM to add!
+MTA - Thanks for contributing many gameshark bugfixes for Ocarina of Time/ROMhacks and some cheat codes!
 
 TheGent & Smiff - Thank you for establishing the original Game config and Cheat database support files.
 

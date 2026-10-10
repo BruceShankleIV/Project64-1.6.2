@@ -79,7 +79,7 @@ void _fastcall r4300i_BNE (void) {
 }
 void _fastcall r4300i_BLEZ (void) {
 	SetDelay
-	if (GPR[Opcode.rs].DW <=0) {
+	if (GPR[Opcode.rs].DW<=0) {
 		JumpToLocation=PROGRAM_COUNTER+((short)Opcode.offset<<2)+4;
 		TestInterpreterJump(PROGRAM_COUNTER,JumpToLocation,Opcode.rs,0);
 	} else {
@@ -115,7 +115,7 @@ void _fastcall r4300i_ORI (void) {
 	GPR[Opcode.rt].DW=GPR[Opcode.rs].DW|Opcode.immediate;
 }
 void _fastcall r4300i_XORI (void) {
-	GPR[Opcode.rt].DW=GPR[Opcode.rs].DW ^ Opcode.immediate;
+	GPR[Opcode.rt].DW=GPR[Opcode.rs].DW^Opcode.immediate;
 }
 void _fastcall r4300i_LUI (void) {
 	if (Opcode.rt==0) return;
@@ -142,7 +142,7 @@ void _fastcall r4300i_BNEL (void) {
 	}
 }
 void _fastcall r4300i_BLEZL (void) {
-	if (GPR[Opcode.rs].DW <=0) {
+	if (GPR[Opcode.rs].DW<=0) {
 		SetDelay
 		JumpToLocation=PROGRAM_COUNTER+((short)Opcode.offset<<2)+4;
 		TestInterpreterJump(PROGRAM_COUNTER,JumpToLocation,Opcode.rs,0);
@@ -164,8 +164,8 @@ void _fastcall r4300i_BGTZL (void) {
 void _fastcall r4300i_DADDIU (void) {
 	GPR[Opcode.rt].DW=GPR[Opcode.rs].DW+(_int64)((short)Opcode.immediate);
 }
-QWORD LDL_MASK[8]={ 0,0xFF,0xFFFF,0xFFFFFF,0xFFFFFFFF,0xFFFFFFFFFF,0xFFFFFFFFFFFF,0xFFFFFFFFFFFFFF };
-int LDL_SHIFT[8]={ 0,8,16,24,32,40,48,56 };
+QWORD LDL_MASK[8]={0,0xFF,0xFFFF,0xFFFFFF,0xFFFFFFFF,0xFFFFFFFFFF,0xFFFFFFFFFFFF,0xFFFFFFFFFFFFFF};
+int LDL_SHIFT[8]={0,8,16,24,32,40,48,56};
 void _fastcall r4300i_LDL (void) {
 	DWORD Offset,Address;
 	QWORD Value;
@@ -175,8 +175,8 @@ void _fastcall r4300i_LDL (void) {
 	GPR[Opcode.rt].DW=GPR[Opcode.rt].DW&LDL_MASK[Offset];
 	GPR[Opcode.rt].DW+=Value<<LDL_SHIFT[Offset];
 }
-QWORD LDR_MASK[8]={ 0xFFFFFFFFFFFFFF00,0xFFFFFFFFFFFF0000,0xFFFFFFFFFF000000,0xFFFFFFFF00000000,0xFFFFFF0000000000,0xFFFF000000000000,0xFF00000000000000,0 };
-int LDR_SHIFT[8]={ 56,48,40,32,24,16,8,0 };
+QWORD LDR_MASK[8]={0xFFFFFFFFFFFFFF00,0xFFFFFFFFFFFF0000,0xFFFFFFFFFF000000,0xFFFFFFFF00000000,0xFFFFFF0000000000,0xFFFF000000000000,0xFF00000000000000,0};
+int LDR_SHIFT[8]={56,48,40,32,24,16,8,0};
 void _fastcall r4300i_LDR (void) {
 	DWORD Offset,Address;
 	QWORD Value;
@@ -197,15 +197,15 @@ void _fastcall r4300i_LB (void) {
 }
 void _fastcall r4300i_LH (void) {
 	DWORD Address=GPR[Opcode.base].UW[0]+(short)Opcode.offset;
-	if ((Address&1)!=0) { ADDRESS_ERROR_EXCEPTION(Address,TRUE); }
+	if ((Address&1)!=0) {ADDRESS_ERROR_EXCEPTION(Address,TRUE);}
 	if (!r4300i_LH_VAddr(Address,&GPR[Opcode.rt].UHW[0])) {
 		TLB_READ_EXCEPTION(Address);
 	} else {
 		GPR[Opcode.rt].DW=GPR[Opcode.rt].HW[0];
 	}
 }
-DWORD LWL_MASK[4]={ 0,0xFF,0xFFFF,0xFFFFFF };
-int LWL_SHIFT[4]={ 0,8,16,24};
+DWORD LWL_MASK[4]={0,0xFF,0xFFFF,0xFFFFFF};
+int LWL_SHIFT[4]={0,8,16,24};
 void _fastcall r4300i_LWL (void) {
 	DWORD Offset,Address,Value;
 	Address=GPR[Opcode.base].UW[0]+(short)Opcode.offset;
@@ -216,7 +216,7 @@ void _fastcall r4300i_LWL (void) {
 }
 void _fastcall r4300i_LW (void) {
 	DWORD Address=GPR[Opcode.base].UW[0]+(short)Opcode.offset;
-	if ((Address&3)!=0) { ADDRESS_ERROR_EXCEPTION(Address,TRUE); }
+	if ((Address&3)!=0) {ADDRESS_ERROR_EXCEPTION(Address,TRUE);}
 	if (Opcode.rt==0) return;
 	if (!r4300i_LW_VAddr(Address,&GPR[Opcode.rt].UW[0])) {
 		TLB_READ_EXCEPTION(Address);
@@ -232,13 +232,13 @@ void _fastcall r4300i_LBU (void) {
 }
 void _fastcall r4300i_LHU (void) {
 	DWORD Address=GPR[Opcode.base].UW[0]+(short)Opcode.offset;
-	if ((Address&1)!=0) { ADDRESS_ERROR_EXCEPTION(Address,TRUE); }
+	if ((Address&1)!=0) {ADDRESS_ERROR_EXCEPTION(Address,TRUE);}
 	if (!r4300i_LH_VAddr(Address,&GPR[Opcode.rt].UHW[0])) {
 		TLB_READ_EXCEPTION(Address);
 	} else GPR[Opcode.rt].UDW=GPR[Opcode.rt].UHW[0];
 }
-DWORD LWR_MASK[4]={ 0xFFFFFF00,0xFFFF0000,0xFF000000,0 };
-int LWR_SHIFT[4]={ 24,16,8,0 };
+DWORD LWR_MASK[4]={0xFFFFFF00,0xFFFF0000,0xFF000000,0};
+int LWR_SHIFT[4]={24,16,8,0};
 void _fastcall r4300i_LWR (void) {
 	DWORD Offset,Address,Value;
 	Address=GPR[Opcode.base].UW[0]+(short)Opcode.offset;
@@ -249,7 +249,7 @@ void _fastcall r4300i_LWR (void) {
 }
 void _fastcall r4300i_LWU (void) {
 	DWORD Address=GPR[Opcode.base].UW[0]+(short)Opcode.offset;
-	if ((Address&3)!=0) { ADDRESS_ERROR_EXCEPTION(Address,TRUE); }
+	if ((Address&3)!=0) {ADDRESS_ERROR_EXCEPTION(Address,TRUE);}
 	if (Opcode.rt==0) return;
 	if (!r4300i_LW_VAddr(Address,&GPR[Opcode.rt].UW[0])) {
 		TLB_READ_EXCEPTION(Address);
@@ -263,11 +263,11 @@ void _fastcall r4300i_SB (void) {
 }
 void _fastcall r4300i_SH (void) {
 	DWORD Address=GPR[Opcode.base].UW[0]+(short)Opcode.offset;
-	if ((Address&1)!=0) { ADDRESS_ERROR_EXCEPTION(Address,FALSE); }
+	if ((Address&1)!=0) {ADDRESS_ERROR_EXCEPTION(Address,FALSE);}
 	r4300i_SH_VAddr(Address,GPR[Opcode.rt].UHW[0]);
 }
-DWORD SWL_MASK[4]={ 0,0xFF000000,0xFFFF0000,0xFFFFFF00 };
-int SWL_SHIFT[4]={ 0,8,16,24 };
+DWORD SWL_MASK[4]={0,0xFF000000,0xFFFF0000,0xFFFFFF00};
+int SWL_SHIFT[4]={0,8,16,24};
 void _fastcall r4300i_SWL (void) {
 	DWORD Offset,Address,Value;
 	Address=GPR[Opcode.base].UW[0]+(short)Opcode.offset;
@@ -279,11 +279,11 @@ void _fastcall r4300i_SWL (void) {
 }
 void _fastcall r4300i_SW (void) {
 	DWORD Address=GPR[Opcode.base].UW[0]+(short)Opcode.offset;
-	if ((Address&3)!=0) { ADDRESS_ERROR_EXCEPTION(Address,FALSE); }
+	if ((Address&3)!=0) {ADDRESS_ERROR_EXCEPTION(Address,FALSE);}
 	r4300i_SW_VAddr(Address,GPR[Opcode.rt].UW[0]);
 }
-QWORD SDL_MASK[8]={ 0,0xFF00000000000000,0xFFFF000000000000,0xFFFFFF0000000000,0xFFFFFFFF00000000,0xFFFFFFFFFF000000,0xFFFFFFFFFFFF0000,0xFFFFFFFFFFFFFF00 };
-int SDL_SHIFT[8]={ 0,8,16,24,32,40,48,56 };
+QWORD SDL_MASK[8]={0,0xFF00000000000000,0xFFFF000000000000,0xFFFFFF0000000000,0xFFFFFFFF00000000,0xFFFFFFFFFF000000,0xFFFFFFFFFFFF0000,0xFFFFFFFFFFFFFF00};
+int SDL_SHIFT[8]={0,8,16,24,32,40,48,56};
 void _fastcall r4300i_SDL (void) {
 	DWORD Offset,Address;
 	QWORD Value;
@@ -294,7 +294,7 @@ void _fastcall r4300i_SDL (void) {
 	Value+=GPR[Opcode.rt].UDW>>SDL_SHIFT[Offset];
 	r4300i_SD_VAddr((Address&~7),Value);
 }
-QWORD SDR_MASK[8]={ 0x00FFFFFFFFFFFFFF,
+QWORD SDR_MASK[8]={0x00FFFFFFFFFFFFFF,
 					  0x0000FFFFFFFFFFFF,
 					  0x000000FFFFFFFFFF,
 					  0x00000000FFFFFFFF,
@@ -303,7 +303,7 @@ QWORD SDR_MASK[8]={ 0x00FFFFFFFFFFFFFF,
 					  0x00000000000000FF,
 					  0x0000000000000000
 					};
-int SDR_SHIFT[8]={ 56,48,40,32,24,16,8,0 };
+int SDR_SHIFT[8]={56,48,40,32,24,16,8,0};
 void _fastcall r4300i_SDR (void) {
 	DWORD Offset,Address;
 	QWORD Value;
@@ -314,8 +314,8 @@ void _fastcall r4300i_SDR (void) {
 	Value+=GPR[Opcode.rt].UDW<<SDR_SHIFT[Offset];
 	r4300i_SD_VAddr((Address&~7),Value);
 }
-DWORD SWR_MASK[4]={ 0x00FFFFFF,0x0000FFFF,0x000000FF,0x00000000 };
-int SWR_SHIFT[4]={ 24,16,8,0  };
+DWORD SWR_MASK[4]={0x00FFFFFF,0x0000FFFF,0x000000FF,0x00000000};
+int SWR_SHIFT[4]={24,16,8,0 };
 void _fastcall r4300i_SWR (void) {
 	DWORD Offset,Address,Value;
 	Address=GPR[Opcode.base].UW[0]+(short)Opcode.offset;
@@ -327,7 +327,7 @@ void _fastcall r4300i_SWR (void) {
 }
 void _fastcall r4300i_LL (void) {
 	DWORD Address=GPR[Opcode.base].UW[0]+(short)Opcode.offset;
-	if ((Address&3)!=0) { ADDRESS_ERROR_EXCEPTION(Address,TRUE); }
+	if ((Address&3)!=0) {ADDRESS_ERROR_EXCEPTION(Address,TRUE);}
 	if (Opcode.rt==0) return;
 	if (!r4300i_LW_VAddr(Address,&GPR[Opcode.rt].UW[0])) {
 		TLB_READ_EXCEPTION(Address);
@@ -339,43 +339,43 @@ void _fastcall r4300i_LL (void) {
 void _fastcall r4300i_LWC1 (void) {
 	DWORD Address=GPR[Opcode.base].UW[0]+(DWORD)((short)Opcode.offset);
 	TEST_COP1_USABLE_EXCEPTION
-	if ((Address&3)!=0) { ADDRESS_ERROR_EXCEPTION(Address,TRUE); }
+	if ((Address&3)!=0) {ADDRESS_ERROR_EXCEPTION(Address,TRUE);}
 	if (!r4300i_LW_VAddr(Address,&*(DWORD*)FPRFloatLocation[Opcode.ft])) {
 		TLB_READ_EXCEPTION(Address);
 	}
 }
 void _fastcall r4300i_SC (void) {
 	DWORD Address=GPR[Opcode.base].UW[0]+(short)Opcode.offset;
-	if ((Address&3)!=0) { ADDRESS_ERROR_EXCEPTION(Address,FALSE); }
+	if ((Address&3)!=0) {ADDRESS_ERROR_EXCEPTION(Address,FALSE);}
 	if (LLBit==1) r4300i_SW_VAddr(Address,GPR[Opcode.rt].UW[0]);
 	GPR[Opcode.rt].UW[0]=LLBit;
 }
 void _fastcall r4300i_LD (void) {
 	DWORD Address=GPR[Opcode.base].UW[0]+(short)Opcode.offset;
-	if ((Address&7)!=0) { ADDRESS_ERROR_EXCEPTION(Address,TRUE); }
+	if ((Address&7)!=0) {ADDRESS_ERROR_EXCEPTION(Address,TRUE);}
 	r4300i_LD_VAddr(Address,&GPR[Opcode.rt].UDW);
 }
 void _fastcall r4300i_LDC1 (void) {
 	DWORD Address=GPR[Opcode.base].UW[0]+(short)Opcode.offset;
 	TEST_COP1_USABLE_EXCEPTION
-	if ((Address&7)!=0) { ADDRESS_ERROR_EXCEPTION(Address,TRUE); }
+	if ((Address&7)!=0) {ADDRESS_ERROR_EXCEPTION(Address,TRUE);}
 	r4300i_LD_VAddr(Address,&*(unsigned __int64*)FPRDoubleLocation[Opcode.ft]);
 }
 void _fastcall r4300i_SWC1 (void) {
 	DWORD Address=GPR[Opcode.base].UW[0]+(short)Opcode.offset;
 	TEST_COP1_USABLE_EXCEPTION
-	if ((Address&3)!=0) { ADDRESS_ERROR_EXCEPTION(Address,FALSE); }
+	if ((Address&3)!=0) {ADDRESS_ERROR_EXCEPTION(Address,FALSE);}
 	r4300i_SW_VAddr(Address,*(DWORD*)FPRFloatLocation[Opcode.ft]);
 }
 void _fastcall r4300i_SDC1 (void) {
 	DWORD Address=GPR[Opcode.base].UW[0]+(short)Opcode.offset;
 	TEST_COP1_USABLE_EXCEPTION
-	if ((Address&7)!=0) { ADDRESS_ERROR_EXCEPTION(Address,FALSE); }
+	if ((Address&7)!=0) {ADDRESS_ERROR_EXCEPTION(Address,FALSE);}
 	r4300i_SD_VAddr(Address,*(__int64*)FPRDoubleLocation[Opcode.ft]);
 }
 void _fastcall r4300i_SD (void) {
 	DWORD Address=GPR[Opcode.base].UW[0]+(short)Opcode.offset;
-	if ((Address&7)!=0) { ADDRESS_ERROR_EXCEPTION(Address,FALSE); }
+	if ((Address&7)!=0) {ADDRESS_ERROR_EXCEPTION(Address,FALSE);}
 	r4300i_SD_VAddr(Address,GPR[Opcode.rt].UDW);
 }
 /**********************R4300i OpCodes: Special**********************/
@@ -417,7 +417,7 @@ void _fastcall r4300i_SPECIAL_BREAK (void) {
 	if (SPECIAL_BREAK_Yes||NoOoT) r4300i_SPECIAL_SYSCALL();
 	if (SPECIAL_BREAK_Trigger||NoOoT) return;
 	HandleModal1(hMainWindow);
-	if (MessageBox(NULL,GS(SPECIAL_BREAK),GS(OPTIONAL_CRASH),MB_YESNO|MB_ICONERROR|MB_SETFOREGROUND)==IDYES) {
+	if (MessageBox(0,GS(SPECIAL_BREAK),GS(OPTIONAL_CRASH),MB_YESNO|MB_ICONERROR|MB_SETFOREGROUND)==IDYES) {
 		r4300i_SPECIAL_SYSCALL();
 		SPECIAL_BREAK_Yes=TRUE;
 	}
@@ -518,7 +518,7 @@ void _fastcall r4300i_SPECIAL_OR (void) {
 	GPR[Opcode.rd].DW=GPR[Opcode.rs].DW|GPR[Opcode.rt].DW;
 }
 void _fastcall r4300i_SPECIAL_XOR (void) {
-	GPR[Opcode.rd].DW=GPR[Opcode.rs].DW ^ GPR[Opcode.rt].DW;
+	GPR[Opcode.rd].DW=GPR[Opcode.rs].DW^GPR[Opcode.rt].DW;
 }
 void _fastcall r4300i_SPECIAL_NOR (void) {
 	GPR[Opcode.rd].DW=~(GPR[Opcode.rs].DW|GPR[Opcode.rt].DW);
@@ -660,7 +660,7 @@ void _fastcall r4300i_COP0_MT (void) {
 		ChangeCompareTimer();
 		break;
 	case 12: //Status
-		if ((CP0[Opcode.rd] ^ GPR[Opcode.rt].UW[0])!=0) {
+		if ((CP0[Opcode.rd]^GPR[Opcode.rt].UW[0])!=0) {
 			CP0[Opcode.rd]=GPR[Opcode.rt].UW[0];
 			SetFpuLocations();
 		} else {

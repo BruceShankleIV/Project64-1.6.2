@@ -31,28 +31,28 @@ FASTTLB FastTlb[64];
 TLB tlb[32];
 BOOL AddressDefined (DWORD VAddr) {
 	DWORD i;
-	if (VAddr>=0x80000000&&VAddr <=0xBFFFFFFF) return TRUE;
-	for (i=0; i<64; i++) {
+	if (VAddr>=0x80000000&&VAddr<=0xBFFFFFFF) return TRUE;
+	for (i=0;i<64;i++) {
 		if (FastTlb[i].ValidEntry==FALSE) continue;
-		if (VAddr>=FastTlb[i].VSTART&&VAddr <=FastTlb[i].VEND) return TRUE;
+		if (VAddr>=FastTlb[i].VSTART&&VAddr<=FastTlb[i].VEND) return TRUE;
 	}
 	return FALSE;
 }
 void InitializeTLB () {
 	DWORD count;
-	for (count=0; count<32; count++) { tlb[count].EntryDefined=FALSE; }
-	for (count=0; count<64; count++) { FastTlb[count].ValidEntry=FALSE; }
+	for (count=0;count<32;count++) {tlb[count].EntryDefined=FALSE;}
+	for (count=0;count<64;count++) {FastTlb[count].ValidEntry=FALSE;}
 	SetupTLB();
 }
 void SetupTLB () {
 	DWORD count;
 	memset(TLB_ReadMap,0,(0xFFFFF*sizeof(DWORD)));
 	memset(TLB_WriteMap,0,(0xFFFFF*sizeof(DWORD)));
-	for (count=0x80000000; count<0xC0000000; count+=0x1000) {
+	for (count=0x80000000;count<0xC0000000;count+=0x1000) {
 		TLB_ReadMap[count>>12]=((DWORD)N64MEM+(count&0x1FFFFFFF))-count;
 		TLB_WriteMap[count>>12]=((DWORD)N64MEM+(count&0x1FFFFFFF))-count;
 	}
-	for (count=0; count<32; count++) { SetupTLB_Entry(count); }
+	for (count=0;count<32;count++) {SetupTLB_Entry(count);}
 }
 void SetupTLB_Entry (int Entry) {
 	int FastIndx;
@@ -73,17 +73,17 @@ void SetupTLB_Entry (int Entry) {
 	FastTlb[FastIndx].DIRTY=tlb[Entry].EntryLo1.D;
 	FastTlb[FastIndx].GLOBAL=tlb[Entry].EntryLo0.GLOBAL&tlb[Entry].EntryLo1.GLOBAL;
 	FastTlb[FastIndx].ValidEntry=FALSE;
-	for (FastIndx=Entry<<1; FastIndx <=(Entry<<1)+1; FastIndx++) {
+	for (FastIndx=Entry<<1;FastIndx<=(Entry<<1)+1;FastIndx++) {
 		DWORD count;
 		DWORD physend=FastTlb[FastIndx].PHYSSTART+(tlb[Entry].PageMask.Mask<<12)+0xFFF;
 		if (!FastTlb[FastIndx].VALID) {
 			FastTlb[FastIndx].ValidEntry=TRUE;
 			continue;
 		}
-		if (FastTlb[FastIndx].VEND <=FastTlb[FastIndx].VSTART) {
+		if (FastTlb[FastIndx].VEND<=FastTlb[FastIndx].VSTART) {
 			continue;
 		}
-		if (FastTlb[FastIndx].VSTART>=0x80000000&&FastTlb[FastIndx].VEND <=0xBFFFFFFF) {
+		if (FastTlb[FastIndx].VSTART>=0x80000000&&FastTlb[FastIndx].VEND<=0xBFFFFFFF) {
 			continue;
 		}
 		if (FastTlb[FastIndx].PHYSSTART>0x1FFFFFFF||physend>0x1FFFFFFF) {
@@ -91,7 +91,7 @@ void SetupTLB_Entry (int Entry) {
 		}
 		//test if overlap
 		FastTlb[FastIndx].ValidEntry=TRUE;
-		for (count=FastTlb[FastIndx].VSTART; count<FastTlb[FastIndx].VEND; count+=0x1000) {
+		for (count=FastTlb[FastIndx].VSTART;count<FastTlb[FastIndx].VEND;count+=0x1000) {
 			TLB_ReadMap[count>>12]=((DWORD)N64MEM+(count-FastTlb[FastIndx].VSTART+FastTlb[FastIndx].PHYSSTART))-count;
 			if (!FastTlb[FastIndx].DIRTY) continue;
 			TLB_WriteMap[count>>12]=((DWORD)N64MEM+(count-FastTlb[FastIndx].VSTART+FastTlb[FastIndx].PHYSSTART))-count;
@@ -101,7 +101,7 @@ void SetupTLB_Entry (int Entry) {
 void TLB_Probe (void) {
 	int Counter;
 	INDEX_REGISTER|=0x80000000;
-	for (Counter=0; Counter<32; Counter++) {
+	for (Counter=0;Counter<32;Counter++) {
 		DWORD TlbValue=tlb[Counter].EntryHi.Value&(~tlb[Counter].PageMask.Mask<<13);
 		DWORD EntryHi=ENTRYHI_REGISTER&(~tlb[Counter].PageMask.Mask<<13);
 		if (TlbValue==EntryHi) {
@@ -132,10 +132,10 @@ void _fastcall WriteTLBEntry (int index) {
 	if ((PROGRAM_COUNTER>=FastTlb[FastIndx].VSTART&&PROGRAM_COUNTER<FastTlb[FastIndx].VEND&&FastTlb[FastIndx].ValidEntry&&FastTlb[FastIndx].VALID)||(PROGRAM_COUNTER>=FastTlb[FastIndx+1].VSTART&&PROGRAM_COUNTER<FastTlb[FastIndx+1].VEND&&FastTlb[FastIndx+1].ValidEntry&&FastTlb[FastIndx+1].VALID)) return;
 	if (tlb[index].EntryDefined) {
 		DWORD count;
-		for (FastIndx=index<<1; FastIndx <=(index<<1)+1; FastIndx++) {
+		for (FastIndx=index<<1;FastIndx<=(index<<1)+1;FastIndx++) {
 			if (!FastTlb[FastIndx].ValidEntry) continue;
 			if (!FastTlb[FastIndx].VALID) continue;
-			for (count=FastTlb[FastIndx].VSTART; count<FastTlb[FastIndx].VEND; count+=0x1000) {
+			for (count=FastTlb[FastIndx].VSTART;count<FastTlb[FastIndx].VEND;count+=0x1000) {
 				TLB_ReadMap[count>>12]=0;
 				TLB_WriteMap[count>>12]=0;
 			}

@@ -45,23 +45,23 @@ typedef struct {
 	DLGPROC pfnDlgProc;
 } SETTINGS_TAB;
 SETTINGS_TAB SettingsTabs[]={
-	{ TAB_PLUGIN,         IDD_Settings_PlugSel,  PluginSelectProc     },
-	{ TAB_DIRECTORY,      IDD_Settings_Directory,DirSelectProc        },
-	{ MENU_OPTIONS,        IDD_Settings_General,  GeneralOptionsProc   },
-	{ TAB_ROMSELECTION,   IDD_Settings_RomBrowser,RomBrowserProc       },
-	{ TAB_ADVANCED,       IDD_Settings_Options,  DefaultOptionsProc   },
-	{ TAB_ROMSETTINGS,    IDD_Settings_Rom,      RomSettingsProc      },
-	{ TAB_ROMNOTES,       IDD_Settings_RomNotes, RomNotesProc         },
+	{TAB_PLUGIN,         IDD_Settings_PlugSel,  PluginSelectProc    },
+	{TAB_DIRECTORY,      IDD_Settings_Directory,DirSelectProc       },
+	{MENU_OPTIONS,        IDD_Settings_General,  GeneralOptionsProc  },
+	{TAB_ROMSELECTION,   IDD_Settings_RomBrowser,RomBrowserProc      },
+	{TAB_ADVANCED,       IDD_Settings_Options,  DefaultOptionsProc  },
+	{TAB_ROMSETTINGS,    IDD_Settings_Rom,      RomSettingsProc     },
+	{TAB_ROMNOTES,       IDD_Settings_RomNotes, RomNotesProc        },
 };
 SETTINGS_TAB SettingsTabsBasic[]={
-	{ TAB_PLUGIN,IDD_Settings_PlugSel,PluginSelectProc               },
-	{ TAB_DIRECTORY,IDD_Settings_Directory,DirSelectProc              },
-	{ MENU_OPTIONS,IDD_Settings_General,GeneralOptionsProc             },
-	{ TAB_ROMSELECTION,IDD_Settings_RomBrowser,RomBrowserProc         },
-	{ TAB_ROMNOTES,IDD_Settings_RomNotes,RomNotesProc                 },
+	{TAB_PLUGIN,IDD_Settings_PlugSel,PluginSelectProc              },
+	{TAB_DIRECTORY,IDD_Settings_Directory,DirSelectProc             },
+	{MENU_OPTIONS,IDD_Settings_General,GeneralOptionsProc            },
+	{TAB_ROMSELECTION,IDD_Settings_RomBrowser,RomBrowserProc        },
+	{TAB_ROMNOTES,IDD_Settings_RomNotes,RomNotesProc                },
 };
 SETTINGS_TAB SettingsTabsRom[]={
-	{ TAB_ROMNOTES,   IDD_Settings_RomNotes,RomNotesProc     },
+	{TAB_ROMNOTES,   IDD_Settings_RomNotes,RomNotesProc    },
 };
 void ChangeRomSettings(HWND hwndOwner) {
 	char OrigRomName[sizeof(RomName)],OrigFileName[sizeof(CurrentFileName)];
@@ -75,7 +75,7 @@ void ChangeRomSettings(HWND hwndOwner) {
 	strncpy(CurrentFileName,CurrentRBFileName,sizeof(CurrentFileName));
 	OrigFileSize=RomFileSize;
 	LoadRomHeader();
-	for (count=0; count<(sizeof(SettingsTabsRom) / sizeof(SETTINGS_TAB)); count++) {
+	for (count=0;count<(sizeof(SettingsTabsRom) / sizeof(SETTINGS_TAB));count++) {
 		psp[count].dwSize=sizeof(PROPSHEETPAGE);
 		psp[count].dwFlags=PSP_USETITLE;
 		psp[count].hInstance=hInst;
@@ -83,7 +83,7 @@ void ChangeRomSettings(HWND hwndOwner) {
 		psp[count].pfnDlgProc=SettingsTabsRom[count].pfnDlgProc;
 		psp[count].pszTitle=GS(SettingsTabsRom[count].LanguageID);
 		psp[count].lParam=0;
-		psp[count].pfnCallback=NULL;
+		psp[count].pfnCallback=0;
 	}
 	psh.dwSize=sizeof(PROPSHEETHEADER);
 	psh.dwFlags=PSH_PROPSHEETPAGE|PSH_NOAPPLYNOW;
@@ -93,7 +93,7 @@ void ChangeRomSettings(HWND hwndOwner) {
 	psh.nPages=sizeof(psp) / sizeof(PROPSHEETPAGE);
 	psh.nStartPage=0;
 	psh.ppsp=(LPCPROPSHEETPAGE)&psp;
-	psh.pfnCallback=NULL;
+	psh.pfnCallback=0;
 	PropertySheet(&psh);
 	strncpy(RomName,OrigRomName,sizeof(RomName));
 	strncpy(CurrentFileName,OrigFileName,sizeof(CurrentFileName));
@@ -105,7 +105,7 @@ void ChangeSettings(HWND hwndOwner) {
 	PROPSHEETPAGE BasicPsp[sizeof(SettingsTabsBasic) / sizeof(SETTINGS_TAB)];
 	PROPSHEETHEADER psh;
 	int count;
-	for (count=0; count<(sizeof(SettingsTabs) / sizeof(SETTINGS_TAB)); count++) {
+	for (count=0;count<(sizeof(SettingsTabs) / sizeof(SETTINGS_TAB));count++) {
 		psp[count].dwSize=sizeof(PROPSHEETPAGE);
 		psp[count].dwFlags=PSP_USETITLE;
 		psp[count].hInstance=hInst;
@@ -113,9 +113,9 @@ void ChangeSettings(HWND hwndOwner) {
 		psp[count].pfnDlgProc=SettingsTabs[count].pfnDlgProc;
 		psp[count].pszTitle=GS(SettingsTabs[count].LanguageID);
 		psp[count].lParam=0;
-		psp[count].pfnCallback=NULL;
+		psp[count].pfnCallback=0;
 	}
-	for (count=0; count<(sizeof(SettingsTabsBasic) / sizeof(SETTINGS_TAB)); count++) {
+	for (count=0;count<(sizeof(SettingsTabsBasic) / sizeof(SETTINGS_TAB));count++) {
 		BasicPsp[count].dwSize=sizeof(PROPSHEETPAGE);
 		BasicPsp[count].dwFlags=PSP_USETITLE;
 		BasicPsp[count].hInstance=hInst;
@@ -123,7 +123,7 @@ void ChangeSettings(HWND hwndOwner) {
 		BasicPsp[count].pfnDlgProc=SettingsTabsBasic[count].pfnDlgProc;
 		BasicPsp[count].pszTitle=GS(SettingsTabsBasic[count].LanguageID);
 		BasicPsp[count].lParam=0;
-		BasicPsp[count].pfnCallback=NULL;
+		BasicPsp[count].pfnCallback=0;
 	}
 	psh.dwSize=sizeof(PROPSHEETHEADER);
 	psh.dwFlags=PSH_PROPSHEETPAGE|PSH_NOAPPLYNOW;
@@ -133,17 +133,17 @@ void ChangeSettings(HWND hwndOwner) {
 	psh.nPages=(BasicMode?sizeof(BasicPsp):sizeof(psp)) / sizeof(PROPSHEETPAGE);
 	psh.nStartPage=0;
 	psh.ppsp=BasicMode?(LPCPROPSHEETPAGE)&BasicPsp:(LPCPROPSHEETPAGE)&psp;
-	psh.pfnCallback=NULL;
+	psh.pfnCallback=0;
 	PropertySheet(&psh);
 	if (!AutoSleep&&!ManualPaused&&(CPU_Paused||CPU_Action.Pause)) PauseCPU();
-	if (SetupPluginsAfterSaveRomOpt) {
-		SetupPluginsAfterSaveRomOpt=FALSE;
-		SetupPlugins(hHiddenWin);
+	if (DelayHandleGlobalTasks) {
+		DelayHandleGlobalTasks=FALSE;
+		HandleGlobalTasks(hHiddenWin);
 	} else SetupMenu(hMainWindow);
 }
 void SetFlagControl (HWND hDlg,BOOL*Flag,WORD CtrlID,int StringID) {
 	SetDlgItemText(hDlg,CtrlID,GS(StringID));
-	if (*Flag) { SendMessage(GetDlgItem(hDlg,CtrlID),BM_SETCHECK,BST_CHECKED,0); }
+	if (*Flag) {SendMessage(GetDlgItem(hDlg,CtrlID),BM_SETCHECK,BST_CHECKED,0);}
 }
 BOOL CALLBACK GeneralOptionsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 	switch (uMsg) {
@@ -160,7 +160,7 @@ BOOL CALLBACK GeneralOptionsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lPara
 			char String[256];
 			sprintf(String,"PJ64 V 1.6.2\\Configuration\\Settings\\Options");
 			lResult=RegCreateKeyEx(HKEY_CURRENT_USER,String,0,"",REG_OPTION_NON_VOLATILE,
-				KEY_ALL_ACCESS,NULL,&hKeyResults,&Disposition);
+				KEY_ALL_ACCESS,0,&hKeyResults,&Disposition);
 			if (lResult==ERROR_SUCCESS) {
 				AutoFullScreen=SendMessage(GetDlgItem(hDlg,IDC_LOAD_FULLSCREEN),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
 				RegSetValueEx(hKeyResults,"Enter Fullscreen Mode Upon ROM Opening",0,REG_DWORD,(BYTE*)&AutoFullScreen,sizeof(DWORD));
@@ -182,8 +182,8 @@ void AddDropDownItem (HWND hDlg,WORD CtrlID,int StringID,int ItemData,int*Variab
 	int indx;
 	indx=SendMessage(hCtrl,CB_ADDSTRING,0,(LPARAM)GS(StringID));
 	SendMessage(hCtrl,CB_SETITEMDATA,indx,ItemData);
-	if (*Variable==ItemData) { SendMessage(hCtrl,CB_SETCURSEL,indx,0); }
-	if (SendMessage(hCtrl,CB_GETCOUNT,0,0)==0) { SendMessage(hCtrl,CB_SETCURSEL,0,0); }
+	if (*Variable==ItemData) {SendMessage(hCtrl,CB_SETCURSEL,indx,0);}
+	if (SendMessage(hCtrl,CB_GETCOUNT,0,0)==0) {SendMessage(hCtrl,CB_SETCURSEL,0,0);}
 }
 BOOL CALLBACK DefaultOptionsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 	int indx;
@@ -213,7 +213,7 @@ BOOL CALLBACK DefaultOptionsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lPara
 			char String[256];
 			sprintf(String,"PJ64 V 1.6.2\\Configuration\\Settings\\Advanced");
 			lResult=RegCreateKeyEx(HKEY_CURRENT_USER,String,0,"",REG_OPTION_NON_VOLATILE,
-				KEY_ALL_ACCESS,NULL,&hKeyResults,&Disposition);
+				KEY_ALL_ACCESS,0,&hKeyResults,&Disposition);
 			if (lResult==ERROR_SUCCESS) {
 				ForceDisableTLB=SendMessage(GetDlgItem(hDlg,IDC_ForceDisableTLB),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
 				RegSetValueEx(hKeyResults,"Always Disable Translation Lookaside Buffer",0,REG_DWORD,(BYTE*)&ForceDisableTLB,sizeof(DWORD));
@@ -252,28 +252,28 @@ BOOL CALLBACK DirSelectProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 			if (lResult==ERROR_SUCCESS) {
 				DWORD Type,Value,Bytes=4;
 				lResult=RegQueryValueEx(hKeyResults,"AppPath ROMs",0,&Type,(LPBYTE)(&Value),&Bytes);
-				if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) { Value=FALSE; }
+				if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {Value=FALSE;}
 				SendMessage(GetDlgItem(hDlg,Value?IDC_ROM_DEFAULT:IDC_ROM_OTHER),BM_SETCHECK,BST_CHECKED,0);
 				lResult=RegQueryValueEx(hKeyResults,"AppPath Save Data",0,&Type,(LPBYTE)(&Value),&Bytes);
-				if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) { Value=TRUE; }
+				if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {Value=TRUE;}
 				SendMessage(GetDlgItem(hDlg,Value?IDC_AUTO_DEFAULT:IDC_AUTO_OTHER),BM_SETCHECK,BST_CHECKED,0);
 				lResult=RegQueryValueEx(hKeyResults,"AppPath Screenshots and Videos",0,&Type,(LPBYTE)(&Value),&Bytes);
-				if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) { Value=TRUE; }
+				if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {Value=TRUE;}
 				SendMessage(GetDlgItem(hDlg,Value?IDC_SNAP_DEFAULT:IDC_SNAP_OTHER),BM_SETCHECK,BST_CHECKED,0);
 				lResult=RegQueryValueEx(hKeyResults,"AppPath Savestates",0,&Type,(LPBYTE)(&Value),&Bytes);
-				if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) { Value=TRUE; }
+				if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {Value=TRUE;}
 				SendMessage(GetDlgItem(hDlg,Value?IDC_INSTANT_DEFAULT:IDC_INSTANT_OTHER),BM_SETCHECK,BST_CHECKED,0);
 				Bytes=sizeof(Directory);
 				lResult=RegQueryValueEx(hKeyResults,"CustomPath Savestates",0,&Type,(LPBYTE)Directory,&Bytes);
-				if (lResult!=ERROR_SUCCESS) { GetInstantSaveDir(Directory); }
+				if (lResult!=ERROR_SUCCESS) {GetInstantSaveDir(Directory);}
 				SetDlgItemText(hDlg,IDC_INSTANT_DIR,Directory);
 				Bytes=sizeof(Directory);
 				lResult=RegQueryValueEx(hKeyResults,"CustomPath Save Data",0,&Type,(LPBYTE)Directory,&Bytes);
-				if (lResult!=ERROR_SUCCESS) { GetAutoSaveDir(Directory); }
+				if (lResult!=ERROR_SUCCESS) {GetAutoSaveDir(Directory);}
 				SetDlgItemText(hDlg,IDC_AUTO_DIR,Directory);
 				Bytes=sizeof(Directory);
 				lResult=RegQueryValueEx(hKeyResults,"CustomPath Screenshots and Videos",0,&Type,(LPBYTE)Directory,&Bytes);
-				if (lResult!=ERROR_SUCCESS) { FetchScreenAndVideoDir(Directory); }
+				if (lResult!=ERROR_SUCCESS) {FetchScreenAndVideoDir(Directory);}
 				SetDlgItemText(hDlg,IDC_SNAP_DIR,Directory);
 			} else {
 				SendMessage(GetDlgItem(hDlg,IDC_ROM_DEFAULT),BM_SETCHECK,BST_CHECKED,0);
@@ -324,16 +324,16 @@ BOOL CALLBACK DirSelectProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 					strcpy(Title,GS(DIR_SELECT_SCREEN));
 				}
 				bi.hwndOwner=hDlg;
-				bi.pidlRoot=NULL;
+				bi.pidlRoot=0;
 				bi.pszDisplayName=Buffer;
 				bi.lpszTitle=Title;
 				bi.ulFlags=BIF_RETURNFSANCESTORS|BIF_RETURNONLYFSDIRS;
 				bi.lpfn=(BFFCALLBACK)SelectRomDirCallBack;
 				bi.lParam=(DWORD)Directory;
-				if ((pidl=SHBrowseForFolder(&bi))!=NULL) {
+				if ((pidl=SHBrowseForFolder(&bi))!=0) {
 					if (SHGetPathFromIDList(pidl,Directory)) {
 						int len=strlen(Directory);
-						if (Directory[len-1]!='\\') { strcat(Directory,"\\"); }
+						if (Directory[len-1]!='\\') {strcat(Directory,"\\");}
 						switch (LOWORD(wParam)) {
 						case IDC_SELECT_ROM_DIR:
 							SetDlgItemText(hDlg,IDC_ROM_DIR,Directory);
@@ -369,7 +369,7 @@ BOOL CALLBACK DirSelectProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 			char String[256];
 			sprintf(String,"PJ64 V 1.6.2\\Configuration");
 			lResult=RegCreateKeyEx(HKEY_CURRENT_USER,String,0,"",REG_OPTION_NON_VOLATILE,
-				KEY_ALL_ACCESS,NULL,&hKeyResults,&Disposition);
+				KEY_ALL_ACCESS,0,&hKeyResults,&Disposition);
 			if (lResult==ERROR_SUCCESS) {
 				DWORD Value;
 				Value=SendMessage(GetDlgItem(hDlg,IDC_ROM_DEFAULT),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
@@ -431,7 +431,7 @@ BOOL PluginsChanged (HWND hDlg) {
 }
 void FreePluginList() {
 	unsigned int count;
-	for (count=0; count <	PluginCount; count++) {
+	for (count=0;count<	PluginCount;count++) {
 		free(PluginNames[count]);
 	}
 	PluginCount=0;
@@ -442,7 +442,7 @@ BOOL CALLBACK PluginSelectProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam)
 	DWORD index;
 	switch (uMsg) {
 	case WM_INITDIALOG:
-		SetupPluginScreen(hDlg);
+		SetupPluginsScreen(hDlg);
 		if (CPURunning) SetDlgItemText(hDlg,IDC_ROMSETTWARN,GS(ROMSETTWARN));
 		break;
 	case WM_COMMAND:
@@ -450,54 +450,54 @@ BOOL CALLBACK PluginSelectProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam)
 		case RSP_LIST:
 			if (HIWORD(wParam)==CBN_SELCHANGE) {
 				index=SendMessage(GetDlgItem(hDlg,RSP_LIST),CB_GETCURSEL,0,0);
-				if (index==CB_ERR) { break; }
+				if (index==CB_ERR) {break;}
 				index=SendMessage(GetDlgItem(hDlg,RSP_LIST),CB_GETITEMDATA,(WPARAM)index,0);
 				GetPluginDir(Plugin);
 				strcat(Plugin,PluginNames[index]);
 				hLib=LoadLibrary(Plugin);
-				if (hLib==NULL) { DisplayError("%s %s",GS(MSG_FAIL_LOAD_PLUGIN),Plugin); }
+				if (hLib==0) {DisplayError("%s %s",GS(MSG_FAIL_LOAD_PLUGIN),Plugin);}
 				RSPDLLAbout=(void (__cdecl*)(HWND))GetProcAddress(hLib,"DllAbout");
-				EnableWindow(GetDlgItem(hDlg,RSP_ABOUT),RSPDLLAbout!=NULL?TRUE:FALSE);
+				EnableWindow(GetDlgItem(hDlg,RSP_ABOUT),RSPDLLAbout!=0?TRUE:FALSE);
 			}
 			break;
 		case GFX_LIST:
 			if (HIWORD(wParam)==CBN_SELCHANGE) {
 				index=SendMessage(GetDlgItem(hDlg,GFX_LIST),CB_GETCURSEL,0,0);
-				if (index==CB_ERR) { break; }
+				if (index==CB_ERR) {break;}
 				index=SendMessage(GetDlgItem(hDlg,GFX_LIST),CB_GETITEMDATA,(WPARAM)index,0);
 				GetPluginDir(Plugin);
 				strcat(Plugin,PluginNames[index]);
 				hLib=LoadLibrary(Plugin);
-				if (hLib==NULL) { DisplayError("%s %s",GS(MSG_FAIL_LOAD_PLUGIN),Plugin); }
+				if (hLib==0) {DisplayError("%s %s",GS(MSG_FAIL_LOAD_PLUGIN),Plugin);}
 				GFXDllAbout=(void (__cdecl*)(HWND))GetProcAddress(hLib,"DllAbout");
-				EnableWindow(GetDlgItem(hDlg,GFX_ABOUT),GFXDllAbout!=NULL?TRUE:FALSE);
+				EnableWindow(GetDlgItem(hDlg,GFX_ABOUT),GFXDllAbout!=0?TRUE:FALSE);
 			}
 			if (BootupSettings) PostMessage(GetParent(hDlg),WM_COMMAND,IDCANCEL,0);
 			break;
 		case AUDIO_LIST:
 			if (HIWORD(wParam)==CBN_SELCHANGE) {
 				index=SendMessage(GetDlgItem(hDlg,AUDIO_LIST),CB_GETCURSEL,0,0);
-				if (index==CB_ERR) { break; }
+				if (index==CB_ERR) {break;}
 				index=SendMessage(GetDlgItem(hDlg,AUDIO_LIST),CB_GETITEMDATA,(WPARAM)index,0);
 				GetPluginDir(Plugin);
 				strcat(Plugin,PluginNames[index]);
 				hLib=LoadLibrary(Plugin);
-				if (hLib==NULL) { DisplayError("%s %s",GS(MSG_FAIL_LOAD_PLUGIN),Plugin); }
+				if (hLib==0) {DisplayError("%s %s",GS(MSG_FAIL_LOAD_PLUGIN),Plugin);}
 				AiDllAbout=(void (__cdecl*)(HWND))GetProcAddress(hLib,"DllAbout");
-				EnableWindow(GetDlgItem(hDlg,GFX_ABOUT),GFXDllAbout!=NULL?TRUE:FALSE);
+				EnableWindow(GetDlgItem(hDlg,GFX_ABOUT),GFXDllAbout!=0?TRUE:FALSE);
 			}
 			break;
 		case CONT_LIST:
 			if (HIWORD(wParam)==CBN_SELCHANGE) {
 				index=SendMessage(GetDlgItem(hDlg,CONT_LIST),CB_GETCURSEL,0,0);
-				if (index==CB_ERR) { break; }
+				if (index==CB_ERR) {break;}
 				index=SendMessage(GetDlgItem(hDlg,CONT_LIST),CB_GETITEMDATA,(WPARAM)index,0);
 				GetPluginDir(Plugin);
 				strcat(Plugin,PluginNames[index]);
 				hLib=LoadLibrary(Plugin);
-				if (hLib==NULL) { DisplayError("%s %s",GS(MSG_FAIL_LOAD_PLUGIN),Plugin); }
+				if (hLib==0) {DisplayError("%s %s",GS(MSG_FAIL_LOAD_PLUGIN),Plugin);}
 				ContDllAbout=(void (__cdecl*)(HWND))GetProcAddress(hLib,"DllAbout");
-				EnableWindow(GetDlgItem(hDlg,CONT_ABOUT),ContDllAbout!=NULL?TRUE:FALSE);
+				EnableWindow(GetDlgItem(hDlg,CONT_ABOUT),ContDllAbout!=0?TRUE:FALSE);
 			}
 			break;
 		case RSP_ABOUT: RSPDLLAbout(hDlg); break;
@@ -512,10 +512,10 @@ BOOL CALLBACK PluginSelectProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam)
 			HKEY hKeyResults=0;
 			DWORD Disposition=0;
 			char String[256];
-			if (PluginsChanged(hDlg)==FALSE) { FreePluginList(); break; }
-			if (!CPURunning) SetupPluginsAfterSaveRomOpt=TRUE;
+			if (PluginsChanged(hDlg)==FALSE) {FreePluginList(); break;}
+			if (!CPURunning) DelayHandleGlobalTasks=TRUE;
 			sprintf(String,"PJ64 V 1.6.2\\Configuration\\Dll");
-			lResult=RegCreateKeyEx(HKEY_CURRENT_USER,String,0,"",REG_OPTION_NON_VOLATILE,KEY_ALL_ACCESS,NULL,&hKeyResults,&Disposition);
+			lResult=RegCreateKeyEx(HKEY_CURRENT_USER,String,0,"",REG_OPTION_NON_VOLATILE,KEY_ALL_ACCESS,0,&hKeyResults,&Disposition);
 			if (lResult==ERROR_SUCCESS) {
 				DWORD index;
 				index=SendMessage(GetDlgItem(hDlg,RSP_LIST),CB_GETCURSEL,0,0);
@@ -539,9 +539,6 @@ BOOL CALLBACK PluginSelectProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam)
 			FreePluginList();
 		}
 		break;
-	case IDCANCEL:
-		if (CPURunning&&!PluginsInitialized) HandleShutdown(hMainWindow);
-		break;
 	default:
 		return FALSE;
 	}
@@ -555,17 +552,17 @@ void RomAddFieldToList (HWND hDlg,char*Name,int Pos,int ID) {
 		return;
 	}
 	listCount=SendDlgItemMessage(hDlg,IDC_USING,LB_GETCOUNT,0,0);
-	if (Pos>listCount) { Pos=listCount; }
+	if (Pos>listCount) {Pos=listCount;}
 	index=SendDlgItemMessage(hDlg,IDC_USING,LB_INSERTSTRING,Pos,(LPARAM)Name);
 	SendDlgItemMessage(hDlg,IDC_USING,LB_SETITEMDATA,index,ID);
 }
 BOOL CALLBACK RomBrowserProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 	switch (uMsg) {
 	case WM_INITDIALOG:
-		if (Recursion) { SendMessage(GetDlgItem(hDlg,IDC_RECURSION),BM_SETCHECK,BST_CHECKED,0); }
+		if (Recursion) {SendMessage(GetDlgItem(hDlg,IDC_RECURSION),BM_SETCHECK,BST_CHECKED,0);}
 		{
 			int count;
-			for (count=0; count<NoOfFields; count++) {
+			for (count=0;count<NoOfFields;count++) {
 				RomAddFieldToList(hDlg,GS(RomBrowserFields[count].LangID),RomBrowserFields[count].Pos,count);
 			}
 		}
@@ -593,12 +590,12 @@ BOOL CALLBACK RomBrowserProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 				char String[100];
 				int index,listCount,Data;
 				index=SendMessage(GetDlgItem(hDlg,IDC_AVAILABLE),LB_GETCURSEL,0,0);
-				if (index<0) { break; }
+				if (index<0) {break;}
 				SendMessage(GetDlgItem(hDlg,IDC_AVAILABLE),LB_GETTEXT,index,(LPARAM)String);
 				Data=SendMessage(GetDlgItem(hDlg,IDC_AVAILABLE),LB_GETITEMDATA,index,0);
 				SendDlgItemMessage(hDlg,IDC_AVAILABLE,LB_DELETESTRING,index,0);
 				listCount=SendDlgItemMessage(hDlg,IDC_AVAILABLE,LB_GETCOUNT,0,0);
-				if (index>=listCount) { index -=1;}
+				if (index>=listCount) {index-=1;}
 				SendDlgItemMessage(hDlg,IDC_AVAILABLE,LB_SETCURSEL,index,0);
 				index=SendDlgItemMessage(hDlg,IDC_USING,LB_ADDSTRING,0,(LPARAM)String);
 				SendDlgItemMessage(hDlg,IDC_USING,LB_SETITEMDATA,index,Data);
@@ -609,12 +606,12 @@ BOOL CALLBACK RomBrowserProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 				char String[100];
 				int index,listCount,Data;
 				index=SendMessage(GetDlgItem(hDlg,IDC_USING),LB_GETCURSEL,0,0);
-				if (index<0) { break; }
+				if (index<0) {break;}
 				SendMessage(GetDlgItem(hDlg,IDC_USING),LB_GETTEXT,index,(LPARAM)String);
 				Data=SendMessage(GetDlgItem(hDlg,IDC_USING),LB_GETITEMDATA,index,0);
 				SendDlgItemMessage(hDlg,IDC_USING,LB_DELETESTRING,index,0);
 				listCount=SendDlgItemMessage(hDlg,IDC_USING,LB_GETCOUNT,0,0);
-				if (index>=listCount) { index -=1;}
+				if (index>=listCount) {index-=1;}
 				SendDlgItemMessage(hDlg,IDC_USING,LB_SETCURSEL,index,0);
 				index=SendDlgItemMessage(hDlg,IDC_AVAILABLE,LB_ADDSTRING,0,(LPARAM)String);
 				SendDlgItemMessage(hDlg,IDC_AVAILABLE,LB_SETITEMDATA,index,Data);
@@ -630,29 +627,29 @@ BOOL CALLBACK RomBrowserProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 			long lResult;
 			Recursion=SendMessage(GetDlgItem(hDlg,IDC_RECURSION),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
 			sprintf(String,"PJ64 V 1.6.2\\Configuration\\Settings\\ROM Selection");
-			lResult=RegCreateKeyEx(HKEY_CURRENT_USER,String,0,"",REG_OPTION_NON_VOLATILE,KEY_ALL_ACCESS,NULL,&hKeyResults,&Disposition);
+			lResult=RegCreateKeyEx(HKEY_CURRENT_USER,String,0,"",REG_OPTION_NON_VOLATILE,KEY_ALL_ACCESS,0,&hKeyResults,&Disposition);
 			if (lResult==ERROR_SUCCESS) RegSetValueEx(hKeyResults,"Directory Recursion",0,REG_DWORD,(BYTE*)&Recursion,sizeof(DWORD));
 			SaveRomBrowserColumnInfo();
 			listCount=SendDlgItemMessage(hDlg,IDC_USING,LB_GETCOUNT,0,0);
-			for (Pos=0; Pos<listCount; Pos++) {
+			for (Pos=0;Pos<listCount;Pos++) {
 				index=SendMessage(GetDlgItem(hDlg,IDC_USING),LB_GETITEMDATA,Pos,0);
 				SaveRomBrowserColumnPosition(index,Pos);
 			}
 			listCount=SendDlgItemMessage(hDlg,IDC_AVAILABLE,LB_GETCOUNT,0,0);
 			strcpy(szIndex,"-1");
-			for (Pos=0; Pos<listCount; Pos++) {
+			for (Pos=0;Pos<listCount;Pos++) {
 				index=SendMessage(GetDlgItem(hDlg,IDC_AVAILABLE),LB_GETITEMDATA,Pos,0);
 				SaveRomBrowserColumnPosition(index,-1);
 			}
 			LoadRomBrowserColumnInfo();
 			ResetRomBrowserColumns();
-			RomsToRemember=GetDlgItemInt(hDlg,IDC_REMEMBER,NULL,FALSE);
-			if (RomsToRemember<0) { RomsToRemember=0; }
-			if (RomsToRemember>10) { RomsToRemember=10; }
+			RomsToRemember=GetDlgItemInt(hDlg,IDC_REMEMBER,0,FALSE);
+			if (RomsToRemember<0) {RomsToRemember=0;}
+			if (RomsToRemember>10) {RomsToRemember=10;}
 			RegSetValueEx(hKeyResults,"Max # of ROMs Remembered",0,REG_DWORD,(BYTE*)&RomsToRemember,sizeof(DWORD));
-			RomDirsToRemember=GetDlgItemInt(hDlg,IDC_REMEMBERDIR,NULL,FALSE);
-			if (RomDirsToRemember<0) { RomDirsToRemember=0; }
-			if (RomDirsToRemember>10) { RomDirsToRemember=10; }
+			RomDirsToRemember=GetDlgItemInt(hDlg,IDC_REMEMBERDIR,0,FALSE);
+			if (RomDirsToRemember<0) {RomDirsToRemember=0;}
+			if (RomDirsToRemember>10) {RomDirsToRemember=10;}
 			RegSetValueEx(hKeyResults,"Max # of ROM Dirs Remembered",0,REG_DWORD,(BYTE*)&RomDirsToRemember,sizeof(DWORD));
 		}
 		break;
@@ -676,15 +673,15 @@ BOOL CALLBACK RomNotesProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 				int len,index;
 				_GetPrivateProfileString(Identifier,"Status",GS(UNKNOWN),RomStatus,sizeof(RomStatus),IniFile);
 				GetPrivateProfileSection("ROM Status",String,sizeof(String),IniFile);
-				for (p=String; strlen(p)>0; p+=strlen(p)+1) {
+				for (p=String;strlen(p)>0;p+=strlen(p)+1) {
 					strncpy(Status,p,sizeof(Status));
-					if (strrchr(Status,'=')==NULL) continue;
+					if (strrchr(Status,'=')==0) continue;
 					*(strrchr(Status,'='))=0;
 					len=strlen(Status);
 					if (len>4&&_strnicmp(&Status[len-4],".Sel",4)==0) continue;
 					index=SendMessage(GetDlgItem(hDlg,IDC_STATUS),CB_ADDSTRING,0,(LPARAM)Status);
-					if (strcmp(Status,RomStatus)==0) { SendMessage(GetDlgItem(hDlg,IDC_STATUS),CB_SETCURSEL,index,0); }
-					if (SendMessage(GetDlgItem(hDlg,IDC_STATUS),CB_GETCOUNT,0,0)==0) { SendMessage(GetDlgItem(hDlg,IDC_STATUS),CB_SETCURSEL,0,0); }
+					if (strcmp(Status,RomStatus)==0) {SendMessage(GetDlgItem(hDlg,IDC_STATUS),CB_SETCURSEL,index,0);}
+					if (SendMessage(GetDlgItem(hDlg,IDC_STATUS),CB_GETCOUNT,0,0)==0) {SendMessage(GetDlgItem(hDlg,IDC_STATUS),CB_SETCURSEL,0,0);}
 				}
 			}
 			{
@@ -710,7 +707,7 @@ BOOL CALLBACK RomNotesProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 			sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD*)(&RomHeader[0x10]),*(DWORD*)(&RomHeader[0x14]),RomHeader[0x3D]);
 			IniFile=GetIniFileName();
 			GetWindowText(GetDlgItem(hDlg,IDC_STATUS),string,sizeof(string));
-			if (strlen(string)==0) { strcpy(string,GS(UNKNOWN)); }
+			if (strlen(string)==0) {strcpy(string,GS(UNKNOWN));}
 			_WritePrivateProfileString(Identifier,"Status",string,IniFile);
 			GetWindowText(GetDlgItem(hDlg,IDC_CORE_NOTES),string,sizeof(string));
 			_WritePrivateProfileString(Identifier,"Core Note",string,IniFile);
