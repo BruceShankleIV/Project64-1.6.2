@@ -1720,7 +1720,7 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpszArgs,in
 		if (!CPURunning) CreateRomListControl(hMainWindow);
 	} else {
 		HandleShutdown();
-		if (strcmp(GfxDLL,"Glide64.dll")==0||strcmp(GfxDLL,"GLideN64.dll")==0||strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) {
+		if (strcmp(GfxDLL,"Glide64.dll")==0) {
 			BootupSettings=TRUE;
 			ChangeSettings(hMainWindow);
 			BootupSettings=FALSE;

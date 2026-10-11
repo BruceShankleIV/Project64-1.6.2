@@ -240,7 +240,7 @@ void EndEmulation () {
 	Timer_Stop();
 	VirtualProtect(N64MEM,RDRAMsize,PAGE_READWRITE,&OldProtect);
 	VirtualProtect(N64MEM+0x04000000,0x2000,PAGE_READWRITE,&OldProtect);
-	if (GfxRomClosed!=0&&(!inFullScreen||strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0)) GfxRomClosed();
+	if (GfxRomClosed!=0&&(!inFullScreen||strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0||strcmp(GfxDLL,"Glide64.dll")==0)) GfxRomClosed();
 	if (GLideN64NeedsToBeSetupFirst) return;
 	if (AiRomClosed!=0) AiRomClosed();
 	if (ContRomClosed!=0) ContRomClosed();

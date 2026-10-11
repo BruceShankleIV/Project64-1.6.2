@@ -2222,8 +2222,8 @@ void StartRecompilerCPU (void) {
 		VirtualFree(OrigMem,0,MEM_RELEASE);
 		OrigMem=0;
 	}
-	if (GfxRomOpen!=0&&(!inFullScreen||strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0)) {GfxRomOpen();}
-	if (ContRomOpen!=0&&!GLideN64NeedsToBeSetupFirst) {ContRomOpen();}
+	if (GfxRomOpen!=0&&(!inFullScreen||strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0||strcmp(GfxDLL,"Glide64.dll")==0)) GfxRomOpen();
+	if (ContRomOpen!=0&&!GLideN64NeedsToBeSetupFirst) ContRomOpen();
 	ResetRecompCode();
 	memset(&N64_Blocks,0,sizeof(N64_Blocks));
 	SetNormal
