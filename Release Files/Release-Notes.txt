@@ -10,4 +10,4 @@ Finally, if intending to play multiplayer online instead of locally, an option t
 
 I will quit actively working on the project after this release, but feel free to report any bugs you encounter during your usage of or fixes you would like to add for this build via my Project64 1.6.2 server in case I revisit the project or someone else wants to make a fork: discord.gg/cHDxa9vzQM
 
- - Edwin Bruce Shankle IV
+From Edwin Bruce Shankle IV

@@ -18,7 +18,7 @@ Report bugs: discord.gg/cHDxa9vzQM
 
 I'm usually busy so be patient or try to resolve an issue yourself and post any solutions you find.
 
- - Edwin Bruce Shankle IV
+From Edwin Bruce Shankle IV
 
 ## Personal Favorite N64 Games From My Childhood
 
