@@ -496,6 +496,7 @@ void HandleShutdown () {
 	else if (screenHeight>=1080&&screenWidth>=1440) ChangeWinSize(hMainWindow,800,600,0);
 	else ChangeWinSize(hMainWindow,640,480,0);
 	if (RefreshRomBrowserOnShutdown) RefreshRomBrowser();
+	if (hRomList!=0) SetFocus(hRomList);
 	ListView_SetExtendedListViewStyleEx(hRomList,LVS_EX_DOUBLEBUFFER,LVS_EX_DOUBLEBUFFER);
 }
 void FreeRomBrowser () {
