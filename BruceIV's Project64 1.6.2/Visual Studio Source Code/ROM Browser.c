@@ -34,35 +34,11 @@
 #include "Resource.h"
 #define NoOfSortKeys	3
 typedef struct {
-	char     szFullFileName[MAX_PATH+1];
-	char     Status[60];
-	char     FileName[200];
-	char     InternalName[22];
-	char     GameName[200];
-	char     CartID[3];
-	char     Developer[30];
-	char     ReleaseDate[30];
-	char     Genre[15];
-	int		 Players;
-	int      RomSize;
-	BYTE     Manufacturer;
-	BYTE     Country;
-	DWORD    CRC1;
-	DWORD    CRC2;
-	int      CicChip;
-	char     ForceFeedback[15];
-} ROM_INFO;
-typedef struct {
 	BYTE     Country;
 	DWORD    CRC1;
 	DWORD    CRC2;
 	long     Fpos;
 } ROM_LIST_INFO;
-typedef struct {
-	int    ListCount;
-	int    ListAlloc;
-	ROM_INFO*List;
-} ITEM_LIST;
 typedef struct {
 	int    ListCount;
 	int    ListAlloc;
@@ -221,7 +197,7 @@ void RefreshRomBrowser () {
 	GetRomDirectory(RomDir);
 	FillRomList (RomDir);
 	RomList_SortList();
-	RefreshRomBrowserOnShutdown=FALSE;
+	if (RefreshRomBrowserOnShutdown) RefreshRomBrowserOnShutdown=FALSE;
 }
 void ResetRomBrowserColumns () {
 	int Column,index,screenHeight=GetSystemMetrics(SM_CYSCREEN),screenWidth=GetSystemMetrics(SM_CXSCREEN),i;
@@ -495,7 +471,7 @@ void HandleShutdown () {
 	if (screenHeight>=1440&&screenWidth>=1920) ChangeWinSize(hMainWindow,1280,960,0);
 	else if (screenHeight>=1080&&screenWidth>=1440) ChangeWinSize(hMainWindow,800,600,0);
 	else ChangeWinSize(hMainWindow,640,480,0);
-	if (RefreshRomBrowserOnShutdown) RefreshRomBrowser();
+	if (AutoRefreshRomBrowser&&RefreshRomBrowserOnShutdown) RefreshRomBrowser();
 	if (hRomList!=0) SetFocus(hRomList);
 	ListView_SetExtendedListViewStyleEx(hRomList,LVS_EX_DOUBLEBUFFER,LVS_EX_DOUBLEBUFFER);
 }

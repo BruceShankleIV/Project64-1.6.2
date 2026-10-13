@@ -226,16 +226,13 @@ Vas poder guardar o cargar de tu tarjeta SD virtual de nuevo si esta acción func
 #219# "Tarjeta SD virtual"
 #220# "Optimizaciones de recompilación de la CPU VR4300i"
 #221# "Hacer capturas de pantalla con el complemento de vídeo"
-#222#
-Utiliza la función CaptureScreen del complemento de vídeo en lugar de la captura en BMP"
-#223#
-Las capturas de pantalla se realizarán ahora con el complemento de vídeo en lugar de con BMP"
-#224#
-Las capturas de pantalla se realizarán ahora con BMP en lugar de con el complemento de vídeo"
-#225#
-Las grabaciones se codificarán ahora utilizando el espacio de color RGB (sin pérdidas)"
+#222# "Utiliza la función CaptureScreen del complemento de vídeo en lugar de la captura en BMP"
+#223# "Las capturas de pantalla se realizarán ahora con el complemento de vídeo en lugar de con BMP"
+#224# "Las capturas de pantalla se realizarán ahora con BMP en lugar de con el complemento de vídeo"
+#225# "Las grabaciones se codificarán ahora utilizando el espacio de color RGB (sin pérdidas)"
 #226# "A partir de ahora, los vídeos se codificarán utilizando el espacio de color YUV (con pérdida)"
 #227# "Crea una barra de estado para descripciones y notificaciones"
 #228# "Ahora se creará la barra de estado si aún no existía"
 #229# "La barra de estado no se creará la próxima vez que se abra la aplicación"
 #230# "Crear barra de estado"
+#231# "Navegador de ROM con actualización automática"

@@ -238,3 +238,4 @@ char*GS               (int StringID);
 #define STATUSBAR_ON				228
 #define STATUSBAR_OFF				229
 #define CREATE_STATUS_BAR			230
+#define OPTION_AUTO_BROWSER			231

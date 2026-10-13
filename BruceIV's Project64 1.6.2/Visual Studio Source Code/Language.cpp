@@ -241,6 +241,7 @@ LANG_STR DefaultString[]={
 	{STATUSBAR_ON,					"Status bar will now be created if it wasn't already"},
 	{STATUSBAR_OFF,				"Status bar won't get created on next app opening"},
 	{CREATE_STATUS_BAR,			"Create Status Bar"},
+	{OPTION_AUTO_BROWSER,		"Auto Refresh ROM Browser"},
 };
 class CLanguage  {
 	void FindLangName  (int Index);

@@ -236,3 +236,4 @@ Você será capaz salvar ou carregar do seu cartão SD virtual se essa ação for bem
 #228# "Die Statusleiste wird nun erstellt, falls sie noch nicht vorhanden war"
 #229# "Die Statusleiste wird beim nächsten Öffnen der App nicht erstellt"
 #230# "Criar barra de status"
+#231# "Atualização automática do navegador ROM"

@@ -41,7 +41,7 @@
 #include "Resource.h"
 #include "SummerCart.h"
 LARGE_INTEGER Frequency,Frames[9],LastFrame;
-BOOL AutoSleep,AutoHide,CreateStatusBar,RecordRGB,Recursion,LimitFPS,SpeedCap,AutoFullScreen,SystemCF,UsuallyonTop,VideoToScreen,BasicMode,BootupSettings=FALSE,DelayHandleGlobalTasks=FALSE,SPECIAL_BREAK_Trigger=FALSE,SPECIAL_BREAK_Yes=FALSE,FirstBoot=FALSE,UserCancelPluginInit=FALSE,RefreshRomBrowserOnShutdown=TRUE;
+BOOL AutoSleep,AutoHide,CreateStatusBar,RecordRGB,Recursion,LimitFPS,SpeedCap,AutoFullScreen,SystemCF,UsuallyonTop,VideoToScreen,BasicMode,AutoRefreshRomBrowser,BootupSettings=FALSE,DelayHandleGlobalTasks=FALSE,SPECIAL_BREAK_Trigger=FALSE,SPECIAL_BREAK_Yes=FALSE,FirstBoot=FALSE,UserCancelPluginInit=FALSE,RefreshRomBrowserOnShutdown=TRUE;
 DWORD CurrentFrame,SystemUseCache,SystemProtectMemoryEnlargeBuffer,RomsToRemember,RomDirsToRemember;
 HWND hMainWindow,hHiddenWin,hStatusWnd,hRomList=0;
 char CurrentSave[256];
@@ -357,6 +357,7 @@ void LoadSettings () {
 	AutoFullScreen=FALSE;
 	RomsToRemember=Default_RomsToRemember;
 	RomDirsToRemember=Default_RomsDirsToRemember;
+	AutoRefreshRomBrowser=Default_AutoRefreshRomBrowser;
 	BasicMode=Default_BasicMode;
 	Recursion=Default_Recursion;
 	LimitFPS=Default_LimitFPS;
@@ -388,6 +389,8 @@ void LoadSettings () {
 	sprintf(String,"PJ64 V 1.6.2\\Configuration\\Settings\\Options");
 	lResult=RegOpenKeyEx(HKEY_CURRENT_USER,String,0,KEY_ALL_ACCESS,&hKeyResults);
 	if (lResult==ERROR_SUCCESS) {
+		lResult=RegQueryValueEx(hKeyResults,"Auto Refresh ROM Browser",0,&Type,(LPBYTE)(&AutoRefreshRomBrowser),&Bytes);
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {AutoRefreshRomBrowser=Default_AutoRefreshRomBrowser;}
 		lResult=RegQueryValueEx(hKeyResults,"Basic Mode",0,&Type,(LPBYTE)(&BasicMode),&Bytes);
 		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {BasicMode=Default_BasicMode;}
 		lResult=RegQueryValueEx(hKeyResults,"Pause CPU Upon Focus Loss",0,&Type,(BYTE*)(&AutoSleep),&Bytes);
@@ -1218,11 +1221,12 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 		if (UsuallyonTop) SetWindowPos(hWnd,HWND_NOTOPMOST,0,0,0,0,SWP_NOMOVE|SWP_NOREPOSITION|SWP_NOSIZE);
 		if (Recursion) {
 			ChangeSettings(hWnd);
-			if (!Recursion) RefreshRomBrowser();
+			if (AutoRefreshRomBrowser&&!Recursion&&!RefreshRomBrowserOnShutdown) RefreshRomBrowser();
 		} else {
 			ChangeSettings(hWnd);
-			if (Recursion) RefreshRomBrowser();
+			if (AutoRefreshRomBrowser&&Recursion&&!RefreshRomBrowserOnShutdown) RefreshRomBrowser();
 		}
+		if (AutoRefreshRomBrowser&&RefreshRomBrowserOnShutdown) RefreshRomBrowser();
 		UsuallyonTopWindow(hWnd);
 		break;
 		case ID_OPTIONS_CHEATS:

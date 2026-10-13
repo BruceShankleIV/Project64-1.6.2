@@ -34,12 +34,12 @@ extern "C" {
 #include "Settings API.h"
 #include "ROM Browser.h"
 #include "Language.h"
-/*Source Code Version 26. Last updated @ 03:38PM 10/11/2026*/
+/*Source Code Version 26. Last updated @ 07:03PM 10/12/2026*/
 #define AppName						"BruceIV-Project64-1.6.2"
 #define IniName						"Game.ini"
 #define CheatIniName				"Cheat.ini"
 #define LangFileName				"English.txt"
-#define Default_AutoSleep			TRUE
+#define Default_AutoSleep			FALSE
 #define Default_RecordRGB			FALSE
 #define Default_AutoHide			TRUE
 #define Default_CreateStatusBar		TRUE
@@ -48,6 +48,7 @@ extern "C" {
 #define Default_SpeedCap			FALSE
 #define Default_UsuallyonTop		FALSE
 #define Default_BasicMode			TRUE
+#define Default_AutoRefreshRomBrowser TRUE
 #define Default_RomsToRemember		10
 #define Default_RomsDirsToRemember	10
 #define Default_CountPerOp			2
@@ -66,8 +67,33 @@ extern "C" {
 #define PROTECT_MEMORY_ENLARGE_BUFFER_OFF		1
 #define Default_UseProtectMemoryEnlargeBuffer PROTECT_MEMORY_ENLARGE_BUFFER_OFF
 #define Default_Recursion			TRUE
+typedef struct {
+	char     szFullFileName[MAX_PATH+1];
+	char     Status[60];
+	char     FileName[200];
+	char     InternalName[22];
+	char     GameName[200];
+	char     CartID[3];
+	char     Developer[30];
+	char     ReleaseDate[30];
+	char     Genre[15];
+	int		 Players;
+	int      RomSize;
+	BYTE     Manufacturer;
+	BYTE     Country;
+	DWORD    CRC1;
+	DWORD    CRC2;
+	int      CicChip;
+	char     ForceFeedback[15];
+} ROM_INFO;
+typedef struct {
+	int    ListCount;
+	int    ListAlloc;
+	ROM_INFO*List;
+} ITEM_LIST;
+extern ITEM_LIST ItemList;
 extern LARGE_INTEGER Frequency,Frames[9],LastFrame;
-extern BOOL AutoSleep,AutoHide,CreateStatusBar,RecordRGB,Recursion,LimitFPS,SpeedCap,AutoFullScreen,SystemCF,UsuallyonTop,VideoToScreen,BasicMode,BootupSettings,DelayHandleGlobalTasks,SPECIAL_BREAK_Trigger,SPECIAL_BREAK_Yes,FirstBoot,UserCancelPluginInit,RefreshRomBrowserOnShutdown;
+extern BOOL AutoSleep,AutoHide,CreateStatusBar,RecordRGB,Recursion,LimitFPS,SpeedCap,AutoFullScreen,SystemCF,UsuallyonTop,VideoToScreen,BasicMode,AutoRefreshRomBrowser,BootupSettings,DelayHandleGlobalTasks,SPECIAL_BREAK_Trigger,SPECIAL_BREAK_Yes,FirstBoot,UserCancelPluginInit,RefreshRomBrowserOnShutdown;
 extern DWORD CurrentFrame,SystemUseCache,SystemProtectMemoryEnlargeBuffer,RomsToRemember,RomDirsToRemember;
 extern HWND hMainWindow,hHiddenWin,hStatusWnd,hRomList;
 extern char CurrentSave[256];

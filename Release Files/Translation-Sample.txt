@@ -247,3 +247,4 @@ You will be able to save to or load from your virtual SD card again if this acti
 #228# "Status bar will now be created if it wasn't already"
 #229# "Status bar won't get created on next app opening"
 #230# "Create Status Bar"
+#231# "Auto Refresh ROM Browser"

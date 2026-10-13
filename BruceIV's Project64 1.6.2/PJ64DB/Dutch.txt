@@ -221,3 +221,4 @@ Als deze actie succesvol is, kun je weer gegevens opslaan op en laden van je vir
 #228# "De statusbalk wordt nu aangemaakt als deze nog niet bestond"
 #229# "De statusbalk wordt niet aangemaakt wanneer de app de volgende keer wordt geopend"
 #230# "Statusbalk aanmaken"
+#231# "ROM-browser automatisch vernieuwen"

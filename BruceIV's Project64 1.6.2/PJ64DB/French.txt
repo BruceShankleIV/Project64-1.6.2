@@ -223,3 +223,4 @@ Vous pourrez sauvegarder ou charger vers ou depuis la carte SD virtuelle si cett
 #228# "La barre d'état sera désormais créée si elle ne l'était pas déjà"
 #229# "La barre d'état ne sera pas créée lors de la prochaine ouverture de l'application"
 #230# "Créer une barre d'état"
+#231# "Actualisation automatique du navigateur ROM"

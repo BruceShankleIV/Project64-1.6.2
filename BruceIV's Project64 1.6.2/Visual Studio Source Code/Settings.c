@@ -150,6 +150,7 @@ BOOL CALLBACK GeneralOptionsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lPara
 	case WM_INITDIALOG:
 		SetFlagControl(hDlg,&AutoSleep,     IDC_AUTOSLEEP,      OPTION_AUTO_SLEEP);
 		SetFlagControl(hDlg,&AutoFullScreen,IDC_LOAD_FULLSCREEN,OPTION_AUTO_FULLSCREEN);
+		SetFlagControl(hDlg,&AutoRefreshRomBrowser,IDC_AUTO_BROWSER,OPTION_AUTO_BROWSER);
 		SetFlagControl(hDlg,&BasicMode,     IDC_BASIC_MODE,     OPTION_BASIC_MODE);
 		break;
 	case WM_NOTIFY:
@@ -164,6 +165,8 @@ BOOL CALLBACK GeneralOptionsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lPara
 			if (lResult==ERROR_SUCCESS) {
 				AutoFullScreen=SendMessage(GetDlgItem(hDlg,IDC_LOAD_FULLSCREEN),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
 				RegSetValueEx(hKeyResults,"Enter Fullscreen Mode Upon ROM Opening",0,REG_DWORD,(BYTE*)&AutoFullScreen,sizeof(DWORD));
+				AutoRefreshRomBrowser=SendMessage(GetDlgItem(hDlg,IDC_AUTO_BROWSER),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
+				RegSetValueEx(hKeyResults,"Auto Refresh ROM Browser",0,REG_DWORD,(BYTE*)&AutoRefreshRomBrowser,sizeof(DWORD));
 				BasicMode=SendMessage(GetDlgItem(hDlg,IDC_BASIC_MODE),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
 				RegSetValueEx(hKeyResults,"Basic Mode",0,REG_DWORD,(BYTE*)&BasicMode,sizeof(DWORD));
 				AutoSleep=SendMessage(GetDlgItem(hDlg,IDC_AUTOSLEEP),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
