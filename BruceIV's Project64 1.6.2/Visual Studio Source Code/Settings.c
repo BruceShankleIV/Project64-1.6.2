@@ -136,10 +136,6 @@ void ChangeSettings(HWND hwndOwner) {
 	psh.pfnCallback=0;
 	PropertySheet(&psh);
 	if (!AutoSleep&&!ManualPaused&&(CPU_Paused||CPU_Action.Pause)) PauseCPU();
-	if (DelayHandleGlobalTasks) {
-		DelayHandleGlobalTasks=FALSE;
-		HandleGlobalTasks(hHiddenWin);
-	} else SetupMenu(hMainWindow);
 }
 void SetFlagControl (HWND hDlg,BOOL*Flag,WORD CtrlID,int StringID) {
 	SetDlgItemText(hDlg,CtrlID,GS(StringID));

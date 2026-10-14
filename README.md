@@ -54,7 +54,7 @@ To Zilmar, thanks for your work on Project64 1.6 and contributing a couple fixes
 
 To my friends, thank you for testing the application along the way and providing feedback, reporting issues to solve, and translating to other languages.
 
-To idc5580, your patching tool is wonderful to apply lots of patches to a baseROM to quickly generate lots of ROMhacks. Thank you for savine me so much time!
+To idc5580, your patching tool is wonderful to apply lots of patches to a baseROM to quickly generate lots of ROMhacks. Thank you for saving me so much time!
 
 ## Credits
 

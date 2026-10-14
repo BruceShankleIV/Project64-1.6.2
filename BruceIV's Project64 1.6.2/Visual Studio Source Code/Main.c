@@ -1227,6 +1227,10 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 			if (AutoRefreshRomBrowser&&Recursion&&!RefreshRomBrowserOnShutdown) RefreshRomBrowser();
 		}
 		if (AutoRefreshRomBrowser&&RefreshRomBrowserOnShutdown) RefreshRomBrowser();
+		if (DelayHandleGlobalTasks) {
+			DelayHandleGlobalTasks=FALSE;
+			HandleGlobalTasks(hHiddenWin);
+		} else SetupMenu(hMainWindow);
 		UsuallyonTopWindow(hWnd);
 		break;
 		case ID_OPTIONS_CHEATS:
@@ -1373,7 +1377,12 @@ int RegisterWinClass () {
 	return TRUE;
 }
 void SetupMenu (HWND hWnd) {
-	HMENU hMenu=GetMenu(hWnd);
+	char String[256];
+	long lResult;
+	DWORD count,Type,Bytes;
+	HKEY hKeyResults=0;
+	MENUITEMINFO menuinfo;
+	HMENU hMenu=GetMenu(hWnd),hSubMenu=GetSubMenu(hMenu,0);
 	int State;
 	if (inFullScreen) return;
 	DestroyMenu(hMenu);
@@ -1381,8 +1390,88 @@ void SetupMenu (HWND hWnd) {
 	FixMenuLang(hMenu);
 	SetMenu(hWnd,hMenu);
 	CreateLangList(GetSubMenu(hMenu,0),6,ID_LANG_SELECT);
-	CreateRecentDirList(hMenu);
-	CreateRecentFileList(hMenu);
+	sprintf(String,"PJ64 V 1.6.2\\Configuration");
+	lResult=RegOpenKeyEx(HKEY_CURRENT_USER,String,0,KEY_ALL_ACCESS,&hKeyResults);
+	if (lResult==ERROR_SUCCESS) {
+		for (count=0;count<RomDirsToRemember;count++) {
+			Bytes=sizeof(LastDirs[count]);
+			sprintf(String,"RecentDir%d",count+1);
+			lResult=RegQueryValueEx(hKeyResults,String,0,&Type,(LPBYTE)LastDirs[count],&Bytes);
+			if (lResult!=ERROR_SUCCESS) {
+				memset(LastDirs[count],0,sizeof(LastDirs[count]));
+				break;
+			}
+		}
+		RegCloseKey(hKeyResults);
+	}
+	{
+		memset(&menuinfo,0,sizeof(MENUITEMINFO));
+		menuinfo.cbSize=sizeof(MENUITEMINFO);
+		menuinfo.fMask=MIIM_TYPE|MIIM_ID;
+		menuinfo.fType=MFT_STRING;
+		menuinfo.fState=MFS_ENABLED;
+		menuinfo.dwTypeData=String;
+		menuinfo.cch=256;
+		sprintf(String," ");
+		InsertMenuItem(hSubMenu,MenuLocOfUsedDirs,TRUE,&menuinfo);
+		hSubMenu=CreateMenu();
+		if (strlen(LastDirs[0])==0) {
+			menuinfo.wID=ID_FILE_RECENT_DIR;
+			sprintf(String," ");
+			InsertMenuItem(hSubMenu,0,TRUE,&menuinfo);
+		}
+		menuinfo.fMask=MIIM_TYPE|MIIM_ID;
+		for (count=0;count<RomDirsToRemember;count++) {
+			if (strlen(LastDirs[count])==0) {break;}
+			menuinfo.wID=ID_FILE_RECENT_DIR+count;
+			sprintf(String,"&%d %s",(count+1) % 10,LastDirs[count]);
+			InsertMenuItem(hSubMenu,count,TRUE,&menuinfo);
+		}
+		ModifyMenu(GetSubMenu(hMenu,0),MenuLocOfUsedDirs,MF_POPUP|MF_BYPOSITION,(DWORD)hSubMenu,GS(MENU_RECENT_DIR));
+		if (strlen(LastDirs[0])==0||RomDirsToRemember==0) EnableMenuItem(GetSubMenu(hMenu,0),MenuLocOfUsedDirs,MF_BYPOSITION|MFS_DISABLED);
+		else EnableMenuItem(GetSubMenu(hMenu,0),MenuLocOfUsedDirs,MF_BYPOSITION|MFS_ENABLED);
+	}
+	sprintf(String,"PJ64 V 1.6.2\\Configuration");
+	lResult=RegOpenKeyEx(HKEY_CURRENT_USER,String,0,KEY_ALL_ACCESS,&hKeyResults);
+	if (lResult==ERROR_SUCCESS) {
+		for (count=0;count<RomsToRemember;count++) {
+			Bytes=sizeof(LastRoms[count]);
+			sprintf(String,"RecentFile%d",count+1);
+			lResult=RegQueryValueEx(hKeyResults,String,0,&Type,(LPBYTE)LastRoms[count],&Bytes);
+			if (lResult!=ERROR_SUCCESS) {
+				memset(LastRoms[count],0,sizeof(LastRoms[count]));
+				break;
+			}
+		}
+		RegCloseKey(hKeyResults);
+	}
+	{
+		memset(&menuinfo,0,sizeof(MENUITEMINFO));
+		menuinfo.cbSize=sizeof(MENUITEMINFO);
+		menuinfo.fMask=MIIM_TYPE|MIIM_ID;
+		menuinfo.fType=MFT_STRING;
+		menuinfo.fState=MFS_ENABLED;
+		menuinfo.dwTypeData=String;
+		menuinfo.cch=256;
+		sprintf(String," ");
+		InsertMenuItem(hSubMenu,MenuLocOfUsedFiles,TRUE,&menuinfo);
+		hSubMenu=CreateMenu();
+		if (strlen(LastRoms[0])==0) {
+			menuinfo.wID=ID_FILE_RECENT_DIR;
+			sprintf(String," ");
+			InsertMenuItem(hSubMenu,0,TRUE,&menuinfo);
+		}
+		menuinfo.fMask=MIIM_TYPE|MIIM_ID;
+		for (count=0;count<RomsToRemember;count++) {
+			if (strlen(LastRoms[count])==0) {break;}
+			menuinfo.wID=ID_FILE_RECENT_FILE+count;
+			sprintf(String,"&%d %s",(count+1) % 10,LastRoms[count]);
+			InsertMenuItem(hSubMenu,count,TRUE,&menuinfo);
+		}
+		ModifyMenu(GetSubMenu(hMenu,0),MenuLocOfUsedFiles,MF_POPUP|MF_BYPOSITION,(DWORD)hSubMenu,GS(MENU_RECENT_ROM));
+		if (strlen(LastRoms[0])==0) EnableMenuItem(GetSubMenu(hMenu,0),MenuLocOfUsedFiles,MF_BYPOSITION|MFS_DISABLED);
+		else EnableMenuItem(GetSubMenu(hMenu,0),MenuLocOfUsedFiles,MF_BYPOSITION|MFS_ENABLED);
+	}
 	CheckMenuItem(hMenu,CurrentSaveSlot,MFS_CHECKED);
 	if (LimitFPS) CheckMenuItem(hMenu,ID_SYSTEM_LIMITFPS,MFS_CHECKED);
 	if (SpeedCap) CheckMenuItem(hMenu,ID_SYSTEM_SPEEDCAP,MFS_CHECKED);
@@ -1583,14 +1672,14 @@ void TerminatePreviousInstance () {
 	DWORD pid=GetCurrentProcessId(),foundPID=0;
 	int matchCount=0;
 	if (Process32First(s,&e)) do {
-			if (!_tcsicmp(e.szExeFile,name)&&e.th32ProcessID!=pid) {
-				HANDLE p=OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION,FALSE,e.th32ProcessID);
-				if (p) {
-					if (!matchCount++) foundPID=e.th32ProcessID;
-					CloseHandle(p);
-				}
+		if (!_tcsicmp(e.szExeFile,name)&&e.th32ProcessID!=pid) {
+			HANDLE p=OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION,FALSE,e.th32ProcessID);
+			if (p) {
+				if (!matchCount++) foundPID=e.th32ProcessID;
+				CloseHandle(p);
 			}
-		} while (Process32Next(s,&e));
+		}
+	} while (Process32Next(s,&e));
 	CloseHandle(s);
 	if (matchCount==1) {
 		int result=MessageBox(0,GS(EXTRA_PROJECT64),AppName,MB_YESNOCANCEL|MB_ICONQUESTION|MB_SETFOREGROUND);
@@ -1719,6 +1808,7 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpszArgs,in
 	}
 	ShowWindow(hMainWindow,SW_SHOW);
 	if (__argc>1) {
+		SetupMenu(hMainWindow);
 		strcpy(CurrentFileName,__argv[1]);
 		CreateThread(0,0,(LPTHREAD_START_ROUTINE)OpenChosenFile,0,0,0);
 		if (!CPURunning) CreateRomListControl(hMainWindow);

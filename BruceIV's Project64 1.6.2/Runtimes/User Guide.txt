@@ -59,10 +59,12 @@ Direct64 v0.5.03.25 - One of the oldest video plugins included in this project. 
 		      if it happens to be that other plugins don't work at all with any game on your PC.
 		      My 5th (least) favorite video plugin because it's not very useful.
 
-Glide64 'Final' Date: Dec 29 2011 - If you need a video plugin for modern hacks that supports alpha
-				    blending and a (low res) framebuffer, and your PC doesn't support
-				    GLideN64, this is your best bet. Easily my 3rd favorite video plugin
-				    and a very good pick all-around if it works on your PC.
+Glide64 'Final' Date: Dec 29 2011 - This video plugin is quite bad, it's only included because it works
+				    better than others for specific ROMhacks. It doesn't work properly
+				    with Zelda due to poor hardware frame buffer emulation specifically
+				    and MM lens of truth does not work right on it and broken textures.
+				    Not as horrible as Direct64 but not much better either. Used to be
+				    a decent all-around choice but GLideN64 has taken that title. 4th.
 
 GLideN64 rev.xxxxxxx - This would be my favorite video plugin if it used Direct3D8 instead of OpenGL for
 		       better PC support and didn't experience tearing during fullscreen or input delay.
@@ -73,7 +75,7 @@ GLideN64 rev.xxxxxxx - This would be my favorite video plugin if it used Direct3
 Project64 Legacy Icepir8's LLE - This plugin is faithful to the graphics of an original N64, in terms of
 				 its blurry low resolution low level style. However, it does not support
 				 F3DEX3 like GLideN64 does and also has a compatibility issue with Pmem.
-				 My 4th favorite video plugin, I'll use this if I want to feel like I am
+				 My 3rd favorite video plugin, I'll use this if I want to feel like I am
 				 living in the 1990s/early 2000s.
 
 Jabo's Direct3D8 1.6.2 - This is my personal favorite video plugin for these reasons:

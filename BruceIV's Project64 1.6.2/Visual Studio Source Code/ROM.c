@@ -34,11 +34,26 @@
 #include "UnZIP.h"
 #include "Resource.h"
 #include "ROM Tools Common.h"
-#define MenuLocOfUsedFiles	11
-#define MenuLocOfUsedDirs	(MenuLocOfUsedFiles+1)
 DWORD RomFileSize,VirtualSD,RomVirtualSD,SaveUsing,RomSaveUsing,CPUType,UseTLB,RomUseTLB,FiftyNineHertz,RomFiftyNineHertz,RomJAI,AudioSignal,RomAudioSignal,RomCF,UseCache,RomUseCache,RomShankleAziAI,RomAltEmulateAI,SyncGametoAudio,RomSyncGametoAudio,Lag,RomLag,DelayRDP,RomDelayRDP,DelayRSP,RomDelayRSP,AlignDMA,RomAlignDMA,DelayRDP,RomDelayRDP,DelayRSP,RomDelayRSP,DelaySI,RomDelaySI,RomRspRecompiler,CpuRecompiler,RomCpuRecompiler,ProtectMemoryEnlargeBuffer,RomProtectMemoryEnlargeBuffer,JumperPak,RomJumperPak,ForceAuto16kbit,ForceDisableTLB,ForceEnableDMA,EmulateAI;
 char CurrentFileName[MAX_PATH+1]={""},RomName[MAX_PATH+1]={""},RomHeader[0x1000],LastRoms[10][MAX_PATH+1],LastDirs[10][MAX_PATH+1];
 BOOL IsValidRomImage (BYTE Test[4]);
+void SaveRecentDirs () {
+	long lResult;
+	HKEY hKeyResults=0;
+	DWORD Disposition=0;
+	char String[256];
+	sprintf(String,"PJ64 V 1.6.2\\Configuration");
+	lResult=RegCreateKeyEx(HKEY_CURRENT_USER,String,0,"",REG_OPTION_NON_VOLATILE,KEY_ALL_ACCESS,0,&hKeyResults,&Disposition);
+	if (lResult==ERROR_SUCCESS) {
+		DWORD count;
+		for (count=0;count<RomDirsToRemember;count++) {
+			if (strlen(LastDirs[count])==0) {break;}
+			sprintf(String,"RecentDir%d",count+1);
+			RegSetValueEx(hKeyResults,String,0,REG_SZ,(LPBYTE)LastDirs[count],strlen(LastDirs[count]));
+		}
+		RegCloseKey(hKeyResults);
+	}
+}
 void AddRecentDir(HWND hWnd,char*addition) {
 	DWORD count;
 	if (addition!=0&&RomDirsToRemember>0) {
@@ -215,61 +230,6 @@ BOOL LoadDataFromRomFile(char*FileName,BYTE*Data,int DataLen,int*RomSize) {
 		break;
 	}
 	return TRUE;
-}
-void CreateRecentDirList (HMENU hMenu) {
-	HKEY hKeyResults=0;
-	char String[256];
-	long lResult;
-	DWORD count;
-	sprintf(String,"PJ64 V 1.6.2\\Configuration");
-	lResult=RegOpenKeyEx(HKEY_CURRENT_USER,String,0,KEY_ALL_ACCESS,&hKeyResults);
-	if (lResult==ERROR_SUCCESS) {
-		DWORD Type,Bytes;
-		for (count=0;count<RomDirsToRemember;count++) {
-			Bytes=sizeof(LastDirs[count]);
-			sprintf(String,"RecentDir%d",count+1);
-			lResult=RegQueryValueEx(hKeyResults,String,0,&Type,(LPBYTE)LastDirs[count],&Bytes);
-			if (lResult!=ERROR_SUCCESS) {
-				memset(LastDirs[count],0,sizeof(LastDirs[count]));
-				break;
-			}
-		}
-		RegCloseKey(hKeyResults);
-	}
-	{
-		HMENU hSubMenu;
-		MENUITEMINFO menuinfo;
-		hSubMenu=GetSubMenu(hMenu,0);
-		DeleteMenu(hSubMenu,MenuLocOfUsedDirs,MF_BYPOSITION);
-		memset(&menuinfo,0,sizeof(MENUITEMINFO));
-		menuinfo.cbSize=sizeof(MENUITEMINFO);
-		menuinfo.fMask=MIIM_TYPE|MIIM_ID;
-		menuinfo.fType=MFT_STRING;
-		menuinfo.fState=MFS_ENABLED;
-		menuinfo.dwTypeData=String;
-		menuinfo.cch=256;
-		sprintf(String," ");
-		InsertMenuItem(hSubMenu,MenuLocOfUsedDirs,TRUE,&menuinfo);
-		hSubMenu=CreateMenu();
-		if (strlen(LastDirs[0])==0) {
-			menuinfo.wID=ID_FILE_RECENT_DIR;
-			sprintf(String," ");
-			InsertMenuItem(hSubMenu,0,TRUE,&menuinfo);
-		}
-		menuinfo.fMask=MIIM_TYPE|MIIM_ID;
-		for (count=0;count<RomDirsToRemember;count++) {
-			if (strlen(LastDirs[count])==0) {break;}
-			menuinfo.wID=ID_FILE_RECENT_DIR+count;
-			sprintf(String,"&%d %s",(count+1) % 10,LastDirs[count]);
-			InsertMenuItem(hSubMenu,count,TRUE,&menuinfo);
-		}
-		ModifyMenu(GetSubMenu(hMenu,0),MenuLocOfUsedDirs,MF_POPUP|MF_BYPOSITION,(DWORD)hSubMenu,GS(MENU_RECENT_DIR));
-		if (strlen(LastDirs[0])==0||RomDirsToRemember==0) {
-			EnableMenuItem(GetSubMenu(hMenu,0),MenuLocOfUsedDirs,MF_BYPOSITION|MFS_DISABLED);
-		} else {
-			EnableMenuItem(GetSubMenu(hMenu,0),MenuLocOfUsedDirs,MF_BYPOSITION|MFS_ENABLED);
-		}
-	}
 }
 void CreateRecentFileList(HMENU hMenu) {
 	HKEY hKeyResults=0;
@@ -787,32 +747,13 @@ void OpenChosenFile(void) {
 		SendMessage(hMainWindow,WM_COMMAND,ID_OPTIONS_FULLSCREEN,0);
 	}
 }
-void SaveRecentDirs () {
-	long lResult;
-	HKEY hKeyResults=0;
-	DWORD Disposition=0;
-	char String[256];
-	sprintf(String,"PJ64 V 1.6.2\\Configuration");
-	lResult=RegCreateKeyEx(HKEY_CURRENT_USER,String,0,"",REG_OPTION_NON_VOLATILE,
-		KEY_ALL_ACCESS,0,&hKeyResults,&Disposition);
-	if (lResult==ERROR_SUCCESS) {
-		DWORD count;
-		for (count=0;count<RomDirsToRemember;count++) {
-			if (strlen(LastDirs[count])==0) {break;}
-			sprintf(String,"RecentDir%d",count+1);
-			RegSetValueEx(hKeyResults,String,0,REG_SZ,(LPBYTE)LastDirs[count],strlen(LastDirs[count]));
-		}
-		RegCloseKey(hKeyResults);
-	}
-}
 void SaveRecentFiles () {
 	long lResult;
 	HKEY hKeyResults=0;
 	DWORD Disposition=0;
 	char String[256];
 	sprintf(String,"PJ64 V 1.6.2\\Configuration");
-	lResult=RegCreateKeyEx(HKEY_CURRENT_USER,String,0,"",REG_OPTION_NON_VOLATILE,
-		KEY_ALL_ACCESS,0,&hKeyResults,&Disposition);
+	lResult=RegCreateKeyEx(HKEY_CURRENT_USER,String,0,"",REG_OPTION_NON_VOLATILE,KEY_ALL_ACCESS,0,&hKeyResults,&Disposition);
 	if (lResult==ERROR_SUCCESS) {
 		DWORD count;
 		for (count=0;count<RomsToRemember;count++) {
@@ -904,8 +845,7 @@ void SetRomDirectory (char*Directory) {
 	DWORD Disposition=0;
 	char Group[200];
 	sprintf(Group,"PJ64 V 1.6.2\\Configuration");
-	lResult=RegCreateKeyEx(HKEY_CURRENT_USER,Group,0,"",REG_OPTION_NON_VOLATILE,
-		KEY_ALL_ACCESS,0,&hKeyResults,&Disposition);
+	lResult=RegCreateKeyEx(HKEY_CURRENT_USER,Group,0,"",REG_OPTION_NON_VOLATILE,KEY_ALL_ACCESS,0,&hKeyResults,&Disposition);
 	if (lResult==ERROR_SUCCESS) {
 		RegSetValueEx(hKeyResults,"CustomPath ROMs",0,REG_SZ,(LPBYTE)Directory,strlen(Directory));
 		AddRecentDir(hMainWindow,Directory);
