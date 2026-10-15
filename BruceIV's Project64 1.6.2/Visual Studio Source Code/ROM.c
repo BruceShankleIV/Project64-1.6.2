@@ -34,7 +34,7 @@
 #include "UnZIP.h"
 #include "Resource.h"
 #include "ROM Tools Common.h"
-DWORD RomFileSize,VirtualSD,RomVirtualSD,SaveUsing,RomSaveUsing,CPUType,UseTLB,RomUseTLB,FiftyNineHertz,RomFiftyNineHertz,RomJAI,AudioSignal,RomAudioSignal,RomCF,UseCache,RomUseCache,RomShankleAziAI,RomAltEmulateAI,SyncGametoAudio,RomSyncGametoAudio,Lag,RomLag,DelayRDP,RomDelayRDP,DelayRSP,RomDelayRSP,AlignDMA,RomAlignDMA,DelayRDP,RomDelayRDP,DelayRSP,RomDelayRSP,DelaySI,RomDelaySI,RomRspRecompiler,CpuRecompiler,RomCpuRecompiler,ProtectMemoryEnlargeBuffer,RomProtectMemoryEnlargeBuffer,JumperPak,RomJumperPak,ForceAuto16kbit,ForceDisableTLB,ForceEnableDMA,EmulateAI,UseLastRomFolder;
+DWORD RomFileSize,VirtualSD,RomVirtualSD,SaveUsing,RomSaveUsing,CPUType,UseTLB,RomUseTLB,FiftyNineHertz,RomFiftyNineHertz,RomJAI,AudioSignal,RomAudioSignal,RomCF,UseCache,RomUseCache,RomShankleAziAI,RomAltEmulateAI,SyncGametoAudio,RomSyncGametoAudio,Lag,RomLag,DelayRDP,RomDelayRDP,DelayRSP,RomDelayRSP,AlignDMA,RomAlignDMA,DelayRDP,RomDelayRDP,DelayRSP,RomDelayRSP,DelaySI,RomDelaySI,RomRspRecompiler,CpuRecompiler,RomCpuRecompiler,ProtectMemoryEnlargeBuffer,RomProtectMemoryEnlargeBuffer,JumperPak,RomJumperPak,ForceAuto16kbit,ForceDisableTLB,ForceEnableDMA,EmulateAI;
 char CurrentFileName[MAX_PATH+1]={""},RomName[MAX_PATH+1]={""},RomHeader[0x1000],LastRoms[10][MAX_PATH+1],LastDirs[10][MAX_PATH+1];
 BOOL IsValidRomImage (BYTE Test[4]);
 void SaveRecentDirs () {
@@ -564,20 +564,6 @@ void OpenChosenFile(void) {
 	long lResult;
 	int count,i;
 	CloseCheatWindow();
-	sprintf(String,"PJ64 V 1.6.2\\Configuration");
-	lResult=RegOpenKeyEx(HKEY_CURRENT_USER,String,0,KEY_ALL_ACCESS,&hKeyResults);
-	if (lResult==ERROR_SUCCESS) {
-		DWORD Type,Bytes=4;
-		lResult=RegQueryValueEx(hKeyResults,"AppPath ROMs",0,&Type,(LPBYTE)(&UseLastRomFolder),&Bytes);
-		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) goto SkipSNFD;
-		RegCloseKey(hKeyResults);
-		_splitpath(CurrentFileName,drive,dir,FileName,ext);
-		sprintf(Directory,"%s%s",drive,dir);
-		GetRomDirectory(CurrentDir);
-		if (strcmp(CurrentDir,Directory)!=0) SetRomDirectory(Directory);
-	}
-	SkipSNFD:
-	UseLastRomFolder=FALSE;
 	strcpy(MapFile,CurrentFileName);
 	if (_strnicmp(&CurrentFileName[strlen(CurrentFileName)-4],".ZIP",4)==0) {
 		int len,port=0,FoundRom;
@@ -727,6 +713,19 @@ void OpenChosenFile(void) {
 		else if (RomName[count]!='\0') count=-1;
 	}
 	if (!CPURunning) CPURunning=TRUE;
+	sprintf(String,"PJ64 V 1.6.2\\Configuration");
+	lResult=RegOpenKeyEx(HKEY_CURRENT_USER,String,0,KEY_ALL_ACCESS,&hKeyResults);
+	if (lResult==ERROR_SUCCESS) {
+		DWORD Type,Value,Bytes=4;
+		lResult=RegQueryValueEx(hKeyResults,"AppPath ROMs",0,&Type,(LPBYTE)(&Value),&Bytes);
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) goto SkipSNFD;
+		RegCloseKey(hKeyResults);
+		_splitpath(CurrentFileName,drive,dir,FileName,ext);
+		sprintf(Directory,"%s%s",drive,dir);
+		GetRomDirectory(CurrentDir);
+		if (strcmp(CurrentDir,Directory)!=0&&Value) SetRomDirectory(Directory);
+	}
+	SkipSNFD:
 	if (IsWindowVisible(hRomList)) {
 		SetFocus(hMainWindow);
 		ShowWindow(hRomList,SW_HIDE);
@@ -843,8 +842,6 @@ void SetRomDirectory (char*Directory) {
 		RegSetValueEx(hKeyResults,"CustomPath ROMs",0,REG_SZ,(LPBYTE)Directory,strlen(Directory));
 		AddRecentDir(hMainWindow,Directory);
 		RegCloseKey(hKeyResults);
-		if (CPURunning||UseLastRomFolder) RefreshRomBrowserOnShutdown=TRUE;
-		else if (AutoRefreshRomBrowser) RefreshRomBrowser();
-		// This can probably be formatted to be less redundant somehow with condition updates in RefreshRomBrowser.
+		if (!(!CPURunning&&!AutoRefreshRomBrowser)) RefreshRomBrowser();
 	}
 }
