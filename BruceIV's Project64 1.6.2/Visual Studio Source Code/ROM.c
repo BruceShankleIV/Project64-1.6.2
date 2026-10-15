@@ -34,7 +34,7 @@
 #include "UnZIP.h"
 #include "Resource.h"
 #include "ROM Tools Common.h"
-DWORD RomFileSize,VirtualSD,RomVirtualSD,SaveUsing,RomSaveUsing,CPUType,UseTLB,RomUseTLB,FiftyNineHertz,RomFiftyNineHertz,RomJAI,AudioSignal,RomAudioSignal,RomCF,UseCache,RomUseCache,RomShankleAziAI,RomAltEmulateAI,SyncGametoAudio,RomSyncGametoAudio,Lag,RomLag,DelayRDP,RomDelayRDP,DelayRSP,RomDelayRSP,AlignDMA,RomAlignDMA,DelayRDP,RomDelayRDP,DelayRSP,RomDelayRSP,DelaySI,RomDelaySI,RomRspRecompiler,CpuRecompiler,RomCpuRecompiler,ProtectMemoryEnlargeBuffer,RomProtectMemoryEnlargeBuffer,JumperPak,RomJumperPak,ForceAuto16kbit,ForceDisableTLB,ForceEnableDMA,EmulateAI;
+DWORD RomFileSize,VirtualSD,RomVirtualSD,SaveUsing,RomSaveUsing,CPUType,UseTLB,RomUseTLB,FiftyNineHertz,RomFiftyNineHertz,RomJAI,AudioSignal,RomAudioSignal,RomCF,UseCache,RomUseCache,RomShankleAziAI,RomAltEmulateAI,SyncGametoAudio,RomSyncGametoAudio,Lag,RomLag,DelayRDP,RomDelayRDP,DelayRSP,RomDelayRSP,AlignDMA,RomAlignDMA,DelayRDP,RomDelayRDP,DelayRSP,RomDelayRSP,DelaySI,RomDelaySI,RomRspRecompiler,CpuRecompiler,RomCpuRecompiler,ProtectMemoryEnlargeBuffer,RomProtectMemoryEnlargeBuffer,JumperPak,RomJumperPak,ForceAuto16kbit,ForceDisableTLB,ForceEnableDMA,EmulateAI,UseLastRomFolder;
 char CurrentFileName[MAX_PATH+1]={""},RomName[MAX_PATH+1]={""},RomHeader[0x1000],LastRoms[10][MAX_PATH+1],LastDirs[10][MAX_PATH+1];
 BOOL IsValidRomImage (BYTE Test[4]);
 void SaveRecentDirs () {
@@ -133,14 +133,14 @@ void GetRomDirectory (char*Directory) {
 		DWORD Type,Bytes=sizeof(Dir);
 		lResult=RegQueryValueEx(hKeyResults,"CustomPath ROMs",0,&Type,(LPBYTE)Dir,&Bytes);
 		if (lResult==ERROR_SUCCESS) {strcpy(Directory,Dir);}
+		RegCloseKey(hKeyResults);
 	}
-	RegCloseKey(hKeyResults);
 }
 BOOL IsValidRomImage (BYTE Test[4]) {
 	if (*((DWORD*)&Test[0])==0x40123780) return TRUE;
 	if (*((DWORD*)&Test[0])==0x12408037) return TRUE;
 	if (*((DWORD*)&Test[0])==0x80371240) return TRUE;
-	if (*((DWORD*)&Test[0])==0x40072780) return TRUE;// N64DD IPL (J)
+	if (*((DWORD*)&Test[0])==0x40072780) return TRUE; // N64DD IPL (J)
 	return FALSE;
 }
 BOOL LoadDataFromRomFile(char*FileName,BYTE*Data,int DataLen,int*RomSize) {
@@ -556,32 +556,28 @@ BOOL RecalculateCRC () {
 	HandleShutdown();
 	return FALSE;
 }
-void SetNewFileDirectory () {
-	char String[256],Directory[256],CurrentDir[256];
+void OpenChosenFile(void) {
+#define ReadFromRomSection	0x400000
+	BYTE Test[4];
 	HKEY hKeyResults=0;
+	char String[256],Directory[256],CurrentDir[256],drive[_MAX_DRIVE],FileName[_MAX_DIR],dir[_MAX_DIR],ext[_MAX_EXT],MapFile[_MAX_PATH];
 	long lResult;
+	int count,i;
+	CloseCheatWindow();
 	sprintf(String,"PJ64 V 1.6.2\\Configuration");
 	lResult=RegOpenKeyEx(HKEY_CURRENT_USER,String,0,KEY_ALL_ACCESS,&hKeyResults);
 	if (lResult==ERROR_SUCCESS) {
-		char drive[_MAX_DRIVE],dir[_MAX_DIR],fname[_MAX_FNAME],ext[_MAX_EXT];
-		DWORD Type,ChangeRomDir,Bytes=4;
-		lResult=RegQueryValueEx(hKeyResults,"AppPath ROMs",0,&Type,(LPBYTE)(&ChangeRomDir),&Bytes);
-		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {ChangeRomDir=FALSE;}
-		if (!ChangeRomDir) return;
-		_splitpath(CurrentFileName,drive,dir,fname,ext);
+		DWORD Type,Bytes=4;
+		lResult=RegQueryValueEx(hKeyResults,"AppPath ROMs",0,&Type,(LPBYTE)(&UseLastRomFolder),&Bytes);
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) goto SkipSNFD;
+		RegCloseKey(hKeyResults);
+		_splitpath(CurrentFileName,drive,dir,FileName,ext);
 		sprintf(Directory,"%s%s",drive,dir);
 		GetRomDirectory(CurrentDir);
-		if (strcmp(CurrentDir,Directory)==0) return;
-		SetRomDirectory(Directory);
+		if (strcmp(CurrentDir,Directory)!=0) SetRomDirectory(Directory);
 	}
-}
-void OpenChosenFile(void) {
-#define ReadFromRomSection	0x400000
-	char drive[_MAX_DRIVE],FileName[_MAX_DIR],dir[_MAX_DIR],ext[_MAX_EXT],MapFile[_MAX_PATH];
-	int count,i;
-	BYTE Test[4];
-	CloseCheatWindow();
-	SetNewFileDirectory();
+	SkipSNFD:
+	UseLastRomFolder=FALSE;
 	strcpy(MapFile,CurrentFileName);
 	if (_strnicmp(&CurrentFileName[strlen(CurrentFileName)-4],".ZIP",4)==0) {
 		int len,port=0,FoundRom;
@@ -850,7 +846,7 @@ void SetRomDirectory (char*Directory) {
 		RegSetValueEx(hKeyResults,"CustomPath ROMs",0,REG_SZ,(LPBYTE)Directory,strlen(Directory));
 		AddRecentDir(hMainWindow,Directory);
 		RegCloseKey(hKeyResults);
-		if (CPURunning) RefreshRomBrowserOnShutdown=TRUE;
+		if (CPURunning||UseLastRomFolder) RefreshRomBrowserOnShutdown=TRUE;
 		else if (AutoRefreshRomBrowser) RefreshRomBrowser();
 	}
 }

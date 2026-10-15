@@ -155,9 +155,8 @@ BOOL CALLBACK GeneralOptionsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lPara
 			HKEY hKeyResults=0;
 			DWORD Disposition=0;
 			char String[256];
-			sprintf(String,"PJ64 V 1.6.2\\Configuration\\Settings\\Options");
-			lResult=RegCreateKeyEx(HKEY_CURRENT_USER,String,0,"",REG_OPTION_NON_VOLATILE,
-				KEY_ALL_ACCESS,0,&hKeyResults,&Disposition);
+			sprintf(String,"PJ64 V 1.6.2\\Configuration");
+			lResult=RegCreateKeyEx(HKEY_CURRENT_USER,String,0,"",REG_OPTION_NON_VOLATILE,KEY_ALL_ACCESS,0,&hKeyResults,&Disposition);
 			if (lResult==ERROR_SUCCESS) {
 				AutoFullScreen=SendMessage(GetDlgItem(hDlg,IDC_LOAD_FULLSCREEN),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
 				RegSetValueEx(hKeyResults,"Enter Fullscreen Mode Upon ROM Opening",0,REG_DWORD,(BYTE*)&AutoFullScreen,sizeof(DWORD));
@@ -167,8 +166,8 @@ BOOL CALLBACK GeneralOptionsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lPara
 				RegSetValueEx(hKeyResults,"Basic Mode",0,REG_DWORD,(BYTE*)&BasicMode,sizeof(DWORD));
 				AutoSleep=SendMessage(GetDlgItem(hDlg,IDC_AUTOSLEEP),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
 				RegSetValueEx(hKeyResults,"Pause CPU Upon Focus Loss",0,REG_DWORD,(BYTE*)&AutoSleep,sizeof(DWORD));
+				RegCloseKey(hKeyResults);
 			}
-			RegCloseKey(hKeyResults);
 		}
 		break;
 	default:
@@ -210,9 +209,8 @@ BOOL CALLBACK DefaultOptionsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lPara
 			HKEY hKeyResults=0;
 			DWORD Disposition=0;
 			char String[256];
-			sprintf(String,"PJ64 V 1.6.2\\Configuration\\Settings\\Advanced");
-			lResult=RegCreateKeyEx(HKEY_CURRENT_USER,String,0,"",REG_OPTION_NON_VOLATILE,
-				KEY_ALL_ACCESS,0,&hKeyResults,&Disposition);
+			sprintf(String,"PJ64 V 1.6.2\\Configuration");
+			lResult=RegCreateKeyEx(HKEY_CURRENT_USER,String,0,"",REG_OPTION_NON_VOLATILE,KEY_ALL_ACCESS,0,&hKeyResults,&Disposition);
 			if (lResult==ERROR_SUCCESS) {
 				ForceDisableTLB=SendMessage(GetDlgItem(hDlg,IDC_ForceDisableTLB),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
 				RegSetValueEx(hKeyResults,"Always Disable Translation Lookaside Buffer",0,REG_DWORD,(BYTE*)&ForceDisableTLB,sizeof(DWORD));
@@ -229,8 +227,8 @@ BOOL CALLBACK DefaultOptionsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lPara
 				indx=SendMessage(GetDlgItem(hDlg,IDC_CF),CB_GETCURSEL,0,0);
 				SystemCF=SendMessage(GetDlgItem(hDlg,IDC_CF),CB_GETITEMDATA,indx,0);
 				RegSetValueEx(hKeyResults,"Counter Factor",0,REG_DWORD,(BYTE*)&SystemCF,sizeof(DWORD));
+				RegCloseKey(hKeyResults);
 			}
-			RegCloseKey(hKeyResults);
 		}
 		break;
 	default:
@@ -274,6 +272,7 @@ BOOL CALLBACK DirSelectProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 				lResult=RegQueryValueEx(hKeyResults,"CustomPath Screenshots and Videos",0,&Type,(LPBYTE)Directory,&Bytes);
 				if (lResult!=ERROR_SUCCESS) {FetchScreenAndVideoDir(Directory);}
 				SetDlgItemText(hDlg,IDC_SNAP_DIR,Directory);
+				RegCloseKey(hKeyResults);
 			} else {
 				SendMessage(GetDlgItem(hDlg,IDC_ROM_DEFAULT),BM_SETCHECK,BST_CHECKED,0);
 				SendMessage(GetDlgItem(hDlg,IDC_AUTO_DEFAULT),BM_SETCHECK,BST_CHECKED,0);
@@ -364,13 +363,11 @@ BOOL CALLBACK DirSelectProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 		if (((NMHDR FAR*) lParam)->code==PSN_APPLY) {
 			long lResult;
 			HKEY hKeyResults=0;
-			DWORD Disposition=0;
+			DWORD Disposition=0,Value;
 			char String[256];
 			sprintf(String,"PJ64 V 1.6.2\\Configuration");
-			lResult=RegCreateKeyEx(HKEY_CURRENT_USER,String,0,"",REG_OPTION_NON_VOLATILE,
-				KEY_ALL_ACCESS,0,&hKeyResults,&Disposition);
+			lResult=RegCreateKeyEx(HKEY_CURRENT_USER,String,0,"",REG_OPTION_NON_VOLATILE,KEY_ALL_ACCESS,0,&hKeyResults,&Disposition);
 			if (lResult==ERROR_SUCCESS) {
-				DWORD Value;
 				Value=SendMessage(GetDlgItem(hDlg,IDC_ROM_DEFAULT),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
 				RegSetValueEx(hKeyResults,"AppPath ROMs",0,REG_DWORD,(BYTE*)&Value,sizeof(DWORD));
 				if (Value==FALSE) {
@@ -395,8 +392,8 @@ BOOL CALLBACK DirSelectProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 					GetDlgItemText(hDlg,IDC_SNAP_DIR,String,sizeof(String));
 					RegSetValueEx(hKeyResults,"CustomPath Screenshots and Videos",0,REG_SZ,(CONST BYTE*)String,strlen(String));
 				}
+				RegCloseKey(hKeyResults);
 			}
-			RegCloseKey(hKeyResults);
 		}
 		break;
 	default:
@@ -533,8 +530,8 @@ BOOL CALLBACK PluginSelectProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam)
 				index=SendMessage(GetDlgItem(hDlg,CONT_LIST),CB_GETITEMDATA,(WPARAM)index,0);
 				sprintf(String,"%s",PluginNames[index]);
 				RegSetValueEx(hKeyResults,"Controller Dll",0,REG_SZ,(CONST BYTE*)String,strlen(String));
+				RegCloseKey(hKeyResults);
 			}
-			RegCloseKey(hKeyResults);
 			FreePluginList();
 		}
 		break;
@@ -625,7 +622,7 @@ BOOL CALLBACK RomBrowserProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 			HKEY hKeyResults=0;
 			long lResult;
 			Recursion=SendMessage(GetDlgItem(hDlg,IDC_RECURSION),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
-			sprintf(String,"PJ64 V 1.6.2\\Configuration\\Settings\\ROM Selection");
+			sprintf(String,"PJ64 V 1.6.2\\Configuration");
 			lResult=RegCreateKeyEx(HKEY_CURRENT_USER,String,0,"",REG_OPTION_NON_VOLATILE,KEY_ALL_ACCESS,0,&hKeyResults,&Disposition);
 			if (lResult==ERROR_SUCCESS) RegSetValueEx(hKeyResults,"Directory Recursion",0,REG_DWORD,(BYTE*)&Recursion,sizeof(DWORD));
 			SaveRomBrowserColumnInfo();
@@ -670,7 +667,7 @@ BOOL CALLBACK RomNotesProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 			{
 				char String[0x3000],RomStatus[100],Status[200],*p;
 				int len,index;
-				_GetPrivateProfileString(Identifier,"Status",GS(UNKNOWN),RomStatus,sizeof(RomStatus),IniFile);
+				_GetPrivateProfileString(Identifier,"Status","Unknown", RomStatus, sizeof(RomStatus), IniFile);
 				GetPrivateProfileSection("ROM Status",String,sizeof(String),IniFile);
 				for (p=String;strlen(p)>0;p+=strlen(p)+1) {
 					strncpy(Status,p,sizeof(Status));
@@ -706,7 +703,7 @@ BOOL CALLBACK RomNotesProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 			sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD*)(&RomHeader[0x10]),*(DWORD*)(&RomHeader[0x14]),RomHeader[0x3D]);
 			IniFile=GetIniFileName();
 			GetWindowText(GetDlgItem(hDlg,IDC_STATUS),string,sizeof(string));
-			if (strlen(string)==0) {strcpy(string,GS(UNKNOWN));}
+			if (strlen(string)==0) {strcpy(string,"Unknown"); }
 			_WritePrivateProfileString(Identifier,"Status",string,IniFile);
 			GetWindowText(GetDlgItem(hDlg,IDC_CORE_NOTES),string,sizeof(string));
 			_WritePrivateProfileString(Identifier,"Core Note",string,IniFile);

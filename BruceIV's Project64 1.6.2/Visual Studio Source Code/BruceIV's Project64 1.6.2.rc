@@ -394,7 +394,6 @@ BEGIN
         BEGIN
             MENUITEM "",                  1100
         END
-        MENUITEM SEPARATOR
         MENUITEM " ",                      ID_FILE_EXIT
     END
     POPUP " "

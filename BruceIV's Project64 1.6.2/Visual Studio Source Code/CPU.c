@@ -513,19 +513,19 @@ void GetAutoSaveDir(char*Directory) {
 	_splitpath(path_buffer,drive,dir,fname,ext);
 	sprintf(Directory,"%s%sSave Data\\",drive,dir);
 	sprintf(Group,"PJ64 V 1.6.2\\Configuration");
-	lResult=RegOpenKeyEx(HKEY_CURRENT_USER,Group,0,KEY_ALL_ACCESS,
-		&hKeyResults);
+	lResult=RegOpenKeyEx(HKEY_CURRENT_USER,Group,0,KEY_ALL_ACCESS,&hKeyResults);
 	if (lResult==ERROR_SUCCESS) {
-		DWORD Type,Value,Bytes;
-		Bytes=4;
+		DWORD Type,Value,Bytes=4;
 		lResult=RegQueryValueEx(hKeyResults,"AppPath Save Data",0,&Type,(LPBYTE)(&Value),&Bytes);
-		if (lResult==ERROR_SUCCESS&&Value==FALSE) {
-			Bytes=sizeof(Dir);
-			lResult=RegQueryValueEx(hKeyResults,"CustomPath Save Data",0,&Type,(LPBYTE)Dir,&Bytes);
-			if (lResult==ERROR_SUCCESS) {strcpy(Directory,Dir);}
+		if (lResult==ERROR_SUCCESS) {
+			if (Value==FALSE) {
+				Bytes=sizeof(Dir);
+				lResult=RegQueryValueEx(hKeyResults,"CustomPath Save Data",0,&Type,(LPBYTE)Dir,&Bytes);
+				if (lResult==ERROR_SUCCESS) {strcpy(Directory,Dir);}
+			}
+			RegCloseKey(hKeyResults);
 		}
 	}
-	RegCloseKey(hKeyResults);
 }
 void GetInstantSaveDir(char*Directory) {
 	char path_buffer[_MAX_PATH],drive[_MAX_DRIVE],dir[_MAX_DIR],fname[_MAX_FNAME],ext[_MAX_EXT],Dir[256],Group[200];
@@ -538,16 +538,17 @@ void GetInstantSaveDir(char*Directory) {
 	lResult=RegOpenKeyEx(HKEY_CURRENT_USER,Group,0,KEY_ALL_ACCESS,
 		&hKeyResults);
 	if (lResult==ERROR_SUCCESS) {
-		DWORD Type,Value,Bytes;
-		Bytes=4;
+		DWORD Type,Value,Bytes=4;
 		lResult=RegQueryValueEx(hKeyResults,"AppPath Save States",0,&Type,(LPBYTE)(&Value),&Bytes);
-		if (lResult==ERROR_SUCCESS&&Value==FALSE) {
-			Bytes=sizeof(Dir);
-			lResult=RegQueryValueEx(hKeyResults,"CustomPath SaveStates",0,&Type,(LPBYTE)Dir,&Bytes);
-			if (lResult==ERROR_SUCCESS) {strcpy(Directory,Dir);}
+		if (lResult==ERROR_SUCCESS) {
+			if (Value==FALSE) {
+				Bytes=sizeof(Dir);
+				lResult=RegQueryValueEx(hKeyResults,"CustomPath SaveStates",0,&Type,(LPBYTE)Dir,&Bytes);
+				if (lResult==ERROR_SUCCESS) {strcpy(Directory,Dir);}
+			}
+			RegCloseKey(hKeyResults);
 		}
 	}
-	RegCloseKey(hKeyResults);
 }
 void InPermLoop (void) {
 	//***Changed***/

@@ -151,9 +151,8 @@ LRESULT CALLBACK RomInfoProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 		SetDlgItemText(hDlg,IDC_INFO_CRC1,String);
 		sprintf(&String[1],"0x%08X",*(DWORD*)(&RomHeader[0x14]));
 		SetDlgItemText(hDlg,IDC_INFO_CRC2,String);
-		if (GetCicChipID(RomHeader)<0) {
-			sprintf(&String[1],GS(UNKNOWN));
-		} else {
+		if (GetCicChipID(RomHeader)<0) sprintf(&String[1],GS(UNKNOWN));
+		else {
 			if (GetCicChipID(RomHeader)==4) sprintf(&String[1],"CIC-NUS-XENO");
 			else if (GetCicChipID(RomHeader)==7) sprintf(&String[1],"CIC-NUS-5167");
 			else if (GetCicChipID(RomHeader)==8) sprintf(&String[1],"CIC-NUS-8303");
@@ -285,7 +284,7 @@ void FixMenuLang (HMENU hMenu) {
 	MenuSetText(hSubMenu,9,GS(MENU_REFRESH),"F5");
 	MenuSetText(hSubMenu,11,GS(MENU_RECENT_ROM),0);
 	MenuSetText(hSubMenu,12,GS(MENU_RECENT_DIR),0);
-	MenuSetText(hSubMenu,14,GS(MENU_EXIT),"Alt+F4");
+	MenuSetText(hSubMenu,13,GS(MENU_EXIT),"Alt+F4");
 	//System
 	hSubMenu=GetSubMenu(hMenu,1);
 	MenuSetText(hSubMenu,0,GS(MENU_RESET),"F1");
@@ -343,8 +342,8 @@ char*GetLangFileName() {
 	return IniFileName;
 }
 void LoadSettings () {
-	HKEY hKeyResults;
 	DWORD Type,Bytes=4;
+	HKEY hKeyResults;
 	char String[256];
 	long lResult;
 	SystemUseCache=Default_UseCache;
@@ -386,7 +385,7 @@ void LoadSettings () {
 		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {VideoToScreen=Default_VideoToScreen;}
 		RegCloseKey(hKeyResults);
 	}
-	sprintf(String,"PJ64 V 1.6.2\\Configuration\\Settings\\Options");
+	sprintf(String,"PJ64 V 1.6.2\\Configuration\\Setting");
 	lResult=RegOpenKeyEx(HKEY_CURRENT_USER,String,0,KEY_ALL_ACCESS,&hKeyResults);
 	if (lResult==ERROR_SUCCESS) {
 		lResult=RegQueryValueEx(hKeyResults,"Auto Refresh ROM Browser",0,&Type,(LPBYTE)(&AutoRefreshRomBrowser),&Bytes);
@@ -399,7 +398,7 @@ void LoadSettings () {
 		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {AutoFullScreen=FALSE;}
 		RegCloseKey(hKeyResults);
 	}
-	sprintf(String,"PJ64 V 1.6.2\\Configuration\\Settings\\Advanced");
+	sprintf(String,"PJ64 V 1.6.2\\Configuration");
 	lResult=RegOpenKeyEx(HKEY_CURRENT_USER,String,0,KEY_ALL_ACCESS,&hKeyResults);
 	if (lResult==ERROR_SUCCESS) {
 		lResult=RegQueryValueEx(hKeyResults,"Always Disable Translation Lookaside Buffer",0,&Type,(BYTE*)(&ForceDisableTLB),&Bytes);
@@ -416,7 +415,7 @@ void LoadSettings () {
 		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {SystemCF=Default_CountPerOp;}
 		RegCloseKey(hKeyResults);
 	}
-	sprintf(String,"PJ64 V 1.6.2\\Configuration\\Settings\\ROM Selection");
+	sprintf(String,"PJ64 V 1.6.2\\Configuration");
 	lResult=RegOpenKeyEx(HKEY_CURRENT_USER,String,0,KEY_ALL_ACCESS,&hKeyResults);
 	if (lResult==ERROR_SUCCESS) {
 		lResult=RegQueryValueEx(hKeyResults,"Directory Recursion",0,&Type,(BYTE*)(&Recursion),&Bytes);
@@ -430,19 +429,15 @@ void LoadSettings () {
 }
 int InitializeApplication (HINSTANCE hInstance) {
 	INITCOMMONCONTROLSEX IntComStruct;
-	HKEY hKeyResults=0;
+	char String[256];
 	CoInitialize(0);
 	IntComStruct.dwSize=sizeof(IntComStruct);
 	IntComStruct.dwICC=ICC_TREEVIEW_CLASSES;
 	InitCommonControls();
 	InitCommonControlsEx(&IntComStruct);
 	hInst=hInstance;
-	{
-		char String[256];
-		sprintf(String,"PJ64 V 1.6.2\\Configuration");
-		//Language selection if none found
-		LoadLanguage(String);
-	}
+	sprintf(String,"PJ64 V 1.6.2\\Configuration");
+	LoadLanguage(String);
 	if (!Allocate_Memory()) {
 		DisplayError(GS(MSG_MEM_ALLOC_ERROR));
 		return FALSE;
@@ -475,12 +470,11 @@ void CheckedMenuItem(UINT uMenuID,BOOL*Flag,char*FlagName) {
 		*Flag=TRUE;
 	}
 	sprintf(String,"PJ64 V 1.6.2\\Configuration");
-	lResult=RegCreateKeyEx(HKEY_CURRENT_USER,String,0,"",
-		REG_OPTION_NON_VOLATILE,KEY_ALL_ACCESS,0,&hKeyResults,&Disposition);
+	lResult=RegCreateKeyEx(HKEY_CURRENT_USER,String,0,"",REG_OPTION_NON_VOLATILE,KEY_ALL_ACCESS,0,&hKeyResults,&Disposition);
 	if (lResult==ERROR_SUCCESS) {
 		RegSetValueEx(hKeyResults,FlagName,0,REG_DWORD,(BYTE*)Flag,sizeof(DWORD));
+		RegCloseKey(hKeyResults);
 	}
-	RegCloseKey(hKeyResults);
 }
 void SelectRomDir() {
 	char Buffer[MAX_PATH],RomDir[MAX_PATH+1],Directory[256];
@@ -1382,7 +1376,7 @@ void SetupMenu (HWND hWnd) {
 	DWORD count,Type,Bytes;
 	HKEY hKeyResults=0;
 	MENUITEMINFO menuinfo;
-	HMENU hMenu=GetMenu(hWnd),hSubMenu=GetSubMenu(hMenu,0);
+	HMENU hMenu=GetMenu(hWnd);
 	int State;
 	if (inFullScreen) return;
 	DestroyMenu(hMenu);
@@ -1405,31 +1399,32 @@ void SetupMenu (HWND hWnd) {
 		RegCloseKey(hKeyResults);
 	}
 	{
-		memset(&menuinfo,0,sizeof(MENUITEMINFO));
-		menuinfo.cbSize=sizeof(MENUITEMINFO);
-		menuinfo.fMask=MIIM_TYPE|MIIM_ID;
-		menuinfo.fType=MFT_STRING;
-		menuinfo.fState=MFS_ENABLED;
-		menuinfo.dwTypeData=String;
-		menuinfo.cch=256;
+	memset(&menuinfo,0,sizeof(MENUITEMINFO));
+	menuinfo.cbSize=sizeof(MENUITEMINFO);
+	menuinfo.fMask=MIIM_TYPE|MIIM_ID;
+	menuinfo.fType=MFT_STRING;
+	menuinfo.fState=MFS_ENABLED;
+	menuinfo.dwTypeData=String;
+	menuinfo.cch=256;
+	sprintf(String," ");
+	HMENU hSubMenu=GetSubMenu(hMenu,0);
+	InsertMenuItem(hSubMenu,MenuLocOfUsedDirs,TRUE,&menuinfo);
+	hSubMenu=CreateMenu();
+	if (strlen(LastDirs[0])==0) {
+		menuinfo.wID=ID_FILE_RECENT_DIR;
 		sprintf(String," ");
-		InsertMenuItem(hSubMenu,MenuLocOfUsedDirs,TRUE,&menuinfo);
-		hSubMenu=CreateMenu();
-		if (strlen(LastDirs[0])==0) {
-			menuinfo.wID=ID_FILE_RECENT_DIR;
-			sprintf(String," ");
-			InsertMenuItem(hSubMenu,0,TRUE,&menuinfo);
-		}
-		menuinfo.fMask=MIIM_TYPE|MIIM_ID;
-		for (count=0;count<RomDirsToRemember;count++) {
-			if (strlen(LastDirs[count])==0) {break;}
-			menuinfo.wID=ID_FILE_RECENT_DIR+count;
-			sprintf(String,"&%d %s",(count+1) % 10,LastDirs[count]);
-			InsertMenuItem(hSubMenu,count,TRUE,&menuinfo);
-		}
-		ModifyMenu(GetSubMenu(hMenu,0),MenuLocOfUsedDirs,MF_POPUP|MF_BYPOSITION,(DWORD)hSubMenu,GS(MENU_RECENT_DIR));
-		if (strlen(LastDirs[0])==0||RomDirsToRemember==0) EnableMenuItem(GetSubMenu(hMenu,0),MenuLocOfUsedDirs,MF_BYPOSITION|MFS_DISABLED);
-		else EnableMenuItem(GetSubMenu(hMenu,0),MenuLocOfUsedDirs,MF_BYPOSITION|MFS_ENABLED);
+		InsertMenuItem(hSubMenu,0,TRUE,&menuinfo);
+	}
+	menuinfo.fMask=MIIM_TYPE|MIIM_ID;
+	for (count=0;count<RomDirsToRemember;count++) {
+		if (strlen(LastDirs[count])==0) {break;}
+		menuinfo.wID=ID_FILE_RECENT_DIR+count;
+		sprintf(String,"&%d %s",(count+1) % 10,LastDirs[count]);
+		InsertMenuItem(hSubMenu,count,TRUE,&menuinfo);
+	}
+	ModifyMenu(GetSubMenu(hMenu,0),MenuLocOfUsedDirs,MF_POPUP|MF_BYPOSITION,(DWORD)hSubMenu,GS(MENU_RECENT_DIR));
+	if (strlen(LastDirs[0])==0||RomDirsToRemember==0) EnableMenuItem(GetSubMenu(hMenu,0),MenuLocOfUsedDirs,MF_BYPOSITION|MFS_DISABLED);
+	else EnableMenuItem(GetSubMenu(hMenu,0),MenuLocOfUsedDirs,MF_BYPOSITION|MFS_ENABLED);
 	}
 	sprintf(String,"PJ64 V 1.6.2\\Configuration");
 	lResult=RegOpenKeyEx(HKEY_CURRENT_USER,String,0,KEY_ALL_ACCESS,&hKeyResults);
@@ -1446,31 +1441,32 @@ void SetupMenu (HWND hWnd) {
 		RegCloseKey(hKeyResults);
 	}
 	{
-		memset(&menuinfo,0,sizeof(MENUITEMINFO));
-		menuinfo.cbSize=sizeof(MENUITEMINFO);
-		menuinfo.fMask=MIIM_TYPE|MIIM_ID;
-		menuinfo.fType=MFT_STRING;
-		menuinfo.fState=MFS_ENABLED;
-		menuinfo.dwTypeData=String;
-		menuinfo.cch=256;
+	memset(&menuinfo,0,sizeof(MENUITEMINFO));
+	menuinfo.cbSize=sizeof(MENUITEMINFO);
+	menuinfo.fMask=MIIM_TYPE|MIIM_ID;
+	menuinfo.fType=MFT_STRING;
+	menuinfo.fState=MFS_ENABLED;
+	menuinfo.dwTypeData=String;
+	menuinfo.cch=256;
+	sprintf(String," ");
+	HMENU hSubMenu=GetSubMenu(hMenu,0);
+	InsertMenuItem(hSubMenu,MenuLocOfUsedFiles,TRUE,&menuinfo);
+	hSubMenu=CreateMenu();
+	if (strlen(LastRoms[0])==0) {
+		menuinfo.wID=ID_FILE_RECENT_DIR;
 		sprintf(String," ");
-		InsertMenuItem(hSubMenu,MenuLocOfUsedFiles,TRUE,&menuinfo);
-		hSubMenu=CreateMenu();
-		if (strlen(LastRoms[0])==0) {
-			menuinfo.wID=ID_FILE_RECENT_DIR;
-			sprintf(String," ");
-			InsertMenuItem(hSubMenu,0,TRUE,&menuinfo);
-		}
-		menuinfo.fMask=MIIM_TYPE|MIIM_ID;
-		for (count=0;count<RomsToRemember;count++) {
-			if (strlen(LastRoms[count])==0) {break;}
-			menuinfo.wID=ID_FILE_RECENT_FILE+count;
-			sprintf(String,"&%d %s",(count+1) % 10,LastRoms[count]);
-			InsertMenuItem(hSubMenu,count,TRUE,&menuinfo);
-		}
-		ModifyMenu(GetSubMenu(hMenu,0),MenuLocOfUsedFiles,MF_POPUP|MF_BYPOSITION,(DWORD)hSubMenu,GS(MENU_RECENT_ROM));
-		if (strlen(LastRoms[0])==0) EnableMenuItem(GetSubMenu(hMenu,0),MenuLocOfUsedFiles,MF_BYPOSITION|MFS_DISABLED);
-		else EnableMenuItem(GetSubMenu(hMenu,0),MenuLocOfUsedFiles,MF_BYPOSITION|MFS_ENABLED);
+		InsertMenuItem(hSubMenu,0,TRUE,&menuinfo);
+	}
+	menuinfo.fMask=MIIM_TYPE|MIIM_ID;
+	for (count=0;count<RomsToRemember;count++) {
+		if (strlen(LastRoms[count])==0) {break;}
+		menuinfo.wID=ID_FILE_RECENT_FILE+count;
+		sprintf(String,"&%d %s",(count+1) % 10,LastRoms[count]);
+		InsertMenuItem(hSubMenu,count,TRUE,&menuinfo);
+	}
+	ModifyMenu(GetSubMenu(hMenu,0),MenuLocOfUsedFiles,MF_POPUP|MF_BYPOSITION,(DWORD)hSubMenu,GS(MENU_RECENT_ROM));
+	if (strlen(LastRoms[0])==0||RomsToRemember==0) EnableMenuItem(GetSubMenu(hMenu,0),MenuLocOfUsedFiles,MF_BYPOSITION|MFS_DISABLED);
+	else EnableMenuItem(GetSubMenu(hMenu,0),MenuLocOfUsedFiles,MF_BYPOSITION|MFS_ENABLED);
 	}
 	CheckMenuItem(hMenu,CurrentSaveSlot,MFS_CHECKED);
 	if (LimitFPS) CheckMenuItem(hMenu,ID_SYSTEM_LIMITFPS,MFS_CHECKED);
@@ -1747,44 +1743,44 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpszArgs,in
 		DWORD dwDataTF=0x00000000,dwDataWH600p=0x00000258,dwDataWW600p=0x00000320,dwDataFSH1080p=0x00000438,dwDataFSW1080pFSH25K=0x000005a0,dwDataFSW25K=0X00000780,dwDataOPT1080p=0x00000804,dwDataFSF=0x00000016,dwData960pHeight=0x000003c0,dwData960pWidth=0x00000500,dwDataOPT960p=0x00000807,dwDataRange=0x0000003f,dwDisposition;
 		const char*regPaths[]={"PJ64 V 1.6.2\\Configuration\\Direct64","PJ64 V 1.6.2\\Jabo Ver1.6.2 Regs\\Direct3D8 1.6.2","PJ64 V 1.6.2\\Jabo Ver1.6.2 Regs\\DirectInput7 1.6.2   ",};
 		for (int i=0;i<sizeof(regPaths) / sizeof(regPaths[0]);++i) {
-			HKEY hKey;
-			LONG lRet=RegOpenKeyEx(HKEY_CURRENT_USER,regPaths[i],0,KEY_READ,&hKey);
+			HKEY hKeyResults;
+			LONG lRet=RegOpenKeyEx(HKEY_CURRENT_USER,regPaths[i],0,KEY_READ,&hKeyResults);
 			if (lRet!=ERROR_SUCCESS) {
-				lRet=RegCreateKeyEx(HKEY_CURRENT_USER,regPaths[i],0,0,REG_OPTION_NON_VOLATILE,KEY_WRITE,0,&hKey,&dwDisposition);
+				lRet=RegCreateKeyEx(HKEY_CURRENT_USER,regPaths[i],0,0,REG_OPTION_NON_VOLATILE,KEY_WRITE,0,&hKeyResults,&dwDisposition);
 				if (lRet==ERROR_SUCCESS) {
-					if (strstr(regPaths[i],"f")) RegSetValueEx(hKey,"Texture Filter",0,REG_DWORD,(const BYTE*)&dwDataTF,sizeof(dwDataTF));
-					if (strstr(regPaths[i],"8")) RegSetValueEx(hKey,"Full Screen Format",0,REG_DWORD,(const BYTE*)&dwDataFSF,sizeof(dwDataFSF));
+					if (strstr(regPaths[i],"f")) RegSetValueEx(hKeyResults,"Texture Filter",0,REG_DWORD,(const BYTE*)&dwDataTF,sizeof(dwDataTF));
+					if (strstr(regPaths[i],"8")) RegSetValueEx(hKeyResults,"Full Screen Format",0,REG_DWORD,(const BYTE*)&dwDataFSF,sizeof(dwDataFSF));
 					if (screenHeight>=1440&&screenWidth>=1920) {
 						if (strstr(regPaths[i],"f")) {
-							RegSetValueEx(hKey,"Windowed Height",0,REG_DWORD,(const BYTE*)&dwData960pHeight,sizeof(dwData960pHeight));
-							RegSetValueEx(hKey,"Windowed Width",0,REG_DWORD,(const BYTE*)&dwData960pWidth,sizeof(dwData960pWidth));
+							RegSetValueEx(hKeyResults,"Windowed Height",0,REG_DWORD,(const BYTE*)&dwData960pHeight,sizeof(dwData960pHeight));
+							RegSetValueEx(hKeyResults,"Windowed Width",0,REG_DWORD,(const BYTE*)&dwData960pWidth,sizeof(dwData960pWidth));
 						}
 						if (strstr(regPaths[i],"8")) {
-							RegSetValueEx(hKey,"Full Screen Height",0,REG_DWORD,(const BYTE*)&dwDataFSW1080pFSH25K,sizeof(dwDataFSW1080pFSH25K));
-							RegSetValueEx(hKey,"Full Screen Width",0,REG_DWORD,(const BYTE*)&dwDataFSW25K,sizeof(dwDataFSW25K));
-							RegSetValueEx(hKey,"Options",0,REG_DWORD,(const BYTE*)&dwDataOPT960p,sizeof(dwDataOPT960p));
+							RegSetValueEx(hKeyResults,"Full Screen Height",0,REG_DWORD,(const BYTE*)&dwDataFSW1080pFSH25K,sizeof(dwDataFSW1080pFSH25K));
+							RegSetValueEx(hKeyResults,"Full Screen Width",0,REG_DWORD,(const BYTE*)&dwDataFSW25K,sizeof(dwDataFSW25K));
+							RegSetValueEx(hKeyResults,"Options",0,REG_DWORD,(const BYTE*)&dwDataOPT960p,sizeof(dwDataOPT960p));
 						}
 					} else if (screenHeight>=1080&&screenWidth>=1440) {
 						if (strstr(regPaths[i],"f")) {
-							RegSetValueEx(hKey,"Windowed Height",0,REG_DWORD,(const BYTE*)&dwDataWH600p,sizeof(dwDataWH600p));
-							RegSetValueEx(hKey,"Windowed Width",0,REG_DWORD,(const BYTE*)&dwDataWW600p,sizeof(dwDataWW600p));
+							RegSetValueEx(hKeyResults,"Windowed Height",0,REG_DWORD,(const BYTE*)&dwDataWH600p,sizeof(dwDataWH600p));
+							RegSetValueEx(hKeyResults,"Windowed Width",0,REG_DWORD,(const BYTE*)&dwDataWW600p,sizeof(dwDataWW600p));
 						}
 						if (strstr(regPaths[i],"8")) {
-							RegSetValueEx(hKey,"Full Screen Height",0,REG_DWORD,(const BYTE*)&dwDataFSH1080p,sizeof(dwDataFSH1080p));
-							RegSetValueEx(hKey,"Full Screen Width",0,REG_DWORD,(const BYTE*)&dwDataFSW1080pFSH25K,sizeof(dwDataFSW1080pFSH25K));
-							RegSetValueEx(hKey,"Options",0,REG_DWORD,(const BYTE*)&dwDataOPT1080p,sizeof(dwDataOPT1080p));
+							RegSetValueEx(hKeyResults,"Full Screen Height",0,REG_DWORD,(const BYTE*)&dwDataFSH1080p,sizeof(dwDataFSH1080p));
+							RegSetValueEx(hKeyResults,"Full Screen Width",0,REG_DWORD,(const BYTE*)&dwDataFSW1080pFSH25K,sizeof(dwDataFSW1080pFSH25K));
+							RegSetValueEx(hKeyResults,"Options",0,REG_DWORD,(const BYTE*)&dwDataOPT1080p,sizeof(dwDataOPT1080p));
 						}
 					} else if (screenHeight>=960&&screenWidth>=1280&&strstr(regPaths[i],"8")) {
-						RegSetValueEx(hKey,"Full Screen Height",0,REG_DWORD,(const BYTE*)&dwData960pHeight,sizeof(dwData960pHeight));
-						RegSetValueEx(hKey,"Full Screen Width",0,REG_DWORD,(const BYTE*)&dwData960pWidth,sizeof(dwData960pWidth));
+						RegSetValueEx(hKeyResults,"Full Screen Height",0,REG_DWORD,(const BYTE*)&dwData960pHeight,sizeof(dwData960pHeight));
+						RegSetValueEx(hKeyResults,"Full Screen Width",0,REG_DWORD,(const BYTE*)&dwData960pWidth,sizeof(dwData960pWidth));
 					}
 					if (strstr(regPaths[i],"7")) {
-						RegSetValueEx(hKey,"Range(0)",0,REG_DWORD,(const BYTE*)&dwDataRange,sizeof(dwDataRange));
-						RegSetValueEx(hKey,"Range(1)",0,REG_DWORD,(const BYTE*)&dwDataRange,sizeof(dwDataRange));
-						RegSetValueEx(hKey,"Range(2)",0,REG_DWORD,(const BYTE*)&dwDataRange,sizeof(dwDataRange));
-						RegSetValueEx(hKey,"Range(3)",0,REG_DWORD,(const BYTE*)&dwDataRange,sizeof(dwDataRange));
+						RegSetValueEx(hKeyResults,"Range(0)",0,REG_DWORD,(const BYTE*)&dwDataRange,sizeof(dwDataRange));
+						RegSetValueEx(hKeyResults,"Range(1)",0,REG_DWORD,(const BYTE*)&dwDataRange,sizeof(dwDataRange));
+						RegSetValueEx(hKeyResults,"Range(2)",0,REG_DWORD,(const BYTE*)&dwDataRange,sizeof(dwDataRange));
+						RegSetValueEx(hKeyResults,"Range(3)",0,REG_DWORD,(const BYTE*)&dwDataRange,sizeof(dwDataRange));
 					}
-					RegCloseKey(hKey);
+					RegCloseKey(hKeyResults);
 					FirstBoot=TRUE;
 				}
 			}

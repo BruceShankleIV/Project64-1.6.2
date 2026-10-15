@@ -290,8 +290,8 @@ void CLanguage::LoadLanguage  (char*RegLocation) {
 		DWORD Type,Bytes=sizeof(m_CurrentLangName);
 		lResult=RegQueryValueEx(hKeyResults,"Language",0,&Type,(LPBYTE)(m_CurrentLangName),&Bytes);
 		if (lResult!=ERROR_SUCCESS) {strcpy(m_CurrentLangName,"");}
+		RegCloseKey(hKeyResults);
 	}
-	RegCloseKey(hKeyResults);
 	bool Found=false;
 	for (int count=0;count<m_NoOflangs;count++) {
 		if (strcmp(m_LangName[count],m_CurrentLangName)==0) {
@@ -427,13 +427,12 @@ void CLanguage::SaveCurrentLang (char*String) {
 	long lResult;
 	HKEY hKeyResults=0;
 	DWORD Disposition=0;
-	lResult=RegCreateKeyEx(HKEY_CURRENT_USER,m_RegKey,0,"",REG_OPTION_NON_VOLATILE,
-		KEY_ALL_ACCESS,0,&hKeyResults,&Disposition);
+	lResult=RegCreateKeyEx(HKEY_CURRENT_USER,m_RegKey,0,"",REG_OPTION_NON_VOLATILE,KEY_ALL_ACCESS,0,&hKeyResults,&Disposition);
 	if (lResult==ERROR_SUCCESS) {
 		RegSetValueEx(hKeyResults,"Language",0,REG_SZ,(CONST BYTE*)String,strlen(String));
 		strcpy(m_CurrentLangName,String);
+		RegCloseKey(hKeyResults);
 	}
-	RegCloseKey(hKeyResults);
 	for (int count=0;count<m_NoOflangs;count++) {
 		if (strcmp(m_LangName[count],m_CurrentLangName)==0) {
 			LoadStrings(m_filenames[count]);

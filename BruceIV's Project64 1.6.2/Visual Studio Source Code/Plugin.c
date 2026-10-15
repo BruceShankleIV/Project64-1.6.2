@@ -61,16 +61,17 @@ void FetchScreenAndVideoDir(char*Directory) {
 	sprintf(Group,"PJ64 V 1.6.2\\Configuration");
 	lResult=RegOpenKeyEx(HKEY_CURRENT_USER,Group,0,KEY_ALL_ACCESS,&hKeyResults);
 	if (lResult==ERROR_SUCCESS) {
-		DWORD Type,Value,Bytes;
-		Bytes=4;
+		DWORD Type,Value,Bytes=4;
 		lResult=RegQueryValueEx(hKeyResults,"AppPath Screenshots and Videos",0,&Type,(LPBYTE)(&Value),&Bytes);
-		if (lResult==ERROR_SUCCESS&&Value==FALSE) {
-			Bytes=sizeof(Dir);
-			lResult=RegQueryValueEx(hKeyResults,"CustomPath Screenshots and Videos",0,&Type,(LPBYTE)Dir,&Bytes);
-			if (lResult==ERROR_SUCCESS) {strcpy(Directory,Dir);}
+		if (lResult==ERROR_SUCCESS) {
+			if (Value==FALSE) {
+				Bytes=sizeof(Dir);
+				lResult=RegQueryValueEx(hKeyResults,"CustomPath Screenshots and Videos",0,&Type,(LPBYTE)Dir,&Bytes);
+				if (lResult==ERROR_SUCCESS) {strcpy(Directory,Dir);}
+			}
 		}
+		RegCloseKey(hKeyResults);
 	}
-	RegCloseKey(hKeyResults);
 	CreateDirectory(Directory,0);
 }
 BOOL LoadAudioDll(char*AudioDll) {
@@ -239,6 +240,7 @@ void HandleGlobalTasks (HWND hWnd) {
 		Bytes=100;
 		lResult=RegQueryValueEx(hKeyResults,"RSP Dll",0,&Type,(LPBYTE)(RSPDLL),&Bytes);
 		if (lResult!=ERROR_SUCCESS) sprintf(RSPDLL,"%s",DefaultRSPDLL);
+		RegCloseKey(hKeyResults);
 	} else {
 		sprintf(RSPDLL,"%s",DefaultRSPDLL);
 		sprintf(GfxDLL,"%s",DefaultGFXDll);
@@ -462,15 +464,15 @@ void HandleGlobalTasks (HWND hWnd) {
 	} else {
 		DWORD dwDataListsFromPluginInterpreterCore=0x00000000,dwDataListsToPluginRecompilerCore=0x00000001,dwDisposition;
 		const char*regPath="PJ64 V 1.6.2\\Configuration\\1.6 RSP";
-		HKEY hKey;
+		HKEY hKeyResults;
 		LONG lRet;
-		lRet=RegCreateKeyExA(HKEY_CURRENT_USER,regPath,0,0,REG_OPTION_NON_VOLATILE,KEY_SET_VALUE,0,&hKey,&dwDisposition);
+		lRet=RegCreateKeyExA(HKEY_CURRENT_USER,regPath,0,0,REG_OPTION_NON_VOLATILE,KEY_SET_VALUE,0,&hKeyResults,&dwDisposition);
 		if (lRet==ERROR_SUCCESS&&CPURunning&&strcmp(RSPDLL,"RSP.dll")==0) {
-			if (RomRspRecompiler) RegSetValueEx(hKey,"RSP Core",0,REG_DWORD,(const BYTE*)&dwDataListsToPluginRecompilerCore,sizeof(dwDataListsToPluginRecompilerCore));
-			else RegSetValueEx(hKey,"RSP Core",0,REG_DWORD,(const BYTE*)&dwDataListsFromPluginInterpreterCore,sizeof(dwDataListsFromPluginInterpreterCore));
-			if (strcmp(AudioDLL,"Jabo_Dsound.dll")==0) RegSetValueEx(hKey,"List Type",0,REG_DWORD,(const BYTE*)&dwDataListsFromPluginInterpreterCore,sizeof(dwDataListsFromPluginInterpreterCore));
-			else RegSetValueEx(hKey,"List Type",0,REG_DWORD,(const BYTE*)&dwDataListsToPluginRecompilerCore,sizeof(dwDataListsToPluginRecompilerCore));
-			RegCloseKey(hKey);
+			if (RomRspRecompiler) RegSetValueEx(hKeyResults,"RSP Core",0,REG_DWORD,(const BYTE*)&dwDataListsToPluginRecompilerCore,sizeof(dwDataListsToPluginRecompilerCore));
+			else RegSetValueEx(hKeyResults,"RSP Core",0,REG_DWORD,(const BYTE*)&dwDataListsFromPluginInterpreterCore,sizeof(dwDataListsFromPluginInterpreterCore));
+			if (strcmp(AudioDLL,"Jabo_Dsound.dll")==0) RegSetValueEx(hKeyResults,"List Type",0,REG_DWORD,(const BYTE*)&dwDataListsFromPluginInterpreterCore,sizeof(dwDataListsFromPluginInterpreterCore));
+			else RegSetValueEx(hKeyResults,"List Type",0,REG_DWORD,(const BYTE*)&dwDataListsToPluginRecompilerCore,sizeof(dwDataListsToPluginRecompilerCore));
+			RegCloseKey(hKeyResults);
 		}
 		RSP_INFO_1_0 RspInfo10;
 		RSP_INFO_1_1 RspInfo11;

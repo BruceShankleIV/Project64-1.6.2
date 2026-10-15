@@ -305,9 +305,8 @@ void RomList_GetDispInfo(LPNMHDR pnmh) {
 	case RB_Crc1: sprintf(lpdi->item.pszText,"0x%08X",pRomInfo->CRC1); break;
 	case RB_Crc2: sprintf(lpdi->item.pszText,"0x%08X",pRomInfo->CRC2); break;
 	case RB_CICChip:
-		if (pRomInfo->CicChip<0) {
-			sprintf(lpdi->item.pszText,GS(UNKNOWN));
-		} else {
+		if (pRomInfo->CicChip<0) sprintf(lpdi->item.pszText,GS(UNKNOWN));
+		else {
 			if (GetCicChipID(RomHeader)==4) sprintf(lpdi->item.pszText,"CIC-NUS-XENO");
 			else if (GetCicChipID(RomHeader)==7) sprintf(lpdi->item.pszText,"CIC-NUS-5167");
 			else if (GetCicChipID(RomHeader)==8) sprintf(lpdi->item.pszText,"CIC-NUS-8303");
@@ -556,9 +555,7 @@ void SaveRomBrowserColumnInfo () {
 		memset(&lvColumn,0,sizeof(lvColumn));
 		lvColumn.mask=LVCF_WIDTH;
 		for (Column=0;ListView_GetColumn(hRomList,Column,&lvColumn);Column++) {
-			for (index=0;index<NoOfFields;index++) {
-				if (RomBrowserFields[index].Pos==Column) {break;}
-			}
+			for (index=0;index<NoOfFields;index++) if (RomBrowserFields[index].Pos==Column) break;
 			RomBrowserFields[index].ColWidth=lvColumn.cx;
 			sprintf(String,"%s.Width",RomBrowserFields[index].Name);
 			RegSetValueEx(hKeyResults,String,0,REG_DWORD,(BYTE*)&lvColumn.cx,sizeof(DWORD));
