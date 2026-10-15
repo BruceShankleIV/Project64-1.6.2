@@ -191,7 +191,8 @@ BOOL FillRomInfo(ROM_INFO*pRomInfo) {
 }
 void RefreshRomBrowser () {
 	char RomDir[MAX_PATH+1];
-	if (!hRomList) return;
+	if (CPURunning&&!RefreshRomBrowserOnShutdown) RefreshRomBrowserOnShutdown=TRUE;
+	if (CPURunning||!hRomList) return;
 	ListView_DeleteAllItems(hRomList);
 	FreeRomBrowser();
 	GetRomDirectory(RomDir);
@@ -471,7 +472,7 @@ void HandleShutdown () {
 	else if (screenHeight>=1080&&screenWidth>=1440) ChangeWinSize(hMainWindow,800,600,0);
 	else ChangeWinSize(hMainWindow,640,480,0);
 	if (AutoRefreshRomBrowser&&RefreshRomBrowserOnShutdown) RefreshRomBrowser();
-	if (hRomList!=0) SetFocus(hRomList);
+	if (hRomList) SetFocus(hRomList);
 	ListView_SetExtendedListViewStyleEx(hRomList,LVS_EX_DOUBLEBUFFER,LVS_EX_DOUBLEBUFFER);
 }
 void FreeRomBrowser () {
