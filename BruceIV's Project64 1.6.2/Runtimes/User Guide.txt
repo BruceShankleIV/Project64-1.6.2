@@ -437,6 +437,8 @@ Azimer:			Application, Core programmer, Audio plugin programmer for 1.4-1.6.1 an
 
 Icepir8:		Application, Core programmer, Video plugin programmer for Project64 Legacy.
 
+Javarooster:	Maternal Stank Stream
+
 Project64 Legacy Contributors (who weren't mentioned in the above list): Starkness2, Hacktarux, OddMLan.
 ********************************************************************************************************
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -471,6 +473,7 @@ Jabo's DirectSound 1.6.2 - Jabo, with changes to suit this project from Bruce Sh
 No Audio Plugin - Project64 Legacy Team.
 Shankle's LINK's AziAudio [SEP2023] (1.0) - Azimer, aglab2, and Bruce Shankle IV/me.
 Jabo's DirectInput7 1.6.2 - Jabo & Gent, 1.6.2 updated app-synced build by Bruce Shankle IV/me.
+Javarooster for the Maternal Stank Stream
 
 Shankle's N-Rage's DirectInput8 1.6.2 -
 
@@ -484,6 +487,7 @@ Smiff, Bodie, Cyber, Hotshitu, Gannonboy, Harlay, squall_leonhart, Poobah, Legen
 koolsmoky for message window patch.
 kidkat for fixing potential crash and buffer overruns.
 KrossX for fixing XInput Rumble and Deadzone.
+Javarooster for the Maternal Stank Stream
 
 Shankle's Octomino SDL2 Input 0.1.1 -
 Octomino/clickdevin for original plugin.
@@ -493,6 +497,7 @@ Bruce for fixing some problems with the config system.
 Legacy N-Rage Changes from N-Rage 2.0 Credits:
 Zilmar for customizations and bugfixes.
 LuigiBlood for N64 Mouse support.
+Javarooster for the Maternal Stank Stream
 
 Project64 Legacy Icepir8's RSP - Icepir8, Angrylion RDP Plus developers.
 
@@ -512,6 +517,7 @@ Mario Kart 64 (U) 60FPS Hack - theboy181
 Adult Link Fist Pointer and MQ Debug LOD Fix - Phantom Natsu:
 https://www.youtube.com/watch?v=i7jjsZKoM3A
 https://www.youtube.com/watch?v=hNb3cYtNDC8
+Maternal Stank Stream - Javarooster
 
 Cheat.ini (Cheat Database) - Original by Gent, further modified/improved by Bruce IV with added/modified
 code from Miro as well as MTA.
