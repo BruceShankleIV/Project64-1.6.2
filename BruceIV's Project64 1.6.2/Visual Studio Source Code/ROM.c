@@ -475,7 +475,7 @@ BOOL RecalculateCRC () {
 		// Decades Later, AKA Super Mario 64 but FINALLY A GOOD GAME by BroDute
 		if (crc1==0xE1CE3595&&crc2==0x68941049) {
 			HandleModal1(hMainWindow);
-			if (MessageBox(0,"The creator of this project describes himself and the completion of this fan game as “That one german guy that made the Star Revenge Series and remade vanilla SM64 to be finally a good game.”\n\n\nDo you still want to play this fan game?","Illegit Hack Disclaimer",MB_YESNO|MB_ICONEXCLAMATION|MB_SETFOREGROUND)==IDNO) goto End;
+			if (MessageBox(0,"The creator of this project describes himself and the completion of this fan game as Â“That one german guy that made the Star Revenge Series and remade vanilla SM64 to be finally a good game.Â”\n\n\nDo you still want to play this fan game?","Illegit Hack Disclaimer",MB_YESNO|MB_ICONEXCLAMATION|MB_SETFOREGROUND)==IDNO) goto End;
 			HandleModal2(hMainWindow);
 		}
 		// Star Revenge by BroDute
@@ -484,16 +484,16 @@ BOOL RecalculateCRC () {
 			if (MessageBox(NULL,"This series of projects has been used to insult an SM64 ROMhacking tools contributor (SKELUX) in the opening credits from the signpost.\n\n\nDo you still want to play this fan game?","Illegit Hack Disclaimer",MB_YESNO|MB_ICONEXCLAMATION|MB_SETFOREGROUND)==IDNO) goto End;
 			HandleModal2(hMainWindow);
 		}
-		// Star Road by SKELUX, Hijack “Retooled” Edit by Pyro Jay
+		// Star Road by SKELUX, Hijack Â“RetooledÂ” Edit by Pyro Jay
 		if (crc1==0xCAC63712&&crc2==0xE2372AF3) {
 			HandleModal1(hMainWindow);
-			if (MessageBox(0,"This ROMhack has been presented by the author across multiple YouTube channels as a remastered update for one of their projects. But Star Road is made by SKELUX and this is a hijack edit which introduces regressions such as graphical glitches.\n\nSKELUX explains “When you put a lot of work into something, other people love to come along and put in a fraction of the work modifying it just so they can slap their name over yours.”\n\n\nDo you still want to play this fan game?", "Illegit Hack Disclaimer",MB_YESNO|MB_ICONEXCLAMATION|MB_SETFOREGROUND)==IDNO) goto End;
+			if (MessageBox(0,"This ROMhack has been presented by the author across multiple YouTube channels as a remastered update for one of their projects. But Star Road is made by SKELUX and this is a hijack edit which introduces regressions such as graphical glitches.\n\nSKELUX explains Â“When you put a lot of work into something, other people love to come along and put in a fraction of the work modifying it just so they can slap their name over yours.Â”\n\n\nDo you still want to play this fan game?", "Illegit Hack Disclaimer",MB_YESNO|MB_ICONEXCLAMATION|MB_SETFOREGROUND)==IDNO) goto End;
 			HandleModal2(hMainWindow);
 		}
 		// B3313 by Chrisrlillo, Hijack Edits (under various names) by Thegreatestroman & Chlorobyte/Benedani
 		if (crc1==0xC39F397B&&crc2==0x9C2D6AFF||crc1==0xA52866E9&&crc2==0xA5C4CFD3) {
 			HandleModal1(hMainWindow);
-			if (MessageBox(0,"This illegit hack is part of an organized harm effort against the author of a fan game called B3313. This effort includes stealing content of the author and his friends from an unfinished copy of B3313 in 2023. Harm is organized by mean-spirited individuals closely involved with SM64 ROMhacks including “Thegreatestroman”, “Chlorobyte/Benedani”, and “SimpleFlips”. Harm is attempted on the author's life with cyberbullying by doxxing and badmouthing.\n\nI strongly suggest ignoring these hacks and anything else motivated by harmful intentions!\n\n\nDo you still want to play this fan game?","Illegit Hack Disclaimer",MB_YESNO|MB_ICONEXCLAMATION|MB_SETFOREGROUND)==IDNO) goto End;
+			if (MessageBox(0,"This illegit hack is part of an organized harm effort against the author of a fan game called B3313. This effort includes stealing content of the author and his friends from an unfinished copy of B3313 in 2023. Harm is organized by mean-spirited individuals closely involved with SM64 ROMhacks including Â“ThegreatestromanÂ”, Â“Chlorobyte/BenedaniÂ”, and Â“SimpleFlipsÂ”. Harm is attempted on the author's life with cyberbullying by doxxing and badmouthing.\n\nI strongly suggest ignoring these hacks and anything else motivated by harmful intentions!\n\n\nDo you still want to play this fan game?","Illegit Hack Disclaimer",MB_YESNO|MB_ICONEXCLAMATION|MB_SETFOREGROUND)==IDNO) goto End;
 			HandleModal2(hMainWindow);
 		}
 	}
@@ -667,10 +667,7 @@ void OpenChosenFile(void) {
 		if (hFile==INVALID_HANDLE_VALUE) {
 			CloseHandle(hFile);
 			DisplayError(GS(OPENROM_FAILED));
-			if (AutoRefreshRomBrowser&&!RefreshRomBrowserOnShutdown&&ItemList.List) for (i=0;i<ItemList.ListCount;++i) if (!_stricmp(ItemList.List[i].szFullFileName,CurrentFileName)) {
-				if (CPURunning) RefreshRomBrowserOnShutdown=TRUE;
-				else RefreshRomBrowser();
-			}
+			if (AutoRefreshRomBrowser&&!RefreshRomBrowserOnShutdown&&ItemList.List) for (i=0;i<ItemList.ListCount;++i) if (!_stricmp(ItemList.List[i].szFullFileName,CurrentFileName)) RefreshRomBrowser();
 			HandleShutdown();
 			return;
 		}
@@ -848,5 +845,6 @@ void SetRomDirectory (char*Directory) {
 		RegCloseKey(hKeyResults);
 		if (CPURunning||UseLastRomFolder) RefreshRomBrowserOnShutdown=TRUE;
 		else if (AutoRefreshRomBrowser) RefreshRomBrowser();
+		// This can probably be formatted to be less redundant somehow with condition updates in RefreshRomBrowser.
 	}
 }
