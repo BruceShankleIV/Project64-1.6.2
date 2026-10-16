@@ -224,3 +224,5 @@
 #define IDC_ForceEnableDMA             223
 #define IDC_ForceAuto16kbit            224
 #define IDC_REGCACHE_TEXT              225
+#define IDC_SKIP_BREAKPOINTS		   226
+#define IDC_CC_MOD					   227

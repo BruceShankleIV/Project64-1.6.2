@@ -223,7 +223,7 @@ void HandleGlobalTasks (HWND hWnd) {
 	static DWORD AI_DUMMY=0;
 	DWORD NewRAMsize;
 	HKEY hKeyResults=0;
-	sprintf(String,"PJ64 V 1.6.2\\Configuration\\Dll");
+	sprintf(String,"PJ64 V 1.6.2\\Configuration");
 	lResult=RegOpenKeyEx(HKEY_CURRENT_USER,String,0,KEY_ALL_ACCESS,&hKeyResults);
 	if (lResult==ERROR_SUCCESS) {
 		DWORD Type,Bytes=100;
@@ -247,7 +247,7 @@ void HandleGlobalTasks (HWND hWnd) {
 		sprintf(AudioDLL,"%s",DefaultAudioDll);
 		sprintf(ControllerDLL,"%s",DefaultControllerDll);
 	}
-	if ((strcmp(GfxDLL,"Direct64-1.6.2.dll")==0||strcmp(GfxDLL,"Glide64.dll")==0||strcmp(GfxDLL,"Jabo_Direct3D8.dll")==0)&&strcmp(RSPDLL,"Icepir8sLegacyRSP.dll")==0) strcpy(RSPDLL,"RSP.dll");
+	if (strcmp(GfxDLL,"Jabo_Direct3D8.dll")==0&&strcmp(RSPDLL,"Icepir8sLegacyRSP.dll")==0) strcpy(RSPDLL,"RSP.dll");
 	SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(PLUGINS_INITIALIZING));
 	if (CPURunning) {
 		ReadRomSettings();
@@ -276,6 +276,8 @@ void HandleGlobalTasks (HWND hWnd) {
 		AudioSignal=RomAudioSignal;
 		UseTLB=RomUseTLB;
 		DelaySI=RomDelaySI;
+		SkipBps=RomSkipBps;
+		CCMod=RomCCMod;
 		Lag=RomLag;
 		DelayRDP=RomDelayRDP;
 		DelayRSP=RomDelayRSP;
@@ -590,7 +592,7 @@ void HandleGlobalTasks (HWND hWnd) {
 			EndEmulation();
 			goto DONE_INIT_GLideN64;
 		}
-		if ((strcmp(GfxDLL,"Glide64.dll")==0||strcmp(GfxDLL,"GLideN64.dll")==0)&&!GonetzGLHasBeenSetupFirst) GonetzGLHasBeenSetupFirst=TRUE;
+		if (strcmp(GfxDLL,"GLideN64.dll")==0&&!GonetzGLHasBeenSetupFirst) GonetzGLHasBeenSetupFirst=TRUE;
 		HandleWindowTitle();
 		if (EmulateAI&&!LimitFPS) {
 			LimitFPS=TRUE;

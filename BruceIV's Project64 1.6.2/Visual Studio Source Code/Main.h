@@ -34,7 +34,7 @@ extern "C" {
 #include "Settings API.h"
 #include "ROM Browser.h"
 #include "Language.h"
-/*Source Code V26 R1.03. Last updated at 06:22PM 10/15/2026*/
+/*Source Code V26 R1.03. Last updated at 06:00PM 10/16/2026*/
 #define AppName						"BruceIV-Project64-1.6.2"
 #define IniName						"Game.ini"
 #define CheatIniName				"Cheat.ini"
@@ -93,7 +93,7 @@ typedef struct {
 } ITEM_LIST;
 extern ITEM_LIST ItemList;
 extern LARGE_INTEGER Frequency,Frames[9],LastFrame;
-extern BOOL AutoSleep,AutoHide,CreateStatusBar,RecordRGB,Recursion,LimitFPS,SpeedCap,AutoFullScreen,SystemCF,UsuallyonTop,VideoToScreen,BasicMode,AutoRefreshRomBrowser,BootupSettings,DelayHandleGlobalTasks,SPECIAL_BREAK_Trigger,SPECIAL_BREAK_Yes,FirstBoot,UserCancelPluginInit,RefreshRomBrowserOnShutdown;
+extern BOOL AutoSleep,AutoHide,CreateStatusBar,RecordRGB,Recursion,LimitFPS,SpeedCap,AutoFullScreen,SystemCF,UsuallyonTop,VideoToScreen,BasicMode,AutoRefreshRomBrowser,DelayHandleGlobalTasks,FirstBoot,UserCancelPluginInit,RefreshRomBrowserOnShutdown;
 extern DWORD CurrentFrame,SystemUseCache,SystemProtectMemoryEnlargeBuffer,RomsToRemember,RomDirsToRemember;
 extern HWND hMainWindow,hHiddenWin,hStatusWnd,hRomList;
 extern char CurrentSave[256];

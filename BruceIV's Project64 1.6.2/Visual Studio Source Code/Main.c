@@ -41,7 +41,7 @@
 #include "Resource.h"
 #include "SummerCart.h"
 LARGE_INTEGER Frequency,Frames[9],LastFrame;
-BOOL AutoSleep,AutoHide,CreateStatusBar,RecordRGB,Recursion,LimitFPS,SpeedCap,AutoFullScreen,SystemCF,UsuallyonTop,VideoToScreen,BasicMode,AutoRefreshRomBrowser,BootupSettings=FALSE,DelayHandleGlobalTasks=FALSE,SPECIAL_BREAK_Trigger=FALSE,SPECIAL_BREAK_Yes=FALSE,FirstBoot=FALSE,UserCancelPluginInit=FALSE,RefreshRomBrowserOnShutdown=TRUE;
+BOOL AutoSleep,AutoHide,CreateStatusBar,RecordRGB,Recursion,LimitFPS,SpeedCap,AutoFullScreen,SystemCF,UsuallyonTop,VideoToScreen,BasicMode,AutoRefreshRomBrowser,DelayHandleGlobalTasks=FALSE,FirstBoot=FALSE,UserCancelPluginInit=FALSE,RefreshRomBrowserOnShutdown=TRUE;
 DWORD CurrentFrame,SystemUseCache,SystemProtectMemoryEnlargeBuffer,RomsToRemember,RomDirsToRemember;
 HWND hMainWindow,hHiddenWin,hStatusWnd,hRomList=0;
 char CurrentSave[256];
@@ -385,7 +385,7 @@ void LoadSettings () {
 		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {VideoToScreen=Default_VideoToScreen;}
 		RegCloseKey(hKeyResults);
 	}
-	sprintf(String,"PJ64 V 1.6.2\\Configuration\\Setting");
+	sprintf(String,"PJ64 V 1.6.2\\Configuration");
 	lResult=RegOpenKeyEx(HKEY_CURRENT_USER,String,0,KEY_ALL_ACCESS,&hKeyResults);
 	if (lResult==ERROR_SUCCESS) {
 		lResult=RegQueryValueEx(hKeyResults,"Auto Refresh ROM Browser",0,&Type,(LPBYTE)(&AutoRefreshRomBrowser),&Bytes);
@@ -401,7 +401,7 @@ void LoadSettings () {
 	sprintf(String,"PJ64 V 1.6.2\\Configuration");
 	lResult=RegOpenKeyEx(HKEY_CURRENT_USER,String,0,KEY_ALL_ACCESS,&hKeyResults);
 	if (lResult==ERROR_SUCCESS) {
-		lResult=RegQueryValueEx(hKeyResults,"Always Disable Translation Lookaside Buffer",0,&Type,(BYTE*)(&ForceDisableTLB),&Bytes);
+		lResult=RegQueryValueEx(hKeyResults,"Always Disable TLB",0,&Type,(BYTE*)(&ForceDisableTLB),&Bytes);
 		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {ForceDisableTLB=Default_ForceDisableTLB;}
 		lResult=RegQueryValueEx(hKeyResults,"Always Enable Align DMA",0,&Type,(BYTE*)(&ForceEnableDMA),&Bytes);
 		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {ForceEnableDMA=Default_ForceEnableDMA;}
@@ -1091,7 +1091,6 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 			SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)(VideoToScreen?GS(VIDEOTOSCREEN_ON):GS(VIDEOTOSCREEN_OFF)));
 			break;
 		case ID_OPTIONS_CONFIG_GFX:
-		if (strcmp(GfxDLL,"Glide64.dll")==0&&!CPU_Paused&&!AutoSleep) goto ForcePause;
 		if (strcmp(GfxDLL,"GLideN64.dll")==0) {
 			HandleModal1(hWnd);
 			if (CPU_Paused) GFXDllConfig(hWnd);
@@ -1101,7 +1100,6 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 					GFXDllConfig(hWnd);
 					ManualPaused=FALSE;
 				} else {
-					ForcePause:
 					PauseCPU();
 					GFXDllConfig(hWnd);
 					PauseCPU();
@@ -1492,7 +1490,7 @@ void SetupMenu (HWND hWnd) {
 	EnableMenuItem(hMenu,ID_SYSTEM_GSBUTTON,State);
 	EnableMenuItem(hMenu,ID_OPTIONS_GAMECAPTURE,State);	
 	if (CaptureScreen!=0||!VideoToScreen) EnableMenuItem(hMenu,ID_SYSTEM_GENERATEBITMAP,State);
-	if (ChangeWindow!=0&&strcmp(GfxDLL,"Direct64-1.6.2.dll")!=0) EnableMenuItem(hMenu,ID_OPTIONS_FULLSCREEN,State);
+	if (ChangeWindow!=0) EnableMenuItem(hMenu,ID_OPTIONS_FULLSCREEN,State);
 	EnableMenuItem(GetSubMenu(hMenu,1),13,State|MF_BYPOSITION);
 	State=CPURunning?MFS_DISABLED:MFS_ENABLED;
 	EnableMenuItem(hMenu,ID_FILE_REFRESHROMLIST,State);
@@ -1741,14 +1739,13 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpszArgs,in
 	if (!hMainWindow) return FALSE;
 	{
 		DWORD dwDataTF=0x00000000,dwDataWH600p=0x00000258,dwDataWW600p=0x00000320,dwDataFSH1080p=0x00000438,dwDataFSW1080pFSH25K=0x000005a0,dwDataFSW25K=0X00000780,dwDataOPT1080p=0x00000804,dwDataFSF=0x00000016,dwData960pHeight=0x000003c0,dwData960pWidth=0x00000500,dwDataOPT960p=0x00000807,dwDataRange=0x0000003f,dwDisposition;
-		const char*regPaths[]={"PJ64 V 1.6.2\\Configuration\\Direct64","PJ64 V 1.6.2\\Jabo Ver1.6.2 Regs\\Direct3D8 1.6.2","PJ64 V 1.6.2\\Jabo Ver1.6.2 Regs\\DirectInput7 1.6.2   ",};
+		const char*regPaths[]={"PJ64 V 1.6.2\\Jabo Ver1.6.2 Regs\\Direct3D8 1.6.2","PJ64 V 1.6.2\\Jabo Ver1.6.2 Regs\\DirectInput7 1.6.2   ",};
 		for (int i=0;i<sizeof(regPaths) / sizeof(regPaths[0]);++i) {
 			HKEY hKeyResults;
 			LONG lRet=RegOpenKeyEx(HKEY_CURRENT_USER,regPaths[i],0,KEY_READ,&hKeyResults);
 			if (lRet!=ERROR_SUCCESS) {
 				lRet=RegCreateKeyEx(HKEY_CURRENT_USER,regPaths[i],0,0,REG_OPTION_NON_VOLATILE,KEY_WRITE,0,&hKeyResults,&dwDisposition);
 				if (lRet==ERROR_SUCCESS) {
-					if (strstr(regPaths[i],"f")) RegSetValueEx(hKeyResults,"Texture Filter",0,REG_DWORD,(const BYTE*)&dwDataTF,sizeof(dwDataTF));
 					if (strstr(regPaths[i],"8")) RegSetValueEx(hKeyResults,"Full Screen Format",0,REG_DWORD,(const BYTE*)&dwDataFSF,sizeof(dwDataFSF));
 					if (screenHeight>=1440&&screenWidth>=1920) {
 						if (strstr(regPaths[i],"f")) {
@@ -1808,14 +1805,7 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpszArgs,in
 		strcpy(CurrentFileName,__argv[1]);
 		CreateThread(0,0,(LPTHREAD_START_ROUTINE)OpenChosenFile,0,0,0);
 		if (!CPURunning) CreateRomListControl(hMainWindow);
-	} else {
-		HandleShutdown();
-		if (strcmp(GfxDLL,"Glide64.dll")==0) {
-			BootupSettings=TRUE;
-			ChangeSettings(hMainWindow);
-			BootupSettings=FALSE;
-		}
-	}
+	} else HandleShutdown();
 	while (GetMessage(&msg,0,0,0)) {
 		if (!CPURunning&&TranslateAccelerator(hMainWindow,AccelRomBrowser,&msg)) continue;
 		if (CPURunning) {

@@ -55,15 +55,7 @@ void OpcodeMapRecompiler (BLOCK_SECTION*Section) {
 	switch (Opcode.op) {
 	case R4300i_SPECIAL:
 		switch (Opcode.funct) {
-		case R4300i_SPECIAL_BREAK:
-		if (strcmp(RomName,"THE LEGEND OF ZELDA")==0&&!SPECIAL_BREAK_Yes) {
-			if (SPECIAL_BREAK_Trigger) break;
-			HandleModal1(hMainWindow);
-			if (MessageBox(0,GS(SPECIAL_BREAK),GS(OPTIONAL_CRASH),MB_YESNO|MB_ICONERROR|MB_SETFOREGROUND)==IDYES) SPECIAL_BREAK_Yes=TRUE;
-			HandleModal2(hMainWindow);
-			SPECIAL_BREAK_Trigger=TRUE;
-			if (!SPECIAL_BREAK_Yes) break;
-		}
+		case R4300i_SPECIAL_BREAK: if (SkipBps) break;
 		case R4300i_SPECIAL_SYSCALL: Compile_R4300i_SPECIAL_SYSCALL(Section);
 		case R4300i_SPECIAL_SYNC:
 		case R4300i_SPECIAL_TGE:
@@ -390,7 +382,8 @@ void OpcodeMapRecompiler (BLOCK_SECTION*Section) {
 	break;
 	default:
 		if (ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON) DisplayThreadExit("OpcodeMapRecompiler-switch (Opcode.op)-default:-ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON\n\nThe emulator has crashed on a reserved Opcode at this location\n\nTry “Recompile VR4300i CPU=OFF”?");
-		else DisplayThreadExit("OpcodeMapRecompiler-switch (Opcode.op)-default:-ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON-else\n\nThe emulator has crashed on a reserved Opcode at this location.\n\n\nPotential fault point: ClearRecompilerCache-memset(JumpTable+(Block<<10),0,SetMem);\n\nTry “Protect Memory / Enlarge Buffer=ON”?");
+		else if (CCMod) DisplayThreadExit("OpcodeMapRecompiler-switch (Opcode.op)-default:-ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON-else-CCMod\n\nThe emulator has crashed on a reserved Opcode at this location.\n\nTry “Protect Memory / Enlarge Buffer=ON”?");
+		else DisplayThreadExit("OpcodeMapRecompiler-switch (Opcode.op)-default:-ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON-else-CCMod-else\n\nThe emulator has crashed on a reserved Opcode at this location.\n\nTry “Clear Cache Mod=ON”?");
 	}
 }
 void InitializeInitialCompilerVariable () {
@@ -1815,7 +1808,7 @@ BOOL GenerateX86Code (BLOCK_SECTION*Section,DWORD Test) {
 				if (UseTLB) {
 					if (ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON) DisplayThreadExit("GenerateX86Code-!r4300i_LW_VAddr(Section->CompilePC,&Opcode.Hex)-UseTLB-ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON\n\nTry “Recompile VR4300i CPU=OFF”?");
 					else DisplayThreadExit("GenerateX86Code-!r4300i_LW_VAddr(Section->CompilePC,&Opcode.Hex)-UseTLB-ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON-else\n\nTry “Protect Memory / Enlarge Buffer=ON”?");
-				} else DisplayThreadExit("GenerateX86Code-!r4300i_LW_VAddr(Section->CompilePC,&Opcode.Hex)-UseTLB-else\n\nNeeds “Translation Lookaside Buffer=OFF” removed?");
+				} else DisplayThreadExit("GenerateX86Code-!r4300i_LW_VAddr(Section->CompilePC,&Opcode.Hex)-UseTLB-else\n\nNeeds “TLB=OFF” removed?");
 			}
 		} __except(r4300i_CPU_MemoryFilter(GetExceptionCode(),GetExceptionInformation())) {
 			DisplayThreadExit("GenerateX86Code-r4300i_CPU_MemoryFilter(GetExceptionCode(),GetExceptionInformation()");
@@ -2222,7 +2215,7 @@ void StartRecompilerCPU (void) {
 		VirtualFree(OrigMem,0,MEM_RELEASE);
 		OrigMem=0;
 	}
-	if (GfxRomOpen!=0&&(!inFullScreen||strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0||strcmp(GfxDLL,"Glide64.dll")==0)) GfxRomOpen();
+	if (GfxRomOpen!=0&&(!inFullScreen||strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0)) GfxRomOpen();
 	if (ContRomOpen!=0&&!GLideN64NeedsToBeSetupFirst) ContRomOpen();
 	ResetRecompCode();
 	memset(&N64_Blocks,0,sizeof(N64_Blocks));
@@ -2270,7 +2263,7 @@ void StartRecompilerCPU (void) {
 						if (UseTLB) {
 							if (ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON) DisplayThreadExit("StartRecompilerCPU-Addr>0x10000000-PROGRAM_COUNTER>=0xB0000000&&PROGRAM_COUNTER<(RomFileSize|0xB0000000)-else-UseTLB-ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON\n\nTry “Recompile VR4300i CPU=OFF”?");
 							else DisplayThreadExit("StartRecompilerCPU-Addr>0x10000000-PROGRAM_COUNTER>=0xB0000000&&PROGRAM_COUNTER<(RomFileSize|0xB0000000)-else-UseTLB-ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON-else\n\nTry “Protect Memory / Enlarge Buffer=ON”?");
-						} else DisplayThreadExit("StartRecompilerCPU-Addr>0x10000000-PROGRAM_COUNTER>=0xB0000000&&PROGRAM_COUNTER<(RomFileSize|0xB0000000)-else-UseTLB-else\n\nNeeds “Translation Lookaside Buffer=OFF” removed?");
+						} else DisplayThreadExit("StartRecompilerCPU-Addr>0x10000000-PROGRAM_COUNTER>=0xB0000000&&PROGRAM_COUNTER<(RomFileSize|0xB0000000)-else-UseTLB-else\n\nNeeds “TLB=OFF” removed?");
 					}
 				}
 				Block=*(JumpTable+(Addr>>2));

@@ -547,7 +547,7 @@ void SaveRomBrowserColumnInfo () {
 	HKEY  hKeyResults=0;
 	char  String[256];
 	long  lResult;
-	sprintf(String,"PJ64 V 1.6.2\\Configuration\\ROM Browser");
+	sprintf(String,"PJ64 V 1.6.2\\Configuration");
 	lResult=RegCreateKeyEx(HKEY_CURRENT_USER,String,0,"",REG_OPTION_NON_VOLATILE,
 		KEY_ALL_ACCESS,0,&hKeyResults,&Disposition);
 	if (lResult==ERROR_SUCCESS) {
@@ -569,7 +569,7 @@ void SaveRomBrowserColumnPosition (int index,int Position) {
 	DWORD Disposition=0;
 	HKEY  hKeyResults=0;
 	long  lResult;
-	sprintf(String,"PJ64 V 1.6.2\\Configuration\\ROM Browser");
+	sprintf(String,"PJ64 V 1.6.2\\Configuration");
 	lResult=RegCreateKeyEx(HKEY_CURRENT_USER,String,0,"",REG_OPTION_NON_VOLATILE,
 		KEY_ALL_ACCESS,0,&hKeyResults,&Disposition);
 	if (lResult==ERROR_SUCCESS) {
@@ -584,7 +584,7 @@ void LoadRomBrowserColumnInfo () {
 	HKEY  hKeyResults=0;
 	long  lResult;
 	NoOfFields ;
-	sprintf(String,"PJ64 V 1.6.2\\Configuration\\ROM Browser");
+	sprintf(String,"PJ64 V 1.6.2\\Configuration");
 	lResult=RegOpenKeyEx(HKEY_CURRENT_USER,String,0,KEY_ALL_ACCESS,&hKeyResults);
 	if (lResult==ERROR_SUCCESS) {
 		DWORD Type,Value,count,Bytes=4;

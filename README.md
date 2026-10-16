@@ -107,9 +107,6 @@ Miroku - Intel GPU test, lots of OoT fixes and improved cheat support.
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 PLUGIN CREDITS
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-Direct64 - By Orkin. Thanks to Clements, Rice, Gonetz, Malcolm, Dave2001, cryhlove, icepir8, zilmar,
-Azimer, StrmnNrmn, Kreed, and Maxim Stepin
-Glide64 - See the about. Some improvements to the default ini and hack support from Bruce IV/me.
 GLideN64 - See the about. Some improvements to the default ini from Bruce IV/me. Based on glN64 RC2.
 Project64 Legacy Icepir8's LLE - Icepir8 for improvements to ata4's multithreaded fork of Angrylion RDP.
 Jabo's Direct3D8 1.6.2 - Jabo, with changes to suit this project from Bruce Shankle IV/me.

@@ -413,16 +413,7 @@ void _fastcall r4300i_SPECIAL_SYSCALL (void) {
 	JumpToLocation=PROGRAM_COUNTER;
 }
 void _fastcall r4300i_SPECIAL_BREAK (void) {
-	BOOL NoOoT=strcmp(RomName,"THE LEGEND OF ZELDA")!=0;
-	if (SPECIAL_BREAK_Yes||NoOoT) r4300i_SPECIAL_SYSCALL();
-	if (SPECIAL_BREAK_Trigger||NoOoT) return;
-	HandleModal1(hMainWindow);
-	if (MessageBox(0,GS(SPECIAL_BREAK),GS(OPTIONAL_CRASH),MB_YESNO|MB_ICONERROR|MB_SETFOREGROUND)==IDYES) {
-		r4300i_SPECIAL_SYSCALL();
-		SPECIAL_BREAK_Yes=TRUE;
-	}
-	SPECIAL_BREAK_Trigger=TRUE;
-	HandleModal2(hMainWindow);
+	if (!SkipBps) r4300i_SPECIAL_SYSCALL();
 }
 void _fastcall r4300i_SPECIAL_MFHI (void) {
 	GPR[Opcode.rd].DW=HI.DW;

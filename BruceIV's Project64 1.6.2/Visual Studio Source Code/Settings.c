@@ -213,7 +213,7 @@ BOOL CALLBACK DefaultOptionsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lPara
 			lResult=RegCreateKeyEx(HKEY_CURRENT_USER,String,0,"",REG_OPTION_NON_VOLATILE,KEY_ALL_ACCESS,0,&hKeyResults,&Disposition);
 			if (lResult==ERROR_SUCCESS) {
 				ForceDisableTLB=SendMessage(GetDlgItem(hDlg,IDC_ForceDisableTLB),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
-				RegSetValueEx(hKeyResults,"Always Disable Translation Lookaside Buffer",0,REG_DWORD,(BYTE*)&ForceDisableTLB,sizeof(DWORD));
+				RegSetValueEx(hKeyResults,"Always Disable TLB",0,REG_DWORD,(BYTE*)&ForceDisableTLB,sizeof(DWORD));
 				ForceEnableDMA=SendMessage(GetDlgItem(hDlg,IDC_ForceEnableDMA),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
 				RegSetValueEx(hKeyResults,"Always Enable Align DMA",0,REG_DWORD,(BYTE*)&ForceEnableDMA,sizeof(DWORD));
 				ForceAuto16kbit=SendMessage(GetDlgItem(hDlg,IDC_ForceAuto16kbit),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
@@ -468,7 +468,6 @@ BOOL CALLBACK PluginSelectProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam)
 				GFXDllAbout=(void (__cdecl*)(HWND))GetProcAddress(hLib,"DllAbout");
 				EnableWindow(GetDlgItem(hDlg,GFX_ABOUT),GFXDllAbout!=0?TRUE:FALSE);
 			}
-			if (BootupSettings) PostMessage(GetParent(hDlg),WM_COMMAND,IDCANCEL,0);
 			break;
 		case AUDIO_LIST:
 			if (HIWORD(wParam)==CBN_SELCHANGE) {
@@ -510,7 +509,7 @@ BOOL CALLBACK PluginSelectProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam)
 			char String[256];
 			if (PluginsChanged(hDlg)==FALSE) {FreePluginList(); break;}
 			if (!CPURunning) DelayHandleGlobalTasks=TRUE;
-			sprintf(String,"PJ64 V 1.6.2\\Configuration\\Dll");
+			sprintf(String,"PJ64 V 1.6.2\\Configuration");
 			lResult=RegCreateKeyEx(HKEY_CURRENT_USER,String,0,"",REG_OPTION_NON_VOLATILE,KEY_ALL_ACCESS,0,&hKeyResults,&Disposition);
 			if (lResult==ERROR_SUCCESS) {
 				DWORD index;
@@ -751,6 +750,8 @@ BOOL CALLBACK RomSettingsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) 
 		SetFlagControl(hDlg,&RomSyncGametoAudio,IDC_SyncGametoAudio,SyncGametoAudio_LANG);
 		SetFlagControl(hDlg,&RomDelaySI,IDC_DELAY_SI,ROM_DELAY_SI);
 		SetFlagControl(hDlg,&RomRspRecompiler,IDC_RSP_RECOMPILER,FORCE_RSP_RECOMPILER);
+		SetFlagControl(hDlg,&RomSkipBps,IDC_SKIP_BREAKPOINTS,SPECIAL_BREAK);
+		SetFlagControl(hDlg,&RomCCMod,IDC_CC_MOD,CC_MOD);
 		SetFlagControl(hDlg,&RomCpuRecompiler,IDC_CPU_RECOMPILER,CORE_RECOMPILER);
 		SetFlagControl(hDlg,&RomVirtualSD,IDC_VirtualSD,VIRTUALSD_LANG);
 		SetFlagControl(hDlg,&RomJumperPak,IDC_JUMPER_PAK,JUMPER_PAK);
@@ -769,10 +770,12 @@ BOOL CALLBACK RomSettingsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) 
 			EnableWindow(GetDlgItem(hDlg,IDC_CPU_RECOMPILER),FALSE);
 			EnableWindow(GetDlgItem(hDlg,IDC_VirtualSD),FALSE);
 			EnableWindow(GetDlgItem(hDlg,IDC_JUMPER_PAK),FALSE);
+			EnableWindow(GetDlgItem(hDlg,IDC_SKIP_BREAKPOINTS),FALSE);
 		}
 		if (strlen(RomName)==0||!RomCpuRecompiler||ForceDisableTLB) EnableWindow(GetDlgItem(hDlg,IDC_USE_TLB),FALSE);
 		if (strlen(RomName)==0||ForceEnableDMA) EnableWindow(GetDlgItem(hDlg,IDC_ALIGN_DMA),FALSE);
 		if (strlen(RomName)==0||!RomCpuRecompiler) {
+			EnableWindow(GetDlgItem(hDlg,IDC_CC_MOD),FALSE);
 			EnableWindow(GetDlgItem(hDlg,IDC_REGCACHE),FALSE);
 			EnableWindow(GetDlgItem(hDlg,IDC_PROTECT_MEMORY_ENLARGE_BUFFER),FALSE);
 		}
@@ -798,6 +801,8 @@ BOOL CALLBACK RomSettingsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) 
 				RomAudioSignal=SendMessage(GetDlgItem(hDlg,IDC_AUDIO_SIGNAL),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
 				RomDelaySI=SendMessage(GetDlgItem(hDlg,IDC_DELAY_SI),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
 				RomRspRecompiler=SendMessage(GetDlgItem(hDlg,IDC_RSP_RECOMPILER),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
+				RomSkipBps=SendMessage(GetDlgItem(hDlg,IDC_SKIP_BREAKPOINTS),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
+				RomCCMod=SendMessage(GetDlgItem(hDlg,IDC_CC_MOD),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
 				RomCpuRecompiler=SendMessage(GetDlgItem(hDlg,IDC_CPU_RECOMPILER),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
 				RomVirtualSD=SendMessage(GetDlgItem(hDlg,IDC_VirtualSD),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
 				RomJumperPak=SendMessage(GetDlgItem(hDlg,IDC_JUMPER_PAK),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;

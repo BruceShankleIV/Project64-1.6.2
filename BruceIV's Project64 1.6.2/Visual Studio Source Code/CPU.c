@@ -211,8 +211,6 @@ void CheckTimer () {
 }
 void EndEmulation () {
 	DWORD ExitCode,count,OldProtect;
-	if (SPECIAL_BREAK_Yes) SPECIAL_BREAK_Yes=FALSE;
-	if (SPECIAL_BREAK_Trigger) SPECIAL_BREAK_Trigger=FALSE;
 	SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)"");
 	ManualPaused=FALSE;
 	CPU_Action.CloseCPU=TRUE;
@@ -240,7 +238,7 @@ void EndEmulation () {
 	Timer_Stop();
 	VirtualProtect(N64MEM,RDRAMsize,PAGE_READWRITE,&OldProtect);
 	VirtualProtect(N64MEM+0x04000000,0x2000,PAGE_READWRITE,&OldProtect);
-	if (GfxRomClosed!=0&&(!inFullScreen||strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0||strcmp(GfxDLL,"Glide64.dll")==0)) GfxRomClosed();
+	if (GfxRomClosed!=0&&(!inFullScreen||strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0)) GfxRomClosed();
 	if (GLideN64NeedsToBeSetupFirst) return;
 	if (AiRomClosed!=0) AiRomClosed();
 	if (ContRomClosed!=0) ContRomClosed();
@@ -535,8 +533,7 @@ void GetInstantSaveDir(char*Directory) {
 	_splitpath(path_buffer,drive,dir,fname,ext);
 	sprintf(Directory,"%s%sSave States\\",drive,dir);
 	sprintf(Group,"PJ64 V 1.6.2\\Configuration");
-	lResult=RegOpenKeyEx(HKEY_CURRENT_USER,Group,0,KEY_ALL_ACCESS,
-		&hKeyResults);
+	lResult=RegOpenKeyEx(HKEY_CURRENT_USER,Group,0,KEY_ALL_ACCESS,&hKeyResults);
 	if (lResult==ERROR_SUCCESS) {
 		DWORD Type,Value,Bytes=4;
 		lResult=RegQueryValueEx(hKeyResults,"AppPath Save States",0,&Type,(LPBYTE)(&Value),&Bytes);
@@ -704,8 +701,6 @@ BOOL Machine_LoadState() {
 	else if (RDRAMsize==0x800000&&RomJumperPak) sprintf(String,"%s: %s (%s %s)",GS(MSG_LOADED_STATE),FileName,GS(JUMPER_PAK),GS(OFF));
 	else sprintf(String,"%s: %s",GS(MSG_LOADED_STATE),FileName);
 	SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)String);
-	if (SPECIAL_BREAK_Yes) SPECIAL_BREAK_Yes=FALSE;
-	if (SPECIAL_BREAK_Trigger) SPECIAL_BREAK_Trigger=FALSE;
 	return TRUE;
 	SharedBlock:
 	if (CpuRecompiler) ResetRecompCode();

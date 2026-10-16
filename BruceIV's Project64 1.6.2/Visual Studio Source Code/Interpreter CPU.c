@@ -405,7 +405,7 @@ void ExecuteInterpreterOpCode () {
 void StartInterpreterCPU (void) {
 	CoInitialize(0);
 	SetNormal
-	if (GfxRomOpen!=0&&(!inFullScreen||strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0||strcmp(GfxDLL,"Glide64.dll")==0)) GfxRomOpen();
+	if (GfxRomOpen!=0&&(!inFullScreen||strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0)) GfxRomOpen();
 	if (ContRomOpen!=0&&!GLideN64NeedsToBeSetupFirst) ContRomOpen();
 	__try {
 		for (;;) {

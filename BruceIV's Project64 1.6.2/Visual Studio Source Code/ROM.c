@@ -34,7 +34,7 @@
 #include "UnZIP.h"
 #include "Resource.h"
 #include "ROM Tools Common.h"
-DWORD RomFileSize,VirtualSD,RomVirtualSD,SaveUsing,RomSaveUsing,CPUType,UseTLB,RomUseTLB,FiftyNineHertz,RomFiftyNineHertz,RomJAI,AudioSignal,RomAudioSignal,RomCF,UseCache,RomUseCache,RomShankleAziAI,RomAltEmulateAI,SyncGametoAudio,RomSyncGametoAudio,Lag,RomLag,DelayRDP,RomDelayRDP,DelayRSP,RomDelayRSP,AlignDMA,RomAlignDMA,DelayRDP,RomDelayRDP,DelayRSP,RomDelayRSP,DelaySI,RomDelaySI,RomRspRecompiler,CpuRecompiler,RomCpuRecompiler,ProtectMemoryEnlargeBuffer,RomProtectMemoryEnlargeBuffer,JumperPak,RomJumperPak,ForceAuto16kbit,ForceDisableTLB,ForceEnableDMA,EmulateAI;
+DWORD RomFileSize,VirtualSD,RomVirtualSD,SaveUsing,RomSaveUsing,CPUType,UseTLB,RomUseTLB,FiftyNineHertz,RomFiftyNineHertz,RomJAI,AudioSignal,RomAudioSignal,RomCF,UseCache,RomUseCache,RomShankleAziAI,RomAltEmulateAI,SyncGametoAudio,RomSyncGametoAudio,Lag,RomLag,DelayRDP,RomDelayRDP,DelayRSP,RomDelayRSP,AlignDMA,RomAlignDMA,DelayRDP,RomDelayRDP,DelayRSP,RomDelayRSP,DelaySI,SkipBps,RomSkipBps,CCMod,RomCCMod,RomDelaySI,RomRspRecompiler,CpuRecompiler,RomCpuRecompiler,ProtectMemoryEnlargeBuffer,RomProtectMemoryEnlargeBuffer,JumperPak,RomJumperPak,ForceAuto16kbit,ForceDisableTLB,ForceEnableDMA,EmulateAI;
 char CurrentFileName[MAX_PATH+1]={""},RomName[MAX_PATH+1]={""},RomHeader[0x1000],LastRoms[10][MAX_PATH+1],LastDirs[10][MAX_PATH+1];
 BOOL IsValidRomImage (BYTE Test[4]);
 void SaveRecentDirs () {
@@ -405,10 +405,12 @@ void ReadRomSettings() {
 	RomDelaySI=FALSE;
 	if (strcmp(RSPDLL,"RSP.dll")==0&&(strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")!=0||strcmp(RomName,"THE LEGEND OF ZELDA")==0||strcmp(RomName,"THE MASK OF MUJURA")==0||strcmp(RomName,"ZELDA MAJORA'S MASK")==0||strcmp(RomName,"BANJO KAZOOIE 2")==0||strcmp(RomName,"BANJO TOOIE")==0||strcmp(RomName,"CONKER BFD")==0||strcmp(RomName,"DONKEY KONG 64")==0||strcmp(RomName,"JET FORCE GEMINI")==0||strcmp(RomName,"STAR TWINS")==0||strcmp(RomName,"Perfect Dark")==0)) RomRspRecompiler=TRUE;
 	else RomRspRecompiler=FALSE;
+	RomSkipBps=FALSE;
 	RomCpuRecompiler=TRUE;
 	RomLag=FALSE;
 	if (ForceDisableTLB) RomUseTLB=FALSE;
 	else RomUseTLB=TRUE;
+	RomCCMod=FALSE;
 	RomUseCache=UseCache_Default;
 	RomProtectMemoryEnlargeBuffer=ProtectMemoryEnlargeBuffer_Default;
 	if (strlen(RomName)>0) {
@@ -450,13 +452,17 @@ void ReadRomSettings() {
 		if (strcmp(String,"ON")==0) RomDelaySI=TRUE;
 		_GetPrivateProfileString(Identifier,"Recompile RCP RSP","",String,sizeof(String),IniFileName);
 		if (strcmp(String,"ON")==0) RomRspRecompiler=TRUE;
+		_GetPrivateProfileString(Identifier,"Skip Breakpoints","",String,sizeof(String),IniFileName);
+		if (strcmp(String,"ON")==0||strcmp(RomName,"THE LEGEND OF ZELDA")==0&&strcmp(String,"OFF")!=0) RomSkipBps=TRUE;
 		_GetPrivateProfileString(Identifier,"Recompile VR4300i CPU","",String,sizeof(String),IniFileName);
 		if (strcmp(String,"OFF")==0) RomCpuRecompiler=FALSE;
 		if (RomCpuRecompiler) {
+			_GetPrivateProfileString(Identifier,"Clear Cache Mod","",String,sizeof(String),IniFileName);
+			if (strcmp(String,"ON")==0||strcmp(RomName,"THE LEGEND OF ZELDA")==0&&strcmp(String,"OFF")!=0) RomCCMod=TRUE;
+			_GetPrivateProfileString(Identifier,"TLB","",String,sizeof(String),IniFileName);
+			if (strcmp(String,"OFF")==0) RomUseTLB=FALSE;
 			_GetPrivateProfileString(Identifier,"Lag","",String,sizeof(String),IniFileName);
 			if (strcmp(String,"ON")==0||RomCF!=-1&&RomCF!=1) RomLag=TRUE;
-			_GetPrivateProfileString(Identifier,"Translation Lookaside Buffer","",String,sizeof(String),IniFileName);
-			if (strcmp(String,"OFF")==0) RomUseTLB=FALSE;
 			_GetPrivateProfileString(Identifier,"Register Caching","",String,sizeof(String),IniFileName);
 			if (strcmp(String,"ON")==0) RomUseCache=REG_CACHE_ON;
 			else if (strcmp(String,"OFF")==0) RomUseCache=REG_CACHE_OFF;
@@ -732,7 +738,7 @@ void OpenChosenFile(void) {
 		EnableWindow(hRomList,FALSE);
 	}
 	HandleGlobalTasks(hMainWindow);
-	if (AutoFullScreen&&strcmp(GfxDLL,"Direct64-1.6.2.dll")!=0) {
+	if (AutoFullScreen) {
 		timeBeginPeriod(16);
 		Sleep(200);
 		timeEndPeriod(16);
@@ -808,10 +814,14 @@ void SaveRomSettings () {
 	_WritePrivateProfileString(Identifier,"Delay SI",RomDelaySI?"ON":"Default",GetIniFileName());
 	if (strcmp(RSPDLL,"RSP.dll")==0&&(strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0||strcmp(RomName,"THE LEGEND OF ZELDA")==0||strcmp(RomName,"THE MASK OF MUJURA")==0||strcmp(RomName,"ZELDA MAJORA'S MASK")==0||strcmp(RomName,"BANJO KAZOOIE 2")==0||strcmp(RomName,"BANJO TOOIE")==0||strcmp(RomName,"CONKER BFD")==0||strcmp(RomName,"DONKEY KONG 64")==0||strcmp(RomName,"JET FORCE GEMINI")==0||strcmp(RomName,"STAR TWINS")==0||strcmp(RomName,"Perfect Dark")==0)) _WritePrivateProfileString(Identifier,"Recompile RCP RSP",RomRspRecompiler?"ON":"Default",GetIniFileName());
 	_WritePrivateProfileString(Identifier,"Recompile VR4300i CPU",RomCpuRecompiler?"Default":"OFF",GetIniFileName());
+	if (RomSkipBps) _WritePrivateProfileString(Identifier,"Skip Breakpoints","ON",GetIniFileName());
+	else _WritePrivateProfileString(Identifier,"Skip Breakpoints",(strcmp(RomName,"THE LEGEND OF ZELDA")==0)?"OFF":"Default",GetIniFileName());
 	if (RomCF!=-1&&RomCF!=1) RomLag=FALSE;
 	if (RomCpuRecompiler) {
+		if (RomCCMod) _WritePrivateProfileString(Identifier,"Clear Cache Mod","ON",GetIniFileName());
+		else _WritePrivateProfileString(Identifier,"Clear Cache Mod",(strcmp(RomName,"THE LEGEND OF ZELDA")==0)?"OFF":"Default",GetIniFileName());
+		if (!ForceDisableTLB) _WritePrivateProfileString(Identifier,"TLB",RomUseTLB?"Default":"OFF",GetIniFileName());
 		_WritePrivateProfileString(Identifier,"Lag",RomLag?"ON":"Default",GetIniFileName());
-		if (!ForceDisableTLB) _WritePrivateProfileString(Identifier,"Translation Lookaside Buffer",RomUseTLB?"Default":"OFF",GetIniFileName());
 		switch (RomUseCache) {
 		case REG_CACHE_ON: sprintf(String,"ON"); break;
 		case REG_CACHE_OFF: sprintf(String,"OFF"); break;
@@ -826,7 +836,7 @@ void SaveRomSettings () {
 		_WritePrivateProfileString(Identifier,"Protect Memory / Enlarge Buffer",String,GetIniFileName());
 	} else {
 		_WritePrivateProfileString(Identifier,"Lag","Default",GetIniFileName());
-		_WritePrivateProfileString(Identifier,"Translation Lookaside Buffer","Default",GetIniFileName());
+		_WritePrivateProfileString(Identifier,"TLB","Default",GetIniFileName());
 		_WritePrivateProfileString(Identifier,"Register Caching","Default",GetIniFileName());
 		_WritePrivateProfileString(Identifier,"Protect Memory / Enlarge Buffer","Default",GetIniFileName());
 	}
