@@ -34,7 +34,7 @@ extern "C" {
 #include "Settings API.h"
 #include "ROM Browser.h"
 #include "Language.h"
-/*Source Code V26 R1.03. Last updated at 06:00PM 10/16/2026*/
+/*Source Code V26 R1.03. Last updated at 03:18AM 10/17/2026*/
 #define AppName						"BruceIV-Project64-1.6.2"
 #define IniName						"Game.ini"
 #define CheatIniName				"Cheat.ini"
