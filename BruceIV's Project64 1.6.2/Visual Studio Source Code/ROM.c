@@ -450,7 +450,7 @@ void ReadRomSettings() {
 		if (strcmp(String,"ON")==0) RomFiftyNineHertz=TRUE;
 		_GetPrivateProfileString(Identifier,"Delay SI","",String,sizeof(String),IniFileName);
 		if (strcmp(String,"ON")==0) RomDelaySI=TRUE;
-		_GetPrivateProfileString(Identifier,"Recompile RCP RSP","",String,sizeof(String),IniFileName);
+		_GetPrivateProfileString(Identifier,"Recompile RSP","",String,sizeof(String),IniFileName);
 		if (strcmp(String,"ON")==0) RomRspRecompiler=TRUE;
 		_GetPrivateProfileString(Identifier,"Skip Breakpoints","",String,sizeof(String),IniFileName);
 		if (strcmp(String,"ON")==0||strcmp(RomName,"THE LEGEND OF ZELDA")==0&&strcmp(String,"OFF")!=0) RomSkipBps=TRUE;
@@ -812,7 +812,7 @@ void SaveRomSettings () {
 	_WritePrivateProfileString(Identifier,"Virtual SD Card",RomVirtualSD?"ON":"Default",GetIniFileName());
 	_WritePrivateProfileString(Identifier,"59 FPS",RomFiftyNineHertz?"ON":"Default",GetIniFileName());
 	_WritePrivateProfileString(Identifier,"Delay SI",RomDelaySI?"ON":"Default",GetIniFileName());
-	if (strcmp(RSPDLL,"RSP.dll")==0&&(strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0||strcmp(RomName,"THE LEGEND OF ZELDA")==0||strcmp(RomName,"THE MASK OF MUJURA")==0||strcmp(RomName,"ZELDA MAJORA'S MASK")==0||strcmp(RomName,"BANJO KAZOOIE 2")==0||strcmp(RomName,"BANJO TOOIE")==0||strcmp(RomName,"CONKER BFD")==0||strcmp(RomName,"DONKEY KONG 64")==0||strcmp(RomName,"JET FORCE GEMINI")==0||strcmp(RomName,"STAR TWINS")==0||strcmp(RomName,"Perfect Dark")==0)) _WritePrivateProfileString(Identifier,"Recompile RCP RSP",RomRspRecompiler?"ON":"Default",GetIniFileName());
+	if (strcmp(RSPDLL,"RSP.dll")==0&&(strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0||strcmp(RomName,"THE LEGEND OF ZELDA")==0||strcmp(RomName,"THE MASK OF MUJURA")==0||strcmp(RomName,"ZELDA MAJORA'S MASK")==0||strcmp(RomName,"BANJO KAZOOIE 2")==0||strcmp(RomName,"BANJO TOOIE")==0||strcmp(RomName,"CONKER BFD")==0||strcmp(RomName,"DONKEY KONG 64")==0||strcmp(RomName,"JET FORCE GEMINI")==0||strcmp(RomName,"STAR TWINS")==0||strcmp(RomName,"Perfect Dark")==0)) _WritePrivateProfileString(Identifier,"Recompile RSP",RomRspRecompiler?"ON":"Default",GetIniFileName());
 	_WritePrivateProfileString(Identifier,"Recompile VR4300i CPU",RomCpuRecompiler?"Default":"OFF",GetIniFileName());
 	if (RomSkipBps) _WritePrivateProfileString(Identifier,"Skip Breakpoints","ON",GetIniFileName());
 	else _WritePrivateProfileString(Identifier,"Skip Breakpoints",(strcmp(RomName,"THE LEGEND OF ZELDA")==0)?"OFF":"Default",GetIniFileName());
