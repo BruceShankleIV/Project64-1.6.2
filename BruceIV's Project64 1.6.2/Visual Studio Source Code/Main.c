@@ -346,87 +346,73 @@ void LoadSettings () {
 	HKEY hKeyResults;
 	char String[256];
 	long lResult;
-	SystemUseCache=Default_UseCache;
-	SystemProtectMemoryEnlargeBuffer=Default_UseProtectMemoryEnlargeBuffer;
-	SystemCF=Default_CountPerOp;
-	AutoSleep=Default_AutoSleep;
-	ForceDisableTLB=Default_ForceDisableTLB;
-	ForceDisableCpuRecompiler=Default_ForceDisableCpuRecompiler;
-	ForceEnableDMA=Default_ForceEnableDMA;
-	ForceAuto16kbit=Default_ForceAuto16kbit;
+	// APP NON-PLUGIN DEFAULTS
+	SystemUseCache=REG_CACHE_ON;
+	SystemProtectMemoryEnlargeBuffer=PROTECT_MEMORY_ENLARGE_BUFFER_OFF;
+	SystemCF=2;
+	AutoSleep=FALSE;
+	ForceDisableTLB=FALSE;
+	ForceDisableCpuRecompiler=FALSE;
+	ForceEnableDMA=FALSE;
+	ForceAuto16kbit=FALSE;
 	AutoFullScreen=FALSE;
-	RomsToRemember=Default_RomsToRemember;
-	RomDirsToRemember=Default_RomsDirsToRemember;
-	AutoRefreshRomBrowser=Default_AutoRefreshRomBrowser;
-	BasicMode=Default_BasicMode;
-	Recursion=Default_Recursion;
-	LimitFPS=Default_LimitFPS;
-	SpeedCap=Default_SpeedCap;
-	UsuallyonTop=Default_UsuallyonTop;
-	RecordRGB=Default_RecordRGB;
-	AutoHide=Default_AutoHide;
-	VideoToScreen=Default_VideoToScreen;
-	CreateStatusBar=Default_CreateStatusBar;
+	RomsToRemember=10;
+	RomDirsToRemember=10;
+	AutoRefreshRomBrowser=TRUE;
+	BasicMode=TRUE;
+	Recursion=TRUE;
+	LimitFPS=TRUE;
+	SpeedCap=FALSE;
+	UsuallyonTop=FALSE;
+	RecordRGB=FALSE;
+	AutoHide=TRUE;
+	VideoToScreen=FALSE;
+	CreateStatusBar=TRUE;
 	sprintf(String,"PJ64 V 1.6.2\\Configuration");
 	lResult=RegOpenKeyEx(HKEY_CURRENT_USER,String,0,KEY_ALL_ACCESS,&hKeyResults);
 	if (lResult==ERROR_SUCCESS) {
 		lResult=RegQueryValueEx(hKeyResults,"Limit FPS",0,&Type,(LPBYTE)(&LimitFPS),&Bytes);
-		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {LimitFPS=Default_LimitFPS;}
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {LimitFPS=TRUE;}
 		lResult=RegQueryValueEx(hKeyResults,"Speed Cap",0,&Type,(LPBYTE)(&SpeedCap),&Bytes);
-		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {SpeedCap=Default_SpeedCap;}
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {SpeedCap=FALSE;}
 		lResult=RegQueryValueEx(hKeyResults,"Usually on Top",0,&Type,(LPBYTE)(&UsuallyonTop),&Bytes);
-		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {UsuallyonTop=Default_UsuallyonTop;}
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {UsuallyonTop=FALSE;}
 		lResult=RegQueryValueEx(hKeyResults,"Record gameplay with RGB instead of YUV",0,&Type,(LPBYTE)(&RecordRGB),&Bytes);
-		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {RecordRGB=Default_RecordRGB;}
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {RecordRGB=FALSE;}
 		lResult=RegQueryValueEx(hKeyResults,"Hide Mouse Cursor",0,&Type,(LPBYTE)(&AutoHide),&Bytes);
-		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {AutoHide=Default_AutoHide;}
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {AutoHide=TRUE;}
 		lResult=RegQueryValueEx(hKeyResults,"Display Status Bar",0,&Type,(LPBYTE)(&CreateStatusBar),&Bytes);
-		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {CreateStatusBar=Default_CreateStatusBar;}
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {CreateStatusBar=TRUE;}
 		lResult=RegQueryValueEx(hKeyResults,"Capture Screenshots with Video Plugin",0,&Type,(LPBYTE)(&VideoToScreen),&Bytes);
-		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {VideoToScreen=Default_VideoToScreen;}
-		RegCloseKey(hKeyResults);
-	}
-	sprintf(String,"PJ64 V 1.6.2\\Configuration");
-	lResult=RegOpenKeyEx(HKEY_CURRENT_USER,String,0,KEY_ALL_ACCESS,&hKeyResults);
-	if (lResult==ERROR_SUCCESS) {
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {VideoToScreen=FALSE;}
 		lResult=RegQueryValueEx(hKeyResults,"Auto Refresh ROM Browser",0,&Type,(LPBYTE)(&AutoRefreshRomBrowser),&Bytes);
-		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {AutoRefreshRomBrowser=Default_AutoRefreshRomBrowser;}
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {AutoRefreshRomBrowser=TRUE;}
 		lResult=RegQueryValueEx(hKeyResults,"Basic Mode",0,&Type,(LPBYTE)(&BasicMode),&Bytes);
-		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {BasicMode=Default_BasicMode;}
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {BasicMode=TRUE;}
 		lResult=RegQueryValueEx(hKeyResults,"Pause CPU Upon Focus Loss",0,&Type,(BYTE*)(&AutoSleep),&Bytes);
-		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {AutoSleep=Default_AutoSleep;}
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {AutoSleep=FALSE;}
 		lResult=RegQueryValueEx(hKeyResults,"Enter Fullscreen Mode Upon ROM Opening",0,&Type,(BYTE*)(&AutoFullScreen),&Bytes);
 		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {AutoFullScreen=FALSE;}
-		RegCloseKey(hKeyResults);
-	}
-	sprintf(String,"PJ64 V 1.6.2\\Configuration");
-	lResult=RegOpenKeyEx(HKEY_CURRENT_USER,String,0,KEY_ALL_ACCESS,&hKeyResults);
-	if (lResult==ERROR_SUCCESS) {
 		lResult=RegQueryValueEx(hKeyResults,"Always Disable TLB",0,&Type,(BYTE*)(&ForceDisableTLB),&Bytes);
-		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {ForceDisableTLB=Default_ForceDisableTLB;}
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {ForceDisableTLB=FALSE;}
 		lResult=RegQueryValueEx(hKeyResults,"Always Interpret VR4300i CPU",0,&Type,(BYTE*)(&ForceDisableCpuRecompiler),&Bytes);
-		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {ForceDisableCpuRecompiler=Default_ForceDisableCpuRecompiler;}
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {ForceDisableCpuRecompiler=FALSE;}
 		lResult=RegQueryValueEx(hKeyResults,"Always Enable Align DMA",0,&Type,(BYTE*)(&ForceEnableDMA),&Bytes);
-		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {ForceEnableDMA=Default_ForceEnableDMA;}
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {ForceEnableDMA=FALSE;}
 		lResult=RegQueryValueEx(hKeyResults,"Always Autodetect With 16kbit",0,&Type,(BYTE*)(&ForceAuto16kbit),&Bytes);
-		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {ForceAuto16kbit=Default_ForceAuto16kbit;}
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {ForceAuto16kbit=FALSE;}
 		lResult=RegQueryValueEx(hKeyResults,"Protect Memory / Enlarge Buffer",0,&Type,(LPBYTE)(&SystemProtectMemoryEnlargeBuffer),&Bytes);
-		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {SystemProtectMemoryEnlargeBuffer=Default_UseProtectMemoryEnlargeBuffer;}
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {SystemProtectMemoryEnlargeBuffer=PROTECT_MEMORY_ENLARGE_BUFFER_OFF;}
 		lResult=RegQueryValueEx(hKeyResults,"Register Caching",0,&Type,(LPBYTE)(&SystemUseCache),&Bytes);
-		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {SystemUseCache=Default_UseCache;}
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {SystemUseCache=REG_CACHE_ON;}
 		lResult=RegQueryValueEx(hKeyResults,"Counter Factor",0,&Type,(LPBYTE)(&SystemCF),&Bytes);
-		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {SystemCF=Default_CountPerOp;}
-		RegCloseKey(hKeyResults);
-	}
-	sprintf(String,"PJ64 V 1.6.2\\Configuration");
-	lResult=RegOpenKeyEx(HKEY_CURRENT_USER,String,0,KEY_ALL_ACCESS,&hKeyResults);
-	if (lResult==ERROR_SUCCESS) {
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {SystemCF=2;}
 		lResult=RegQueryValueEx(hKeyResults,"Directory Recursion",0,&Type,(BYTE*)(&Recursion),&Bytes);
-		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {Recursion=Default_Recursion;}
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {Recursion=TRUE;}
 		lResult=RegQueryValueEx(hKeyResults,"Max # of ROMs Remembered",0,&Type,(BYTE*)(&RomsToRemember),&Bytes);
-		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {RomsToRemember=Default_RomsToRemember;}
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {RomsToRemember=10;}
 		lResult=RegQueryValueEx(hKeyResults,"Max # of ROM Dirs Remembered",0,&Type,(BYTE*)(&RomDirsToRemember),&Bytes);
-		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {RomDirsToRemember=Default_RomsDirsToRemember;}
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {RomDirsToRemember=10;}
 		RegCloseKey(hKeyResults);
 	}
 }
