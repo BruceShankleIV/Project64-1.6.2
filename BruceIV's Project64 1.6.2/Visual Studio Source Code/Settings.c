@@ -729,10 +729,10 @@ BOOL CALLBACK RomSettingsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) 
 		SetDlgItemText(hDlg,IDC_SAVE_TYPE_TEXT,GS(ROM_SAVE_TYPE));
 		SetDlgItemText(hDlg,IDC_CF_TEXT,GS(ROM_COUNTER_FACTOR));
 		SetDlgItemText(hDlg,IDC_RECOMPILER_SETTINGS,GS(RECOMPILER_SETTINGS));
-		AddDropDownItem(hDlg,IDC_REGCACHE,DEFAULT_TEXT,UseCache_Default,&RomUseCache);
+		AddDropDownItem(hDlg,IDC_REGCACHE,DEFAULT_TEXT,0,&RomUseCache);
 		AddDropDownItem(hDlg,IDC_REGCACHE,ON,REG_CACHE_ON,&RomUseCache);
 		AddDropDownItem(hDlg,IDC_REGCACHE,OFF,REG_CACHE_OFF,&RomUseCache);
-		AddDropDownItem(hDlg,IDC_PROTECT_MEMORY_ENLARGE_BUFFER,DEFAULT_TEXT,ProtectMemoryEnlargeBuffer_Default,&RomProtectMemoryEnlargeBuffer);
+		AddDropDownItem(hDlg,IDC_PROTECT_MEMORY_ENLARGE_BUFFER,DEFAULT_TEXT,0,&RomProtectMemoryEnlargeBuffer);
 		AddDropDownItem(hDlg,IDC_PROTECT_MEMORY_ENLARGE_BUFFER,ON,PROTECT_MEMORY_ENLARGE_BUFFER_ON,&RomProtectMemoryEnlargeBuffer);
 		AddDropDownItem(hDlg,IDC_PROTECT_MEMORY_ENLARGE_BUFFER,OFF,PROTECT_MEMORY_ENLARGE_BUFFER_OFF,&RomProtectMemoryEnlargeBuffer);
 		AddDropDownItem(hDlg,IDC_SAVE_TYPE,DEFAULT_TEXT,Auto,&RomSaveUsing);
@@ -740,7 +740,7 @@ BOOL CALLBACK RomSettingsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) 
 		AddDropDownItem(hDlg,IDC_SAVE_TYPE,SAVE_16K_EEPROM,EEPROM_16K,&RomSaveUsing);
 		AddDropDownItem(hDlg,IDC_SAVE_TYPE,SAVE_SRAM,SRAM,&RomSaveUsing);
 		AddDropDownItem(hDlg,IDC_SAVE_TYPE,SAVE_FlashRAM,FlashRAM,&RomSaveUsing);
-		AddDropDownItem(hDlg,IDC_CF,DEFAULT_TEXT,-1,&RomCF);
+		AddDropDownItem(hDlg,IDC_CF,DEFAULT_TEXT,0,&RomCF);
 		AddDropDownItem(hDlg,IDC_CF,NUMBER_1,1,&RomCF);
 		AddDropDownItem(hDlg,IDC_CF,NUMBER_2,2,&RomCF);
 		AddDropDownItem(hDlg,IDC_CF,NUMBER_3,3,&RomCF);

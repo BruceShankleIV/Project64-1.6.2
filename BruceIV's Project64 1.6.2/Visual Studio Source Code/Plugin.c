@@ -262,6 +262,9 @@ void HandleGlobalTasks (HWND hWnd) {
 		CountPerOp=RomCF;
 		UseCache=RomUseCache;
 		ProtectMemoryEnlargeBuffer=RomProtectMemoryEnlargeBuffer;
+		if (CountPerOp==0) CountPerOp=SystemCF;
+		if (UseCache==0) UseCache=SystemUseCache;
+		if (ProtectMemoryEnlargeBuffer==0) ProtectMemoryEnlargeBuffer=SystemProtectMemoryEnlargeBuffer;
 		SaveUsing=RomSaveUsing;
 		if (RomSaveUsing==Auto) {
 			if (strcmp(RomName,"CONKER BFD")==0||strcmp(RomName,"DRACULA MOKUSHIROKU")==0||strcmp(RomName,"DRACULA MOKUSHIROKU2")==0||strcmp(RomName,"BANJO KAZOOIE 2")==0||strcmp(RomName,"BANJO TOOIE")==0||strcmp(RomName,"CRUIS'N WORLD")==0||strcmp(RomName,"CUSTOMROBOV2")==0||strcmp(RomName,"DONKEY KONG 64")==0||strcmp(RomName,"霓状虞2 硕厣驾棉�")==0||strcmp(RomName,"霓状虞3 伤蘩上罶OS!")==0||strcmp(RomName,"EXCITEBIKE64")==0||strcmp(RomName,"裁拗辰股习嫁嫁")==0||strcmp(RomName,"NBA COURTSIDE")==0||strcmp(RomName,"Madden NFL 2002")==0||strcmp(RomName,"MarioParty3")==0||strcmp(RomName,"MarioTennis")==0||strcmp(RomName,"MarioTennis64")==0||strcmp(RomName,"EVANGELION")==0||strcmp(RomName,"Parlor PRO 64")==0||strcmp(RomName,"Ultraman Battle JAPA")==0||strcmp(RomName,"Perfect Dark")==0||strcmp(RomName,"RIDGE RACER 64")==0||strcmp(RomName,"Robopon 64")==0||strcmp(RomName,"STAR WARS EP1 RACER")==0||strcmp(RomName,"YOSHI STORY")==0) SaveUsing=EEPROM_16K;

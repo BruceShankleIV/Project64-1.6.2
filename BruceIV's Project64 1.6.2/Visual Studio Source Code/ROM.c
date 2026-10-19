@@ -388,7 +388,7 @@ void HandleTimers() {
 }
 void ReadRomSettings() {
 	RomSaveUsing=Auto;
-	RomCF=SystemCF;
+	RomCF=0;
 	if (strcmp(AudioDLL,"Jabo_Dsound.dll")==0) RomSyncGametoAudio=TRUE;
 	else RomSyncGametoAudio=FALSE;
 	RomJAI=FALSE;
@@ -412,8 +412,8 @@ void ReadRomSettings() {
 	if (ForceDisableTLB) RomUseTLB=FALSE;
 	else RomUseTLB=TRUE;
 	RomCCMod=FALSE;
-	RomUseCache=SystemUse-Cache;
-	RomProtectMemoryEnlargeBuffer=SystemProtectMemoryEnlargeBuffer;
+	RomUseCache=0;
+	RomProtectMemoryEnlargeBuffer=0;
 	if (strlen(RomName)>0) {
 		LPSTR IniFileName;
 		char String[100],Identifier[100];
@@ -425,8 +425,8 @@ void ReadRomSettings() {
 		else if (strcmp(String,"SRAM")==0) {RomSaveUsing=SRAM;}
 		else if (strcmp(String,"FlashRAM")==0) {RomSaveUsing=FlashRAM;}
 		else {RomSaveUsing=Auto;}
-		RomCF=_GetPrivateProfileInt(Identifier,"Counter Factor",-1,IniFileName);
-		if (RomCF>3||RomCF<1) RomCF=-1;
+		RomCF=_GetPrivateProfileInt(Identifier,"Counter Factor",0,IniFileName);
+		if (RomCF>3) RomCF=0;
 		_GetPrivateProfileString(Identifier,"Sync Game to Audio","",String,sizeof(String),IniFileName);
 		if (strcmp(String,"OFF")==0) RomSyncGametoAudio=FALSE;
 		_GetPrivateProfileString(Identifier,"Jabo AI","",String,sizeof(String),IniFileName);
