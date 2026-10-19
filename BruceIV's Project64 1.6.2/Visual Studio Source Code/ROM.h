@@ -23,7 +23,7 @@
 *should be forwarded to them so if they want them.
 *
 */
-extern DWORD RomFileSize,VirtualSD,RomVirtualSD,SaveUsing,RomSaveUsing,UseTLB,RomUseTLB,FiftyNineHertz,RomFiftyNineHertz,RomJAI,AudioSignal,RomAudioSignal,RomCF,UseCache,RomUseCache,RomShankleAziAI,RomAltEmulateAI,SyncGametoAudio,RomSyncGametoAudio,Lag,RomLag,DelayRDP,RomDelayRDP,DelayRSP,RomDelayRSP,AlignDMA,RomAlignDMA,DelayRDP,RomDelayRDP,DelayRSP,RomDelayRSP,DelaySI,RomRspRecompiler,SkipBps,RomSkipBps,CCMod,RomCCMod,CpuRecompiler,RomCpuRecompiler,ProtectMemoryEnlargeBuffer,RomProtectMemoryEnlargeBuffer,JumperPak,RomJumperPak,RomDelaySI,ForceAuto16kbit,ForceDisableTLB,ForceEnableDMA,EmulateAI;
+extern DWORD RomFileSize,VirtualSD,RomVirtualSD,SaveUsing,RomSaveUsing,UseTLB,RomUseTLB,FiftyNineHertz,RomFiftyNineHertz,RomJAI,AudioSignal,RomAudioSignal,RomCF,UseCache,RomUseCache,RomShankleAziAI,RomAltEmulateAI,SyncGametoAudio,RomSyncGametoAudio,Lag,RomLag,DelayRDP,RomDelayRDP,DelayRSP,RomDelayRSP,AlignDMA,RomAlignDMA,DelayRDP,RomDelayRDP,DelayRSP,RomDelayRSP,DelaySI,RomRspRecompiler,SkipBps,RomSkipBps,CCMod,RomCCMod,CpuRecompiler,RomCpuRecompiler,ProtectMemoryEnlargeBuffer,RomProtectMemoryEnlargeBuffer,JumperPak,RomJumperPak,RomDelaySI,ForceAuto16kbit,ForceDisableTLB,ForceDisableCpuRecompiler,ForceEnableDMA,EmulateAI;
 extern char CurrentFileName[MAX_PATH+1],RomName[MAX_PATH+1],RomHeader[0x1000],LastRoms[10][MAX_PATH+1],LastDirs[10][MAX_PATH+1];
 void GetRomDirectory         (char*Directory);
 BOOL LoadDataFromRomFile     (char*FileName,BYTE*Data,int DataLen,int*RomSize);

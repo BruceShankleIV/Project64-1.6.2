@@ -351,6 +351,7 @@ void LoadSettings () {
 	SystemCF=Default_CountPerOp;
 	AutoSleep=Default_AutoSleep;
 	ForceDisableTLB=Default_ForceDisableTLB;
+	ForceDisableCpuRecompiler=Default_ForceDisableCpuRecompiler;
 	ForceEnableDMA=Default_ForceEnableDMA;
 	ForceAuto16kbit=Default_ForceAuto16kbit;
 	AutoFullScreen=FALSE;
@@ -403,6 +404,8 @@ void LoadSettings () {
 	if (lResult==ERROR_SUCCESS) {
 		lResult=RegQueryValueEx(hKeyResults,"Always Disable TLB",0,&Type,(BYTE*)(&ForceDisableTLB),&Bytes);
 		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {ForceDisableTLB=Default_ForceDisableTLB;}
+		lResult=RegQueryValueEx(hKeyResults,"Always Interpret VR4300i CPU",0,&Type,(BYTE*)(&ForceDisableCpuRecompiler),&Bytes);
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {ForceDisableCpuRecompiler=Default_ForceDisableCpuRecompiler;}
 		lResult=RegQueryValueEx(hKeyResults,"Always Enable Align DMA",0,&Type,(BYTE*)(&ForceEnableDMA),&Bytes);
 		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {ForceEnableDMA=Default_ForceEnableDMA;}
 		lResult=RegQueryValueEx(hKeyResults,"Always Autodetect With 16kbit",0,&Type,(BYTE*)(&ForceAuto16kbit),&Bytes);
@@ -1791,7 +1794,7 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpszArgs,in
 #elif MODERN_PLUGINS
 #define PLUGINS "Modern Plugins - Project64_Modern.exe uses GLideN64 Video, Azi Audio, and N-Rage's Input as default plugins for modern PC's and modern ROMhacks. Switching to Jabo's D3D8 is necessary for most legacy ROMhacks."
 #endif
-		sprintf(IntroMessage,"About - This is an updated Project64 v1.6.1 that's semi-maintained for casual play of retro and ROMhack games with minimal system requirements. See User Guide or contact me for info and troubleshooting.\n\n\n%s\n\n\nContact Info -\nMy email: bruceiv.shankle@gmail.com\nReport bugs: discord.gg/cHDxa9vzQM\n\nI'm usually busy so be patient or try to resolve an issue yourself and post any solutions you find.\n\n\n\n                                                                - Edwin Bruce Shankle IV",PLUGINS);
+		sprintf(IntroMessage,"About - This is an updated Project64 v1.6.1 that's semi-maintained for casual play of retro and ROMhack games with minimal system requirements. See User Guide or contact me for info and troubleshooting.\n\n\n%s\n\n\nContact Info -\nMy email: bruceiv.shankle@gmail.com\nReport bugs: discord.gg/cHDxa9vzQM\n\nI'm usually busy so be patient or try to resolve an issue yourself and post any solutions you find.\n\n\n\n																- Edwin Bruce Shankle IV",PLUGINS);
 		MessageBox(0,IntroMessage,AppName,MB_OK|MB_ICONINFORMATION|MB_SETFOREGROUND);
 		if (screenHeight>=2160&&screenWidth>=2880) ResScale="200%";
 		else if (screenHeight>=1440&&screenWidth>=1920) ResScale="125%";

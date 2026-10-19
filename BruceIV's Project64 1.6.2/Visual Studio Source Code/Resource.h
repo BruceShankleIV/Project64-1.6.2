@@ -226,3 +226,4 @@
 #define IDC_REGCACHE_TEXT              225
 #define IDC_SKIP_BREAKPOINTS		   226
 #define IDC_CC_MOD					   227
+#define IDC_ForceDisableCpuRecompiler  228

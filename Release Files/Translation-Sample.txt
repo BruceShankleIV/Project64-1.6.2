@@ -236,7 +236,7 @@ You will be able to save to or load from your virtual SD card again if this acti
 #217# "Unable to locate ffmpeg"
 #218# "Unable to boot ffmpeg"
 #219# "Virtual SD Card"
-#220# "VR4300i CPU Recompilation Optimizations"
+#220# "VR4300i CPU Recompilation Settings"
 #221# "Capture Screenshots With Video Plugin"
 #222# "Uses video plugin CaptureScreen function instead of BMP capture"
 #223# "Screenshots will now be captured with video plugin instead of BMP"
@@ -249,3 +249,4 @@ You will be able to save to or load from your virtual SD card again if this acti
 #230# "Create Status Bar"
 #231# "Auto Refresh ROM Browser"
 #232# "Clear Cache Mod"
+#232# "Always Interpret VR4300i CPU"

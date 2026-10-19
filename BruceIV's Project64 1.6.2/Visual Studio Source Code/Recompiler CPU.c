@@ -109,8 +109,8 @@ void OpcodeMapRecompiler (BLOCK_SECTION*Section) {
 		case R4300i_SPECIAL_DSRL32: Compile_R4300i_SPECIAL_DSRL32(Section); break;
 		case R4300i_SPECIAL_DSRA32: Compile_R4300i_SPECIAL_DSRA32(Section); break;
 		default:
-			if (ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON) DisplayThreadExit("OpcodeMapRecompiler-switch (Opcode.op)-case R4300i_SPECIAL:-switch (Opcode.funct)-default:-ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON\nThe emulator has crashed on a reserved Opcode at this location\n\nTry “Recompile VR4300i CPU=OFF”?");
-			else DisplayThreadExit("OpcodeMapRecompiler-switch (Opcode.op)-case R4300i_SPECIAL:-switch (Opcode.funct)-default:-ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON-else\nThe emulator has crashed on a reserved Opcode at this location\n\nTry “Protect Memory / Enlarge Buffer=ON”?");
+			if (ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON) DisplayThreadExit("OpcodeMapRecompiler-switch (Opcode.op)-case R4300i_SPECIAL:-switch (Opcode.funct)-default:-ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON\nThe emulator has crashed on a reserved Opcode at this location\n\nNeeds “Recompile VR4300i CPU=OFF”?");
+			else DisplayThreadExit("OpcodeMapRecompiler-switch (Opcode.op)-case R4300i_SPECIAL:-switch (Opcode.funct)-default:-ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON-else\nThe emulator has crashed on a reserved Opcode at this location\n\nNeeds “Protect Memory / Enlarge Buffer=ON”?");
 	}
 	break;
 	case R4300i_REGIMM:
@@ -362,7 +362,7 @@ void OpcodeMapRecompiler (BLOCK_SECTION*Section) {
 	case R4300i_SDL: Compile_R4300i_SDL(Section); break;
 	case R4300i_SDR: Compile_R4300i_SDR(Section); break;
 	case R4300i_SWR: Compile_R4300i_SWR(Section); break;
-	case R4300i_CACHE: Compile_R4300i_CACHE(Section); break;
+	case R4300i_CACHE: if (ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_OFF) Compile_R4300i_CACHE(Section); break;
 	case R4300i_LL: Compile_R4300i_LL(Section); break;
 	case R4300i_LWC1: Compile_R4300i_LWC1(Section); break;
 	case R4300i_LDC1: Compile_R4300i_LDC1(Section); break;
@@ -381,9 +381,9 @@ void OpcodeMapRecompiler (BLOCK_SECTION*Section) {
 	case R4300i_SD: Compile_R4300i_SD(Section); break;
 	break;
 	default:
-		if (ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON) DisplayThreadExit("OpcodeMapRecompiler-switch (Opcode.op)-default:-ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON\n\nThe emulator has crashed on a reserved Opcode at this location\n\nTry “Recompile VR4300i CPU=OFF”?");
-		else if (CCMod) DisplayThreadExit("OpcodeMapRecompiler-switch (Opcode.op)-default:-ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON-else-CCMod\n\nThe emulator has crashed on a reserved Opcode at this location.\n\nTry “Protect Memory / Enlarge Buffer=ON”?");
-		else DisplayThreadExit("OpcodeMapRecompiler-switch (Opcode.op)-default:-ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON-else-CCMod-else\n\nThe emulator has crashed on a reserved Opcode at this location.\n\nTry “Clear Cache Mod=ON”?");
+		if (ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON) DisplayThreadExit("OpcodeMapRecompiler-switch (Opcode.op)-default:-ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON\n\nThe emulator has crashed on a reserved Opcode at this location\n\nNeeds “Recompile VR4300i CPU=OFF”?");
+		else if (CCMod) DisplayThreadExit("OpcodeMapRecompiler-switch (Opcode.op)-default:-ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON-else-CCMod\n\nThe emulator has crashed on a reserved Opcode at this location.\n\nNeeds “Protect Memory / Enlarge Buffer=ON”?");
+		else DisplayThreadExit("OpcodeMapRecompiler-switch (Opcode.op)-default:-ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON-else-CCMod-else\n\nThe emulator has crashed on a reserved Opcode at this location.\n\nNeeds “Clear Cache Mod=ON”?");
 	}
 }
 void InitializeInitialCompilerVariable () {
@@ -1806,9 +1806,9 @@ BOOL GenerateX86Code (BLOCK_SECTION*Section,DWORD Test) {
 			if (!Lag&&CountPerOp==1) BlockCycleCount=1;
 			if (!r4300i_LW_VAddr(Section->CompilePC,&Opcode.Hex)) {
 				if (UseTLB) {
-					if (ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON) DisplayThreadExit("GenerateX86Code-!r4300i_LW_VAddr(Section->CompilePC,&Opcode.Hex)-UseTLB-ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON\n\nTry “Recompile VR4300i CPU=OFF”?");
-					else DisplayThreadExit("GenerateX86Code-!r4300i_LW_VAddr(Section->CompilePC,&Opcode.Hex)-UseTLB-ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON-else\n\nTry “Protect Memory / Enlarge Buffer=ON”?");
-				} else DisplayThreadExit("GenerateX86Code-!r4300i_LW_VAddr(Section->CompilePC,&Opcode.Hex)-UseTLB-else\n\nNeeds “TLB=OFF” removed?");
+					if (ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON) DisplayThreadExit("GenerateX86Code-!r4300i_LW_VAddr(Section->CompilePC,&Opcode.Hex)-UseTLB-ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON\n\nNeeds “Recompile VR4300i CPU=OFF”?");
+					else DisplayThreadExit("GenerateX86Code-!r4300i_LW_VAddr(Section->CompilePC,&Opcode.Hex)-UseTLB-ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON-else\n\nNeeds “Protect Memory / Enlarge Buffer=ON”?");
+				} else DisplayThreadExit("GenerateX86Code-!r4300i_LW_VAddr(Section->CompilePC,&Opcode.Hex)-UseTLB-else\n\nNeeds TLB enabled?");
 			}
 		} __except(r4300i_CPU_MemoryFilter(GetExceptionCode(),GetExceptionInformation())) {
 			DisplayThreadExit("GenerateX86Code-r4300i_CPU_MemoryFilter(GetExceptionCode(),GetExceptionInformation()");
@@ -2261,9 +2261,9 @@ void StartRecompilerCPU (void) {
 						continue;
 					} else {
 						if (UseTLB) {
-							if (ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON) DisplayThreadExit("StartRecompilerCPU-Addr>0x10000000-PROGRAM_COUNTER>=0xB0000000&&PROGRAM_COUNTER<(RomFileSize|0xB0000000)-else-UseTLB-ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON\n\nTry “Recompile VR4300i CPU=OFF”?");
-							else DisplayThreadExit("StartRecompilerCPU-Addr>0x10000000-PROGRAM_COUNTER>=0xB0000000&&PROGRAM_COUNTER<(RomFileSize|0xB0000000)-else-UseTLB-ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON-else\n\nTry “Protect Memory / Enlarge Buffer=ON”?");
-						} else DisplayThreadExit("StartRecompilerCPU-Addr>0x10000000-PROGRAM_COUNTER>=0xB0000000&&PROGRAM_COUNTER<(RomFileSize|0xB0000000)-else-UseTLB-else\n\nNeeds “TLB=OFF” removed?");
+							if (ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON) DisplayThreadExit("StartRecompilerCPU-Addr>0x10000000-PROGRAM_COUNTER>=0xB0000000&&PROGRAM_COUNTER<(RomFileSize|0xB0000000)-else-UseTLB-ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON\n\nNeeds “Recompile VR4300i CPU=OFF”?");
+							else DisplayThreadExit("StartRecompilerCPU-Addr>0x10000000-PROGRAM_COUNTER>=0xB0000000&&PROGRAM_COUNTER<(RomFileSize|0xB0000000)-else-UseTLB-ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON-else\n\nNeeds “Protect Memory / Enlarge Buffer=ON”?");
+						} else DisplayThreadExit("StartRecompilerCPU-Addr>0x10000000-PROGRAM_COUNTER>=0xB0000000&&PROGRAM_COUNTER<(RomFileSize|0xB0000000)-else-UseTLB-else\n\nNeeds TLB enabled?");
 					}
 				}
 				Block=*(JumpTable+(Addr>>2));
@@ -2279,12 +2279,12 @@ void StartRecompilerCPU (void) {
 						if (RDRAMsize==0x400000) DisplayThreadExit("StartRecompilerCPU-EXCEPTION_EXECUTE_HANDLER-PROGRAM_COUNTER>=0xB0000000&&PROGRAM_COUNTER<(RomFileSize|0xB0000000)-else-JumperPak-RDRAMsize==0x400000\n\nNeeds “Jumper Pak=ON” removed?");
 						else DisplayThreadExit("StartRecompilerCPU-EXCEPTION_EXECUTE_HANDLER-PROGRAM_COUNTER>=0xB0000000&&PROGRAM_COUNTER<(RomFileSize|0xB0000000)-else-JumperPak-RDRAMsize==0x400000-else\n\nWarning: crashed with Jumper Pak OFF memory from savestate");
 					} else {
-						if (RDRAMsize==0x800000) DisplayThreadExit("StartRecompilerCPU-EXCEPTION_EXECUTE_HANDLER-PROGRAM_COUNTER>=0xB0000000&&PROGRAM_COUNTER<(RomFileSize|0xB0000000)-else-JumperPak-else-RDRAMsize==0x800000\n\nNeeds Rat Attack SCM?");
-						else DisplayThreadExit("StartRecompilerCPU-EXCEPTION_EXECUTE_HANDLER-PROGRAM_COUNTER>=0xB0000000&&PROGRAM_COUNTER<(RomFileSize|0xB0000000)-else-JumperPak-else-RDRAMsize==0x800000-else\n\nWarning: crashed with Jumper Pak ON memory from savestate");
+						if (RDRAMsize==0x800000) DisplayThreadExit("StartRecompilerCPU-EXCEPTION_EXECUTE_HANDLER-PROGRAM_COUNTER>=0xB0000000&&PROGRAM_COUNTER<(RomFileSize|0xB0000000)-else-JumperPak-else-RDRAMsize==0x800000\n\nNeeds “Recompile VR4300i CPU=OFF”?");
+						else DisplayThreadExit("StartRecompilerCPU-EXCEPTION_EXECUTE_HANDLER-PROGRAM_COUNTER>=0xB0000000&&PROGRAM_COUNTER<(RomFileSize|0xB0000000)-else-JumperPak-else-RDRAMsize==0x800000-else\n\nCrashed with Jumper Pak ON memory from savestate");
 					}
 				}
 			}
-			if (ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_OFF&&Block!=0&&strcmp(RomName,"RAT ATTACK")!=0) {
+			if (ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_OFF&&Block!=0) {
 				TARGET_INFO*Target=(TARGET_INFO*)Block;
 				if (*(QWORD*)(N64MEM+Addr)!=Target->OriginalMemory) {
 					DWORD Start=(Addr&~0xFFF)-0x10000,End=Start+0x20000,count;
@@ -2309,9 +2309,9 @@ void StartRecompilerCPU (void) {
 					ResetRecompCode();
 					Block=Compiler4300iBlock();
 				}
-				if (ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON||strcmp(RomName,"RAT ATTACK")==0) {
+				if (ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON) {
 					*(JumpTable+(Addr>>2))=Block;
-					if (strcmp(RomName,"RAT ATTACK")!=0) VirtualProtect(N64MEM+Addr,4,PAGE_READONLY,&OldProtect);
+					VirtualProtect(N64MEM+Addr,4,PAGE_READONLY,&OldProtect);
 				} else {
 					TargetInfo[TargetIndex].CodeBlock=Block;
 					TargetInfo[TargetIndex].OriginalMemory=*(QWORD*)(N64MEM+Addr);

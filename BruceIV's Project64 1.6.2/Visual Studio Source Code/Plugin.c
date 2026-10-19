@@ -259,12 +259,12 @@ void HandleGlobalTasks (HWND hWnd) {
 			JumperPak=TRUE;
 		}
 		CpuRecompiler=RomCpuRecompiler;
-		CountPerOp=SystemCF;
-		if (RomCF!=-1) CountPerOp=RomCF;
-		UseCache=SystemUseCache;
-		if (RomUseCache!=UseCache_Default) UseCache=RomUseCache;
-		ProtectMemoryEnlargeBuffer=SystemProtectMemoryEnlargeBuffer;
-		if (RomProtectMemoryEnlargeBuffer!=ProtectMemoryEnlargeBuffer_Default) ProtectMemoryEnlargeBuffer=RomProtectMemoryEnlargeBuffer;
+		if (RomCF==-1) CountPerOp=SystemCF;
+		else CountPerOp=RomCF;
+		if (RomUseCache==UseCache_Default) UseCache=SystemUseCache;
+		else UseCache=RomUseCache;
+		if (RomProtectMemoryEnlargeBuffer==ProtectMemoryEnlargeBuffer_Default) ProtectMemoryEnlargeBuffer=SystemProtectMemoryEnlargeBuffer;
+		else ProtectMemoryEnlargeBuffer=RomProtectMemoryEnlargeBuffer;
 		SaveUsing=RomSaveUsing;
 		if (RomSaveUsing==Auto) {
 			if (strcmp(RomName,"CONKER BFD")==0||strcmp(RomName,"DRACULA MOKUSHIROKU")==0||strcmp(RomName,"DRACULA MOKUSHIROKU2")==0||strcmp(RomName,"BANJO KAZOOIE 2")==0||strcmp(RomName,"BANJO TOOIE")==0||strcmp(RomName,"CRUIS'N WORLD")==0||strcmp(RomName,"CUSTOMROBOV2")==0||strcmp(RomName,"DONKEY KONG 64")==0||strcmp(RomName,"ÄÞ×´ÓÝ2 Ë¶ØÉ¼ÝÃÞÝ")==0||strcmp(RomName,"ÄÞ×´ÓÝ3 ÉËÞÀÉÏÁSOS!")==0||strcmp(RomName,"EXCITEBIKE64")==0||strcmp(RomName,"²ÃÞÖ³½¹ÉÏ°¼Þ¬Ý¼Þ­¸")==0||strcmp(RomName,"NBA COURTSIDE")==0||strcmp(RomName,"Madden NFL 2002")==0||strcmp(RomName,"MarioParty3")==0||strcmp(RomName,"MarioTennis")==0||strcmp(RomName,"MarioTennis64")==0||strcmp(RomName,"EVANGELION")==0||strcmp(RomName,"Parlor PRO 64")==0||strcmp(RomName,"Ultraman Battle JAPA")==0||strcmp(RomName,"Perfect Dark")==0||strcmp(RomName,"RIDGE RACER 64")==0||strcmp(RomName,"Robopon 64")==0||strcmp(RomName,"STAR WARS EP1 RACER")==0||strcmp(RomName,"YOSHI STORY")==0) SaveUsing=EEPROM_16K;
@@ -287,7 +287,7 @@ void HandleGlobalTasks (HWND hWnd) {
 		EmulateAI=FALSE;
 		if (strcmp(AudioDLL,"No Audio.dll")==0||RomJAI||RomShankleAziAI) EmulateAI=TRUE;
 		if (ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON) {
-			if (VirtualAlloc(RecompCode,0x03200000,MEM_COMMIT,PAGE_EXECUTE_READWRITE)==0) {// Performance
+			if (VirtualAlloc(RecompCode,0x03200000,MEM_COMMIT,PAGE_EXECUTE_READWRITE)==0) { // Performance
 				DisplayError(GS(MSG_MEM_ALLOC_ERROR));
 				HandleShutdown();
 				return;

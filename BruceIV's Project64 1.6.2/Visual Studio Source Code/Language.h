@@ -240,3 +240,4 @@ char*GS               (int StringID);
 #define CREATE_STATUS_BAR			230
 #define OPTION_AUTO_BROWSER			231
 #define CC_MOD					232
+#define FORCE_DISABLE_RECOMPILER		233

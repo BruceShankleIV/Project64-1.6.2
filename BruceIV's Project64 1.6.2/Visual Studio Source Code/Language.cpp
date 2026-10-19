@@ -13,7 +13,7 @@ typedef struct {
 } LANG_STR;
 LANG_STR DefaultString[]={
     {LANGUAGE_AUTHOR,				"BruceIV"},
-    {LANGUAGE_VERSION,				"26"},
+    {LANGUAGE_VERSION,				"26 Release 1.03"},
 	{AUTOHIDE_ON,					"Mouse cursor will now be hidden during recordings, screenshots, and fullscreen"},
 	{INI_CURRENT_LANG,				"Language Database (.txt)"},
 	{INI_AUTHOR,					"Author"},
@@ -230,7 +230,7 @@ LANG_STR DefaultString[]={
 	{FFMPEG_NOFIND,				"Unable to locate ffmpeg"},
 	{FFMPEG_NOBOOT,				"Unable to boot ffmpeg"},
 	{VIRTUALSD_LANG,				"Virtual SD Card"},
-	{RECOMPILER_SETTINGS,			"VR4300i CPU Recompilation Optimizations"},
+	{RECOMPILER_SETTINGS,			"VR4300i CPU Recompilation Settings"},
 	{VIDEOTOSCREEN,				"Capture Screenshots With Video Plugin"},
 	{MENUDES_VIDEOTOSCREEN,		"Uses video plugin CaptureScreen function instead of BMP capture"},
 	{VIDEOTOSCREEN_ON,				"Screenshots will now be captured with video plugin instead of BMP"},
@@ -243,6 +243,7 @@ LANG_STR DefaultString[]={
 	{CREATE_STATUS_BAR,			"Create Status Bar"},
 	{OPTION_AUTO_BROWSER,		"Auto Refresh ROM Browser"},
 	{CC_MOD,			"Clear Cache Mod"},
+	{FORCE_DISABLE_RECOMPILER,	"Always Interpret VR4300i CPU"},
 };
 class CLanguage  {
 	void FindLangName  (int Index);

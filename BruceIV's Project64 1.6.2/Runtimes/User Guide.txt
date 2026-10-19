@@ -54,9 +54,6 @@ should be forwarded to them so if they want them.
 
 Section#3 Plugin Details
 --------------------------------------------------------------------------------------------------------
-DISCLAIMER: DON'T add any plugin to the plugin folder. You DON'T NEED TO! ADDING DLLS CAN CAUSE A CRASH!
-
-
 Video (graphics) plugin:
 
 GLideN64 rev.xxxxxxx - This would be my favorite video plugin if it used Direct3D8 instead of OpenGL for
@@ -188,12 +185,6 @@ Yellow - Semicompatible
 
 Red - Illegit
 
-PLEASE NOTE - Games marked as Compatible were only tested with a few of the video plugins included (more
-video plugins were added to the project over time to account for users with weaker hardware and specific
-ROMhacks which needed an older video plugin to be playable depending on the user's GPU and the ROMhack).
-Games marked as Compatible are only tested between GLideN64, Jabo's Direct3D8, and Legacy Icepir8's LLE.
-These 3 video plugins are the best general-use options available.
-
 The user should refer to the plugin note for Semicompatible games if given to see what plugin(s) to use.
 The user should refer to the plugin note for Compatible games if given to see viable plugin suggestions.
 The plugin note will be found from the settings window after opening the ROM in the ROM Notes section or
@@ -216,7 +207,7 @@ from the ROM Settings, or type it. You may also need to specify FlashRAM or 256k
 You can however autodetect to 16kbit EEPROM from the advanced tab if this suits your usage of Project64.
 
 Counter Factor: By default, 2 but changeable from the advanced tab
-* Forces Lag on if not set to 1
+* Forces Lag on if directly set above 1
 Another very game-dependent setting, this essentially just adds lag. This is needed for some games to be
 stable, for others it breaks them completely or causes extreme flickering (video plugin dependent). 2 is
 a safe default so it's not suggested you go any lower (or higher) from this unless you are playing games
@@ -245,11 +236,11 @@ There is currently only one game which needs this setting, but there could be mo
 Recompiler is turned off, you may want to turn this on if that still doesn't fix a game's graphical bug.
 
 Legacy AiLenChanged: By default, off
-* Forced off if sound plugin is No audio
+* Forced off until an AI (Audio Interface) setting is enabled
 This is an alternate AI function from Project64 Legacy 1.6.4 which works better sometimes (not always).
 
 Azi AI: By default, off
-* Forced off if sound plugin isn't Shankle AziAudio
+* Forced off if sound plugin isn't Shankle's LINK's AziAudio
 This emulates AI for Shankle AziAudio, used to get sound working in some games or to solve Limit FPS off
 issues while using the Shankle AziAudio plugin.
 
@@ -306,30 +297,32 @@ Having this option enabled for OoT means any ROMhack which shares CRC but not in
 the setting as it would need to from most likely sharing the same behavior.
 
 Recompile VR4300i CPU: By default, on
-This should almost always be on unless it's not possible to get a game working with recomp optimizations
+This should almost always be on unless it's not possible to get a game working with recompiler settings,
 in which case disabling this is mandatory. When enabled, you should take advantage of all optimizations.
 Those optimizations are: Lag unchecked, Translation Lookaside Buffer unchecked, Register Caching ON, and
-Protect Memory / Enlarged Buffer OFF. If experiencing issues with that combination, try until you arrive
-at whatever combination works best for the current game.
+Protect Memory / Enlarge Buffer OFF. If experiencing issues with that combination, try until you arrive
+at whatever combination works best for the current game. To fix N64 copies of OoT crashing on Lost Woods
+exit, use Clear Cache Mod instead of Protect Memory / Enlarge Buffer to maintain reasonable performance.
 
 
 
-VR4300i CPU Recompilation Optimizations
+VR4300i CPU Recompilation Settings
+* These are forced off if Recompile VR4300i CPU is off (interpretation traverses a different code path)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Clear Cache Mod: By default, off
+* Forced off if Protect Memory / Enlarge Buffer is directly set to on (traverses a different code path)
 * On by default for Ocarina of Time ROMs (THE LEGEND OF ZELDA internal name/in app window post-ROM open)
 A hack for the ClearRecompilerCache function in Recompiler Ops.c to avoid a sudden death scenario in all
 Ocarina of Time ROMs dumped from N64 cartridges, but has been upgraded to a toggle as of release 1.03
 for version 26 to futureproof for Ocarina of Time ROMhacks which may be released with a tweaked internal
 name. This way if a user downloads the ROMhack outside of the Project64 1.6.2 ROMhacks archive, it still
-still receives the required setting. Having it as a toggle means it can be disabled for ROMhacks using
-THE LEGEND OF ZELDA internal name in case they don't enjoy/have any issues with this setting enabled, as
+receives this needed setting. Having it as a toggle means it can be disabled for ROMhacks that share the
+internal name THE LEGEND OF ZELDA in case they don't enjoy/have any issues with this setting enabled, as
 this option can worsen support for some games (try Indiana Jones with Register Caching OFF for example).
 Having this option enabled for OoT means any ROMhack which shares CRC but not internal name will receive
 the setting as it would need to from most likely sharing the same behavior.
 
 Translation Lookaside Buffer: By default, on, but can be force disabled from the advanced tab
-* Forced off if Recompile VR4300i CPU is off (interpretation goes through a different code path)
 * Forced off if force disabled from the advanced tab
 This Translation Lookaside Buffer is either required for a game or not. If the game does not require it,
 it's best to turn it off to avoid issues that this setting can cause, although with most games it's fine
@@ -337,13 +330,8 @@ to leave it on. Generally, just leave this on unless you know a game works bette
 Turning it off notably improves performance and can get ROMhacks working.
 
 Lag: By default, off
-* Forced off if Recompile VR4300i CPU is off (interpretation goes through a different code path)
-* Forced on if emulating with a specified Counter Factor >1 in the ROM Settings tab (ignore default CF).
-* E.g, you set Counter Factor 1 by default and you're using the default Counter Factor, the setting goes
-out of effect for you to test if a game works ok with it, otherwise it has no effect but can be toggled.
-* This is for the sake of convenience testing regarding optimal timing settings. If a game works without
-any issues with Counter Factor 1 default, the setting can be left off.
-* Essentially, when configuring ROM Settings, you should have Counter Factor 1 by default and review for
+* Forced on if Counter Factor is directly set above 1
+Essentially, when configuring ROM Settings, you should have Counter Factor 1 by default and review for
 any abnormal behavior, then if you see something caused by it off, try turning this setting on, if it is
 not working still, then you need to increase Counter Factor in the ROM Settings tab (force-enables Lag).
 Lag reduction is helpful to reduce load times and achieve consistent framerates and create a more
@@ -351,7 +339,7 @@ satisfying gaming experience, but this remains a game specific setting since som
 without lag. To know when you can get by with this requires in-game testing. Disabling lag can reduce
 performance and increase boot times, so this setting should be used carefully and with caution!
 
-Protect Memory / Enlarged Buffer: By default, off but changeable from the advanced tab
+Protect Memory / Enlarge Buffer: By default, off but changeable from the advanced tab
 This is a self-modifying code emulation setting and the “Larger Compile Buffer” option added in v1.4 put
 into one unified setting since they work best together. This should be kept off as much as you possibly
 can since enabling it can introduce stutter and performance problems, but sometimes it's needed. You'll

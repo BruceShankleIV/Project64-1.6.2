@@ -34,8 +34,8 @@ extern "C" {
 #include "Settings API.h"
 #include "ROM Browser.h"
 #include "Language.h"
-/*Source Code V26 R1.03. Last updated at 03:10AM 10/18/2026*/
-#define AppName						"BruceIV-Project64-1.6.2"
+/*Source Code Version 26 Release 1.03. At 02:18AM 10/19/2026*/
+#define AppName						"BruceIV's Project64 1.6.2"
 #define IniName						"Game.ini"
 #define CheatIniName				"Cheat.ini"
 #define LangFileName				"English.txt"
@@ -53,6 +53,7 @@ extern "C" {
 #define Default_RomsDirsToRemember	10
 #define Default_CountPerOp			2
 #define Default_ForceDisableTLB		FALSE
+#define Default_ForceDisableCpuRecompiler FALSE
 #define Default_ForceEnableDMA		FALSE
 #define Default_ForceAuto16kbit		FALSE
 #define ID_FILE_RECENT_FILE		1000

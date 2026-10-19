@@ -80,9 +80,7 @@ void LoadEEPROM () {
 		case ERROR_PATH_NOT_FOUND:
 			CreateDirectory(Directory,0);
 			hEEPROMFile=CreateFile(File,GENERIC_WRITE|GENERIC_READ,FILE_SHARE_READ,0,OPEN_ALWAYS,FILE_ATTRIBUTE_NORMAL|FILE_FLAG_RANDOM_ACCESS,0);
-			if (hEEPROMFile==INVALID_HANDLE_VALUE) {
-				DisplayError(GS(MSG_FAIL_OPEN_SAVE));
-			}
+			if (hEEPROMFile==INVALID_HANDLE_VALUE) DisplayError(GS(MSG_FAIL_OPEN_SAVE));
 			return;
 		default:
 			DisplayError(GS(MSG_FAIL_OPEN_SAVE));

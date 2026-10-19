@@ -152,10 +152,10 @@ void DisplayThreadExit (char*ExitPoint) {
 		}
 	}
 	if (strcmp(GfxDLL,"GLideN64.dll")==0&&inFullScreen) {
-		DisplayError("Emulation crash: %s",ExitPoint);
+		DisplayError("Emulation crash: %s\n\nApplication will now be shutdown from GLideN64 video plugin being used in fullscreen mode",ExitPoint);
 		SendMessage(hMainWindow,WM_COMMAND,ID_FILE_EXIT,0);
 	}
-	DisplayError("Emulation crash: %s",ExitPoint);
+	DisplayError("Emulation crash: %s\n\nEmulation will now be ended. Application would be shutdown if GLideN64 video plugin is used in fullscreen mode",ExitPoint);
 	SendMessage(hMainWindow,WM_COMMAND,ID_FILE_ENDEMULATION,0);
 }
 void INITIALIZECPUFlags () {

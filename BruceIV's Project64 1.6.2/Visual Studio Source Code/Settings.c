@@ -193,6 +193,7 @@ BOOL CALLBACK DefaultOptionsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lPara
 		SetDlgItemText(hDlg,IDC_TEXT6,GS(REG_CACHE));
 		SetDlgItemText(hDlg,IDC_TEXT7,GS(SMCM_PROTECTED));
 		SetFlagControl(hDlg,&ForceDisableTLB,IDC_ForceDisableTLB,FORCE_DISABLE_TLB);
+		SetFlagControl(hDlg,&ForceDisableCpuRecompiler,IDC_ForceDisableCpuRecompiler,FORCE_DISABLE_RECOMPILER);
 		SetFlagControl(hDlg,&ForceEnableDMA,IDC_ForceEnableDMA,FORCE_ENABLE_DMA);
 		SetFlagControl(hDlg,&ForceAuto16kbit,IDC_ForceAuto16kbit,FORCE_AUTO4kbit);
 		AddDropDownItem(hDlg,IDC_REGCACHE,ON,REG_CACHE_ON,&SystemUseCache);
@@ -214,6 +215,8 @@ BOOL CALLBACK DefaultOptionsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lPara
 			if (lResult==ERROR_SUCCESS) {
 				ForceDisableTLB=SendMessage(GetDlgItem(hDlg,IDC_ForceDisableTLB),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
 				RegSetValueEx(hKeyResults,"Always Disable TLB",0,REG_DWORD,(BYTE*)&ForceDisableTLB,sizeof(DWORD));
+				ForceDisableCpuRecompiler=SendMessage(GetDlgItem(hDlg,IDC_ForceDisableCpuRecompiler),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
+				RegSetValueEx(hKeyResults,"Always Interpret VR4300i CPU",0,REG_DWORD,(BYTE*)&ForceDisableCpuRecompiler,sizeof(DWORD));
 				ForceEnableDMA=SendMessage(GetDlgItem(hDlg,IDC_ForceEnableDMA),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
 				RegSetValueEx(hKeyResults,"Always Enable Align DMA",0,REG_DWORD,(BYTE*)&ForceEnableDMA,sizeof(DWORD));
 				ForceAuto16kbit=SendMessage(GetDlgItem(hDlg,IDC_ForceAuto16kbit),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
@@ -766,20 +769,20 @@ BOOL CALLBACK RomSettingsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) 
 			EnableWindow(GetDlgItem(hDlg,IDC_DELAY_RSP),FALSE);
 			EnableWindow(GetDlgItem(hDlg,IDC_AUDIO_SIGNAL),FALSE);
 			EnableWindow(GetDlgItem(hDlg,IDC_CF),FALSE);
-			EnableWindow(GetDlgItem(hDlg,IDC_FiftyNineHertz),FALSE);
-			EnableWindow(GetDlgItem(hDlg,IDC_CPU_RECOMPILER),FALSE);
+			EnableWindow(GetDlgItem(hDlg,IDC_FiftyNineHertz),FALSE);			
 			EnableWindow(GetDlgItem(hDlg,IDC_VirtualSD),FALSE);
 			EnableWindow(GetDlgItem(hDlg,IDC_JUMPER_PAK),FALSE);
 			EnableWindow(GetDlgItem(hDlg,IDC_SKIP_BREAKPOINTS),FALSE);
 		}
+		if (strlen(RomName)==0||ForceDisableCpuRecompiler) EnableWindow(GetDlgItem(hDlg,IDC_CPU_RECOMPILER),FALSE);
 		if (strlen(RomName)==0||!RomCpuRecompiler||ForceDisableTLB) EnableWindow(GetDlgItem(hDlg,IDC_USE_TLB),FALSE);
 		if (strlen(RomName)==0||ForceEnableDMA) EnableWindow(GetDlgItem(hDlg,IDC_ALIGN_DMA),FALSE);
 		if (strlen(RomName)==0||!RomCpuRecompiler) {
-			EnableWindow(GetDlgItem(hDlg,IDC_CC_MOD),FALSE);
 			EnableWindow(GetDlgItem(hDlg,IDC_REGCACHE),FALSE);
 			EnableWindow(GetDlgItem(hDlg,IDC_PROTECT_MEMORY_ENLARGE_BUFFER),FALSE);
 		}
-		if (strlen(RomName)==0||!RomCpuRecompiler||RomCF!=-1&&RomCF!=1) EnableWindow(GetDlgItem(hDlg,IDC_CF1_CF0),FALSE);
+		if (strlen(RomName)==0||!RomCpuRecompiler||RomProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON) EnableWindow(GetDlgItem(hDlg,IDC_CC_MOD),FALSE);
+		if (strlen(RomName)==0||!RomCpuRecompiler||RomCF>1) EnableWindow(GetDlgItem(hDlg,IDC_CF1_CF0),FALSE);
 		if (strlen(RomName)==0||strcmp(RSPDLL,"RSP.dll")!=0||strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")!=0||strcmp(RomName,"THE LEGEND OF ZELDA")==0||strcmp(RomName,"THE MASK OF MUJURA")==0||strcmp(RomName,"ZELDA MAJORA'S MASK")==0||strcmp(RomName,"BANJO KAZOOIE 2")==0||strcmp(RomName,"BANJO TOOIE")==0||strcmp(RomName,"CONKER BFD")==0||strcmp(RomName,"DONKEY KONG 64")==0||strcmp(RomName,"JET FORCE GEMINI")==0||strcmp(RomName,"STAR TWINS")==0||strcmp(RomName,"Perfect Dark")==0) EnableWindow(GetDlgItem(hDlg,IDC_RSP_RECOMPILER),FALSE);
 		if (strlen(RomName)==0||!RomJAI&&!RomShankleAziAI) EnableWindow(GetDlgItem(hDlg,ALTERNATE_EMUAI),FALSE);
 		if (strlen(RomName)==0||strcmp(AudioDLL,"Shankle_Audio.dll")!=0) EnableWindow(GetDlgItem(hDlg,SHANKLE_AZI_AI),FALSE);
