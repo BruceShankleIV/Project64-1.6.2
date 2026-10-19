@@ -259,15 +259,12 @@ void HandleGlobalTasks (HWND hWnd) {
 			JumperPak=TRUE;
 		}
 		CpuRecompiler=RomCpuRecompiler;
-		if (RomCF==-1) CountPerOp=SystemCF;
-		else CountPerOp=RomCF;
-		if (RomUseCache==UseCache_Default) UseCache=SystemUseCache;
-		else UseCache=RomUseCache;
-		if (RomProtectMemoryEnlargeBuffer==ProtectMemoryEnlargeBuffer_Default) ProtectMemoryEnlargeBuffer=SystemProtectMemoryEnlargeBuffer;
-		else ProtectMemoryEnlargeBuffer=RomProtectMemoryEnlargeBuffer;
+		CountPerOp=RomCF;
+		UseCache=RomUseCache;
+		ProtectMemoryEnlargeBuffer=RomProtectMemoryEnlargeBuffer;
 		SaveUsing=RomSaveUsing;
 		if (RomSaveUsing==Auto) {
-			if (strcmp(RomName,"CONKER BFD")==0||strcmp(RomName,"DRACULA MOKUSHIROKU")==0||strcmp(RomName,"DRACULA MOKUSHIROKU2")==0||strcmp(RomName,"BANJO KAZOOIE 2")==0||strcmp(RomName,"BANJO TOOIE")==0||strcmp(RomName,"CRUIS'N WORLD")==0||strcmp(RomName,"CUSTOMROBOV2")==0||strcmp(RomName,"DONKEY KONG 64")==0||strcmp(RomName,"ƒﬁ◊¥”›2 À∂ÿ…º›√ﬁ›")==0||strcmp(RomName,"ƒﬁ◊¥”›3 …Àﬁ¿…œ¡SOS!")==0||strcmp(RomName,"EXCITEBIKE64")==0||strcmp(RomName,"≤√ﬁ÷≥Ωπ…œ∞ºﬁ¨›ºﬁ≠∏")==0||strcmp(RomName,"NBA COURTSIDE")==0||strcmp(RomName,"Madden NFL 2002")==0||strcmp(RomName,"MarioParty3")==0||strcmp(RomName,"MarioTennis")==0||strcmp(RomName,"MarioTennis64")==0||strcmp(RomName,"EVANGELION")==0||strcmp(RomName,"Parlor PRO 64")==0||strcmp(RomName,"Ultraman Battle JAPA")==0||strcmp(RomName,"Perfect Dark")==0||strcmp(RomName,"RIDGE RACER 64")==0||strcmp(RomName,"Robopon 64")==0||strcmp(RomName,"STAR WARS EP1 RACER")==0||strcmp(RomName,"YOSHI STORY")==0) SaveUsing=EEPROM_16K;
+			if (strcmp(RomName,"CONKER BFD")==0||strcmp(RomName,"DRACULA MOKUSHIROKU")==0||strcmp(RomName,"DRACULA MOKUSHIROKU2")==0||strcmp(RomName,"BANJO KAZOOIE 2")==0||strcmp(RomName,"BANJO TOOIE")==0||strcmp(RomName,"CRUIS'N WORLD")==0||strcmp(RomName,"CUSTOMROBOV2")==0||strcmp(RomName,"DONKEY KONG 64")==0||strcmp(RomName,"ÈúìÁä∂Ëôû2 Á°ïÂé£È©æÊ£âÔøΩ")==0||strcmp(RomName,"ÈúìÁä∂Ëôû3 ‰º§Ëò©‰∏äÁΩ∂OS!")==0||strcmp(RomName,"EXCITEBIKE64")==0||strcmp(RomName,"Ë£ÅÊãóËæ∞ËÇ°‰π†Â´ÅÓÉ∏Â´ÅÓÑ±")==0||strcmp(RomName,"NBA COURTSIDE")==0||strcmp(RomName,"Madden NFL 2002")==0||strcmp(RomName,"MarioParty3")==0||strcmp(RomName,"MarioTennis")==0||strcmp(RomName,"MarioTennis64")==0||strcmp(RomName,"EVANGELION")==0||strcmp(RomName,"Parlor PRO 64")==0||strcmp(RomName,"Ultraman Battle JAPA")==0||strcmp(RomName,"Perfect Dark")==0||strcmp(RomName,"RIDGE RACER 64")==0||strcmp(RomName,"Robopon 64")==0||strcmp(RomName,"STAR WARS EP1 RACER")==0||strcmp(RomName,"YOSHI STORY")==0) SaveUsing=EEPROM_16K;
 			if (strcmp(RomName,"THE LEGEND OF ZELDA")==0) SaveUsing=SRAM;
 			if (strcmp(RomName,"NBA Courtside 2")==0||strcmp(RomName,"POKEMON STADIUM")==0) SaveUsing=FlashRAM;
 			// This masks most auto save type issues to extend compatibility for ROMhacks. The reason why it is still set manually per Game.ini is for hacks with custom internal name and shared CRC.
