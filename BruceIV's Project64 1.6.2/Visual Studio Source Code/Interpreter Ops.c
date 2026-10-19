@@ -663,7 +663,7 @@ void _fastcall r4300i_COP0_MT (void) {
 		CP0[Opcode.rd]&=0xFFFFCFF;
 		break;
 	default:
-		DisplayThreadExit("Interpreter Ops.c-r4300i_COP0_MT-switch (Opcode.rd)-default:");
+		HandleEmulationCrash("Interpreter Ops.c-r4300i_COP0_MT-switch (Opcode.rd)-default:");
 	}
 }
 /**************************COP0 CO functions***********************/

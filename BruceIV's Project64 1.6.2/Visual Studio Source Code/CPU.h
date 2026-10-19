@@ -81,7 +81,7 @@ void DoSomething        (void);
 void InPermLoop         (void);
 void GetAutoSaveDir     (char*Directory);
 void GetInstantSaveDir  (char*Directory);
-void DisplayThreadExit	(char*ExitPoint);
+void HandleEmulationCrash	(char*ExitPoint);
 void INITIALIZECPUFlags ();
 BOOL Machine_LoadState  ();
 BOOL Machine_SaveState  ();

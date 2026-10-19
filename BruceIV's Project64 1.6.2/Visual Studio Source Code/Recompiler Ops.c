@@ -53,7 +53,7 @@ void Compile_R4300i_Branch (BLOCK_SECTION*Section,void (*CompareFunc)(BLOCK_SECT
 			case BranchTypeCop1:
 				{
 					OPCODE Command;
-					if (!r4300i_LW_VAddr(Section->CompilePC+4,&Command.Hex)) DisplayThreadExit("Compile_R4300i_Branch-!r4300i_LW_VAddr(Section->CompilePC+4,&Command.Hex)");
+					if (!r4300i_LW_VAddr(Section->CompilePC+4,&Command.Hex)) HandleEmulationCrash("Compile_R4300i_Branch-!r4300i_LW_VAddr(Section->CompilePC+4,&Command.Hex)");
 					EffectDelaySlot=FALSE;
 					if (Command.op==R4300i_COP1) {
 						if (Command.fmt==R4300i_COP1_S&&(Command.funct&0x30)==0x30) {
@@ -215,7 +215,7 @@ void BNE_Compare (BLOCK_SECTION*Section) {
 	BYTE*Jump;
 	if (IsKnown(Opcode.rs)&&IsKnown(Opcode.rt)) {
 		if (IsConst(Opcode.rs)&&IsConst(Opcode.rt)) {
-			if (Is64Bit(Opcode.rs)||Is64Bit(Opcode.rt)) DisplayThreadExit("BNE_Compare-Is64Bit(Opcode.rs)||Is64Bit(Opcode.rt)\n\nThe emulator has crashed on an unknown Opcode at this location");
+			if (Is64Bit(Opcode.rs)||Is64Bit(Opcode.rt)) HandleEmulationCrash("BNE_Compare-Is64Bit(Opcode.rs)||Is64Bit(Opcode.rt)\n\nThe emulator has crashed on an unknown Opcode at this location");
 			else if (MipsRegLo(Opcode.rs)!=MipsRegLo(Opcode.rt)) {
 				Section->Jump.FallThrough=TRUE;
 				Section->Cont.FallThrough=FALSE;
@@ -404,7 +404,7 @@ void BEQ_Compare (BLOCK_SECTION*Section) {
 	BYTE*Jump;
 	if (IsKnown(Opcode.rs)&&IsKnown(Opcode.rt)) {
 		if (IsConst(Opcode.rs)&&IsConst(Opcode.rt)) {
-			if (Is64Bit(Opcode.rs)||Is64Bit(Opcode.rt)) DisplayThreadExit("BEQ_Compare-Is64Bit(Opcode.rs)||Is64Bit(Opcode.rt)\n\nThe emulator has crashed on an unknown Opcode at this location");
+			if (Is64Bit(Opcode.rs)||Is64Bit(Opcode.rt)) HandleEmulationCrash("BEQ_Compare-Is64Bit(Opcode.rs)||Is64Bit(Opcode.rt)\n\nThe emulator has crashed on an unknown Opcode at this location");
 			else if (MipsRegLo(Opcode.rs)==MipsRegLo(Opcode.rt)) {
 				Section->Jump.FallThrough=TRUE;
 				Section->Cont.FallThrough=FALSE;
@@ -824,7 +824,7 @@ void BLTZ_Compare (BLOCK_SECTION*Section) {
 }
 void BGEZ_Compare (BLOCK_SECTION*Section) {
 	if (IsConst(Opcode.rs)) {
-		if (Is64Bit(Opcode.rs)) DisplayThreadExit("BGEZ_Compare-Is64Bit(Opcode.rs)\n\nThe emulator has crashed on an unknown Opcode at this location");
+		if (Is64Bit(Opcode.rs)) HandleEmulationCrash("BGEZ_Compare-Is64Bit(Opcode.rs)\n\nThe emulator has crashed on an unknown Opcode at this location");
 		else if IsSigned(Opcode.rs) {
 			if (MipsRegLo_S(Opcode.rs)>=0) {
 				Section->Jump.FallThrough=TRUE;
@@ -2434,7 +2434,7 @@ void Compile_R4300i_SPECIAL_JR (BLOCK_SECTION*Section) {
 }
 void Compile_R4300i_SPECIAL_JALR (BLOCK_SECTION*Section) {
 	if (NextInstruction==NORMAL) {
-		if (DelaySlotEffectsCompare(Section->CompilePC,Opcode.rs,0)) DisplayThreadExit("Compile_R4300i_SPECIAL_JALR-DelaySlotEffectsCompare(Section->CompilePC,Opcode.rs,0)\n\nThe emulator has crashed on an unknown Opcode at this location");
+		if (DelaySlotEffectsCompare(Section->CompilePC,Opcode.rs,0)) HandleEmulationCrash("Compile_R4300i_SPECIAL_JALR-DelaySlotEffectsCompare(Section->CompilePC,Opcode.rs,0)\n\nThe emulator has crashed on an unknown Opcode at this location");
 		UnMap_GPR(Section,Opcode.rd,FALSE);
 		MipsRegLo(Opcode.rd)=Section->CompilePC+8;
 		MipsRegState(Opcode.rd)=STATE_CONST_32;
@@ -2548,7 +2548,7 @@ void Compile_R4300i_SPECIAL_DSLLV (BLOCK_SECTION*Section) {
 	BYTE*Jump[2];
 	if (Opcode.rd==0) return;
 	if (IsConst(Opcode.rs)) {
-		DisplayThreadExit("Compile_R4300i_SPECIAL_DSLLV-IsConst(Opcode.rs)\n\nThe emulator has crashed on an unknown Opcode at this location");
+		HandleEmulationCrash("Compile_R4300i_SPECIAL_DSLLV-IsConst(Opcode.rs)\n\nThe emulator has crashed on an unknown Opcode at this location");
 		return;
 	}
 	Map_TempReg(Section,x86_ECX,Opcode.rs,FALSE);
@@ -2610,7 +2610,7 @@ void Compile_R4300i_SPECIAL_DSRAV (BLOCK_SECTION*Section) {
 	BYTE*Jump[2];
 	if (Opcode.rd==0) return;
 	if (IsConst(Opcode.rs)) {
-		DisplayThreadExit("Compile_R4300i_SPECIAL_DSRAV-IsConst(Opcode.rs)\n\nThe emulator has crashed on an unknown Opcode at this location");
+		HandleEmulationCrash("Compile_R4300i_SPECIAL_DSRAV-IsConst(Opcode.rs)\n\nThe emulator has crashed on an unknown Opcode at this location");
 		return;
 	}
 	Map_TempReg(Section,x86_ECX,Opcode.rs,FALSE);
@@ -3127,7 +3127,7 @@ void Compile_R4300i_SPECIAL_XOR (BLOCK_SECTION*Section) {
 	if (IsKnown(Opcode.rt)&&IsKnown(Opcode.rs)) {
 		if (IsConst(Opcode.rt)&&IsConst(Opcode.rs)) {
 			if (IsMapped(Opcode.rd)) {UnMap_GPR(Section,Opcode.rd,FALSE);}
-			if (Is64Bit(Opcode.rt)||Is64Bit(Opcode.rs)) DisplayThreadExit("Compile_R4300i_SPECIAL_XOR-Is64Bit(Opcode.rt)||Is64Bit(Opcode.rs)\n\nThe emulator has crashed on an unknown Opcode at this location");
+			if (Is64Bit(Opcode.rt)||Is64Bit(Opcode.rs)) HandleEmulationCrash("Compile_R4300i_SPECIAL_XOR-Is64Bit(Opcode.rt)||Is64Bit(Opcode.rs)\n\nThe emulator has crashed on an unknown Opcode at this location");
 			else {
 				MipsRegState(Opcode.rd)=STATE_CONST_32;
 				MipsRegLo(Opcode.rd)=MipsRegLo(Opcode.rt)^MipsRegLo(Opcode.rs);
@@ -3209,7 +3209,7 @@ void Compile_R4300i_SPECIAL_NOR (BLOCK_SECTION*Section) {
 	if (IsKnown(Opcode.rt)&&IsKnown(Opcode.rs)) {
 		if (IsConst(Opcode.rt)&&IsConst(Opcode.rs)) {
 			if (IsMapped(Opcode.rd)) {UnMap_GPR(Section,Opcode.rd,FALSE);}
-			if (Is64Bit(Opcode.rt)||Is64Bit(Opcode.rs)) DisplayThreadExit("Compile_R4300i_SPECIAL_NOR-Is64Bit(Opcode.rt)||Is64Bit(Opcode.rs)\n\nThe emulator has crashed on an unknown Opcode at this location");
+			if (Is64Bit(Opcode.rt)||Is64Bit(Opcode.rs)) HandleEmulationCrash("Compile_R4300i_SPECIAL_NOR-Is64Bit(Opcode.rt)||Is64Bit(Opcode.rs)\n\nThe emulator has crashed on an unknown Opcode at this location");
 			else {
 				MipsRegLo(Opcode.rd)=~(MipsRegLo(Opcode.rt)|MipsRegLo(Opcode.rs));
 				MipsRegState(Opcode.rd)=STATE_CONST_32;
@@ -3300,7 +3300,7 @@ void Compile_R4300i_SPECIAL_NOR (BLOCK_SECTION*Section) {
 void Compile_R4300i_SPECIAL_SLT (BLOCK_SECTION*Section) {
 	if (IsKnown(Opcode.rt)&&IsKnown(Opcode.rs)) {
 		if (IsConst(Opcode.rt)&&IsConst(Opcode.rs)) {
-			if (Is64Bit(Opcode.rt)||Is64Bit(Opcode.rs)) DisplayThreadExit("Compile_R4300i_SPECIAL_SLT-Is64Bit(Opcode.rt)||Is64Bit(Opcode.rs)\n\nThe emulator has crashed on an unknown Opcode at this location");
+			if (Is64Bit(Opcode.rt)||Is64Bit(Opcode.rs)) HandleEmulationCrash("Compile_R4300i_SPECIAL_SLT-Is64Bit(Opcode.rt)||Is64Bit(Opcode.rs)\n\nThe emulator has crashed on an unknown Opcode at this location");
 			else {
 				if (IsMapped(Opcode.rd)) {UnMap_GPR(Section,Opcode.rd,FALSE);}
 				MipsRegState(Opcode.rd)=STATE_CONST_32;
@@ -3454,7 +3454,7 @@ void Compile_R4300i_SPECIAL_SLTU (BLOCK_SECTION*Section) {
 	if (Opcode.rd==0) return;
 	if (IsKnown(Opcode.rt)&&IsKnown(Opcode.rs)) {
 		if (IsConst(Opcode.rt)&&IsConst(Opcode.rs)) {
-			if (Is64Bit(Opcode.rt)||Is64Bit(Opcode.rs)) DisplayThreadExit("Compile_R4300i_SPECIAL_SLTU-Is64Bit(Opcode.rt)||Is64Bit(Opcode.rs)\n\nThe emulator has crashed on an unknown Opcode at this location");
+			if (Is64Bit(Opcode.rt)||Is64Bit(Opcode.rs)) HandleEmulationCrash("Compile_R4300i_SPECIAL_SLTU-Is64Bit(Opcode.rt)||Is64Bit(Opcode.rs)\n\nThe emulator has crashed on an unknown Opcode at this location");
 			else {
 				if (IsMapped(Opcode.rd)) {UnMap_GPR(Section,Opcode.rd,FALSE);}
 				MipsRegState(Opcode.rd)=STATE_CONST_32;
@@ -3844,7 +3844,7 @@ void Compile_R4300i_SPECIAL_DSRL32 (BLOCK_SECTION*Section) {
 			if ((BYTE)Opcode.sa!=0) {
 				ShiftRightUnsignImmed(MipsRegLo(Opcode.rd),(BYTE)Opcode.sa);
 			}
-		} else DisplayThreadExit("Compile_R4300i_SPECIAL_DSRL32-Is64Bit(Opcode.rt)-else\n\nThe emulator has crashed on an unknown Opcode at this location");
+		} else HandleEmulationCrash("Compile_R4300i_SPECIAL_DSRL32-Is64Bit(Opcode.rt)-else\n\nThe emulator has crashed on an unknown Opcode at this location");
 	} else {
 		Map_GPR_32bit(Section,Opcode.rd,FALSE,-1);
 		MoveVariableToX86reg(&GPR[Opcode.rt].UW[1],MipsRegLo(Opcode.rd));
@@ -3873,7 +3873,7 @@ void Compile_R4300i_SPECIAL_DSRA32 (BLOCK_SECTION*Section) {
 			if ((BYTE)Opcode.sa!=0) {
 				ShiftRightSignImmed(MipsRegLo(Opcode.rd),(BYTE)Opcode.sa);
 			}
-		} else DisplayThreadExit("Compile_R4300i_SPECIAL_DSRA32-Is64Bit(Opcode.rt)-else\n\nThe emulator has crashed on an unknown Opcode at this location");
+		} else HandleEmulationCrash("Compile_R4300i_SPECIAL_DSRA32-Is64Bit(Opcode.rt)-else\n\nThe emulator has crashed on an unknown Opcode at this location");
 	} else {
 		Map_GPR_32bit(Section,Opcode.rd,TRUE,-1);
 		MoveVariableToX86reg(&GPR[Opcode.rt].UW[1],MipsRegLo(Opcode.rd));
@@ -3978,13 +3978,13 @@ void Compile_R4300i_COP0_MT (BLOCK_SECTION*Section) {
 	case 13: //cause
 		if (IsConst(Opcode.rt)) {
 			AndConstToVariable(0xFFFFCFF,&CP0[Opcode.rd]);
-		} else DisplayThreadExit("Compile_R4300i_COP0_MT-switch (Opcode.rd)-case 13: //cause-IsConst(Opcode.rt)-else\n\nThe emulator has crashed on an unknown Opcode at this location");
+		} else HandleEmulationCrash("Compile_R4300i_COP0_MT-switch (Opcode.rd)-case 13: //cause-IsConst(Opcode.rt)-else\n\nThe emulator has crashed on an unknown Opcode at this location");
 		Pushad();
 		InterruptsCD
 		Popad();
 		break;
 	default:
-		DisplayThreadExit("Compile_R4300i_COP0_MT-switch (Opcode.rd)-default:\n\nThe emulator has crashed on an unknown Opcode at this location");
+		HandleEmulationCrash("Compile_R4300i_COP0_MT-switch (Opcode.rd)-default:\n\nThe emulator has crashed on an unknown Opcode at this location");
 	}
 }
 /**************************COP0 CO functions***********************/
@@ -4044,6 +4044,6 @@ void Compile_R4300i_COP0_CO(BLOCK_SECTION*Section) {
 	case R4300i_COP0_CO_TLBP: Compile_R4300i_COP0_CO_TLBP(Section); break;
 	case R4300i_COP0_CO_ERET: Compile_R4300i_COP0_CO_ERET(Section); break;
 	default:
-		DisplayThreadExit("Compile_R4300i_COP0_CO-switch (Opcode.funct)-default:\nThe emulator has crashed on an unknown Opcode at this location");
+		HandleEmulationCrash("Compile_R4300i_COP0_CO-switch (Opcode.funct)-default:\nThe emulator has crashed on an unknown Opcode at this location");
 	}
 }

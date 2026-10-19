@@ -320,7 +320,7 @@ void Compile_R4300i_COP1_DMF (BLOCK_SECTION*Section) {
 void Compile_R4300i_COP1_CF (BLOCK_SECTION*Section) {
 	CompileCop1Test(Section);
 	if (Opcode.fs!=31&&Opcode.fs!=0) {
-		DisplayThreadExit("Compile_R4300i_COP1_CF-Opcode.fs!=31&&Opcode.fs!=0\n\nThe emulator has crashed on an unknown Opcode at this location");
+		HandleEmulationCrash("Compile_R4300i_COP1_CF-Opcode.fs!=31&&Opcode.fs!=0\n\nThe emulator has crashed on an unknown Opcode at this location");
 		return;
 	}
 	Map_GPR_32bit(Section,Opcode.rt,TRUE,-1);
@@ -382,7 +382,7 @@ void Compile_R4300i_COP1_DMT (BLOCK_SECTION*Section) {
 void Compile_R4300i_COP1_CT (BLOCK_SECTION*Section) {
 	CompileCop1Test(Section);
 	if (Opcode.fs!=31) {
-		DisplayThreadExit("Compile_R4300i_COP1_CT-Opcode.fs!=31\n\nThe emulator has crashed on an unknown Opcode at this location");
+		HandleEmulationCrash("Compile_R4300i_COP1_CT-Opcode.fs!=31\n\nThe emulator has crashed on an unknown Opcode at this location");
 		return;
 	}
 	if (IsConst(Opcode.rt)) {

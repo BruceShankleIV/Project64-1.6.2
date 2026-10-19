@@ -133,7 +133,7 @@ void EmuAI_SetNextTimer() {
 		ChangeTimer(AiTimer,0);
 	}
 }
-void DisplayThreadExit (char*ExitPoint) {
+void HandleEmulationCrash (char*ExitPoint) {
 	if (VideoToScreen) {
 		VideoToScreen=FALSE;
 		if (AutoHide) SendMessage(hMainWindow,WM_COMMAND,ID_SYSTEM_GENERATEBITMAP,0);
@@ -195,7 +195,7 @@ void CheckTimer () {
 		Timers.Timer=Timers.NextTimer[count];
 		Timers.CurrentTimerType=count;
 	}
-	if (Timers.CurrentTimerType==-1) DisplayThreadExit("CheckTimer-Timers.CurrentTimerType==-1");
+	if (Timers.CurrentTimerType==-1) HandleEmulationCrash("CheckTimer-Timers.CurrentTimerType==-1");
 	for (count=0;count<MaxTimers;count++) {
 		if (!Timers.Active[count]) continue;
 		if (!(count==CompareTimer&&Timers.NextTimer[count]==0x7FFFFFFF)) {
@@ -555,7 +555,7 @@ void InPermLoop (void) {
 		if (UpdateScreen!=0) {UpdateScreen();}
 		CurrentFrame=0;
 		DisplayEmulationSpeed();
-		DisplayThreadExit("InPermLoop-(STATUS_REGISTER&STATUS_IE )==0||(STATUS_REGISTER&STATUS_EXL)!=0||(STATUS_REGISTER&STATUS_ERL)!=0||(STATUS_REGISTER&0xFF00)==0");
+		HandleEmulationCrash("InPermLoop-(STATUS_REGISTER&STATUS_IE )==0||(STATUS_REGISTER&STATUS_EXL)!=0||(STATUS_REGISTER&STATUS_ERL)!=0||(STATUS_REGISTER&0xFF00)==0");
 	}
 	/*check sound playing*/
 	/*check RSP running*/
@@ -710,9 +710,9 @@ BOOL Machine_LoadState() {
 	//fix RDRAM size
 	if (SaveRDRAMsize!=RDRAMsize) {
 		if (RDRAMsize==0x400000) {
-			if (VirtualAlloc(N64MEM+0x400000,0x400000,MEM_COMMIT,PAGE_READWRITE)==0) DisplayThreadExit("Machine_LoadState-SharedBlock-VirtualAlloc(N64MEM+0x400000,0x400000,MEM_COMMIT,PAGE_READWRITE)==0\n\n(MEM_ALLOC_ERROR)");
-			if (VirtualAlloc((BYTE*)JumpTable+0x400000,0x400000,MEM_COMMIT,PAGE_READWRITE)==0) DisplayThreadExit("Machine_LoadState-SharedBlock-VirtualAlloc((BYTE*)JumpTable+0x400000,0x400000,MEM_COMMIT,PAGE_READWRITE)==0\n\n(MEM_ALLOC_ERROR)");
-			if (VirtualAlloc((BYTE*)DelaySlotTable+(0x400000>>0xA),(0x400000>>0xA),MEM_COMMIT,PAGE_READWRITE)==0) DisplayThreadExit("Machine_LoadState-SharedBlock-VirtualAlloc((BYTE*)DelaySlotTable+(0x400000>>0xA),(0x400000>>0xA),MEM_COMMIT,PAGE_READWRITE)==0\n\n(MEM_ALLOC_ERROR)");
+			if (VirtualAlloc(N64MEM+0x400000,0x400000,MEM_COMMIT,PAGE_READWRITE)==0) HandleEmulationCrash("Machine_LoadState-SharedBlock-VirtualAlloc(N64MEM+0x400000,0x400000,MEM_COMMIT,PAGE_READWRITE)==0\n\n(MEM_ALLOC_ERROR)");
+			if (VirtualAlloc((BYTE*)JumpTable+0x400000,0x400000,MEM_COMMIT,PAGE_READWRITE)==0) HandleEmulationCrash("Machine_LoadState-SharedBlock-VirtualAlloc((BYTE*)JumpTable+0x400000,0x400000,MEM_COMMIT,PAGE_READWRITE)==0\n\n(MEM_ALLOC_ERROR)");
+			if (VirtualAlloc((BYTE*)DelaySlotTable+(0x400000>>0xA),(0x400000>>0xA),MEM_COMMIT,PAGE_READWRITE)==0) HandleEmulationCrash("Machine_LoadState-SharedBlock-VirtualAlloc((BYTE*)DelaySlotTable+(0x400000>>0xA),(0x400000>>0xA),MEM_COMMIT,PAGE_READWRITE)==0\n\n(MEM_ALLOC_ERROR)");
 		} else {
 			VirtualFree(N64MEM+0x400000,0x400000,MEM_DECOMMIT);
 			VirtualFree((BYTE*)JumpTable+0x400000,0x400000,MEM_DECOMMIT);
@@ -845,7 +845,7 @@ void RefreshScreen () {
 	CurrentFrame+=1;
 	__try {
 		if (UpdateScreen!=0) UpdateScreen();
-	} __except (r4300i_CPU_MemoryFilter(GetExceptionCode(),GetExceptionInformation())) {DisplayThreadExit("RefreshScreen-r4300i_CPU_MemoryFilter(GetExceptionCode(),GetExceptionInformation())");}
+	} __except (r4300i_CPU_MemoryFilter(GetExceptionCode(),GetExceptionInformation())) {HandleEmulationCrash("RefreshScreen-r4300i_CPU_MemoryFilter(GetExceptionCode(),GetExceptionInformation())");}
 	if ((STATUS_REGISTER&STATUS_IE)!=0) {ApplyCheats();}
 }
 void RunRsp () {

@@ -1510,8 +1510,7 @@ void SaveCheat(char*CheatName,BOOL Active) {
 	long lResult;
 	sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD*)(&RomHeader[0x10]),*(DWORD*)(&RomHeader[0x14]),RomHeader[0x3D]);
 	sprintf(String,"PJ64 V 1.6.2\\Configuration\\Cheats\\%s",Identifier);
-	lResult=RegCreateKeyEx(HKEY_CURRENT_USER,String,0,"",REG_OPTION_NON_VOLATILE,
-		KEY_ALL_ACCESS,0,&hKeyResults,&Disposition);
+	lResult=RegCreateKeyEx(HKEY_CURRENT_USER,String,0,"",REG_OPTION_NON_VOLATILE,KEY_ALL_ACCESS,0,&hKeyResults,&Disposition);
 	if (lResult==ERROR_SUCCESS) {
 		if (Active) RegSetValueEx(hKeyResults,CheatName,0,REG_DWORD,(CONST BYTE*)(&Active),sizeof(DWORD));
 		else RegDeleteValue(hKeyResults,CheatName);

@@ -78,10 +78,10 @@ void _fastcall r4300i_COP2 (void) {
 	((void (_fastcall*)()) R4300i_CoP2[ Opcode.rs ])();
 }
 void _fastcall DTE_RESERVED() {
-	DisplayThreadExit("OpcodeMapInterpreter-i=0;i<64;i++\n\nThe emulator has crashed on a reserved Opcode at this location");
+	HandleEmulationCrash("OpcodeMapInterpreter-i=0;i<64;i++\n\nThe emulator has crashed on a reserved Opcode at this location");
 }
 void _fastcall DTE_UNKNOWN() {
-	DisplayThreadExit("OpcodeMapInterpreter-i=0;i<64;i++\n\nThe emulator has crashed on an unknown Opcode at this location");
+	HandleEmulationCrash("OpcodeMapInterpreter-i=0;i<64;i++\n\nThe emulator has crashed on an unknown Opcode at this location");
 }
 void _fastcall DUMMY() {}
 void OpcodeMapInterpreter () {
@@ -412,7 +412,7 @@ void StartInterpreterCPU (void) {
 			ExecuteInterpreterOpCode();
 		}
 	} __except(r4300i_CPU_MemoryFilter(GetExceptionCode(),GetExceptionInformation())) {
-		DisplayThreadExit("StartInterpreterCPU-r4300i_CPU_MemoryFilter(GetExceptionCode(),GetExceptionInformation())");
+		HandleEmulationCrash("StartInterpreterCPU-r4300i_CPU_MemoryFilter(GetExceptionCode(),GetExceptionInformation())");
 	}
 }
 void TestInterpreterJump (DWORD PC,DWORD TargetPC,int Reg1,int Reg2) {
