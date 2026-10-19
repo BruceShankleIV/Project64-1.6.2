@@ -782,7 +782,7 @@ BOOL CALLBACK RomSettingsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) 
 			EnableWindow(GetDlgItem(hDlg,IDC_PROTECT_MEMORY_ENLARGE_BUFFER),FALSE);
 		}
 		if (strlen(RomName)==0||!RomCpuRecompiler||RomProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON) EnableWindow(GetDlgItem(hDlg,IDC_CC_MOD),FALSE);
-		if (strlen(RomName)==0||!RomCpuRecompiler||RomCF>1&&RomCF!=-1) EnableWindow(GetDlgItem(hDlg,IDC_CF1_CF0),FALSE);
+		if (strlen(RomName)==0||!RomCpuRecompiler||RomCF>1) EnableWindow(GetDlgItem(hDlg,IDC_CF1_CF0),FALSE);
 		if (strlen(RomName)==0||strcmp(RSPDLL,"RSP.dll")!=0||strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")!=0||strcmp(RomName,"THE LEGEND OF ZELDA")==0||strcmp(RomName,"THE MASK OF MUJURA")==0||strcmp(RomName,"ZELDA MAJORA'S MASK")==0||strcmp(RomName,"BANJO KAZOOIE 2")==0||strcmp(RomName,"BANJO TOOIE")==0||strcmp(RomName,"CONKER BFD")==0||strcmp(RomName,"DONKEY KONG 64")==0||strcmp(RomName,"JET FORCE GEMINI")==0||strcmp(RomName,"STAR TWINS")==0||strcmp(RomName,"Perfect Dark")==0) EnableWindow(GetDlgItem(hDlg,IDC_RSP_RECOMPILER),FALSE);
 		if (strlen(RomName)==0||!RomJAI&&!RomShankleAziAI) EnableWindow(GetDlgItem(hDlg,ALTERNATE_EMUAI),FALSE);
 		if (strlen(RomName)==0||strcmp(AudioDLL,"Shankle_Audio.dll")!=0) EnableWindow(GetDlgItem(hDlg,SHANKLE_AZI_AI),FALSE);
