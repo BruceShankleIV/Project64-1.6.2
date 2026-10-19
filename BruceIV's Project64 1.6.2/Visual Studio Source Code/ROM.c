@@ -461,7 +461,7 @@ void ReadRomSettings() {
 			_GetPrivateProfileString(Identifier,"TLB","",String,sizeof(String),IniFileName);
 			if (strcmp(String,"OFF")==0) RomUseTLB=FALSE;
 			_GetPrivateProfileString(Identifier,"Lag","",String,sizeof(String),IniFileName);
-			if (strcmp(String,"ON")==0||RomCF>1) RomLag=TRUE;
+			if (strcmp(String,"ON")==0||RomCF>1&&RomCF!=-1) RomLag=TRUE;
 			_GetPrivateProfileString(Identifier,"Register Caching","",String,sizeof(String),IniFileName);
 			if (strcmp(String,"ON")==0) RomUseCache=REG_CACHE_ON;
 			else if (strcmp(String,"OFF")==0) RomUseCache=REG_CACHE_OFF;
@@ -822,8 +822,7 @@ void SaveRomSettings () {
 		if (RomCCMod) _WritePrivateProfileString(Identifier,"Clear Cache Mod","ON",GetIniFileName());
 		else _WritePrivateProfileString(Identifier,"Clear Cache Mod",(strcmp(RomName,"THE LEGEND OF ZELDA")==0)?"OFF":"Default",GetIniFileName());
 		if (!ForceDisableTLB) _WritePrivateProfileString(Identifier,"TLB",RomUseTLB?"Default":"OFF",GetIniFileName());
-		if (RomCF>1) RomLag=FALSE;
-		_WritePrivateProfileString(Identifier,"Lag",RomLag?"ON":"Default",GetIniFileName());
+		_WritePrivateProfileString(Identifier,"Lag",(RomLag&&RomCF==1)?"ON":"Default",GetIniFileName());
 		switch (RomUseCache) {
 		case REG_CACHE_ON: sprintf(String,"ON"); break;
 		case REG_CACHE_OFF: sprintf(String,"OFF"); break;
