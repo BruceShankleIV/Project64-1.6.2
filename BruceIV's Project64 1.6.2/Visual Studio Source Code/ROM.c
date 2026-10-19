@@ -388,7 +388,7 @@ void HandleTimers() {
 }
 void ReadRomSettings() {
 	RomSaveUsing=Auto;
-	RomCF=-1;
+	RomCF=SystemCF;
 	if (strcmp(AudioDLL,"Jabo_Dsound.dll")==0) RomSyncGametoAudio=TRUE;
 	else RomSyncGametoAudio=FALSE;
 	RomJAI=FALSE;
@@ -412,8 +412,8 @@ void ReadRomSettings() {
 	if (ForceDisableTLB) RomUseTLB=FALSE;
 	else RomUseTLB=TRUE;
 	RomCCMod=FALSE;
-	RomUseCache=UseCache_Default;
-	RomProtectMemoryEnlargeBuffer=ProtectMemoryEnlargeBuffer_Default;
+	RomUseCache=SystemUse-Cache;
+	RomProtectMemoryEnlargeBuffer=SystemProtectMemoryEnlargeBuffer;
 	if (strlen(RomName)>0) {
 		LPSTR IniFileName;
 		char String[100],Identifier[100];
@@ -461,7 +461,7 @@ void ReadRomSettings() {
 			_GetPrivateProfileString(Identifier,"TLB","",String,sizeof(String),IniFileName);
 			if (strcmp(String,"OFF")==0) RomUseTLB=FALSE;
 			_GetPrivateProfileString(Identifier,"Lag","",String,sizeof(String),IniFileName);
-			if (strcmp(String,"ON")==0||RomCF>1&&RomCF!=-1) RomLag=TRUE;
+			if (strcmp(String,"ON")==0||RomCF>1) RomLag=TRUE;
 			_GetPrivateProfileString(Identifier,"Register Caching","",String,sizeof(String),IniFileName);
 			if (strcmp(String,"ON")==0) RomUseCache=REG_CACHE_ON;
 			else if (strcmp(String,"OFF")==0) RomUseCache=REG_CACHE_OFF;
