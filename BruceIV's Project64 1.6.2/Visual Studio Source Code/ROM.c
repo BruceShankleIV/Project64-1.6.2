@@ -835,7 +835,7 @@ void SaveRomSettings () {
 		default: sprintf(String,"Default");
 		}
 		_WritePrivateProfileString(Identifier,"Protect Memory / Enlarge Buffer",String,GetIniFileName());
-	} else {
+	} else if (!ForceDisableCpuRecompiler) {
 		_WritePrivateProfileString(Identifier,"Clear Cache Mod","Default",GetIniFileName());
 		_WritePrivateProfileString(Identifier,"TLB","Default",GetIniFileName());
 		_WritePrivateProfileString(Identifier,"Lag","Default",GetIniFileName());
