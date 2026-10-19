@@ -818,8 +818,7 @@ void SaveRomSettings () {
 	if (RomSkipBps) _WritePrivateProfileString(Identifier,"Skip Breakpoints","ON",GetIniFileName());
 	else _WritePrivateProfileString(Identifier,"Skip Breakpoints",(strcmp(RomName,"THE LEGEND OF ZELDA")==0)?"OFF":"Default",GetIniFileName());
 	if (RomCpuRecompiler) {
-		if (RomProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON&&RomCCMod) RomCCMod=FALSE;
-		if (RomCCMod) _WritePrivateProfileString(Identifier,"Clear Cache Mod","ON",GetIniFileName());
+		if (RomCCMod&&RomProtectMemoryEnlargeBuffer!=PROTECT_MEMORY_ENLARGE_BUFFER_ON) _WritePrivateProfileString(Identifier,"Clear Cache Mod","ON",GetIniFileName());
 		else _WritePrivateProfileString(Identifier,"Clear Cache Mod",(strcmp(RomName,"THE LEGEND OF ZELDA")==0)?"OFF":"Default",GetIniFileName());
 		if (!ForceDisableTLB) _WritePrivateProfileString(Identifier,"TLB",RomUseTLB?"Default":"OFF",GetIniFileName());
 		_WritePrivateProfileString(Identifier,"Lag",(RomLag&&RomCF==1)?"ON":"Default",GetIniFileName());
