@@ -58,12 +58,12 @@ void OpcodeMapRecompiler (BLOCK_SECTION*Section) {
 		case R4300i_SPECIAL_BREAK: if (SkipBps) break;
 		case R4300i_SPECIAL_SYSCALL: Compile_R4300i_SPECIAL_SYSCALL(Section);
 		case R4300i_SPECIAL_SYNC: // SYNChronize shared memory
-		case R4300i_SPECIAL_TGE: // rs,rt            Trap if Greater Than or Equal
-		case R4300i_SPECIAL_TGEU: // rs,rt            Trap if Greater Than or Equal Unsigned
-		case R4300i_SPECIAL_TLT: // rs,rt            Trap if Less Than
-		case R4300i_SPECIAL_TLTU: // rs,rt            Trap if Less Than Unsigned
-		case R4300i_SPECIAL_TEQ: // rs,rt            Trap if EQual (but this is working with no function at all)
-		case R4300i_SPECIAL_TNE: // rs,rt            Trap if not Equal
+		case R4300i_SPECIAL_TGE: // rs,rt - Trap if Greater Than or Equal
+		case R4300i_SPECIAL_TGEU: // rs,rt - Trap if Greater Than or Equal Unsigned
+		case R4300i_SPECIAL_TLT: // rs,rt - Trap if Less Than
+		case R4300i_SPECIAL_TLTU: // rs,rt - Trap if Less Than Unsigned
+		case R4300i_SPECIAL_TEQ: // rs,rt - Trap if EQual (but this is working with no function at all)
+		case R4300i_SPECIAL_TNE: // rs,rt - Trap if not Equal
 		break;
 		case R4300i_SPECIAL_SLL: Compile_R4300i_SPECIAL_SLL(Section); break;
 		case R4300i_SPECIAL_SRL: Compile_R4300i_SPECIAL_SRL(Section); break;
@@ -121,14 +121,14 @@ void OpcodeMapRecompiler (BLOCK_SECTION*Section) {
 		case R4300i_REGIMM_BGEZL: Compile_R4300i_BranchLikely(Section,BGEZ_Compare,FALSE); break;
 		case R4300i_REGIMM_BLTZAL: Compile_R4300i_Branch(Section,BLTZ_Compare,BranchTypeRs,TRUE); break;
 		case R4300i_REGIMM_BGEZAL: Compile_R4300i_Branch(Section,BGEZ_Compare,BranchTypeRs,TRUE);
-		case R4300i_REGIMM_TGEI: // rs,immediate     Trap if Greater Than or Equal Immediate
-		case R4300i_REGIMM_TGEIU: // rs,immediate     Trap if Greater Than or Equal Immediate Unsigned
-		case R4300i_REGIMM_TLTI: // rs,immediate     Trap if Less Than Immediate
-		case R4300i_REGIMM_TLTIU: // rs,immediate     Trap if Less Than Immediate Unsigned
-		case R4300i_REGIMM_TEQI: // rs,immediate     Trap if EQual Immediate
-		case R4300i_REGIMM_TNEI: // rs,immediate     Trap if not Equal Immediate
-		case R4300i_REGIMM_BLTZALL: // rs,offset        Branch on Less than Zero And Link Likely
-		case R4300i_REGIMM_BGEZALL: // rs,offset        Branch on Greater than or Equal to Zero And Link Likely
+		case R4300i_REGIMM_TGEI: // rs,immediate - Trap if Greater Than or Equal Immediate
+		case R4300i_REGIMM_TGEIU: // rs,immediate - Trap if Greater Than or Equal Immediate Unsigned
+		case R4300i_REGIMM_TLTI: // rs,immediate - Trap if Less Than Immediate
+		case R4300i_REGIMM_TLTIU: // rs,immediate - Trap if Less Than Immediate Unsigned
+		case R4300i_REGIMM_TEQI: // rs,immediate - Trap if EQual Immediate
+		case R4300i_REGIMM_TNEI: // rs,immediate - Trap if not Equal Immediate
+		case R4300i_REGIMM_BLTZALL: // rs,offset - Branch on Less than Zero And Link Likely
+		case R4300i_REGIMM_BGEZALL: // rs,offset - Branch on Greater than or Equal to Zero And Link Likely
 		break;
 		HandleEmulationCrash("OpcodeMapRecompiler-switch (Opcode.op)-case R4300i_REGIMM:-switch (Opcode.rt)-default:\nThe emulator has crashed on a reserved Opcode at this location");
 		}
@@ -149,11 +149,10 @@ void OpcodeMapRecompiler (BLOCK_SECTION*Section) {
 	case R4300i_LUI: Compile_R4300i_LUI(Section); break;
 	case R4300i_COP0:
 		switch (Opcode.rs) {
-			// Missing CACHE?
 		case R4300i_COP0_MF: Compile_R4300i_COP0_MF(Section); break;
 		case R4300i_COP0_MT: Compile_R4300i_COP0_MT(Section);
-		case R4300i_COP0_DMF: // rt,fs            Doubleword Move From CP0
-		case R4300i_COP0_DMT: // rt,fs            Doubleword Move To CP0
+		case R4300i_COP0_DMF: // rt,fs - Doubleword Move From COP0
+		case R4300i_COP0_DMT: // rt,fs - Doubleword Move To COP0
 		break;
 		case R4300i_COP0_CO_16:
 		case R4300i_COP0_CO_17:
@@ -183,8 +182,8 @@ void OpcodeMapRecompiler (BLOCK_SECTION*Section) {
 		case R4300i_COP1_MT: Compile_R4300i_COP1_MT(Section); break;
 		case R4300i_COP1_DMT: Compile_R4300i_COP1_DMT(Section); break;
 		case R4300i_COP1_CT: Compile_R4300i_COP1_CT(Section);
-		case R4300i_COP1_DCF:
-		case R4300i_COP1_DCT:
+		case R4300i_COP1_DCF: // Move control word From Floating-Point - rt = fs
+		case R4300i_COP1_DCT: // Move control word To Floating-Point - fs = rt
 		break;
 		case R4300i_COP1_BC:
 			switch (Opcode.ft) {
@@ -219,22 +218,22 @@ void OpcodeMapRecompiler (BLOCK_SECTION*Section) {
 			case R4300i_COP1_FUNCT_CVT_D: Compile_R4300i_COP1_S_CVT_D(Section); break;
 			case R4300i_COP1_FUNCT_CVT_W: Compile_R4300i_COP1_S_CVT_W(Section); break;
 			case R4300i_COP1_FUNCT_CVT_L: Compile_R4300i_COP1_S_CVT_L(Section); break;
-			case R4300i_COP1_FUNCT_C_F:
-			case R4300i_COP1_FUNCT_C_UN:
-			case R4300i_COP1_FUNCT_C_EQ:
-			case R4300i_COP1_FUNCT_C_UEQ:
-			case R4300i_COP1_FUNCT_C_OLT:
-			case R4300i_COP1_FUNCT_C_ULT:
-			case R4300i_COP1_FUNCT_C_OLE:
-			case R4300i_COP1_FUNCT_C_ULE:
-			case R4300i_COP1_FUNCT_C_SF:
-			case R4300i_COP1_FUNCT_C_NGLE:
-			case R4300i_COP1_FUNCT_C_SEQ:
-			case R4300i_COP1_FUNCT_C_NGL:
-			case R4300i_COP1_FUNCT_C_LT:
-			case R4300i_COP1_FUNCT_C_NGE:
-			case R4300i_COP1_FUNCT_C_LE:
-			case R4300i_COP1_FUNCT_C_NGT:
+			case R4300i_COP1_FUNCT_C_F: // (False)
+			case R4300i_COP1_FUNCT_C_UN: // (Unordered)
+			case R4300i_COP1_FUNCT_C_EQ: // (Equal)
+			case R4300i_COP1_FUNCT_C_UEQ: // (Unordered or Equal)
+			case R4300i_COP1_FUNCT_C_OLT: // (Ordered or Less Than)
+			case R4300i_COP1_FUNCT_C_ULT: // (Unordered or Less Than)
+			case R4300i_COP1_FUNCT_C_OLE: // (Ordered or Less than or Equal)
+			case R4300i_COP1_FUNCT_C_ULE: // (Unordered or Less than or Equal)
+			case R4300i_COP1_FUNCT_C_SF: // (Signaling False)
+			case R4300i_COP1_FUNCT_C_NGLE: // (Not Greater than or Less than or Equal)
+			case R4300i_COP1_FUNCT_C_SEQ: // (Signaling Equal)
+			case R4300i_COP1_FUNCT_C_NGL: // (Not Greater than or Less than)
+			case R4300i_COP1_FUNCT_C_LT: // (Less Than)
+			case R4300i_COP1_FUNCT_C_NGE: // (Not Greater than or Equal)
+			case R4300i_COP1_FUNCT_C_LE: // (Less than or Equal)
+			case R4300i_COP1_FUNCT_C_NGT: // (Not Greater Than)
 			Compile_R4300i_COP1_S_CMP(Section); break;
 			default:
 				HandleEmulationCrash("OpcodeMapRecompiler-switch (Opcode.op)-case R4300i_COP1:-switch (Opcode.rs)-case R4300i_COP1_S:-switch (Opcode.funct)-default:\nThe emulator has crashed on an unknown Opcode at this location");
@@ -263,22 +262,22 @@ void OpcodeMapRecompiler (BLOCK_SECTION*Section) {
 			break;
 			case R4300i_COP1_FUNCT_CVT_W: Compile_R4300i_COP1_D_CVT_W(Section); break;
 			case R4300i_COP1_FUNCT_CVT_L: Compile_R4300i_COP1_D_CVT_L(Section); break;
-			case R4300i_COP1_FUNCT_C_F:
-			case R4300i_COP1_FUNCT_C_UN:
-			case R4300i_COP1_FUNCT_C_EQ:
-			case R4300i_COP1_FUNCT_C_UEQ:
-			case R4300i_COP1_FUNCT_C_OLT:
-			case R4300i_COP1_FUNCT_C_ULT:
-			case R4300i_COP1_FUNCT_C_OLE:
-			case R4300i_COP1_FUNCT_C_ULE:
-			case R4300i_COP1_FUNCT_C_SF:
-			case R4300i_COP1_FUNCT_C_NGLE:
-			case R4300i_COP1_FUNCT_C_SEQ:
-			case R4300i_COP1_FUNCT_C_NGL:
-			case R4300i_COP1_FUNCT_C_LT:
-			case R4300i_COP1_FUNCT_C_NGE:
-			case R4300i_COP1_FUNCT_C_LE:
-			case R4300i_COP1_FUNCT_C_NGT:
+			case R4300i_COP1_FUNCT_C_F: // (False)
+			case R4300i_COP1_FUNCT_C_UN: // (Unordered)
+			case R4300i_COP1_FUNCT_C_EQ: // (Equal)
+			case R4300i_COP1_FUNCT_C_UEQ: // (Unordered or Equal)
+			case R4300i_COP1_FUNCT_C_OLT: // (Ordered or Less Than)
+			case R4300i_COP1_FUNCT_C_ULT: // (Unordered or Less Than)
+			case R4300i_COP1_FUNCT_C_OLE: // (Ordered or Less than or Equal)
+			case R4300i_COP1_FUNCT_C_ULE: // (Unordered or Less than or Equal)
+			case R4300i_COP1_FUNCT_C_SF: // (Signaling False)
+			case R4300i_COP1_FUNCT_C_NGLE: // (Not Greater than or Less than or Equal)
+			case R4300i_COP1_FUNCT_C_SEQ: // (Signaling Equal)
+			case R4300i_COP1_FUNCT_C_NGL: // (Not Greater than or Less than)
+			case R4300i_COP1_FUNCT_C_LT: // (Less Than)
+			case R4300i_COP1_FUNCT_C_NGE: // (Not Greater than or Equal)
+			case R4300i_COP1_FUNCT_C_LE: // (Less than or Equal)
+			case R4300i_COP1_FUNCT_C_NGT: // (Not Greater Than)
 			Compile_R4300i_COP1_D_CMP(Section); break;
 			default:
 				HandleEmulationCrash("OpcodeMapRecompiler-switch (Opcode.op)-case R4300i_COP1:-switch (Opcode.rs)-case R4300i_COP1_D:-switch (Opcode.funct)-default:\nThe emulator has crashed on an unknown Opcode at this location");
@@ -288,16 +287,16 @@ void OpcodeMapRecompiler (BLOCK_SECTION*Section) {
 			switch (Opcode.funct) {
 			case R4300i_COP1_FUNCT_CVT_S: Compile_R4300i_COP1_W_CVT_S(Section); break;
 			case R4300i_COP1_FUNCT_CVT_D: Compile_R4300i_COP1_W_CVT_D(Section);
-			case R4300i_COP1_FUNCT_ROUND_L:
-			case R4300i_COP1_FUNCT_TRUNC_L:
-			case R4300i_COP1_FUNCT_CEIL_L:
-			case R4300i_COP1_FUNCT_FLOOR_L:
-			case R4300i_COP1_FUNCT_ROUND_W:
-			case R4300i_COP1_FUNCT_TRUNC_W:
-			case R4300i_COP1_FUNCT_CEIL_W:
-			case R4300i_COP1_FUNCT_FLOOR_W:
-			case R4300i_COP1_FUNCT_CVT_W:
-			case R4300i_COP1_FUNCT_CVT_L:
+			case R4300i_COP1_FUNCT_ROUND_L: // floating-point ROUND to Long fixed-point
+			case R4300i_COP1_FUNCT_TRUNC_L: // floating-point TRUNCate to Long fixed-point
+			case R4300i_COP1_FUNCT_CEIL_L: // floating-point CEILing convert to Long fixed-point
+			case R4300i_COP1_FUNCT_FLOOR_L: // floating-point FLOOR convert to Long fixed-point
+			case R4300i_COP1_FUNCT_ROUND_W: // floating-point ROUND to Word fixed-point
+			case R4300i_COP1_FUNCT_TRUNC_W: // floating-point TRUNCate to Word fixed-point
+			case R4300i_COP1_FUNCT_CEIL_W: // floating-point CEILing convert to Word fixed-point
+			case R4300i_COP1_FUNCT_FLOOR_W: // floating-point FLOOR convert to Word fixed-point
+			case R4300i_COP1_FUNCT_CVT_W: // floating-point ConVerT to Word fixed-point
+			case R4300i_COP1_FUNCT_CVT_L: // floating-point ConVerT to Long fixed-point
 			break;
 			default:
 				HandleEmulationCrash("OpcodeMapRecompiler-switch (Opcode.op)-case R4300i_COP1:-switch (Opcode.rs)-case R4300i_COP1_W:-switch (Opcode.funct)-default:\nThe emulator has crashed on an unknown Opcode at this location");
@@ -307,16 +306,16 @@ void OpcodeMapRecompiler (BLOCK_SECTION*Section) {
 			switch (Opcode.funct) {
 			case R4300i_COP1_FUNCT_CVT_S: Compile_R4300i_COP1_L_CVT_S(Section); break;
 			case R4300i_COP1_FUNCT_CVT_D: Compile_R4300i_COP1_L_CVT_D(Section);
-			case R4300i_COP1_FUNCT_ROUND_L:
-			case R4300i_COP1_FUNCT_TRUNC_L:
-			case R4300i_COP1_FUNCT_CEIL_L:
-			case R4300i_COP1_FUNCT_FLOOR_L:
-			case R4300i_COP1_FUNCT_ROUND_W:
-			case R4300i_COP1_FUNCT_TRUNC_W:
-			case R4300i_COP1_FUNCT_CEIL_W:
-			case R4300i_COP1_FUNCT_FLOOR_W:
-			case R4300i_COP1_FUNCT_CVT_W:
-			case R4300i_COP1_FUNCT_CVT_L:
+			case R4300i_COP1_FUNCT_ROUND_L: // floating-point ROUND to Long fixed-point
+			case R4300i_COP1_FUNCT_TRUNC_L: // floating-point TRUNCate to Long fixed-point
+			case R4300i_COP1_FUNCT_CEIL_L: // floating-point CEILing convert to Long fixed-point
+			case R4300i_COP1_FUNCT_FLOOR_L: // floating-point FLOOR convert to Long fixed-point
+			case R4300i_COP1_FUNCT_ROUND_W: // floating-point ROUND to Word fixed-point
+			case R4300i_COP1_FUNCT_TRUNC_W: // floating-point TRUNCate to Word fixed-point
+			case R4300i_COP1_FUNCT_CEIL_W: // floating-point CEILing convert to Word fixed-point
+			case R4300i_COP1_FUNCT_FLOOR_W: // floating-point FLOOR convert to Word fixed-point
+			case R4300i_COP1_FUNCT_CVT_W: // floating-point ConVerT to Word fixed-point
+			case R4300i_COP1_FUNCT_CVT_L: // floating-point ConVerT to Long fixed-point
 			break;
 			default:
 				HandleEmulationCrash("OpcodeMapRecompiler-switch (Opcode.op)-case R4300i_COP1:-switch (Opcode.rs)-case R4300i_COP1_L:-switch (Opcode.funct)-default:\nThe emulator has crashed on an unknown Opcode at this location");
@@ -328,14 +327,14 @@ void OpcodeMapRecompiler (BLOCK_SECTION*Section) {
 	break;
 	case R4300i_COP2:
 		switch (Opcode.rs) {
-		case R4300i_COP2_MF:
-		case R4300i_COP2_DMF:
-		case R4300i_COP2_CF:
-		case R4300i_COP2_DCF:
-		case R4300i_COP2_MT:
-		case R4300i_COP2_DMT:
-		case R4300i_COP2_CT:
-		case R4300i_COP2_DCT:
+		case R4300i_COP2_MF: // rt,fs - Move Word From Floating-Point
+		case R4300i_COP2_DMF: // rt,fs - Doubleword Move From Floating-Point
+		case R4300i_COP2_CF: // rt,fs - Move control word From Floating-Point
+		case R4300i_COP2_DCF: // rt,fs - Doubleword Move control word From Floating-Point
+		case R4300i_COP2_MT: // rt,fs - Move Word To Floating-Point
+		case R4300i_COP2_DMT: // rt,fs - Doubleword Move Word To Floating-Point
+		case R4300i_COP2_CT: // rt,fs - Move control word To Floating-Point
+		case R4300i_COP2_DCT: // rt,fs - Doubleword Move control word To Floating-Point
 		break;
 		default:
 			HandleEmulationCrash("OpcodeMapRecompiler-switch (Opcode.op)-case R4300i_COP2:-default:\nThe emulator has crashed on an unknown Opcode at this location");
@@ -365,20 +364,20 @@ void OpcodeMapRecompiler (BLOCK_SECTION*Section) {
 	case R4300i_SWR: Compile_R4300i_SWR(Section); break;
 	case R4300i_CACHE: if (ProtectMemoryEnlargeBuffer!=PROTECT_MEMORY_ENLARGE_BUFFER_ON) Compile_R4300i_CACHE(Section); break; // This is the only Opcode not mapped between Recompiler and Interpreter!
 	case R4300i_LL: Compile_R4300i_LL(Section); break;
-	case R4300i_LWC1: Compile_R4300i_LWC1(Section); break; // Shouldn't this be under the case for cop1
-	case R4300i_LDC1: Compile_R4300i_LDC1(Section); break; // Shouldn't this be under the case for cop1
+	case R4300i_LWC1: Compile_R4300i_LWC1(Section); break;
+	case R4300i_LDC1: Compile_R4300i_LDC1(Section); break;
 	case R4300i_LD: Compile_R4300i_LD(Section); break;
 	case R4300i_SC: Compile_R4300i_SC(Section); break;
-	case R4300i_SWC1: Compile_R4300i_SWC1(Section); break; // Shouldn't this be under the case for cop1
-	case R4300i_SDC1: Compile_R4300i_SDC1(Section); // Shouldn't this be under the case for cop1
+	case R4300i_SWC1: Compile_R4300i_SWC1(Section); break;
+	case R4300i_SDC1: Compile_R4300i_SDC1(Section);
 	case R4300i_COP3:
-	case R4300i_DADDI: // rt,rs,immediate  Doubleword ADD Immediate
-	case R4300i_LWC2: // Shouldn't this be under the case for cop2
-	case R4300i_LLD: // rt,offset(base)  Load Linked Doubleword
-	case R4300i_LDC2: // cop2?
-	case R4300i_SWC2: // Shouldn't this be under the case for cop2
-	case R4300i_SCD: // rt,offset(base)  Store Conditional Doubleword
-	case R4300i_SDC2: break; // cop2?
+	case R4300i_DADDI: // rt,rs,immediate - Doubleword ADD Immediate
+	case R4300i_LWC2: // COP2 Instruction
+	case R4300i_LLD: // rt,offset(base) - Load Linked Doubleword
+	case R4300i_LDC2: // COP2 Instruction likely
+	case R4300i_SWC2: // COP2 Instruction
+	case R4300i_SCD: // rt,offset(base) - Store Conditional Doubleword
+	case R4300i_SDC2: break; // COP2 Instruction likely
 	case R4300i_SD: Compile_R4300i_SD(Section); break;
 	break;
 	default:
