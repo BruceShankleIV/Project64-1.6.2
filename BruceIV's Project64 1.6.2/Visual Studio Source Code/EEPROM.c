@@ -36,7 +36,7 @@ void CloseEEPROM () {
 	}
 }
 void EEPROMCommand (BYTE*Command) {
-	if (SaveUsing==Auto) {
+	if (SaveUsing==Default) {
 		if (ForceAuto16kbit) SaveUsing=EEPROM_16K;
 		else SaveUsing=EEPROM_4K;
 	}

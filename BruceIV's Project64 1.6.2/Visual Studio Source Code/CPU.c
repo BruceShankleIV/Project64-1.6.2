@@ -102,17 +102,17 @@ void EmuAI_ClearAudio() {
 	}
 }
 void EmuAI_InitializePluginHook() {
-		LastVICntFrame=0;
-		CountsPerByte=0;
-		EmuAI_Buffer[0]=EmuAI_Buffer[1]=0;
-		EmuAI_Frequency=0;
-		if (AiDacrateChanged==EmuAI_AiDacrateChanged) return;
-		AiDacrateChangedPlugin=AiDacrateChanged;
-		AiLenChangedPlugin=AiLenChanged;
-		AiReadLengthPlugin=AiReadLength;
-		AiDacrateChanged=EmuAI_AiDacrateChanged;
-		AiLenChanged=EmuAI_AiLenChanged;
-		AiReadLength=EmuAI_AiReadLength;
+	LastVICntFrame=0;
+	CountsPerByte=0;
+	EmuAI_Buffer[0]=EmuAI_Buffer[1]=0;
+	EmuAI_Frequency=0;
+	if (AiDacrateChanged==EmuAI_AiDacrateChanged) return;
+	AiDacrateChangedPlugin=AiDacrateChanged;
+	AiLenChangedPlugin=AiLenChanged;
+	AiReadLengthPlugin=AiReadLength;
+	AiDacrateChanged=EmuAI_AiDacrateChanged;
+	AiLenChanged=EmuAI_AiLenChanged;
+	AiReadLength=EmuAI_AiReadLength;
 }
 void EmuAI_SetFrameRate (int frameRate) {
 	EmuAI_FrameRate=frameRate;
@@ -152,10 +152,10 @@ void HandleEmulationCrash (char*ExitPoint) {
 		}
 	}
 	if (strcmp(GfxDLL,"GLideN64.dll")==0&&inFullScreen) {
-		DisplayError("Emulation crash: %s\n\nApplication will now be shutdown from GLideN64 video plugin being used in fullscreen mode",ExitPoint);
+		DisplayError("Emulator Crash: %s\n\nThis app will now be force-killed from crashing with GLideN64 video plugin initialized in fullscreen mode.\n\nScreenshot taken on emulation crash. That screenshot may make it easier to replicate and solve this crash if the cause is visible.\n\nPlease consider reporting this crash and any other bugs here: discord.gg/cHDxa9vzQM",ExitPoint);
 		SendMessage(hMainWindow,WM_COMMAND,ID_FILE_EXIT,0);
 	}
-	DisplayError("Emulation crash: %s\n\nEmulation will now be ended. Application would be shutdown if GLideN64 video plugin is used in fullscreen mode",ExitPoint);
+	DisplayError("Emulator Crash: %s\n\nEmulation will now be ended from emu-crash. This app would be force-killed if crashing with GLideN64 video plugin initialized in fullscreen mode.\n\nScreenshot taken on emulation crash. That screenshot may make it easier to replicate and solve this crash if the cause is visible.\n\nPlease consider reporting this crash and any other bugs here: discord.gg/cHDxa9vzQM",ExitPoint);
 	SendMessage(hMainWindow,WM_COMMAND,ID_FILE_ENDEMULATION,0);
 }
 void INITIALIZECPUFlags () {

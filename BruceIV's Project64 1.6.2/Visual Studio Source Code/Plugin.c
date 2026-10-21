@@ -251,41 +251,8 @@ void HandleGlobalTasks (HWND hWnd) {
 	SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(PLUGINS_INITIALIZING));
 	if (CPURunning) {
 		ReadRomSettings();
-		SyncGametoAudio=RomSyncGametoAudio;
-		NewRAMsize=0x800000;
-		JumperPak=FALSE;
-		if (RomJumperPak) {
-			NewRAMsize=0x400000;
-			JumperPak=TRUE;
-		}
-		CpuRecompiler=RomCpuRecompiler;
-		CountPerOp=RomCF;
-		UseCache=RomUseCache;
-		ProtectMemoryEnlargeBuffer=RomProtectMemoryEnlargeBuffer;
-		if (CountPerOp==0) CountPerOp=SystemCF;
-		if (UseCache==0) UseCache=SystemUseCache;
-		if (ProtectMemoryEnlargeBuffer==0) ProtectMemoryEnlargeBuffer=SystemProtectMemoryEnlargeBuffer;
-		SaveUsing=RomSaveUsing;
-		if (RomSaveUsing==Auto) {
-			if (strcmp(RomName,"CONKER BFD")==0||strcmp(RomName,"DRACULA MOKUSHIROKU")==0||strcmp(RomName,"DRACULA MOKUSHIROKU2")==0||strcmp(RomName,"BANJO KAZOOIE 2")==0||strcmp(RomName,"BANJO TOOIE")==0||strcmp(RomName,"CRUIS'N WORLD")==0||strcmp(RomName,"CUSTOMROBOV2")==0||strcmp(RomName,"DONKEY KONG 64")==0||strcmp(RomName,"霓状虞2 硕厣驾棉�")==0||strcmp(RomName,"霓状虞3 伤蘩上罶OS!")==0||strcmp(RomName,"EXCITEBIKE64")==0||strcmp(RomName,"裁拗辰股习嫁嫁")==0||strcmp(RomName,"NBA COURTSIDE")==0||strcmp(RomName,"Madden NFL 2002")==0||strcmp(RomName,"MarioParty3")==0||strcmp(RomName,"MarioTennis")==0||strcmp(RomName,"MarioTennis64")==0||strcmp(RomName,"EVANGELION")==0||strcmp(RomName,"Parlor PRO 64")==0||strcmp(RomName,"Ultraman Battle JAPA")==0||strcmp(RomName,"Perfect Dark")==0||strcmp(RomName,"RIDGE RACER 64")==0||strcmp(RomName,"Robopon 64")==0||strcmp(RomName,"STAR WARS EP1 RACER")==0||strcmp(RomName,"YOSHI STORY")==0) SaveUsing=EEPROM_16K;
-			if (strcmp(RomName,"THE LEGEND OF ZELDA")==0) SaveUsing=SRAM;
-			if (strcmp(RomName,"NBA Courtside 2")==0||strcmp(RomName,"POKEMON STADIUM")==0) SaveUsing=FlashRAM;
-			// This masks most auto save type issues to extend compatibility for ROMhacks. The reason why it is still set manually per Game.ini is for hacks with custom internal name and shared CRC.
-		}
-		VirtualSD=RomVirtualSD;
-		AudioSignal=RomAudioSignal;
-		UseTLB=RomUseTLB;
-		DelaySI=RomDelaySI;
-		SkipBps=RomSkipBps;
-		CCMod=RomCCMod;
-		Lag=RomLag;
-		DelayRDP=RomDelayRDP;
-		DelayRSP=RomDelayRSP;
-		AlignDMA=RomAlignDMA;
-		FiftyNineHertz=RomFiftyNineHertz;
-		if (SyncGametoAudio) LimitFPS=TRUE;
-		EmulateAI=FALSE;
-		if (strcmp(AudioDLL,"No Audio.dll")==0||RomJAI||RomShankleAziAI) EmulateAI=TRUE;
+		if (RomProtectMemoryEnlargeBuffer==0) ProtectMemoryEnlargeBuffer=SystemProtectMemoryEnlargeBuffer;
+		else ProtectMemoryEnlargeBuffer=RomProtectMemoryEnlargeBuffer;
 		if (ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON) {
 			if (VirtualAlloc(RecompCode,0x03200000,MEM_COMMIT,PAGE_EXECUTE_READWRITE)==0) { // Performance
 				DisplayError(GS(MSG_MEM_ALLOC_ERROR));
@@ -300,6 +267,9 @@ void HandleGlobalTasks (HWND hWnd) {
 				return;
 			}
 		}
+		JumperPak=RomJumperPak;
+		if (JumperPak) NewRAMsize=0x400000;
+		else NewRAMsize=0x800000;
 		if (NewRAMsize!=RDRAMsize) {
 			if (RDRAMsize==0x400000) {
 				if (VirtualAlloc(N64MEM+0x400000,0x400000,MEM_COMMIT,PAGE_READWRITE)==0) {
@@ -323,7 +293,33 @@ void HandleGlobalTasks (HWND hWnd) {
 				VirtualFree((BYTE*)DelaySlotTable+(0x400000>>0xA),(0x400000>>0xA),MEM_DECOMMIT);
 			}
 		}
-		RDRAMsize=NewRAMsize;
+		if (RomSaveUsing==Default) {
+			// This masks most auto save type issues to extend compatibility for ROMhacks. The reason why it is still set manually per Game.ini is for hacks with custom internal name and shared CRC.
+			if (strcmp(RomName,"CONKER BFD")==0||strcmp(RomName,"DRACULA MOKUSHIROKU")==0||strcmp(RomName,"DRACULA MOKUSHIROKU2")==0||strcmp(RomName,"BANJO KAZOOIE 2")==0||strcmp(RomName,"BANJO TOOIE")==0||strcmp(RomName,"CRUIS'N WORLD")==0||strcmp(RomName,"CUSTOMROBOV2")==0||strcmp(RomName,"DONKEY KONG 64")==0||strcmp(RomName,"霓状虞2 硕厣驾棉�")==0||strcmp(RomName,"霓状虞3 伤蘩上罶OS!")==0||strcmp(RomName,"EXCITEBIKE64")==0||strcmp(RomName,"裁拗辰股习嫁嫁")==0||strcmp(RomName,"NBA COURTSIDE")==0||strcmp(RomName,"Madden NFL 2002")==0||strcmp(RomName,"MarioParty3")==0||strcmp(RomName,"MarioTennis")==0||strcmp(RomName,"MarioTennis64")==0||strcmp(RomName,"EVANGELION")==0||strcmp(RomName,"Parlor PRO 64")==0||strcmp(RomName,"Ultraman Battle JAPA")==0||strcmp(RomName,"Perfect Dark")==0||strcmp(RomName,"RIDGE RACER 64")==0||strcmp(RomName,"Robopon 64")==0||strcmp(RomName,"STAR WARS EP1 RACER")==0||strcmp(RomName,"YOSHI STORY")==0) SaveUsing=EEPROM_16K;
+			else if (strcmp(RomName,"THE LEGEND OF ZELDA")==0) SaveUsing=SRAM;
+			else if (strcmp(RomName,"NBA Courtside 2")==0||strcmp(RomName,"POKEMON STADIUM")==0) SaveUsing=FlashRAM;
+			else SaveUsing=Default;
+		} else SaveUsing=RomSaveUsing;
+		if (RomCF==0) CountPerOp=SystemCF;
+		else CountPerOp=RomCF;
+		SyncGametoAudio=RomSyncGametoAudio;
+		if (SyncGametoAudio) LimitFPS=TRUE;
+		if (strcmp(AudioDLL,"No Audio.dll")==0||RomJAI||RomShankleAziAI) EmulateAI=TRUE;
+		else EmulateAI=FALSE;
+		AlignDMA=RomAlignDMA;
+		DelayRDP=RomDelayRDP;
+		AudioSignal=RomAudioSignal;
+		DelayRSP=RomDelayRSP;
+		VirtualSD=RomVirtualSD;
+		FiftyNineHertz=RomFiftyNineHertz;
+		DelaySI=RomDelaySI;
+		SkipBps=RomSkipBps;
+		CpuRecompiler=RomCpuRecompiler;
+		CCMod=RomCCMod;
+		UseTLB=RomUseTLB;
+		Lag=RomLag;
+		if (RomUseCache==0) UseCache=SystemUseCache;
+		else UseCache=RomUseCache;
 		LoadCheats();
 		if (!inFullScreen) {
 			if (strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) {
@@ -538,11 +534,55 @@ void HandleGlobalTasks (HWND hWnd) {
 	}
 	SetupMenu(hMainWindow);
 	UsuallyonTopWindow(hMainWindow);
-	if (PluginsInitialized) SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(PLUGINS_INITIALIZED));
-	else {
-		if (UserCancelPluginInit) goto SET_INIT;
+	if (PluginsInitialized&&!UserCancelPluginInit) {
+		if (CPURunning) {
+			DWORD count;
+		StartEmulation:
+			RDRAMsize=NewRAMsize;
+			memset(&CPU_Action,0,sizeof(CPU_Action));
+			CPU_Action.hStepping=CreateEvent(0,FALSE,FALSE,0);
+			WrittenToRom=FALSE;
+			memset(N64MEM,0,RDRAMsize);
+			InitializeTLB();
+			InitializeR4300iRegisters(LoadPifRom(*(ROM+0x3D)),*(ROM+0x3D),GetCicChipID(ROM));
+			OpcodeMapInterpreter();
+			RecompPos=RecompCode;
+			Timers.CurrentTimerType=-1;
+			Timers.Timer=0;
+			CurrentFrame=0;
+			for (count=0;count<MaxTimers;count++) {Timers.Active[count]=FALSE;}
+			ChangeTimer(ViTimer,5000);
+			ChangeCompareTimer();
+			ViFieldSerration=0;
+			DMAUsed=FALSE;
+			CPU_Paused=FALSE;
+			ManualPaused=FALSE;
+			Timer_Start();
+			if (CpuRecompiler) hCPU=CreateThread(0,0,(LPTHREAD_START_ROUTINE)StartRecompilerCPU,0,0,0);
+			else hCPU=CreateThread(0,0,(LPTHREAD_START_ROUTINE)StartInterpreterCPU,0,0,0);
+			if (GLideN64NeedsToBeSetupFirst) {
+				EndEmulation();
+				DONE_INIT_GLideN64:
+				GonetzGLHasBeenSetupFirst=TRUE;
+				GLideN64NeedsToBeSetupFirst=FALSE;
+				strcpy(GfxDLL,"Icepir8sLegacyLLE.dll");
+				goto SIZE_MAXIMIZE;
+			}
+			if (strcmp(GfxDLL,"GLideN64.dll")==0&&!GonetzGLHasBeenSetupFirst) GonetzGLHasBeenSetupFirst=TRUE;
+			HandleWindowTitle();
+			if (EmulateAI&&!LimitFPS) {
+				LimitFPS=TRUE;
+				HandleTimers();
+				LimitFPS=FALSE;
+				if (SpeedCap) HandleTimers();
+			} else HandleTimers();
+			SetCurrentSaveState(hMainWindow,ID_CURRENTSAVE_DEFAULT);
+			SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MSG_EMULATION_STARTED));
+		} else SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(PLUGINS_INITIALIZED));
+	} else {
+		if (UserCancelPluginInit) goto SKIP_INIT;
 		if (inFullScreen) SendMessage(hMainWindow,WM_COMMAND,ID_OPTIONS_FULLSCREEN,0);
-		HandleModal1(hMainWindow);
+		if (!UserCancelPluginInit) HandleModal1(hMainWindow);
 		if (CPURunning) {
 			if (MessageBox(0,GS(FAIL_MSG),AppName,MB_OKCANCEL|MB_ICONEXCLAMATION|MB_SETFOREGROUND)==IDCANCEL) {
 				UserCancelPluginInit=TRUE;
@@ -550,59 +590,15 @@ void HandleGlobalTasks (HWND hWnd) {
 				UserCancelPluginInit=FALSE;
 				return;
 			}
-		} else if (MessageBox(0,GS(FAIL_MSG),AppName,MB_OKCANCEL|MB_ICONEXCLAMATION|MB_SETFOREGROUND)==IDCANCEL) SET_INIT: PluginsInitialized=TRUE;
+		} else if (MessageBox(0,GS(FAIL_MSG),AppName,MB_OKCANCEL|MB_ICONEXCLAMATION|MB_SETFOREGROUND)==IDCANCEL) SKIP_INIT: PluginsInitialized=TRUE;
 		HandleModal2(hMainWindow);
 		if (PluginsInitialized) SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(PLUGINS_NOT_INITIALIZED));
 		else {
 			SendMessage(hMainWindow,WM_COMMAND,ID_OPTIONS_SETTINGS,0);
 			if (CPURunning) HandleGlobalTasks(hMainWindow);
 		}
-		return;
-		DONE_INIT_GLideN64:
-		GonetzGLHasBeenSetupFirst=TRUE;
-		GLideN64NeedsToBeSetupFirst=FALSE;
-		strcpy(GfxDLL,"Icepir8sLegacyLLE.dll");
-		goto SIZE_MAXIMIZE;
 	}
-	if (CPURunning) {
-		DWORD count;
-		StartEmulation:
-		memset(&CPU_Action,0,sizeof(CPU_Action));
-		CPU_Action.hStepping=CreateEvent(0,FALSE,FALSE,0);
-		WrittenToRom=FALSE;
-		memset(N64MEM,0,RDRAMsize);
-		InitializeTLB();
-		InitializeR4300iRegisters(LoadPifRom(*(ROM+0x3D)),*(ROM+0x3D),GetCicChipID(ROM));
-		OpcodeMapInterpreter();
-		RecompPos=RecompCode;
-		Timers.CurrentTimerType=-1;
-		Timers.Timer=0;
-		CurrentFrame=0;
-		for (count=0;count<MaxTimers;count++) {Timers.Active[count]=FALSE;}
-		ChangeTimer(ViTimer,5000);
-		ChangeCompareTimer();
-		ViFieldSerration=0;
-		DMAUsed=FALSE;
-		CPU_Paused=FALSE;
-		ManualPaused=FALSE;
-		Timer_Start();
-		if (CpuRecompiler) hCPU=CreateThread(0,0,(LPTHREAD_START_ROUTINE)StartRecompilerCPU,0,0,0);
-		else hCPU=CreateThread(0,0,(LPTHREAD_START_ROUTINE)StartInterpreterCPU,0,0,0);
-		if (GLideN64NeedsToBeSetupFirst) {
-			EndEmulation();
-			goto DONE_INIT_GLideN64;
-		}
-		if (strcmp(GfxDLL,"GLideN64.dll")==0&&!GonetzGLHasBeenSetupFirst) GonetzGLHasBeenSetupFirst=TRUE;
-		HandleWindowTitle();
-		if (EmulateAI&&!LimitFPS) {
-			LimitFPS=TRUE;
-			HandleTimers();
-			LimitFPS=FALSE;
-			if (SpeedCap) HandleTimers();
-		} else HandleTimers();
-		SetCurrentSaveState(hMainWindow,ID_CURRENTSAVE_DEFAULT);
-		SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MSG_EMULATION_STARTED));
-	}
+	
 }
 void SetupPluginsScreen (HWND hDlg) {
 	WIN32_FIND_DATA FindData;

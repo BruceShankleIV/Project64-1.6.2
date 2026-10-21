@@ -387,7 +387,7 @@ void HandleTimers() {
 	}
 }
 void ReadRomSettings() {
-	RomSaveUsing=Auto;
+	RomSaveUsing=Default;
 	RomCF=0;
 	if (strcmp(AudioDLL,"Jabo_Dsound.dll")==0) RomSyncGametoAudio=TRUE;
 	else RomSyncGametoAudio=FALSE;
@@ -420,11 +420,10 @@ void ReadRomSettings() {
 		IniFileName=GetIniFileName();
 		sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD*)(&RomHeader[0x10]),*(DWORD*)(&RomHeader[0x14]),RomHeader[0x3D]);
 		_GetPrivateProfileString(Identifier,"Save Type","",String,sizeof(String),IniFileName);
-		if (strcmp(String,"4kbit EEPROM")==0) {RomSaveUsing=EEPROM_4K;}
-		else if (strcmp(String,"16kbit EEPROM")==0) {RomSaveUsing=EEPROM_16K;}
-		else if (strcmp(String,"SRAM")==0) {RomSaveUsing=SRAM;}
-		else if (strcmp(String,"FlashRAM")==0) {RomSaveUsing=FlashRAM;}
-		else {RomSaveUsing=Auto;}
+		if (strcmp(String,"4kbit EEPROM")==0) RomSaveUsing=EEPROM_4K;
+		else if (strcmp(String,"16kbit EEPROM")==0) RomSaveUsing=EEPROM_16K;
+		else if (strcmp(String,"SRAM")==0) RomSaveUsing=SRAM;
+		else if (strcmp(String,"FlashRAM")==0) RomSaveUsing=FlashRAM;
 		RomCF=_GetPrivateProfileInt(Identifier,"Counter Factor",0,IniFileName);
 		if (RomCF>3) RomCF=0;
 		_GetPrivateProfileString(Identifier,"Sync Game to Audio","",String,sizeof(String),IniFileName);
@@ -802,7 +801,8 @@ void SaveRomSettings () {
 		else _WritePrivateProfileString(Identifier,"Sync Game to Audio","OFF",GetIniFileName());
 		_WritePrivateProfileString(Identifier,"Jabo AI",RomJAI?"ON":"Default",GetIniFileName());
 	}
-	if (!ForceEnableDMA) _WritePrivateProfileString(Identifier,"Align DMA",RomAlignDMA?"ON":"Default",GetIniFileName());
+	if (FixFEDMAtoNonFEDMA) FixFEDMAtoNonFEDMA=FALSE;
+	else if (!ForceEnableDMA) _WritePrivateProfileString(Identifier,"Align DMA",RomAlignDMA?"ON":"Default",GetIniFileName());
 	if (RomJAI||RomShankleAziAI) _WritePrivateProfileString(Identifier,"Legacy AiLenChanged",RomAltEmulateAI?"ON":"Default",GetIniFileName());
 	else _WritePrivateProfileString(Identifier,"Legacy AiLenChanged","Default",GetIniFileName());
 	if (strcmp(AudioDLL,"Shankle_Audio.dll")==0) _WritePrivateProfileString(Identifier,"Azi AI",RomShankleAziAI?"ON":"Default",GetIniFileName());
@@ -814,13 +814,15 @@ void SaveRomSettings () {
 	_WritePrivateProfileString(Identifier,"59 FPS",RomFiftyNineHertz?"ON":"Default",GetIniFileName());
 	_WritePrivateProfileString(Identifier,"Delay SI",RomDelaySI?"ON":"Default",GetIniFileName());
 	if (strcmp(RSPDLL,"RSP.dll")==0&&(strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0||strcmp(RomName,"THE LEGEND OF ZELDA")==0||strcmp(RomName,"THE MASK OF MUJURA")==0||strcmp(RomName,"ZELDA MAJORA'S MASK")==0||strcmp(RomName,"BANJO KAZOOIE 2")==0||strcmp(RomName,"BANJO TOOIE")==0||strcmp(RomName,"CONKER BFD")==0||strcmp(RomName,"DONKEY KONG 64")==0||strcmp(RomName,"JET FORCE GEMINI")==0||strcmp(RomName,"STAR TWINS")==0||strcmp(RomName,"Perfect Dark")==0)) _WritePrivateProfileString(Identifier,"Recompile RSP",RomRspRecompiler?"ON":"Default",GetIniFileName());
-	if (!ForceDisableCpuRecompiler) _WritePrivateProfileString(Identifier,"Recompile VR4300i CPU",RomCpuRecompiler?"Default":"OFF",GetIniFileName());
+	if (FixFDCPURtoNonFDCPUR) FixFDCPURtoNonFDCPUR=FALSE;
+	else if (!ForceDisableCpuRecompiler) _WritePrivateProfileString(Identifier,"Recompile VR4300i CPU",RomCpuRecompiler?"Default":"OFF",GetIniFileName());
 	if (RomSkipBps) _WritePrivateProfileString(Identifier,"Skip Breakpoints","ON",GetIniFileName());
 	else _WritePrivateProfileString(Identifier,"Skip Breakpoints",(strcmp(RomName,"THE LEGEND OF ZELDA")==0)?"OFF":"Default",GetIniFileName());
 	if (RomCpuRecompiler) {
 		if (RomCCMod&&RomProtectMemoryEnlargeBuffer!=PROTECT_MEMORY_ENLARGE_BUFFER_ON) _WritePrivateProfileString(Identifier,"Clear Cache Mod","ON",GetIniFileName());
 		else _WritePrivateProfileString(Identifier,"Clear Cache Mod",(strcmp(RomName,"THE LEGEND OF ZELDA")==0)?"OFF":"Default",GetIniFileName());
-		if (!ForceDisableTLB) _WritePrivateProfileString(Identifier,"TLB",RomUseTLB?"Default":"OFF",GetIniFileName());
+		if (FixFDTLBtoNonFDTLB) FixFDTLBtoNonFDTLB=FALSE;
+		else if (!ForceDisableTLB) _WritePrivateProfileString(Identifier,"TLB",RomUseTLB?"Default":"OFF",GetIniFileName());
 		_WritePrivateProfileString(Identifier,"Lag",(RomLag&&RomCF==1)?"ON":"Default",GetIniFileName());
 		switch (RomUseCache) {
 		case REG_CACHE_ON: sprintf(String,"ON"); break;

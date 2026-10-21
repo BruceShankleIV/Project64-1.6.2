@@ -103,7 +103,7 @@ void TimerDone          (void);
 #define LIKELY_DELAY_SLOT_DONE	8
 #define END_BLOCK 				9
 enum SaveType {
-	Auto,
+	Default,
 	EEPROM_4K,
 	EEPROM_16K,
 	SRAM,

@@ -41,7 +41,7 @@
 #include "Resource.h"
 #include "SummerCart.h"
 LARGE_INTEGER Frequency,Frames[9],LastFrame;
-BOOL AutoSleep,AutoHide,CreateStatusBar,RecordRGB,Recursion,LimitFPS,SpeedCap,AutoFullScreen,SystemCF,UsuallyonTop,VideoToScreen,BasicMode,AutoRefreshRomBrowser,DelayHandleGlobalTasks=FALSE,FirstBoot=FALSE,UserCancelPluginInit=FALSE,RefreshRomBrowserOnShutdown=TRUE;
+BOOL AutoSleep,AutoHide,CreateStatusBar,RecordRGB,Recursion,LimitFPS,SpeedCap,AutoFullScreen,SystemCF,UsuallyonTop,VideoToScreen,BasicMode,AutoRefreshRomBrowser,DelayHandleGlobalTasks=FALSE,FirstBoot=FALSE,UserCancelPluginInit=FALSE,RefreshRomBrowserOnShutdown=TRUE,FixFEDMAtoNonFEDMA=FALSE,FixFDCPURtoNonFDCPUR=FALSE,FixFDTLBtoNonFDTLB=FALSE;
 DWORD CurrentFrame,SystemUseCache,SystemProtectMemoryEnlargeBuffer,RomsToRemember,RomDirsToRemember;
 HWND hMainWindow,hHiddenWin,hStatusWnd,hRomList=0;
 char CurrentSave[256];
@@ -850,12 +850,9 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 					fileIndex++;
 				} while (GetFileAttributes(outputFile)!=INVALID_FILE_ATTRIBUTES);
 				if (!inFullScreen) {
+					RECT statusRect;
 					if (!GetClientRect(hMainWindow,&rc)) break;
-					if (hStatusWnd==0) {
-						cropHeight=0;
-					} else if (screenHeight>=2160&&screenWidth>=2880) cropHeight=43;
-					else if (screenHeight>=1440&&screenWidth>=1920) cropHeight=29;
-					else cropHeight=28;
+					if (GetWindowRect(hStatusWnd,&statusRect)) cropHeight=statusRect.bottom-statusRect.top;
 					screenWidth=rc.right-rc.left;
 					screenHeight=rc.bottom-rc.top;
 					screenHeight-=cropHeight;
@@ -1114,7 +1111,8 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 		case ID_OPTIONS_GAMECAPTURE:
 		{
 			char path_buffer[_MAX_PATH],drive[_MAX_DRIVE],dir[_MAX_DIR],Runtimesdir[_MAX_DIR],ffmpegPath[_MAX_PATH],outputFile[_MAX_PATH],Directory[_MAX_PATH],*IniFile,Identifier[256],cmd[4096],WinTitle[512],GameName[256];
-			int fileIndex=0;
+			int fileIndex=0,cropHeight=0;
+			RECT statusRect;
 			GetWindowText(hMainWindow,WinTitle,sizeof(WinTitle));
 			GetModuleFileName(0,path_buffer,sizeof(path_buffer));
 			_splitpath(path_buffer,drive,dir,0,0);
@@ -1128,49 +1126,13 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 			IniFile=GetIniFileName();
 			sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD*)(&RomHeader[0x10]),*(DWORD*)(&RomHeader[0x14]),RomHeader[0x3D]);
 			_GetPrivateProfileString(Identifier,"Game Name","",GameName,sizeof(GameName),IniFile);
-			if (RecordRGB) {
-				do {
-					if (strcmp(GameName,"(UNREGISTERED GAME ENTRY)")==0) sprintf(outputFile,"%s\\%04d_RGB.mp4",Directory,fileIndex);
-					else sprintf(outputFile,"%s\\%s %04d_RGB.mp4",Directory,GameName,fileIndex);
-					fileIndex++;
-				} while (GetFileAttributes(outputFile)!=INVALID_FILE_ATTRIBUTES);
-				if (hStatusWnd==0) {
-					if (AutoHide) sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -draw_mouse 0 -framerate 60 -i title=\"%s\" -level 4.1 -c:v libx264rgb -crf 14 -pix_fmt rgb24 -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
-					else sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -framerate 60 -i title=\"%s\" -level 4.1 -c:v libx264rgb -crf 14 -pix_fmt rgb24 -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
-				} else {
-					if (screenHeight>=2160&&screenWidth>=2880) {
-						if (AutoHide) sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -draw_mouse 0 -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-44:0:0\" -level 4.1 -c:v libx264rgb -crf 14 -pix_fmt rgb24 -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
-						else sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-44:0:0\" -level 4.1 -c:v libx264rgb -crf 14 -pix_fmt rgb24 -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
-					} else if (screenHeight>=1440&&screenWidth>=1920) {
-						if (AutoHide) sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -draw_mouse 0 -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-29:0:0\" -level 4.1 -c:v libx264rgb -crf 14 -pix_fmt rgb24 -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
-						else sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-29:0:0\" -level 4.1 -c:v libx264rgb -crf 14 -pix_fmt rgb24 -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
-					} else {
-						if (AutoHide) sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -draw_mouse 0 -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-28:0:0\" -level 4.1 -c:v libx264rgb -crf 14 -pix_fmt rgb24 -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
-						else sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-28:0:0\" -level 4.1 -c:v libx264rgb -crf 14 -pix_fmt rgb24 -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
-					}
-				}
-			} else {
-				do {
-					if (strcmp(GameName,"(UNREGISTERED GAME ENTRY)")==0) sprintf(outputFile,"%s\\%04d.mp4",Directory,fileIndex);
-					else sprintf(outputFile,"%s\\%s %04d.mp4",Directory,GameName,fileIndex);
-					fileIndex++;
-				} while (GetFileAttributes(outputFile)!=INVALID_FILE_ATTRIBUTES);
-				if (hStatusWnd==0) {
-					if (AutoHide) sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -draw_mouse 0 -framerate 60 -i title=\"%s\" -level 4.1 -crf 14 -pix_fmt yuv420p -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
-					else sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -framerate 60 -i title=\"%s\" -level 4.1 -crf 14 -pix_fmt yuv420p -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
-				} else {
-					if (screenHeight>=2160&&screenWidth>=2880) {
-						if (AutoHide) sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -draw_mouse 0 -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-44:0:0\" -level 4.1 -crf 14 -pix_fmt yuv420p -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
-						else sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-44:0:0\" -level 4.1 -crf 14 -pix_fmt yuv420p -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
-					} else if (screenHeight>=1440&&screenWidth>=1920) {
-						if (AutoHide) sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -draw_mouse 0 -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-29:0:0\" -level 4.1 -crf 14 -pix_fmt yuv420p -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
-						else sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-29:0:0\" -level 4.1 -crf 14 -pix_fmt yuv420p -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
-					} else {
-						if (AutoHide) sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -draw_mouse 0 -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-28:0:0\" -level 4.1 -crf 14 -pix_fmt yuv420p -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
-						else sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab -framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-28:0:0\" -level 4.1 -crf 14 -pix_fmt yuv420p -preset veryfast ""\"%s\"",drive,Runtimesdir,WinTitle,outputFile);
-					}
-				}
-			}
+			if (GetWindowRect(hStatusWnd,&statusRect)) cropHeight=statusRect.bottom-statusRect.top;
+			do {
+				if (strcmp(GameName,"(UNREGISTERED GAME ENTRY)")==0) sprintf(outputFile,"%s\\%04d%s.mp4",Directory,fileIndex,RecordRGB?"_RGB":"");
+				else sprintf(outputFile,"%s\\%s %04d%s.mp4",Directory,GameName,fileIndex,RecordRGB?"_RGB":"");
+				fileIndex++;
+			} while (GetFileAttributes(outputFile)!=INVALID_FILE_ATTRIBUTES);
+			sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab %s-framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-%d:0:0\" -level 4.1 %s-crf 14 -pix_fmt %s -preset veryfast ""\"%s\"",drive,Runtimesdir,AutoHide?"-draw_mouse 0 ":"",WinTitle,cropHeight,RecordRGB?"-c:v libx264rgb ":"",RecordRGB?"rgb24":"yuv420p",outputFile);
 			STARTUPINFO si;
 			PROCESS_INFORMATION pi;
 			ZeroMemory(&si,sizeof(si));
@@ -1773,8 +1735,7 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpszArgs,in
 		}
 	}
 	if (FirstBoot) {
-		char IntroMessage[99],ResWarning[99];
-		const char*ResScale;
+		char IntroMessage[99];
 #ifdef CLASSIC_PLUGINS
 #define PLUGINS "Classic Plugins - Project64.exe uses Jabo Video/Audio/Input as default plugins for old PC's and classic ROMhacks (mostly hacks up to year 2020). Switching to GLideN64 is necessary for all modern-day ROMhacks."
 #elif MODERN_PLUGINS
@@ -1782,11 +1743,6 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpszArgs,in
 #endif
 		sprintf(IntroMessage,"About - This is an updated Project64 v1.6.1 that's semi-maintained for casual play of retro and ROMhack games with minimal system requirements. See User Guide or contact me for info and troubleshooting.\n\n\n%s\n\n\nContact Info -\nMy email: bruceiv.shankle@gmail.com\nReport bugs: discord.gg/cHDxa9vzQM\n\nI'm usually busy so be patient or try to resolve an issue yourself and post any solutions you find.\n\n\n\n																- Edwin Bruce Shankle IV",PLUGINS);
 		MessageBox(0,IntroMessage,AppName,MB_OK|MB_ICONINFORMATION|MB_SETFOREGROUND);
-		if (screenHeight>=2160&&screenWidth>=2880) ResScale="200%";
-		else if (screenHeight>=1440&&screenWidth>=1920) ResScale="125%";
-		else ResScale="100%";
-		sprintf(ResWarning,"Scale suggestion - I suggest using a scale of %s to get the best results from this app since I've only tested it at that scale ratio for the current resolution of your display.\n\nYou can review and update your scale setting from Settings->System->Display.",ResScale);
-		MessageBox(0,ResWarning,AppName,MB_OK|MB_SETFOREGROUND);
 	}
 	ShowWindow(hMainWindow,SW_SHOW);
 	if (__argc>1) {

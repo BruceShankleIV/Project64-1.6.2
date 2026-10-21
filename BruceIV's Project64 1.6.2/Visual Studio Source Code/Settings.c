@@ -136,6 +136,9 @@ void ChangeSettings(HWND hwndOwner) {
 	psh.pfnCallback=0;
 	PropertySheet(&psh);
 	if (!AutoSleep&&!ManualPaused&&(CPU_Paused||CPU_Action.Pause)) PauseCPU();
+	if (FixFEDMAtoNonFEDMA) FixFEDMAtoNonFEDMA=FALSE;
+	if (ForceDisableCpuRecompiler) ForceDisableCpuRecompiler=FALSE;
+	if (FixFDTLBtoNonFDTLB) FixFDTLBtoNonFDTLB=FALSE;
 }
 void SetFlagControl (HWND hDlg,BOOL*Flag,WORD CtrlID,int StringID) {
 	SetDlgItemText(hDlg,CtrlID,GS(StringID));
@@ -723,6 +726,9 @@ BOOL CALLBACK RomSettingsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) 
 	switch (uMsg) {
 	case WM_INITDIALOG:
 		ReadRomSettings();
+		if (ForceEnableDMA) FixFEDMAtoNonFEDMA=TRUE;
+		if (ForceDisableCpuRecompiler) FixFDCPURtoNonFDCPUR=TRUE;
+		if (ForceDisableTLB) FixFDTLBtoNonFDTLB=TRUE;		
 		if (CPURunning) SetDlgItemText(hDlg,IDC_ROMSETTWARN,GS(ROMSETTWARN));
 		SetDlgItemText(hDlg,IDC_REGCACHE_TEXT,GS(REG_CACHE));
 		SetDlgItemText(hDlg,IDC_PROTECT_MEMORY_ENLARGE_BUFFER_TEXT,GS(SMCM_PROTECTED));
@@ -735,7 +741,7 @@ BOOL CALLBACK RomSettingsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) 
 		AddDropDownItem(hDlg,IDC_PROTECT_MEMORY_ENLARGE_BUFFER,DEFAULT_TEXT,0,&RomProtectMemoryEnlargeBuffer);
 		AddDropDownItem(hDlg,IDC_PROTECT_MEMORY_ENLARGE_BUFFER,ON,PROTECT_MEMORY_ENLARGE_BUFFER_ON,&RomProtectMemoryEnlargeBuffer);
 		AddDropDownItem(hDlg,IDC_PROTECT_MEMORY_ENLARGE_BUFFER,OFF,PROTECT_MEMORY_ENLARGE_BUFFER_OFF,&RomProtectMemoryEnlargeBuffer);
-		AddDropDownItem(hDlg,IDC_SAVE_TYPE,DEFAULT_TEXT,Auto,&RomSaveUsing);
+		AddDropDownItem(hDlg,IDC_SAVE_TYPE,DEFAULT_TEXT,Default,&RomSaveUsing);
 		AddDropDownItem(hDlg,IDC_SAVE_TYPE,SAVE_4K_EEPROM,EEPROM_4K,&RomSaveUsing);
 		AddDropDownItem(hDlg,IDC_SAVE_TYPE,SAVE_16K_EEPROM,EEPROM_16K,&RomSaveUsing);
 		AddDropDownItem(hDlg,IDC_SAVE_TYPE,SAVE_SRAM,SRAM,&RomSaveUsing);
@@ -792,34 +798,32 @@ BOOL CALLBACK RomSettingsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) 
 	case WM_NOTIFY:
 		if (((NMHDR FAR*) lParam)->code==PSN_APPLY) {
 			if (strlen(RomName)==0) break;
-			{
-				indx=SendMessage(GetDlgItem(hDlg,IDC_SAVE_TYPE),CB_GETCURSEL,0,0);
-				RomSaveUsing=SendMessage(GetDlgItem(hDlg,IDC_SAVE_TYPE),CB_GETITEMDATA,indx,0);
-				indx=SendMessage(GetDlgItem(hDlg,IDC_CF),CB_GETCURSEL,0,0);
-				RomCF=SendMessage(GetDlgItem(hDlg,IDC_CF),CB_GETITEMDATA,indx,0);
-				indx=SendMessage(GetDlgItem(hDlg,IDC_REGCACHE),CB_GETCURSEL,0,0);
-				RomUseCache=SendMessage(GetDlgItem(hDlg,IDC_REGCACHE),CB_GETITEMDATA,indx,0);
-				indx=SendMessage(GetDlgItem(hDlg,IDC_PROTECT_MEMORY_ENLARGE_BUFFER),CB_GETCURSEL,0,0);
-				RomProtectMemoryEnlargeBuffer=SendMessage(GetDlgItem(hDlg,IDC_PROTECT_MEMORY_ENLARGE_BUFFER),CB_GETITEMDATA,indx,0);
-				RomAudioSignal=SendMessage(GetDlgItem(hDlg,IDC_AUDIO_SIGNAL),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
-				RomDelaySI=SendMessage(GetDlgItem(hDlg,IDC_DELAY_SI),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
-				RomRspRecompiler=SendMessage(GetDlgItem(hDlg,IDC_RSP_RECOMPILER),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
-				RomSkipBps=SendMessage(GetDlgItem(hDlg,IDC_SKIP_BREAKPOINTS),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
-				RomCCMod=SendMessage(GetDlgItem(hDlg,IDC_CC_MOD),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
-				RomCpuRecompiler=SendMessage(GetDlgItem(hDlg,IDC_CPU_RECOMPILER),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
-				RomVirtualSD=SendMessage(GetDlgItem(hDlg,IDC_VirtualSD),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
-				RomJumperPak=SendMessage(GetDlgItem(hDlg,IDC_JUMPER_PAK),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
-				RomDelayRDP=SendMessage(GetDlgItem(hDlg,IDC_DELAY_RDP),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
-				RomDelayRSP=SendMessage(GetDlgItem(hDlg,IDC_DELAY_RSP),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
-				RomAlignDMA=SendMessage(GetDlgItem(hDlg,IDC_ALIGN_DMA),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
-				RomLag=SendMessage(GetDlgItem(hDlg,IDC_CF1_CF0),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
-				RomUseTLB=SendMessage(GetDlgItem(hDlg,IDC_USE_TLB),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
-				RomFiftyNineHertz=SendMessage(GetDlgItem(hDlg,IDC_FiftyNineHertz),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
-				RomShankleAziAI=SendMessage(GetDlgItem(hDlg,SHANKLE_AZI_AI),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
-				RomAltEmulateAI=SendMessage(GetDlgItem(hDlg,ALTERNATE_EMUAI),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
-				RomSyncGametoAudio=SendMessage(GetDlgItem(hDlg,IDC_SyncGametoAudio),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
-				RomJAI=SendMessage(GetDlgItem(hDlg,IDC_JAI),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
-			}
+			indx=SendMessage(GetDlgItem(hDlg,IDC_SAVE_TYPE),CB_GETCURSEL,0,0);
+			RomSaveUsing=SendMessage(GetDlgItem(hDlg,IDC_SAVE_TYPE),CB_GETITEMDATA,indx,0);
+			indx=SendMessage(GetDlgItem(hDlg,IDC_CF),CB_GETCURSEL,0,0);
+			RomCF=SendMessage(GetDlgItem(hDlg,IDC_CF),CB_GETITEMDATA,indx,0);
+			indx=SendMessage(GetDlgItem(hDlg,IDC_REGCACHE),CB_GETCURSEL,0,0);
+			RomUseCache=SendMessage(GetDlgItem(hDlg,IDC_REGCACHE),CB_GETITEMDATA,indx,0);
+			indx=SendMessage(GetDlgItem(hDlg,IDC_PROTECT_MEMORY_ENLARGE_BUFFER),CB_GETCURSEL,0,0);
+			RomProtectMemoryEnlargeBuffer=SendMessage(GetDlgItem(hDlg,IDC_PROTECT_MEMORY_ENLARGE_BUFFER),CB_GETITEMDATA,indx,0);
+			RomAudioSignal=SendMessage(GetDlgItem(hDlg,IDC_AUDIO_SIGNAL),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
+			RomDelaySI=SendMessage(GetDlgItem(hDlg,IDC_DELAY_SI),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
+			RomRspRecompiler=SendMessage(GetDlgItem(hDlg,IDC_RSP_RECOMPILER),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
+			RomSkipBps=SendMessage(GetDlgItem(hDlg,IDC_SKIP_BREAKPOINTS),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
+			RomCCMod=SendMessage(GetDlgItem(hDlg,IDC_CC_MOD),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
+			RomCpuRecompiler=SendMessage(GetDlgItem(hDlg,IDC_CPU_RECOMPILER),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
+			RomVirtualSD=SendMessage(GetDlgItem(hDlg,IDC_VirtualSD),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
+			RomJumperPak=SendMessage(GetDlgItem(hDlg,IDC_JUMPER_PAK),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
+			RomDelayRDP=SendMessage(GetDlgItem(hDlg,IDC_DELAY_RDP),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
+			RomDelayRSP=SendMessage(GetDlgItem(hDlg,IDC_DELAY_RSP),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
+			RomAlignDMA=SendMessage(GetDlgItem(hDlg,IDC_ALIGN_DMA),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
+			RomLag=SendMessage(GetDlgItem(hDlg,IDC_CF1_CF0),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
+			RomUseTLB=SendMessage(GetDlgItem(hDlg,IDC_USE_TLB),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
+			RomFiftyNineHertz=SendMessage(GetDlgItem(hDlg,IDC_FiftyNineHertz),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
+			RomShankleAziAI=SendMessage(GetDlgItem(hDlg,SHANKLE_AZI_AI),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
+			RomAltEmulateAI=SendMessage(GetDlgItem(hDlg,ALTERNATE_EMUAI),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
+			RomSyncGametoAudio=SendMessage(GetDlgItem(hDlg,IDC_SyncGametoAudio),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
+			RomJAI=SendMessage(GetDlgItem(hDlg,IDC_JAI),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
 			SaveRomSettings();
 		}
 		break;

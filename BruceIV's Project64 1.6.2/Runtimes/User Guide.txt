@@ -358,9 +358,10 @@ all relevant optimizations for any issues.
 
 
 The default area is just the defaults used for the ROM Settings whenever it says “Default”.
-Then there is the force settings, they are self-explanatory. Keep in mind that activating these settings
-doesn't overwrite Game.ini entries so it is good for testing, but disactivating them overwrites entries.
-Just do not go to ROM Settings tab and disactivate these force-enable/disable settings at the same time.
+Then there is the force settings, for testing and preference. Always interpreting VR4300i CPU will lower
+performance while increasing stability for the most part, but this isn't always true with some ROMhacks.
+Always interpreting VR4300i CPU and always enabling Align DMA exposes regular N64 compatibility problems
+in games which would be ignored. Unchecking Skip Breakpoints can also expose N64 compatibility problems.
 --------------------------------------------------------------------------------------------------------
 
 Section#7 Known Issues

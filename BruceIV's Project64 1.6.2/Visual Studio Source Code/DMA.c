@@ -37,7 +37,7 @@ void PI_DMA_READ () {
 		return;
 	}
 	if (PI_CART_ADDR_REG>=0x08000000&&PI_CART_ADDR_REG <=0x08010000||PI_CART_ADDR_REG>=0x08040000&&PI_CART_ADDR_REG <=0x08050000||PI_CART_ADDR_REG>=0x08080000&&PI_CART_ADDR_REG <=0x08090000) {
-		if (SaveUsing==Auto) { SaveUsing=SRAM;}
+		if (SaveUsing==Default) { SaveUsing=SRAM;}
 		if (SaveUsing==SRAM) {
 			DMAtoSRAM(
 				N64MEM+PI_DRAM_ADDR_REG,
@@ -127,7 +127,7 @@ void PI_DMA_WRITE () {
 		return;
 	}
 	if (PI_CART_ADDR_REG>=0x08000000&&PI_CART_ADDR_REG <=0x08010000||PI_CART_ADDR_REG>=0x08040000&&PI_CART_ADDR_REG <=0x08050000||PI_CART_ADDR_REG>=0x08080000&&PI_CART_ADDR_REG <=0x08090000) {
-		if (SaveUsing==Auto) { SaveUsing=SRAM;}
+		if (SaveUsing==Default) { SaveUsing=SRAM;}
 		if (SaveUsing==SRAM) {
 			DMAfromSRAM(
 				N64MEM+PI_DRAM_ADDR_REG,

@@ -34,14 +34,14 @@ extern "C" {
 #include "Settings API.h"
 #include "ROM Browser.h"
 #include "Language.h"
-/*Source Code Version 26 Rel 1.03 (WIP). Made at 07:34PM 10/19/2026*/
+/*Source Code Version 26 Rel 1.03 (WIP). Made at 08:23PM 10/20/2026*/
 #define AppName						"BruceIV's Project64 1.6.2"
 #define IniName						"Game.ini"
 #define CheatIniName				"Cheat.ini"
 #define LangFileName				"English.txt"
-#define ID_FILE_RECENT_FILE		1000
-#define ID_FILE_RECENT_DIR		1100
-#define ID_LANG_SELECT			2000
+#define ID_FILE_RECENT_FILE		229
+#define ID_FILE_RECENT_DIR		230
+#define ID_LANG_SELECT			231
 #define REG_CACHE_ON		1
 #define REG_CACHE_OFF		2
 #define PROTECT_MEMORY_ENLARGE_BUFFER_ON		1
@@ -72,7 +72,7 @@ typedef struct {
 } ITEM_LIST;
 extern ITEM_LIST ItemList;
 extern LARGE_INTEGER Frequency,Frames[9],LastFrame;
-extern BOOL AutoSleep,AutoHide,CreateStatusBar,RecordRGB,Recursion,LimitFPS,SpeedCap,AutoFullScreen,SystemCF,UsuallyonTop,VideoToScreen,BasicMode,AutoRefreshRomBrowser,DelayHandleGlobalTasks,FirstBoot,UserCancelPluginInit,RefreshRomBrowserOnShutdown;
+extern BOOL AutoSleep,AutoHide,CreateStatusBar,RecordRGB,Recursion,LimitFPS,SpeedCap,AutoFullScreen,SystemCF,UsuallyonTop,VideoToScreen,BasicMode,AutoRefreshRomBrowser,DelayHandleGlobalTasks,FirstBoot,UserCancelPluginInit,RefreshRomBrowserOnShutdown,FixFEDMAtoNonFEDMA,FixFDCPURtoNonFDCPUR,FixFDTLBtoNonFDTLB;
 extern DWORD CurrentFrame,SystemUseCache,SystemProtectMemoryEnlargeBuffer,RomsToRemember,RomDirsToRemember;
 extern HWND hMainWindow,hHiddenWin,hStatusWnd,hRomList;
 extern char CurrentSave[256];

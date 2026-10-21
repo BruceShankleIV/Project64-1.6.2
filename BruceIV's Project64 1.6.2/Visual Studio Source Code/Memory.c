@@ -1196,7 +1196,7 @@ int r4300i_LW_NonMemory (DWORD PAddr,DWORD*Value) {
 		}
 		break;
 	case 0x08000000:
-		if (SaveUsing==Auto) {SaveUsing=FlashRAM;}
+		if (SaveUsing==Default) {SaveUsing=FlashRAM;}
 		if (SaveUsing!=FlashRAM) {
 			*Value=PAddr&0xFFFF;
 			*Value=(*Value<<16)|*Value;
@@ -1631,7 +1631,7 @@ int r4300i_SW_NonMemory (DWORD PAddr,DWORD Value) {
 		break;
 	case 0x08000000:
 		if (PAddr!=0x08010000) return FALSE;
-		if (SaveUsing==Auto) {SaveUsing=FlashRAM;}
+		if (SaveUsing==Default) {SaveUsing=FlashRAM;}
 		if (SaveUsing!=FlashRAM) return TRUE;
 		WriteToFlashCommand(Value);
 		break;
