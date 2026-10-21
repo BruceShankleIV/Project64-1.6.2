@@ -44,6 +44,7 @@ LARGE_INTEGER Frequency,Frames[9],LastFrame;
 BOOL AutoSleep,AutoHide,CreateStatusBar,RecordRGB,Recursion,LimitFPS,SpeedCap,AutoFullScreen,SystemCF,UsuallyonTop,VideoToScreen,BasicMode,AutoRefreshRomBrowser,DelayHandleGlobalTasks=FALSE,FirstBoot=FALSE,UserCancelPluginInit=FALSE,RefreshRomBrowserOnShutdown=TRUE,FixFEDMAtoNonFEDMA=FALSE,FixFDCPURtoNonFDCPUR=FALSE,FixFDTLBtoNonFDTLB=FALSE;
 DWORD CurrentFrame,SystemUseCache,SystemProtectMemoryEnlargeBuffer,RomsToRemember,RomDirsToRemember;
 HWND hMainWindow,hHiddenWin,hStatusWnd,hRomList=0;
+int cropHeight=0;
 char CurrentSave[256];
 HMENU hMainMenu;
 HINSTANCE hInst;
@@ -830,7 +831,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 				FetchScreenAndVideoDir(Directory);
 				CaptureScreen(Directory);
 			} else {
-				int fileIndex=0,rowSize,cropHeight=0,sourceX=0,sourceY=0;
+				int fileIndex=0,rowSize,sourceX=0,sourceY=0;
 				char outputFile[_MAX_PATH],Directory[_MAX_PATH],*IniFile,Identifier[256],GameName[256];
 				HDC hScreenDC,hMemoryDC;
 				HBITMAP hBitmap,hOldBitmap;
@@ -1111,7 +1112,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 		case ID_OPTIONS_GAMECAPTURE:
 		{
 			char path_buffer[_MAX_PATH],drive[_MAX_DRIVE],dir[_MAX_DIR],Runtimesdir[_MAX_DIR],ffmpegPath[_MAX_PATH],outputFile[_MAX_PATH],Directory[_MAX_PATH],*IniFile,Identifier[256],cmd[4096],WinTitle[512],GameName[256];
-			int fileIndex=0,cropHeight=0;
+			int fileIndex=0;
 			RECT statusRect;
 			GetWindowText(hMainWindow,WinTitle,sizeof(WinTitle));
 			GetModuleFileName(0,path_buffer,sizeof(path_buffer));
