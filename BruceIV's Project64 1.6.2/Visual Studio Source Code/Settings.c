@@ -105,6 +105,9 @@ void ChangeSettings(HWND hwndOwner) {
 	PROPSHEETPAGE BasicPsp[sizeof(SettingsTabsBasic) / sizeof(SETTINGS_TAB)];
 	PROPSHEETHEADER psh;
 	int count;
+	FixFEDMAtoNonFEDMA=FALSE;
+	FixFDCPURtoNonFDCPUR=FALSE;
+	FixFDTLBtoNonFDTLB=FALSE;
 	for (count=0;count<(sizeof(SettingsTabs) / sizeof(SETTINGS_TAB));count++) {
 		psp[count].dwSize=sizeof(PROPSHEETPAGE);
 		psp[count].dwFlags=PSP_USETITLE;
@@ -136,9 +139,11 @@ void ChangeSettings(HWND hwndOwner) {
 	psh.pfnCallback=0;
 	PropertySheet(&psh);
 	if (!AutoSleep&&!ManualPaused&&(CPU_Paused||CPU_Action.Pause)) PauseCPU();
-	if (FixFEDMAtoNonFEDMA) FixFEDMAtoNonFEDMA=FALSE;
-	if (ForceDisableCpuRecompiler) ForceDisableCpuRecompiler=FALSE;
-	if (FixFDTLBtoNonFDTLB) FixFDTLBtoNonFDTLB=FALSE;
+	if (AutoRefreshRomBrowser&&RefreshRomBrowserOnShutdown) RefreshRomBrowser();
+	if (DelayHandleGlobalTasks) {
+		DelayHandleGlobalTasks=FALSE;
+		HandleGlobalTasks(hHiddenWin);
+	} else SetupMenu(hMainWindow);
 }
 void SetFlagControl (HWND hDlg,BOOL*Flag,WORD CtrlID,int StringID) {
 	SetDlgItemText(hDlg,CtrlID,GS(StringID));

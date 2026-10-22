@@ -178,14 +178,14 @@ char*GS               (int StringID);
 #define NOTE_CORE			168
 #define NOTE_PLUGIN			169
 #define INFO_TITLE			170
-#define INFO_ROM_NAME_TEXT		171
-#define INFO_FILE_NAME_TEXT		172
+#define MENUDES_CREATE_STATUS_BAR	171
+#define STATUSBAR_ON				172
 #define INFO_LOCATION_TEXT		173
-#define INFO_SIZE_TEXT			174
-#define INFO_CART_ID_TEXT		175
-#define INFO_CRC1_TEXT			176
-#define INFO_CRC2_TEXT			177
-#define INFO_CIC_CHIP_TEXT		178
+#define STATUSBAR_OFF				174
+#define CREATE_STATUS_BAR			175
+#define OPTION_AUTO_BROWSER			176
+#define CC_MOD					177
+#define FORCE_DISABLE_RECOMPILER		178
 #define ROM_ALIGN_DMA			179
 #define MSG_CPU_PAUSED			180
 #define MSG_CPU_RESUMED			181
@@ -196,7 +196,7 @@ char*GS               (int StringID);
 #define MSG_FAIL_INIT_CONTROL           186
 #define MSG_FAIL_LOAD_PLUGIN            187
 #define MENU_ADVANCE_DESC		188
-#define MSG_UNABLE_SAVE_STATE              189
+#define MSG_UNABLE_SAVE_STATE           189
 #define MSG_FAIL_OPEN_SAVE				190
 #define MSG_FAIL_OPEN_ZIP               191
 #define MSG_RB_INFO			192
@@ -234,10 +234,4 @@ char*GS               (int StringID);
 #define VIDEOTOSCREEN_OFF		224
 #define RGBREC_ON			225
 #define RGBREC_OFF			226
-#define MENUDES_CREATE_STATUS_BAR	227
-#define STATUSBAR_ON				228
-#define STATUSBAR_OFF				229
-#define CREATE_STATUS_BAR			230
-#define OPTION_AUTO_BROWSER			231
-#define CC_MOD					232
-#define FORCE_DISABLE_RECOMPILER		233
+

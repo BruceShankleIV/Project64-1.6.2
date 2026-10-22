@@ -1,3 +1,7 @@
+Contact Info
+My email: bruceiv.shankle@gmail.com
+Report bugs: discord.gg/cHDxa9vzQM
+
 ********************************************************************************************************
 ---------------------------
 |||||Table of Contents|||||
@@ -11,8 +15,6 @@ Section#6 Emulator Advanced Settings Overview
 Section#7 Known Issues
 Section#8 Credits
 Section#9 Shoutouts
-
-(just ctrl-f the name to navigate to your desired section)
 ********************************************************************************************************
 Section#1 Usage (Personal)
 --------------------------------------------------------------------------------------------------------
@@ -177,7 +179,8 @@ The ROM browser system, controlled by Game.ini, is supposed to work like this:
 You select your ROM directory and then all those ROMs will be loaded in the ROM browser. They get marked
 with colors based on compatibility. Green would indicate that it works with any of the included plugins.
 Yellow would indicate that at least one video, audio, input, or RSP plugin is needed for you to play it.
-Red indicates the game is illegit somehow and I suggest not to play them, especially with this emulator.
+Red indicates the game is illegit somehow and I suggest not to play them, especially with this emulator,
+specifically because it was made using powerful feelings of arrogance, deceit, malice, or a combination.
 
 Green - Compatible
 
@@ -189,7 +192,7 @@ The user should refer to the plugin note for Semicompatible games if given to se
 The user should refer to the plugin note for Compatible games if given to see viable plugin suggestions.
 The plugin note will be found from the settings window after opening the ROM in the ROM Notes section or
 from the ROM Notes window which appears from right clicking the ROM after it gets loaded in the browser.
-And the core notes are for developers and testers, not casual users.
+The core notes only describe emulation quirks and unresolved bugs that likely won't ever get dealt with.
 --------------------------------------------------------------------------------------------------------
 
 Section#6 Emulator Advanced Settings Overview
@@ -561,6 +564,8 @@ Bruce Shankle III - Thank you for setting up internet for my PC and being a good
 l0lgamez - Thank you for testing earlier builds of this project!
 
 MTA - Thanks for contributing many gameshark bugfixes for Ocarina of Time/ROMhacks and some cheat codes!
+
+E-Gor (co-creator of the DHF Z64 hack) - Thanks for aknowledging my brilliancy by calling me a genius!
 
 TheGent & Smiff - Thank you for establishing the original Game config and Cheat database support files.
 

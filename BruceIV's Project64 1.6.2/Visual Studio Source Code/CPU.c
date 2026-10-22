@@ -152,10 +152,10 @@ void HandleEmulationCrash (char*ExitPoint) {
 		}
 	}
 	if (strcmp(GfxDLL,"GLideN64.dll")==0&&inFullScreen) {
-		DisplayError("Emulator Crash: %s\n\nThis app will now be force-killed from crashing with GLideN64 video plugin initialized in fullscreen mode.\n\nScreenshot taken on emulation crash. That screenshot may make it easier to replicate and solve this crash if the cause is visible.\n\nPlease consider reporting this crash and any other bugs here: discord.gg/cHDxa9vzQM",ExitPoint);
+		DisplayError("Crash Report: %s\n\nProject64 will now be force-killed from crashing with GLideN64 in fullscreen mode.\n\nShare the crash report (and screenshot if useful, check the screenshots directory) with the current maintainer if it wasn't the game's fault so the crash can be replicated and fixed",ExitPoint);
 		SendMessage(hMainWindow,WM_COMMAND,ID_FILE_EXIT,0);
 	}
-	DisplayError("Emulator Crash: %s\n\nEmulation will now be ended from emu-crash. This app would be force-killed if crashing with GLideN64 video plugin initialized in fullscreen mode.\n\nScreenshot taken on emulation crash. That screenshot may make it easier to replicate and solve this crash if the cause is visible.\n\nPlease consider reporting this crash and any other bugs here: discord.gg/cHDxa9vzQM",ExitPoint);
+	DisplayError("Crash Report: %s\n\nEmulation will now be ended from crashing.\n\nShare the crash report (and screenshot if useful, check the screenshots directory) with the current maintainer if it wasn't the game's fault so the crash can be replicated and fixed",ExitPoint);
 	SendMessage(hMainWindow,WM_COMMAND,ID_FILE_ENDEMULATION,0);
 }
 void INITIALIZECPUFlags () {

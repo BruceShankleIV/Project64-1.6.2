@@ -41,7 +41,7 @@
 #include "Resource.h"
 #include "SummerCart.h"
 LARGE_INTEGER Frequency,Frames[9],LastFrame;
-BOOL AutoSleep,AutoHide,CreateStatusBar,RecordRGB,Recursion,LimitFPS,SpeedCap,AutoFullScreen,SystemCF,UsuallyonTop,VideoToScreen,BasicMode,AutoRefreshRomBrowser,DelayHandleGlobalTasks=FALSE,FirstBoot=FALSE,UserCancelPluginInit=FALSE,RefreshRomBrowserOnShutdown=TRUE,FixFEDMAtoNonFEDMA=FALSE,FixFDCPURtoNonFDCPUR=FALSE,FixFDTLBtoNonFDTLB=FALSE;
+BOOL AutoSleep,AutoHide,CreateStatusBar,RecordRGB,Recursion,LimitFPS,SpeedCap,AutoFullScreen,SystemCF,UsuallyonTop,VideoToScreen,BasicMode,AutoRefreshRomBrowser,DelayHandleGlobalTasks=FALSE,FirstBoot=FALSE,UserCancelPluginInit=FALSE,RefreshRomBrowserOnShutdown=TRUE,FixFEDMAtoNonFEDMA,FixFDCPURtoNonFDCPUR,FixFDTLBtoNonFDTLB;
 DWORD CurrentFrame,SystemUseCache,SystemProtectMemoryEnlargeBuffer,RomsToRemember,RomDirsToRemember;
 HWND hMainWindow,hHiddenWin,hStatusWnd,hRomList=0;
 int cropHeight=0;
@@ -115,14 +115,14 @@ LRESULT CALLBACK RomInfoProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 	switch (uMsg) {
 	case WM_INITDIALOG:
 		SetWindowText(hDlg,GS(INFO_TITLE));
-		SetDlgItemText(hDlg,IDC_ROM_NAME,GS(INFO_ROM_NAME_TEXT));
-		SetDlgItemText(hDlg,IDC_FILE_NAME,GS(INFO_FILE_NAME_TEXT));
+		SetDlgItemText(hDlg,IDC_ROM_NAME,GS(RB_INTERNALNAME));
+		SetDlgItemText(hDlg,IDC_FILE_NAME,GS(RB_FILENAME));
 		SetDlgItemText(hDlg,IDC_LOCATION,GS(INFO_LOCATION_TEXT));
-		SetDlgItemText(hDlg,IDC_ROM_SIZE,GS(INFO_SIZE_TEXT));
-		SetDlgItemText(hDlg,IDC_CART_ID,GS(INFO_CART_ID_TEXT));
-		SetDlgItemText(hDlg,IDC_CRC1,GS(INFO_CRC1_TEXT));
-		SetDlgItemText(hDlg,IDC_CRC2,GS(INFO_CRC2_TEXT));
-		SetDlgItemText(hDlg,IDC_CIC_CHIP,GS(INFO_CIC_CHIP_TEXT));
+		SetDlgItemText(hDlg,IDC_ROM_SIZE,GS(RB_ROMSIZE));
+		SetDlgItemText(hDlg,IDC_CART_ID,GS(RB_CART_ID));
+		SetDlgItemText(hDlg,IDC_CRC1,GS(RB_CRC1));
+		SetDlgItemText(hDlg,IDC_CRC2,GS(RB_CRC2));
+		SetDlgItemText(hDlg,IDC_CIC_CHIP,GS(RB_CICCHIP));
 		memcpy(&String[1],(void*)(&RomHeader[0x20]),20);
 		for(count=1 ;count<21;count+=4) {
 			String[count]^=String[count+3];
@@ -828,6 +828,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 			char Directory[256],statusMsg[256];
 			static BOOL toggle=FALSE;
 			if (VideoToScreen) {
+				if (CaptureScreen==0) break;
 				FetchScreenAndVideoDir(Directory);
 				CaptureScreen(Directory);
 			} else {
@@ -1170,11 +1171,6 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 			ChangeSettings(hWnd);
 			if (AutoRefreshRomBrowser&&Recursion&&!RefreshRomBrowserOnShutdown) RefreshRomBrowser();
 		}
-		if (AutoRefreshRomBrowser&&RefreshRomBrowserOnShutdown) RefreshRomBrowser();
-		if (DelayHandleGlobalTasks) {
-			DelayHandleGlobalTasks=FALSE;
-			HandleGlobalTasks(hHiddenWin);
-		} else SetupMenu(hMainWindow);
 		UsuallyonTopWindow(hWnd);
 		break;
 		case ID_OPTIONS_CHEATS:
@@ -1450,11 +1446,10 @@ void SetupMenu (HWND hWnd) {
 		EnableMenuItem(hMenu,ID_SYSTEM_LIMITFPS,State);
 		EnableMenuItem(hMenu,ID_SYSTEM_SPEEDCAP,State);
 	}
-	if (!CPURunning&&strlen(LastRoms[0])>0) EnableMenuItem(hMenu,ID_FILE_STARTEMULATION,MFS_ENABLED);
+	if (strlen(LastRoms[0])>0) EnableMenuItem(hMenu,ID_FILE_STARTEMULATION,State);
 	if (strlen(RomName)>0) {
 		EnableMenuItem(hMenu,ID_FILE_ROM_INFO,MFS_ENABLED);
 		EnableMenuItem(hMenu,ID_OPTIONS_CHEATS,MFS_ENABLED);
-		if (!CPURunning) HandleWindowTitle();
 	}
 	hMainMenu=hMenu;
 }
@@ -1742,7 +1737,7 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpszArgs,in
 #elif MODERN_PLUGINS
 #define PLUGINS "Modern Plugins - Project64_Modern.exe uses GLideN64 Video, Azi Audio, and N-Rage's Input as default plugins for modern PC's and modern ROMhacks. Switching to Jabo's D3D8 is necessary for most legacy ROMhacks."
 #endif
-		sprintf(IntroMessage,"About - This is an updated Project64 v1.6.1 that's semi-maintained for casual play of retro and ROMhack games with minimal system requirements. See User Guide or contact me for info and troubleshooting.\n\n\n%s\n\n\nContact Info -\nMy email: bruceiv.shankle@gmail.com\nReport bugs: discord.gg/cHDxa9vzQM\n\nI'm usually busy so be patient or try to resolve an issue yourself and post any solutions you find.\n\n\n\n																- Edwin Bruce Shankle IV",PLUGINS);
+		sprintf(IntroMessage,"About - This is an updated Project64 v1.6.1 that's semi-maintained for casual play of retro and ROMhack games with minimal system requirements.\n\n\n%s\n\n\nSee User Guide for my contact info and useful information. Please be patient if expecting a response from me.\n\n\n- Edwin Bruce Shankle IV",PLUGINS);
 		MessageBox(0,IntroMessage,AppName,MB_OK|MB_ICONINFORMATION|MB_SETFOREGROUND);
 	}
 	ShowWindow(hMainWindow,SW_SHOW);

@@ -569,7 +569,6 @@ void HandleGlobalTasks (HWND hWnd) {
 				goto SIZE_MAXIMIZE;
 			}
 			if (strcmp(GfxDLL,"GLideN64.dll")==0&&!GonetzGLHasBeenSetupFirst) GonetzGLHasBeenSetupFirst=TRUE;
-			HandleWindowTitle();
 			if (EmulateAI&&!LimitFPS) {
 				LimitFPS=TRUE;
 				HandleTimers();

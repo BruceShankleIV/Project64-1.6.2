@@ -33,7 +33,6 @@ void HandleTimers			();
 void OpenChosenFile			(void);
 void ReadRomSettings         ();
 void SaveRecentFiles         ();
-void HandleWindowTitle	     ();
 void SaveRomSettings         ();
 void SetRomDirectory         (char*Directory);
 #define MenuLocOfUsedFiles	11

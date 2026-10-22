@@ -1,18 +1,8 @@
-⚠Quick Cyber Safety Disclaimer⚠ - Due to general trends of animosity, arrogance, deception, doxxing, theft, and sexually immoral behavior commonly exhibited online, especially from channels and servers involved with ROMhacks, it's strongly suggested to avoid any servers managed by or private chatrooms from users associated with ROMhacks. If you heed this warning, simply download N64 ROMhacks from the ROMhacks collection repository linked to down below which features ~150 ROMhack patches with optimized emulation settings and fixes already added in the emulator. If you involve yourself online especially via the Discord platform to discuss or obtain ROMhacks, be mindful of your personal interactions. If you are a child, have your parent or guardian monitor your activities on the internet to avoid being abused and harmed, especially if involved with any ROMhack-related websites or servers. Also understand that malicious behavior online isn't exclusive to ROMhacks and is prevalent across Discord generally.
-
-## Download Links
-
-[The download link for the emulator](https://github.com/BruceShankleIV/Project64-1.6.2/releases).
-
-[Download link for ROMhacks](https://github.com/BruceShankleIV/Project64-1.6.2-ROMhacks-Collection).
-
-A collection (possibly temporary) of texture packs is available [here](https://mega.nz/folder/xL5BwaaQ#2yLK6SfwElrnJQtphdqXKw) as well.
-
 ## About
 
 This is an updated Project64 v1.6.1 that's semi-maintained for casual play of retro and ROMhack games with minimal system requirements. See User Guide or contact me for info and troubleshooting.
 
-Contact Info -
+Contact Info
 My email: bruceiv.shankle@gmail.com
 Report bugs: discord.gg/cHDxa9vzQM
 
@@ -28,6 +18,16 @@ If you'd like to experience the games I grew up playing, here's a list of them a
 * The Legend of Zelda - Majora's Mask (U Region for N64, not GC. Jabo's Direct3D8 has the least graphics issues with the pause menu on this version and has improved cheat support)
 * Super Mario 64 (U version, has LOD fix and improved cheat support)
 * Mario Kart 64 (U version, gets 60FPS support)
+
+##⚠Internet Safety Disclaimer⚠ & Obtaining ROMhacks
+
+Due to general trends of animosity, arrogance, deception, doxxing, theft, and sexually immoral behavior commonly exhibited online, especially from channels and servers involved with ROMhacks, it's strongly suggested to avoid any servers managed by or private chatrooms from users associated with ROMhacks. If you heed this warning, simply download N64 ROMhacks from the ROMhacks collection repository linked to down below which features ~150 ROMhack patches with optimized emulation settings and fixes already added in the emulator. If you involve yourself online especially via the Discord platform to discuss or obtain ROMhacks, be mindful of your personal interactions. If you are a child, have your parent or guardian monitor your activities on the internet to avoid being abused and harmed, especially if involved with any ROMhack-related websites or servers. Also understand that malicious behavior online isn't exclusive to ROMhacks and is prevalent across Discord generally.
+
+[Download link for ROMhacks](https://github.com/BruceShankleIV/Project64-1.6.2-ROMhacks-Collection).
+If downloading ROMhacks from this repository, please avoid any hacks labeled “Illegit”. These hacks were produced from strong feelings of arrogance, deceit, malice, or a combination, and are only hosted on this repository as an archive. This currently includes:
+* Decades Later - was created out of arrogance, to make Super Mario 64 “finally a good game” as the author has claimed.
+* Star Road Retooled - was created out of deceit by modifying someone else's game, to reduce and redirect attribution away for the game's creator to an outsider.
+* Multiple hijack edits of B3313 - was created out of malice by stealing content from someone else's game, to bother the game's creator out of spite and intent to do harm which is clear from other actions taken by people involved with the development and presentation of these edits including behaviors such as doxxing/revealing private user information.
 
 ## Aknowledgements
 
@@ -211,6 +211,8 @@ Bruce Shankle III - Thank you for setting up internet for my PC and being a good
 l0lgamez - Thank you for testing earlier builds of this project!
 
 MTA - Thanks for contributing many gameshark bugfixes for Ocarina of Time/ROMhacks and some cheat codes!
+
+E-Gor (co-creator of the DHF Z64 hack) - Thanks for aknowledging my brilliancy by calling me a genius!
 
 TheGent & Smiff - Thank you for establishing the original Game config and Cheat database support files.
 
