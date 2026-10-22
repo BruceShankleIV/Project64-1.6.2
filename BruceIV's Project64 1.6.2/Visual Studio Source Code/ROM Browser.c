@@ -371,7 +371,7 @@ void RomList_OpenRom(LPNMHDR pnmh) {
 	pRomInfo=&ItemList.List[lvItem.lParam];
 	if (!pRomInfo) return;
 	strcpy(CurrentFileName,pRomInfo->szFullFileName);
-	CreateThread(0,0,(LPTHREAD_START_ROUTINE)OpenChosenFile,0,0,0);
+	OpenChosenFile();
 }
 void RomList_SortList () {
 	SORT_FIELDS SortFields;
@@ -460,13 +460,12 @@ void FillRomList (char*Directory) {
 }
 void HandleShutdown () {
 	int screenHeight=GetSystemMetrics(SM_CYSCREEN),screenWidth=GetSystemMetrics(SM_CXSCREEN);
-	if (IsWindowVisible(hRomList)&&__argc==1) return;
+	if (IsWindowVisible(hRomList)) return;
 	if (CPURunning) {
 		CPURunning=FALSE;
 		EnableWindow(hRomList,TRUE);
 		ShowWindow(hRomList,SW_SHOW);
-	} else if (__argc>1) __argc=1;
-	else CreateRomListControl(hMainWindow);
+	} else CreateRomListControl(hMainWindow);
 	HandleGlobalTasks(hHiddenWin);
 	if (screenHeight>=1440&&screenWidth>=1920) ChangeWinSize(hMainWindow,1280,960,0);
 	else if (screenHeight>=1080&&screenWidth>=1440) ChangeWinSize(hMainWindow,800,600,0);

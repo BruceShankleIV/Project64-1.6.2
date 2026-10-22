@@ -419,15 +419,12 @@ void LoadSettings () {
 }
 int InitializeApplication (HINSTANCE hInstance) {
 	INITCOMMONCONTROLSEX IntComStruct;
-	char String[256];
 	CoInitialize(0);
 	IntComStruct.dwSize=sizeof(IntComStruct);
 	IntComStruct.dwICC=ICC_TREEVIEW_CLASSES;
 	InitCommonControls();
 	InitCommonControlsEx(&IntComStruct);
 	hInst=hInstance;
-	sprintf(String,"PJ64 V 1.6.2\\Configuration");
-	LoadLanguage(String);
 	if (!Allocate_Memory()) {
 		DisplayError(GS(MSG_MEM_ALLOC_ERROR));
 		return FALSE;
@@ -494,9 +491,6 @@ void SetRecentRomDir (DWORD Index) {
 	if (Index<0||Index>RomDirsToRemember) return;
 	SetRomDirectory(LastDirs[Index]);
 	SetupMenu(hMainWindow);
-}
-void ResetThreadHGT () {
-	HandleGlobalTasks(hMainWindow);
 }
 LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 	int screenHeight=GetSystemMetrics(SM_CYSCREEN),screenWidth=GetSystemMetrics(SM_CXSCREEN);
@@ -717,7 +711,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 		case ID_PLAYGAME:
 			if (strlen(CurrentRBFileName)>0) {
 				strcpy(CurrentFileName,CurrentRBFileName);
-				CreateThread(0,0,(LPTHREAD_START_ROUTINE)OpenChosenFile,0,0,0);
+				OpenChosenFile();
 			}
 			break;
 		case ID_EDITCHEATS: ChangeRomCheats(hWnd); break;
@@ -744,11 +738,11 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 				RomFileSize=OrigFileSize;
 			}
 			break;
-		case ID_FILE_OPEN_ROM: if (ChooseN64RomToOpen()) CreateThread(0,0,(LPTHREAD_START_ROUTINE)OpenChosenFile,0,0,0); break;
+		case ID_FILE_OPEN_ROM: if (ChooseN64RomToOpen()) OpenChosenFile(); break;
 		case ID_FILE_ROM_INFO: RomInfo(); break;
 		case ID_FILE_STARTEMULATION:
 			strcpy(CurrentFileName,LastRoms[0]);
-			CreateThread(0,0,(LPTHREAD_START_ROUTINE)OpenChosenFile,0,0,0);
+			OpenChosenFile();
 			break;
 		case ID_FILE_ENDEMULATION:
 			if (inFullScreen) {
@@ -764,8 +758,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 		case ID_FILE_EXIT: DestroyWindow(hWnd); break;
 		case ID_CPU_RESET:
 			EndEmulation();
-			CreateThread(0,0,(LPTHREAD_START_ROUTINE)ResetThreadHGT,0,0,0);
-			// Issue: If CPU thread is ongoing and attempting to transition to Ice LLE, Ice LLE cannot start another CPU Thread with GLideN64 before it initializes, causing a crash later. Due to this, a dedicated reset thread for HandleGlobalTasks(hMainWindow); is used.
+			HandleGlobalTasks(hMainWindow);
 			break;
 		case ID_CPU_PAUSE:
 			ManualPaused=TRUE;
@@ -1271,7 +1264,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 		DragQueryFile(hDrop,0,CurrentFileName,sizeof(CurrentFileName));
 		DragFinish(hDrop);
 		SetForegroundWindow(hWnd);
-		CreateThread(0,0,(LPTHREAD_START_ROUTINE)OpenChosenFile,0,0,0);
+		OpenChosenFile();
 		break;
 	}
 	default:
@@ -1635,6 +1628,9 @@ void TerminatePreviousInstance () {
 }
 int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpszArgs,int nWinMode) {
 	int screenHeight=GetSystemMetrics(SM_CYSCREEN),screenWidth=GetSystemMetrics(SM_CXSCREEN);
+	char*IniFile,String[256],String2[256],title[256];
+	sprintf(String,"PJ64 V 1.6.2\\Configuration");
+	LoadLanguage(String);
 	TerminatePreviousInstance();
 	HANDLE hJob=CreateJobObject(0,0);
 	JOBOBJECT_BASIC_UI_RESTRICTIONS jbur={0};
@@ -1674,7 +1670,6 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpszArgs,in
 	AccelRomBrowser=LoadAccelerators(hInst,MAKEINTRESOURCE(IDR_ROMBROWSER));
 	hHiddenWin=CreateWindow(AppName,AppName,WS_OVERLAPPED|WS_CLIPCHILDREN|WS_CLIPSIBLINGS|WS_SYSMENU|WS_MINIMIZEBOX,X,Y,4,3,0,0,hInst,0);
 	if (!hHiddenWin) return FALSE;
-	char*IniFile,String[256],String2[256],title[256];
 	IniFile=GetIniFileName();
 	_GetPrivateProfileString("Meta","Version","",String,sizeof(String),IniFile);
 	_GetPrivateProfileString("Meta","Date","",String2,sizeof(String2),IniFile);
@@ -1744,8 +1739,7 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpszArgs,in
 	if (__argc>1) {
 		SetupMenu(hMainWindow);
 		strcpy(CurrentFileName,__argv[1]);
-		CreateThread(0,0,(LPTHREAD_START_ROUTINE)OpenChosenFile,0,0,0);
-		if (!CPURunning) CreateRomListControl(hMainWindow);
+		OpenChosenFile();
 	} else HandleShutdown();
 	while (GetMessage(&msg,0,0,0)) {
 		if (!CPURunning&&TranslateAccelerator(hMainWindow,AccelRomBrowser,&msg)) continue;

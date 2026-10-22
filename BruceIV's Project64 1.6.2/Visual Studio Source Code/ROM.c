@@ -288,7 +288,7 @@ void LoadRecentRom (DWORD Index) {
 	Index-=ID_FILE_RECENT_FILE;
 	if (Index<0||Index>RomsToRemember) return;
 	strcpy(CurrentFileName,LastRoms[Index]);
-	CreateThread(0,0,(LPTHREAD_START_ROUTINE)OpenChosenFile,0,0,0);
+	OpenChosenFile();
 }
 void LoadRomHeader () {
 	char drive[_MAX_DRIVE],FileName[_MAX_DIR],dir[_MAX_DIR],ext[_MAX_EXT],zname[132];
