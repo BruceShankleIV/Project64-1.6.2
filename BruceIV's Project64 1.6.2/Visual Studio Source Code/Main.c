@@ -820,7 +820,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 		{
 			char Directory[256],statusMsg[256];
 			static BOOL toggle=FALSE;
-			if (VideoToScreen) {
+			if (VideoToScreen||inFullScreen&&strcmp(GfxDLL,"GLideN64.dll")==0) {
 				if (CaptureScreen==0) break;
 				FetchScreenAndVideoDir(Directory);
 				CaptureScreen(Directory);
@@ -849,8 +849,15 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 					if (!GetClientRect(hMainWindow,&rc)) break;
 					if (GetWindowRect(hStatusWnd,&statusRect)) cropHeight=statusRect.bottom-statusRect.top;
 					screenWidth=rc.right-rc.left;
-					screenHeight=rc.bottom-rc.top;
-					screenHeight-=cropHeight;
+					screenHeight=rc.bottom-rc.top-cropHeight;
+					if (screenWidth>0&&(screenWidth&1)) {
+						sourceX=1;
+						screenWidth--;
+					}
+					if (screenHeight>0&&(screenHeight&1)) {
+						sourceY=1;
+						screenHeight--;
+					}
 				}
 				hScreenDC=GetDC(hMainWindow);
 				if (hScreenDC==0) break;
@@ -866,7 +873,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 					break;
 				}
 				hOldBitmap=(HBITMAP)SelectObject(hMemoryDC,hBitmap);
-				BitBlt(hMemoryDC,0,0,screenWidth,screenHeight,hScreenDC,0,0,SRCCOPY);
+				BitBlt(hMemoryDC,0,0,screenWidth,screenHeight,hScreenDC,sourceX,sourceY,SRCCOPY);
 				if (!AutoHide) {
 					CURSORINFO ci;
 					ICONINFO ii;
@@ -925,8 +932,8 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 			sprintf(statusMsg,"%s %s",GS(SCREENSHOT_TAKEN),toggle?"<<":">>");
 			SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)statusMsg);
 			toggle=!toggle;
-			break;
 		}
+		break;
 		case ID_SYSTEM_LIMITFPS:
 			if (SyncGametoAudio) break;
 			CheckedMenuItem(ID_SYSTEM_LIMITFPS,&LimitFPS,"Limit FPS");
@@ -1065,6 +1072,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 		case ID_OPTIONS_UsuallyonTop:
 			CheckedMenuItem(ID_OPTIONS_UsuallyonTop,&UsuallyonTop,"Usually on Top");
 			SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)(UsuallyonTop?GS(USUALLYONTOP_ON):GS(USUALLYONTOP_OFF)));
+			if (hManageWindow) UsuallyonTopWindow(hManageWindow);
 			UsuallyonTopWindow(hWnd);
 			break;
 		case ID_OPTIONS_VideoToScreen:
@@ -1127,7 +1135,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 				else sprintf(outputFile,"%s\\%s %04d%s.mp4",Directory,GameName,fileIndex,RecordRGB?"_RGB":"");
 				fileIndex++;
 			} while (GetFileAttributes(outputFile)!=INVALID_FILE_ATTRIBUTES);
-			sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab %s-framerate 60 -i title=\"%s\" -vf \"crop=iw:ih-%d:0:0\" -level 4.1 %s-crf 14 -pix_fmt %s -preset veryfast ""\"%s\"",drive,Runtimesdir,AutoHide?"-draw_mouse 0 ":"",WinTitle,cropHeight,RecordRGB?"-c:v libx264rgb ":"",RecordRGB?"rgb24":"yuv420p",outputFile);
+			sprintf(cmd,"cmd /K cd /d \"%s%s\" && ffmpeg -y -f gdigrab %s-framerate 60 -i title=\"%s\" -vf \"crop=trunc(iw/2)*2:trunc((ih-%d)/2)*2:0:mod(ih-%d\\,2)\" -level 4.1 %s-crf 14 -pix_fmt %s -preset veryfast ""\"%s\"",drive,Runtimesdir,AutoHide?"-draw_mouse 0 ":"",WinTitle,cropHeight,cropHeight,RecordRGB?"-c:v libx264rgb ":"",RecordRGB?"rgb24":"yuv420p",outputFile);
 			STARTUPINFO si;
 			PROCESS_INFORMATION pi;
 			ZeroMemory(&si,sizeof(si));
@@ -1167,8 +1175,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 		UsuallyonTopWindow(hWnd);
 		break;
 		case ID_OPTIONS_CHEATS:
-		if (CPURunning) ManageCheats(0);
-		else ChangeRomCheats(hWnd);
+		ManageCheats(0);
 		break;
 		case ID_HELP_GUIDE:
 			{
@@ -1581,17 +1588,17 @@ void SetCurrentSaveState (HWND hWnd,int State) {
 void HandleModal1 (HWND hWnd) {
 	if (inFullScreen) {
 		if (strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")!=0) ShowCursor(TRUE);
-		SendMessage(hMainWindow,WM_COMMAND,ID_OPTIONS_FULLSCREEN,0);
+		SendMessage(hWnd,WM_COMMAND,ID_OPTIONS_FULLSCREEN,0);
 	}
 	if (UsuallyonTop) {
-		if (hManageWindow) SetWindowPos(hManageWindow,HWND_NOTOPMOST,0,0,0,0,SWP_NOMOVE|SWP_NOSIZE);
+		if (hManageWindow) SetWindowPos(hManageWindow,HWND_NOTOPMOST,0,0,0,0,SWP_NOMOVE|SWP_NOREPOSITION|SWP_NOSIZE);
 		SetWindowPos(hWnd,HWND_NOTOPMOST,0,0,0,0,SWP_NOMOVE|SWP_NOREPOSITION|SWP_NOSIZE);
 	}
 	EnableWindow(hWnd,FALSE);
 }
 void HandleModal2 (HWND hWnd) {
-	if (UsuallyonTop) UsuallyonTopWindow(hMainWindow);
-	SetForegroundWindow(hMainWindow);
+	UsuallyonTopWindow(hWnd);
+	SetForegroundWindow(hWnd);
 	EnableWindow(hWnd,TRUE);
 }
 void TerminatePreviousInstance () {
@@ -1627,8 +1634,11 @@ void TerminatePreviousInstance () {
 	}
 }
 int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpszArgs,int nWinMode) {
-	int screenHeight=GetSystemMetrics(SM_CYSCREEN),screenWidth=GetSystemMetrics(SM_CXSCREEN);
+	const char*regPaths[]={"PJ64 V 1.6.2\\Jabo Ver1.6.2 Regs\\Direct3D8 1.6.2","PJ64 V 1.6.2\\Jabo Ver1.6.2 Regs\\DirectInput7 1.6.2   ",};
+	int screenHeight=GetSystemMetrics(SM_CYSCREEN),screenWidth=GetSystemMetrics(SM_CXSCREEN),i;
 	char*IniFile,String[256],String2[256],title[256];
+	HKEY hKeyResults;	
+	DWORD dwDataTF=0x00000000,dwDataFSH1080p=0x00000438,dwDataFSW1080pFSH25K=0x000005a0,dwDataFSW25K=0X00000780,dwDataOPT1080p=0x00000804,dwDataFSF=0x00000016,dwData960pHeight=0x000003c0,dwData960pWidth=0x00000500,dwDataOPT960p=0x00000807,dwDataRange=0x0000003f,dwDisposition;
 	sprintf(String,"PJ64 V 1.6.2\\Configuration");
 	LoadLanguage(String);
 	TerminatePreviousInstance();
@@ -1679,49 +1689,34 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpszArgs,in
 	hMainWindow=CreateWindow(AppName,title,WS_OVERLAPPED|WS_CLIPCHILDREN|WS_CLIPSIBLINGS|WS_SYSMENU|WS_MINIMIZEBOX,X,Y,4,3,0,0,hInst,0);
 	DragAcceptFiles(hMainWindow,TRUE);
 	if (!hMainWindow) return FALSE;
-	{
-		DWORD dwDataTF=0x00000000,dwDataWH600p=0x00000258,dwDataWW600p=0x00000320,dwDataFSH1080p=0x00000438,dwDataFSW1080pFSH25K=0x000005a0,dwDataFSW25K=0X00000780,dwDataOPT1080p=0x00000804,dwDataFSF=0x00000016,dwData960pHeight=0x000003c0,dwData960pWidth=0x00000500,dwDataOPT960p=0x00000807,dwDataRange=0x0000003f,dwDisposition;
-		const char*regPaths[]={"PJ64 V 1.6.2\\Jabo Ver1.6.2 Regs\\Direct3D8 1.6.2","PJ64 V 1.6.2\\Jabo Ver1.6.2 Regs\\DirectInput7 1.6.2   ",};
-		for (int i=0;i<sizeof(regPaths) / sizeof(regPaths[0]);++i) {
-			HKEY hKeyResults;
-			LONG lRet=RegOpenKeyEx(HKEY_CURRENT_USER,regPaths[i],0,KEY_READ,&hKeyResults);
-			if (lRet!=ERROR_SUCCESS) {
-				lRet=RegCreateKeyEx(HKEY_CURRENT_USER,regPaths[i],0,0,REG_OPTION_NON_VOLATILE,KEY_WRITE,0,&hKeyResults,&dwDisposition);
-				if (lRet==ERROR_SUCCESS) {
-					if (strstr(regPaths[i],"8")) RegSetValueEx(hKeyResults,"Full Screen Format",0,REG_DWORD,(const BYTE*)&dwDataFSF,sizeof(dwDataFSF));
+	for (i=0;i<sizeof(regPaths) / sizeof(regPaths[0]);++i) {
+		LONG lRet=RegOpenKeyEx(HKEY_CURRENT_USER,regPaths[i],0,KEY_READ,&hKeyResults);
+		if (lRet!=ERROR_SUCCESS) {
+			lRet=RegCreateKeyEx(HKEY_CURRENT_USER,regPaths[i],0,0,REG_OPTION_NON_VOLATILE,KEY_WRITE,0,&hKeyResults,&dwDisposition);
+			if (lRet==ERROR_SUCCESS) {
+				if (strstr(regPaths[i],"8")) {
+					RegSetValueEx(hKeyResults,"Full Screen Format",0,REG_DWORD,(const BYTE*)&dwDataFSF,sizeof(dwDataFSF));
 					if (screenHeight>=1440&&screenWidth>=1920) {
-						if (strstr(regPaths[i],"f")) {
-							RegSetValueEx(hKeyResults,"Windowed Height",0,REG_DWORD,(const BYTE*)&dwData960pHeight,sizeof(dwData960pHeight));
-							RegSetValueEx(hKeyResults,"Windowed Width",0,REG_DWORD,(const BYTE*)&dwData960pWidth,sizeof(dwData960pWidth));
-						}
-						if (strstr(regPaths[i],"8")) {
-							RegSetValueEx(hKeyResults,"Full Screen Height",0,REG_DWORD,(const BYTE*)&dwDataFSW1080pFSH25K,sizeof(dwDataFSW1080pFSH25K));
-							RegSetValueEx(hKeyResults,"Full Screen Width",0,REG_DWORD,(const BYTE*)&dwDataFSW25K,sizeof(dwDataFSW25K));
-							RegSetValueEx(hKeyResults,"Options",0,REG_DWORD,(const BYTE*)&dwDataOPT960p,sizeof(dwDataOPT960p));
-						}
+						RegSetValueEx(hKeyResults,"Full Screen Height",0,REG_DWORD,(const BYTE*)&dwDataFSW1080pFSH25K,sizeof(dwDataFSW1080pFSH25K));
+						RegSetValueEx(hKeyResults,"Full Screen Width",0,REG_DWORD,(const BYTE*)&dwDataFSW25K,sizeof(dwDataFSW25K));
+						RegSetValueEx(hKeyResults,"Options",0,REG_DWORD,(const BYTE*)&dwDataOPT960p,sizeof(dwDataOPT960p));
 					} else if (screenHeight>=1080&&screenWidth>=1440) {
-						if (strstr(regPaths[i],"f")) {
-							RegSetValueEx(hKeyResults,"Windowed Height",0,REG_DWORD,(const BYTE*)&dwDataWH600p,sizeof(dwDataWH600p));
-							RegSetValueEx(hKeyResults,"Windowed Width",0,REG_DWORD,(const BYTE*)&dwDataWW600p,sizeof(dwDataWW600p));
-						}
-						if (strstr(regPaths[i],"8")) {
-							RegSetValueEx(hKeyResults,"Full Screen Height",0,REG_DWORD,(const BYTE*)&dwDataFSH1080p,sizeof(dwDataFSH1080p));
-							RegSetValueEx(hKeyResults,"Full Screen Width",0,REG_DWORD,(const BYTE*)&dwDataFSW1080pFSH25K,sizeof(dwDataFSW1080pFSH25K));
-							RegSetValueEx(hKeyResults,"Options",0,REG_DWORD,(const BYTE*)&dwDataOPT1080p,sizeof(dwDataOPT1080p));
-						}
+						RegSetValueEx(hKeyResults,"Full Screen Height",0,REG_DWORD,(const BYTE*)&dwDataFSH1080p,sizeof(dwDataFSH1080p));
+						RegSetValueEx(hKeyResults,"Full Screen Width",0,REG_DWORD,(const BYTE*)&dwDataFSW1080pFSH25K,sizeof(dwDataFSW1080pFSH25K));
+						RegSetValueEx(hKeyResults,"Options",0,REG_DWORD,(const BYTE*)&dwDataOPT1080p,sizeof(dwDataOPT1080p));
 					} else if (screenHeight>=960&&screenWidth>=1280&&strstr(regPaths[i],"8")) {
-						RegSetValueEx(hKeyResults,"Full Screen Height",0,REG_DWORD,(const BYTE*)&dwData960pHeight,sizeof(dwData960pHeight));
-						RegSetValueEx(hKeyResults,"Full Screen Width",0,REG_DWORD,(const BYTE*)&dwData960pWidth,sizeof(dwData960pWidth));
+					RegSetValueEx(hKeyResults,"Full Screen Height",0,REG_DWORD,(const BYTE*)&dwData960pHeight,sizeof(dwData960pHeight));
+					RegSetValueEx(hKeyResults,"Full Screen Width",0,REG_DWORD,(const BYTE*)&dwData960pWidth,sizeof(dwData960pWidth));
 					}
-					if (strstr(regPaths[i],"7")) {
-						RegSetValueEx(hKeyResults,"Range(0)",0,REG_DWORD,(const BYTE*)&dwDataRange,sizeof(dwDataRange));
-						RegSetValueEx(hKeyResults,"Range(1)",0,REG_DWORD,(const BYTE*)&dwDataRange,sizeof(dwDataRange));
-						RegSetValueEx(hKeyResults,"Range(2)",0,REG_DWORD,(const BYTE*)&dwDataRange,sizeof(dwDataRange));
-						RegSetValueEx(hKeyResults,"Range(3)",0,REG_DWORD,(const BYTE*)&dwDataRange,sizeof(dwDataRange));
-					}
-					RegCloseKey(hKeyResults);
-					FirstBoot=TRUE;
 				}
+				if (strstr(regPaths[i],"7")) {
+					RegSetValueEx(hKeyResults,"Range(0)",0,REG_DWORD,(const BYTE*)&dwDataRange,sizeof(dwDataRange));
+					RegSetValueEx(hKeyResults,"Range(1)",0,REG_DWORD,(const BYTE*)&dwDataRange,sizeof(dwDataRange));
+					RegSetValueEx(hKeyResults,"Range(2)",0,REG_DWORD,(const BYTE*)&dwDataRange,sizeof(dwDataRange));
+					RegSetValueEx(hKeyResults,"Range(3)",0,REG_DWORD,(const BYTE*)&dwDataRange,sizeof(dwDataRange));
+				}
+				RegCloseKey(hKeyResults);
+				FirstBoot=TRUE;
 			}
 		}
 	}

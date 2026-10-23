@@ -63,6 +63,8 @@ GLideN64 rev.xxxxxxx - This would be my favorite video plugin if it used Direct3
 		       If you use a modern PC or you want to play modern hacks though, you'll want this.
 		       My 2nd favorite video plugin.
 		       Note: This plugin supports GIM by turning off “Emulate framebuffer”.
+		       Note: This plugin is very buggy with fullscreen usage. You will encounter: screen
+		       tearing, force-kills, and no BMP screenshots support in GLideN64 fullscreen mode.
 
 Project64 Legacy Icepir8's LLE - This plugin is faithful to the graphics of an original N64, in terms of
 				 its blurry low resolution low level style. However, it does not support
@@ -374,7 +376,8 @@ Windowed video capture does not capture sounds, this could get fixed if I find a
 Mouse cursor isn't hidden in fullscreen with Icepir8's LLE because that video plugin hides the cursor.
 
 Fullscreen issues with GLideN64 - Screen tearing all over the place, can't end emulation, any emulation
-crashes in fullscreen with GLideN64 will force the program to shut down because it can't be graceful...
+crashes in fullscreen with GLideN64 force-kill Project64. BMP screenshot type never works with GLideN64
+fullscreen mode either, it just uses the plugin's capturescreen function in that specific circumstance.
 A workaround to the screen tearing in fullscreen is turning framebuffer off. It also fixes input delay,
 but breaks the graphics in most games since it's usually needed.
 

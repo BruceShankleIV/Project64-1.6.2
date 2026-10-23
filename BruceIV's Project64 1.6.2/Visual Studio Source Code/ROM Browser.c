@@ -201,34 +201,9 @@ void RefreshRomBrowser () {
 	if (RefreshRomBrowserOnShutdown) RefreshRomBrowserOnShutdown=FALSE;
 }
 void ResetRomBrowserColumns () {
-	int Column,index,screenHeight=GetSystemMetrics(SM_CYSCREEN),screenWidth=GetSystemMetrics(SM_CXSCREEN),i;
+	int Column,index;
 	LV_COLUMN lvColumn;
 	char szString[300];
-	double n;
-	if (FirstBoot) {
-		if (screenHeight>=2160&&screenWidth>=2880) n=2.003;
-		else if (screenHeight>=1440&&screenWidth>=1920) n=2.026;
-		else if (screenHeight>=1080&&screenWidth>=1440) n=1.261;
-		else n=1.003;
-		for (i=0;i<NoOfFields;++i) switch (RomBrowserFields[i].ID) {
-			case RB_GameName:
-				RomBrowserFields[i].ColWidth=(int)(260*n);
-				break;
-			case RB_InternalName:
-				RomBrowserFields[i].ColWidth=(int)(133*n);
-				break;
-			case RB_FileName:
-				RomBrowserFields[i].ColWidth=(int)(101*n);
-				break;
-			case RB_Crc1:
-				RomBrowserFields[i].ColWidth=(int)(71*n);
-				break;
-			case RB_RomSize:
-				RomBrowserFields[i].ColWidth=(int)(58*n);
-				break;
-		}
-		FirstBoot=FALSE;
-	}
 	memset(&lvColumn,0,sizeof(lvColumn));
 	lvColumn.mask=LVCF_FMT;
 	while (ListView_GetColumn(hRomList,0,&lvColumn)) {
@@ -461,11 +436,12 @@ void FillRomList (char*Directory) {
 void HandleShutdown () {
 	int screenHeight=GetSystemMetrics(SM_CYSCREEN),screenWidth=GetSystemMetrics(SM_CXSCREEN);
 	if (IsWindowVisible(hRomList)) return;
+	if (hRomList) ShowWindow(hRomList,SW_SHOW);
+	else CreateRomListControl(hMainWindow);
 	if (CPURunning) {
 		CPURunning=FALSE;
 		EnableWindow(hRomList,TRUE);
-		ShowWindow(hRomList,SW_SHOW);
-	} else CreateRomListControl(hMainWindow);
+	}
 	HandleGlobalTasks(hHiddenWin);
 	if (screenHeight>=1440&&screenWidth>=1920) ChangeWinSize(hMainWindow,1280,960,0);
 	else if (screenHeight>=1080&&screenWidth>=1440) ChangeWinSize(hMainWindow,800,600,0);
@@ -547,8 +523,7 @@ void SaveRomBrowserColumnInfo () {
 	char  String[256];
 	long  lResult;
 	sprintf(String,"PJ64 V 1.6.2\\Configuration");
-	lResult=RegCreateKeyEx(HKEY_CURRENT_USER,String,0,"",REG_OPTION_NON_VOLATILE,
-		KEY_ALL_ACCESS,0,&hKeyResults,&Disposition);
+	lResult=RegCreateKeyEx(HKEY_CURRENT_USER,String,0,"",REG_OPTION_NON_VOLATILE,KEY_ALL_ACCESS,0,&hKeyResults,&Disposition);
 	if (lResult==ERROR_SUCCESS) {
 		int Column,index;
 		LV_COLUMN lvColumn;
@@ -569,8 +544,7 @@ void SaveRomBrowserColumnPosition (int index,int Position) {
 	HKEY  hKeyResults=0;
 	long  lResult;
 	sprintf(String,"PJ64 V 1.6.2\\Configuration");
-	lResult=RegCreateKeyEx(HKEY_CURRENT_USER,String,0,"",REG_OPTION_NON_VOLATILE,
-		KEY_ALL_ACCESS,0,&hKeyResults,&Disposition);
+	lResult=RegCreateKeyEx(HKEY_CURRENT_USER,String,0,"",REG_OPTION_NON_VOLATILE,KEY_ALL_ACCESS,0,&hKeyResults,&Disposition);
 	if (lResult==ERROR_SUCCESS) {
 		sprintf(szPos,"%d",Position);
 		RegSetValueEx(hKeyResults,RomBrowserFields[index].Name,0,REG_SZ,(CONST BYTE*)szPos,strlen(szPos));
@@ -578,11 +552,23 @@ void SaveRomBrowserColumnPosition (int index,int Position) {
 	}
 }
 void LoadRomBrowserColumnInfo () {
-	char  String[256],szPos[10];
-	DWORD Disposition=0;
-	HKEY  hKeyResults=0;
-	long  lResult;
-	NoOfFields ;
+	char String[256],szPos[10];
+	HKEY hKeyResults=0;
+	long lResult;
+    int screenHeight=GetSystemMetrics(SM_CYSCREEN),screenWidth=GetSystemMetrics(SM_CXSCREEN);
+    double n;
+    if (screenHeight>=2160&&screenWidth>=2880) n=2.003;
+    else if (screenHeight>=1440&&screenWidth>=1920) n=2.026;
+    else if (screenHeight>=1080&&screenWidth>=1440) n=1.261;
+    RomBrowserFields[RB_GameName].ColWidth=(int)(101*n);
+    RomBrowserFields[RB_InternalName].ColWidth=(int)(133*n);
+    RomBrowserFields[RB_FileName].ColWidth=(int)(260*n);
+    RomBrowserFields[RB_Crc1].ColWidth=(int)(71*n);
+    RomBrowserFields[RB_RomSize].ColWidth=(int)(58*n);
+    RomBrowserFields[RB_Status].ColWidth=(int)(71*n);
+    RomBrowserFields[RB_Crc2].ColWidth=(int)(23*n);
+    RomBrowserFields[RB_CartridgeID].ColWidth=(int)(93*n);
+    RomBrowserFields[RB_CICChip].ColWidth=(int)(79*n);
 	sprintf(String,"PJ64 V 1.6.2\\Configuration");
 	lResult=RegOpenKeyEx(HKEY_CURRENT_USER,String,0,KEY_ALL_ACCESS,&hKeyResults);
 	if (lResult==ERROR_SUCCESS) {

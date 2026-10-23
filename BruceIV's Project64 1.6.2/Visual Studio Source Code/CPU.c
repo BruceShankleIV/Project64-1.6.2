@@ -151,11 +151,11 @@ void HandleEmulationCrash (char*ExitPoint) {
 			AutoHide=FALSE;
 		}
 	}
-	if (strcmp(GfxDLL,"GLideN64.dll")==0&&inFullScreen) {
-		DisplayError("Crash Report: %s\n\nProject64 will now be force-killed from crashing with GLideN64 in fullscreen mode.\n\nShare the crash report (and screenshot if useful, check the screenshots directory) with the current maintainer if it wasn't the game's fault so the crash can be replicated and fixed",ExitPoint);
+	if (inFullScreen&&strcmp(GfxDLL,"GLideN64.dll")==0) {
+		DisplayError("Crash Report: %s\n\nProject64 will now be force-killed from crashing with GLideN64 in fullscreen mode.\n\nShare the crash report and any screenshots/videos related to the crash with the current maintainer if it seems related to emulation so the crash can be replicated and solved",ExitPoint);
 		SendMessage(hMainWindow,WM_COMMAND,ID_FILE_EXIT,0);
 	}
-	DisplayError("Crash Report: %s\n\nEmulation will now be ended from crashing.\n\nShare the crash report (and screenshot if useful, check the screenshots directory) with the current maintainer if it wasn't the game's fault so the crash can be replicated and fixed",ExitPoint);
+	DisplayError("Crash Report: %s\n\nEmulation will now be ended from crashing.\n\nShare the crash report and any screenshots/videos related to the crash with the current maintainer if it seems related to emulation so the crash can be replicated and solved",ExitPoint);
 	SendMessage(hMainWindow,WM_COMMAND,ID_FILE_ENDEMULATION,0);
 }
 void INITIALIZECPUFlags () {

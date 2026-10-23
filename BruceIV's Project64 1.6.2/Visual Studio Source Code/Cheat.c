@@ -317,6 +317,7 @@ void ChangeRomCheats(HWND hwndOwner) {
 	char OrigFileName[sizeof(CurrentFileName)];
 	BYTE OrigByteHeader[sizeof(RomHeader)];
 	DWORD OrigFileSize;
+	CloseCheatWindow();
 	//Load information about target rom and back up current information
 	strncpy(OrigFileName,CurrentFileName,sizeof(OrigFileName));
 	memcpy(OrigByteHeader,RomHeader,sizeof(RomHeader));
@@ -1322,7 +1323,7 @@ void ManageCheats (HWND hParent) {
 	if (hParent) {Style=WS_SIZEBOX|WS_SYSMENU;}
 	if (!hParent) {Style=WS_SIZEBOX|WS_SYSMENU|WS_MINIMIZEBOX;}
 	hManageWindow=CreateWindow("PJ64.Cheats","Cheats",Style,X,Y,WindowWidth,WindowHeight,hParent,0,hInst,0);
-	if (UsuallyonTop) SetWindowPos(hManageWindow,HWND_TOPMOST,0,0,0,0,SWP_NOMOVE|SWP_NOSIZE);
+	UsuallyonTopWindow(hManageWindow);
 	RefreshCheatManager();
 	ShowWindow(hManageWindow,SW_SHOW);
 	if (hParent) {

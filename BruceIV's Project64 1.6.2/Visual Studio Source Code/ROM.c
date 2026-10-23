@@ -678,8 +678,8 @@ void OpenChosenFile(void) {
 	ByteSwapRom(ROM,RomFileSize);
 	memcpy(RomHeader,ROM,sizeof(RomHeader));
 	if (!RecalculateCRC()) return;
-	memcpy(&RomName[0],(void*)(ROM+0x20),20);
-	for (count=0;count<20;count+=4) {
+	memcpy(&RomName[0],(void*)(ROM+0x20),26);
+	for (count=0;count<26;count+=4) {
 		RomName[count]^=RomName[count+3];
 		RomName[count+3]^=RomName[count];
 		RomName[count]^=RomName[count+3];
