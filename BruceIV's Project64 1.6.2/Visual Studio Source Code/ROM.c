@@ -477,7 +477,7 @@ void ReadRomSettings() {
 		SetWindowText(hMainWindow,WinTitle);
 	}
 }
-BOOL RecalculateCRC () {
+void RecalculateCRC () {
 	int bootcode,i;
 	unsigned int seed,crc[2],t1,t2,t3,t4,t5,t6,r,d,j;
 	switch (bootcode=6100+GetCicChipID(ROM)) {
@@ -495,7 +495,7 @@ BOOL RecalculateCRC () {
 		seed=0x1FEA617A;
 		break;
 	default:
-		return TRUE;
+		return;
 	}
 	t1=t2=t3=t4=t5=t6=seed;
 	for (i=0x00001000;i<0x00101000;i+=4) {
@@ -533,7 +533,7 @@ BOOL RecalculateCRC () {
 		ROM[0x15]=(crc[1]&0x0000FF00)>>8;
 		ROM[0x14]=(crc[1]&0x000000FF);
 	}
-	return TRUE;
+	return;
 }
 void OpenChosenFile(void) {
 #define ReadFromRomSection	0x400000
@@ -542,7 +542,6 @@ void OpenChosenFile(void) {
 	char String[256],Directory[256],CurrentDir[256],drive[_MAX_DRIVE],FileName[_MAX_DIR],dir[_MAX_DIR],ext[_MAX_EXT],MapFile[_MAX_PATH];
 	long lResult;
 	int count,i;
-	CloseCheatWindow();
 	strcpy(MapFile,CurrentFileName);
 	if (_strnicmp(&CurrentFileName[strlen(CurrentFileName)-4],".ZIP",4)==0) {
 		int len,port=0,FoundRom;
@@ -675,9 +674,10 @@ void OpenChosenFile(void) {
 		AddRecentFile(hMainWindow,CurrentFileName);
 		_splitpath(CurrentFileName,drive,dir,FileName,ext);
 	}
+	CloseCheatWindow();
 	ByteSwapRom(ROM,RomFileSize);
 	memcpy(RomHeader,ROM,sizeof(RomHeader));
-	if (!RecalculateCRC()) return;
+	RecalculateCRC();
 	memcpy(&RomName[0],(void*)(ROM+0x20),26);
 	for (count=0;count<26;count+=4) {
 		RomName[count]^=RomName[count+3];

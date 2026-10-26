@@ -439,6 +439,7 @@ void HandleShutdown () {
 	if (hRomList) ShowWindow(hRomList,SW_SHOW);
 	else CreateRomListControl(hMainWindow);
 	if (CPURunning) {
+		EndEmulation();
 		CPURunning=FALSE;
 		EnableWindow(hRomList,TRUE);
 	}

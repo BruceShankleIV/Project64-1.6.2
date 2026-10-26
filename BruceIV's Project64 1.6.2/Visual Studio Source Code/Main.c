@@ -749,7 +749,6 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 				if (strcmp(GfxDLL,"GLideN64.dll")==0) break;
 				SendMessage(hMainWindow,WM_COMMAND,ID_OPTIONS_FULLSCREEN,0);
 			}
-			EndEmulation();
 			HandleShutdown();
 			SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MSG_EMULATION_ENDED));
 			break;
