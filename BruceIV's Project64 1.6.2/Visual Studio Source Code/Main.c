@@ -1733,8 +1733,8 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpszArgs,in
 		MessageBox(0,IntroMessage,AppName,MB_OK|MB_ICONINFORMATION|MB_SETFOREGROUND);
 	}
 	ShowWindow(hMainWindow,SW_SHOW);
-	if (__argc>1) {
-		SetupMenu(hMainWindow); // Why did I put this here earlier? Related to ROM Browser display on Open ROM from extension association failure?
+	SetupMenu(hMainWindow); // For recent lists with __argc>1/Open ROM from extension association and to display menu options ASAP
+	if (__argc>1) {		
 		strcpy(CurrentFileName,__argv[1]);
 		OpenChosenFile();
 	}
