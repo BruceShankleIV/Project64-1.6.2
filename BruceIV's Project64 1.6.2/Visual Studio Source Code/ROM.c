@@ -552,7 +552,6 @@ void OpenChosenFile(void) {
 		if (file==0) {
 			unzClose(file);
 			DisplayError(GS(OPENROM_FAILED));
-			HandleShutdown();
 			return;
 		}
 		port=unzGoToFirstFile(file);
@@ -562,13 +561,11 @@ void OpenChosenFile(void) {
 			if (unzLocateFile(file,zname,1)!=UNZ_OK) {
 				unzClose(file);
 				DisplayError(GS(MSG_FAIL_OPEN_ZIP));
-				HandleShutdown();
 				return;
 			}
 			if (unzOpenCurrentFile(file)!=UNZ_OK) {
 				unzClose(file);
 				DisplayError(GS(MSG_FAIL_OPEN_ZIP));
-				HandleShutdown();
 				return;
 			}
 			unzReadCurrentFile(file,Test,4);
@@ -579,7 +576,6 @@ void OpenChosenFile(void) {
 					unzCloseCurrentFile(file);
 					unzClose(file);
 					DisplayError(GS(MSG_MEM_ALLOC_ERROR));
-					HandleShutdown();
 					return;
 				}
 				memcpy(ROM,Test,4);
@@ -600,13 +596,11 @@ void OpenChosenFile(void) {
 						DisplayError(GS(MSG_FAIL_OPEN_ZIP));
 						break;
 					}
-					HandleShutdown();
 					return;
 				}
 				if (unzCloseCurrentFile(file)==UNZ_CRCERROR) {
 					unzClose(file);
 					DisplayError(GS(MSG_FAIL_OPEN_ZIP));
-					HandleShutdown();
 					return;
 				}
 				AddRecentFile(hMainWindow,CurrentFileName);
@@ -621,7 +615,6 @@ void OpenChosenFile(void) {
 		if (FoundRom==FALSE) {
 			unzClose(file);
 			DisplayError(GS(MSG_FAIL_IMAGE));
-			HandleShutdown();
 			return;
 		}
 	} else {
@@ -632,7 +625,6 @@ void OpenChosenFile(void) {
 			CloseHandle(hFile);
 			DisplayError(GS(OPENROM_FAILED));
 			if (AutoRefreshRomBrowser&&!RefreshRomBrowserOnShutdown&&ItemList.List) for (i=0;i<ItemList.ListCount;++i) if (!_stricmp(ItemList.List[i].szFullFileName,CurrentFileName)) RefreshRomBrowser();
-			HandleShutdown();
 			return;
 		}
 		SetFilePointer(hFile,0,0,FILE_BEGIN);
@@ -640,14 +632,12 @@ void OpenChosenFile(void) {
 		if (!IsValidRomImage(Test)) {
 			CloseHandle(hFile);
 			DisplayError(GS(MSG_FAIL_IMAGE));
-			HandleShutdown();
 			return;
 		}
 		RomFileSize=GetFileSize(hFile,0);
 		if (!Allocate_ROM()) {
 			CloseHandle(hFile);
 			DisplayError(GS(MSG_MEM_ALLOC_ERROR));
-			HandleShutdown();
 			return;
 		}
 		SetFilePointer(hFile,0,0,FILE_BEGIN);
@@ -658,7 +648,6 @@ void OpenChosenFile(void) {
 			if (!ReadFile(hFile,&ROM[count],dwToRead,&dwRead,0)) {
 				CloseHandle(hFile);
 				DisplayError(GS(OPENROM_FAILED));
-				HandleShutdown();
 				return;
 			}
 			TotalRead+=dwRead;
@@ -667,7 +656,6 @@ void OpenChosenFile(void) {
 		if (RomFileSize!=dwRead) {
 			CloseHandle(hFile);
 			DisplayError(GS(OPENROM_FAILED));
-			HandleShutdown();
 			return;
 		}
 		CloseHandle(hFile);
