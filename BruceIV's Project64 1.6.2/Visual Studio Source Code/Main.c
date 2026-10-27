@@ -1731,10 +1731,11 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpszArgs,in
 	}
 	ShowWindow(hMainWindow,SW_SHOW);
 	if (__argc>1) {
-		SetupMenu(hMainWindow);
+		SetupMenu(hMainWindow); // Why did I put this here earlier? Related to ROM Browser display on Open ROM from extension association failure?
 		strcpy(CurrentFileName,__argv[1]);
 		OpenChosenFile();
-	} else HandleShutdown();
+	}
+	if (!CPURunning) HandleShutdown(); // Load ROM Browser if initial startup or Open ROM from extension association failed
 	while (GetMessage(&msg,0,0,0)) {
 		if (!CPURunning&&TranslateAccelerator(hMainWindow,AccelRomBrowser,&msg)) continue;
 		if (CPURunning) {
