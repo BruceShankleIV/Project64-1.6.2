@@ -435,14 +435,8 @@ void FillRomList (char*Directory) {
 }
 void HandleShutdown () {
 	int screenHeight=GetSystemMetrics(SM_CYSCREEN),screenWidth=GetSystemMetrics(SM_CXSCREEN);
-	if (IsWindowVisible(hRomList)) return;
 	if (hRomList) ShowWindow(hRomList,SW_SHOW);
 	else CreateRomListControl(hMainWindow);
-	if (CPURunning) {
-		EndEmulation();
-		CPURunning=FALSE;
-		EnableWindow(hRomList,TRUE);
-	}
 	HandleGlobalTasks(hHiddenWin);
 	if (screenHeight>=1440&&screenWidth>=1920) ChangeWinSize(hMainWindow,1280,960,0);
 	else if (screenHeight>=1080&&screenWidth>=1440) ChangeWinSize(hMainWindow,800,600,0);
