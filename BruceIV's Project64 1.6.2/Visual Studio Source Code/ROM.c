@@ -662,6 +662,8 @@ void OpenChosenFile(void) {
 		AddRecentFile(hMainWindow,CurrentFileName);
 		_splitpath(CurrentFileName,drive,dir,FileName,ext);
 	}
+		if (CPURunning) EndEmulation();
+	else CPURunning=TRUE;
 	ByteSwapRom(ROM,RomFileSize);
 	memcpy(RomHeader,ROM,sizeof(RomHeader));
 	CloseCheatWindow(); // If called any earlier it can crash the application for some reason
@@ -697,8 +699,6 @@ void OpenChosenFile(void) {
 		ShowWindow(hRomList,SW_HIDE);
 		EnableWindow(hRomList,FALSE);
 	}
-	if (CPURunning) EndEmulation();
-	else CPURunning=TRUE;
 	HandleGlobalTasks(hMainWindow);
 	if (AutoFullScreen) {
 		timeBeginPeriod(16);
