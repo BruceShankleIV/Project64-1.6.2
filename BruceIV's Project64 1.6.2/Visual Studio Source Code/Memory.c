@@ -1254,6 +1254,15 @@ int r4300i_LW_NonMemory (DWORD PAddr,DWORD*Value) {
 BOOL r4300i_LW_VAddr(DWORD VAddr,DWORD*Value) {
 	if (TLB_ReadMap[VAddr>>12]==0) return FALSE;
 	*Value=*(DWORD*)(TLB_ReadMap[VAddr>>12]+VAddr);
+	if (*Value==0x14200005&&(VAddr&0xFF000000)==0x80000000) {
+		const DWORD sBusyLoopPrologue[]={0x3C02A440,0xA7380000,0x8C830000,0x34420010,0x3C0CA440,0x8C680008,0x8D090004,0xAC69000C,0x8C4A0000,0x2D41000B};
+		int sCheckSize=sizeof(sBusyLoopPrologue)/sizeof(*sBusyLoopPrologue),i;
+		for (i=0;i<sCheckSize;i++) {
+			DWORD ivaddr=VAddr-(sCheckSize-i)*4;
+			if (TLB_ReadMap[ivaddr>>12]==0||*(DWORD*)(TLB_ReadMap[ivaddr>>12]+ivaddr)!=sBusyLoopPrologue[i]) break;
+		}
+		if (i==sCheckSize) *Value=0x10000005;
+	}
 	return TRUE;
 }
 int r4300i_SB_NonMemory (DWORD PAddr,BYTE Value) {

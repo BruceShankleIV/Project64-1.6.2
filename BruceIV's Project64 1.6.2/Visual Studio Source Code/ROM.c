@@ -662,7 +662,7 @@ void OpenChosenFile(void) {
 		AddRecentFile(hMainWindow,CurrentFileName);
 		_splitpath(CurrentFileName,drive,dir,FileName,ext);
 	}
-		if (CPURunning) EndEmulation();
+	if (CPURunning) EndEmulation();
 	else CPURunning=TRUE;
 	ByteSwapRom(ROM,RomFileSize);
 	memcpy(RomHeader,ROM,sizeof(RomHeader));
@@ -699,6 +699,7 @@ void OpenChosenFile(void) {
 		ShowWindow(hRomList,SW_HIDE);
 		EnableWindow(hRomList,FALSE);
 	}
+	SetCurrentSaveState(hMainWindow,ID_CURRENTSAVE_DEFAULT);
 	HandleGlobalTasks(hMainWindow);
 	if (AutoFullScreen) {
 		timeBeginPeriod(16);

@@ -537,7 +537,7 @@ void HandleGlobalTasks (HWND hWnd) {
 	if (PluginsInitialized&&!UserCancelPluginInit) {
 		if (CPURunning) {
 			DWORD count;
-		StartEmulation:
+			StartEmulation:
 			RDRAMsize=NewRAMsize;
 			memset(&CPU_Action,0,sizeof(CPU_Action));
 			CPU_Action.hStepping=CreateEvent(0,FALSE,FALSE,0);
@@ -575,7 +575,6 @@ void HandleGlobalTasks (HWND hWnd) {
 				LimitFPS=FALSE;
 				if (SpeedCap) HandleTimers();
 			} else HandleTimers();
-			SetCurrentSaveState(hMainWindow,ID_CURRENTSAVE_DEFAULT);
 			SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MSG_EMULATION_STARTED));
 		} else SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(PLUGINS_INITIALIZED));
 	} else {
