@@ -36,7 +36,7 @@ void ResetRomBrowserColumns    ();
 void ResizeRomListControl      (WORD nWidth,WORD nHeight);
 void RomListDrawItem           (LPDRAWITEMSTRUCT ditem);
 void RomListNotify             (LPNMHDR pnmh);
-void HandleShutdown	       ();
+void OpenRomBrowser	       ();
 void FreeRomBrowser            ();
 void LoadRomBrowserColumnInfo  ();
 void SaveRomBrowserColumnPosition (int index,int Position);

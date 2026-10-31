@@ -138,6 +138,7 @@ BOOL CALLBACK DefaultOptionsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lPara
 		SetFlagControl(hDlg,&ForceDisableTLB,IDC_ForceDisableTLB,FORCE_DISABLE_TLB);
 		SetFlagControl(hDlg,&ForceDisableCpuRecompiler,IDC_ForceDisableCpuRecompiler,FORCE_DISABLE_RECOMPILER);
 		SetFlagControl(hDlg,&ForceEnableDMA,IDC_ForceEnableDMA,FORCE_ENABLE_DMA);
+		SetFlagControl(hDlg,&SkipAudioClear,IDC_SKIP_AudioClear,SKIP_AudioClear_ON_STATE_LOAD);
 		SetFlagControl(hDlg,&ForceAuto16kbit,IDC_ForceAuto16kbit,FORCE_AUTO4kbit);
 		AddDropDownItem(hDlg,IDC_REGCACHE,ON,REG_CACHE_ON,&SystemUseCache);
 		AddDropDownItem(hDlg,IDC_REGCACHE,OFF,REG_CACHE_OFF,&SystemUseCache);
@@ -162,6 +163,8 @@ BOOL CALLBACK DefaultOptionsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lPara
 				RegSetValueEx(hKeyResults,"Always Interpret VR4300i CPU",0,REG_DWORD,(BYTE*)&ForceDisableCpuRecompiler,sizeof(DWORD));
 				ForceEnableDMA=SendMessage(GetDlgItem(hDlg,IDC_ForceEnableDMA),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
 				RegSetValueEx(hKeyResults,"Always Enable Align DMA",0,REG_DWORD,(BYTE*)&ForceEnableDMA,sizeof(DWORD));
+				SkipAudioClear=SendMessage(GetDlgItem(hDlg,IDC_SKIP_AudioClear),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
+				RegSetValueEx(hKeyResults,"Skip Audio Clearance on State Loads",0,REG_DWORD,(BYTE*)&SkipAudioClear,sizeof(DWORD));
 				ForceAuto16kbit=SendMessage(GetDlgItem(hDlg,IDC_ForceAuto16kbit),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
 				RegSetValueEx(hKeyResults,"Always Autodetect With 16kbit",0,REG_DWORD,(BYTE*)&ForceAuto16kbit,sizeof(DWORD));
 				indx=SendMessage(GetDlgItem(hDlg,IDC_REGCACHE),CB_GETCURSEL,0,0);
@@ -423,7 +426,7 @@ BOOL CALLBACK PluginSelectProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 			DWORD Disposition=0;
 			char String[256];
 			if (PluginsChanged(hDlg)==FALSE) {FreePluginList(); break;}
-			if (!CPURunning) DelayHandleGlobalTasks=TRUE;
+			if (!CPURunning) DelayHandlePluginsAndEmulationStartup=TRUE;
 			sprintf(String,"PJ64 V 1.6.2\\Configuration");
 			lResult=RegCreateKeyEx(HKEY_CURRENT_USER,String,0,"",REG_OPTION_NON_VOLATILE,KEY_ALL_ACCESS,0,&hKeyResults,&Disposition);
 			if (lResult==ERROR_SUCCESS) {
@@ -652,7 +655,6 @@ BOOL CALLBACK RomSettingsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) 
 		SetFlagControl(hDlg,&RomFiftyNineHertz,IDC_FiftyNineHertz,FIFTYNINEHERTZ_LANG);
 		SetFlagControl(hDlg,&RomUseTLB,IDC_USE_TLB,ROM_USE_TLB);
 		SetFlagControl(hDlg,&RomShankleAziAI,SHANKLE_AZI_AI,SHANKLE_AZI_AI_LANG);
-		SetFlagControl(hDlg,&RomAltEmulateAI,ALTERNATE_EMUAI,ALTERNATE_EMUAI_LANG);
 		SetFlagControl(hDlg,&RomSyncGametoAudio,IDC_SyncGametoAudio,SyncGametoAudio_LANG);
 		SetFlagControl(hDlg,&RomDelaySI,IDC_DELAY_SI,ROM_DELAY_SI);
 		SetFlagControl(hDlg,&RomRspRecompiler,IDC_RSP_RECOMPILER,FORCE_RSP_RECOMPILER);
@@ -687,7 +689,6 @@ BOOL CALLBACK RomSettingsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) 
 		if (strlen(RomName)==0||!RomCpuRecompiler||RomProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON) EnableWindow(GetDlgItem(hDlg,IDC_CC_MOD),FALSE);
 		if (strlen(RomName)==0||!RomCpuRecompiler||RomCF>1) EnableWindow(GetDlgItem(hDlg,IDC_CF1_CF0),FALSE);
 		if (strlen(RomName)==0||strcmp(RSPDLL,"RSP.dll")!=0||strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")!=0||strcmp(RomName,"THE LEGEND OF ZELDA")==0||strcmp(RomName,"THE MASK OF MUJURA")==0||strcmp(RomName,"ZELDA MAJORA'S MASK")==0||strcmp(RomName,"BANJO KAZOOIE 2")==0||strcmp(RomName,"BANJO TOOIE")==0||strcmp(RomName,"CONKER BFD")==0||strcmp(RomName,"DONKEY KONG 64")==0||strcmp(RomName,"JET FORCE GEMINI")==0||strcmp(RomName,"STAR TWINS")==0||strcmp(RomName,"Perfect Dark")==0) EnableWindow(GetDlgItem(hDlg,IDC_RSP_RECOMPILER),FALSE);
-		if (strlen(RomName)==0||!RomJAI&&!RomShankleAziAI) EnableWindow(GetDlgItem(hDlg,ALTERNATE_EMUAI),FALSE);
 		if (strlen(RomName)==0||strcmp(AudioDLL,"Shankle_Audio.dll")!=0) EnableWindow(GetDlgItem(hDlg,SHANKLE_AZI_AI),FALSE);
 		if (strlen(RomName)==0||strcmp(AudioDLL,"Jabo_Dsound.dll")!=0) EnableWindow(GetDlgItem(hDlg,IDC_JAI),FALSE);
 		if (strlen(RomName)==0||RomJAI||strcmp(AudioDLL,"Jabo_Dsound.dll")!=0) EnableWindow(GetDlgItem(hDlg,IDC_SyncGametoAudio),FALSE);
@@ -718,7 +719,6 @@ BOOL CALLBACK RomSettingsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) 
 			RomUseTLB=SendMessage(GetDlgItem(hDlg,IDC_USE_TLB),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
 			RomFiftyNineHertz=SendMessage(GetDlgItem(hDlg,IDC_FiftyNineHertz),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
 			RomShankleAziAI=SendMessage(GetDlgItem(hDlg,SHANKLE_AZI_AI),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
-			RomAltEmulateAI=SendMessage(GetDlgItem(hDlg,ALTERNATE_EMUAI),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
 			RomSyncGametoAudio=SendMessage(GetDlgItem(hDlg,IDC_SyncGametoAudio),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
 			RomJAI=SendMessage(GetDlgItem(hDlg,IDC_JAI),BM_GETSTATE,0,0)==BST_CHECKED?TRUE:FALSE;
 			SaveRomSettings();
@@ -825,8 +825,8 @@ void ChangeSettings(HWND hwndOwner) {
 	PropertySheet(&psh);
 	if (!AutoSleep&&!ManualPaused&&(CPU_Paused||CPU_Action.Pause)) PauseCPU();
 	if (AutoRefreshRomBrowser&&RefreshRomBrowserOnShutdown) RefreshRomBrowser();
-	if (DelayHandleGlobalTasks) {
-		DelayHandleGlobalTasks=FALSE;
-		HandleGlobalTasks(hHiddenWin);
+	if (DelayHandlePluginsAndEmulationStartup) {
+		DelayHandlePluginsAndEmulationStartup=FALSE;
+		HandlePluginsAndEmulationStartup();
 	} else SetupMenu(hMainWindow);
 }

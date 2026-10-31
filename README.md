@@ -1,6 +1,6 @@
 ## About
 
-This is my update of Project64 v1.6.1 which I semi-maintain for casual retail and ROMhack gaming (minimal system requirements). See User Guide for helpful information, especially regarding personal/legal usage, plugin details, running ROMhacks, using the ROM Browser/ROM Notes system, and Advanced Settings. Please be patient if expecting a response from contacting me as I'm usually quite busy.
+Project64 1.6.2 is a personal update of Project64 1.6.1 made to enjoy retail and ROMhack games with most PC's. See User Guide for helpful information, especially regarding personal/legal usage, plugin details, running ROMhacks, using the ROM Browser/ROM Notes system, and Advanced Settings. Please be patient if expecting a response from contacting me as I am usually quite busy.
 
 Contact Info
 My email: bruceiv.shankle@gmail.com

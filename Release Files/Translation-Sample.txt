@@ -145,7 +145,7 @@ You will not be able to save to or load from your virtual SD card until you comp
 #142# "Register Caching:"
 #143# "Delay SI"
 #144# "Lag"
-#145# "Legacy AiLenChanged"
+#145# "Skip Audio Clearance on State Loads"
 #146# "Limit FPS off"
 #147# "Delay RDP"
 #148# "Delay RSP"

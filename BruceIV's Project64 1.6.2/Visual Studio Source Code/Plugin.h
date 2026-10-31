@@ -262,7 +262,7 @@ void (__cdecl*RumbleCommand)	 (int Control,BOOL bRumble);
 /**********Plugin Functions*********************/
 void GetPluginDir        (char*Directory);
 void FetchScreenAndVideoDir      (char*Directory);
-void HandleGlobalTasks        (HWND hWnd);
+void HandlePluginsAndEmulationStartup        ();
 void SetupPluginsScreen   (HWND hDlg);
 void ShutdownPlugins     (void);
 /**********External Global Variables***************/

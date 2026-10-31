@@ -13,7 +13,7 @@ typedef struct {
 } LANG_STR;
 LANG_STR DefaultString[]={
     {LANGUAGE_AUTHOR,				"BruceIV"},
-    {LANGUAGE_VERSION,				"26 Rel 1.03"},
+    {LANGUAGE_VERSION,				"26 Rel 1.04"},
 	{AUTOHIDE_ON,					"Mouse cursor will now be hidden during recordings, screenshots, and fullscreen"},
 	{INI_CURRENT_LANG,				"Language Database (.txt)"},
 	{INI_AUTHOR,					"Author"},
@@ -155,7 +155,7 @@ LANG_STR DefaultString[]={
 	{REG_CACHE,					"Register Caching:"},
 	{ROM_DELAY_SI,					"Delay SI"},
 	{CF1_CF0,						"Lag"},
-	{ALTERNATE_EMUAI_LANG,			"Legacy AiLenChanged"},
+	{SKIP_AudioClear_ON_STATE_LOAD,		"Skip Audio Clearance on State Loads"},
 	{LIMITFPS_OFF,					"Limit FPS off"},
 	{ROM_DELAY_RDP,				"Delay RDP"},
 	{ROM_DELAY_RSP,				"Delay RSP"},

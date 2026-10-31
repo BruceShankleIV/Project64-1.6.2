@@ -50,7 +50,7 @@
 #define IDC_SNAP_DEFAULT                49
 #define IDC_SELECT_SNAP_DIR             50
 #define SHANKLE_AZI_AI                  51
-#define ALTERNATE_EMUAI                 52
+#define IDC_SKIP_AudioClear					52
 #define IDC_USE_TLB                     53
 #define IDC_AUDIO_SIGNAL                54
 #define IDC_SAVE_TYPE                   55

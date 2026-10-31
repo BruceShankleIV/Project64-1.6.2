@@ -59,11 +59,9 @@ void __cdecl EmuAI_AiLenChanged (void) {
 	if (CountsPerByte==0)	CountsPerByte=(double)(EmuAI_FrameRate*EmuAI_VICntFrame) / (double)(22050*(16 / 4));
 	if (EmuAI_Buffer[0]==0) {
 		Start_COUNT=COUNT_REGISTER;
-		if (RomAltEmulateAI) EmuAI_Buffer[1]=AI_LEN_REG&0x3FFF8;
-		else EmuAI_Buffer[0]=AI_LEN_REG&0x3FFF8;
+		EmuAI_Buffer[0]=AI_LEN_REG&0x3FFF8;
 		AI_STATUS_REG|=0x40000000;
-		if (RomAltEmulateAI) ChangeTimer(AiTimer,(int)(CountsPerByte*50));
-		else ChangeTimer(AiTimer,(int)(CountsPerByte*(double)(double)(EmuAI_Buffer[0])));
+		ChangeTimer(AiTimer,(int)(CountsPerByte*(double)(double)(EmuAI_Buffer[0])));
 	} else if (EmuAI_Buffer[1]==0) {
 		EmuAI_Buffer[1]=AI_LEN_REG&0x3FFF8;
 		AI_STATUS_REG|=0x80000000;
@@ -681,7 +679,7 @@ BOOL Machine_LoadState() {
 		sprintf(FileName,"%s%s",ZipFile,ext);
 	}
 	ChangeCompareTimer();
-	if (AiRomClosed!=0&&!SyncGametoAudio) AiRomClosed();
+	if (AiRomClosed!=0&&!SyncGametoAudio&&!ApplySkipAudioClear) AiRomClosed();
 	DlistCount=0;
 	AlistCount=0;
 	AI_STATUS_REG=0;

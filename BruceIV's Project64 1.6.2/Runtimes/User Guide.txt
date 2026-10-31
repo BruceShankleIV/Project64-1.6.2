@@ -240,9 +240,13 @@ This setting fixes broken interface positions in games but also emulates a limit
 There is currently only one game which needs this setting, but there could be more in the future. If CPU
 Recompiler is turned off, you may want to turn this on if that still doesn't fix a game's graphical bug.
 
-Legacy AiLenChanged: By default, off
-* Forced off until an AI (Audio Interface) setting is enabled
-This is an alternate AI function from Project64 Legacy 1.6.4 which works better sometimes (not always).
+Skip Breakpoints: By default, off
+* On by default for Ocarina of Time ROMs (THE LEGEND OF ZELDA internal name/in app window post-ROM open)
+This skips breakpoints in a game which trigger from special opcode 13. It's used to avoid a sudden death
+scenario in all Ocarina of Time ROMs dumped from N64 cartridges, but has been upgraded to a toggle as of
+release 1.03 for version 26 to futureproof for other games that need it or ROMhacks that won't enjoy it.
+Having this option enabled for OoT means any ROMhack which shares CRC but not internal name will receive
+the setting as it would need to from most likely sharing the same behavior.
 
 Azi AI: By default, off
 * Forced off if sound plugin isn't Shankle's LINK's AziAudio
@@ -292,14 +296,6 @@ main processor, the VR4300 CPU to draw 3D graphics, perform matrix calculations,
 Reality Signal Processor, or RSP, is the portion of the RCP responsible for matrix math, lighting
 calculations, clipping, shading, and other highly parallel graphics tasks, as well as audio processing.
 -
-
-Skip Breakpoints: By default, off
-* On by default for Ocarina of Time ROMs (THE LEGEND OF ZELDA internal name/in app window post-ROM open)
-This skips breakpoints in a game which trigger from special opcode 13. It's used to avoid a sudden death
-scenario in all Ocarina of Time ROMs dumped from N64 cartridges, but has been upgraded to a toggle as of
-release 1.03 for version 26 to futureproof for other games that need it or ROMhacks that won't enjoy it.
-Having this option enabled for OoT means any ROMhack which shares CRC but not internal name will receive
-the setting as it would need to from most likely sharing the same behavior.
 
 Recompile VR4300i CPU: By default, on
 This should almost always be on unless it's not possible to get a game working with recompiler settings,
@@ -367,6 +363,11 @@ Then there is the force settings, for testing and preference. Always interpretin
 performance while increasing stability for the most part, but this isn't always true with some ROMhacks.
 Always interpreting VR4300i CPU and always enabling Align DMA exposes regular N64 compatibility problems
 in games which would be ignored. Unchecking Skip Breakpoints can also expose N64 compatibility problems.
+“Skip Audio Clearance on State Loads” was added because it can make savestates load more smoothly but is
+a moreso a preference: with it disabled, audio will be cleared/restarted everytime which can cause crack
+in quality. It's avoided with skip audio clearance enabled but sound carries over into the loaded state.
+With one exception: audio clearance will always get skipped if Sync Game to Audio is enabled in a game's
+ROM Settings. This is because audio clearance and Sync Game to Audio don't work properly simultaneously.
 --------------------------------------------------------------------------------------------------------
 
 Section#7 Known Issues

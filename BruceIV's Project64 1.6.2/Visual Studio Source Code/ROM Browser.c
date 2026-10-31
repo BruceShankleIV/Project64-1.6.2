@@ -420,11 +420,11 @@ void FillRomList (char*Directory) {
 	} while (FindNextFile(hFind,&fd));
 	FindClose(hFind);
 }
-void HandleShutdown () {
+void OpenRomBrowser () {
 	int screenHeight=GetSystemMetrics(SM_CYSCREEN),screenWidth=GetSystemMetrics(SM_CXSCREEN);
 	if (hRomList) ShowWindow(hRomList,SW_SHOW);
 	else CreateRomListControl(hMainWindow);
-	HandleGlobalTasks(hHiddenWin);
+	HandlePluginsAndEmulationStartup();
 	if (screenHeight>=1440&&screenWidth>=1920) ChangeWinSize(hMainWindow,1280,960,0);
 	else if (screenHeight>=1080&&screenWidth>=1440) ChangeWinSize(hMainWindow,800,600,0);
 	else ChangeWinSize(hMainWindow,640,480,0);

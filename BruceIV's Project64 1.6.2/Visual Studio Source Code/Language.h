@@ -152,7 +152,7 @@ char*GS               (int StringID);
 #define REG_CACHE			142
 #define ROM_DELAY_SI			143
 #define CF1_CF0			144
-#define ALTERNATE_EMUAI_LANG	145
+#define SKIP_AudioClear_ON_STATE_LOAD 145
 #define LIMITFPS_OFF			146
 #define ROM_DELAY_RDP			147
 #define ROM_DELAY_RSP			148

@@ -216,13 +216,14 @@ BOOL LoadRSPDLL(char*RSPDLL) {
 	if (RSPCloseDLL==0) return FALSE;
 	return TRUE;
 }
-void HandleGlobalTasks (HWND hWnd) {
+void HandlePluginsAndEmulationStartup () {
 	int FAIL_MSG;
 	long lResult;
 	char String[256];
 	static DWORD AI_DUMMY=0;
 	DWORD NewRAMsize;
 	HKEY hKeyResults=0;
+	HWND hWnd;
 	sprintf(String,"PJ64 V 1.6.2\\Configuration");
 	lResult=RegOpenKeyEx(HKEY_CURRENT_USER,String,0,KEY_ALL_ACCESS,&hKeyResults);
 	if (lResult==ERROR_SUCCESS) {
@@ -256,14 +257,14 @@ void HandleGlobalTasks (HWND hWnd) {
 		if (ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON) {
 			if (VirtualAlloc(RecompCode,0x03200000,MEM_COMMIT,PAGE_EXECUTE_READWRITE)==0) { // Performance
 				DisplayError(GS(MSG_MEM_ALLOC_ERROR));
-				HandleShutdown();
+				OpenRomBrowser();
 				return;
 			}
 		} else {
 			VirtualFree(RecompCode,0x03200000,MEM_DECOMMIT);
 			if (VirtualAlloc(RecompCode,0x01400000,MEM_COMMIT,PAGE_EXECUTE_READWRITE)==0) {
 				DisplayError(GS(MSG_MEM_ALLOC_ERROR));
-				HandleShutdown();
+				OpenRomBrowser();
 				return;
 			}
 		}
@@ -274,17 +275,17 @@ void HandleGlobalTasks (HWND hWnd) {
 			if (RDRAMsize==0x400000) {
 				if (VirtualAlloc(N64MEM+0x400000,0x400000,MEM_COMMIT,PAGE_READWRITE)==0) {
 					DisplayError(GS(MSG_MEM_ALLOC_ERROR));
-					HandleShutdown();
+					OpenRomBrowser();
 					return;
 				}
 				if (VirtualAlloc((BYTE*)JumpTable+0x400000,0x400000,MEM_COMMIT,PAGE_READWRITE)==0) {
 					DisplayError(GS(MSG_MEM_ALLOC_ERROR));
-					HandleShutdown();
+					OpenRomBrowser();
 					return;
 				}
 				if (VirtualAlloc((BYTE*)DelaySlotTable+(0x400000>>0xA),(0x400000>>0xA),MEM_COMMIT,PAGE_READWRITE)==0) {
 					DisplayError(GS(MSG_MEM_ALLOC_ERROR));
-					HandleShutdown();
+					OpenRomBrowser();
 					return;
 				}
 			} else {
@@ -320,6 +321,9 @@ void HandleGlobalTasks (HWND hWnd) {
 		Lag=RomLag;
 		if (RomUseCache==0) UseCache=SystemUseCache;
 		else UseCache=RomUseCache;
+		if (SkipAudioClear) ApplySkipAudioClear=TRUE;
+		else ApplySkipAudioClear=FALSE;
+		hWnd=hMainWindow;
 		LoadCheats();
 		if (!inFullScreen) {
 			if (strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0) {
@@ -333,7 +337,10 @@ void HandleGlobalTasks (HWND hWnd) {
 				DrawMenuBar(hMainWindow);
 			}
 		}
-	} else SIZE_MAXIMIZE: SetWindowLong(hMainWindow,GWL_STYLE,GetWindowLong(hMainWindow,GWL_STYLE)|WS_SIZEBOX|WS_MAXIMIZEBOX);
+	} else {
+		hWnd=hHiddenWindow;
+		SIZE_MAXIMIZE: SetWindowLong(hMainWindow,GWL_STYLE,GetWindowLong(hMainWindow,GWL_STYLE)|WS_SIZEBOX|WS_MAXIMIZEBOX);
+	}
 	ShutdownPlugins();
 	PluginsInitialized=TRUE;
 	if (!inFullScreen) {
@@ -584,7 +591,7 @@ void HandleGlobalTasks (HWND hWnd) {
 		if (CPURunning) {
 			if (MessageBox(0,GS(FAIL_MSG),AppName,MB_OKCANCEL|MB_ICONEXCLAMATION|MB_SETFOREGROUND)==IDCANCEL) {
 				UserCancelPluginInit=TRUE;
-				HandleShutdown();
+				OpenRomBrowser();
 				UserCancelPluginInit=FALSE;
 				return;
 			}
@@ -593,7 +600,7 @@ void HandleGlobalTasks (HWND hWnd) {
 		if (PluginsInitialized) SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(PLUGINS_NOT_INITIALIZED));
 		else {
 			SendMessage(hMainWindow,WM_COMMAND,ID_OPTIONS_SETTINGS,0);
-			if (CPURunning) HandleGlobalTasks(hMainWindow);
+			if (CPURunning) HandlePluginsAndEmulationStartup();
 		}
 	}
 }

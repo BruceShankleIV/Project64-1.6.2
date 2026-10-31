@@ -41,9 +41,9 @@
 #include "Resource.h"
 #include "SummerCart.h"
 LARGE_INTEGER Frequency,Frames[9],LastFrame;
-BOOL AutoSleep,AutoHide,CreateStatusBar,RecordRGB,Recursion,LimitFPS,SpeedCap,AutoFullScreen,SystemCF,UsuallyonTop,VideoToScreen,BasicMode,AutoRefreshRomBrowser,DelayHandleGlobalTasks=FALSE,FirstBoot=FALSE,UserCancelPluginInit=FALSE,RefreshRomBrowserOnShutdown=TRUE,FixFEDMAtoNonFEDMA,FixFDCPURtoNonFDCPUR,FixFDTLBtoNonFDTLB;
+BOOL AutoSleep,AutoHide,CreateStatusBar,RecordRGB,Recursion,LimitFPS,SpeedCap,AutoFullScreen,SystemCF,UsuallyonTop,VideoToScreen,BasicMode,AutoRefreshRomBrowser,DelayHandlePluginsAndEmulationStartup=FALSE,FirstBoot=FALSE,UserCancelPluginInit=FALSE,RefreshRomBrowserOnShutdown=TRUE,FixFEDMAtoNonFEDMA,FixFDCPURtoNonFDCPUR,FixFDTLBtoNonFDTLB;
 DWORD CurrentFrame,SystemUseCache,SystemProtectMemoryEnlargeBuffer,RomsToRemember,RomDirsToRemember;
-HWND hMainWindow,hHiddenWin,hStatusWnd,hRomList=0;
+HWND hMainWindow,hHiddenWindow,hStatusWnd,hRomList=0;
 int cropHeight=0;
 char CurrentSave[256];
 HMENU hMainMenu;
@@ -356,6 +356,7 @@ void LoadSettings () {
 	ForceDisableTLB=FALSE;
 	ForceDisableCpuRecompiler=FALSE;
 	ForceEnableDMA=FALSE;
+	SkipAudioClear=FALSE;
 	ForceAuto16kbit=FALSE;
 	AutoFullScreen=FALSE;
 	RomsToRemember=10;
@@ -401,6 +402,8 @@ void LoadSettings () {
 		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {ForceDisableCpuRecompiler=FALSE;}
 		lResult=RegQueryValueEx(hKeyResults,"Always Enable Align DMA",0,&Type,(BYTE*)(&ForceEnableDMA),&Bytes);
 		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {ForceEnableDMA=FALSE;}
+		lResult=RegQueryValueEx(hKeyResults,"Skip Audio Clearance on State Loads",0,&Type,(BYTE*)(&SkipAudioClear),&Bytes);
+		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {SkipAudioClear=FALSE;}
 		lResult=RegQueryValueEx(hKeyResults,"Always Autodetect With 16kbit",0,&Type,(BYTE*)(&ForceAuto16kbit),&Bytes);
 		if (Type!=REG_DWORD||lResult!=ERROR_SUCCESS) {ForceAuto16kbit=FALSE;}
 		lResult=RegQueryValueEx(hKeyResults,"Protect Memory / Enlarge Buffer",0,&Type,(LPBYTE)(&SystemProtectMemoryEnlargeBuffer),&Bytes);
@@ -517,7 +520,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 		ValidateRect(hWnd,0);
 		break;
 	case WM_MOVE:
-		if (hWnd==hHiddenWin) {break;}
+		if (hWnd==hHiddenWindow) {break;}
 		if (MoveScreen!=0&&CPURunning) {
 			MoveScreen((int)(short)LOWORD(lParam),(int)(short)HIWORD(lParam));
 		}
@@ -535,7 +538,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 		if (strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0&&CPURunning) SetWindowLong(hMainWindow,GWL_EXSTYLE,GetWindowLong(hMainWindow,GWL_EXSTYLE)&~WS_EX_COMPOSITED);
 		break;
 	case WM_SIZE:
-		if (hWnd==hHiddenWin) {break;}
+		if (hWnd==hHiddenWindow) {break;}
 		{
 			RECT clrect,swrect;
 			int Parts[2];
@@ -551,11 +554,11 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 		SendMessage(hWnd,WM_NCPAINT,0,0);
 		break;
 	case WM_SETFOCUS:
-		if (hWnd==hHiddenWin) {break;}
+		if (hWnd==hHiddenWindow) {break;}
 		if (AutoSleep&&!ManualPaused&&(CPU_Paused||CPU_Action.Pause)) {PauseCPU();}
 		break;
 	case WM_KILLFOCUS:
-		if (hWnd==hHiddenWin) {break;}
+		if (hWnd==hHiddenWindow) {break;}
 		if (AutoSleep&&!CPU_Paused) {PauseCPU();}
 		break;
 	case WM_NOTIFY:
@@ -753,7 +756,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 			EndEmulation();
 			CPURunning=FALSE;
 			EnableWindow(hRomList,TRUE);
-			HandleShutdown();
+			OpenRomBrowser();
 			SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MSG_EMULATION_ENDED));
 			break;
 		case ID_FILE_ROMDIRECTORY: SelectRomDir(); break;
@@ -761,7 +764,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 		case ID_FILE_EXIT: DestroyWindow(hWnd); break;
 		case ID_CPU_RESET:
 			EndEmulation();
-			HandleGlobalTasks(hMainWindow);
+			HandlePluginsAndEmulationStartup();
 			break;
 		case ID_CPU_PAUSE:
 			ManualPaused=TRUE;
@@ -1681,8 +1684,8 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpszArgs,in
 	AccelWinMode   =LoadAccelerators(hInst,MAKEINTRESOURCE(IDR_WINDOWMODE));
 	AccelCPURunning=LoadAccelerators(hInst,MAKEINTRESOURCE(IDR_CPURUNNING));
 	AccelRomBrowser=LoadAccelerators(hInst,MAKEINTRESOURCE(IDR_ROMBROWSER));
-	hHiddenWin=CreateWindow(AppName,AppName,WS_OVERLAPPED|WS_CLIPCHILDREN|WS_CLIPSIBLINGS|WS_SYSMENU|WS_MINIMIZEBOX,X,Y,4,3,0,0,hInst,0);
-	if (!hHiddenWin) return FALSE;
+	hHiddenWindow=CreateWindow(AppName,AppName,WS_OVERLAPPED|WS_CLIPCHILDREN|WS_CLIPSIBLINGS|WS_SYSMENU|WS_MINIMIZEBOX,X,Y,4,3,0,0,hInst,0);
+	if (!hHiddenWindow) return FALSE;
 	IniFile=GetIniFileName();
 	_GetPrivateProfileString("Meta","Version","",String,sizeof(String),IniFile);
 	_GetPrivateProfileString("Meta","Date","",String2,sizeof(String2),IniFile);
@@ -1730,7 +1733,7 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpszArgs,in
 #elif MODERN_PLUGINS
 #define PLUGINS "Modern Plugins - Project64_Modern.exe uses GLideN64 Video, Azi Audio, and N-Rage's Input as default plugins for modern PC's and modern ROMhacks. Switching to Jabo's D3D8 is necessary for most legacy ROMhacks."
 #endif
-		sprintf(IntroMessage,"This is my update of Project64 v1.6.1 which I semi-maintain for casual retail and ROMhack gaming (minimal system requirements).\n\n\n%s\n\n\nSee User Guide for my contact info and helpful information, especially regarding personal/legal usage, plugin details, running ROMhacks, using the ROM Browser/ROM Notes system, and Advanced Settings. Please be patient if expecting a response from contacting me as I'm usually quite busy. Credits are found towards the very bottom of Visual Studio Source Code/Main.h (view from Visual Studio with the .vcxproj file or open with a notepad app) and the User Guide.\n\n\n- Edwin Bruce Shankle IV",PLUGINS);
+		sprintf(IntroMessage,"Project64 1.6.2 is a personal update of Project64 1.6.1 made to enjoy retail and ROMhack games with most PC's.\n\n\n%s\n\n\nSee User Guide for my contact info and helpful information, especially regarding personal/legal usage, plugin details, running ROMhacks, using the ROM Browser/ROM Notes system, and Advanced Settings. Please be patient if expecting a response from contacting me as I am usually quite busy. Credits are found towards the very bottom of Visual Studio Source Code/Main.h (view from Visual Studio with the .vcxproj file or open with a notepad app) and the User Guide.\n\n\n- Edwin Bruce Shankle IV",PLUGINS);
 		MessageBox(0,IntroMessage,AppName,MB_OK|MB_ICONINFORMATION|MB_SETFOREGROUND);
 	}
 	ShowWindow(hMainWindow,SW_SHOW);
@@ -1739,7 +1742,7 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpszArgs,in
 		strcpy(CurrentFileName,__argv[1]);
 		OpenChosenFile();
 	}
-	if (!CPURunning) HandleShutdown(); // Load ROM Browser if initial startup or Open ROM from extension association failed
+	if (!CPURunning) OpenRomBrowser(); // Load ROM Browser if initial startup or Open ROM from extension association failed
 	while (GetMessage(&msg,0,0,0)) {
 		if (!CPURunning&&TranslateAccelerator(hMainWindow,AccelRomBrowser,&msg)) continue;
 		if (CPURunning) {

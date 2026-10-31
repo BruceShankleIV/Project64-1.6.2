@@ -34,7 +34,7 @@
 #include "UnZIP.h"
 #include "Resource.h"
 #include "ROM Tools Common.h"
-DWORD RomFileSize,VirtualSD,RomVirtualSD,SaveUsing,RomSaveUsing,CPUType,UseTLB,RomUseTLB,FiftyNineHertz,RomFiftyNineHertz,RomJAI,AudioSignal,RomAudioSignal,RomCF,UseCache,RomUseCache,RomShankleAziAI,RomAltEmulateAI,SyncGametoAudio,RomSyncGametoAudio,Lag,RomLag,DelayRDP,RomDelayRDP,DelayRSP,RomDelayRSP,AlignDMA,RomAlignDMA,DelayRDP,RomDelayRDP,DelayRSP,RomDelayRSP,DelaySI,SkipBps,RomSkipBps,CCMod,RomCCMod,RomDelaySI,RomRspRecompiler,CpuRecompiler,RomCpuRecompiler,ProtectMemoryEnlargeBuffer,RomProtectMemoryEnlargeBuffer,JumperPak,RomJumperPak,ForceAuto16kbit,ForceDisableTLB,ForceDisableCpuRecompiler,ForceEnableDMA,EmulateAI;
+DWORD RomFileSize,VirtualSD,RomVirtualSD,SaveUsing,RomSaveUsing,CPUType,UseTLB,RomUseTLB,FiftyNineHertz,RomFiftyNineHertz,RomJAI,AudioSignal,RomAudioSignal,RomCF,UseCache,RomUseCache,RomShankleAziAI,SyncGametoAudio,RomSyncGametoAudio,Lag,RomLag,DelayRDP,RomDelayRDP,DelayRSP,RomDelayRSP,AlignDMA,RomAlignDMA,DelayRDP,RomDelayRDP,DelayRSP,RomDelayRSP,DelaySI,SkipBps,RomSkipBps,CCMod,RomCCMod,RomDelaySI,RomRspRecompiler,CpuRecompiler,RomCpuRecompiler,ProtectMemoryEnlargeBuffer,RomProtectMemoryEnlargeBuffer,JumperPak,RomJumperPak,ForceAuto16kbit,ForceDisableTLB,ForceDisableCpuRecompiler,ForceEnableDMA,SkipAudioClear,ApplySkipAudioClear,EmulateAI;
 char CurrentFileName[MAX_PATH+1]={""},RomName[MAX_PATH+1]={""},RomHeader[0x1000],LastRoms[10][MAX_PATH+1],LastDirs[10][MAX_PATH+1];
 BOOL IsValidRomImage (BYTE Test[4]);
 void SaveRecentDirs () {
@@ -394,7 +394,6 @@ void ReadRomSettings() {
 	RomJAI=FALSE;
 	if (ForceEnableDMA) RomAlignDMA=TRUE;
 	else RomAlignDMA=FALSE;
-	RomAltEmulateAI=FALSE;
 	RomShankleAziAI=FALSE;
 	RomDelayRDP=FALSE;
 	RomJumperPak=FALSE;
@@ -432,8 +431,8 @@ void ReadRomSettings() {
 		if (strcmp(String,"ON")==0&&strcmp(AudioDLL,"Jabo_Dsound.dll")==0) {RomSyncGametoAudio=TRUE; RomJAI=TRUE;}
 		_GetPrivateProfileString(Identifier,"Align DMA","",String,sizeof(String),IniFileName);
 		if (strcmp(String,"ON")==0) RomAlignDMA=TRUE;
-		_GetPrivateProfileString(Identifier,"Legacy AiLenChanged","",String,sizeof(String),IniFileName);
-		if (strcmp(String,"ON")==0&&(RomJAI||RomShankleAziAI)) RomAltEmulateAI=TRUE;
+		_GetPrivateProfileString(Identifier,"Skip Breakpoints","",String,sizeof(String),IniFileName);
+		if (strcmp(String,"ON")==0||strcmp(RomName,"THE LEGEND OF ZELDA")==0&&strcmp(String,"OFF")!=0) RomSkipBps=TRUE;
 		_GetPrivateProfileString(Identifier,"Azi AI","",String,sizeof(String),IniFileName);
 		if (strcmp(String,"ON")==0&&strcmp(AudioDLL,"Shankle_Audio.dll")==0) RomShankleAziAI=TRUE;
 		_GetPrivateProfileString(Identifier,"Delay RDP","",String,sizeof(String),IniFileName);
@@ -452,8 +451,6 @@ void ReadRomSettings() {
 		if (strcmp(String,"ON")==0) RomDelaySI=TRUE;
 		_GetPrivateProfileString(Identifier,"Recompile RSP","",String,sizeof(String),IniFileName);
 		if (strcmp(String,"ON")==0) RomRspRecompiler=TRUE;
-		_GetPrivateProfileString(Identifier,"Skip Breakpoints","",String,sizeof(String),IniFileName);
-		if (strcmp(String,"ON")==0||strcmp(RomName,"THE LEGEND OF ZELDA")==0&&strcmp(String,"OFF")!=0) RomSkipBps=TRUE;
 		_GetPrivateProfileString(Identifier,"Recompile VR4300i CPU","",String,sizeof(String),IniFileName);
 		if (strcmp(String,"OFF")==0) RomCpuRecompiler=FALSE;
 		if (RomCpuRecompiler) {
@@ -700,7 +697,7 @@ void OpenChosenFile(void) {
 		EnableWindow(hRomList,FALSE);
 	}
 	SetCurrentSaveState(hMainWindow,ID_CURRENTSAVE_DEFAULT);
-	HandleGlobalTasks(hMainWindow);
+	HandlePluginsAndEmulationStartup();
 	if (AutoFullScreen) {
 		timeBeginPeriod(16);
 		Sleep(200);
@@ -753,8 +750,8 @@ void SaveRomSettings () {
 		_WritePrivateProfileString(Identifier,"Jabo AI",RomJAI?"ON":"Default",GetIniFileName());
 	}
 	if (!FixFEDMAtoNonFEDMA&&!ForceEnableDMA) _WritePrivateProfileString(Identifier,"Align DMA",RomAlignDMA?"ON":"Default",GetIniFileName());
-	if (RomJAI||RomShankleAziAI) _WritePrivateProfileString(Identifier,"Legacy AiLenChanged",RomAltEmulateAI?"ON":"Default",GetIniFileName());
-	else _WritePrivateProfileString(Identifier,"Legacy AiLenChanged","Default",GetIniFileName());
+	if (RomSkipBps) _WritePrivateProfileString(Identifier,"Skip Breakpoints","ON",GetIniFileName());
+	else _WritePrivateProfileString(Identifier,"Skip Breakpoints",(strcmp(RomName,"THE LEGEND OF ZELDA")==0)?"OFF":"Default",GetIniFileName());
 	if (strcmp(AudioDLL,"Shankle_Audio.dll")==0) _WritePrivateProfileString(Identifier,"Azi AI",RomShankleAziAI?"ON":"Default",GetIniFileName());
 	_WritePrivateProfileString(Identifier,"Delay RDP",RomDelayRDP?"ON":"Default",GetIniFileName());
 	_WritePrivateProfileString(Identifier,"Jumper Pak",RomJumperPak?"ON":"Default",GetIniFileName());
@@ -765,8 +762,7 @@ void SaveRomSettings () {
 	_WritePrivateProfileString(Identifier,"Delay SI",RomDelaySI?"ON":"Default",GetIniFileName());
 	if (strcmp(RSPDLL,"RSP.dll")==0&&(strcmp(GfxDLL,"Icepir8sLegacyLLE.dll")==0||strcmp(RomName,"THE LEGEND OF ZELDA")==0||strcmp(RomName,"THE MASK OF MUJURA")==0||strcmp(RomName,"ZELDA MAJORA'S MASK")==0||strcmp(RomName,"BANJO KAZOOIE 2")==0||strcmp(RomName,"BANJO TOOIE")==0||strcmp(RomName,"CONKER BFD")==0||strcmp(RomName,"DONKEY KONG 64")==0||strcmp(RomName,"JET FORCE GEMINI")==0||strcmp(RomName,"STAR TWINS")==0||strcmp(RomName,"Perfect Dark")==0)) _WritePrivateProfileString(Identifier,"Recompile RSP",RomRspRecompiler?"ON":"Default",GetIniFileName());
 	if (!FixFDCPURtoNonFDCPUR&&!ForceDisableCpuRecompiler) _WritePrivateProfileString(Identifier,"Recompile VR4300i CPU",RomCpuRecompiler?"Default":"OFF",GetIniFileName());
-	if (RomSkipBps) _WritePrivateProfileString(Identifier,"Skip Breakpoints","ON",GetIniFileName());
-	else _WritePrivateProfileString(Identifier,"Skip Breakpoints",(strcmp(RomName,"THE LEGEND OF ZELDA")==0)?"OFF":"Default",GetIniFileName());
+
 	if (RomCpuRecompiler) {
 		if (RomCCMod&&RomProtectMemoryEnlargeBuffer!=PROTECT_MEMORY_ENLARGE_BUFFER_ON) _WritePrivateProfileString(Identifier,"Clear Cache Mod","ON",GetIniFileName());
 		else _WritePrivateProfileString(Identifier,"Clear Cache Mod",(strcmp(RomName,"THE LEGEND OF ZELDA")==0)?"OFF":"Default",GetIniFileName());

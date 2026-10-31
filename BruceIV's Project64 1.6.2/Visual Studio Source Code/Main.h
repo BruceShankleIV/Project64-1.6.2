@@ -34,7 +34,7 @@ extern "C" {
 #include "Settings API.h"
 #include "ROM Browser.h"
 #include "Language.h"
-/*Source Code V26 Release 1.04. Made at 01:11AM on 10/31/2026*/
+/*Source Code V26 Release 1.04. Made at 05:05PM on 10/31/2026*/
 #define AppName						"BruceIV's Project64 1.6.2"
 #define IniName						"Game.ini"
 #define CheatIniName				"Cheat.ini"
@@ -72,9 +72,9 @@ typedef struct {
 } ITEM_LIST;
 extern ITEM_LIST ItemList;
 extern LARGE_INTEGER Frequency,Frames[9],LastFrame;
-extern BOOL AutoSleep,AutoHide,CreateStatusBar,RecordRGB,Recursion,LimitFPS,SpeedCap,AutoFullScreen,SystemCF,UsuallyonTop,VideoToScreen,BasicMode,AutoRefreshRomBrowser,DelayHandleGlobalTasks,FirstBoot,UserCancelPluginInit,RefreshRomBrowserOnShutdown,FixFEDMAtoNonFEDMA,FixFDCPURtoNonFDCPUR,FixFDTLBtoNonFDTLB;
+extern BOOL AutoSleep,AutoHide,CreateStatusBar,RecordRGB,Recursion,LimitFPS,SpeedCap,AutoFullScreen,SystemCF,UsuallyonTop,VideoToScreen,BasicMode,AutoRefreshRomBrowser,DelayHandlePluginsAndEmulationStartup,FirstBoot,UserCancelPluginInit,RefreshRomBrowserOnShutdown,FixFEDMAtoNonFEDMA,FixFDCPURtoNonFDCPUR,FixFDTLBtoNonFDTLB;
 extern DWORD CurrentFrame,SystemUseCache,SystemProtectMemoryEnlargeBuffer,RomsToRemember,RomDirsToRemember;
-extern HWND hMainWindow,hHiddenWin,hStatusWnd,hRomList;
+extern HWND hMainWindow,hHiddenWindow,hStatusWnd,hRomList;
 extern char CurrentSave[256];
 extern HMENU hMainMenu;
 extern HINSTANCE hInst;
