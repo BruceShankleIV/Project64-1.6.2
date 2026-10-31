@@ -32,130 +32,73 @@
 #include "CPU.h"
 #include "Plugin.h"
 #include "Resource.h"
-BOOL CALLBACK DefaultOptionsProc   (HWND,UINT,WPARAM,LPARAM);
-BOOL CALLBACK GeneralOptionsProc   (HWND,UINT,WPARAM,LPARAM);
-BOOL CALLBACK DirSelectProc        (HWND,UINT,WPARAM,LPARAM);
-BOOL CALLBACK PluginSelectProc     (HWND,UINT,WPARAM,LPARAM);
-BOOL CALLBACK RomBrowserProc       (HWND,UINT,WPARAM,LPARAM);
-BOOL CALLBACK RomSettingsProc      (HWND,UINT,WPARAM,LPARAM);
-BOOL CALLBACK RomNotesProc         (HWND,UINT,WPARAM,LPARAM);
 typedef struct {
-	int     LanguageID;
-	WORD    TemplateID;
+	int LanguageID;
+	WORD TemplateID;
 	DLGPROC pfnDlgProc;
 } SETTINGS_TAB;
-SETTINGS_TAB SettingsTabs[]={
-	{TAB_PLUGIN,         IDD_Settings_PlugSel,  PluginSelectProc    },
-	{TAB_DIRECTORY,      IDD_Settings_Directory,DirSelectProc       },
-	{MENU_OPTIONS,        IDD_Settings_General,  GeneralOptionsProc  },
-	{TAB_ROMSELECTION,   IDD_Settings_RomBrowser,RomBrowserProc      },
-	{TAB_ADVANCED,       IDD_Settings_Options,  DefaultOptionsProc  },
-	{TAB_ROMSETTINGS,    IDD_Settings_Rom,      RomSettingsProc     },
-	{TAB_ROMNOTES,       IDD_Settings_RomNotes, RomNotesProc        },
-};
-SETTINGS_TAB SettingsTabsBasic[]={
-	{TAB_PLUGIN,IDD_Settings_PlugSel,PluginSelectProc              },
-	{TAB_DIRECTORY,IDD_Settings_Directory,DirSelectProc             },
-	{MENU_OPTIONS,IDD_Settings_General,GeneralOptionsProc            },
-	{TAB_ROMSELECTION,IDD_Settings_RomBrowser,RomBrowserProc        },
-	{TAB_ROMNOTES,IDD_Settings_RomNotes,RomNotesProc                },
-};
-SETTINGS_TAB SettingsTabsRom[]={
-	{TAB_ROMNOTES,   IDD_Settings_RomNotes,RomNotesProc    },
-};
-void ChangeRomSettings(HWND hwndOwner) {
-	char OrigRomName[sizeof(RomName)],OrigFileName[sizeof(CurrentFileName)];
-	PROPSHEETPAGE psp[sizeof(SettingsTabsRom) / sizeof(SETTINGS_TAB)];
-	BYTE OrigByteHeader[sizeof(RomHeader)];
-	PROPSHEETHEADER psh;
-	DWORD OrigFileSize,count;
-	strncpy(OrigRomName,RomName,sizeof(OrigRomName));
-	strncpy(OrigFileName,CurrentFileName,sizeof(OrigFileName));
-	memcpy(OrigByteHeader,RomHeader,sizeof(RomHeader));
-	strncpy(CurrentFileName,CurrentRBFileName,sizeof(CurrentFileName));
-	OrigFileSize=RomFileSize;
-	LoadRomHeader();
-	for (count=0;count<(sizeof(SettingsTabsRom) / sizeof(SETTINGS_TAB));count++) {
-		psp[count].dwSize=sizeof(PROPSHEETPAGE);
-		psp[count].dwFlags=PSP_USETITLE;
-		psp[count].hInstance=hInst;
-		psp[count].pszTemplate=MAKEINTRESOURCE(SettingsTabsRom[count].TemplateID);
-		psp[count].pfnDlgProc=SettingsTabsRom[count].pfnDlgProc;
-		psp[count].pszTitle=GS(SettingsTabsRom[count].LanguageID);
-		psp[count].lParam=0;
-		psp[count].pfnCallback=0;
-	}
-	psh.dwSize=sizeof(PROPSHEETHEADER);
-	psh.dwFlags=PSH_PROPSHEETPAGE|PSH_NOAPPLYNOW;
-	psh.hwndParent=hwndOwner;
-	psh.hInstance=hInst;
-	psh.pszCaption=(LPSTR)GS(MENU_SETTINGS);
-	psh.nPages=sizeof(psp) / sizeof(PROPSHEETPAGE);
-	psh.nStartPage=0;
-	psh.ppsp=(LPCPROPSHEETPAGE)&psp;
-	psh.pfnCallback=0;
-	PropertySheet(&psh);
-	strncpy(RomName,OrigRomName,sizeof(RomName));
-	strncpy(CurrentFileName,OrigFileName,sizeof(CurrentFileName));
-	memcpy(RomHeader,OrigByteHeader,sizeof(RomHeader));
-	RomFileSize=OrigFileSize;
-}
-void ChangeSettings(HWND hwndOwner) {
-	PROPSHEETPAGE psp[sizeof(SettingsTabs) / sizeof(SETTINGS_TAB)];
-	PROPSHEETPAGE BasicPsp[sizeof(SettingsTabsBasic) / sizeof(SETTINGS_TAB)];
-	PROPSHEETHEADER psh;
-	int count;
-	FixFEDMAtoNonFEDMA=FALSE;
-	FixFDCPURtoNonFDCPUR=FALSE;
-	FixFDTLBtoNonFDTLB=FALSE;
-	for (count=0;count<(sizeof(SettingsTabs) / sizeof(SETTINGS_TAB));count++) {
-		psp[count].dwSize=sizeof(PROPSHEETPAGE);
-		psp[count].dwFlags=PSP_USETITLE;
-		psp[count].hInstance=hInst;
-		psp[count].pszTemplate=MAKEINTRESOURCE(SettingsTabs[count].TemplateID);
-		psp[count].pfnDlgProc=SettingsTabs[count].pfnDlgProc;
-		psp[count].pszTitle=GS(SettingsTabs[count].LanguageID);
-		psp[count].lParam=0;
-		psp[count].pfnCallback=0;
-	}
-	for (count=0;count<(sizeof(SettingsTabsBasic) / sizeof(SETTINGS_TAB));count++) {
-		BasicPsp[count].dwSize=sizeof(PROPSHEETPAGE);
-		BasicPsp[count].dwFlags=PSP_USETITLE;
-		BasicPsp[count].hInstance=hInst;
-		BasicPsp[count].pszTemplate=MAKEINTRESOURCE(SettingsTabsBasic[count].TemplateID);
-		BasicPsp[count].pfnDlgProc=SettingsTabsBasic[count].pfnDlgProc;
-		BasicPsp[count].pszTitle=GS(SettingsTabsBasic[count].LanguageID);
-		BasicPsp[count].lParam=0;
-		BasicPsp[count].pfnCallback=0;
-	}
-	psh.dwSize=sizeof(PROPSHEETHEADER);
-	psh.dwFlags=PSH_PROPSHEETPAGE|PSH_NOAPPLYNOW;
-	psh.hwndParent=hwndOwner;
-	psh.hInstance=hInst;
-	psh.pszCaption=(LPSTR)GS(MENU_SETTINGS);
-	psh.nPages=(BasicMode?sizeof(BasicPsp):sizeof(psp)) / sizeof(PROPSHEETPAGE);
-	psh.nStartPage=0;
-	psh.ppsp=BasicMode?(LPCPROPSHEETPAGE)&BasicPsp:(LPCPROPSHEETPAGE)&psp;
-	psh.pfnCallback=0;
-	PropertySheet(&psh);
-	if (!AutoSleep&&!ManualPaused&&(CPU_Paused||CPU_Action.Pause)) PauseCPU();
-	if (AutoRefreshRomBrowser&&RefreshRomBrowserOnShutdown) RefreshRomBrowser();
-	if (DelayHandleGlobalTasks) {
-		DelayHandleGlobalTasks=FALSE;
-		HandleGlobalTasks(hHiddenWin);
-	} else SetupMenu(hMainWindow);
-}
 void SetFlagControl (HWND hDlg,BOOL*Flag,WORD CtrlID,int StringID) {
 	SetDlgItemText(hDlg,CtrlID,GS(StringID));
 	if (*Flag) {SendMessage(GetDlgItem(hDlg,CtrlID),BM_SETCHECK,BST_CHECKED,0);}
 }
+void AddDropDownItem (HWND hDlg,WORD CtrlID,int StringID,int ItemData,int*Variable) {
+	HWND hCtrl=GetDlgItem(hDlg,CtrlID);
+	int indx;
+	indx=SendMessage(hCtrl,CB_ADDSTRING,0,(LPARAM)GS(StringID));
+	SendMessage(hCtrl,CB_SETITEMDATA,indx,ItemData);
+	if (*Variable==ItemData) {SendMessage(hCtrl,CB_SETCURSEL,indx,0);}
+	if (SendMessage(hCtrl,CB_GETCOUNT,0,0)==0) {SendMessage(hCtrl,CB_SETCURSEL,0,0);}
+}
+void FreePluginList() {
+	unsigned int count;
+	for (count=0;count<	PluginCount;count++) {
+		free(PluginNames[count]);
+	}
+	PluginCount=0;
+}
+void RomAddFieldToList (HWND hDlg,char*Name,int Pos,int ID) {
+	int listCount,index;
+	if (Pos<0) {
+		index=SendDlgItemMessage(hDlg,IDC_AVAILABLE,LB_ADDSTRING,0,(LPARAM)Name);
+		SendDlgItemMessage(hDlg,IDC_AVAILABLE,LB_SETITEMDATA,index,ID);
+		return;
+	}
+	listCount=SendDlgItemMessage(hDlg,IDC_USING,LB_GETCOUNT,0,0);
+	if (Pos>listCount) {Pos=listCount;}
+	index=SendDlgItemMessage(hDlg,IDC_USING,LB_INSERTSTRING,Pos,(LPARAM)Name);
+	SendDlgItemMessage(hDlg,IDC_USING,LB_SETITEMDATA,index,ID);
+}
+BOOL PluginsChanged (HWND hDlg) {
+	DWORD index;
+	index=SendMessage(GetDlgItem(hDlg,RSP_LIST),CB_GETCURSEL,0,0);
+	index=SendMessage(GetDlgItem(hDlg,RSP_LIST),CB_GETITEMDATA,(WPARAM)index,0);
+	if ((int)index>=0) {
+		if(_stricmp(RSPDLL,PluginNames[index])!=0) return TRUE;
+	}
+	index=SendMessage(GetDlgItem(hDlg,GFX_LIST),CB_GETCURSEL,0,0);
+	index=SendMessage(GetDlgItem(hDlg,GFX_LIST),CB_GETITEMDATA,(WPARAM)index,0);
+	if ((int)index>=0) {
+		if(_stricmp(GfxDLL,PluginNames[index])!=0) return TRUE;
+	}
+	index=SendMessage(GetDlgItem(hDlg,AUDIO_LIST),CB_GETCURSEL,0,0);
+	index=SendMessage(GetDlgItem(hDlg,AUDIO_LIST),CB_GETITEMDATA,(WPARAM)index,0);
+	if ((int)index>=0) {
+		if(_stricmp(AudioDLL,PluginNames[index])!=0) return TRUE;
+	}
+	index=SendMessage(GetDlgItem(hDlg,CONT_LIST),CB_GETCURSEL,0,0);
+	index=SendMessage(GetDlgItem(hDlg,CONT_LIST),CB_GETITEMDATA,(WPARAM)index,0);
+	if ((int)index>=0) {
+		if(_stricmp(ControllerDLL,PluginNames[index])!=0) return TRUE;
+	}
+	return FALSE;
+}
 BOOL CALLBACK GeneralOptionsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 	switch (uMsg) {
 	case WM_INITDIALOG:
-		SetFlagControl(hDlg,&AutoSleep,     IDC_AUTOSLEEP,      OPTION_AUTO_SLEEP);
+		SetFlagControl(hDlg,&AutoSleep,IDC_AUTOSLEEP,OPTION_AUTO_SLEEP);
 		SetFlagControl(hDlg,&AutoFullScreen,IDC_LOAD_FULLSCREEN,OPTION_AUTO_FULLSCREEN);
 		SetFlagControl(hDlg,&AutoRefreshRomBrowser,IDC_AUTO_BROWSER,OPTION_AUTO_BROWSER);
-		SetFlagControl(hDlg,&BasicMode,     IDC_BASIC_MODE,     OPTION_BASIC_MODE);
+		SetFlagControl(hDlg,&BasicMode,IDC_BASIC_MODE,OPTION_BASIC_MODE);
 		break;
 	case WM_NOTIFY:
 		if (((NMHDR FAR*) lParam)->code==PSN_APPLY) {
@@ -182,14 +125,6 @@ BOOL CALLBACK GeneralOptionsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lPara
 		return FALSE;
 	}
 	return TRUE;
-}
-void AddDropDownItem (HWND hDlg,WORD CtrlID,int StringID,int ItemData,int*Variable) {
-	HWND hCtrl=GetDlgItem(hDlg,CtrlID);
-	int indx;
-	indx=SendMessage(hCtrl,CB_ADDSTRING,0,(LPARAM)GS(StringID));
-	SendMessage(hCtrl,CB_SETITEMDATA,indx,ItemData);
-	if (*Variable==ItemData) {SendMessage(hCtrl,CB_SETCURSEL,indx,0);}
-	if (SendMessage(hCtrl,CB_GETCOUNT,0,0)==0) {SendMessage(hCtrl,CB_SETCURSEL,0,0);}
 }
 BOOL CALLBACK DefaultOptionsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 	int indx;
@@ -412,38 +347,7 @@ BOOL CALLBACK DirSelectProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 	}
 	return TRUE;
 }
-BOOL PluginsChanged (HWND hDlg) {
-	DWORD index;
-	index=SendMessage(GetDlgItem(hDlg,RSP_LIST),CB_GETCURSEL,0,0);
-	index=SendMessage(GetDlgItem(hDlg,RSP_LIST),CB_GETITEMDATA,(WPARAM)index,0);
-	if ((int)index>=0) {
-		if(_stricmp(RSPDLL,PluginNames[index])!=0) return TRUE;
-	}
-	index=SendMessage(GetDlgItem(hDlg,GFX_LIST),CB_GETCURSEL,0,0);
-	index=SendMessage(GetDlgItem(hDlg,GFX_LIST),CB_GETITEMDATA,(WPARAM)index,0);
-	if ((int)index>=0) {
-		if(_stricmp(GfxDLL,PluginNames[index])!=0) return TRUE;
-	}
-	index=SendMessage(GetDlgItem(hDlg,AUDIO_LIST),CB_GETCURSEL,0,0);
-	index=SendMessage(GetDlgItem(hDlg,AUDIO_LIST),CB_GETITEMDATA,(WPARAM)index,0);
-	if ((int)index>=0) {
-		if(_stricmp(AudioDLL,PluginNames[index])!=0) return TRUE;
-	}
-	index=SendMessage(GetDlgItem(hDlg,CONT_LIST),CB_GETCURSEL,0,0);
-	index=SendMessage(GetDlgItem(hDlg,CONT_LIST),CB_GETITEMDATA,(WPARAM)index,0);
-	if ((int)index>=0) {
-		if(_stricmp(ControllerDLL,PluginNames[index])!=0) return TRUE;
-	}
-	return FALSE;
-}
-void FreePluginList() {
-	unsigned int count;
-	for (count=0;count<	PluginCount;count++) {
-		free(PluginNames[count]);
-	}
-	PluginCount=0;
-}
-BOOL CALLBACK PluginSelectProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) {
+BOOL CALLBACK PluginSelectProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	char Plugin[300];
 	HANDLE hLib;
 	DWORD index;
@@ -549,18 +453,6 @@ BOOL CALLBACK PluginSelectProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam)
 		return FALSE;
 	}
 	return TRUE;
-}
-void RomAddFieldToList (HWND hDlg,char*Name,int Pos,int ID) {
-	int listCount,index;
-	if (Pos<0) {
-		index=SendDlgItemMessage(hDlg,IDC_AVAILABLE,LB_ADDSTRING,0,(LPARAM)Name);
-		SendDlgItemMessage(hDlg,IDC_AVAILABLE,LB_SETITEMDATA,index,ID);
-		return;
-	}
-	listCount=SendDlgItemMessage(hDlg,IDC_USING,LB_GETCOUNT,0,0);
-	if (Pos>listCount) {Pos=listCount;}
-	index=SendDlgItemMessage(hDlg,IDC_USING,LB_INSERTSTRING,Pos,(LPARAM)Name);
-	SendDlgItemMessage(hDlg,IDC_USING,LB_SETITEMDATA,index,ID);
 }
 BOOL CALLBACK RomBrowserProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 	switch (uMsg) {
@@ -836,4 +728,105 @@ BOOL CALLBACK RomSettingsProc (HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam) 
 		return FALSE;
 	}
 	return TRUE;
+}
+SETTINGS_TAB SettingsTabs[]={
+	{TAB_PLUGIN,IDD_Settings_PlugSel,PluginSelectProc},
+	{TAB_DIRECTORY,IDD_Settings_Directory,DirSelectProc},
+	{MENU_OPTIONS,IDD_Settings_General,GeneralOptionsProc},
+	{TAB_ROMSELECTION,IDD_Settings_RomBrowser,RomBrowserProc},
+	{TAB_ADVANCED,IDD_Settings_Options,DefaultOptionsProc},
+	{TAB_ROMSETTINGS,IDD_Settings_Rom,RomSettingsProc},
+	{TAB_ROMNOTES,IDD_Settings_RomNotes,RomNotesProc},
+};
+SETTINGS_TAB SettingsTabsBasic[]={
+	{TAB_PLUGIN,IDD_Settings_PlugSel,PluginSelectProc},
+	{TAB_DIRECTORY,IDD_Settings_Directory,DirSelectProc},
+	{MENU_OPTIONS,IDD_Settings_General,GeneralOptionsProc},
+	{TAB_ROMSELECTION,IDD_Settings_RomBrowser,RomBrowserProc},
+	{TAB_ROMNOTES,IDD_Settings_RomNotes,RomNotesProc},
+};
+SETTINGS_TAB SettingsTabsRom[]={
+	{TAB_ROMNOTES,IDD_Settings_RomNotes,RomNotesProc},
+};
+void ChangeRomSettings(HWND hwndOwner) {
+	char OrigRomName[sizeof(RomName)],OrigFileName[sizeof(CurrentFileName)];
+	PROPSHEETPAGE psp[sizeof(SettingsTabsRom) / sizeof(SETTINGS_TAB)];
+	BYTE OrigByteHeader[sizeof(RomHeader)];
+	PROPSHEETHEADER psh;
+	DWORD OrigFileSize,count;
+	strncpy(OrigRomName,RomName,sizeof(OrigRomName));
+	strncpy(OrigFileName,CurrentFileName,sizeof(OrigFileName));
+	memcpy(OrigByteHeader,RomHeader,sizeof(RomHeader));
+	strncpy(CurrentFileName,CurrentRBFileName,sizeof(CurrentFileName));
+	OrigFileSize=RomFileSize;
+	LoadRomHeader();
+	for (count=0;count<(sizeof(SettingsTabsRom) / sizeof(SETTINGS_TAB));count++) {
+		psp[count].dwSize=sizeof(PROPSHEETPAGE);
+		psp[count].dwFlags=PSP_USETITLE;
+		psp[count].hInstance=hInst;
+		psp[count].pszTemplate=MAKEINTRESOURCE(SettingsTabsRom[count].TemplateID);
+		psp[count].pfnDlgProc=SettingsTabsRom[count].pfnDlgProc;
+		psp[count].pszTitle=GS(SettingsTabsRom[count].LanguageID);
+		psp[count].lParam=0;
+		psp[count].pfnCallback=0;
+	}
+	psh.dwSize=sizeof(PROPSHEETHEADER);
+	psh.dwFlags=PSH_PROPSHEETPAGE|PSH_NOAPPLYNOW;
+	psh.hwndParent=hwndOwner;
+	psh.hInstance=hInst;
+	psh.pszCaption=(LPSTR)GS(MENU_SETTINGS);
+	psh.nPages=sizeof(psp) / sizeof(PROPSHEETPAGE);
+	psh.nStartPage=0;
+	psh.ppsp=(LPCPROPSHEETPAGE)&psp;
+	psh.pfnCallback=0;
+	PropertySheet(&psh);
+	strncpy(RomName,OrigRomName,sizeof(RomName));
+	strncpy(CurrentFileName,OrigFileName,sizeof(CurrentFileName));
+	memcpy(RomHeader,OrigByteHeader,sizeof(RomHeader));
+	RomFileSize=OrigFileSize;
+}
+void ChangeSettings(HWND hwndOwner) {
+	PROPSHEETPAGE psp[sizeof(SettingsTabs) / sizeof(SETTINGS_TAB)];
+	PROPSHEETPAGE BasicPsp[sizeof(SettingsTabsBasic) / sizeof(SETTINGS_TAB)];
+	PROPSHEETHEADER psh;
+	int count;
+	FixFEDMAtoNonFEDMA=FALSE;
+	FixFDCPURtoNonFDCPUR=FALSE;
+	FixFDTLBtoNonFDTLB=FALSE;
+	for (count=0;count<(sizeof(SettingsTabs) / sizeof(SETTINGS_TAB));count++) {
+		psp[count].dwSize=sizeof(PROPSHEETPAGE);
+		psp[count].dwFlags=PSP_USETITLE;
+		psp[count].hInstance=hInst;
+		psp[count].pszTemplate=MAKEINTRESOURCE(SettingsTabs[count].TemplateID);
+		psp[count].pfnDlgProc=SettingsTabs[count].pfnDlgProc;
+		psp[count].pszTitle=GS(SettingsTabs[count].LanguageID);
+		psp[count].lParam=0;
+		psp[count].pfnCallback=0;
+	}
+	for (count=0;count<(sizeof(SettingsTabsBasic) / sizeof(SETTINGS_TAB));count++) {
+		BasicPsp[count].dwSize=sizeof(PROPSHEETPAGE);
+		BasicPsp[count].dwFlags=PSP_USETITLE;
+		BasicPsp[count].hInstance=hInst;
+		BasicPsp[count].pszTemplate=MAKEINTRESOURCE(SettingsTabsBasic[count].TemplateID);
+		BasicPsp[count].pfnDlgProc=SettingsTabsBasic[count].pfnDlgProc;
+		BasicPsp[count].pszTitle=GS(SettingsTabsBasic[count].LanguageID);
+		BasicPsp[count].lParam=0;
+		BasicPsp[count].pfnCallback=0;
+	}
+	psh.dwSize=sizeof(PROPSHEETHEADER);
+	psh.dwFlags=PSH_PROPSHEETPAGE|PSH_NOAPPLYNOW;
+	psh.hwndParent=hwndOwner;
+	psh.hInstance=hInst;
+	psh.pszCaption=(LPSTR)GS(MENU_SETTINGS);
+	psh.nPages=(BasicMode?sizeof(BasicPsp):sizeof(psp)) / sizeof(PROPSHEETPAGE);
+	psh.nStartPage=0;
+	psh.ppsp=BasicMode?(LPCPROPSHEETPAGE)&BasicPsp:(LPCPROPSHEETPAGE)&psp;
+	psh.pfnCallback=0;
+	PropertySheet(&psh);
+	if (!AutoSleep&&!ManualPaused&&(CPU_Paused||CPU_Action.Pause)) PauseCPU();
+	if (AutoRefreshRomBrowser&&RefreshRomBrowserOnShutdown) RefreshRomBrowser();
+	if (DelayHandleGlobalTasks) {
+		DelayHandleGlobalTasks=FALSE;
+		HandleGlobalTasks(hHiddenWin);
+	} else SetupMenu(hMainWindow);
 }

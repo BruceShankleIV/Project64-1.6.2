@@ -177,12 +177,13 @@ void RomInfo () {
 	DialogBox(hInst,"ROM_INFO_DIALOG",hMainWindow,(DLGPROC)RomInfoProc);
 }
 void ShutdownApplication () {
-	CloseCheatWindow();
+	if (CPURunning) EndEmulation();
 	if (TargetInfo!=0) VirtualFree(TargetInfo,0,MEM_RELEASE);
 	SaveRomBrowserColumnInfo();
 	FreeRomBrowser();
 	ShutdownPlugins();
 	SaveRecentFiles();
+	CloseCheatWindow();
 	Release_Memory();
 	CloseHandle(hPauseMutex);
 	CoUninitialize();
@@ -828,7 +829,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 				CaptureScreen(Directory);
 			} else {
 				int fileIndex=0,rowSize,sourceX=0,sourceY=0;
-				char outputFile[_MAX_PATH],Directory[_MAX_PATH],*IniFile,Identifier[256],GameName[256];
+				char outputFile[_MAX_PATH],Directory[_MAX_PATH],*IniFile,Identifier[100],GameName[200];
 				HDC hScreenDC,hMemoryDC;
 				HBITMAP hBitmap,hOldBitmap;
 				BITMAPINFO bi;
@@ -1115,7 +1116,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 		break;
 		case ID_OPTIONS_GAMECAPTURE:
 		{
-			char path_buffer[_MAX_PATH],drive[_MAX_DRIVE],dir[_MAX_DIR],Runtimesdir[_MAX_DIR],ffmpegPath[_MAX_PATH],outputFile[_MAX_PATH],Directory[_MAX_PATH],*IniFile,Identifier[256],cmd[4096],WinTitle[512],GameName[256];
+			char path_buffer[_MAX_PATH],drive[_MAX_DRIVE],dir[_MAX_DIR],Runtimesdir[_MAX_DIR],ffmpegPath[_MAX_PATH],outputFile[_MAX_PATH],Directory[_MAX_PATH],*IniFile,Identifier[100],cmd[4096],WinTitle[512],GameName[200];
 			int fileIndex=0;
 			RECT statusRect;
 			GetWindowText(hMainWindow,WinTitle,sizeof(WinTitle));
@@ -1729,7 +1730,7 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpszArgs,in
 #elif MODERN_PLUGINS
 #define PLUGINS "Modern Plugins - Project64_Modern.exe uses GLideN64 Video, Azi Audio, and N-Rage's Input as default plugins for modern PC's and modern ROMhacks. Switching to Jabo's D3D8 is necessary for most legacy ROMhacks."
 #endif
-		sprintf(IntroMessage,"About - This is an updated Project64 v1.6.1 that's semi-maintained for casual play of retro and ROMhack games with minimal system requirements.\n\n\n%s\n\n\nSee User Guide for my contact info and helpful information, especially regarding personal/legal usage, plugin details, running ROMhacks, using the ROM Browser/ROM Notes system, and Advanced Settings. Please be patient if expecting a response from contacting me as I'm usually quite busy. Credits are found towards the very bottom of Visual Studio Source Code/Main.h (view from Visual Studio with the .vcxproj file or open with a notepad app) and the User Guide.\n\n\n- Edwin Bruce Shankle IV",PLUGINS);
+		sprintf(IntroMessage,"This is my update of Project64 v1.6.1 which I semi-maintain for casual retail and ROMhack gaming (minimal system requirements).\n\n\n%s\n\n\nSee User Guide for my contact info and helpful information, especially regarding personal/legal usage, plugin details, running ROMhacks, using the ROM Browser/ROM Notes system, and Advanced Settings. Please be patient if expecting a response from contacting me as I'm usually quite busy. Credits are found towards the very bottom of Visual Studio Source Code/Main.h (view from Visual Studio with the .vcxproj file or open with a notepad app) and the User Guide.\n\n\n- Edwin Bruce Shankle IV",PLUGINS);
 		MessageBox(0,IntroMessage,AppName,MB_OK|MB_ICONINFORMATION|MB_SETFOREGROUND);
 	}
 	ShowWindow(hMainWindow,SW_SHOW);

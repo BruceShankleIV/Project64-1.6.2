@@ -596,7 +596,6 @@ void HandleGlobalTasks (HWND hWnd) {
 			if (CPURunning) HandleGlobalTasks(hMainWindow);
 		}
 	}
-	
 }
 void SetupPluginsScreen (HWND hDlg) {
 	WIN32_FIND_DATA FindData;

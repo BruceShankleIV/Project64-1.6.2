@@ -8,11 +8,11 @@
 __time64_t seconds_offset=0;
 int first_load=TRUE;
 BYTE INTtoBCD (int val) {
-	val %=100;		// Conversion to 1 byte (8 bits) packed BCD supports 0 to 99 only.
+	val %=100; // Conversion to 1 byte (8 bits) packed BCD supports 0 to 99 only.
 	return ((val / 10)<<4)|(val % 10);
 }
 BYTE BCDtoBYTE (BYTE val) {
-	val %=0x99;	// The maximum a BCD can store in 1 byte (8 bits).
+	val %=0x99; // The maximum a BCD can store in 1 byte (8 bits).
 	return val-((val&240)>>3)*3;
 }
 int RTC_Command (BYTE*Command) {
@@ -20,14 +20,14 @@ int RTC_Command (BYTE*Command) {
 	case 6:	// Real-Time Clock status
 		Command[3]=0;
 		Command[4]=16;
-		Command[5]=0;	// No error,0x80 would be busy and 0x01 and 0x02 would be failure
+		Command[5]=0; // No error,0x80 would be busy and 0x01 and 0x02 would be failure
 		break;
 	case 7:	// Real-Time Clock read
-		switch (Command[3]) {	// Block number
+		switch (Command[3]) { // Block number
 		case 0:
-			Command[4]=0x00;	// Set blocks 1 and 2 to read-write?
-			Command[5]=0x02;	// Timer is running
-			Command[12]=0x00;	// No error
+			Command[4]=0x00; // Set blocks 1 and 2 to read-write?
+			Command[5]=0x02; // Timer is running
+			Command[12]=0x00; // No error
 			break;
 		case 2:
 			{
@@ -83,9 +83,7 @@ void ReadFromRTC() {
 		fscanf(fp,"%s",String);
 		seconds_offset=_atoi64(String);
 		fclose(fp);
-	} else {
-		seconds_offset=0;
-	}
+	} else seconds_offset=0;
 }
 void WriteToRTC() {
 	FILE*fp;

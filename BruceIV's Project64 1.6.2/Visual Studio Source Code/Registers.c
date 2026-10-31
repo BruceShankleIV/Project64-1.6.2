@@ -29,15 +29,11 @@
 #include "CPU.h"
 #include "x86.h"
 #include "ROM Tools Common.h"
-DWORD PROGRAM_COUNTER,*CP0,*FPCR,*RegRDRAM,*RegSP,*RegDPC,*RegMI,*RegVI,*RegAI,*RegPI,
-	*RegRI,*RegSI,HalfLine,RegModValue,ViFieldSerration,LLBit,LLAddr;
+DWORD PROGRAM_COUNTER,*CP0,*FPCR,*RegRDRAM,*RegSP,*RegDPC,*RegMI,*RegVI,*RegAI,*RegPI,*RegRI,*RegSI,HalfLine,RegModValue,ViFieldSerration,LLBit,LLAddr;
 void*FPRDoubleLocation[32],*FPRFloatLocation[32];
 MIPS_DWORD*GPR,*FPR,HI,LO;
 N64_REGISTERS Registers;
 int fpuControl;
-int  UnMap_8BitTempReg (BLOCK_SECTION*Section);
-int  UnMap_TempReg     (BLOCK_SECTION*Section);
-BOOL UnMap_X86reg      (BLOCK_SECTION*Section,DWORD x86Reg);
 void ChangeFPURegFormat (BLOCK_SECTION*Section,int Reg,int OldFormat,int NewFormat,int RoundingModel) {
 	DWORD i;
 	for (i=0;i<8;i++) {
@@ -108,13 +104,60 @@ void ChangeSpStatus (void) {
 	}
 	RunRsp();
 }
+BOOL UnMap_X86reg (BLOCK_SECTION*Section,DWORD x86Reg) {
+	int count;
+	if (x86Mapped(x86Reg)==NotMapped&&x86Protected(x86Reg)==FALSE) return TRUE;
+	if (x86Mapped(x86Reg)==Temp_Mapped) {
+		if (x86Protected(x86Reg)==FALSE) {
+			x86Mapped(x86Reg)=NotMapped;
+			return TRUE;
+		}
+		return FALSE;
+	}
+	for (count=1;count<32;count++) {
+		if (IsMapped(count)) {
+			if (Is64Bit(count)) {
+				if (MipsRegHi(count)==x86Reg) {
+					if (x86Protected(x86Reg)==FALSE) {
+						UnMap_GPR(Section,count,TRUE);
+						return TRUE;
+					}
+					break;
+				}
+			}
+			if (MipsRegLo(count)==x86Reg) {
+				if (x86Protected(x86Reg)==FALSE) {
+					UnMap_GPR(Section,count,TRUE);
+					return TRUE;
+				}
+				break;
+			}
+		}
+	}
+	if (x86Mapped(x86Reg)==Stack_Mapped) {
+		MoveX86regToVariable(x86Reg,&MemoryStack);
+		x86Mapped(x86Reg)=NotMapped;
+		return TRUE;
+	}
+	return FALSE;
+}
 int Free8BitX86Reg (BLOCK_SECTION*Section) {
 	int x86Reg,count,MapCount[10],MapReg[10];
 	if (x86Mapped(x86_EBX)==NotMapped&&!x86Protected(x86_EBX)) {return x86_EBX;}
 	if (x86Mapped(x86_EAX)==NotMapped&&!x86Protected(x86_EAX)) {return x86_EAX;}
 	if (x86Mapped(x86_EDX)==NotMapped&&!x86Protected(x86_EDX)) {return x86_EDX;}
 	if (x86Mapped(x86_ECX)==NotMapped&&!x86Protected(x86_ECX)) {return x86_ECX;}
-	x86Reg=UnMap_8BitTempReg(Section);
+	x86Reg=-1;
+	for (count=0;count<10;count++) {
+		if (!Is8BitReg(count)) continue;
+		if (MipsRegState(count)==Temp_Mapped) {
+			if (x86Protected(count)==FALSE) {
+				x86Mapped(count)=NotMapped;
+				x86Reg=count;
+				break;
+			}
+		}
+	}
 	if (x86Reg>0) {return x86Reg;}
 	for (count=0;count<10;count++) {
 		MapCount[count]=x86MapOrder(count);
@@ -152,7 +195,16 @@ int FreeX86Reg (BLOCK_SECTION*Section) {
 	if (x86Mapped(x86_EAX)==NotMapped&&!x86Protected(x86_EAX)) {return x86_EAX;}
 	if (x86Mapped(x86_EDX)==NotMapped&&!x86Protected(x86_EDX)) {return x86_EDX;}
 	if (x86Mapped(x86_ECX)==NotMapped&&!x86Protected(x86_ECX)) {return x86_ECX;}
-	x86Reg=UnMap_TempReg(Section);
+	x86Reg=-1;
+	for (count=0;count<10;count++) {
+		if (x86Mapped(count)==Temp_Mapped) {
+			if (x86Protected(count)==FALSE) {
+				x86Mapped(count)=NotMapped;
+				x86Reg=count;
+				break;
+			}
+		}
+	}
 	if (x86Reg>0) {return x86Reg;}
 	for (count=0;count<10;count++) {
 		MapCount[count]=x86MapOrder(count);
@@ -819,19 +871,6 @@ int StackPosition (BLOCK_SECTION*Section,int Reg) {
 	}
 	return -1;
 }
-int UnMap_8BitTempReg (BLOCK_SECTION*Section) {
-	int count;
-	for (count=0;count<10;count++) {
-		if (!Is8BitReg(count)) continue;
-		if (MipsRegState(count)==Temp_Mapped) {
-			if (x86Protected(count)==FALSE) {
-				x86Mapped(count)=NotMapped;
-				return count;
-			}
-		}
-	}
-	return -1;
-}
 void UnMap_AllFPRs (BLOCK_SECTION*Section) {
 	DWORD StackPos;
 	for (;;) {
@@ -965,55 +1004,6 @@ void UnMap_GPR (BLOCK_SECTION*Section,DWORD Reg,int WriteBackValue) {
 	}
 	MipsRegState(Reg)=STATE_UNKNOWN;
 }
-int UnMap_TempReg (BLOCK_SECTION*Section) {
-	int count;
-	for (count=0;count<10;count++) {
-		if (x86Mapped(count)==Temp_Mapped) {
-			if (x86Protected(count)==FALSE) {
-				x86Mapped(count)=NotMapped;
-				return count;
-			}
-		}
-	}
-	return -1;
-}
-BOOL UnMap_X86reg (BLOCK_SECTION*Section,DWORD x86Reg) {
-	int count;
-	if (x86Mapped(x86Reg)==NotMapped&&x86Protected(x86Reg)==FALSE) return TRUE;
-	if (x86Mapped(x86Reg)==Temp_Mapped) {
-		if (x86Protected(x86Reg)==FALSE) {
-			x86Mapped(x86Reg)=NotMapped;
-			return TRUE;
-		}
-		return FALSE;
-	}
-	for (count=1;count<32;count++) {
-		if (IsMapped(count)) {
-			if (Is64Bit(count)) {
-				if (MipsRegHi(count)==x86Reg) {
-					if (x86Protected(x86Reg)==FALSE) {
-						UnMap_GPR(Section,count,TRUE);
-						return TRUE;
-					}
-					break;
-				}
-			}
-			if (MipsRegLo(count)==x86Reg) {
-				if (x86Protected(x86Reg)==FALSE) {
-					UnMap_GPR(Section,count,TRUE);
-					return TRUE;
-				}
-				break;
-			}
-		}
-	}
-	if (x86Mapped(x86Reg)==Stack_Mapped) {
-		MoveX86regToVariable(x86Reg,&MemoryStack);
-		x86Mapped(x86Reg)=NotMapped;
-		return TRUE;
-	}
-	return FALSE;
-}
 void UnProtectGPR(BLOCK_SECTION*Section,DWORD Reg) {
 	if (IsUnknown(Reg)||IsConst(Reg)) return;
 	if (Is64Bit(Reg)) {
@@ -1026,7 +1016,7 @@ void UpdateCurrentHalfLine () {
 		HalfLine=0;
 		return;
 	}
-	HalfLine=(Timers.Timer / 1500);
+	HalfLine=(Timers.Timer / 1500); // (VI Refresh Rate)
 	HalfLine&=~1;
 	HalfLine|=ViFieldSerration;
 	VI_V_CURRENT_LINE_REG=HalfLine;

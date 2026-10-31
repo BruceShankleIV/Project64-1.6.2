@@ -1,12 +1,10 @@
 ## About
 
-This is an updated Project64 v1.6.1 that's semi-maintained for casual play of retro and ROMhack games with minimal system requirements. See User Guide or contact me for info and troubleshooting.
+This is my update of Project64 v1.6.1 which I semi-maintain for casual retail and ROMhack gaming (minimal system requirements). See User Guide for helpful information, especially regarding personal/legal usage, plugin details, running ROMhacks, using the ROM Browser/ROM Notes system, and Advanced Settings. Please be patient if expecting a response from contacting me as I'm usually quite busy.
 
 Contact Info
 My email: bruceiv.shankle@gmail.com
 Report bugs: discord.gg/cHDxa9vzQM
-
-I'm usually busy so be patient or try to resolve an issue yourself and post any solutions you find.
 
 From Edwin Bruce Shankle IV
 
@@ -148,7 +146,7 @@ Static Interpreter - by Iconoclast with Special thanks to Jabo, ziggy, and angry
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 DATABASE CREDITS
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-Game.ini (ROM Database) - Original by Smiff, updated by Nekokabu + MASA + Jelta, and updated by BruceIV.
+Game.ini (ROM Database) - OOriginal by Smiff, updated by BruceIV & Collaborators including Miroku and MTA
 SM64 U LOD fix by theboy181.
 FIFA Soccer 64 audio fix by Gent.
 Mario Kart 64 (U) 60FPS Hack - theboy181
@@ -157,7 +155,7 @@ https://www.youtube.com/watch?v=i7jjsZKoM3A
 https://www.youtube.com/watch?v=hNb3cYtNDC8
 
 Cheat.ini (Cheat Database) - Original by Gent, further modified/improved by Bruce IV with added/modified
-code from Miro as well as MTA.
+code from Miro and MTA in collaboration.
 
 Dutch by lilycatx, Russian by SatanNintendo, French by Andzura, Brazilian Portugese by TrulyNaN. + DeepL
 

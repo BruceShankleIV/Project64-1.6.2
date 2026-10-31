@@ -416,7 +416,7 @@ void ReadRomSettings() {
 	RomProtectMemoryEnlargeBuffer=0;
 	if (strlen(RomName)>0) {
 		LPSTR IniFileName;
-		char String[100],Identifier[100],GameName[100],WinTitle[100];
+		char String[100],Identifier[100],GameName[200],WinTitle[100];
 		IniFileName=GetIniFileName();
 		sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD*)(&RomHeader[0x10]),*(DWORD*)(&RomHeader[0x14]),RomHeader[0x3D]);
 		_GetPrivateProfileString(Identifier,"Save Type","",String,sizeof(String),IniFileName);

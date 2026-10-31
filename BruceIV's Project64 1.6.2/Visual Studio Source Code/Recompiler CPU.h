@@ -159,12 +159,8 @@ struct {
 	DWORD NoOfIMEMBlocks;
 	DWORD NoOfPifRomBlocks;
 } N64_Blocks;
-BYTE*Compiler4300iBlock    ();
-BYTE*CompileDelaySlot      ();
 void CompileExit            (DWORD TargetPC,REG_INFO ExitRegSet,int reason,int CompileNow,void (*x86Jmp)(DWORD Value));
-void CompileSystemCheck     (DWORD TimerModifier,DWORD TargetPC,REG_INFO RegSet);
 void FixRandomReg           (void);
-void FreeSection            (BLOCK_SECTION*Section,BLOCK_SECTION*Parent);
 void StartRecompilerCPU     (void);
 void GenerateSectionLinkage (BLOCK_SECTION*Section);
 void InitializeInitialCompilerVariable ();

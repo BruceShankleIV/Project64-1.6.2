@@ -68,13 +68,9 @@ typedef struct {
 #define RB_Crc1				6
 #define RB_Crc2				7
 #define RB_CICChip			8
-void LoadRomList             ();
-void RomList_SortList        ();
-void FillRomExtensionInfo    (ROM_INFO*pRomInfo);
-BOOL FillRomInfo             (ROM_INFO*pRomInfo);
-#define COLOR_TEXT 0
+#define COLOR_TEXT			0
 #define COLOR_SELECTED_TEXT 1
-#define COLOR_HIGHLIGHTED 2
+#define COLOR_HIGHLIGHTED	2
 void AddToColorCache(COLOR_ENTRY color);
 COLORREF GetColor(char*status,int selection);
 int ColorIndex(char*status);
@@ -86,9 +82,12 @@ int NoOfFields=sizeof(RomBrowserFields)/sizeof(RomBrowserFields[0]),FieldType[(s
 ITEM_LIST ItemList={0,0,0};
 COLOR_CACHE ColorCache;
 void AddRomToList (char*RomLocation) {
-	LV_ITEM  lvItem;
+	LV_ITEM lvItem;
 	ROM_INFO*pRomInfo;
-	int index;
+	BYTE RomData[0x1000];
+	LPSTR IniFileName;
+	char drive[_MAX_DRIVE],dir[_MAX_DIR],ext[_MAX_EXT],Identifier[100];
+	int index,count;
 	if (ItemList.ListAlloc==0) {
 		ItemList.List=(ROM_INFO*)malloc(100*sizeof(ROM_INFO));
 		ItemList.ListAlloc=100;
@@ -105,64 +104,10 @@ void AddRomToList (char*RomLocation) {
 	memset(pRomInfo,0,sizeof(ROM_INFO));
 	memset(&lvItem,0,sizeof(lvItem));
 	strncpy(pRomInfo->szFullFileName,RomLocation,MAX_PATH);
-	if (!FillRomInfo(pRomInfo)) {return;}
-	lvItem.mask=LVIF_TEXT|LVIF_PARAM;
-	lvItem.iItem=ListView_GetItemCount(hRomList);
-	lvItem.lParam=(LPARAM)ItemList.ListCount;
-	lvItem.pszText=LPSTR_TEXTCALLBACK;
-	ItemList.ListCount+=1;
-	index=ListView_InsertItem(hRomList,&lvItem);
-	if (_stricmp(pRomInfo->szFullFileName,LastRoms[0])==0) {
-		ListView_SetItemState(hRomList,index,LVIS_SELECTED|LVIS_FOCUSED,LVIS_SELECTED|LVIS_FOCUSED);
-		ListView_EnsureVisible(hRomList,index,FALSE);
-	}
-}
-void CreateRomListControl (HWND hParent) {
-	hRomList=CreateWindow(WC_LISTVIEW,0,WS_TABSTOP|WS_VISIBLE|WS_CHILD|LVS_OWNERDRAWFIXED|LVS_SINGLESEL|LVS_REPORT,0,0,0,0,hParent,(HMENU)IDC_ROMLIST,hInst,0);
-	ResetRomBrowserColumns();
-	LoadRomList();
-}
-void LoadRomList () {
-	int count,index;
-	ROM_INFO*pRomInfo;
-	LV_ITEM  lvItem;
-	FreeRomBrowser();
-	ListView_DeleteAllItems(hRomList);
-	for (count=0;count<ItemList.ListCount;count++) {
-		pRomInfo=&ItemList.List[count];
-		memset(&lvItem,0,sizeof(lvItem));
-		lvItem.mask=LVIF_TEXT|LVIF_PARAM;
-		lvItem.iItem=ListView_GetItemCount(hRomList);
-		lvItem.lParam=(LPARAM)count;
-		lvItem.pszText=LPSTR_TEXTCALLBACK;
-		index=ListView_InsertItem(hRomList,&lvItem);
-		if (_stricmp(pRomInfo->szFullFileName,LastRoms[0])==0) {
-			ListView_SetItemState(hRomList,index,LVIS_SELECTED|LVIS_FOCUSED,LVIS_SELECTED|LVIS_FOCUSED);
-			ListView_EnsureVisible(hRomList,index,FALSE);
-		}
-		SetColors(pRomInfo->Status);
-	}
-	RomList_SortList();
-}
-void FillRomExtensionInfo(ROM_INFO*pRomInfo) {
-	LPSTR IniFileName;
-	char Identifier[100];
-	IniFileName=GetIniFileName();
-	sprintf(Identifier,"%08X-%08X-C:%X",pRomInfo->CRC1,pRomInfo->CRC2,pRomInfo->Country);
-	if (RomBrowserFields[RB_GameName].Pos>=0) {
-		_GetPrivateProfileString(Identifier,"Game Name",GS(UNKNOWN),pRomInfo->GameName,sizeof(pRomInfo->GameName),IniFileName);
-		_GetPrivateProfileString(Identifier,"Status",GS(UNKNOWN),pRomInfo->Status,sizeof(pRomInfo->Status),IniFileName);
-		SetColors(pRomInfo->Status);
-	}
-}
-BOOL FillRomInfo(ROM_INFO*pRomInfo) {
-	char drive[_MAX_DRIVE],dir[_MAX_DIR],ext[_MAX_EXT];
-	BYTE RomData[0x1000];
-	int count;
 	if (RomBrowserFields[RB_CICChip].Pos>=0) {
-		if (!LoadDataFromRomFile(pRomInfo->szFullFileName,RomData,sizeof(RomData),&pRomInfo->RomSize)) return FALSE;
+		if (!LoadDataFromRomFile(pRomInfo->szFullFileName,RomData,sizeof(RomData),&pRomInfo->RomSize)) return;
 	} else {
-		if (!LoadDataFromRomFile(pRomInfo->szFullFileName,RomData,0x40,&pRomInfo->RomSize)) return FALSE;
+		if (!LoadDataFromRomFile(pRomInfo->szFullFileName,RomData,0x40,&pRomInfo->RomSize)) return;
 	}
 	_splitpath(pRomInfo->szFullFileName,drive,dir,pRomInfo->FileName,ext);
 	strcat(pRomInfo->FileName,ext);
@@ -186,8 +131,57 @@ BOOL FillRomInfo(ROM_INFO*pRomInfo) {
 	pRomInfo->CRC1=*(DWORD*)(RomData+0x10);
 	pRomInfo->CRC2=*(DWORD*)(RomData+0x14);
 	if (RomBrowserFields[RB_CICChip].Pos>=0) pRomInfo->CicChip=GetCicChipID(RomData);
-	FillRomExtensionInfo(pRomInfo);
-	return TRUE;
+	IniFileName=GetIniFileName();
+	sprintf(Identifier,"%08X-%08X-C:%X",pRomInfo->CRC1,pRomInfo->CRC2,pRomInfo->Country);
+	if (RomBrowserFields[RB_GameName].Pos>=0) {
+		_GetPrivateProfileString(Identifier,"Game Name",GS(UNKNOWN),pRomInfo->GameName,sizeof(pRomInfo->GameName),IniFileName);
+		_GetPrivateProfileString(Identifier,"Status",GS(UNKNOWN),pRomInfo->Status,sizeof(pRomInfo->Status),IniFileName);
+		SetColors(pRomInfo->Status);
+	}
+	lvItem.mask=LVIF_TEXT|LVIF_PARAM;
+	lvItem.iItem=ListView_GetItemCount(hRomList);
+	lvItem.lParam=(LPARAM)ItemList.ListCount;
+	lvItem.pszText=LPSTR_TEXTCALLBACK;
+	ItemList.ListCount+=1;
+	index=ListView_InsertItem(hRomList,&lvItem);
+	if (_stricmp(pRomInfo->szFullFileName,LastRoms[0])==0) {
+		ListView_SetItemState(hRomList,index,LVIS_SELECTED|LVIS_FOCUSED,LVIS_SELECTED|LVIS_FOCUSED);
+		ListView_EnsureVisible(hRomList,index,FALSE);
+	}
+}
+void RomList_SortList () {
+	SORT_FIELDS SortFields;
+	int count;
+	for (count=0;count<NoOfSortKeys;count++) SortFields.Key[count]=2;
+	SortFields.Key[count]=2;
+	ListView_SortItems(hRomList,RomList_CompareItems,&SortFields);
+}
+void LoadRomList () {
+	int count,index;
+	ROM_INFO*pRomInfo;
+	LV_ITEM  lvItem;
+	FreeRomBrowser();
+	ListView_DeleteAllItems(hRomList);
+	for (count=0;count<ItemList.ListCount;count++) {
+		pRomInfo=&ItemList.List[count];
+		memset(&lvItem,0,sizeof(lvItem));
+		lvItem.mask=LVIF_TEXT|LVIF_PARAM;
+		lvItem.iItem=ListView_GetItemCount(hRomList);
+		lvItem.lParam=(LPARAM)count;
+		lvItem.pszText=LPSTR_TEXTCALLBACK;
+		index=ListView_InsertItem(hRomList,&lvItem);
+		if (_stricmp(pRomInfo->szFullFileName,LastRoms[0])==0) {
+			ListView_SetItemState(hRomList,index,LVIS_SELECTED|LVIS_FOCUSED,LVIS_SELECTED|LVIS_FOCUSED);
+			ListView_EnsureVisible(hRomList,index,FALSE);
+		}
+		SetColors(pRomInfo->Status);
+	}
+	RomList_SortList();
+}
+void CreateRomListControl (HWND hParent) {
+	hRomList=CreateWindow(WC_LISTVIEW,0,WS_TABSTOP|WS_VISIBLE|WS_CHILD|LVS_OWNERDRAWFIXED|LVS_SINGLESEL|LVS_REPORT,0,0,0,0,hParent,(HMENU)IDC_ROMLIST,hInst,0);
+	ResetRomBrowserColumns();
+	LoadRomList();
 }
 void RefreshRomBrowser () {
 	char RomDir[MAX_PATH+1];
@@ -347,13 +341,6 @@ void RomList_OpenRom(LPNMHDR pnmh) {
 	if (!pRomInfo) return;
 	strcpy(CurrentFileName,pRomInfo->szFullFileName);
 	OpenChosenFile();
-}
-void RomList_SortList () {
-	SORT_FIELDS SortFields;
-	int count;
-	for (count=0;count<NoOfSortKeys;count++) SortFields.Key[count]=2;
-	SortFields.Key[count]=2;
-	ListView_SortItems(hRomList,RomList_CompareItems,&SortFields);
 }
 void RomListDrawItem (LPDRAWITEMSTRUCT ditem) {
 	RECT rcItem,rcDraw;

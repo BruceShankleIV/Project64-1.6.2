@@ -1669,8 +1669,8 @@ BOOL r4300i_SW_VAddr (DWORD VAddr,DWORD Value) {
 	return TRUE;
 }
 void Release_Memory () {
-	if (OrigMem!=0) {VirtualFree(OrigMem,0,MEM_RELEASE);}
-	if (ROM!=0) {	VirtualFree(ROM,0,MEM_RELEASE);}
+	if (OrigMem!=0) VirtualFree(OrigMem,0,MEM_RELEASE);
+	if (ROM!=0) VirtualFree(ROM,0,MEM_RELEASE);
 	VirtualFree(TLB_ReadMap,0,MEM_RELEASE);
 	VirtualFree(TLB_WriteMap,0,MEM_RELEASE);
 	VirtualFree(N64MEM,0,MEM_RELEASE);
