@@ -115,7 +115,6 @@ extern int DlistCount,AlistCount,CurrentSaveSlot;
 extern enum SaveType SaveUsing;
 extern CPU_ACTION CPU_Action;
 extern SYSTEM_TIMERS Timers;
-extern HANDLE hPauseMutex;
 extern OPCODE Opcode;
 extern HANDLE hCPU;
 extern BOOL inFullScreen,CPURunning;

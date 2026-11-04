@@ -40,7 +40,6 @@ int DlistCount,AlistCount,Start_COUNT,EmuAI_FrameRate,CurrentSaveSlot;
 enum SaveType SaveUsing;
 CPU_ACTION CPU_Action;
 SYSTEM_TIMERS Timers;
-HANDLE hPauseMutex;
 OPCODE Opcode;
 HANDLE hCPU;
 BOOL inFullScreen,CPURunning;
@@ -210,6 +209,7 @@ void CheckTimer () {
 }
 void EndEmulation () {
 	DWORD ExitCode,count,OldProtect;
+	if (CPU_Paused) CPU_Paused=FALSE;
 	SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)"");
 	ManualPaused=FALSE;
 	CPU_Action.CloseCPU=TRUE;
@@ -465,27 +465,14 @@ void DoSomething (void) {
 		DoIntrException(FALSE);
 	}
 	if (CPU_Action.Pause) {
-		WaitForSingleObject(hPauseMutex,INFINITE);
-		if (CPU_Action.Pause) {
-			HMENU hMenu=GetMenu(hMainWindow);
-			HMENU hSubMenu=GetSubMenu(hMenu,1);
-			MenuSetText(hSubMenu,1,GS(MENU_RESUME),"F2/Shift+Caps Lock");
-			CurrentFrame=0;
-			CPU_Paused=TRUE;
-			CPU_Action.Pause=FALSE;
-			ReleaseMutex(hPauseMutex);
-			SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MSG_CPU_PAUSED));
-			DisplayEmulationSpeed();
-			WaitForSingleObject(hPauseMutex,INFINITE);
-			if (CPU_Paused) {
-				ReleaseMutex(hPauseMutex);
-				SuspendThread(hCPU);
-			} else {
-				ReleaseMutex(hPauseMutex);
-			}
-		} else {
-			ReleaseMutex(hPauseMutex);
-		}
+		HMENU hMenu=GetMenu(hMainWindow),hSubMenu=GetSubMenu(hMenu,1);
+		MenuSetText(hSubMenu,1,GS(MENU_RESUME),"F2/Shift+Caps Lock");
+		CurrentFrame=0;
+		CPU_Paused=TRUE;
+		CPU_Action.Pause=FALSE;
+		SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MSG_CPU_PAUSED));
+		DisplayEmulationSpeed();
+		if (CPU_Paused) SuspendThread(hCPU);
 	}
 	CPU_Action.DoSomething=FALSE;
 	if (CPU_Action.SaveState) {
@@ -795,18 +782,13 @@ BOOL Machine_SaveState() {
 }
 void PauseCPU () {
 	if (!CPURunning) return;
-	if (CPU_Paused||CPU_Action.Pause) {
-		HMENU hMenu=GetMenu(hMainWindow);
-		HMENU hSubMenu=GetSubMenu(hMenu,1);
-		if (CPU_Action.Pause) {
-			CPU_Action.Pause=FALSE;
-			CPU_Paused=FALSE;
-			ManualPaused=FALSE;
-			SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MSG_CPU_RESUMED));
-			ReleaseMutex(hPauseMutex);
-			return;
-		}
+	HMENU hMenu=GetMenu(hMainWindow),hSubMenu=GetSubMenu(hMenu,1);
+	if (CPU_Action.Pause) {
+		CPU_Action.Pause=FALSE;
+		goto HandleUnpause;
+	} else if (CPU_Paused) {
 		ResumeThread(hCPU);
+		HandleUnpause:
 		SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MSG_CPU_RESUMED));
 		MenuSetText(hSubMenu,1,GS(MENU_PAUSE),"F2/Shift+Caps Lock");
 		ManualPaused=FALSE;
@@ -816,19 +798,15 @@ void PauseCPU () {
 		CPU_Action.Pause=TRUE;
 		CPU_Action.DoSomething=TRUE;
 	}
-	ReleaseMutex(hPauseMutex);
 }
 void RefreshScreen () {
 	static DWORD OLD_VI_V_SYNC_REG=0,VI_INTR_TIME=500000;
 	LARGE_INTEGER Time;
 	if (OLD_VI_V_SYNC_REG!=VI_V_SYNC_REG) {
-		if (VI_V_SYNC_REG==0) {
-			VI_INTR_TIME=500000;
-		} else {
+		if (VI_V_SYNC_REG==0) VI_INTR_TIME=500000;
+		else {
 			VI_INTR_TIME=(VI_V_SYNC_REG+1)*1500;
-			if ((VI_V_SYNC_REG % 1)!=0) {
-				VI_INTR_TIME-=38;
-			}
+			if ((VI_V_SYNC_REG % 1)!=0) VI_INTR_TIME-=38;
 		}
 	}
 	ChangeTimer(ViTimer,Timers.Timer+Timers.NextTimer[ViTimer]+VI_INTR_TIME);

@@ -179,13 +179,12 @@ void RomInfo () {
 void ShutdownApplication () {
 	if (CPURunning) EndEmulation();
 	if (TargetInfo!=0) VirtualFree(TargetInfo,0,MEM_RELEASE);
+	CloseCheatWindow();
 	SaveRomBrowserColumnInfo();
 	FreeRomBrowser();
 	ShutdownPlugins();
 	SaveRecentFiles();
-	CloseCheatWindow();
 	Release_Memory();
-	CloseHandle(hPauseMutex);
 	CoUninitialize();
 }
 int CALLBACK SelectRomDirCallBack (HWND hwnd,DWORD uMsg,DWORD lp,DWORD lpData) {
@@ -435,7 +434,6 @@ int InitializeApplication (HINSTANCE hInstance) {
 	}
 	init_summercart(&SummerCart);
 	poweron_summercart(&SummerCart);
-	hPauseMutex=CreateMutex(0,FALSE,0);
 	INITIALIZECPUFlags();
 	LoadSettings();
 	SetupRegisters(&Registers);
