@@ -782,15 +782,12 @@ BOOL Machine_SaveState() {
 }
 void PauseCPU () {
 	if (!CPURunning) return;
-	HMENU hMenu=GetMenu(hMainWindow),hSubMenu=GetSubMenu(hMenu,1);
-	if (CPU_Action.Pause) {
-		CPU_Action.Pause=FALSE;
-		goto HandleUnpause;
-	} else if (CPU_Paused) {
+	if (CPU_Paused) {
+		HMENU hMenu=GetMenu(hMainWindow),hSubMenu=GetSubMenu(hMenu,1);
 		ResumeThread(hCPU);
-		HandleUnpause:
 		SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(MSG_CPU_RESUMED));
 		MenuSetText(hSubMenu,1,GS(MENU_PAUSE),"F2/Shift+Caps Lock");
+		CPU_Action.Pause=FALSE;
 		ManualPaused=FALSE;
 		CPU_Paused=FALSE;
 		if (LimitFPS&&!SyncGametoAudio||!LimitFPS&&SpeedCap) Timer_Start();
