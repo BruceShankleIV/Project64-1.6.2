@@ -177,9 +177,9 @@ void RomInfo () {
 	DialogBox(hInst,"ROM_INFO_DIALOG",hMainWindow,(DLGPROC)RomInfoProc);
 }
 void ShutdownApplication () {
+	CloseCheatWindow();
 	if (CPURunning) EndEmulation();
 	if (TargetInfo!=0) VirtualFree(TargetInfo,0,MEM_RELEASE);
-	CloseCheatWindow();
 	SaveRomBrowserColumnInfo();
 	FreeRomBrowser();
 	ShutdownPlugins();
