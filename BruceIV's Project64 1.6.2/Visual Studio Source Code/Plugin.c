@@ -548,8 +548,7 @@ void HandlePluginsAndEmulationStartup () {
 			RDRAMsize=NewRAMsize;
 			memset(&CPU_Action,0,sizeof(CPU_Action));
 			CPU_Action.hStepping=CreateEvent(0,FALSE,FALSE,0);
-			WrittenToRom=FALSE;
-			memset(N64MEM,0,RDRAMsize);
+			WrittenToRom=FALSE;			
 			InitializeTLB();
 			InitializeR4300iRegisters(LoadPifRom(*(ROM+0x3D)),*(ROM+0x3D),GetCicChipID(ROM));
 			OpcodeMapInterpreter();

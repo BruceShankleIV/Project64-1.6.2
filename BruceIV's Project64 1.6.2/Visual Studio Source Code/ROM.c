@@ -663,7 +663,6 @@ void OpenChosenFile(void) {
 	else CPURunning=TRUE;
 	ByteSwapRom(ROM,RomFileSize);
 	memcpy(RomHeader,ROM,sizeof(RomHeader));
-	CloseCheatWindow(); // If called any earlier it can crash the application for some reason
 	RecalculateCRC();
 	memcpy(&RomName[0],(void*)(ROM+0x20),26);
 	for (count=0;count<26;count+=4) {
@@ -678,6 +677,7 @@ void OpenChosenFile(void) {
 		if (RomName[count]==' ') RomName[count]='\0';
 		else if (RomName[count]!='\0') count=-1;
 	}
+	CloseCheatWindow();
 	sprintf(String,"PJ64 V 1.6.2\\Configuration");
 	lResult=RegOpenKeyEx(HKEY_CURRENT_USER,String,0,KEY_ALL_ACCESS,&hKeyResults);
 	if (lResult==ERROR_SUCCESS) {
