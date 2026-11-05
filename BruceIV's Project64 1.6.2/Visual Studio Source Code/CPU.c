@@ -210,8 +210,7 @@ void CheckTimer () {
 void EndEmulation () {
 	DWORD ExitCode,count,OldProtect;
 	if (CPU_Paused) CPU_Paused=FALSE;
-	SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)"");
-	ManualPaused=FALSE;
+	if (ManualPaused) ManualPaused=FALSE;
 	CPU_Action.CloseCPU=TRUE;
 	CPU_Action.Stepping=FALSE;
 	CPU_Action.DoSomething=TRUE;
