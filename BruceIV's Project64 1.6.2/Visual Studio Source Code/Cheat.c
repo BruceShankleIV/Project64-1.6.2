@@ -1041,7 +1041,7 @@ void DeleteCheat(int CheatNo) {
 	fInput=fopen(IniFileName,"r+b");
 	if (fInput==0) {
 		fInput=fopen(IniFileName,"w+b");
-		if (IniFileName==0) return;
+		if (fInput==0) return;
 	}
 	CurrentSection[0]=0;
 	do {
@@ -1091,7 +1091,10 @@ void DeleteCheat(int CheatNo) {
 			char Header[100];
 			sprintf(Header,"Cheat%d",atoi(&Input[5])-1);
 			Newlen+=strlen(Header);
-			if (OldLen!=Newlen) CurrentPos+=Newlen-OldLen;
+			if (OldLen!=Newlen) {
+				fInsertSpaces(fInput,WritePos,Newlen-OldLen);
+				CurrentPos+=Newlen-OldLen;
+			}
 			fseek(fInput,WritePos,SEEK_SET);
 			fprintf(fInput,"%s%s%s",Header,Pos,LineFeed);
 			fflush(fInput);
