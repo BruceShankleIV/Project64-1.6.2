@@ -942,7 +942,7 @@ BOOL GenerateX86Code (BLOCK_SECTION*Section,DWORD Test) {
 	do {
 		__try {
 			if (!Lag&&CountPerOp==1) BlockCycleCount=1;
-			if (!r4300i_LW_VAddr(Section->CompilePC,&Opcode.Hex)) {
+			if (!r4300i_LW_VAddr_Boot(Section->CompilePC,&Opcode.Hex)) {
 				if (UseTLB) {
 					if (ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON) HandleEmulationCrash("GenerateX86Code-!r4300i_LW_VAddr(Section->CompilePC,&Opcode.Hex)-UseTLB-ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON\n\nNeeds “Recompile VR4300i CPU=OFF”?");
 					else HandleEmulationCrash("GenerateX86Code-!r4300i_LW_VAddr(Section->CompilePC,&Opcode.Hex)-UseTLB-ProtectMemoryEnlargeBuffer==PROTECT_MEMORY_ENLARGE_BUFFER_ON-else\n\nNeeds “Protect Memory / Enlarge Buffer=ON”?");

@@ -888,8 +888,7 @@ void _fastcall r4300i_COP1_S_CMP (void) {
 		equal=Temp0==Temp1;
 		unorded=FALSE;
 	}
-	condition=((Opcode.funct&4)&&less)|((Opcode.funct&2)&&equal)|
-		((Opcode.funct&1)&&unorded);
+	condition=((Opcode.funct&4)&&less)|((Opcode.funct&2)&&equal)|((Opcode.funct&1)&&unorded);
 	if (condition) {
 		FPCR[31]|=FPCSR_C;
 	} else {

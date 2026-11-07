@@ -372,7 +372,7 @@ void OpcodeMapInterpreter () {
 	R4300i_CoP2[ 7]=DUMMY;// COP2_DCT
 }
 void ExecuteInterpreterOpCode () {
-	if (!r4300i_LW_VAddr(PROGRAM_COUNTER,&Opcode.Hex)) {
+	if (!r4300i_LW_VAddr_Boot(PROGRAM_COUNTER,&Opcode.Hex)) {
 		DoTLBMiss(NextInstruction==JUMP,PROGRAM_COUNTER);
 		SetNormal
 		return;
