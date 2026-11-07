@@ -225,21 +225,25 @@ int ApplyCheatEntry (GAMESHARK_CODE*Code,BOOL Execute) {
 			int numrepeats=(Code->Command&0x0000FF00)>>8,offset=Code->Command&0x000000FF,incr=Code->Value,count;
 			switch (Code[1].Command&0xFF000000) {
 			case 0x80000000:
-				Address=0x80000000|(Code[1].Command&0xFFFFFF);
-				Memory=Code[1].Value;
-				for (count=0;count<numrepeats;count++) {
-					r4300i_SB_VAddr(Address,(BYTE)Memory);
-					Address+=offset;
-					Memory+=incr;
+				if (Execute) {
+					Address=0x80000000|(Code[1].Command&0xFFFFFF);
+					Memory=Code[1].Value;
+					for (count=0;count<numrepeats;count++) {
+						r4300i_SB_VAddr(Address,(BYTE)Memory);
+						Address+=offset;
+						Memory+=incr;
+					}
 				}
 				return 2;
 			case 0x81000000:
-				Address=0x80000000|(Code[1].Command&0xFFFFFF);
-				Memory=Code[1].Value;
-				for (count=0;count<numrepeats;count++) {
-					r4300i_SH_VAddr(Address,(WORD)Memory);
-					Address+=offset;
-					Memory+=incr;
+				if (Execute) {
+					Address=0x80000000|(Code[1].Command&0xFFFFFF);
+					Memory=Code[1].Value;
+					for (count=0;count<numrepeats;count++) {
+						r4300i_SH_VAddr(Address,(WORD)Memory);
+						Address+=offset;
+						Memory+=incr;
+					}
 				}
 				return 2;
 			default: return 1;
