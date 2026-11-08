@@ -15,7 +15,7 @@ If you'd like to experience the games I grew up playing, here's a list of them a
 * The Legend of Zelda - Ocarina of Time (v1.0) (Version 1.0 for no censorship and fun glitches to screw around with)
 * The Legend of Zelda - Majora's Mask (U Region for N64, not GC. Jabo's Direct3D8 has the least graphics issues with the pause menu on this version and has improved cheat support)
 * Super Mario 64 (U version, has LOD fix and improved cheat support)
-* Mario Kart 64 (U version, gets 60FPS support)
+* Mario Kart 64 (supports multiplayer)
 
 ##⚠Internet Safety Disclaimer⚠ & Obtaining ROMhacks
 
