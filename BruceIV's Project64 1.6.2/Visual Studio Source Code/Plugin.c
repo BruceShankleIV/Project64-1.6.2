@@ -250,6 +250,7 @@ void HandlePluginsAndEmulationStartup () {
 	}
 	if (strcmp(GfxDLL,"Jabo_Direct3D8.dll")==0&&strcmp(RSPDLL,"Icepir8sLegacyRSP.dll")==0) strcpy(RSPDLL,"RSP.dll");
 	SendMessage(hStatusWnd,SB_SETTEXT,0,(LPARAM)GS(PLUGINS_INITIALIZING));
+	ShowWindow(hMainWindow,SW_RESTORE);
 	if (CPURunning) {
 		ReadRomSettings();
 		if (RomProtectMemoryEnlargeBuffer==0) ProtectMemoryEnlargeBuffer=SystemProtectMemoryEnlargeBuffer;
