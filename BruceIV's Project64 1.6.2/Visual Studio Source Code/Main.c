@@ -844,7 +844,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 				sprintf(Identifier,"%08X-%08X-C:%X",*(DWORD*)(&RomHeader[0x10]),*(DWORD*)(&RomHeader[0x14]),RomHeader[0x3D]);
 				_GetPrivateProfileString(Identifier,"Game Name","",GameName,sizeof(GameName),IniFile);
 				do {
-					if (strcmp(GameName,"(UNREGISTERED GAME ENTRY)")==0) sprintf(outputFile,"%s\\snap%04d.bmp",Directory,fileIndex);
+					if (strlen(GameName)==0) sprintf(outputFile,"%s\\snap%04d.bmp",Directory,fileIndex);
 					else sprintf(outputFile,"%s\\%s snap%04d.bmp",Directory,GameName,fileIndex);
 					fileIndex++;
 				} while (GetFileAttributes(outputFile)!=INVALID_FILE_ATTRIBUTES);
@@ -1135,7 +1135,7 @@ LRESULT CALLBACK Main_Proc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam) {
 			_GetPrivateProfileString(Identifier,"Game Name","",GameName,sizeof(GameName),IniFile);
 			if (GetWindowRect(hStatusWnd,&statusRect)) cropHeight=statusRect.bottom-statusRect.top;
 			do {
-				if (strcmp(GameName,"(UNREGISTERED GAME ENTRY)")==0) sprintf(outputFile,"%s\\%04d%s.mp4",Directory,fileIndex,RecordRGB?"_RGB":"");
+				if (strlen(GameName)==0) sprintf(outputFile,"%s\\%04d%s.mp4",Directory,fileIndex,RecordRGB?"_RGB":"");
 				else sprintf(outputFile,"%s\\%s %04d%s.mp4",Directory,GameName,fileIndex,RecordRGB?"_RGB":"");
 				fileIndex++;
 			} while (GetFileAttributes(outputFile)!=INVALID_FILE_ATTRIBUTES);
